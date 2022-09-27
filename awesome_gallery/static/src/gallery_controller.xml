@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_gallery.GalleryController">
-        <div> Hello world </div>
+        <Layout display="props.display"/>
     </t>
 
 </templates>
