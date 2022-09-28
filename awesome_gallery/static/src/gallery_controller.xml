@@ -3,12 +3,7 @@
 
     <t t-name="awesome_gallery.GalleryController">
         <Layout display="props.display">
-            <t t-foreach="images.data" t-as="image" t-key="image.id">
-                <p>
-                    id: <t t-esc="image.id"/>
-                    bin_size: <t t-esc="image[props.archInfo.imageField]"/>
-                </p>
-            </t>
+            <GalleryRenderer model="model"/>
         </Layout>
     </t>
 
