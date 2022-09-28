@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_gallery.GalleryRenderer">
-        <t t-foreach="props.model.records" t-as="record" t-key="record.id">
-            <p>
-                id: <t t-esc="record.id"/>
-                bin_size: <t t-esc="record[props.model.imageField]"/>
-            </p>
-        </t>
+        <div class="row">
+            <t t-foreach="props.model.records" t-as="record" t-key="record.id">
+                <div class="col-lg-2 col-md-3 col-sm-4 px-2 col-6 d-flex">
+                    <GalleryImage record="record" model="props.model"/>
+                </div>
+            </t>
+        </div>
     </t>
 </templates>
