@@ -10,4 +10,5 @@ export class GalleryRenderer extends Component {
     static props = {
         model: GalleryModel,
     }
+
 }
