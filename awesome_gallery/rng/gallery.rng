@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0"
+             xmlns:a="http://relaxng.org/ns/annotation/1.0"
+             datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <rng:define name="gallery">
+        <rng:element name="gallery">
+            <rng:attribute name="image_field"/>
+            <rng:optional><rng:attribute name="tooltip_field"/></rng:optional>
+         	<rng:optional><rng:attribute name="limit"/></rng:optional>
+        </rng:element>
+    </rng:define>
+    <rng:start>
+        <rng:choice>
+            <rng:ref name="gallery" />
+        </rng:choice>
+    </rng:start>
+</rng:grammar>
