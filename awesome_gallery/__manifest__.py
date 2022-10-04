@@ -11,6 +11,7 @@
     'data': [],
     'assets': {
         'web.assets_backend': [
+            'awesome_gallery/static/tests/**/*',
             'awesome_gallery/static/src/**/*',
         ],
     },
