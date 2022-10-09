@@ -1,0 +1,58 @@
+<odoo>
+    <data>
+      <record id="order1" model="awesome_tshirt.order">
+        <field name="quantity">2</field>
+        <field name="customer_id" ref="base.res_partner_12"/>
+        <field name="size">s</field>
+        <field name="state">new</field>
+        <field name="create_date" eval="datetime.now() - timedelta(days=1)"/>
+        <field name="image_url">https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/T-shirt2.jpg/640px-T-shirt2.jpg</field>
+      </record>
+
+      <record id="order2" model="awesome_tshirt.order">
+        <field name="quantity">1</field>
+        <field name="customer_id" ref="base.res_partner_2"/>
+        <field name="size">s</field>
+        <field name="state">cancelled</field>
+        <field name="create_date" eval="datetime.now() - timedelta(days=6)"/>
+        <field name="image_url">https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/T-shirt2.jpg/640px-T-shirt2.jpg</field>
+      </record>
+
+      <record id="order3" model="awesome_tshirt.order">
+        <field name="quantity">3</field>
+        <field name="customer_id" ref="base.res_partner_12"/>
+        <field name="size">xl</field>
+        <field name="state">sent</field>
+        <field name="create_date" eval="datetime.now() - timedelta(days=7)"/>
+        <field name="image_url">https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Salerno_Calcio_T-Shirt_5.png/640px-Salerno_Calcio_T-Shirt_5.png</field>
+      </record>
+
+      <record id="order4" model="awesome_tshirt.order">
+        <field name="quantity">10</field>
+        <field name="customer_id" ref="base.res_partner_4"/>
+        <field name="size">m</field>
+        <field name="state">printed</field>
+        <field name="create_date" eval="datetime.now() - timedelta(days=8)"/>
+
+        <field name="image_url">https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/T-Shirt_Wikipedia_white.jpg/640px-T-Shirt_Wikipedia_white.jpg</field>
+      </record>
+
+      <record id="order5" model="awesome_tshirt.order">
+        <field name="quantity">2</field>
+        <field name="customer_id" ref="base.res_partner_1"/>
+        <field name="size">s</field>
+        <field name="create_date" eval="datetime.now() - timedelta(days=8)"/>
+        <field name="image_url">https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/T-shirt-2.jpg/640px-T-shirt-2.jpg</field>
+      </record>
+
+      <record id="order6" model="awesome_tshirt.order">
+        <field name="quantity">2</field>
+        <field name="customer_id" ref="base.res_partner_12"/>
+        <field name="size">s</field>
+        <field name="state">cancelled</field>
+        <field name="create_date" eval="datetime.now() - timedelta(days=1)"/>
+        <field name="image_url">https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/T-shirt2.jpg/640px-T-shirt2.jpg</field>
+      </record>
+
+    </data>
+</odoo>

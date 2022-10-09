@@ -1,0 +1,120 @@
+<odoo>
+    <data>
+  <template id="awesome_tshirt.order_public_page" name="Awesome T-Shirt public page">
+    <t t-call="web.layout">
+      <t t-set="head">
+        <t t-call-assets="web.assets_frontend" t-js="false"/>
+      </t>
+      <div id="wrap">
+        <div class="oe_structure">
+          <section class="pt8 pb8">
+            <div class="container">
+              <div class="row s_nb_column_fixed">
+                <div class="col-lg-12 s_title pt16 pb16">
+                  <h1>Order awesome custom t-shirts</h1>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="container mt-2">
+          <div class="row">
+            <div class="col-lg-8">
+              <div>
+                <form action="/awesome_tshirt/validate_order" method="post" data-success_page="/awesome_tshirt/thankyou" class="container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">
+                  <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                  <div class="form-group row form-field">
+                    <label class="col-lg-3 col-md-4 col-form-label" for="url">Image URL</label>
+                    <div class="col-lg-7 col-md-8">
+                      <input type="text" class="form-control" name="url" id="url" required=""/>
+                    </div>
+                  </div>
+                  <div class="form-group row form-field">
+                    <label class="col-lg-3 col-md-4 col-form-label" for="size">Size</label>
+                    <div class="col-lg-7 col-md-8">
+                      <select name="size" id="size">
+                        <option value="s">S</option>
+                        <option value="m" selected="selected">M</option>
+                        <option value="l">L</option>
+                        <option value="xl">XL</option>
+                        <option value="xxl">XXL</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row form-field">
+                    <label class="col-lg-3 col-md-4 col-form-label" for="quantity">Quantity</label>
+                    <div class="col-lg-7 col-md-8">
+                      <input type="number" class="form-control" name="quantity" id="quantity" value="1" required=""/>
+                    </div>
+                  </div>
+                  <div class="form-group row form-field">
+                    <label class="col-lg-3 col-md-4 col-form-label" for="name">Name</label>
+                    <div class="col-lg-7 col-md-8">
+                      <input type="text" class="form-control" name="name" id="name" required=""/>
+                    </div>
+                  </div>
+                  <div class="form-group row form-field">
+                    <label class="col-lg-3 col-md-4 col-form-label" for="address">Address</label>
+                    <div class="col-lg-7 col-md-8">
+                      <input type="text" class="form-control" name="address" id="address" required=""/>
+                    </div>
+                  </div>
+                  <div class="form-group row form-field">
+                    <label class="col-lg-3 col-md-4 col-form-label" for="email">Email</label>
+                    <div class="col-lg-7 col-md-8">
+                      <input type="text" class="form-control" name="email" id="email" required=""/>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+                      <button href="#" role="button" class="btn btn-primary">Order</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </t>
+  </template>
+
+  <template id="awesome_tshirt.thank_you" name="Awesome T-Shirt thank you">
+    <t t-call="web.layout">
+      <t t-set="head">
+        <t t-call-assets="web.assets_frontend" t-js="false"/>
+      </t>
+      <div id="wrap">
+        <div class="oe_structure">
+          <section class="pt8 pb8">
+            <div class="container">
+              <div class="row s_nb_column_fixed">
+                <div class="col-lg-12 s_title pt16 pb16">
+                  <h1>Thanks for your order!</h1>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="container mt-2">
+          <div class="row">
+            <div class="col-lg-8">
+              <div>
+                <form action="/awesome_tshirt/order" method="post" class="container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">
+                  <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                  <div class="form-group row">
+                    <div class="col-md-8 col-lg-7">
+                      <button href="#" role="button" class="btn btn-primary">Make another order</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </t>
+  </template>
+
+    </data>
+</odoo>

@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+          <template id="owl_playground.playground" name="Awesome T-Shirt thank you">
+            <html>
+                <head>
+                    <t t-call-assets="owl_playground.assets_playground"/>
+                </head>
+
+                <body>
+                </body>
+            </html>
+          </template>
+    </data>
+</odoo>
