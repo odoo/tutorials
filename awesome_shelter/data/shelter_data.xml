@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+  
+        <record id="awesome_shelter.type_cat" model="awesome_shelter.animal_type">
+            <field name="name">Cat</field>
+            <field name="pictogram" type="base64" file="awesome_shelter/static/img/cat_pictogram.png"/>
+        </record>
+
+        <record id="awesome_shelter.type_dog" model="awesome_shelter.animal_type">
+            <field name="name">Dog</field>
+            <field name="pictogram" type="base64" file="awesome_shelter/static/img/dog_pictogram.png"/>
+        </record>
+
+        <record id="awesome_shelter.race_stray" model="awesome_shelter.animal_race">
+            <field name="name">Stray</field>
+        </record>
+    
+    </data>
+  </odoo>
+  
