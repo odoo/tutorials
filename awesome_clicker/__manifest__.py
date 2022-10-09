@@ -3,11 +3,11 @@
     'name': "Awesome Clicker",
 
     'summary': """
-        Starting module for "Master the Odoo web framework, chapter 1: Build a Clicker game"
+        Companion addon for the Odoo JS Framework Training
     """,
 
     'description': """
-        Starting module for "Master the Odoo web framework, chapter 1: Build a Clicker game"
+        Companion addon for the Odoo JS Framework Training
     """,
 
     'author': "Odoo",

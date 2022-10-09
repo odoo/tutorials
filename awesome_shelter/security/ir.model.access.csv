@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+awesome_shelter.access_shelter_animal,access_shelter_animal,awesome_shelter.model_awesome_shelter_animal,base.group_user,1,1,1,1
+awesome_shelter.access_shelter_animal_type,access_shelter_animal_type,awesome_shelter.model_awesome_shelter_animal_type,base.group_user,1,1,1,1
+awesome_shelter.access_shelter_animal_race,access_shelter_animal_race,awesome_shelter.model_awesome_shelter_animal_race,base.group_user,1,1,1,1

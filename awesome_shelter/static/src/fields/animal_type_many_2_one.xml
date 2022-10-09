@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="shelter.AnimalTypeManyToOne" t-inherit="web.Many2OneField">
+        <xpath expr="//t" position="inside">
+            <img t-if="hasImage" t-att-src="pictogramUrl" class="ms-2" style="width: 18px; height: 18px;"/>
+        </xpath>
+    </t>
+
+</templates>

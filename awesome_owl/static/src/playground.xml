@@ -4,7 +4,21 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
+            <Counter value="counters[0].value" onChange.bind="() => this.increment(0)" />
+            <Counter value="counters[1].value" onChange.bind="() => this.increment(1)" />
+            <Counter value="counters[2].value" onChange.bind="() => this.increment(2)" />
+            <Counter value="counters[2].value" onChange.bind="() => this.increment(2)" />
+            <div>The sum is: <t t-esc="sum"/></div>
         </div>
+        <div>
+            <Card title="'card 1'">
+                content of card 1
+            </Card>
+            <Card title="'card 2'">
+                <Counter />
+            </Card>
+        </div>
+        <TodoList />
     </t>
 
 </templates>

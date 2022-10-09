@@ -1,11 +1,24 @@
-# Odoo tutorials
+![Odoo Logo](_images/odoo_logo.png)
 
-This repository hosts the code for the bases of the modules used in the
-[official Odoo tutorials](https://www.odoo.com/documentation/latest/developer/tutorials.html).
+# Odoo : Javascript Framework Training
 
-It has 3 branches for each Odoo version: one for the bases, one for the
-[Discover the JS framework](https://www.odoo.com/documentation/latest/developer/tutorials/discover_js_framework.html)
-tutorial's solutions, and one for the
-[Master the Odoo web framework](https://www.odoo.com/documentation/latest/developer/tutorials/master_odoo_web_framework.html)
-tutorial's solutions. For example, `17.0`, `17.0-discover-js-framework-solutions` and
-`17.0-master-odoo-web-framework-solutions`.
+This branch contains the exercises and supporting code for the Odoo JavaScript Framework Training.
+It provides four addons, each a standalone project that can be completed independently.
+
+To get started:
+
+1. Clone this repository.
+2. Check out this branch.
+2. Launch an Odoo server with this folder included in the addons path.
+
+Much of the theory is covered in the accompanying slides.
+And of course—feel free to ask questions!
+
+| Title                                                               | Content                                                                    |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [Module 1: Learn Owl 🦉](1_learn_owl.md)                            | Owl, components, hooks, reactivity, state management, ...                  |
+| [Module 2: Make a Dashboard](2_make_a_dashboard.md)                 | assets, basics of odoo framework, rpcs, systray, services, registries, ... |
+| [Module 3: Introduction to the Website](3_intro_to_website.md.md)                 | interactions, snippets, pages, options, ... |
+| [Module 4: Customize Fields and Views](4_customize_fields_views.md) | fields, views                                                              |
+| [Module 5: Build a Clicker Game](5_build_a_clicker_game.md)         | advanced framework, state management, ...                                  |
+| [Module 6: Testing Javascript](6_testing_javascript.md.md)         | unit tests, integration tests, hoot, tours, ...                                  |
