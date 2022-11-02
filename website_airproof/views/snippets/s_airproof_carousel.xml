@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_airproof_carousel" name="Custom carousel">
+        <section class="s_airproof_carousel s_carousel_wrapper">
+            <!-- Content -->
+            <div class="s_carousel s_carousel_default carousel slide" data-bs-interval="10000" id="s_carousel_homepage">
+                <ol class="carousel-indicators o_we_no_overlay">
+                    <li data-bs-slide-to="0" class="active" data-bs-target="#s_carousel_homepage"/>
+                    <li data-bs-slide-to="1" data-bs-target="#s_carousel_homepage"/>
+                </ol>
+                <!-- Slide 01 -->
+                <div class="carousel-inner">
+                    <div class="carousel-item o_colored_level pt24 pb64 active" data-name="Slide">
+                        <div class="oe_unremovable container">
+                            <div class="row content">
+                                <div class="carousel-content col-lg-6 pt88 position-relative">
+                                    <img src="/web/image/website_airproof.img_sticker" class="img img-fluid position-absolute x_sticker"/>
+                                    <h1 class="x_carousel_title z-index-1">One step<br/>beyond<br/>the horizon</h1>
+                                    <p class="lead fw-bold">We create custom waterproof drones<br/>for professional pilots.</p>
+                                    <a href="/shop" class="mb-2 btn btn-secondary btn-lg">​​
+                                        Discover our drones
+                                        <img src="/web/image/website_airproof.img_arrow" alt="" class="img img-fluid ms-2"/>
+                                    </a>
+                                </div>
+                                <div class="carousel-content col-lg-6">
+                                    <img src="/web/image/website_airproof.img_drone" class="img img-fluid" alt="Drone"/>
+                                    <div class="x_bubble row justify-content-center justify-content-lg-end position-static position-lg-absolute">
+                                        <div class="col-5 col-lg-5 offset-lg-7 z-index-1 x_bubble_item x_bubble1 o_cc o_cc1 mb-3 pt24 pb24 px-4">
+                                            <p class="fw-bold pb8 m-0">Best drone of the year</p>
+                                            <p class="m-0 small">GQ France</p>
+                                        </div>
+                                        <div class="col-5 col-lg-5 offset-lg-7 z-index-1 x_bubble_item x_bubble2 o_cc o_cc1 mb-3 pt24 pb24 px-4">
+                                            <div class="s_rating_icons pb8">
+                                                <span class="s_rating_active_icons">
+                                                    <i class="fa fa-star"/>
+                                                    <i class="fa fa-star"/>
+                                                    <i class="fa fa-star"/>
+                                                    <i class="fa fa-star"/>
+                                                </span>
+                                                <span class="s_rating_inactive_icons">
+                                                    <i class="fa fa-star-o"/>
+                                                </span>
+                                            </div>
+                                            <p class="m-0 small"><strong style="font-size: 16px;">1000+</strong> reviews</p>
+                                        </div>
+                                    </div>​
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 02 -->
+                    <div class="carousel-item o_colored_level pt24 pb64" data-name="Slide">
+                        <div class="oe_unremovable container">
+                            <div class="row content">
+                                <div class="carousel-content col-lg-6 pt88 position-relative">
+                                    <img src="/web/image/website_airproof.img_sticker" class="img img-fluid position-absolute x_sticker"/>
+                                    <h1 class="x_carousel_title z-index-1">One step<br/>beyond<br/>the horizon</h1>
+                                    <p class="lead fw-bold">We create custom waterproof drones<br/>for professional pilots.</p>
+                                    <a href="/shop" class="mb-2 btn btn-secondary btn-lg">​​
+                                        Discover our drones
+                                        <img src="/web/image/website_airproof.img_arrow" alt="" class="img img-fluid ms-2"/>
+                                    </a>
+                                </div>
+                                <div class="carousel-content col-lg-6">
+                                    <img src="/web/image/website_airproof.img_drone" class="img img-fluid" alt="Drone"/>
+                                    <div class="x_bubble row justify-content-center justify-content-lg-end position-static position-lg-absolute">
+                                        <div class="col-5 col-lg-5 offset-lg-7 z-index-1 x_bubble_item x_bubble1 o_cc o_cc1 mb-3 pt24 pb24 px-4">
+                                            <p class="fw-bold pb8 m-0">Best drone of the year</p>
+                                            <p class="m-0 small">GQ France</p>
+                                        </div>
+                                        <div class="col-5 col-lg-5 offset-lg-7 z-index-1 x_bubble_item x_bubble2 o_cc o_cc1 mb-3 pt24 pb24 px-4">
+                                            <div class="s_rating_icons pb8">
+                                                <span class="s_rating_active_icons">
+                                                    <i class="fa fa-star"/>
+                                                    <i class="fa fa-star"/>
+                                                    <i class="fa fa-star"/>
+                                                    <i class="fa fa-star"/>
+                                                </span>
+                                                <span class="s_rating_inactive_icons">
+                                                    <i class="fa fa-star-o"/>
+                                                </span>
+                                            </div>
+                                            <p class="m-0 small"><strong style="font-size: 16px;">1000+</strong> reviews</p>
+                                        </div>
+                                    </div>​
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Add options to snippets -->
+    <template id="snippet_options" inherit_id="website.snippet_options" name="Airproof - Snippets Options">
+        <xpath expr="." position="inside">
+            <div data-selector=".x_bubble_item">
+                <!-- Bubble shadow color -->
+                <we-button-group string="Bubble Shadow">
+                    <we-button data-select-class="x_bubble1">Blue</we-button>
+                    <we-button data-select-class="x_bubble2">Green</we-button>
+                </we-button-group>
+                <!-- Bubble spacing -->
+                <we-range string="Bubble Spacing" data-select-class="mb-1|mb-2|mb-3|mb-4|mb-5"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[@data-js='Box'][@data-selector='section .row > div']" position="attributes">
+            <!-- Disable standard shadow & border for bubbles -->
+            <attribute name="t-attf-data-exclude" add=".x_bubble_item" separator=", "/>
+        </xpath>
+    </template>
+</odoo>
