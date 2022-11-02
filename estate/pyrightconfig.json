@@ -1,0 +1,7 @@
+{
+  "extraPaths": ["../../community"],
+  "typeCheckingMode": "basic",
+  "reportPrivateLocalImportUsage": "none",
+  "reportUnannotatedClassAttribute": "none",
+  "reportArgumentType": "none",
+}

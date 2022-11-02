@@ -1,0 +1,29 @@
+#wrapwrap {
+    // Green underline on active nav items
+    .navbar-light .navbar-nav .show > .nav-link,
+    .navbar-light .navbar-nav .nav-link.active {
+        border-bottom: 2px solid o-color('o-color-1');
+    }
+    // Arrow for the collapsable nav items
+    #top_menu_collapse .dropdown-toggle::after {
+        vertical-align: middle;
+        width: 10px;
+        height: 10px;
+        border: none;
+        content: '';
+        background-image: url('/website_airproof/static/src/img/content/icons/angle-down-solid.svg');
+    }
+    // Shopping cart
+    .my_cart_quantity,
+    .my_wish_quantity  {
+        height: 18px;
+        width: 18px;
+        border-radius: 99px;
+        background-color: o-color('o-color-1') !important;
+        color: o-color('black') !important;
+    }
+    // Centre logo
+    @media (min-width: 992px) {
+        header .o_header_centered_logo { width: 50%; }
+    }
+}
