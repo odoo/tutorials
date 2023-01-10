@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="owl_playground.todo" owl="1">
-        <p t-att-class="props.done ? 'text-decoration-line-through text-muted' : '' ">
+       <!-- Checkbox input to be marked only when done is not done, and that on click will call the toggleState function with the todo id  -->
+       <input class="form-check-input" type="checkbox" t-att-id="props.id" t-att-checked="props.done" t-on-click="onClick"/>
+        <label t-att-class="props.done ? 'text-decoration-line-through text-muted' : '' ">
             <t t-esc="props.id"/>.
             <t t-esc="props.description"/>
-        </p>
+            <span class="fa fa-remove" t-on-click="onRemove">
+        </label>
     </t>
 </templates>

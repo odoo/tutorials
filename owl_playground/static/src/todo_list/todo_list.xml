@@ -2,8 +2,9 @@
 <templates xml:space="preserve">
     <t t-name="owl_playground.todo_list" owl="1">
         <div class="bg-white border border-primary rounded mt-3 p3">
+        <input class="form-control mb-3" type="text" placeholder="Add a todo" t-on-keyup="addTodo" t-ref="todoListInput"/>
             <t t-foreach="todoList" t-as="todo" t-key="todo.id">
-                <Todo id="todo.id" description="todo.description" done="todo.done"/>
+                <Todo id="todo.id" description="todo.description" done="todo.done" toggleState.bind="toggleTodo" removeTodo.bind="removeTodo"/> <!-- We need to add the toggleState connection to the child --> 
             </t>
         </div>
     </t>
