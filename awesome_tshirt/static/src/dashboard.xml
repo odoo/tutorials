@@ -2,7 +2,38 @@
 <templates xml:space="preserve">
 
 <t t-name="awesome_tshirt.clientaction" owl="1">
+    <Layout display="display">
+        <t t-set-slot="control-panel-top-left">
+            <h2>This is the title</h2>
+        </t>
+        <t t-set-slot="control-panel-bottom-left">
+            <button class="btn btn-primary" t-on-click="openCustomersKanban">Customers</button>
+            <button class="btn btn-primary" t-on-click="openNewOrders">New Orders</button>
+            <button class="btn btn-primary" t-on-click="openCancelledOrders">Cancelled Orders</button>
+        </t>
+    </Layout>
 
+    <div class="h-100 o_awesome_tshirt_dashboard">
+        <t t-call="awesome_tshirt.clientaction.statistics"/>
+
+        <div class="m-3">
+            <Card className="'w-25'">
+                <t t-set-slot="title">Shirt orders by size</t>
+                <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'" onPieClick.bind="openFilteredBySizeOrders"/>
+            </Card>
+        </div>
+    </div>
+</t>
+
+<t t-name="awesome_tshirt.clientaction.statistics" owl="1">
+    <div class="d-flex flex-nowrap">
+        <div t-foreach="keyToString" t-as="key" t-key="key" class="m-2">
+            <Card>
+                <t t-set-slot="title"><t t-esc="keyToString[key]"/></t>
+                <p class="card-text"><t t-esc="statistics[key]"/></p>
+            </Card>
+        </div>
+    </div>
 </t>
 
 </templates>
