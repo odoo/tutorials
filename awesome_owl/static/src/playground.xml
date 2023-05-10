@@ -12,6 +12,7 @@
             <Card title="'card 1'" content="str1"/>
             <Card title="'card 2'" content="str2"/>
         </div>
+        <TodoList />
     </t>
 
 </templates>
