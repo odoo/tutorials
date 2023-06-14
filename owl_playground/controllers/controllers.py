@@ -9,5 +9,15 @@ class OwlPlayground(http.Controller):
         """
         return request.render('owl_playground.playground')
 
+    #For Seprate Counter component
+    # @http.route(['/owl_playground/counter'], type='http', auth='public')
+    # def show_counter(self):
+    #     """
+    #     Renders the owl playground page
+    #     """
+    #     return request.render('owl_playground.counter')
+
+
+
 
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="owl_playground.card" owl="1">
+        <div class="card">
+            <div t-if="props.slots.title" class="card-header">
+                <t t-slot="title">Default Title</t>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    <t t-slot="default"/>
+                </p>
+                <ul>
+                    <t t-foreach="props.list" t-as="item" t-key="item.id">
+                        <t t-if="item.done">
+                            <li id="item.id"><t t-esc="item.description"/></li>
+                        </t>
+                    </t>
+                </ul>
+            </div>
+        </div>      
+    </t>
+
+</templates>

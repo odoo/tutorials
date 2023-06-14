@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="owl_playground.counter" owl="1">
+        <h4>Counter Component</h4>
+        <hr/>
+        <div class="text-center">
+            <p class="fw-bold">Count: <t t-esc="props.count" /></p>
+            <button class="btn btn-primary" t-on-click="props.increment">Count++</button>
+
+            <!-- Just for fun :) -->
+            <p t-if="props.count &lt; 10" class="mt-3">Hello there 👋 <br/> Click Please...! </p>
+            <p t-if="props.count &gt;= 10 &amp;&amp; props.count &lt; 20" class="mt-3">Okay Okay.. 😑 <br/>Enough.!!</p>
+            <p t-if="props.count &gt;= 20" class="mt-3">Get some life bro!! 😤</p>
+        </div>
+    </t>
+
+</templates>

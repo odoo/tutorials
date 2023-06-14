@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="owl_playground.todo" owl="1">
+        <div class="d-flex align-items-center gap-2 m-2 p-2 ps-3 bg-light shadow rounded">
+            <input type="checkbox" t-att-id="props.id" t-on-click="ev => props.toggleState(props.id)" t-att-checked="props.done"  title="Mark as Done"/>
+            <span t-att-for="props.id" t-att-class="props.done == true ? 'text-muted text-decoration-line-through':''">
+                <t t-esc="props.id"/>: <t t-esc="props.description"/>
+            </span>
+            <span class="fa fa-remove text-danger" t-on-click="ev => props.removeTodo(props.id)" title="Remove Todo"/>
+        </div>
+    </t>
+
+    <t t-name="owl_playground.todolist" owl="1">
+        <h4>Todo List Component</h4>
+        <hr/>
+        <div class="px-2">
+            <input type="text" id="todo" class="w-100" t-ref="todo_input" placeholder="Add a Todo" t-on-keyup="this.addTodo"/>
+        </div>
+        <div class="border rounded bg-white mt-2">
+            <t t-foreach="props.list" t-as="item" t-key="item.id">
+                <Todo id="item.id" description="item.description" done="item.done" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
+            </t>
+        </div>
+    </t>
+
+</templates>
