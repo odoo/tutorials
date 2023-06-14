@@ -99,7 +99,7 @@ class TShirtOrder(models.Model):
         total_amount = self.read_group(new_this_month_domain, ['amount'], [])[0]['amount']
         total_quantity = self.read_group(this_month_domain, ['quantity'], [])[0]['quantity']
         nb_orders = self.search_count(this_month_domain)
-        orders_by_size = self.read_group([['state', '!=', 'cancelled']], [], ['size'])
+        orders_by_size = self.read_group([['state', '!=', 'cancelled']], ['quantity'], ['size'])
 
         return {
             'average_quantity': 0 if not nb_orders else round(total_quantity / nb_orders, 2),
