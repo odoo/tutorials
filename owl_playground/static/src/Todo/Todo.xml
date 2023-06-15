@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <template xml:space="preserve">
+        <t  t-name="owl_playground.Todo" owl="1">
+            <div  class="form-check" >
+                <input class="form-check-input" type="checkbox"  t-att-id="props.id" t-att-checked="props.done" t-on-click="onClick"/>
+                <p t-att-class="props.done? 'text-muted text-decoration-line-through':''" >
+                    <t t-esc="props.id" style=""/> :
+                    <t  t-esc="props.description"/>
+                    <span class="fa fa-remove" t-att-checked="props.done" t-on-click ="remove" />
+                </p>
+                
+            </div>
+            
+        </t >
+    </template>

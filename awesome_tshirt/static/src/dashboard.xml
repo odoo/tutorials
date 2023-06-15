@@ -1,8 +1,39 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_tshirt.clientaction" owl="1">
+        <div class="r_awesome_tshirt_dasboard">
 
+            <Layout display="display">
+                <t t-set-slot="control-panel-bottom-left">
+
+                    <button class='btn btn-primary' t-on-click='customerview'>Customer</button>
+                    <button class='btn btn-success' t-on-click='Order'>New Order</button>
+                    <button class='btn btn-danger' t-on-click='Cancelled'>Cancelled Order</button>
+                </t>
+                <t t-set-slot="control-panel-bottom-right">
+                    <button class='btn btn-info' t-on-click='openSettings'>Settings</button>
+                </t>
+            </Layout>
+            <t t-name="awesome_tshirt.clientaction.statistics" owl="1">
+                <div class="d-flex flex-nowrap" background-color="gray">
+                    <div t-foreach="keys" t-as="key" t-key="key" class="m-2">
+                        <Card>
+                            <t t-set-slot="title">
+                                <t t-esc="keys[key]"/>
+                            </t>
+                            <p class="card-text">
+                                <t t-esc="statistics[key]"/>
+                            </p>
+                        </Card>
+                    </div>
+                </div>
+            </t>
+
+            <div class="o_graph_canvas_container w-50 mx-auto fs-1">
+                <t t-set-slot="title">Shirt orders by size</t>
+                <canvas t-ref="canvas"/>
+            </div>
+        </div>
     </t>
-
 </templates>
