@@ -6,6 +6,10 @@
             <button class="btn btn-secondary" t-on-click="increment">
                 <i class="fa fa-lg fa-plus"></i>
             </button>
+
+            <button class="btn btn-secondary" t-on-click="openClientAction">
+                Open
+            </button>
         </div>
     </t>
 </templates>
