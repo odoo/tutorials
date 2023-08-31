@@ -5,6 +5,6 @@
 			hello world
 		</div>
         <Counter/>
-        <Todo props="this.todo"/>		
+        <TodoList/>		
 	</t>
 </templates>
