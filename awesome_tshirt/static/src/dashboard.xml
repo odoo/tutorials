@@ -1,8 +1,35 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_tshirt.clientaction" owl="1">
-
-    </t>
-
+	<t t-name="awesome_tshirt.clientaction" owl="1">
+		<Layout display="display">
+			<t t-set-slot="control-panel-bottom-left">
+			
+                
+				<button class="btn btn-primary mx-2 my-5" t-on-click="viewCustomers">
+					Customers
+				</button>
+				<button class="btn btn-primary mx-2 my-5" t-on-click="openRecentOrders">
+					New Orders
+				</button>
+				<button class="btn btn-primary mx-2 my-5" t-on-click="openCancelledOrders">
+					Cancelled Orders
+				</button>
+			</t>
+		</Layout>
+		<t t-call="awesome_tshirt.clientaction.statistics" />
+	</t>
+	<t t-name="awesome_tshirt.clientaction.statistics" owl="1">
+		<div class="d-flex flex-nowrap">
+			<div class="m-2" t-foreach="this.keyToString" t-as="key" t-key="key">
+				<Card>
+					<h5>
+						<t t-set-slot="title" t-esc="this.keyToString[key]" />
+					</h5>
+					<p>
+						<t t-esc="this.statistics[key]" />
+					</p>
+				</Card>
+			</div>
+		</div>
+	</t>
 </templates>
