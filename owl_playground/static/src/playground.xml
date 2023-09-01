@@ -4,7 +4,13 @@
 		<div class="p-3">
 			hello world
 		</div>
-        <Counter/>
-        <TodoList/>		
+		<Counter />
+		<Card>
+			<t t-set-slot="title">Hello </t>
+			This is a Card
+
+			
+		</Card>
+		<TodoList />
 	</t>
 </templates>

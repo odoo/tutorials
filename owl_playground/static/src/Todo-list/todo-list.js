@@ -26,5 +26,15 @@ export class TodoList extends Component {
       todo.done = !todo.done;
     }
   }
+
+  removeTodo(todoId) {
+    const todoIndex = this.state.todoList.findIndex(
+      (todo) => todo.id === todoId
+    );
+
+    if (todoIndex !== -1) {
+      this.state.todoList.splice(todoIndex, 1);
+    }
+  }
   static components = { Todo };
 }
