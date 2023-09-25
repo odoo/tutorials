@@ -10,7 +10,6 @@ export class Card extends Component {
             shape: {
                 title: { type: Object, optional: true },
                 default: Object
-
             },
         },
     };

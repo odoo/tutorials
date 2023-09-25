@@ -11,8 +11,8 @@ export class Todolist extends Component {
 
     setup() {
         this.todoList = [];
-        this.nextId = 1;
-        this.todoList = useState([]);
+        this.todoList = useState([{ id: 1, description: "ggggggggg", done: false }]);
+        this.nextId = this.todoList.length+1;
         this.inputred = useAutofocus("inputElement");
     }
 
@@ -32,10 +32,10 @@ export class Todolist extends Component {
             todo.done = !todo.done;
         }
     }
-    // remove(todoId) {
-    //     const index = this.todoList.findIndex((todo) => todo.id === todoId);
-    //     if (index >= 0) {
-    //         this.todoList.splice(index, 1);
-    //     }
-    // }
+    remove(todoId) {
+        const index = this.todoList.findIndex((todo) => todo.id === todoId);
+        if (index >= 0) {
+            this.todoList.splice(index, 1);
+        }
+    }
 }

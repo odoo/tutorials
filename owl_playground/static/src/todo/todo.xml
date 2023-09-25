@@ -7,7 +7,7 @@
             <t t-esc="props.id"/>.
             <t t-esc="props.description"/> - 
             <t t-esc="props.done"/>  
-            <!-- <span role= "button" class="fa fa-remove" t-on-click ="onRemove"/> -->
+            <span role= "button" class="fa fa-remove red-button" t-on-click ="onRemove"/>
         </p>
     </t>
 </templates>

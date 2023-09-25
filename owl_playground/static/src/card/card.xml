@@ -9,6 +9,7 @@
                         <h5 class="card-title"><t t-slot="title"/></h5>
                     </t>
                     <p class="card-text"><t t-slot="default"/></p>
+                    <!-- <a href="https://www.odoo.com/" class="btn btn-primary">Go somewhere</a> -->
                 </div>
             </div>
         </div>

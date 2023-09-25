@@ -11,7 +11,6 @@ export class Playground extends Component {
 
     setup() {
         this.todo = { id: 3, description: "buy milk", done: true };
-
     }
 }
 
