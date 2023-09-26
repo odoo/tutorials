@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="owl_playground.todo_list" owl="1">
+        <input 
+            type="text" 
+            placeholder="Add a new task" 
+            t-on-keyup="addTodo" 
+            t-ref="todosInput"
+        />
+        <p t-foreach="todos" t-as="item" t-key="item.id">
+            <Todo id="item.id" description="item.description" done="item.done" 
+            toggleDone.bind="toggleDone" removeTodo.bind="removeTodo"/>
+        </p>
+    </t>
+
+</templates>

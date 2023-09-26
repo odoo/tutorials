@@ -5,7 +5,23 @@
         <div class="p-3">
             hello world
         </div>
-        <Counter/>
+        <div>
+            <Counter/>
+        </div>
+        <Card>
+            <t t-set-slot="title">Card title</t>
+            <p class="card-text">Some quick example text...</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </Card>
+        <Card>
+            <p class="card-text">The order of definitions doesnt matter</p>
+            <t t-set-slot="title"><div>I can put anything</div><div>over here</div></t>
+            <p class="card-text">Not at all</p>
+            <a href="#" class="btn btn-primary">Go nowhere</a>
+        </Card>
+        <div>
+            <TodoList/>
+        </div>
     </t>
 
 </templates>
