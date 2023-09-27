@@ -5,7 +5,6 @@
         <input type="text" placeholder="Add a todo" t-on-keyup="addTodo" t-ref="inputElement"/>
         <t t-foreach="todoList" t-as="todo" t-key="todo.id">
             <Todo id="todo.id" description="todo.description" done="todo.done" toggleState.bind="toggled" removeTodo.bind="remove" />
-            <!-- <Todo id="todo.id" description="todo.description" done="todo.done" toggleState="toggled" /> -->
         </t>
     </t>
 

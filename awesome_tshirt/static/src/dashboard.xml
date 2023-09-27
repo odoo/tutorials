@@ -1,8 +1,25 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_tshirt.clientaction" owl="1">
+        <Layout display="display">
+            <t t-set-slot="control-panel-bottom-left">
+                <!-- Hello owl -->
+                <button class="btn btn-primary" t-on-click="openCustomerView"> Customers </button>
+                <button class="btn btn-primary" t-on-click="openLast7DaysOrders"> New Orders </button>
+                <button class="btn btn-primary" t-on-click="openLast7DaysCancelledOrders"> Cancelled Orders </button>
+            </t>
+        </Layout>
 
+        <t t-name="awesome_tshirt.clientaction.statistics" owl="1">
+            <div class="d-flex flex-nowrap">
+                <div t-foreach="keyToString" t-as="key" t-key="key" class="m-2">
+                    <Card>
+                        <t t-set-slot="title"><t t-esc="keyToString[key]"/></t>
+                        <p class="card-text"><t t-esc="statistics[key]"/></p>
+                    </Card>   
+                </div>      
+            </div>
+        </t>
     </t>
 
 </templates>
