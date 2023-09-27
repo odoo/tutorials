@@ -9,10 +9,10 @@
             </button>
                 <button class="btn btn-primary" t-on-click="openCustomerView"> Customers </button>
             </t> 
-                <p t-foreach="cards" t-as="card" t-key="card.idx">
+                <p t-foreach="statistic_key_to_title" t-as="key" t-key="key">
                     <Card>
-                        <t t-set-slot="title"><t t-esc="card.title"/></t>
-                        <p class="card-text"><t t-esc="card.description"/></p>
+                        <t t-set-slot="title"><t t-esc="statistic_key_to_title[key]"/></t>
+                        <p class="card-text"><t t-esc="statistics[key]"/></p>
                     </Card>
                 </p>
         </Layout>

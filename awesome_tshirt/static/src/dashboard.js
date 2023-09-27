@@ -10,26 +10,21 @@ import { Layout } from "@web/search/layout";
 import { onWillStart } from "@odoo/owl";
 import { Card } from "./card/card"
 
-const STATISTIC_TO_CARD_NAME = {
-    "average_quantity": "Average amount of t-shirt by order this month",
-    "average_time": "Average time for an order to go from 'new' to 'cancelled'",
-    "nb_cancelled_orders": "Number of cancelled orders this month",
-    "nb_new_orders": "Number of new orders this month",
-    "total_amount": "Total amount of new orders this month",
-}
+
 
 class AwesomeDashboard extends Component {
-
+    statistic_key_to_title = {
+        "average_quantity": this.env._t("Average amount of t-shirt by order this month"),
+        "average_time": this.env._t("Average time for an order to go from 'new' to 'cancelled'"),
+        "nb_cancelled_orders": this.env._t("Number of cancelled orders this month"),
+        "nb_new_orders": this.env._t("Number of new orders this month"),
+        "total_amount": this.env._t("Total amount of new orders this month"),
+    }
 
     setup() {
         const tshirtStatisticsService = useService("tshirtStatisticsService");
         onWillStart(async () => {
-            const statistics = await tshirtStatisticsService.get()
-            this.cards = Object.entries(statistics).map(([name, value], idx) => ({
-                idx,
-                title: STATISTIC_TO_CARD_NAME[name],
-                description: value
-            }))
+            this.statistics = await tshirtStatisticsService.get()
         });
 
         useSubEnv({
