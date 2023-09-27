@@ -12,5 +12,8 @@ export class Counter extends Component {
     increment() {
         this.state.value++;
     }
+    restart() {
+        this.state.value = 0;
+    }
 }
 

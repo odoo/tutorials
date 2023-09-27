@@ -11,7 +11,7 @@ export class Todolist extends Component {
 
     setup() {
         this.todoList = [];
-        this.todoList = useState([{ id: 1, description: "ggggggggg", done: false }]);
+        this.todoList = useState([{ id: 1, description: "Task 1", done: false },{ id: 2, description: "Task 2", done: false },{ id: 3, description: "Task 3", done: false }]);
         this.nextId = this.todoList.length+1;
         this.inputred = useAutofocus("inputElement");
     }
