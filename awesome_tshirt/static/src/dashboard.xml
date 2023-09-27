@@ -1,8 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_tshirt.clientaction" owl="1">
-
+        <Layout display="{ controlPanel: { 'top-right' : false, 'bottom-right': false } }">
+        <t t-set-slot="control-panel-bottom-left">
+                <button class="btn btn-primary" t-on-click="openLast7DaysOrders"> New Orders </button>
+                <button class="btn btn-primary" t-on-click="openLast7DaysCancelledOrders"> Cancelled Orders
+            </button>
+                <button class="btn btn-primary" t-on-click="openCustomerView"> Customers </button>
+            </t> 
+                <p t-foreach="cards" t-as="card" t-key="card.idx">
+                    <Card>
+                        <t t-set-slot="title"><t t-esc="card.title"/></t>
+                        <p class="card-text"><t t-esc="card.description"/></p>
+                    </Card>
+                </p>
+        </Layout>
     </t>
 
 </templates>
