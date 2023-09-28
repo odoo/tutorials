@@ -15,6 +15,10 @@
                         <p class="card-text"><t t-esc="statistics[key]"/></p>
                     </Card>
                 </p>
+                <Card>
+                    <t t-set-slot="title">Shirt orders by size</t>
+                    <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
+                </Card>
         </Layout>
     </t>
 

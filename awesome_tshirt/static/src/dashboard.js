@@ -8,8 +8,9 @@ import { Domain } from "@web/core/domain";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { onWillStart } from "@odoo/owl";
-import { Card } from "./card/card"
 
+import { Card } from "./card/card"
+import { PieChart } from "./pie_chart/pie_chart"
 
 
 class AwesomeDashboard extends Component {
@@ -23,6 +24,8 @@ class AwesomeDashboard extends Component {
 
     setup() {
         const tshirtStatisticsService = useService("tshirtStatisticsService");
+        this.action = useService("action");
+
         onWillStart(async () => {
             this.statistics = await tshirtStatisticsService.get()
         });
@@ -33,8 +36,6 @@ class AwesomeDashboard extends Component {
                 ...this.env.config,
             },
         });
-
-        this.action = useService("action");
     }
 
     #openOrders(name, domain) {
@@ -74,7 +75,9 @@ class AwesomeDashboard extends Component {
     }
 }
 
-AwesomeDashboard.components = { Layout, Card };
+AwesomeDashboard.components = {
+    Layout, Card, PieChart
+};
 AwesomeDashboard.template = "awesome_tshirt.clientaction";
 
 registry.category("actions").add("awesome_tshirt.dashboard", AwesomeDashboard);
