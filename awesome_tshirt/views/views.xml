@@ -22,7 +22,7 @@
                 <field name="is_late"/>
               </group>
               <group>
-                <field name="image_url"/>
+                <field name="image_url" widget="image_preview"/>
               </group>
             </group>
           </sheet>
@@ -43,7 +43,7 @@
             <field name="customer_id"/>
             <field name="size"/>
             <field name="quantity"/>
-            <field name="image_url"/>
+            <field name="image_url" widget="image_preview"/>
           </group>
         </form>
       </field>

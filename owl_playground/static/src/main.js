@@ -11,7 +11,7 @@ import { Playground } from "./playground";
 // configuration: https://github.com/odoo/owl/blob/master/doc/reference/app.md#configuration
 import { templates } from "@web/core/assets";
 owl.whenReady( () => {
-    mount(Playground, document.body, { templates, dev: false });
+    mount(Playground, document.body, { templates, dev: true });
 });
 
 

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <templates xml:space="preserve">
-    <t t-name="owl_playground.playground" owl="1">
-        <Counter/>
-        <Todo id="todo.id" description="todo.description" done="todo.done" />
-        <Todolist/>
 
+    <t t-name="owl_playground.playground" owl="1">
+    <div style="position:relative;">
+        <Counter/>
+        <div style="position:absolute;top:50%;left:50%" ><Todolist/></div>
+        
+        </div>
         <!-- <Card>
             <t t-set-slot="title">Card title</t>
             <p class="card-text">Some quick example text...</p>

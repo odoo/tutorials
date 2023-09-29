@@ -25,17 +25,21 @@ export class Todolist extends Component {
         }
     }
 
-    toggled(todoId) {
+    toggleState(todoId) {
 
         const todo = this.todoList.find((todo) => todo.id === todoId);
         if (todo) {
             todo.done = !todo.done;
         }
     }
-    remove(todoId) {
+    removeTodo(todoId) {
         const index = this.todoList.findIndex((todo) => todo.id === todoId);
         if (index >= 0) {
             this.todoList.splice(index, 1);
         }
+    }
+
+    resetList(){
+        this.todoList.splice(0);
     }
 }
