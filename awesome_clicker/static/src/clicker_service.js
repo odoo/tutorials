@@ -11,9 +11,9 @@ const clickerService = {
             model.tick();
         }, 10000);
         const bus = model.bus;
-        bus.addEventListener("MILESTONE_1k", () => {
+        bus.addEventListener("MILESTONE", (ev) => {
             services.effect.add({
-                message: "Milestone reached! You can now buy clickbots",
+                message: `Milestone reached! You can now buy ${ev.detail.unlock}`,
                 type: "rainbow_man",
             });
         });
