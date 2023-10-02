@@ -4,7 +4,7 @@ import { registry } from "@web/core/registry";
 import { ClickerModel } from "./clicker_model";
 
 const clickerService = {
-    dependencies: ["effect"],
+    dependencies: ["action", "effect", "notification"],
     start(env, services) {
         const clickerModel = new ClickerModel();
         const bus = clickerModel.bus
@@ -14,6 +14,32 @@ const clickerService = {
                 type: "rainbow_man",
             });
         });
+
+        bus.addEventListener("REWARD", (ev) => {
+            const reward = ev.detail;
+            const closeNotification = services.notification.add(
+                `Congrats you won a reward: "${reward.description}"`,
+                {
+                    type: "success",
+                    sticky: true,
+                    buttons: [
+                        {
+                            name: "Collect",
+                            onClick: () => {
+                                reward.apply(clickerModel);
+                                closeNotification();
+                                services.action.doAction({
+                                    type: "ir.actions.client",
+                                    tag: "awesome_clicker.client_action",
+                                    target: "new",
+                                    name: "Clicker Game"
+                                });
+                            },
+                        },
+                    ],
+                }
+            );
+        })
         return clickerModel;
     },
 };
