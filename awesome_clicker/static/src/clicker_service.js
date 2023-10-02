@@ -2,7 +2,7 @@ import { registry } from "@web/core/registry";
 import { ClickerModel } from "./clicker_model";
 
 const clickerService = {
-    dependencies: ["effect"],
+    dependencies: ["action", "effect", "notification"],
     start(env, services) {
         const model = new ClickerModel();
 
@@ -18,6 +18,31 @@ const clickerService = {
             });
         });
 
+        bus.addEventListener("REWARD", (ev) => {
+            const reward = ev.detail;
+            const closeNotification = services.notification.add(
+                `Congrats you won a reward: "${reward.description}"`,
+                {
+                    type: "success",
+                    sticky: true,
+                    buttons: [
+                        {
+                            name: "Collect",
+                            onClick: () => {
+                                reward.apply(model);
+                                closeNotification();
+                                services.action.doAction({
+                                    type: "ir.actions.client",
+                                    tag: "awesome_clicker.client_action",
+                                    target: "new",
+                                    name: "Clicker Game"
+                                });
+                            },
+                        },
+                    ],
+                }
+            );
+        })
         return model;
     },
 };
