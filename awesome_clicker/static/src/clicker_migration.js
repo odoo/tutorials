@@ -1,7 +1,21 @@
 /** @odoo-module */
 
-export const CURRENT_VERSION = 1.0;
-export const migrations = [];
+export const CURRENT_VERSION = 2.0;
+export const migrations = [
+    {
+        fromVersion: 1.0,
+        toVersion: 2.0,
+        apply: (state) => {
+            state.trees.peachTree = {
+                price: 1500000,
+                level: 4,
+                produce: "peach",
+                purchased: 0,
+            };
+            state.fruits.peach = 0;
+        },
+    },
+];
 
 export function migrate(localState) {
     if (localState?.version < CURRENT_VERSION) {
