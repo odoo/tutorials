@@ -2,10 +2,12 @@ import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
 import { rewards } from "./click_rewards";
 import { choose } from "./utils";
+import { CURRENT_VERSION } from "./clicker_migration";
 
 export class ClickerModel extends Reactive {
     constructor() {
         super();
+        this.version = CURRENT_VERSION;
         this.clicks = 0;
         this.level = 0;
         this.bus = new EventBus();
