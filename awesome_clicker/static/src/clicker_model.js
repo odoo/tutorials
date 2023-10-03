@@ -121,6 +121,19 @@ export class ClickerModel extends Reactive {
         this.trees[name].purchased += 1;
     }
 
+    toJSON() {
+        const json = Object.assign({}, this);
+        delete json["bus"];
+        return json;
+
+    }
+
+    static fromJSON(json) {
+        const clicker = new ClickerModel();
+        const clickerInstance = Object.assign(clicker, json);
+        return clickerInstance;
+    }
+
     get milestones() {
         return [
             { clicks: 1000, unlock: "clickBot" },
