@@ -2,8 +2,8 @@
 <templates xml:space="preserve">
     <t t-name="awesome_clicker.ClickerSystray">
         <div class="o_nav_entry">
-            Clicks: <t t-esc="clickService.state.clicks"/>
-            <button class="btn btn-secondary" t-on-click="() => this.clickService.increment(9)">
+            Clicks: <t t-esc="this.clicker.state.clicks"/>
+            <button class="btn btn-secondary" t-on-click="() => this.clicker.increment(9)">
                 <i class="fa fa-lg fa-plus"></i>
             </button>
 
