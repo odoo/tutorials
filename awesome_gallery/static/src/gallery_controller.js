@@ -2,22 +2,22 @@ import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
 import { standardViewProps } from "@web/views/standard_view_props";
-import { GalleryModel } from "./gallery_model";
-import { GalleryRenderer } from "./gallery_renderer";
 
 export class GalleryController extends Component {
     static template = "awesome_gallery.GalleryController";
     static props = {
         ...standardViewProps,
         archInfo: Object,
+        Model: Function,
+        Renderer: Function,
     };
-    static components = { Layout, GalleryRenderer };
+    static components = { Layout };
 
     setup() {
         this.orm = useService("orm");
 
         this.model = useState(
-            new GalleryModel(
+            new this.props.Model(
                 this.orm,
                 this.props.resModel,
                 this.props.archInfo,
