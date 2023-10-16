@@ -4,7 +4,7 @@
         <div class="row">
             <t t-foreach="props.model.records" t-as="record" t-key="record.id">
                 <div class="col-lg-2 col-md-3 col-sm-4 px-2 col-6 d-flex">
-                    <GalleryImage record="record" model="props.model"/>
+                    <GalleryImage record="record" model="props.model" onImageUpload="props.onImageUpload"/>
                 </div>
             </t>
         </div>
