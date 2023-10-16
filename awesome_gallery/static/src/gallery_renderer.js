@@ -7,6 +7,7 @@ export class GalleryRenderer extends Component {
     static template = "awesome_gallery.GalleryRenderer";
     static props = {
         model: GalleryModel,
+        onImageUpload: Function,
     }
 
 }

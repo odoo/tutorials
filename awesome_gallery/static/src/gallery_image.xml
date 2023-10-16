@@ -3,6 +3,16 @@
     <t t-name="awesome_gallery.GalleryImage">
         <div class="card w-100 mb-4" t-on-click="() => this.onImageClick(props.record.id)" t-att-data-tooltip="props.record[props.model.tooltipField]">
             <img t-if='props.record[props.model.imageField]' loading="lazy" t-att-src='imageUrl'/>
+            <div t-on-click.stop="" class="h-100 opacity-0 opacity-100-hover">
+                <FileUploader
+                    acceptedFileExtensions="'image/*'"
+                    onUploaded.bind="_onFileUploaded"
+                >
+                    <t t-set-slot="toggler">
+                        <button class="btn btn-secondary position-absolute bottom-0 end-0 m-3"> Upload image </button>
+                    </t>
+                </FileUploader>
+            </div>
         </div>
     </t>
 </templates>
