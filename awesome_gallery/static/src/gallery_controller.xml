@@ -3,7 +3,7 @@
 
     <t t-name="awesome_gallery.GalleryController">
         <Layout display="props.display" className="'h-100 overflow-auto'">
-            <t t-component="props.Renderer" model="model" onImageUpload.bind="onImageUpload"/>
+            <t t-component="props.Renderer" model="model" onImageUpload.bind="onImageUpload" tooltipTemplate="props.archInfo.tooltipTemplate"/>
         </Layout>
     </t>
 

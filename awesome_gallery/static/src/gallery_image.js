@@ -3,6 +3,7 @@ import { url } from "@web/core/utils/urls";
 import { GalleryModel } from "./gallery_model";
 import { useService } from "@web/core/utils/hooks";
 import { FileUploader } from "@web/views/fields/file_handler";
+import { useTooltip } from "@web/core/tooltip/tooltip_hook";
 
 export class GalleryImage extends Component {
     static components = { FileUploader }
@@ -11,10 +12,21 @@ export class GalleryImage extends Component {
         record: Object,
         model: GalleryModel,
         onImageUpload: Function,
+        tooltipTemplate: {
+            optional: true,
+            type: String,
+        },
     };
 
     setup() {
         this.action = useService("action");
+
+        if (this.props.tooltipTemplate) {
+            useTooltip("tooltip", {
+                info: { record: this.props.record },
+                template: this.props.tooltipTemplate,
+            });
+        }
     }
 
     onImageClick(resId) {
