@@ -2,11 +2,18 @@
 <odoo>
 <data>
     <record id="contacts_gallery_view" model="ir.ui.view">
-      <field name="name">awesome_gallery.orders.gallery</field>
-      <field name="model">res.partner</field>
-      <field name="arch" type="xml">
-        <gallery image_field="image_1920" tooltip_field="name"/>
-      </field>
+        <field name="name">awesome_gallery.orders.gallery</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <gallery image_field="image_1920">
+                <field name="email"/>
+                <field name="name"/>
+                <tooltip-template>
+                  <p class="m-0">name: <field name="name"/></p>
+                  <p class="m-0">e-mail: <field name="email"/></p>
+                </tooltip-template>
+            </gallery>
+        </field>
     </record>
 
     <record id="contacts.action_contacts" model="ir.actions.act_window">
