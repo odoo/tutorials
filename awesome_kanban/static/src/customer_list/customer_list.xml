@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_kanban.CustomerList">
-        <div>
-            Hello owl
-        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>
+                        <span>Customers</span>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="partners" t-as="partner" t-key="partner.id" class="o_awesome_kanban_customer_hover">
+                    <td class="cursor-pointer" t-esc="partner.display_name" t-on-click="() => props.selectCustomer(partner.id)" />
+                </tr>
+            </tbody>
+        </table>
     </t>
 </templates>
