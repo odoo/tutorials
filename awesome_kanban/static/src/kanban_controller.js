@@ -7,9 +7,22 @@ export class AwesomeKanbanController extends KanbanController {
 
     setup() {
         super.setup();
+        this.searchKey = Symbol("isFromAwesomeKanban");
     }
 
-    selectCustomer(customer_id) {
-        console.log(customer_id);
+    selectCustomer(partner_id, partner_name) {
+        const customerFilters = this.env.searchModel.getSearchItems((searchItem) =>
+            searchItem[this.searchKey]
+        );
+        for (const customerFilter of customerFilters) {
+            if (customerFilter.isActive) {
+                this.env.searchModel.toggleSearchItem(customerFilter.id);
+            }
+        }
+        this.env.searchModel.createNewFilters([{
+            description: partner_name,
+            domain: [["partner_id", "=", partner_id]],
+            [this.searchKey]: true,
+        }])
     }
 }
