@@ -18,10 +18,10 @@
             <tbody>
                 <tr>
                     <td>
-                        <input class="o_input w-100" placeholder="Filter customers" t-on-input="onCustomerFilter"/>
+                        <input class="o_input w-100" placeholder="Filter customers" t-model="state.searchString"/>
                     </td>
                 </tr>
-                <tr t-foreach="displayedPartners.data" t-as="partner" t-key="partner.id" class="o_awesome_kanban_customer_hover">
+                <tr t-foreach="displayedPartners" t-as="partner" t-key="partner.id" class="o_awesome_kanban_customer_hover">
                     <td class="cursor-pointer" t-esc="partner.display_name" t-on-click="() => props.selectCustomer(partner.id, partner.display_name)" />
                 </tr>
             </tbody>
