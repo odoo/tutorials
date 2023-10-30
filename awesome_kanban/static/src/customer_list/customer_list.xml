@@ -12,6 +12,7 @@
                                 Active customers
                             </label>
                         </div>
+                        <Pager offset="pager.offset" limit="pager.limit" total="pager.total" onUpdate.bind="onUpdatePager" />
                     </td>
                 </tr>
             </thead>
