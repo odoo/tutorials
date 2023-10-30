@@ -14,41 +14,36 @@ export class CustomerList extends Component {
     setup() {
         this.orm = useService("orm");
         this.partners = useState({ data: [] });
-        this.displayedPartners = useState({ data: [] });
-        this.filterName = "";
         this.keepLast = new KeepLast();
+        this.state = useState({
+            searchString: "",
+            displayActiveCustomers: false,
+        })
 
         onWillStart(async () => {
-            this.partners.data = await this.loadCustomers([]);
-            this.displayedPartners.data = this.partners.data;
+            this.partners.data = await this.loadCustomers();
         })
     }
 
-    async onChangeActiveCustomers(ev) {
-        const checked = ev.target.checked;
-        const domain = checked ?  [["opportunity_ids", "!=", false]] : [];
-        this.partners.data = await this.keepLast.add(this.loadCustomers(domain));
-        this.filterCustomers(this.filterName);
+    get displayedPartners() {
+        return this.filterCustomers(this.state.searchString);
     }
 
-    onCustomerFilter(ev) {
-        this.filterName = ev.target.value;
-        this.filterCustomers(ev.target.value);
+    async onChangeActiveCustomers(ev) {
+        this.state.displayActiveCustomers = ev.target.checked;
+        this.partners.data = await this.keepLast.add(this.loadCustomers());
     }
 
     filterCustomers(name) {
         if (name) {
-            this.displayedPartners.data = fuzzyLookup(
-                name,
-                this.partners.data,
-                (partner) => partner.display_name
-            );
+            return fuzzyLookup(name, this.partners.data, (partner) => partner.display_name);
         } else {
-            this.displayedPartners.data = this.partners.data;
+            return this.partners.data;
         }
     }
 
-    loadCustomers(domain) {
+    loadCustomers() {
+        const domain = this.state.displayActiveCustomers ? [["opportunity_ids", "!=", false]] : [];
         return this.orm.searchRead("res.partner", domain, ["display_name"]);
     }
 
