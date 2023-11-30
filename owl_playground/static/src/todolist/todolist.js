@@ -7,7 +7,7 @@ import { useAutofocus } from "../utils";
 export class TodoList extends Component {
     static template = "owl_playground.todolist";
     static components = { Todo };
-    
+
     setup() {
         this.inputElement = useAutofocus("todoInput");
         this.state = useState({
@@ -27,5 +27,9 @@ export class TodoList extends Component {
             this.state.todos.push({ id: this.state.id++, description: this.state.description, done: false });
             this.state.description = '';
         }
+    }
+
+    toggleState(id) {
+        this.state.todos = this.state.todos.map(todo => todo.id === id ? { ...todo, done: !todo.done } : todo);
     }
 }

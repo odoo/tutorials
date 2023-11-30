@@ -13,6 +13,11 @@ export class Todo extends Component {
                 description: String,
                 done: Boolean
             }
-        }
+        },
+        toggleState: { type: Function }
+    }
+
+    toggleState() {
+        this.props.todo.done = !this.props.todo.done;
     }
 }
