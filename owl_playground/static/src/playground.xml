@@ -4,9 +4,6 @@
         <Counter />
         <br/>
         <br/>
-        <input placeholder="Enter a new task" t-model="state.description" t-on-keyup="(event) => this.addTodo(event)" />
-        <div t-foreach="state.todos" t-as="todo" t-key="todo.id">
-            <Todo todo="todo" />
-        </div>
+        <TodoList />
     </t>
 </templates>

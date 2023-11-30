@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_playground.todolist" owl="1">
+        <input t-ref="todoInput" placeholder="Enter a new task" t-model="state.description" t-on-keyup="(event) => this.addTodo(event)" />
+        <div t-foreach="state.todos" t-as="todo" t-key="todo.id">
+            <Todo todo="todo" />
+        </div>
+    </t>
+</templates>
