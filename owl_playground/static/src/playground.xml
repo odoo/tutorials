@@ -3,6 +3,10 @@
     <t t-name="owl_playground.playground" owl="1">
         <Counter />
         <br/>
+        <Card>
+            <t t-set-slot="title">Card titleeeeeeeeee</t>
+            <t t-set-slot="text">Card Text</t>
+        </Card>
         <br/>
         <TodoList />
     </t>

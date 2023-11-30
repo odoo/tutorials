@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_playground.card" owl="1">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title" t-att-invisible="!props.slots['title']"><t t-slot="title"/></h5>
+                <p class="card-text">
+                    <t t-slot="text"/>
+                </p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </t>
+</templates>
