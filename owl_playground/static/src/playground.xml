@@ -2,5 +2,8 @@
 <templates xml:space="preserve">
     <t t-name="owl_playground.playground" owl="1">
         <Counter />
+        <div t-foreach="todos" t-as="todo" t-key="todo.id">
+            <Todo todo="todo" />
+        </div>
     </t>
 </templates>
