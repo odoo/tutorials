@@ -3,7 +3,7 @@
     <t t-name="owl_playground.todolist" owl="1">
         <input t-ref="todoInput" placeholder="Enter a new task" t-model="state.description" t-on-keyup="(event) => this.addTodo(event)" />
         <div t-foreach="state.todos" t-as="todo" t-key="todo.id">
-            <Todo todo="todo" toggleState.bind="toggleState" />
+            <Todo todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo" />
         </div>
     </t>
 </templates>

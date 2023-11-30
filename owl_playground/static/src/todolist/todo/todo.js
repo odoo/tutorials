@@ -14,7 +14,8 @@ export class Todo extends Component {
                 done: Boolean
             }
         },
-        toggleState: { type: Function }
+        toggleState: { type: Function },
+        removeTodo: { type: Function }
     }
 
     toggleState() {

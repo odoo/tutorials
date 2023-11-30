@@ -32,4 +32,8 @@ export class TodoList extends Component {
     toggleState(id) {
         this.state.todos = this.state.todos.map(todo => todo.id === id ? { ...todo, done: !todo.done } : todo);
     }
+
+    removeTodo(id) {
+        this.state.todos = this.state.todos.filter(todo => todo.id !== id);
+    }
 }

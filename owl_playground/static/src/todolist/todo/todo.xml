@@ -3,7 +3,7 @@
     <t t-name="owl_playground.todolist.todo" owl="1">
         <div t-att-class="{'text-decoration-line-through text-muted': props.todo.done}" t-on-click="() => props.toggleState(props.todo.id)">
             <input type="checkbox" t-att-checked="props.todo.done" /> 
-            <span t-esc="props.todo.id"/>. <span t-esc="props.todo.description"/> <span class="fa fa-remove" t-on-click="removeTodo"/>
+            <span t-esc="props.todo.id"/>. <span t-esc="props.todo.description"/> <span class="fa fa-remove" t-on-click="() => props.removeTodo(props.todo.id)"/>
         </div>
     </t>
 </templates>
