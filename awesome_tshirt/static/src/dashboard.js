@@ -1,15 +1,26 @@
 /** @odoo-module **/
 
-import { Component, useSubEnv } from "@odoo/owl";
+import { Component, useSubEnv, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { getDefaultConfig } from "@web/views/view";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { Domain } from "@web/core/domain";
-
+import { Card } from './card/card';
 
 class AwesomeDashboard extends Component {
     static defaultFilters = ["('create_date', '>=', (context_today() - datetime.timedelta(days = 7)).strftime('%Y-%m-%d'))"];
+
+    titles = {
+        nb_new_orders: 'Number of new orders this month',
+        total_amount: 'Total amount of new orders this month',
+        average_quantity: 'Average amount of t-shirt by order this month',
+        nb_cancelled_orders: 'Number of cancelled orders this month',
+        average_time: "Average time for an order to go from 'new' to 'sent' or 'cancelled'"
+    };
+
+    keys = ['average_quantity', 'average_time', 'nb_cancelled_orders', 'nb_new_orders', 'total_amount'];
+    
     setup() {
         const config = {
             ...getDefaultConfig(),
@@ -17,6 +28,11 @@ class AwesomeDashboard extends Component {
         };
         useSubEnv({ config });
         this.action = useService("action");
+        this.rpc = useService("rpc");
+
+        onWillStart(async () => {
+            this.statistics = await this.rpc("/awesome_tshirt/statistics");
+        });
     }
 
     openCustomers() {
@@ -51,7 +67,7 @@ class AwesomeDashboard extends Component {
 
 }
 
-AwesomeDashboard.components = { Layout };
+AwesomeDashboard.components = { Layout, Card };
 AwesomeDashboard.template = "awesome_tshirt.clientaction";
 
 registry.category("actions").add("awesome_tshirt.dashboard", AwesomeDashboard);

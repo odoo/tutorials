@@ -9,6 +9,17 @@
                     <button t-on-click="openNewOrders" type="button" class="btn btn-primary" title="New Orders">New Orders</button>
                     <button t-on-click="openCancelledOrders" type="button" class="btn btn-primary" title="Cancelled Orders">Cancelled Orders</button>
                 </t>
+
+                <div class="row">
+                    <t t-foreach="keys" t-as="key" t-key="key">
+                        <Card>
+                            <t t-set-slot="title"><t t-esc="titles[key]" /></t>
+                            <t t-set-slot="text">
+                                <t t-esc="statistics[key]" />
+                            </t>
+                        </Card>
+                    </t>
+                </div>
             </Layout>
         </div>
     </t>
