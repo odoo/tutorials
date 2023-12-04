@@ -28,10 +28,10 @@ class AwesomeDashboard extends Component {
         };
         useSubEnv({ config });
         this.action = useService("action");
-        this.rpc = useService("rpc");
+        this.statisticsService = useService("statisticsService");
 
         onWillStart(async () => {
-            this.statistics = await this.rpc("/awesome_tshirt/statistics");
+            this.statistics = await this.statisticsService.loadStatistics("/awesome_tshirt/statistics");
         });
     }
 
