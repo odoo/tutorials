@@ -20,6 +20,12 @@
                         </Card>
                     </t>
                 </div>
+                <Card>
+                    <t t-set-slot="title">Shirt orders by size</t>
+                    <t t-set-slot="text">
+                        <canvas t-ref="chartCanvas" style="width: 500px; height: 500px;"/>
+                    </t>
+                </Card>
             </Layout>
         </div>
     </t>

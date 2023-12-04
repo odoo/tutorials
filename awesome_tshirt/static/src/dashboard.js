@@ -1,12 +1,14 @@
 /** @odoo-module **/
 
-import { Component, useSubEnv, onWillStart } from "@odoo/owl";
+import { loadJS } from "@web/core/assets";
+import { Component, useSubEnv, onWillStart, useRef, useEffect } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { getDefaultConfig } from "@web/views/view";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { Domain } from "@web/core/domain";
 import { Card } from './card/card';
+
 
 class AwesomeDashboard extends Component {
     static defaultFilters = ["('create_date', '>=', (context_today() - datetime.timedelta(days = 7)).strftime('%Y-%m-%d'))"];
@@ -20,8 +22,9 @@ class AwesomeDashboard extends Component {
     };
 
     keys = ['average_quantity', 'average_time', 'nb_cancelled_orders', 'nb_new_orders', 'total_amount'];
-    
+
     setup() {
+        this.canvasRef = useRef('chartCanvas');
         const config = {
             ...getDefaultConfig(),
             ...this.env.config,
@@ -31,7 +34,17 @@ class AwesomeDashboard extends Component {
         this.statisticsService = useService("statisticsService");
 
         onWillStart(async () => {
+            await loadJS("/web/static/lib/Chart/Chart.js");
             this.statistics = await this.statisticsService.loadStatistics("/awesome_tshirt/statistics");
+        });
+
+        useEffect(() => {
+            this.renderChart();
+            return () => {
+                if (this.chart) {
+                    this.chart.destroy();
+                }
+            }
         });
     }
 
@@ -65,6 +78,27 @@ class AwesomeDashboard extends Component {
         this.openOrders('Cancelled Orders', ["('state', '=', 'cancelled')"]);
     }
 
+    renderChart() {
+        if (this.chart) {
+            this.chart.destroy();
+        }
+
+        this.chart = new Chart(this.canvasRef.el, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: Object.values(this.statistics['orders_by_size']),
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)'
+                    ],
+                }],
+                labels: Object.keys(this.statistics['orders_by_size'])
+            },
+        });
+        Chart.animationService.advance();
+    }
 }
 
 AwesomeDashboard.components = { Layout, Card };
