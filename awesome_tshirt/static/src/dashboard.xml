@@ -4,7 +4,11 @@
     <t t-name="awesome_tshirt.clientaction" owl="1">
         <div class="o_action">
             <Layout display="{controlPanel: { 'top-right': false, 'bottom-right': false } }">
-                <h1>Hello owl</h1>
+                <t t-set-slot="control-panel-bottom-left">
+                    <button t-on-click="openCustomers" type="button" class="btn btn-primary" title="Customers">Customers</button>
+                    <button t-on-click="openNewOrders" type="button" class="btn btn-primary" title="New Orders">New Orders</button>
+                    <button t-on-click="openCancelledOrders" type="button" class="btn btn-primary" title="Cancelled Orders">Cancelled Orders</button>
+                </t>
             </Layout>
         </div>
     </t>
