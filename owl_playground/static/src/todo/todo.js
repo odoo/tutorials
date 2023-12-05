@@ -9,7 +9,12 @@ export class Todo extends Component {
     static props = {
         id: Number,
         description: String,
-        done: Boolean
+        done: Boolean,
+        toggleState: Function
+    }
+
+    onCheckboxClick() {
+        this.props.toggleState(this.props.id);
     }
 }
 
@@ -22,8 +27,8 @@ export class TodoList extends Component {
         this.todos = useState(
             [
                 { id: 1, description: "buy milk", done: false },
-                { id: 2, description: "buy eggs", done: true },
-                { id: 3, description: "buy avocado", done: true },
+                { id: 2, description: "buy eggs", done: false },
+                { id: 3, description: "buy avocado", done: false },
             ]
         );
     }
@@ -38,6 +43,13 @@ export class TodoList extends Component {
                 }
             );
             e.target.value = "";
+        }
+    }
+
+    toggleTodo(id) {
+        const todo = this.todos.find((todo) => { return todo.id === id; });
+        if (todo) {
+            todo.done = !todo.done;
         }
     }
 }
