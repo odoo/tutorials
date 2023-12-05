@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-name="owl_playground.TodoList" owl="1">
+    <t t-name="owl_playground.todoList" owl="1">
         <div class="bg-white border border-primary rounded mt-3 p-3">
             <input class="form-control mb-3" type="text" placeholder="Add a todo" t-on-keyup="addTodo" t-ref="todoListInput"/>
             <t t-foreach="todoList" t-as="todo" t-key="todo.id">

@@ -6,7 +6,7 @@ import { useAutofocus } from "../utils";
 import { Component, useState } from "@odoo/owl";
 
 export class TodoList extends Component {
-    static template = "owl_playground.TodoList";
+    static template = "owl_playground.todoList";
     setup() {
         this.nextId = 1;
         this.todoList = useState([]);
