@@ -4,6 +4,11 @@
     <div t-name="owl_playground.playground" owl="1" class="p-3">
             hello world
             <Counter/>
+            <Card>
+                <t t-set-slot="title">Card title</t>
+                <p class="card-text">Some quick example text...</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </Card>
             <TodoList/>
     </div>
 

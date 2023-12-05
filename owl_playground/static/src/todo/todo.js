@@ -58,12 +58,11 @@ export class TodoList extends Component {
 
         let idExists = true;
         let util = { index: 0, id: 0 };
-        let i = 0;
 
         while (idExists) {
 
             ++util.id;
-            i = 0;
+            let i = 0;
 
             while (i < todos.length && !(idExists = (util.id === todos[i].id)))
                 ++i;

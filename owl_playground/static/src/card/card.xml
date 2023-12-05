@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <div t-name="card.card" owl="1" class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title"><t t-slot="title"/></h5>
+            <t t-slot="default"/>
+        </div>
+    </div>
+
+</templates>
