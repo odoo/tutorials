@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <p t-name="todo.todo" owl="1" t-att-class="{'text-muted text-decoration-line-through': props.done}">
+        <t t-esc="props.id"/>. <t t-esc="props.description"/>
+    </p>
+
+    <t t-name="todo.todolist" owl="1" t-foreach="props.todos" t-as="todo" t-key="todo.id">
+        <Todo id="todo.id" description="todo.description" done="todo.done"/>
+    </t>
+
+</templates>
