@@ -4,8 +4,7 @@
     <div t-name="owl_playground.playground" owl="1" class="p-3">
             hello world
             <Counter/>
-            <input t-on-keyup="addTodo"/>
-            <TodoList todos="todos"/>
+            <TodoList/>
     </div>
 
 </templates>

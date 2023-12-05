@@ -5,8 +5,11 @@
         <t t-esc="props.id"/>. <t t-esc="props.description"/>
     </p>
 
-    <t t-name="todo.todolist" owl="1" t-foreach="props.todos" t-as="todo" t-key="todo.id">
-        <Todo id="todo.id" description="todo.description" done="todo.done"/>
+    <t t-name="todo.todolist" owl="1">
+        <input t-on-keyup="addTodo" t-ref="todoInput"/>
+        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+            <Todo id="todo.id" description="todo.description" done="todo.done"/>
+        </t>
     </t>
 
 </templates>
