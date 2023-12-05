@@ -10,11 +10,16 @@ export class Todo extends Component {
         id: Number,
         description: String,
         done: Boolean,
-        toggleState: Function
+        toggleState: Function,
+        removeFromList: Function
     }
 
     onCheckboxClick() {
         this.props.toggleState(this.props.id);
+    }
+
+    onRemoveClick() {
+        this.props.removeFromList(this.props.id);
     }
 }
 
@@ -35,9 +40,12 @@ export class TodoList extends Component {
 
     addTodo(e) {
         if (e.keyCode === 13 && e.target.value) {
-            this.todos.push(
+            let util = this.findTodoID(this.todos);
+            this.todos.splice(
+                util.index,
+                0,
                 {
-                    id: this.todos.length + 1,
+                    id: util.id,
                     description: e.target.value,
                     done: false
                 }
@@ -46,10 +54,40 @@ export class TodoList extends Component {
         }
     }
 
+    findTodoID(todos) {
+
+        let idExists = true;
+        let util = { index: 0, id: 0 };
+        let i = 0;
+
+        while (idExists) {
+
+            ++util.id;
+            i = 0;
+
+            while (i < todos.length && !(idExists = (util.id === todos[i].id)))
+                ++i;
+
+            if (idExists)
+                util.index = i + 1;
+
+        }
+
+        return util;
+
+    }
+
     toggleTodo(id) {
         const todo = this.todos.find((todo) => { return todo.id === id; });
         if (todo) {
             todo.done = !todo.done;
+        }
+    }
+
+    removeTodo(id) {
+        const index = this.todos.findIndex((todo) => { return todo.id === id; });
+        if (index >= 0) {
+            this.todos.splice(index, 1);
         }
     }
 }

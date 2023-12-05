@@ -2,13 +2,16 @@
 <templates xml:space="preserve">
 
     <p t-name="todo.todo" owl="1" t-att-class="{'text-muted text-decoration-line-through': props.done}">
-        <input type="checkbox" t-on-click="onCheckboxClick"> </input><t t-esc="props.id"/>. <t t-esc="props.description"/>
+        <input type="checkbox" t-on-click="onCheckboxClick"/>
+        <t t-esc="props.id"/>. 
+        <t t-esc="props.description"/>
+        <span class="fa fa-remove" t-on-click="onRemoveClick"/>
     </p>
 
     <t t-name="todo.todolist" owl="1">
         <input t-on-keyup="addTodo" t-ref="todoInput"/>
         <t t-foreach="todos" t-as="todo" t-key="todo.id">
-            <Todo id="todo.id" description="todo.description" done="todo.done" toggleState.bind="toggleTodo"/>
+            <Todo id="todo.id" description="todo.description" done="todo.done" toggleState.bind="toggleTodo" removeFromList.bind="removeTodo"/>
         </t>
     </t>
 
