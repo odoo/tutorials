@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { Todo } from "../todo/todo";
 
 export class Todolist extends Component {
@@ -8,10 +8,14 @@ export class Todolist extends Component {
     static components = { Todo };
 
     setup(){
-        this.todolist = [
-            { id: 3, description: "buy milk", done: false },
-            { id: 4, description: "buy eggs", done: true },
-            { id: 5, description: "buy avocado", done: true },
-        ];
+        this.currentId = 1;
+        this.todolist = useState([]); 
+    }
+
+    addTodo(ev) {
+        if (ev.keyCode === 13 && ev.target.value != ""){
+            this.todolist.push({id: this.currentId++, description: ev.target.value, done: false});
+            ev.target.value = "";
+        }
     }
 }
