@@ -22,4 +22,11 @@ export class Todolist extends Component {
             ev.target.value = "";
         }
     }
+
+    toggleTodo(this_id){
+        const this_todo = this.todolist.find((todo) => todo.id === this_id);
+        if (this_todo) {
+            this_todo.done = !this_todo.done;
+        }
+    }
 }

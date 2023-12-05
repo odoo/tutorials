@@ -2,6 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="owl_playground.Todo" owl="1">
         <p t-att-class="{'text-decoration-line-through text-muted' : props.done }">
+            <input type="checkbox" class="form-check-input" id="props.id" t-att-checked="props.done" t-on-click="toggleClick"/>
             <t t-esc="props.id"/>. 
             <t t-esc="props.description"/>
         </p>
