@@ -25,6 +25,13 @@ export class TodoList extends Component {
         }
     }
 
+    toggleTodo(todoId) {
+        const todo = this.todoList.find((todo) => todo.id === todoId);
+        if (todo) {
+            todo.done = !todo.done;
+        }
+    }
+
     static components = { Todo };
 }
 
