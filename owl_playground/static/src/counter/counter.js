@@ -6,7 +6,7 @@ export class Counter extends Component {
     static template = "owl_playground.counter";
 
     setup() {
-        this.state = useState({ value: 22 });
+        this.state = useState({ value: 0 });
     }
 
     increment() {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="owl_playground.playground" owl="1">
-        <Counter>
+        <div>Hello world</div>
+        <Counter/>
+        <Todo id="todo.id" description="todo.description" done="todo.done"/>
     </t>
-
 </templates>

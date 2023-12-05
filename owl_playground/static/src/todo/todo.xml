@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_playground.todo" owl="1">
+        <p t-att-class="props.done ? 'text-decoration-line-through text-muted' : '' ">
+            <t t-esc="props.id"/>.
+            <t t-esc="props.description"/>
+        </p>
+    </t>
+</templates>
