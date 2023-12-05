@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="owl_playground.Todolist" owl="1">
         <div class="p-3">
-            <input type="text" placeholder="Enter a new task" t-on-keyup="addTodo"/>
+            <input type="text" placeholder="Enter a new task" t-on-keyup="addTodo" t-ref="input"/>
             <t t-foreach="todolist" t-as="todo" t-key="todo.id">
                 <Todo id="todo.id" description="todo.description" done="todo.done" />
             </t>
