@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="owl_playground.playground" owl="1">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
-
+  <t t-name="owl_playground.counter" owl="1">
+      <p>Counter: <t t-esc="state.value"/></p>
+      <button class="btn btn-primary" t-on-click="increment">Increment</button>
+   </t>
 </templates>
