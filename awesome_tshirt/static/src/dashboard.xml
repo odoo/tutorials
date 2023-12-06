@@ -16,5 +16,11 @@
                 </Card>   
             </div>    
         </div>
+        <div class="m-3">
+            <Card className="'w-25'">
+                <t t-set-slot="title">Shirt orders by size</t>
+                <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
+            </Card>
+        </div>
     </t>
 </templates>
