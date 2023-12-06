@@ -8,5 +8,13 @@
                 <button class="btn btn-primary" t-on-click="openLast7DaysCancelledOrders">Cancelled Orders</button>
             </t>
         </Layout>
+        <div class="d-flex flex-nowrap">
+            <div t-foreach="keyToString" t-as="key" t-key="key" class="m-2">
+                <Card>
+                    <t t-set-slot="title"><t t-esc="keyToString[key]"/></t>
+                    <p class="card-text"><t t-esc="statistics[key]"/></p>
+                </Card>   
+            </div>    
+        </div>
     </t>
 </templates>
