@@ -8,19 +8,21 @@
                 <button class="btn btn-primary" t-on-click="openLast7DaysCancelledOrders">Cancelled Orders</button>
             </t>
         </Layout>
-        <div class="d-flex flex-nowrap">
-            <div t-foreach="keyToString" t-as="key" t-key="key" class="m-2">
-                <Card>
-                    <t t-set-slot="title"><t t-esc="keyToString[key]"/></t>
-                    <p class="card-text"><t t-esc="statistics[key]"/></p>
-                </Card>   
-            </div>    
-        </div>
-        <div class="m-3">
-            <Card className="'w-25'">
-                <t t-set-slot="title">Shirt orders by size</t>
-                <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
-            </Card>
+        <div class="h-100 o_awesome_tshirt_dashboard">
+            <div class="d-flex flex-nowrap">
+                <div t-foreach="keyToString" t-as="key" t-key="key" class="m-2">
+                    <Card>
+                        <t t-set-slot="title"><t t-esc="keyToString[key]"/></t>
+                        <p class="card-text"><t t-esc="statistics[key]"/></p>
+                    </Card>   
+                </div>    
+            </div>
+            <div class="m-3">
+                <Card className="'w-25'">
+                    <t t-set-slot="title">Shirt orders by size</t>
+                   <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'" onPieClick.bind="openFilteredBySizeOrders"/>
+                </Card>
+            </div>
         </div>
     </t>
 </templates>

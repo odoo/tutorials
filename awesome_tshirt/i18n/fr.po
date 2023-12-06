@@ -1,0 +1,318 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* awesome_tshirt
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-10 11:51+0000\n"
+"PO-Revision-Date: 2022-09-10 11:51+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/TodoList/TodoList.xml:0
+#, python-format
+msgid "Add a todo"
+msgstr "Ajouter un todo"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.order_public_page
+msgid "Address"
+msgstr "Addresse"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__amount
+msgid "Amount"
+msgstr "Quantité"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.orders_kanban_view
+msgid "Amount:"
+msgstr "Quantité"
+
+#. module: awesome_tshirt
+#: model:ir.ui.menu,name:awesome_tshirt.menu_root
+msgid "Awesome T-Shirts"
+msgstr "Awesome T-Shirts"
+
+#. module: awesome_tshirt
+#: model:ir.model,name:awesome_tshirt.model_awesome_tshirt_order
+msgid "Awesome T-shirt Orders"
+msgstr "Commande d'Awesome T-shirt"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields.selection,name:awesome_tshirt.selection__awesome_tshirt_order__state__cancelled
+msgid "Cancelled"
+msgstr "Annulé"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.xml:0
+#, python-format
+msgid "Cancelled Orders"
+msgstr "Commandes annulées"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/Counter/Counter.xml:0
+#, python-format
+msgid "Counter:"
+msgstr "Compteur:"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__create_uid
+msgid "Created by"
+msgstr "Créee par"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__create_date
+msgid "Created on"
+msgstr "Créee le"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.orders_kanban_view
+msgid "Created:"
+msgstr "Créee:"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__customer_id
+msgid "Customer"
+msgstr "Client"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.orders_kanban_view
+msgid "Customer:"
+msgstr "Client:"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.xml:0
+#, python-format
+msgid "Customers"
+msgstr "Clients"
+
+#. module: awesome_tshirt
+#: model:ir.actions.client,name:awesome_tshirt.dashboard
+#: model:ir.ui.menu,name:awesome_tshirt.dashboard_menu
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.order_public_page
+msgid "Email"
+msgstr "Email"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__id
+msgid "ID"
+msgstr "ID"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__image_url
+msgid "Image"
+msgstr "Image"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.order_public_page
+msgid "Image URL"
+msgstr "URL de l'image"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/Counter/Counter.xml:0
+#, python-format
+msgid "Increment"
+msgstr "Incrémenté"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__is_late
+msgid "Is late"
+msgstr "Est en retard"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order____last_update
+msgid "Last Modified on"
+msgstr "Modifié la dernière fois le"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__write_uid
+msgid "Last Updated by"
+msgstr "Mis à jour la dernière fois par"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__write_date
+msgid "Last Updated on"
+msgstr "Mis à jour la dernière fois le"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.thank_you
+msgid "Make another order"
+msgstr "Faire une autre commande"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.order_public_page
+msgid "Name"
+msgstr "Nom"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields.selection,name:awesome_tshirt.selection__awesome_tshirt_order__state__new
+msgid "New"
+msgstr "Nouveau"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.xml:0
+#, python-format
+msgid "New Orders"
+msgstr "Nouvelles commandes"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.order_public_page
+msgid "Order"
+msgstr "Commande"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.order_public_page
+msgid "Order awesome custom t-shirts"
+msgstr "Commandez des super t-shirts personnalisés"
+
+#. module: awesome_tshirt
+#: model:ir.actions.act_window,name:awesome_tshirt.orders
+#: model:ir.ui.menu,name:awesome_tshirt.order
+msgid "Orders"
+msgstr "Commandes"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields.selection,name:awesome_tshirt.selection__awesome_tshirt_order__state__printed
+msgid "Printed"
+msgstr "Imprimé"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__quantity
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.order_public_page
+msgid "Quantity"
+msgstr "Quantité:"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.orders_kanban_view
+msgid "Quantity:"
+msgstr "Quantité:"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields.selection,name:awesome_tshirt.selection__awesome_tshirt_order__state__sent
+msgid "Sent"
+msgstr "Envoyé"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.xml:0
+#, python-format
+msgid "Shirt orders by size"
+msgstr "Commande de t-shirt par taille"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__size
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.order_public_page
+msgid "Size"
+msgstr "Taille"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.orders_kanban_view
+msgid "Size:"
+msgstr "Taille:"
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,field_description:awesome_tshirt.field_awesome_tshirt_order__state
+msgid "State"
+msgstr "État"
+
+#. module: awesome_tshirt
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.thank_you
+msgid "Thanks for your order!"
+msgstr ""
+
+#. module: awesome_tshirt
+#: model:ir.model.fields.selection,name:awesome_tshirt.selection__awesome_tshirt_order__size__xl
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.order_public_page
+msgid "XL"
+msgstr ""
+
+#. module: awesome_tshirt
+#: model:ir.model.fields.selection,name:awesome_tshirt.selection__awesome_tshirt_order__size__xxl
+#: model_terms:ir.ui.view,arch_db:awesome_tshirt.order_public_page
+msgid "XXL"
+msgstr ""
+
+#. module: awesome_tshirt
+#: model:ir.model.fields,help:awesome_tshirt.field_awesome_tshirt_order__image_url
+msgid "encodes the url of the image"
+msgstr "Encodez l'url de l'image"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.js:0
+#, python-format
+msgid "Average amount of t-shirt by order this month"
+msgstr "Montant en moyenne de t-shirt par commande ce mois-ci"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.js:0
+#, python-format
+msgid "Average time for an order to go from 'new' to 'sent' or 'cancelled'"
+msgstr "Temps moyen pour qu'une commande passe de 'nouvelle' à 'envoyée' ou 'annulée'."
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.js:0
+#, python-format
+msgid "Last 7 days cancelled orders"
+msgstr "Annulation des 7 derniers jours"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.js:0
+#, python-format
+msgid "Last 7 days orders"
+msgstr "Commandes des 7 derniers jours"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.js:0
+#, python-format
+msgid "Number of cancelled orders this month"
+msgstr "Nombre de commandes  annulées ce mois"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.js:0
+#, python-format
+msgid "Number of new orders this month"
+msgstr "Nombre de nouvelles commande ce mois"
+
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.js:0
+#, python-format
+msgid "Total amount of new orders this month"
+msgstr "Montant total des nouvelles commandes ce mois"
+
+#. module: awesome_tshirt
+#. openerp-web
+#: code:addons/awesome_tshirt/static/src/client_action.js:0
+#, python-format
+msgid "Filtered orders by %s size"
+msgstr "Commandes filtrées par la taille %s"
