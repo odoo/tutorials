@@ -2,6 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_item">
         <div>
+            <input type="checkbox" t-att-id="props.id" t-att-checked="props.todo.isCompleted" t-on-click="toggleCompleted" />
             <span t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : '' "><t t-esc="props.todo.id"/>: <t t-esc="props.todo.description"/></span>
         </div>
     </t>
