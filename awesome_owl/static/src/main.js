@@ -2,7 +2,7 @@
 
 import { browser } from "@web/core/browser/browser";
 import { mount, whenReady } from "@odoo/owl";
-import { Playground } from "./playground";
+import { Playground } from "./playground/playground";
 import { templates } from "@web/core/assets";
 
 // Mount the Playground component when the document.body is ready
