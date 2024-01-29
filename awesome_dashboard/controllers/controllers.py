@@ -25,9 +25,11 @@ class AwesomeDashboard(http.Controller):
             'nb_cancelled_orders': random.randint(0, 50),
             'nb_new_orders': random.randint(10, 200),
             'orders_by_size': {
-                'm': random.randint(0, 150),
                 's': random.randint(0, 150),
+                'm': random.randint(0, 150),
+                'l': random.randint(0, 150),
                 'xl': random.randint(0, 150),
+                'xxl': random.randint(0, 150),
             },
             'total_amount': random.randint(100, 1000)
         }
