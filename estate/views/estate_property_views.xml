@@ -1,8 +1,85 @@
 <?xml version="1.0"?>
 <odoo>
+    
+    <record id="estate_property_model_view_search" model="ir.ui.view">
+        <field name="name">estate.estate_property.search</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/> 
+                <field name="postcode"/>
+                <field name="expected_price"/> 
+                <field name="bedrooms"/>
+                <field name="living_area"/> 
+                <field name="facades"/>
+                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="postcode" context="{'group_by':'postcode'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_model_view_tree" model="ir.ui.view">
+        <field name="name">estate.estate_property.tree</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <tree string="Tests">
+                <field name="name"/> 
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
+                
+            </tree>
+        </field>
+    </record>
+
+    <record id="estate_property_model_view_form" model="ir.ui.view">
+        <field name="name">estate.estate_property.form</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" editable="True"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>    
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="state"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                </form>
+        </field>
+    </record>
+
     <record id="estate_property_model_action" model="ir.actions.act_window">
-        <field name="name">Estate Property Action</field>
+        <field name="name">Estate Properties</field>
         <field name="res_model">estate_property</field>
         <field name="view_mode">tree,form</field>
     </record>
+    
 </odoo>
