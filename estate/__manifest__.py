@@ -1,10 +1,11 @@
 {
-    'name': "berm-estate",
-    'version': '1.0',
+    'name': "Estate",
+    'version': '1.01',
     'depends': ['base'],
     'author': "berm-odoo",
-    'category': 'Sales',
-    'description': "Description text",
+    'category': 'Tutorials',
+    'description': "Estate management",
+    'license': "LGPL-3",
     # data files always loaded at installation
     'data': [
         # 'views/mymodule_view.xml',
