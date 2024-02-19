@@ -5,10 +5,10 @@ class Property(models.Model):
     _name = "estate.property"
     _description = "Real Estate Application"
 
-    name=fields.Char(string="Property Name",required=True)
-    description=fields.Text(string="Property Description")
+    name=fields.Char(string="Name",required=True)
+    description=fields.Text(string="Description")
     postcode=fields.Char(string="Postcode")
-    date_availability=fields.Date(string="Property Availability",copy=False,default=fields.Date.add(fields.Date.today(),days=90))
+    date_availability=fields.Date(string="Availability",copy=False,default=fields.Date.add(fields.Date.today(),days=90))
     expected_price=fields.Float(string="Expected Price",required=True)
     selling_price=fields.Float(string="Selling Price",readonly=True,copy=False)
     bedrooms=fields.Integer(string="Number of Bedrooms",default=2)
