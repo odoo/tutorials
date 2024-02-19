@@ -5,7 +5,6 @@
     'website': 'https://www.odoo.com/page/estate',
     'depends': [
         'base',
-        'base_setup',
     ],
     'data': [
         'security/ir.model.access.csv',
