@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+estate.access.estate.property,access.estate.property,model_estate_property,base.group_user,1,1,1,1
+estate.access.estate.property.type,access.estate.property.type,model_estate_property_type,base.group_user,1,1,1,1
+estate.access.estate.property.tag,access.estate.property.tag,model_estate_property_tag,base.group_user,1,1,1,1
+estate.access.estate.property.offer,access.estate.property.offer,model_estate_property_offer,base.group_user,1,1,1,1
