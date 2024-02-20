@@ -71,6 +71,7 @@
               <field name="date_availability" string="Available From" />
             </group>
             <group>
+              <field name="best_price" string="Best Offer" />
               <field name="expected_price" string="Expected Price" />
               <field name="selling_price" string="Selling Price" />
             </group>
