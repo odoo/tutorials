@@ -59,6 +59,8 @@
                   <field name="garden" string="Garden" />
                   <field name="garden_area" string="Garden Area (sqm)" />
                   <field name="garden_orientation" string="Garden Orientation" />
+                  <field name="active" string="Active" />
+                  <field name="state" string="Status" />
                 </group>
               </page>
             </notebook>
@@ -68,4 +70,22 @@
     </field>
   </record>
 
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Estate">
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="state"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]" />
+                <filter string="Archived" name="active" domain="[('active', '=', False)]" />
+                <filter string="New" name="state" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>
