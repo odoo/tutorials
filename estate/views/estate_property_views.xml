@@ -1,13 +1,13 @@
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
-        <field name="res_model">estate_property</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate_property.tree</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Properties">
                 <field name="name" />
@@ -22,8 +22,8 @@
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate_property.form</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="My new house">
                 <sheet>
@@ -61,19 +61,20 @@
         </field>
     </record>
 
-    <record id="estate_property_search" model="ir.ui.view">
+    <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="expected_price"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="facades"/>
-                <filter string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
-                <filter string="Postcode" context="{'group_by': 'postcode'}"/>
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
+                <filter name="Available"
+                    domain="['|', ('state','=','new'), ('state','=','offer_received')]" />
+                <filter name='Postcode' context="{'group_by': 'postcode'}" />
             </search>
         </field>
     </record>
