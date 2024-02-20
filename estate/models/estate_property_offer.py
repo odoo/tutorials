@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 import datetime
 
-class EstateModel(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate/Property/Offer"
 
@@ -23,32 +23,30 @@ class EstateModel(models.Model):
 
     @api.depends("validity")
     def _compute_deadline(self):
-        for record in self:
-            if record.create_date is None:
-                record.date_deadline = record.create_date.add(days=record.validity)
-            else:
-                record.date_deadline = datetime.date.today() + datetime.timedelta(days=record.validity)
+        for offer in self:
+            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.date_deadline = date + datetime.timedelta(days=offer.validity)
 
     def _inverse_deadline(self):
-        for record in self:
-            delta = record.date_deadline - record.create_date.date()
-            record.validity = delta.days 
+        for offer in self:
+            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.validity = (offer.date_deadline - date).days
 
     def action_confirm(self):
-        for record in self:
-            if record.property_id.state != "sold":
-                record.status = "accepted"
-                record.property_id.state = "sold"
-                record.property_id.selling_price = record.price
-                record.property_id.buyer_id = record.partner_id
+        for offer in self:
+            if offer.property_id.state != "sold":
+                offer.status = "accepted"
+                offer.property_id.state = "sold"
+                offer.property_id.selling_price = offer.price
+                offer.property_id.buyer_id = offer.partner_id
                 
-                for offer in record.property_id.offer_ids:
-                    if offer.id != record.id:
+                for offer in offer.property_id.offer_ids:
+                    if offer.id != offer.id:
                         offer.status = "refused"
         return True
 
     def action_refuse(self):
-        for record in self:
-            if record.property_id.state != "sold":
-                record.status = "refused"
+        for offer in self:
+            if offer.property_id.state != "sold":
+                offer.status = "refused"
         return True
