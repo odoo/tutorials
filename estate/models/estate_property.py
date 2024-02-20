@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class Property(models.Model):
@@ -42,7 +43,7 @@ class Property(models.Model):
         copy=False,
         required=True,
         default="new",
-        string="State",
+        string="Status",
         selection=[
             ("new", "New"),
             ("offer_recieved", "Offer Received"),
@@ -54,19 +55,33 @@ class Property(models.Model):
     total_living_area = fields.Integer(compute="_calculate_total_area")
     best_price = fields.Float(compute="_get_max_offer")
 
-    @api.depends("living_area","garden_area")
+    @api.depends("living_area", "garden_area")
     def _calculate_total_area(self):
         for record in self:
-            record.total_living_area=record.living_area+record.garden_area
+            record.total_living_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
     def _get_max_offer(self):
         for record in self:
-            record.best_price=max(record.offer_ids.mapped("price")) if record.offer_ids else 0
-    
+            record.best_price = (
+                max(record.offer_ids.mapped("price")) if record.offer_ids else 0
+            )
+
     @api.onchange("garden")
     def _onchange_garden(self):
-        self.garden_area = 10  if self.garden else 0
-        self.garden_orientation = "north"  if self.garden else None
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = "north" if self.garden else None
 
-    
+    def action_sold_property(self):
+        for record in self:
+            if record.state == "canceled":
+                raise UserError("Canceled properties cannot be sold")
+            record.state = "sold"
+        return True
+
+    def action_cancel_property(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("sold properties cannot be canceled")
+            record.state = "canceled"
+        return True
