@@ -4,5 +4,9 @@
         <menuitem id="advetisements_first_level_menu" name="Advertisements">
             <menuitem id="property_menu_action" action="property_model_action"/>
         </menuitem>
+        <menuitem id="settings_first_level_menu" name="Settings">
+            <menuitem id="property_type__menu_action" action="property_type_model_action"/>
+            <menuitem id="property_tag__menu_action" action="property_tag_model_action"/>
+        </menuitem>
     </menuitem>
 </odoo>
