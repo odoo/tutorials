@@ -1,5 +1,5 @@
 from odoo import models, fields, api, exceptions
-
+from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -47,6 +47,12 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
     best_price = fields.Float(compute='_compute_best_price', readonly=True, copy=False, string="Best Offer")
 
+    _sql_constraints = [
+        ('selling_price_stricly_positive', 'CHECK (selling_price>0)', 'The selling price must be strictly positive.'),
+        (
+        'expected_price_stricly_positive', 'CHECK (expected_price>0)', 'The expected price must be strictly positive.'),
+    ]
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for property in self:
@@ -69,6 +75,12 @@ class EstateProperty(models.Model):
                 'title': ("Warning"),
                 'message': (
                     "You're about to remove your garden place, it will erase all the garden data. Are you sure?")}}
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for property in self:
+            if float_compare(property.selling_price, 0.9 * property.expected_price, precision_digits=2) == -1:
+                raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
     def action_set_to_sold(self):
         for property in self:

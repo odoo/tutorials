@@ -13,10 +13,14 @@ class EstatePropertyOffer(models.Model):
             ('refused', 'Refused')
         ]
     )
-    partner_id = fields.Many2one("res.partner", required=True)
+    partner_id = fields.Many2one("res.partner", required=True, string="Potential Buyer")
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+
+    _sql_constraints = [
+        ('offer_price_stricly_positive', 'CHECK (price>0)', 'The offer price must be strictly positive.'),
+    ]
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -43,7 +47,7 @@ class EstatePropertyOffer(models.Model):
                 raise exceptions.UserError("An offer already accepted for this property")
             offer.status = 'accepted'
             offer.property_id.selling_price = offer.price
-            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.partner_id = offer.partner_id
         return True
 
     def action_refuse_offer(self):
