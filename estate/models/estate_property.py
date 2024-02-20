@@ -5,6 +5,7 @@ class Estate(models.Model):
     _name = "estate.property"
     _description = "Properties of estate entities."
 
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson = fields.Many2one(
             "res.users",
