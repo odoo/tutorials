@@ -44,11 +44,13 @@
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                         <notebook>
@@ -62,6 +64,7 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                 </group>
                             </page>
                             <page string="Offers">
@@ -69,6 +72,8 @@
                                     <tree string="Offers">
                                         <field name="price"/>
                                         <field name="partner_id"/>
+                                        <field name="validity"/>
+                                        <field name="date_deadline"/>
                                         <field name="status"/>
                                     </tree>
                                 </field>
@@ -100,9 +105,11 @@
                 <field name="living_area"/>
                 <field name="facades"/>
                 <separator/>
-                <filter string="Available" name="is_available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer')]"/>
+                <filter string="Available" name="is_available"
+                        domain="['|', ('state', '=', 'new'), ('state', '=', 'offer')]"/>
                 <group expand="1" string="Group By">
-                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                    <filter string="Postcode" name="postcode"
+                            context="{'group_by':'postcode', 'residual_visible':True}"/>
                 </group>
             </search>
         </field>
