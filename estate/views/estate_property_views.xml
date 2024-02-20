@@ -87,6 +87,7 @@
                   <field name="garden_orientation" string="Garden Orientation" />
                   <field name="active" string="Active" />
                   <field name="state" string="Status" />
+                  <field name="total_area" string="Total Area (sqm)"/>
                 </group>
               </page>
               <page name="Offer">
