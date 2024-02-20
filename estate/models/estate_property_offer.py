@@ -14,27 +14,27 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
-        for record in self:
-            if not record.create_date:
-                record.create_date = fields.Date.today()
-            record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
+        for offer in self:
+            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.date_deadline = fields.Date.add(date, days=offer.validity)
 
     def _inverse_date_deadline(self):
-        for record in self:
-            record.validity = (record.date_deadline - record.create_date.date()).days
+        for offer in self:
+            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.validity = (offer.date_deadline - date).days
 
     def action_property_offer_accepted(self):
-        for record in self:
-            if record.property_id.selling_price:
+        for offer in self:
+            if offer.property_id.selling_price:
                 raise UserError("Can't accept more than one offer for a property!")
-            record.status = 'accepted'
-            record.property_id.selling_price = record.price
-            record.property_id.buyer = record.partner_id
+            offer.status = 'accepted'
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer = offer.partner_id
         return True
 
     def action_property_offer_refused(self):
-        for record in self:
-            if record.status == 'accepted':
+        for offer in self:
+            if offer.status == 'accepted':
                 raise UserError("Can't refuse an already accepted offer!")
-            record.status = 'refused'
+            offer.status = 'refused'
         return True

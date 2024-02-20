@@ -47,13 +47,13 @@ class EstateProperty(models.Model):
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.garden_area + record.living_area
+        for estate_property in self:
+            estate_property.total_area = estate_property.garden_area + estate_property.living_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
-        for record in self:
-            record.best_price = max(record.mapped('offer_ids.price')) if self.offer_ids else 0
+        for estate_property in self:
+            estate_property.best_price = max(estate_property.mapped('offer_ids.price')) if self.offer_ids else 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -65,15 +65,15 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_property_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
+        for estate_property in self:
+            if estate_property.state == 'cancelled':
                 raise UserError("Can't sell a cancelled property!")
-            record.state = 'sold'
+            estate_property.state = 'sold'
         return True
 
     def action_property_cancelled(self):
-        for record in self:
-            if record.state == 'sold':
+        for estate_property in self:
+            if estate_property.state == 'sold':
                 raise UserError("Can't cancel a sold property!")
-            record.state = 'cancelled'
+            estate_property.state = 'cancelled'
         return True
