@@ -27,3 +27,22 @@ class EstateModel(models.Model):
         for record in self:
             delta = record.date_deadline - record.create_date.date()
             record.validity = delta.days 
+
+    def action_confirm(self):
+        for record in self:
+            if record.property_id.state != "sold":
+                record.status = "accepted"
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.state = "sold"
+                
+                for offer in record.property_id.offer_ids:
+                    if offer.id != record.id:
+                        offer.status = "refused"
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            if record.property_id.state != "sold":
+                record.status = "refused"
+        return True
