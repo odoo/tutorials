@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- Action to be able to display the model (as a tree, form view) -->
+    <!-- Action to be able to display the estate model (as a tree, form view) -->
     <record id="estate_property_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
@@ -17,11 +17,12 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
+            <tree string="Property Tree View">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
+                <field name="property_type_id"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
@@ -34,12 +35,13 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Channel">
+            <form string="Property Form View">
                 <sheet>
                     <widget name="web_ribbon" title="To sold" bg_color="bg-success"/>
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="postcode"/>
@@ -60,6 +62,22 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                <field name="offer_ids">
+                                    <tree string="Offers">
+                                        <field name="price"/>
+                                        <field name="partner_id"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Other info">
+                                <group>
+                                    <field name="property_type_id"/>
+                                    <field name="user_id"/>
+                                    <field name="partner_id"/>
                                 </group>
                             </page>
                         </notebook>

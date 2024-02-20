@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- Action to be able to display the estate tag model (as a tree, form view) -->
+    <record id="estate_property_tags_model_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
