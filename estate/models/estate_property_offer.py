@@ -15,6 +15,12 @@ class EstateModel(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
 
+    _sql_constraints = [
+        ("check_offer_price",
+        "CHECK(price > 0)",
+        "The offer price must be strictly positive")
+    ]
+
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
@@ -32,9 +38,9 @@ class EstateModel(models.Model):
         for record in self:
             if record.property_id.state != "sold":
                 record.status = "accepted"
+                record.property_id.state = "sold"
                 record.property_id.selling_price = record.price
                 record.property_id.buyer_id = record.partner_id
-                record.property_id.state = "sold"
                 
                 for offer in record.property_id.offer_ids:
                     if offer.id != record.id:
