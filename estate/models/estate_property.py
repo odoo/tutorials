@@ -33,9 +33,9 @@ class Estate(models.Model):
             string='State',
             required=True,
             copy=False,
-            default='New',
-            selection=[('New', 'new'),
-                       ('Offer Received', 'offer received'),
-                       ('Offer Accepted', 'Offer Accepted'),
-                       ('Sold', 'sold'),
-                       ('Canceled', 'Canceled')])
+            default='new',
+            selection=[('new', 'New'),
+                       ('offer received', 'Offer Received'),
+                       ('offer accepted', 'Offer Accepted'),
+                       ('sold', 'Sold'),
+                       ('canceled', 'Canceled')])
