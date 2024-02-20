@@ -33,6 +33,7 @@
                             <field name="name" placeholder="My new house" class="mb16" />
                         </h1>
                     </div>
+                    <field name="tag_ids" widget="many2many_tags" />
                     <group>
                         <group>
                             <field name="property_type_id" />
