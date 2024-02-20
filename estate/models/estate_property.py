@@ -36,7 +36,7 @@ class EstateProperty(models.Model):
                    ('offer received', 'Offer Received'),
                    ('offer accepted', 'Offer Accepted'),
                    ('sold', 'Sold'),
-                   ('canceled', 'Candeled')],
+                   ('canceled', 'Canceled')],
         required=True,
         copy=False,
         default="new",
