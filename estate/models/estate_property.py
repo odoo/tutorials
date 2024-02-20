@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateModel(models.Model):
     _name = "estate.property"
     _description = "Estate/Property"
+    _order = "id desc"
 
     name = fields.Char(required=True, default="New House")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -38,7 +39,8 @@ class EstateModel(models.Model):
             ("cancelled", "Cancelled")
         ],
         default="new",
-        required=True)
+        required=True,
+        copy=False)
     active = fields.Boolean(default=True)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
@@ -58,7 +60,7 @@ class EstateModel(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if record.state == "sold" and float_compare(record.selling_price, record.expected_price * .9, precision_rounding=2) < 0:
+            if (record.state == "offer_accepted" or record.state == "sold") and float_compare(record.selling_price, record.expected_price * .9, precision_rounding=2) < 0:
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price")
 
 
