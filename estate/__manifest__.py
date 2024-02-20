@@ -1,6 +1,6 @@
 {
     'name': 'Estate',
-    'version': '1.2',
+    'version': '1.0',
     'category': 'Estate',
     'summary': 'Estate application',
     'description': "",
