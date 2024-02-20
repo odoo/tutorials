@@ -23,10 +23,10 @@ class Estate(models.Model):
     garden_orientation = fields.Selection(
             string='Orientation',
             selection=[
-                ('North', 'north'),
-                ('South', 'south'),
-                ('East', 'east'),
-                ('West', 'east')],
+                ('north', 'North'),
+                ('south', 'South'),
+                ('east', 'East'),
+                ('west', 'West')],
             help="Cardinal orientation of the garden.",
         )
     state = fields.Selection(
