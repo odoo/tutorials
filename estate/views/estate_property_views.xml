@@ -36,8 +36,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form View">
+                <header>
+                    <button name="action_set_to_sold" type="object" class="oe_highlight" string="Sold"/>
+                    <button name="action_set_to_canceled" type="object" class="oe_highlight" string="Cancel"/>
+                </header>
                 <sheet>
-                    <widget name="web_ribbon" title="To sold" bg_color="bg-success"/>
                     <h1>
                         <field name="name"/>
                     </h1>
@@ -74,6 +77,8 @@
                                         <field name="partner_id"/>
                                         <field name="validity"/>
                                         <field name="date_deadline"/>
+                                        <button name="action_accept_offer" help="Accept" type="object" icon="fa-check"/>
+                                        <button name="action_refuse_offer" help="Refuse" type="object" icon="fa-times"/>
                                         <field name="status"/>
                                     </tree>
                                 </field>

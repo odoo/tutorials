@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -34,3 +35,18 @@ class EstatePropertyOffer(models.Model):
             else:
                 offer.validity = (offer.date_deadline - fields.Date.today()).days
 
+    def action_accept_offer(self):
+        for offer in self:
+            if offer.property_id.state == 'sold' or offer.property_id.state == 'canceled':
+                raise exceptions.UserError("A sold/canceled property cannot accept an offer.")
+            if offer.property_id.selling_price != 0.0:
+                raise exceptions.UserError("An offer already accepted for this property")
+            offer.status = 'accepted'
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id
+        return True
+
+    def action_refuse_offer(self):
+        for offer in self:
+            offer.status = 'refused'
+        return True
