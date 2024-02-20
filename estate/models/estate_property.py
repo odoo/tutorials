@@ -11,6 +11,8 @@ class Estate(models.Model):
             "res.users",
             string="Salesperson",
             default=lambda self: self.env.user)
+    offer_ids = fields.One2many(
+            "estate.property.offer", "property_id", string="Offer")
     active = fields.Boolean(default=True)
     name = fields.Char(string="Name", required=True)
     description = fields.Text()
@@ -41,8 +43,9 @@ class Estate(models.Model):
             required=True,
             copy=False,
             default='new',
-            selection=[('new', 'New'),
-                       ('offer received', 'Offer Received'),
-                       ('offer accepted', 'Offer Accepted'),
-                       ('sold', 'Sold'),
-                       ('canceled', 'Canceled')])
+            selection=[
+                ('new', 'New'),
+                ('offer received', 'Offer Received'),
+                ('offer accepted', 'Offer Accepted'),
+                ('sold', 'Sold'),
+                ('canceled', 'Canceled')])

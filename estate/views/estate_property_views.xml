@@ -41,6 +41,18 @@
     </field>
   </record>
 
+  <record id="estate_property_offer_tree" model="ir.ui.view">
+    <field name="name">estate.property.offer.tree</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+      <tree string="estate_list">
+        <field name="price" string="Price" />
+        <field name="partner_id" string="Partner" />
+        <field name="status" string="Status" />
+      </tree>
+    </field>
+  </record>
+
   <record id="estate_property_view_form" model="ir.ui.view">
     <field name="name">estate.property.form</field>
     <field name="model">estate.property</field>
@@ -75,6 +87,11 @@
                   <field name="garden_orientation" string="Garden Orientation" />
                   <field name="active" string="Active" />
                   <field name="state" string="Status" />
+                </group>
+              </page>
+              <page name="Offer">
+                <group>
+                  <field name="offer_ids" string="Offer" />
                 </group>
               </page>
               <page name="Other Info">
@@ -135,6 +152,20 @@
             <div class="oe_title">
               <h1><field name="name" /></h1>
             </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="estate_offer_view_form" model="ir.ui.view">
+      <field name="name">estate.property.offer.form</field>
+      <field name="model">estate.property.offer</field>
+      <field name="arch" type="xml">
+        <form string="Estate">
+          <sheet>
+            <field name="price" string="Price"/>
+            <field name="partner_id" string="Partner"/>
+            <field name="status" string="Status" />
           </sheet>
         </form>
       </field>
