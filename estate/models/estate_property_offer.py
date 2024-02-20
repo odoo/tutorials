@@ -1,6 +1,6 @@
 import datetime
 
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 
 class EstatePropertyOffer(models.Model):
@@ -35,3 +35,22 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             create_date = record.create_date.date() or fields.Date.today()
             record.validity = (record.date_deadline - create_date).days
+
+    def accept_offer(self):
+        for record in self:
+            property = record.property_id
+            if property.state == "sold":
+                raise exceptions.UserError("Property already sold")
+
+            record.status = "accepted"
+            property.state = "sold"
+            property.selling_price = record.price
+            property.buyer_id = record.partner_id
+        return True
+
+    def reject_offer(self):
+        for record in self:
+            if record.status == "accepted":
+                raise exceptions.UserError("Offer has already been accepted")
+            record.status = "refused"
+        return True
