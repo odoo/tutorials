@@ -27,7 +27,8 @@ class Estate(models.Model):
                 ('South', 'south'),
                 ('East', 'east'),
                 ('West', 'east')],
-            help="Cardinal orientation of the garden.")
+            help="Cardinal orientation of the garden.",
+        )
     state = fields.Selection(
             string='State',
             required=True,
