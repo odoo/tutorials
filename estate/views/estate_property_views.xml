@@ -23,6 +23,7 @@
             <form string="Estate">
                 <sheet>
                     <h1 class="mb32"><field name="name"/></h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <div>
                         <group>
                             <group>
@@ -61,6 +62,15 @@
                                 <field name="garden_orientation"/>
                                 <newline/>
                                 <field name="active"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
                             </group>
                         </page>
                     </notebook>
