@@ -28,9 +28,9 @@
                         <group>
                             <field name="status"/>
                             <field name="partner_id"/>
-                        </group>
-                        <group>
                             <field name="price"/>
+                            <field name="validity"/>
+                            <field name="date_deadline"/>
                         </group>
                     </group>
                 </sheet>
