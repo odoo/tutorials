@@ -11,7 +11,7 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
+            <tree string="Property">
                 <field name="name" string="Title"/>
                 <field name="property_type_id"/>
                 <field name="tag_ids" widget="many2many_tags"/>
@@ -45,6 +45,7 @@
                         </group>
                         <group>
                             <field name="expected_price" string="Expected Price"/>
+                            <field name="best_price" string="Best Offer"/>
                             <field name="selling_price" string="Selling Price"/>
                         </group>
                         <notebook>
@@ -59,6 +60,7 @@
                                     <field name="garden"/>
                                     <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
                                     <field name="garden_orientation" string="Garden Orientation" invisible="not garden"/>
+                                    <field name="total_area" string="Total Area (sqm)"/>
                                 </group>
                             </page>
                             <page string="Offers">

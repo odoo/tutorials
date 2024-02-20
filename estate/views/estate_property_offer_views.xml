@@ -8,6 +8,8 @@
                 <sheet>
                     <group>
                         <field name="price"/>
+                        <field name="validity"/> 
+                        <field name="date_deadline"/> 
                         <field name="status"/>
                         <field name="partner_id"/>
                     </group>
@@ -23,7 +25,9 @@
             <tree>
                 <field name="price"/>     
                 <field name="partner_id" string="Partner"/> 
-                <field name="status"/> 
+                <field name="status"/>
+                <field name="validity"/> 
+                <field name="date_deadline"/> 
             </tree>
         </field>
     </record>
