@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <odoo>
 
+
     <record id="estate_property_view_tree" model="ir.ui.view">
+
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -24,6 +26,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property form">
+                <header>
+                    <button name="action_property_sold" type="object" string="Sold"/>
+                    <button name="action_property_cancelled" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <div>
                         <h1>
@@ -35,6 +41,8 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -53,7 +61,6 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
-                                    <field name="property_type_id"/>
                                     <field name="total_area"/>
                                 </group>
                             </page>
