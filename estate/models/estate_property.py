@@ -3,6 +3,7 @@ from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
+
 class EstateModel(models.Model):
     _name = "estate.property"
     _description = "Estate/Property"
@@ -95,3 +96,10 @@ class EstateModel(models.Model):
         for record in self:
             record.state = "cancelled"
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_is_new_cancelled(self):
+        if any(not record.state in ["new", "cancelled"] for record in self):
+            raise UserError("Only New or Cancelled properties can be deleted")
+
+

@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 import datetime
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -52,3 +53,28 @@ class EstatePropertyOffer(models.Model):
             if offer.property_id.state != "offer_accepted" and offer.property_id.state != "sold":
                 offer.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        offer_property = self.env["estate.property"].browse(vals["property_id"])
+
+        if offer_property.state == "new":
+            offer_property.state = "offer_received"
+
+        if vals["price"] <= offer_property.best_price:
+            raise UserError("The offer must be greater than the other ones")
+
+        return super().create(vals)    
+
+    #The other way of doing it
+    #@api.model
+    #def create(self, vals):
+    #    offers = super().create(vals)
+
+    #    for offer in offers:
+    #        offer.property_id.state = "offer_received"
+
+    #        if offer.price <= max(offer.property_id.offer_ids.filtered(lambda x: x.id != offer.id).mapped("price"), default=0):
+    #            raise UserError("The offer must be greater than the other ones")
+
+    #    return offers
