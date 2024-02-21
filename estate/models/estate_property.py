@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 
 
 class Estate(models.Model):
@@ -31,7 +31,7 @@ class Estate(models.Model):
 
     selling_price = fields.Float(copy=False, readonly=True)
 
-    best_price = fields.Float(compute="_getMaxOffer", string="Best Price")
+    best_price = fields.Float(compute="_get_max_offer", string="Best Price")
 
     property_type_id = fields.Many2one("estate.property.type", string="Type")
 
@@ -80,17 +80,29 @@ class Estate(models.Model):
             record.total_area = record.garden_area + record.living_area
 
     @api.depends("offer_ids")
-    def _getMaxOffer(self):
-        for record in self:
+    def _get_max_offer(self):
+        for property in self:
             offers = self.offer_ids.mapped("price")
             max = 0
             for offer in offers:
                 if offer > max:
                     max = offer
-        record.best_price = max
+        property.best_price = max
 
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
+
+    def set_sold_status(self):
+        if self.state == "canceled":
+            raise exceptions.UserError(
+                    "Canceled properties cannot be sold")
+            return True
+        self.state = "sold"
+        return True
+
+    def set_cancel_status(self):
+        self.state = "canceled"
+        return True

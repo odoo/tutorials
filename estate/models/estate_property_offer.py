@@ -10,7 +10,7 @@ class EstateOffer(models.Model):
     status = fields.Selection(
             string="Status",
             copy=False,
-            selection=[("accepted", "Accepted"), ("refused", "Refused")])
+            selection=[("accepted", "Accepted"), ("refused", "Refused")],)
 
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
 
@@ -25,15 +25,15 @@ class EstateOffer(models.Model):
     date_deadline = fields.Date(
             default=fields.Date.today(),
             string="Deadline Date",
-            compute="_getDeadlineDate",
-            inverse="_getValidityTime")
+            compute="_get_deadline_date",
+            inverse="_get_validity_time")
 
     @api.depends("validity")
-    def _getDeadlineDate(self):
-        for record in self:
-            record.date_deadline = fields.Date.add(
-                    record.create_date,
-                    days=record.validity)
+    def _get_deadline_date(self):
+        for offer in self:
+            offer.date_deadline = fields.Date.add(
+                    offer.create_date,
+                    days=offer.validity)
 
     @api.depends("date_deadline")
     def _getValidityTime(self):
