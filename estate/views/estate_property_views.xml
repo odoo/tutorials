@@ -41,6 +41,11 @@
                                 <field name="selling_price"/>
                             </group>
                         </group>
+                        <group>
+                            <group>
+                                <field name="best_price" string="Best Offer"/>
+                            </group>
+                        </group>
                     </div>
                     <notebook>
                         <page string="Description">
@@ -62,6 +67,8 @@
                                 <field name="garden_orientation"/>
                                 <newline/>
                                 <field name="active"/>
+                                <newline/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
