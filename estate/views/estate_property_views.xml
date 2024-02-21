@@ -29,9 +29,9 @@
             <form string="My new house">
                 <header>
                     <button string="Sold" type="object" name="action_set_to_sold"
-                        class="oe_highlight" />
+                        class="oe_highlight" invisible="state == 'sold'" />
                     <button string="Cancel" type="object" name="action_set_to_canceled"
-                        class="oe_highlight" />
+                        class="oe_highlight" invisible="state == 'sold'" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
@@ -63,14 +63,15 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
                             <field name="offer_ids"
-                                context="{'tree_view_ref': 'estate.estate_property_offer_view_tree'}" />
+                                context="{'tree_view_ref': 'estate.estate_property_offer_view_tree'}"
+                                readonly="state == 'offer_accepted' or state == 'sold' or state == 'canceled'" />
                         </page>
                         <page string="Other Info">
                             <group>
