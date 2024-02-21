@@ -5,7 +5,7 @@
     'summary': 'Estate application',
     'description': "",
     'website': 'https://www.odoo.com/page/estate',
-    'depends' : [
+    'depends': [
         'base',
     ],
     'data': [

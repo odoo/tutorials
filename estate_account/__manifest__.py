@@ -5,7 +5,7 @@
     'summary': 'Estate Account link module',
     'description': "",
     'website': 'https://www.odoo.com/page/estate',
-    'depends' : [
+    'depends': [
         'estate',
         'account'
     ],

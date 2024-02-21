@@ -2,10 +2,9 @@ from odoo import fields, models, Command
 
 from odoo.exceptions import AccessError
 
+
 class EstateProperty(models.Model):
     _inherit = "estate.property"
-
-    
 
     def action_set_sold(self):
         for property_sold in self:
@@ -13,7 +12,7 @@ class EstateProperty(models.Model):
                 'name': f'INV/PROP/{property_sold.id}',
                 'move_type': 'out_invoice',
                 'partner_id': property_sold.buyer_id.id,
-                'invoice_line_ids':[
+                'invoice_line_ids': [
                     Command.create({
                         'name': property_sold.name,
                         'price_unit': property_sold.selling_price,

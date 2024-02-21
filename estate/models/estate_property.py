@@ -33,9 +33,9 @@ class EstateModel(models.Model):
     state = fields.Selection(
         selection=[
             ("new", "New"),
-            ("offer_received", "Offer Received"), 
-            ("offer_accepted", "Offer Accepted"), 
-            ("sold", "Sold"), 
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
             ("cancelled", "Cancelled")
         ],
         default="new",
@@ -50,19 +50,12 @@ class EstateModel(models.Model):
 
     _sql_constraints = [
         ("check_expected_price",
-        "CHECK(expected_price > 0)", 
-        "The expected price must be strictly positive"),
+            "CHECK(expected_price > 0)",
+            "The expected price must be strictly positive"),
         ("check_selling_price",
-        "CHECK(selling_price >= 0)",
-        "The selling price must be positive"),
+            "CHECK(selling_price >= 0)",
+            "The selling price must be positive"),
     ]
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
-        for prop in self:
-            if prop.state in ("offer_accepted", "sold") and float_compare(prop.selling_price, prop.expected_price * .9, precision_rounding=2) < 0:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price")
-
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
@@ -74,6 +67,12 @@ class EstateModel(models.Model):
         for prop in self:
             prop.best_price = max(prop.offer_ids.mapped("price"), default=0.0)
 
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for prop in self:
+            if prop.state in ("offer_accepted", "sold") and float_compare(prop.selling_price, prop.expected_price * .9, precision_rounding=2) < 0:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price")
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -82,6 +81,12 @@ class EstateModel(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def unlink(self):
+        if any(prop.state not in ("new", "cancelled") for prop in self):
+            raise UserError("Only New or Cancelled properties can be deleted")
+
+        return super().unlink()
 
     def action_set_sold(self):
         for prop in self:
@@ -95,11 +100,3 @@ class EstateModel(models.Model):
         for prop in self:
             prop.state = "cancelled"
         return True
-
-    def unlink(self):
-        if any(prop.state not in ("new", "cancelled") for prop in self):
-            raise UserError("Only New or Cancelled properties can be deleted")
-
-        return super().unlink()
-
-

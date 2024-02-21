@@ -1,6 +1,8 @@
-from odoo import api, fields, models
 import datetime
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -20,8 +22,8 @@ class EstatePropertyOffer(models.Model):
 
     _sql_constraints = [
         ("check_offer_price",
-        "CHECK(price > 0)",
-        "The offer price must be strictly positive")
+            "CHECK(price > 0)",
+            "The offer price must be strictly positive")
     ]
 
     @api.depends("validity")
@@ -42,7 +44,7 @@ class EstatePropertyOffer(models.Model):
                 offer.property_id.state = "offer_accepted"
                 offer.property_id.selling_price = offer.price
                 offer.property_id.buyer_id = offer.partner_id
-                
+
                 for other_offer in offer.property_id.offer_ids:
                     if other_offer.id != offer.id:
                         other_offer.status = "refused"
@@ -64,11 +66,11 @@ class EstatePropertyOffer(models.Model):
         if vals["price"] <= offer_property.best_price:
             raise UserError("The offer must be greater than the other ones")
 
-        return super().create(vals)    
+        return super().create(vals)
 
-    #The other way of doing it
-    #@api.model
-    #def create(self, vals):
+    # The other way of doing it
+    # @api.model
+    # def create(self, vals):
     #    offers = super().create(vals)
 
     #    for offer in offers:
