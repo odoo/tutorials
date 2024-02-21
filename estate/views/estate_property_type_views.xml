@@ -12,7 +12,7 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
-                    <field name="name" class="h1 mb-4" />
+                    <field name="name" class="h1 mb-4"/>
                 </sheet>
             </form>
         </field>

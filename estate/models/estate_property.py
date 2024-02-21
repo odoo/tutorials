@@ -1,19 +1,19 @@
 from odoo import models, fields
-from datetime import datetime, timedelta
 
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property model"
 
-    name = fields.Char(string='Name',
-                       required=True,
-                       help='This is the name of the estate property.',
-                       index=True)
+    name = fields.Char(
+        string='Name',
+        required=True,
+        help='This is the name of the estate property.',
+        index=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        default=datetime.today() + timedelta(days=3*30),
+        default=fields.Date.add(fields.Date.today(), months=3),
         copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)

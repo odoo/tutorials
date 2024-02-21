@@ -13,7 +13,7 @@
             <form string="Property Tag">
                 <sheet>
                     <group>
-                        <field name="name" />
+                        <field name="name"/>
                     </group>
                 </sheet>
             </form>
