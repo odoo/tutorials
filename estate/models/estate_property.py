@@ -1,6 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -60,20 +59,20 @@ class EstateModel(models.Model):
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-        for record in self:
-            if (record.state == "offer_accepted" or record.state == "sold") and float_compare(record.selling_price, record.expected_price * .9, precision_rounding=2) < 0:
+        for prop in self:
+            if prop.state in ("offer_accepted", "sold") and float_compare(prop.selling_price, prop.expected_price * .9, precision_rounding=2) < 0:
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price")
 
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.garden_area + record.living_area
+        for prop in self:
+            prop.total_area = prop.garden_area + prop.living_area
 
     @api.depends("offer_ids")
     def _compute_best_price(self):
-        for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"), default=0)
+        for prop in self:
+            prop.best_price = max(prop.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -82,24 +81,25 @@ class EstateModel(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = ""
+            self.garden_orientation = False
 
     def action_set_sold(self):
-        for record in self:
-            if record.state == "cancelled":
+        for prop in self:
+            if prop.state == "cancelled":
                 raise UserError("Cancelled properties cannot be sold")
             else:
-                record.state = "sold"
+                prop.state = "sold"
         return True
 
     def action_cancel_property(self):
-        for record in self:
-            record.state = "cancelled"
+        for prop in self:
+            prop.state = "cancelled"
         return True
 
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_state_is_new_cancelled(self):
-        if any(not record.state in ["new", "cancelled"] for record in self):
+    def unlink(self):
+        if any(prop.state not in ("new", "cancelled") for prop in self):
             raise UserError("Only New or Cancelled properties can be deleted")
+
+        return super().unlink()
 
 

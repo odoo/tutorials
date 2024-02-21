@@ -28,7 +28,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree 
-            decoration-success="state == 'offer_received' or state == 'offer_accepted'"
+            decoration-success="state in ('offer_received', 'offer_accepted')"
             decoration-bf="state == 'offer_accepted'"
             decoration-muted="state == 'sold'"
             >
@@ -52,8 +52,8 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_set_sold" type="object" string="Sold" invisible="state == 'sold' or state == 'cancelled'"/>
-                    <button name="action_cancel_property" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'"/>
+                    <button name="action_set_sold" type="object" string="Sold" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_cancel_property" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -89,10 +89,7 @@
                         </page>
                         <page string="Offers">               
                             <field name="offer_ids" 
-                                readonly="state == 'offer_accepted'
-                                            or state == 'sold'
-                                            or state == 'cancelled'"
-                            /> 
+                                readonly="state in ('offer_accepted', 'sold', 'cancelled')"/> 
                         </page>
                         <page string="Other info">
                             <group>    

@@ -37,7 +37,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_confirm(self):
         for offer in self:
-            if offer.property_id.state != "offer_accepted" and offer.property_id.state != "sold":
+            if offer.property_id.state not in ("offer_accepted", "sold"):
                 offer.status = "accepted"
                 offer.property_id.state = "offer_accepted"
                 offer.property_id.selling_price = offer.price
