@@ -2,13 +2,14 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Management"
+    _order = "id desc"
 
     name = fields.Char(required=True, string="Title")
-    user_id = fields.Many2one('res.users', string="Salesperson", index=True, tracking=True,
-                              default=lambda self: self.env.user)
+    user_id = fields.Many2one('res.users', string="Salesperson", index=True, default=lambda self: self.env.user)
     partner_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     description = fields.Text()
     active = fields.Boolean(default=True)
@@ -36,8 +37,9 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         string="State",
         selection=[
-            ('new', 'New Offer Received'),
-            ('offer', 'Offer Accepted'),
+            ('new', 'New'),
+            ('offer', 'Offer Received'),
+            ('accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('canceled', 'Canceled')
         ],
@@ -51,7 +53,8 @@ class EstateProperty(models.Model):
     _sql_constraints = [
         ('selling_price_stricly_positive', 'CHECK (selling_price>0)', 'The selling price must be strictly positive.'),
         (
-        'expected_price_stricly_positive', 'CHECK (expected_price>0)', 'The expected price must be strictly positive.'),
+            'expected_price_stricly_positive', 'CHECK (expected_price>0)',
+            'The expected price must be strictly positive.'),
     ]
 
     @api.depends('living_area', 'garden_area')
@@ -63,6 +66,11 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for property in self:
             property.best_price = max(property.offer_ids.mapped('price'), default=0.0)
+
+    @api.onchange('offer_ids')
+    def _onchange_state(self):
+        if self.state == 'new' and self.offer_ids:
+            self.state = 'offer'
 
     @api.onchange('garden')
     def _onchange_garden(self):

@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -18,6 +19,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True, string="Property Type")
 
     _sql_constraints = [
         ('offer_price_stricly_positive', 'CHECK (price>0)', 'The offer price must be strictly positive.'),
@@ -41,6 +43,7 @@ class EstatePropertyOffer(models.Model):
             if offer.property_id.selling_price != 0.0:
                 raise UserError("An offer already accepted for this property")
             offer.status = 'accepted'
+            offer.property_id.state = 'accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.partner_id = offer.partner_id
         return True

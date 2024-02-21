@@ -1,5 +1,13 @@
 <?xml version="1.0"?>
 <odoo>
+    <!-- Action to be able to display the estate property offer model -->
+    <record id="estate_property_offer_model_action" model="ir.actions.act_window">
+        <field name="name">Property Offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+
     <!-- Form view-->
     <record id="estate_property_offer_view_form" model="ir.ui.view">
         <field name="name">estate.property.offer.form</field>
@@ -18,6 +26,20 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <!-- Tree view -->
+    <record id="estate_property_offer_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.offer.tree</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+            </tree>
         </field>
     </record>
 </odoo>
