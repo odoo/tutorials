@@ -1,6 +1,7 @@
 import datetime
 
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -35,6 +36,21 @@ class EstatePropertyOffer(models.Model):
         )
     ]
 
+    @api.model
+    def create(self, vals):
+        property = self.env["estate.property"].browse(vals["property_id"])
+        if property.state in ("canceled", "offer accepted", "sold"):
+            raise UserError(
+                "Offer cannot be created for this property due to the property's status"
+            )
+        if property.best_price >= vals["price"]:
+            raise UserError(
+                "Offer cannot have a price lower than any of the existing offers"
+            )
+
+        property.state = "offer received"
+        return super().create(vals)
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -52,7 +68,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             property = record.property_id
             if property.state == "sold":
-                raise exceptions.UserError("Property already sold")
+                raise UserError("Property already sold")
 
             record.status = "accepted"
             property.state = "sold"
@@ -63,6 +79,6 @@ class EstatePropertyOffer(models.Model):
     def reject_offer(self):
         for record in self:
             if record.status == "accepted":
-                raise exceptions.UserError("Offer has already been accepted")
+                raise UserError("Offer has already been accepted")
             record.status = "refused"
         return True
