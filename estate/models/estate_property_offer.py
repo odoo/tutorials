@@ -5,10 +5,14 @@ from odoo.exceptions import UserError
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate offer"
+    _order = "price desc"
 
     _sql_constraints = [
-        ('check_price', 'CHECK(price > 0)',
-         'A property offer must be strictly positive.'),
+        (
+            "check_price",
+            "CHECK(price > 0)",
+            "A property offer must be strictly positive.",
+        ),
     ]
 
     price = fields.Float()
@@ -17,10 +21,13 @@ class PropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True, string="Buyer")
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
     validity = fields.Integer(default=7, string="Validity (days)")
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_compute_validity", string="Deadline"
-    )       
+    )
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -45,7 +52,7 @@ class PropertyOffer(models.Model):
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
         return True
-    
+
     def action_reject(self):
         for offer in self:
             if offer.property_id.state in ["sold", "canceled"]:

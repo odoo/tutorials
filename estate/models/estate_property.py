@@ -1,17 +1,24 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare,float_is_zero
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Real Estate Application"
+    _order = "id desc"
 
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)',
-         'A property expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)',
-         'A property selling price must be positive.'),
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "A property expected price must be strictly positive.",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "A property selling price must be positive.",
+        ),
     ]
 
     name = fields.Char(string="Title", required=True)
@@ -63,7 +70,6 @@ class Property(models.Model):
     total_living_area = fields.Integer(compute="_calculate_total_area")
     best_price = fields.Float(compute="_get_max_offer")
 
-
     @api.depends("living_area", "garden_area")
     def _calculate_total_area(self):
         for record in self:
@@ -82,17 +88,18 @@ class Property(models.Model):
             self.garden_area = 10
             self.garden_orientation = "north"
             return
-        self.garden_area=0
-        self.garden_orientation=None
-        
+        self.garden_area = 0
+        self.garden_orientation = None
 
-    @api.constrains('selling_price')
+    @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
-            if float_is_zero(record.selling_price,1):
+            if float_is_zero(record.selling_price, 1):
                 continue
-            if float_compare(record.selling_price/record.expected_price, 0.9, 1) < 0:
-                raise ValidationError("The selling price is less than 90% of the expected price")
+            if float_compare(record.selling_price / record.expected_price, 0.9, 1) < 0:
+                raise ValidationError(
+                    "The selling price is less than 90% of the expected price"
+                )
 
     def action_sold_property(self):
         for record in self:

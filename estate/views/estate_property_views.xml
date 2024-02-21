@@ -5,14 +5,18 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Property">
+            <tree string="Property" 
+                    decoration-success="state in ('offer_accepted','offer_received')"  
+                    decoration-bf="state == 'offer_accepted'" 
+                    decoration-muted="state == 'sold'">
                 <field name="name"/>
+                <field name="state" invisible="True"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>                
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -26,7 +30,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <field name="facades"/>
                 <separator/>
                 <filter string="Available" name="state" domain="[('state', 'in', ('new','offer_received'))]"/>
@@ -43,20 +47,20 @@
         <field name="arch" type="xml">
             <form string="Real Estate">
                 <header>
-                        <button name="action_sold_property" string="Sold" type="object"/>
-                        <button name="action_cancel_property" string="Cancel" type="object"/>
+                        <button name="action_sold_property" string="Sold" type="object" invisible="state in ('sold','canceled')"/>
+                        <button name="action_cancel_property" string="Cancel" type="object" invisible="state in ('sold','canceled')"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <h1 class="mb32">
                             <field name="name" class="mb16"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="state"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -74,13 +78,13 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                     <field name="total_living_area"/>
                                 </group>
                             </page>
                             <page string="Offers">
-                                <field name="offer_ids"/>
+                                <field name="offer_ids" readonly="state in ('offer_accepted','sold','canceled')"/>
                             </page>
                             <page string="Other Info">
                                 <group>
@@ -99,6 +103,8 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="estate.view_estate_property_search"/>
+        <field name="context">{'search_default_state': True}</field>
     </record>
 
 </odoo>
