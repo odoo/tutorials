@@ -6,6 +6,7 @@ from odoo.tools import float_is_zero, float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "real estate property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -18,7 +19,7 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer(string="Living Area")
+    living_area = fields.Integer(string="Living Area", default=0)
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
