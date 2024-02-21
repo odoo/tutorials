@@ -43,3 +43,11 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Can't refuse an already accepted offer!")
             offer.status = 'refused'
         return True
+
+    @api.model
+    def create(self, vals):
+        estate_property = self.env['estate.property'].browse(vals['property_id'])
+        if vals['price'] < estate_property.best_price:
+            raise UserError("Can't create an offer with a price less than the best offer!")
+        estate_property.state = 'offer_received'
+        return super().create(vals)

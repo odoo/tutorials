@@ -11,7 +11,7 @@
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <button class="oe_stat_button" icon="fa-dollar" type="action" name="%(estate_property_offer_action)d">
+                        <button class="oe_stat_button" icon="fa-dollar" type="action" name="%(estate.estate_property_offer_action)d">
                             <field name="offer_count" widget="statinfo" string="Offers"/>
                         </button>
                     </header>
