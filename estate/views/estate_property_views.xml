@@ -56,10 +56,12 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                                <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" context="{'tree_view_ref': 'estate.estate_property_offer_view_tree'}" />
+                            <field name="offer_ids"
+                                context="{'tree_view_ref': 'estate.estate_property_offer_view_tree'}" />
                         </page>
                         <page string="Other Info">
                             <field name="salesperson_id" />
