@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate offer"
+
     _sql_constraints = [
         ('check_price', 'CHECK(price > 0)',
          'A property offer must be strictly positive.'),
@@ -23,37 +24,35 @@ class PropertyOffer(models.Model):
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
-        for record in self:
-            created_at = record.create_date or fields.Date.today()
-            record.date_deadline = fields.Date.add(created_at, days=record.validity)
+        for offer in self:
+            created_at = offer.create_date or fields.Date.today()
+            offer.date_deadline = fields.Date.add(created_at, days=offer.validity)
 
     def _compute_validity(self):
-        for record in self:
-            created_at = record.create_date or fields.Date.today()
-            delta = record.date_deadline - created_at.date()
-            record.validity = delta.days
+        for offer in self:
+            created_at = offer.create_date or fields.Date.today()
+            delta = offer.date_deadline - created_at.date()
+            offer.validity = delta.days
 
     def action_confirm(self):
-        for record in self:
-            if record.property_id.state in ["sold", "canceled"]:
+        for offer in self:
+            if offer.property_id.state in ["sold", "canceled"]:
                 raise UserError("Property reached a final state")
-            if record.property_id.state in ["Offer_accepted"]:
+            if offer.property_id.state == "offer_accepted":
                 raise UserError("Cannot accept more than one offer")
-            record.status = "accepted"
-            record.property_id.state = "offer_accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
+            offer.status = "accepted"
+            offer.property_id.state = "offer_accepted"
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
         return True
     
-    
-
     def action_reject(self):
-        for record in self:
-            if record.property_id.state in ["sold", "canceled"]:
+        for offer in self:
+            if offer.property_id.state in ["sold", "canceled"]:
                 raise UserError("Property reached a final state")
-            if record.status == "accepted":
-                record.property_id.state = "offer_recieved"
-                record.property_id.buyer_id = None
-                record.property_id.selling_price = 0
-            record.status = "refused"
+            if offer.status == "accepted":
+                offer.property_id.state = "offer_received"
+                offer.property_id.buyer_id = None
+                offer.property_id.selling_price = 0
+            offer.status = "refused"
         return True
