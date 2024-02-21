@@ -31,7 +31,8 @@ class Estate(models.Model):
 
     selling_price = fields.Float(copy=False, readonly=True)
 
-    best_price = fields.Float(compute="_get_max_offer", string="Best Price")
+    best_price = fields.Float(
+            compute="_compute_max_offer", string="Best Price")
 
     property_type_id = fields.Many2one("estate.property.type", string="Type")
 
@@ -80,7 +81,7 @@ class Estate(models.Model):
             record.total_area = record.garden_area + record.living_area
 
     @api.depends("offer_ids")
-    def _get_max_offer(self):
+    def _compute_max_offer(self):
         for property in self:
             property.best_price = max(
                     [offer.price for offer in property.offer_ids], default=0.0)
@@ -100,5 +101,9 @@ class Estate(models.Model):
         return True
 
     def set_cancel_status(self):
+        if self.state == "sold":
+            raise exceptions.UserError(
+                    "Solded properties cannot be cancel")
+            return True
         self.state = "canceled"
         return True
