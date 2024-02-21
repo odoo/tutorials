@@ -116,7 +116,7 @@
                 <field name="facades"/>
                 <separator/>
                 <filter string="Available" name="is_available"
-                        domain="['|', ('state', '=', 'new'), ('state', '=', 'offer')]"/>
+                        domain="[('state', 'in', ('new', 'offer'))]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode"
                             context="{'group_by':'postcode', 'residual_visible':True}"/>
