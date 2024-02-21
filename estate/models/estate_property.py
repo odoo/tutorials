@@ -40,3 +40,4 @@ class Property(models.Model):
             ('sold', 'Sold'),
             ('canceled', 'Canceled'),
         ])
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
