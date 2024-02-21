@@ -1,4 +1,6 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_is_zero, float_compare
 
 
 class EstateProperty(models.Model):
@@ -56,6 +58,37 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
 
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "The expected price must a positive number",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price > 0)",
+            "The selling price must be a positive number",
+        ),
+    ]
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=2):
+                continue
+
+            if (
+                float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9,
+                    precision_rounding=2,
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    "The selling price cannot bet lower than 90% of the expected price"
+                )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -77,13 +110,13 @@ class EstateProperty(models.Model):
     def property_sold(self):
         for record in self:
             if record.state == "canceled":
-                raise exceptions.UserError("Property already canceled")
+                raise UserError("Property already canceled")
             record.state = "sold"
         return True
 
     def property_canceled(self):
         for record in self:
             if record.state == "sold":
-                raise exceptions.UserError("Property already sold")
+                raise UserError("Property already sold")
             record.state = "canceled"
         return True
