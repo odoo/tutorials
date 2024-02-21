@@ -96,7 +96,7 @@
                     <field name="bedrooms" />
                     <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]"/>
                     <field name="facades"/>
-                    <filter name="filter_available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                    <filter name="filter_available" string="Available" domain="[('state', 'in', ('new', 'offer received'))]"/>
                     <filter name="group_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
                     <filter name="group_type" string="Type" context="{'group_by': 'property_type_id'}"/>
                 </search>
