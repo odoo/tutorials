@@ -32,6 +32,10 @@
                     <field name="name" class="h1 mb-4" />
 
                     <group>
+                        <field name="property_tag_ids" widget="many2many_tags" string="" />
+                    </group>
+
+                    <group>
                         <group>
                             <field name="property_type_id" />
                             <field name="postcode" />
