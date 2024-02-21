@@ -88,3 +88,9 @@ class Estate(models.Model):
                 if offer > max:
                     max = offer
         record.best_price = max
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
