@@ -70,30 +70,33 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                        <group>
                             <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area" string="Living Area (sqm)"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation"/>
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area" string="Living Area (sqm)"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area" string="Garden Area (sqm)"/>
+                                    <field name="garden_orientation"/>
+                                </group>
+                                <group>
+                                </group>
                             </group>
-                            <group>
-                            </group>
-                        </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
                         </page>
                         <page string="Other Info">
-                        <group>
                             <group>
-                                <field name="salesman_id"/>
-                                <field name="buyer_id"/>
+                                <group>
+                                    <field name="salesman_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
+                                <group>
+                                </group>
                             </group>
-                            <group>
-                            </group>
-                        </group>
                         </page>
                     </notebook>
                 </sheet>
