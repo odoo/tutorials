@@ -67,11 +67,11 @@ class EstatePropertyOffer(models.Model):
     def accept_offer(self):
         for record in self:
             property = record.property_id
-            if property.state == "sold":
-                raise UserError("Property already sold")
+            if property.state in ("sold", "offer accepted", "canceled"):
+                raise UserError("Can't accept offer for this property")
 
             record.status = "accepted"
-            property.state = "sold"
+            property.state = "offer accepted"
             property.selling_price = record.price
             property.buyer_id = record.partner_id
         return True
