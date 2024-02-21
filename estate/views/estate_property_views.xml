@@ -32,6 +32,8 @@
                         class="oe_highlight" />
                     <button string="Cancel" type="object" name="action_set_to_canceled"
                         class="oe_highlight" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -42,7 +44,6 @@
                     <field name="tag_ids" widget="many2many_tags" />
                     <group>
                         <group>
-                            <field name="state" />
                             <field name="property_type_id" />
                             <field name="postcode"></field>
                             <field name="date_availability"></field>
