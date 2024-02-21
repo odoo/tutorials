@@ -72,8 +72,10 @@
                                 context="{'tree_view_ref': 'estate.estate_property_offer_view_tree'}" />
                         </page>
                         <page string="Other Info">
-                            <field name="salesperson_id" />
-                            <field name="buyer_id" />
+                            <group>
+                                <field name="salesperson_id" />
+                                <field name="buyer_id" />
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
