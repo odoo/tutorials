@@ -5,6 +5,61 @@ class Estate(models.Model):
     _name = "estate.property"
     _description = "Properties of estate entities."
 
+    active = fields.Boolean(default=True)
+
+    garage = fields.Boolean()
+
+    garden = fields.Boolean()
+
+    name = fields.Char(string="Name", required=True)
+
+    postcode = fields.Char()
+
+    description = fields.Text()
+
+    bedrooms = fields.Integer(default=2)
+
+    living_area = fields.Integer()
+
+    facades = fields.Integer()
+
+    total_area = fields.Integer(
+            string="Total Area",
+            compute="_compute_total")
+
+    expected_price = fields.Float(required=True, readonly=True, default=99999)
+
+    selling_price = fields.Float(copy=False, readonly=True)
+
+    best_price = fields.Float(compute="_getMaxOffer", string="Best Price")
+
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
+
+    date_availability = fields.Date(
+            copy=False,
+            default=fields.Date.add(fields.Date.today(), months=3))
+
+    garden_orientation = fields.Selection(
+            string="Orientation",
+            selection=[
+                ("north", "North"),
+                ("south", "South"),
+                ("east", "East"),
+                ("west", "West")],
+            help="Cardinal orientation of the garden.",)
+
+    state = fields.Selection(
+            string='State',
+            required=True,
+            copy=False,
+            default='new',
+            selection=[
+                ("new", "New"),
+                ("offer received", "Offer Received"),
+                ("offer accepted", "Offer Accepted"),
+                ("sold", "Sold"),
+                ("canceled", "Canceled")])
+
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
 
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -17,62 +72,7 @@ class Estate(models.Model):
     offer_ids = fields.One2many(
             "estate.property.offer", "property_id", string="Offer")
 
-    best_price = fields.Float(compute="_getMaxOffer", string="Best Price")
-
-    active = fields.Boolean(default=True)
-
-    name = fields.Char(string="Name", required=True)
-
-    description = fields.Text()
-
-    property_type_id = fields.Many2one("estate.property.type", string="Type")
-
-    postcode = fields.Char()
-
-    date_availability = fields.Date(
-            copy=False,
-            default=fields.Date.add(fields.Date.today(), months=3))
-
-    expected_price = fields.Float(required=True, readonly=True, default=99999)
-
-    selling_price = fields.Float(copy=False, readonly=True)
-
-    bedrooms = fields.Integer(default=2)
-
-    living_area = fields.Integer()
-
-    facades = fields.Integer()
-
-    garage = fields.Boolean()
-
-    garden = fields.Boolean()
-
     garden_area = fields.Integer()
-
-    garden_orientation = fields.Selection(
-            string='Orientation',
-            selection=[
-                ('north', 'North'),
-                ('south', 'South'),
-                ('east', 'East'),
-                ('west', 'West')],
-            help="Cardinal orientation of the garden.",)
-
-    state = fields.Selection(
-            string='State',
-            required=True,
-            copy=False,
-            default='new',
-            selection=[
-                ('new', 'New'),
-                ('offer received', 'Offer Received'),
-                ('offer accepted', 'Offer Accepted'),
-                ('sold', 'Sold'),
-                ('canceled', 'Canceled')])
-
-    total_area = fields.Integer(
-            string="Total Area",
-            compute="_compute_total")
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
