@@ -3,7 +3,8 @@
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree editable="top">
+            <tree editable="top" decoration-success="status == 'accepted'"
+                decoration-danger="status == 'refused'">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="validity" />
@@ -12,7 +13,7 @@
                     invisible="status" />
                 <button name="action_refuse" type="object" icon="fa-times" title="Refuse"
                     invisible="status" />
-                <field name="status" />
+                <field name="status" invisible="True" />
             </tree>
         </field>
     </record>
