@@ -23,6 +23,11 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline"
     )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True
+    )
 
     _sql_constraints = [
         ('check_price', 'CHECK(price > 0)', 'The offer price must be positive.')
