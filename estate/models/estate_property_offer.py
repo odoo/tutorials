@@ -5,6 +5,10 @@ from odoo.exceptions import UserError
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate offer"
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)',
+         'A property offer must be strictly positive.'),
+    ]
 
     price = fields.Float()
     status = fields.Selection(
@@ -15,7 +19,7 @@ class PropertyOffer(models.Model):
     validity = fields.Integer(default=7, string="Validity (days)")
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_compute_validity", string="Deadline"
-    )
+    )       
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -33,13 +37,15 @@ class PropertyOffer(models.Model):
         for record in self:
             if record.property_id.state in ["sold", "canceled"]:
                 raise UserError("Property reached a final state")
-            if record.property_id.selling_price:
+            if record.property_id.state in ["Offer_accepted"]:
                 raise UserError("Cannot accept more than one offer")
             record.status = "accepted"
             record.property_id.state = "offer_accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
         return True
+    
+    
 
     def action_reject(self):
         for record in self:
