@@ -124,7 +124,7 @@
                 <separator/>
                 <filter string="Active" name="active" domain="[('active', '=', True)]" />
                 <filter string="Archived" name="active" domain="[('active', '=', False)]" />
-                <filter string="New" name="state" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter string="New" name="state" domain="[('state', 'in', ('new', offer_received'))]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
                     <filter string="Property Types" name="property_type_id" context="{'group_by':'property_type_id', 'residual_visible':True}"/>
