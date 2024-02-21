@@ -1,4 +1,5 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
@@ -85,13 +86,13 @@ class EstateProperty(models.Model):
     def action_set_to_sold(self):
         for property in self:
             if property.state == 'canceled':
-                raise exceptions.UserError("A canceled property cannot be set as sold.")
+                raise UserError("A canceled property cannot be set as sold.")
             property.state = 'sold'
         return True
 
     def action_set_to_canceled(self):
         for property in self:
             if property.state == 'sold':
-                raise exceptions.UserError("A sold property cannot be canceled.")
+                raise UserError("A sold property cannot be canceled.")
             property.state = 'canceled'
         return True

@@ -1,4 +1,5 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -25,26 +26,20 @@ class EstatePropertyOffer(models.Model):
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for offer in self:
-            if offer.create_date:
-                create_date = fields.Date.from_string(offer.create_date)
-                offer.date_deadline = fields.Date.add(create_date, days=offer.validity)
-            else:
-                offer.date_deadline = fields.Date.add(fields.Date.today(), days=offer.validity)
+            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.date_deadline = fields.Date.add(date, days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:
-            if offer.create_date:
-                create_date = fields.Date.from_string(offer.create_date)
-                offer.validity = (offer.date_deadline - create_date).days
-            else:
-                offer.validity = (offer.date_deadline - fields.Date.today()).days
+            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.validity = (offer.date_deadline - date).days
 
     def action_accept_offer(self):
         for offer in self:
-            if offer.property_id.state == 'sold' or offer.property_id.state == 'canceled':
-                raise exceptions.UserError("A sold/canceled property cannot accept an offer.")
+            if offer.property_id.state in ('sold','canceled'):
+                raise UserError("A sold/canceled property cannot accept an offer.")
             if offer.property_id.selling_price != 0.0:
-                raise exceptions.UserError("An offer already accepted for this property")
+                raise UserError("An offer already accepted for this property")
             offer.status = 'accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.partner_id = offer.partner_id
