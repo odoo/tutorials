@@ -20,16 +20,23 @@ class EstateOffer(models.Model):
     validity = fields.Integer(
             default=7,
             string="Validity",
-            inverse="_getValidityTime")
+            readonly=False,)
 
     date_deadline = fields.Date(
             default=fields.Date.today(),
             string="Deadline Date",
-            compute="_getDeadlineDate")
+            compute="_getDeadlineDate",
+            inverse="_getValidityTime")
 
-    @api.depends("validity", "date_deadline")
+    @api.depends("validity")
     def _getDeadlineDate(self):
         for record in self:
             record.date_deadline = fields.Date.add(
                     record.create_date,
                     days=record.validity)
+
+    @api.depends("date_deadline")
+    def _getValidityTime(self):
+        for record in self:
+            delta = record.date_deadline - fields.Date.today()
+            record.validity = delta.days
