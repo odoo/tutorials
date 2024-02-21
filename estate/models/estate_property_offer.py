@@ -36,7 +36,8 @@ class EstateOffer(models.Model):
                     days=offer.validity)
 
     @api.depends("date_deadline")
-    def _getValidityTime(self):
+    def _get_validity_time(self):
         for record in self:
-            delta = record.date_deadline - (record.create_date or fields.Date.today())
+            delta = record.date_deadline - (
+                    record.create_date or fields.Date.today())
             record.validity = delta.days
