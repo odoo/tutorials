@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate module"
@@ -26,8 +27,8 @@ class EstateProperty(models.Model):
             ('south', 'South'),
             ('east', 'East'),
             ('west', 'West')
-            ],
-        )
+        ],
+    )
 
     active = fields.Boolean(default=True)
 
@@ -39,7 +40,7 @@ class EstateProperty(models.Model):
             ('offer_accepted', 'Offer Accepted'), 
             ('sold', 'Sold'), 
             ('canceled', 'Canceled'),
-            ],
+        ],
         required = True,
         copy = False,
         default = 'new'

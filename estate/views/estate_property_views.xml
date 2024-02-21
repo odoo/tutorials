@@ -35,7 +35,7 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades"/>
                 <separator/>
-                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
                 </group>
@@ -82,6 +82,7 @@
                                     <field name="garden_orientation"/>
                                 </group>
                                 <group>
+                                
                                 </group>
                             </group>
                         </page>
