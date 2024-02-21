@@ -53,6 +53,8 @@ class EstateOffer(models.Model):
         id = self.property_id
         self.env["estate.property"].search(
             [("id", "=", id.id)]).buyer_id = self.partner_id
+        self.env["estate.property"].search(
+            [("id", "=", id.id)]).selling_price = self.price
         self._set_offer_status()
         return True
 
