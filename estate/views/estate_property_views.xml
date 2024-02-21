@@ -21,32 +21,26 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate">
+                <header>
+                    <button name="estate_sold" string="Sold" type="object"/>
+                    <button name="estate_cancel" string="Cancel" type="object"/>
+                </header>
                 <sheet>
                     <h1 class="mb32"><field name="name"/></h1>
                     <field name="tag_ids" widget="many2many_tags"/>
-                    <div>
+                    <group>
                         <group>
-                            <group>
-                                <field name="postcode"/>
-                            </group>
-                            <group>
-                                <field name="expected_price"/>
-                            </group>
+                            <field name="state"/>
+                            <field name="property_type_id" string="Property Type"/>
+                            <field name="postcode"/>
                         </group>
                         <group>
-                            <group>
-                                <field name="date_availability" string="Available From"/>
-                            </group>
-                            <group>
-                                <field name="selling_price"/>
-                            </group>
+                            <field name="expected_price"/>
+                            <field name="date_availability" string="Available From"/>
+                            <field name="selling_price"/>
+                            <field name="best_price" string="Best Offer"/>
                         </group>
-                        <group>
-                            <group>
-                                <field name="best_price" string="Best Offer"/>
-                            </group>
-                        </group>
-                    </div>
+                    </group>
                     <notebook>
                         <page string="Description">
                             <group>
