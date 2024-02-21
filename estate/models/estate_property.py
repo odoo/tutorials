@@ -55,14 +55,14 @@ class Estate(models.Model):
             default='new',
             selection=[
                 ("new", "New"),
-                ("offer received", "Offer Received"),
-                ("offer accepted", "Offer Accepted"),
+                ("offer_received", "Offer Received"),
+                ("offer_accepted", "Offer Accepted"),
                 ("sold", "Sold"),
                 ("canceled", "Canceled")])
 
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
 
-    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
 
     salesperson = fields.Many2one(
             "res.users",
@@ -82,12 +82,8 @@ class Estate(models.Model):
     @api.depends("offer_ids")
     def _get_max_offer(self):
         for property in self:
-            offers = self.offer_ids.mapped("price")
-            max = 0
-            for offer in offers:
-                if offer > max:
-                    max = offer
-        property.best_price = max
+            property.best_price = max(
+                    [offer.price for offer in property.offer_ids], default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):

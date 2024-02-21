@@ -35,9 +35,17 @@ class EstateOffer(models.Model):
                     offer.create_date,
                     days=offer.validity)
 
-    @api.depends("date_deadline")
+    @api.onchange("date_deadline")
     def _get_validity_time(self):
         for record in self:
             delta = record.date_deadline - (
                     record.create_date or fields.Date.today())
             record.validity = delta.days
+
+    def accept_offer(self):
+        self.status = "accepted"
+        return True
+
+    def refuse_offer(self):
+        self.status = "refused"
+        return True
