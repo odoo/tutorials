@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
 
-
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
@@ -100,7 +99,7 @@
                 <separator/>
                 <filter name="state"
                         string="Available"
-                        domain="['|', ('state', '=', 'new'), ('state','=', 'offer_received')]"/>
+                        domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <group expand="1" string="Group By">
                     <filter name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
@@ -110,7 +109,7 @@
 
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
-         <field name="context">{'search_default_state': True}</field>
+        <field name="context">{'search_default_state': True}</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
     </record>
