@@ -50,9 +50,12 @@
             <form string="Property">
                 <sheet>
                     <div class="oe_title">
-                        <h1 class="mb32">
+                        <h1>
                             <field name="name" placeholder="Title"/>
                         </h1>
+                    </div>
+                    <div  class="mb32">
+                        <field name="tag_ids" widget="many2many_tags" nolabel="1"/>
                     </div>
                     <group>
                         <group>
