@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
@@ -15,6 +15,11 @@ class AwesomeDashboard extends Component {
       controlPanel: {},
     };
     this.action = useService("action");
+    this.rpc = useService("rpc");
+    onWillStart(async () => {
+      this.statistics = await this.rpc("/awesome_dashboard/statistics");
+      console.log(this.statistics)
+    });
   }
   openCustomers() {
     this.action.doAction("base.action_partner_form");
@@ -22,15 +27,15 @@ class AwesomeDashboard extends Component {
 
   openLeads() {
     this.action.doAction({
-        type: "ir.actions.act_window",
-        res_model: "crm.lead",
-        name: "Leads",
-        views: [
-            [false, "list"],
-            [false, "form"],
-        ],
+      type: "ir.actions.act_window",
+      res_model: "crm.lead",
+      name: "Leads",
+      views: [
+        [false, "list"],
+        [false, "form"],
+      ],
     });
-}
+  }
 }
 
 registry
