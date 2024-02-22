@@ -35,35 +35,35 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                record.date_deadline = fields.Date.add(
-                    record.create_date, days=record.validity)
+        for offer in self:
+            if offer.create_date:
+                offer.date_deadline = fields.Date.add(
+                    offer.create_date, days=offer.validity)
             else:
-                record.date_deadline = fields.Date.add(
-                    fields.Date.today(), days=record.validity)
+                offer.date_deadline = fields.Date.add(
+                    fields.Date.today(), days=offer.validity)
 
     def _inverse_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                record.validity = (record.date_deadline -
-                                   fields.Date.to_date(record.create_date)).days
+        for offer in self:
+            if offer.create_date:
+                offer.validity = (offer.date_deadline -
+                                  fields.Date.to_date(offer.create_date)).days
             else:
-                record.validity = (record.date_deadline -
-                                   fields.Date.today()).days
+                offer.validity = (offer.date_deadline -
+                                  fields.Date.today()).days
 
     def action_accept(self):
-        for record in self:
-            if record.property_id.buyer_id:
+        for offer in self:
+            if offer.property_id.buyer_id:
                 raise UserError(
                     "This property already has an accepted offer."
                 )
             else:
-                record.property_id.buyer_id = record.partner_id.id
-                record.property_id.state = 'offer_accepted'
-                record.status = 'accepted'
-                record.property_id.selling_price = record.price
+                offer.property_id.buyer_id = offer.partner_id.id
+                offer.property_id.state = 'offer_accepted'
+                offer.status = 'accepted'
+                offer.property_id.selling_price = offer.price
 
     def action_refuse(self):
-        for record in self:
-            record.status = 'refused'
+        for offer in self:
+            offer.status = 'refused'

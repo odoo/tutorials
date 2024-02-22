@@ -87,24 +87,24 @@ class EstateProperty(models.Model):
 
     @api.constrains('expected_price', 'selling_price')
     def _check_prices(self):
-        for record in self:
-            if record.selling_price and record.expected_price:
-                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
+        for property in self:
+            if property.selling_price and property.expected_price:
+                if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) == -1:
                     raise ValidationError(
                         "The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        for record in self:
-            if len(record.offer_ids) > 0:
-                record.best_price = max(record.offer_ids.mapped('price'))
+        for property in self:
+            if len(property.offer_ids) > 0:
+                property.best_price = max(property.offer_ids.mapped('price'))
             else:
-                record.best_price = None
+                property.best_price = None
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -116,17 +116,17 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
 
     def action_set_to_sold(self):
-        for record in self:
-            if record.state != 'canceled':
-                record.state = 'sold'
+        for property in self:
+            if property.state != 'canceled':
+                property.state = 'sold'
             else:
                 raise UserError("You cannot sell a canceled property")
         return True
 
     def action_set_to_canceled(self):
-        for record in self:
-            if record.state != 'sold':
-                record.state = 'canceled'
+        for property in self:
+            if property.state != 'sold':
+                property.state = 'canceled'
             else:
                 raise UserError("You cannot cancel a sold property")
         return True
