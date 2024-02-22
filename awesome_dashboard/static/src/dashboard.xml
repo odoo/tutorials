@@ -7,7 +7,17 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-             hello world
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                    Item 1
+                </DashboardItem>
+                <DashboardItem size="2">
+                    Item 2
+                </DashboardItem>
+                <DashboardItem>
+                    Item 3
+                </DashboardItem>
+            </div>
         </Layout>
     </t>
 
