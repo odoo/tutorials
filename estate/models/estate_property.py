@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, models, fields
 
 
 class Property(models.Model):
@@ -40,6 +40,13 @@ class Property(models.Model):
             ('sold', 'Sold'),
             ('canceled', 'Canceled'),
         ])
+
+    total_area = fields.Integer(compute="_compute_total_area")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     property_type_id = fields.Many2one("estate.property.type", string="Type")
 
