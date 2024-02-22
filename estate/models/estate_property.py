@@ -47,7 +47,7 @@ class Estate(models.Model):
         help="Cardinal orientation of the garden.",)
 
     state = fields.Selection(
-        string='Status',
+        string='Property Status',
         required=True,
         copy=False,
         default='new',

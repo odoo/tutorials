@@ -17,8 +17,9 @@ class EstateOffer(models.Model):
 
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
 
-    property_id = fields.Many2one(
-        "estate.property", string="Property", required=True)
+    property_id = fields.Many2one("estate.property", string="Property", required=True)
+
+    property_state = fields.Selection(related="property_id.state")
 
     validity = fields.Integer(
         default=7,
@@ -64,6 +65,7 @@ class EstateOffer(models.Model):
         id = self.property_id
         self.env["estate.property"].search([("id", "=", id.id)]).buyer_id = self.partner_id
         self.env["estate.property"].search([("id", "=", id.id)]).selling_price = self.price
+        self.env["estate.property"].search([("id", "=", id.id)]).state = "offer_accepted"
         self._set_offer_status()
         return True
 

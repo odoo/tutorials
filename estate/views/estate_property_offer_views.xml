@@ -8,27 +8,28 @@
                 <field name="partner_id" string="Partner" />
                 <field name="validity" string="Validity (days)" />
                 <field name="date_deadline" string="Deadline" />
-                <button name="accept_offer" type="object" title="accept" icon="fa-check" />
-                <button name="refuse_offer" type="object" title="refuse" icon="fa-close" />
+                <button name="accept_offer" type="object" title="accept" icon="fa-check" invisible="status"/>
+                <button name="refuse_offer" type="object" title="refuse" icon="fa-close" invisible="status"/>
                 <field name="status" string="Status" />
+                <field name="property_state" string="Property state" invisible="True"/>
             </tree>
         </field>
     </record>
     <record id="estate_offer_view_form" model="ir.ui.view">
-      <field name="name">estate.property.offer.form</field>
-      <field name="model">estate.property.offer</field>
-      <field name="arch" type="xml">
-        <form string="Estate">
-          <sheet>
-            <group>
-              <field name="price" string="Price"/>
-              <field name="partner_id" string="Partner"/>
-              <field name="validity" string="Validity (days)" />
-              <field name="date_deadline" string="Deadline" />
-              <field name="status" string="Status" />
-            </group>
-          </sheet>
-        </form>
-      </field>
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Estate">
+                <sheet>
+                    <group>
+                        <field name="price" string="Price"/>
+                        <field name="partner_id" string="Partner"/>
+                        <field name="validity" string="Validity (days)"/>
+                        <field name="date_deadline" string="Deadline"/>
+                        <field name="status" string="Status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
     </record>
 </odoo>
