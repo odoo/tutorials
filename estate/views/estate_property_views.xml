@@ -4,7 +4,7 @@
     <record id="estate_property_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_is_available': True}</field>
     </record>
 
@@ -99,6 +99,39 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <!-- Kanban view -->
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban string="Properties" edit="False" default_group_by="state" records_draggable="False">
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <b>
+                                <field name="name"/>
+                            </b>
+                            <div>
+                                <span>Expected price : </span>
+                                <b><field name="expected_price"/></b>
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer'">
+                                <span>Best price : </span>
+                                <b><field name="best_price"/></b>
+                            </div>
+                            <div t-if="record.state.raw_value == 'accepted'">
+                                <span>Selling price : </span>
+                                <b><field name="selling_price"/></b>
+                            </div>
+                            <field name="tag_ids" options="{'color_field': 'color'}"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
