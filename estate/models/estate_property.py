@@ -67,11 +67,6 @@ class EstateProperty(models.Model):
         for property in self:
             property.best_price = max(property.offer_ids.mapped('price'), default=0.0)
 
-    @api.onchange('offer_ids')
-    def _onchange_state(self):
-        if self.state == 'new' and self.offer_ids:
-            self.state = 'offer'
-
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -80,10 +75,6 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-            return {'warning': {
-                'title': ("Warning"),
-                'message': (
-                    "You're about to remove your garden place, it will erase all the garden data. Are you sure?")}}
 
     @api.constrains('selling_price')
     def _check_selling_price(self):
@@ -104,3 +95,9 @@ class EstateProperty(models.Model):
                 raise UserError("A sold property cannot be canceled.")
             property.state = 'canceled'
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_canceled(self):
+        for property in self:
+            if property.state not in ['new', 'canceled']:
+                raise UserError("You cannot delete a property that is not new or canceled.")
