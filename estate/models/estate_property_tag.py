@@ -4,6 +4,7 @@ from odoo import fields, models
 class EstateTag(models.Model):
     _name = "estate.property.tag"
     _description = "Estate tags."
+    _order = "name asc"
 
     name = fields.Char(string="Name", required=True)
 

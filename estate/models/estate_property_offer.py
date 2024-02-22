@@ -5,6 +5,7 @@ from odoo.tools.float_utils import float_is_zero
 class EstateOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer for estate."
+    _order = "price desc"
 
     price = fields.Float(string="Price")
 
