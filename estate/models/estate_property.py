@@ -80,7 +80,7 @@ class EstateProperty(models.Model):
     def _check_selling_price(self):
         for property in self:
             if float_compare(property.selling_price, 0.9 * property.expected_price, precision_digits=2) == -1:
-                raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
     def action_set_to_sold(self):
         for property in self:
