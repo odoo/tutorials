@@ -11,6 +11,8 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
+                <button name="%(estate_property_offer_action)d" type="action" string="Offers"/>
+
                 <sheet>
                     <field name="name" class="h1 mb-4"/>
                     <notebook>
