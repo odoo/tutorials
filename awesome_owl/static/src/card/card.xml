@@ -6,8 +6,9 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-out="props.title"/>
+                    <button class="btn" t-on-click="toggleContent">Toggle</button>
                 </h5>
-                <p class="card-text">
+                <p class="card-text" t-if="state.isToggled">
                     <t t-slot="default"/>
                 </p>
             </div>
