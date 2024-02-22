@@ -16,7 +16,7 @@
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
-                                <tree>
+                                <tree default_order="expected_price desc">
                                     <field name="name" string="Title"/>
                                     <field name="expected_price"/>
                                     <field name="state"/>
@@ -27,5 +27,17 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+
     </record>
 </odoo>
