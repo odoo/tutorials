@@ -21,7 +21,18 @@ class Property(models.Model):
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
+
     garden = fields.Boolean()
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if (self.garden):
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
+
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(selection=[
         ('north', 'North'),
