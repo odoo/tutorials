@@ -39,12 +39,12 @@
                     <field name="name" class="h1 mb-4"/>
 
                     <group>
-                        <field name="property_tag_ids" widget="many2many_tags" string=""/>
+                        <field name="property_tag_ids" widget="many2many_tags" string="" options="{'color_field': 'color'}"/>
                     </group>
 
                     <group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create_edit':true, 'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>

@@ -13,3 +13,5 @@ class PropertyTag(models.Model):
     )
 
     _order = "name"
+
+    color = fields.Integer()
