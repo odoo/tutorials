@@ -17,14 +17,20 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="estate_list">
-                <field name="name" string="Title" />
-                <field name="postcode" string="Postcode" />
-                <field name="bedrooms" string="Bedrooms" />
+            <tree string="estate_list"
+            decoration-success="state == 'offer_accepted' or state == 'offer_received'"
+            decoration-bf="state == 'offer_accepted'"
+            decoration-muted="state == 'sold'"
+            editable="bottom">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="tag_ids" widget="many2many_tags" string="Tags"/>
+                <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
-                <field name="expected_price" string="Expected Price" />
-                <field name="selling_price" string="Selling Price" />
-                <field name="date_availability" string="Available From" />
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="date_availability" string="Available From" optional="hidden"/>
+                <field name="state" invisible="True"/>
             </tree>
         </field>
     </record>
@@ -46,7 +52,7 @@
                     <group>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <group>
-                            <field name="property_type_id" string="Property Type" options="{'no_create': false, 'can_write': false}"/>
+                            <field name="property_type_id" string="Property Type" options="{'no_create': true, 'can_write': false}"/>
                             <field name="postcode" string="Postcode" />
                             <field name="date_availability" string="Available From" />
                         </group>
