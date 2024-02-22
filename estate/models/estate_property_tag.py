@@ -11,3 +11,5 @@ class PropertyTag(models.Model):
         ('unique_name', 'UNIQUE(name)',
          'Tag name should be unique'),
     )
+
+    _order = "name"

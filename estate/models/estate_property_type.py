@@ -15,3 +15,5 @@ class PropertyType(models.Model):
     )
 
     property_ids = fields.One2many("estate.property", "property_type_id")
+
+    _order = "name"

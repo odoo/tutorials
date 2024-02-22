@@ -56,3 +56,5 @@ class PropertyOffer(models.Model):
         ('positive_price', 'CHECK(price > 0)',
          'Offer price should be positive'),
     )
+
+    _order = "price desc"

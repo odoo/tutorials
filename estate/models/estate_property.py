@@ -113,3 +113,5 @@ class Property(models.Model):
             if tools.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=3) < 0 and not tools.float_is_zero(record.selling_price, precision_digits=3):
                 raise exceptions.ValidationError(
                     "Selling price cannot be < 90% of the expected price")
+
+    _order = "id desc"
