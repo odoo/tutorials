@@ -11,7 +11,7 @@ class Estate(models.Model):
 
     garden = fields.Boolean()
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Title", required=True)
 
     postcode = fields.Char()
 
@@ -34,8 +34,6 @@ class Estate(models.Model):
     best_price = fields.Float(
         compute="_compute_max_offer", string="Best Price")
 
-    property_type_id = fields.Many2one("estate.property.type", string="Type")
-
     date_availability = fields.Date(
         copy=False,
         default=fields.Date.add(fields.Date.today(), months=3))
@@ -50,7 +48,7 @@ class Estate(models.Model):
         help="Cardinal orientation of the garden.",)
 
     state = fields.Selection(
-        string='State',
+        string='Status',
         required=True,
         copy=False,
         default='new',
@@ -62,6 +60,8 @@ class Estate(models.Model):
             ("canceled", "Canceled")])
 
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
 
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
 
