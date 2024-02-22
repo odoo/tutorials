@@ -36,21 +36,13 @@ class EstatePropertyOffer(models.Model):
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for offer in self:
-            if offer.create_date:
-                offer.date_deadline = fields.Date.add(
-                    offer.create_date, days=offer.validity)
-            else:
-                offer.date_deadline = fields.Date.add(
-                    fields.Date.today(), days=offer.validity)
+            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.date_deadline = fields.Date.add(date, days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:
-            if offer.create_date:
-                offer.validity = (offer.date_deadline -
-                                  fields.Date.to_date(offer.create_date)).days
-            else:
-                offer.validity = (offer.date_deadline -
-                                  fields.Date.today()).days
+            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.validity = (offer.date_deadline - date).days
 
     def action_accept(self):
         for offer in self:
@@ -58,12 +50,17 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(
                     "This property already has an accepted offer."
                 )
-            else:
-                offer.property_id.buyer_id = offer.partner_id.id
-                offer.property_id.state = 'offer_accepted'
-                offer.status = 'accepted'
-                offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id.id
+            offer.property_id.state = 'offer_accepted'
+            offer.status = 'accepted'
+            offer.property_id.selling_price = offer.price
+        return True
 
     def action_refuse(self):
         for offer in self:
+            if offer.status == 'accepted':
+                raise UserError(
+                    "You cannot refuse an accepted offer."
+                )
             offer.status = 'refused'
+        return True
