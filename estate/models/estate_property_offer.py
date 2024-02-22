@@ -58,6 +58,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
+        import ipdb; ipdb.set_trace()
         offer_property = self.env["estate.property"].browse(vals["property_id"])
 
         if offer_property.state == "new":
