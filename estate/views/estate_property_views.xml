@@ -4,7 +4,7 @@
         <record id="property_model_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,kanban</field>
             <field name="context">{'search_default_filter_available': True}</field>
         </record>
 
@@ -26,6 +26,41 @@
                 </tree>
             </field>
         </record>
+
+        <record id="estate_property_model_view_kanban" model="ir.ui.view">
+            <field name="name">estate.property.kanban</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="property_type_id" group_create="false">
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <h4>
+                                    <field name="name"/>
+                                </h4>
+                                <div>
+                                    Expected price:
+                                    <field name="expected_price"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer received'">
+                                    Best price:
+                                    <field name="best_price"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer accepted'">
+                                    Selling price:
+                                    <field name="selling_price"/>
+                                </div>
+                                <field name="tag_ids" options="{'color_field': 'color'}"/>
+
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
 
         <record id="estate_property_view_form" model="ir.ui.view">
             <field name="name">estate.property.form</field>
