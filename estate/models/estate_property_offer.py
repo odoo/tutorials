@@ -39,6 +39,16 @@ class EstatePropertyOffer(models.Model):
             date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.date_deadline = fields.Date.add(date, days=offer.validity)
 
+    @api.model
+    def create(self, vals):
+        if self.env['estate.property'].browse(vals.get('property_id')).best_price > vals.get('price'):
+            raise UserError(
+                "The offer price cannot be less than a current best offer."
+            )
+        self.env['estate.property'].browse(
+            vals.get('property_id')).state = 'offer_received'
+        return super().create(vals)
+
     def _inverse_date_deadline(self):
         for offer in self:
             date = offer.create_date.date() if offer.create_date else fields.Date.today()
