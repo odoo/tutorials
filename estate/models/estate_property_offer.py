@@ -1,4 +1,4 @@
-from odoo import api, models, fields
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
