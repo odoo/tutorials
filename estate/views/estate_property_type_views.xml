@@ -23,7 +23,9 @@
                             <field name="offer_count" widget="statinfo" string="Offers" class="o_stat_text"/>
                         </div>
                     </button>
-                    <h1 class="oe_title"><field name="name"/></h1>
+                    <h1 class="oe_title">
+                        <field name="name"/>
+                    </h1>
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">

@@ -32,7 +32,9 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                    <h1 class="mb32"><field name="name"/></h1>
+                    <h1 class="mb32">
+                        <field name="name"/>
+                    </h1>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group>
                         <group>
@@ -50,23 +52,14 @@
                         <page string="Description">
                             <group>
                                 <field name="description"/>
-                                <newline/>
                                 <field name="bedrooms"/>
-                                <newline/>
                                 <field name="living_area" string="Living Area (sqm)"/>
-                                <newline/>
                                 <field name="facades"/>
-                                <newline/>
                                 <field name="garage"/>
-                                <newline/>
                                 <field name="garden"/>
-                                <newline/>
                                 <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
-                                <newline/>
                                 <field name="garden_orientation" invisible="not garden"/>
-                                <newline/>
                                 <field name="active"/>
-                                <newline/>
                                 <field name="total_area"/>
                             </group>
                         </page>

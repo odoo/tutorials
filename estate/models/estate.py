@@ -1,4 +1,6 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -40,6 +42,11 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_area")
     best_price = fields.Float(compute="_compute_best_price")
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK (expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK (selling_price >= 0)', 'The selling price must be positive.')
+    ]
+
     @api.depends("garden_area", "living_area")
     def _compute_area(self):
         for property in self:
@@ -48,10 +55,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for property in self:
-            if (len(property.offer_ids) > 0):
-                property.best_price = max(property.offer_ids.mapped("price"))
-            else:
-                property.best_price = 0
+            property.best_price = max(property.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -67,7 +71,7 @@ class EstateProperty(models.Model):
             if (property.state != "sold"):
                 property.state = "canceled"
             else:
-                raise exceptions.UserError("Cancelled property can not be sold.")
+                raise UserError("Cancelled property can not be sold.")
         return True
 
     def estate_sold(self):
@@ -75,16 +79,11 @@ class EstateProperty(models.Model):
             if (property.state != "canceled"):
                 property.state = "sold"
             else:
-                raise exceptions.UserError("Sold property can not be cancel")
+                raise UserError("Sold property can not be cancel")
         return True
     
     @api.constrains("selling_price")
     def _check_estate_selling_price(self):
         for property in self:
-            if (property.selling_price > 0 and property.selling_price < property.expected_price * 0.9):
-                raise exceptions.ValidationError("The selling price must be at least 90%% of the expected price.")
-    
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK (expected_price > 0)', 'The expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK (selling_price >= 0)', 'The selling price must be positive.')
-    ]
+            if (not float_is_zero(property.selling_price) and float_compare(property.expected_price * 0.9, property.selling_price, precision_digits=2) != -1):
+                raise ValidationError("The selling price must be at least 90% of the expected price.")

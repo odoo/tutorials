@@ -16,7 +16,9 @@
         <field name="arch" type="xml">
             <form string="Estate Tag">
                 <sheet>
-                    <h1 class="mb32"><field name="name"/></h1>
+                    <h1 class="mb32">
+                        <field name="name"/>
+                    </h1>
                 </sheet>
             </form>
         </field>

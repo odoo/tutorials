@@ -25,11 +25,8 @@
                 <sheet>
                     <group>
                         <field name="price" string="Price"/>
-                        <newline/>
                         <field name="partner_id" string="Partner"/>
-                        <newline/>
                         <field name="validity"/>
-                        <newline/>
                         <field name="date_deadline"/>
                     </group>
                 </sheet>
