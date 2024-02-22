@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -17,7 +18,7 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(default=7)
-    date_deadline = fields.Datetime(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     _sql_constraints = [
@@ -54,3 +55,11 @@ class EstatePropertyOffer(models.Model):
                 offer.property_id.selling_price = 0
                 offer.property_id.state = "offer_received"
         return True
+    
+    @api.model
+    def create(self, vals):
+        property = self.env["estate.property"].browse(vals["property_id"])
+        property.state = "offer_received"
+        if (vals["price"] < property.best_price):
+            raise UserError("You can't create an offer with a lower price than the Best Offer.")
+        return super().create(vals)
