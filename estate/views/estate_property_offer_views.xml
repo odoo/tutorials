@@ -7,11 +7,13 @@
             <tree string="Property Offer">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
                 <field name="status"/>
             </tree>
         </field>
     </record>
-    
+
     <record id="estate_property_offer_view_form" model="ir.ui.view">
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
@@ -21,6 +23,8 @@
                     <group>
                         <field name="price"/>
                         <field name="partner_id"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
                         <field name="status"/>
                     </group>
                 </sheet>
