@@ -51,3 +51,8 @@ class PropertyOffer(models.Model):
             record.status = 'refused'
 
         return True
+
+    _sql_constraints = (
+        ('positive_price', 'CHECK(price > 0)',
+         'Offer price should be positive'),
+    )

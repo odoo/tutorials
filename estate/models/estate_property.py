@@ -98,3 +98,11 @@ class Property(models.Model):
             else:
                 record.state = 'canceled'
         return True
+
+    _sql_constraints = (
+        ('positive_expected_price', 'CHECK(expected_price > 0)',
+         'Expected price should be positive'),
+
+        ('positive_selling_price', 'CHECK(selling_price >= 0)',
+         'Selling price should be positive'),
+    )
