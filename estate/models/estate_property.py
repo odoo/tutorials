@@ -114,3 +114,11 @@ class Property(models.Model):
                 raise UserError("sold properties cannot be canceled")
             record.state = "canceled"
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def deletion_check(self):
+        for record in self:
+            if record.state not in ["new", "canceled"]:
+                raise UserError(
+                    "Can only delete properties with status New or Canceled"
+                )
