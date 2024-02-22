@@ -13,7 +13,7 @@
             <tree string="Properties"
                 decoration-success="state == 'offer_accepted' or state == 'offer_received'"
                 decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
-                <field name="state" invisible="True"/>
+                <field name="state" invisible="True" column_invisible="True"/>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
