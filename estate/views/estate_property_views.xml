@@ -13,15 +13,15 @@
             <tree string="Properties"
                 decoration-success="state == 'offer_accepted' or state == 'offer_received'"
                 decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
-                <field name="state" invisible="True" />
-                <field name="name" />
-                <field name="postcode" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="expected_price" />
-                <field name="selling_price" />
-                <field name="date_availability" optional="hide" />
-                <field name="property_type_id" />
+                <field name="state" invisible="True"/>
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability" optional="hide"/>
+                <field name="property_type_id"/>
             </tree>
         </field>
     </record>
@@ -33,43 +33,43 @@
             <form string="My new house">
                 <header>
                     <button string="Sold" type="object" name="action_set_to_sold"
-                        class="oe_highlight" invisible="state == 'sold'" />
+                        class="oe_highlight" invisible="state == 'sold'"/>
                     <button string="Cancel" type="object" name="action_set_to_canceled"
-                        class="oe_highlight" invisible="state == 'sold'" />
+                        class="oe_highlight" invisible="state == 'sold'"/>
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new,offer_received,offer_accepted,sold" />
+                        statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <h1 class="mb16">
-                            <field name="name" placeholder="My new house" class="mb16" />
+                            <field name="name" placeholder="My new house" class="mb16"/>
                         </h1>
                     </div>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group>
                         <group>
-                            <field name="property_type_id" options="{'no_create': true}" />
-                            <field name="postcode"></field>
-                            <field name="date_availability"></field>
+                            <field name="property_type_id" options="{'no_create': true}"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price"></field>
-                            <field name="best_price" />
-                            <field name="selling_price"></field>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" />
-                                <field name="bedrooms" />
-                                <field name="living_area" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
-                                <field name="garden_area" invisible="not garden" />
-                                <field name="garden_orientation" invisible="not garden" />
-                                <field name="total_area" />
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -80,8 +80,8 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesperson_id" />
-                                <field name="buyer_id" />
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -95,17 +95,17 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name" />
-                <field name="postcode" />
-                <field name="expected_price" />
-                <field name="bedrooms" />
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
                 <field name="living_area"
-                    filter_domain="[('living_area', '>=', self)]" />
-                <field name="facades" />
-                <field name="property_type_id" />
+                    filter_domain="[('living_area', '>=', self)]"/>
+                <field name="facades"/>
+                <field name="property_type_id"/>
                 <filter name="available" string="Available"
-                    domain="['|', ('state','=','new'), ('state','=','offer_received')]" />
-                <filter name='Postcode' context="{'group_by': 'postcode'}" />
+                    domain="[('state','in',('new', 'offer_received'))]"/>
+                <filter name='Postcode' context="{'group_by': 'postcode'}"/>
             </search>
         </field>
     </record>
