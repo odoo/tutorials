@@ -23,9 +23,7 @@ class Estate(models.Model):
 
     facades = fields.Integer()
 
-    total_area = fields.Integer(
-        string="Total Area",
-        compute="_compute_total")
+    total_area = fields.Integer(string="Total Area", compute="_compute_total")
 
     expected_price = fields.Float(required=True, default=99999)
 
@@ -65,13 +63,9 @@ class Estate(models.Model):
 
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
 
-    salesperson = fields.Many2one(
-        "res.users",
-        string="Salesperson",
-        default=lambda self: self.env.user)
+    salesperson = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
 
-    offer_ids = fields.One2many(
-        "estate.property.offer", "property_id", string="Offer")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
 
     garden_area = fields.Integer()
 
