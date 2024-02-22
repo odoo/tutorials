@@ -4,6 +4,7 @@ from odoo import api, exceptions, fields, models
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Brand new Model"
+    _order = "id desc"
 
     name = fields.Char(required=True, default="Unknown")
     description = fields.Text()
@@ -23,7 +24,7 @@ class EstateProperty(models.Model):
         ('east', 'East'),
         ('west', 'West')
     ])
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     state = fields.Selection(selection=[
         ('new', 'New'),
         ('offer_received', 'Offer Received'),
