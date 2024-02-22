@@ -32,6 +32,7 @@
                     <button name="sell" type="object" string="SOLD"/>
                     <button name="cancel" type="object" string="CANCEL"/>
                     <button name="%(estate_property_type_action)d" type="action" string="View Types"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,received,accepted,sold"/>
                 </header>
 
                 <sheet>
@@ -58,7 +59,6 @@
                         <page string="Description">
                             <group>
                                 <field name="description"/>
-                                <field name="state"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area" string="Living Area (sqm)"/>
                                 <field name="facades"/>
