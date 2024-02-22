@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -57,7 +57,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = min(record.offer_ids.mapped("price"))
+            record.best_price = min(record.offer_ids.mapped("price")) if len(record.offer_ids) > 0 else None
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -67,3 +67,21 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+    
+    def action_set_cancel_state(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError(message="A sold property can not be canceled")
+            record.state = 'canceled'
+        return True
+    
+    def action_set_sold_state(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise exceptions.UserError(message="A canceled property can not be sold")
+            record.state = 'canceled'
+        return True
+    
+    # @api.onchange("offer_ids.status")
+    # def _onchange_garden(self):
+    #     if self.offer_ids.mapped
