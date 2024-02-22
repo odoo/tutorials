@@ -4,6 +4,7 @@ from odoo import models, fields, api, exceptions
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -19,6 +20,9 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+
+    property_type_id = fields.Many2one("estate.property.type",
+                                       related="property_id.property_type_id", store=True)
 
     _sql_constraints = [
         ('check_positive_price', 'CHECK(price > 0)',

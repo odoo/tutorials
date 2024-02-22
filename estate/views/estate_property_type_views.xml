@@ -6,17 +6,51 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
     </record>
-    
+
+    <record id="real_estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="sequence" widget="handle" />
+            </tree>
+        </field>
+    </record>
+
     <record id="real_estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(real_estate_property_offer_action)d"
+                            type="action" class="oe_stat_button" icon="fa-dollar">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field string="" name="offer_count" />
+                                </span>
+                                <span class="o_stat_text"> Offer(s)</span>
+                            </div>
+                        </button>
+                    </div>
                     <h1>
-                        <field name="name"/>
+                        <field name="name" />
                     </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <tree>
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" />
+                                    <field name="state" string="Status" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
+
             </form>
         </field>
     </record>

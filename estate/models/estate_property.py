@@ -5,6 +5,7 @@ from odoo.tools import float_utils
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -96,7 +97,7 @@ class EstateProperty(models.Model):
             if record.state == 'canceled':
                 raise exceptions.UserError(
                     message="A canceled property can not be sold")
-            record.state = 'canceled'
+            record.state = 'sold'
         return True
 
     @api.constrains('selling_price', 'expected_price')
