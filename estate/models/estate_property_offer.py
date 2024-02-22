@@ -1,4 +1,4 @@
-from odoo import api, models, fields
+from odoo import api, models, fields, exceptions
 
 
 class PropertyOffer(models.Model):
@@ -33,3 +33,21 @@ class PropertyOffer(models.Model):
             create_date = record.create_date or fields.Date().today()
             record.validity = (record.date_deadline -
                                create_date.date()).days
+
+    def accept(self):
+        for record in self:
+            for offer in record.property_id.offer_ids:
+                if offer.status == 'accepted':
+                    offer.status = 'refused'
+
+            record.status = 'accepted'
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+
+        return True
+
+    def refuse(self):
+        for record in self:
+            record.status = 'refused'
+
+        return True
