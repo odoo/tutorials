@@ -1,6 +1,6 @@
 import datetime
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 

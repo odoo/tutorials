@@ -1,6 +1,6 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_is_zero, float_compare
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
