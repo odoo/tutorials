@@ -15,10 +15,10 @@ class AwesomeDashboard extends Component {
       controlPanel: {},
     };
     this.action = useService("action");
-    this.rpc = useService("rpc");
+    this.statisticsService = useService("awesome_dashboard.statistics");
+
     onWillStart(async () => {
-      this.statistics = await this.rpc("/awesome_dashboard/statistics");
-      console.log(this.statistics)
+     this.statistics = await this.statisticsService.load()
     });
   }
   openCustomers() {
