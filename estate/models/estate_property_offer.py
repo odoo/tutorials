@@ -20,6 +20,11 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
 
+    _sql_constraints = [
+        ('check_positive_price', 'CHECK(price > 0)',
+         'The offer price should be positive.'),
+    ]
+
     @api.depends("validity", "create_date")
     def _compute_deadline_date(self):
         for record in self:
@@ -48,8 +53,7 @@ class EstatePropertyOffer(models.Model):
     def action_reject(self):
         for record in self:
             if record.property_id.buyer_id == record.partner_id and record.property_id.selling_price == record.price:
-                record.property_id.buyer_id = None
-                record.property_id.state = 'new'
-                record.property_id.selling_price = 0
+                raise exceptions.UserError(
+                    "An accepted offer can not be rejected back!")
             record.status = 'refused'
         return True
