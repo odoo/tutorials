@@ -22,7 +22,7 @@ class Property(models.Model):
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer()
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(selection=[
         ('north', 'North'),
         ('south', 'South'),
@@ -41,12 +41,21 @@ class Property(models.Model):
             ('canceled', 'Canceled'),
         ])
 
-    total_area = fields.Integer(compute="_compute_total_area")
+    total_area = fields.Integer(
+        compute="_compute_total_area",
+        string="Total Area (sqm)")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    best_price = fields.Float(compute="_compute_best_price")
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"))
 
     property_type_id = fields.Many2one("estate.property.type", string="Type")
 
