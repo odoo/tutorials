@@ -4,6 +4,15 @@ from odoo import api, models, fields, exceptions, tools
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property model"
+    _order = "id desc"
+
+    _sql_constraints = (
+        ('positive_expected_price', 'CHECK(expected_price > 0)',
+         'Expected price should be positive'),
+
+        ('positive_selling_price', 'CHECK(selling_price >= 0)',
+         'Selling price should be positive'),
+    )
 
     name = fields.Char(
         string='Name',
@@ -21,18 +30,7 @@ class Property(models.Model):
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
-
     garden = fields.Boolean()
-
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if (self.garden):
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = ''
-
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(selection=[
         ('north', 'North'),
@@ -51,17 +49,32 @@ class Property(models.Model):
             ('sold', 'Sold'),
             ('canceled', 'Canceled'),
         ])
-
     total_area = fields.Integer(
         compute="_compute_total_area",
         string="Total Area (sqm)")
+    best_price = fields.Float(compute="_compute_best_price")
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
+    salesman_id = fields.Many2one(
+        "res.users",
+        string="Salesman",
+        default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", copy=False, readonly=True)
+    property_tag_ids = fields.Many2many("estate.property.tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if (self.garden):
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
-
-    best_price = fields.Float(compute="_compute_best_price")
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -70,18 +83,6 @@ class Property(models.Model):
                 record.best_price = max(record.offer_ids.mapped("price"))
             else:
                 record.best_price = 0
-
-    property_type_id = fields.Many2one("estate.property.type", string="Type")
-
-    salesman_id = fields.Many2one(
-        "res.users",
-        string="Salesman",
-        default=lambda self: self.env.user)
-    buyer_id = fields.Many2one("res.partner", copy=False, readonly=True)
-
-    property_tag_ids = fields.Many2many("estate.property.tag")
-
-    offer_ids = fields.One2many("estate.property.offer", "property_id")
 
     def sell(self):
         for record in self:
@@ -99,22 +100,12 @@ class Property(models.Model):
                 record.state = 'canceled'
         return True
 
-    _sql_constraints = (
-        ('positive_expected_price', 'CHECK(expected_price > 0)',
-         'Expected price should be positive'),
-
-        ('positive_selling_price', 'CHECK(selling_price >= 0)',
-         'Selling price should be positive'),
-    )
-
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
             if tools.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=3) < 0 and not tools.float_is_zero(record.selling_price, precision_digits=3):
                 raise exceptions.ValidationError(
                     "Selling price cannot be < 90% of the expected price")
-
-    _order = "id desc"
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_valid_state(self):

@@ -4,6 +4,12 @@ from odoo import api, models, fields, tools, exceptions
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate property offer"
+    _order = "price desc"
+
+    _sql_constraints = (
+        ('positive_price', 'CHECK(price > 0)',
+         'Offer price should be positive'),
+    )
 
     price = fields.Float()
     status = fields.Selection(
@@ -11,14 +17,15 @@ class PropertyOffer(models.Model):
             ("accepted", "Accepted"),
             ("refused", "Refused")],
         copy=False)
-
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
-
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_deadline",
         inverse="_inverse_deadline")
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id",
+        stored=True)
 
     @api.depends("validity")
     def _compute_deadline(self):
@@ -51,17 +58,6 @@ class PropertyOffer(models.Model):
             record.status = 'refused'
 
         return True
-
-    _sql_constraints = (
-        ('positive_price', 'CHECK(price > 0)',
-         'Offer price should be positive'),
-    )
-
-    _order = "price desc"
-
-    property_type_id = fields.Many2one(
-        related="property_id.property_type_id",
-        stored=True)
 
     @api.model
     def create(self, vals):
