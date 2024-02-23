@@ -59,7 +59,7 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if (self.garden):
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
@@ -68,7 +68,7 @@ class EstateProperty(models.Model):
 
     def estate_cancel(self):
         for property in self:
-            if (property.state != "sold"):
+            if property.state != "sold":
                 property.state = "canceled"
             else:
                 raise UserError("Cancelled property can not be sold.")
@@ -76,21 +76,21 @@ class EstateProperty(models.Model):
 
     def estate_sold(self):
         for property in self:
-            if (property.state != "canceled"):
+            if property.state != "canceled":
                 property.state = "sold"
             else:
                 raise UserError("Sold property can not be cancel")
         return True
-    
+
     @api.constrains("selling_price")
     def _check_estate_selling_price(self):
         for property in self:
-            if (not float_is_zero(property.selling_price, precision_rounding=0.01) and 
-            float_compare(property.expected_price * 0.9, property.selling_price, precision_rounding=0.01) != -1):
+            if (not float_is_zero(property.selling_price, precision_rounding=0.01) and
+                    float_compare(property.expected_price * 0.9, property.selling_price, precision_rounding=0.01) != -1):
                 raise ValidationError("The selling price must be at least 90% of the expected price.")
-            
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_property_state_not_in_new_canceled(self):
         for property in self:
-            if (property.state not in ('new', 'canceled')):
+            if property.state not in ('new', 'canceled'):
                 raise UserError("The state must be New or Canceled to be deleted")

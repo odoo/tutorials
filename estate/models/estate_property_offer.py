@@ -46,20 +46,20 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
         return True
-    
+
     def estate_offer_refuse(self):
         for offer in self:
             offer.status = "refused"
-            if (offer.property_id.buyer_id == offer.partner_id):
+            if offer.property_id.buyer_id == offer.partner_id:
                 offer.property_id.buyer_id = None
                 offer.property_id.selling_price = 0
                 offer.property_id.state = "offer_received"
         return True
-    
+
     @api.model
     def create(self, vals):
         property = self.env["estate.property"].browse(vals["property_id"])
         property.state = "offer_received"
-        if (vals["price"] < property.best_price):
+        if vals["price"] < property.best_price:
             raise UserError("You can't create an offer with a lower price than the Best Offer.")
         return super().create(vals)

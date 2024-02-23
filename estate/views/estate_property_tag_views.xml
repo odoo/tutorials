@@ -34,7 +34,7 @@
         </field>
     </record>
 
-    <record id="estate_tag_model_action" model="ir.actions.act_window">
+    <record id="estate_tag_action" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">tree,form</field>
