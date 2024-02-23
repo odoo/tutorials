@@ -3,8 +3,13 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <p>hello world</p>
+            <Counter/>
+            <Counter/>
+        </div>
+        <div>
+            <Card title="'my card 1'" content="this.str1"/>
+            <Card title="'my card 2'" content="this.str2"/>
         </div>
     </t>
-
 </templates>
