@@ -26,4 +26,9 @@ export class TodoList extends Component {
       this.todoId++;
     }
   }
+
+  toggleState(id) {
+    const todo = this.todos[id];
+    todo.isCompleted = !todo.isCompleted;
+  }
 }
