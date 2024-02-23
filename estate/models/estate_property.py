@@ -1,12 +1,13 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_utils
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate module"
 
-
+    
     name = fields.Char(required=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -55,6 +56,13 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'The expected price should be strictly positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price should be positive')
+    ]
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -90,3 +98,9 @@ class EstateProperty(models.Model):
             else:
                 record.state = "canceled"
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_utils.float_is_zero(record.selling_price, precision_digits=5) and float_utils.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=5) < 0:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price")
