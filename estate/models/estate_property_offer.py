@@ -55,3 +55,9 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = None
             record.status = "refused"
         return True
+
+    def unlink(self):
+        for record in self:
+            if record.status == 'accepted':
+                raise UserError('You cannot delete accepted offers!')
+        return super(EstatePropertyOffer, self).unlink()
