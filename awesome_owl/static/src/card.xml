@@ -9,6 +9,7 @@
                 </t>
             </div>
         </div> 
+        readonly="state in ('offer_accepted
     </t>
     <!-- -->
 </templates>
