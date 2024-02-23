@@ -26,8 +26,7 @@ class PropertyOffer(models.Model):
         compute="_compute_deadline",
         inverse="_inverse_deadline")
     property_type_id = fields.Many2one(
-        related="property_id.property_type_id",
-        store=True)
+        related="property_id.property_type_id")
 
     @api.depends("validity")
     def _compute_deadline(self):
