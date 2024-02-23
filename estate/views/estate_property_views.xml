@@ -32,8 +32,8 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="sell" type="object" string="SOLD" invisible="state == 'sold' or state == 'canceled'"/>
-                    <button name="cancel" type="object" string="CANCEL" invisible="state == 'sold' or state == 'canceled'"/>
+                    <button name="sell" type="object" string="SOLD" invisible="state in ['sold', 'canceled']"/>
+                    <button name="cancel" type="object" string="CANCEL" invisible="state in ['sold', 'canceled']"/>
                     <button name="%(estate_property_type_action)d" type="action" string="View Types"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,received,accepted,sold" options="{'clickable': '1', 'fold_field': 'fold'}"/>
                 </header>
