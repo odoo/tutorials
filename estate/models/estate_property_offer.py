@@ -27,7 +27,7 @@ class PropertyOffer(models.Model):
         inverse="_inverse_deadline")
     property_type_id = fields.Many2one(
         related="property_id.property_type_id",
-        stored=True)
+        store=True)
 
     @api.depends("validity")
     def _compute_deadline(self):
@@ -61,7 +61,7 @@ class PropertyOffer(models.Model):
 
         return True
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         property = self.env["estate.property"].browse(vals['property_id'])
         for offer in property.offer_ids:
