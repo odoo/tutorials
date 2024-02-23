@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
                 Command.create({
                     "name": "Taxe",
                     "quantity": "1",
-                    "price_unit": str(self.selling_price * 0.06)
+                    "price_unit": str(float(self.selling_price) * 0.06)
                 }),
                 Command.create({
                     "name": "Administrative fees",
