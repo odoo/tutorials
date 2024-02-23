@@ -62,11 +62,12 @@ class PropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
-        property = self.env["estate.property"].browse(vals['property_id'])
-        for offer in property.offer_ids:
-            if float_compare(vals['price'], offer.price, precision_digits=3) < 0:
-                raise UserError(
-                    "Cannot add an offer with value lower than existing offers")
+        for val in vals:
+            property = self.env["estate.property"].browse(val['property_id'])
+            for offer in property.offer_ids:
+                if float_compare(val['price'], offer.price, precision_digits=3) < 0:
+                    raise UserError(
+                        "Cannot add an offer with value lower than existing offers")
 
         property.state = 'received'
         return super().create(vals)
