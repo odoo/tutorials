@@ -51,6 +51,7 @@
                 <header>
                     <button name="sold_action" class="btn-primary" type="object" string="Sold"/>
                     <button name="cancel_action" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
