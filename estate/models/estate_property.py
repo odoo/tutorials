@@ -1,4 +1,6 @@
-from odoo import api, models, fields, exceptions, tools
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class Property(models.Model):
@@ -87,7 +89,7 @@ class Property(models.Model):
     def sell(self):
         for record in self:
             if record.state == 'canceled':
-                raise exceptions.UserError('Canceled property cannot be sold')
+                raise UserError('Canceled property cannot be sold')
             else:
                 record.state = 'sold'
         return True
@@ -95,7 +97,7 @@ class Property(models.Model):
     def cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError('Sold property cannot be canceled')
+                raise UserError('Sold property cannot be canceled')
             else:
                 record.state = 'canceled'
         return True
@@ -103,12 +105,12 @@ class Property(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if tools.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=3) < 0 and not tools.float_is_zero(record.selling_price, precision_digits=3):
-                raise exceptions.ValidationError(
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=3) < 0 and not float_is_zero(record.selling_price, precision_digits=3):
+                raise ValidationError(
                     "Selling price cannot be < 90% of the expected price")
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_valid_state(self):
         if any(not (record.state in ['new', 'canceled']) for record in self):
-            raise exceptions.UserError(
+            raise UserError(
                 "Cannot delete a Property which is not New or Canceled")

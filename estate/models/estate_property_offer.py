@@ -1,4 +1,6 @@
-from odoo import api, models, fields, tools, exceptions
+from odoo import api, fields, models
+from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class PropertyOffer(models.Model):
@@ -63,8 +65,8 @@ class PropertyOffer(models.Model):
     def create(self, vals):
         property = self.env["estate.property"].browse(vals['property_id'])
         for offer in property.offer_ids:
-            if tools.float_compare(vals['price'], offer.price, precision_digits=3) < 0:
-                raise exceptions.UserError(
+            if float_compare(vals['price'], offer.price, precision_digits=3) < 0:
+                raise UserError(
                     "Cannot add an offer with value lower than existing offers")
 
         property.state = 'received'
