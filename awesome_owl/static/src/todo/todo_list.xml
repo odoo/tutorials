@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <t t-name="awesome_owl.todo_list">
+        <input class="form-control mb-3" placeholder="Add a todo" t-on-keyup="addTodo"/>
         <div>
             <t t-foreach="this.todos" t-as="todo" t-key="todo.id">
                 <TodoItem todo="todo"/>
