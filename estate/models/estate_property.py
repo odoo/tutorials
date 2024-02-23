@@ -115,3 +115,9 @@ class Property(models.Model):
                     "Selling price cannot be < 90% of the expected price")
 
     _order = "id desc"
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_valid_state(self):
+        if any(not (record.state in ['new', 'canceled']) for record in self):
+            raise exceptions.UserError(
+                "Cannot delete a Property which is not New or Canceled")

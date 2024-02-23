@@ -1,4 +1,4 @@
-from odoo import api, models, fields, exceptions
+from odoo import api, models, fields, tools, exceptions
 
 
 class PropertyOffer(models.Model):
@@ -62,3 +62,14 @@ class PropertyOffer(models.Model):
     property_type_id = fields.Many2one(
         related="property_id.property_type_id",
         stored=True)
+
+    @api.model
+    def create(self, vals):
+        property = self.env["estate.property"].browse(vals['property_id'])
+        for offer in property.offer_ids:
+            if tools.float_compare(vals['price'], offer.price, precision_digits=3) < 0:
+                raise exceptions.UserError(
+                    "Cannot add an offer with value lower than existing offers")
+
+        property.state = 'received'
+        return super().create(vals)
