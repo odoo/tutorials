@@ -35,10 +35,12 @@
             <form>
                 <header>
                     <button name="action_set_cancel_state" type="object" string="Cancel"
-                        invisible="state == 'sold'" />
+                        invisible="state in ('sold', 'canceled')" />
                     <button name="action_set_sold_state" type="object" string="Sold"
-                        invisible="state == 'sold'" />
-                    <field name="state" widget="statusbar" />
+                        invisible="state in ('sold', 'canceled')" />
+                    <field name="state" widget="statusbar"
+                        options="{'clickable': '1', 'fold_field': 'fold'}"
+                        statusbar_visible="new,received,accepted,sold" />
                 </header>
                 <sheet>
                     <h1>

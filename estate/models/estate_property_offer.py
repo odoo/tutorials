@@ -6,7 +6,7 @@ class EstatePropertyOffer(models.Model):
     _description = "Estate Property Offer"
     _order = "price desc"
 
-    price = fields.Float()
+    price = fields.Float(required=True)
     status = fields.Selection(
         copy=False,
         selection=[
@@ -61,3 +61,16 @@ class EstatePropertyOffer(models.Model):
                     "An accepted offer can not be rejected back!")
             record.status = 'refused'
         return True
+
+    @api.model
+    def create(self, vals):
+        best_price = self.env['estate.property'].browse(
+            vals['property_id']).best_price
+        if best_price > vals['price']:
+            raise exceptions.UserError(
+                f"You can not make on offer less than the best price: {best_price}.")
+
+        self.env['estate.property'].browse(
+            vals['property_id']).state = 'received'
+
+        return super().create(vals)
