@@ -5,8 +5,10 @@
         hello world
         <Counter onChange.bind="incrementSum"/>
         <Counter onChange.bind="incrementSum"/>
-        <Card title="'Card 1'" content="card1_content"/>
-        <Card title="'Card 2'" content="card2_content"/>
+        <Card title="'Card 1'">Card 1 text</Card>
+        <Card title="'Card 2'">Card 2 text</Card>
+        <Card title="'Card 3'"><Counter onChange.bind="incrementSum"/></Card>
+        <Card title="'Card 4'"><Counter onChange.bind="incrementSum"/></Card>
         <ToDoList />
         <div>The sum is: <t t-esc="state.sum"/></div>
     </t>

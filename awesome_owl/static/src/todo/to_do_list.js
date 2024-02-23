@@ -23,7 +23,7 @@ export class ToDoList extends Component {
 
     toggleState(ev) {
         const todo = this.todos.find(todo => todo.id === parseInt(ev.target.id));
-        todo.isCompleted = todo.isCompleted ? false : true;
+        todo.isCompleted = !todo.isCompleted;
     }
 
     removeTodo(todoId) {
