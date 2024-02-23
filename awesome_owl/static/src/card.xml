@@ -4,7 +4,7 @@
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p><t t-esc="props.content"/></p>
+                <p><t t-out="props.content"/></p>
             </div>
         </div>
     </t>
