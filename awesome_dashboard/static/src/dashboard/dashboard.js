@@ -24,10 +24,11 @@ class AwesomeDashboard extends Component {
         this.statistics = useState(useService("awesome_dashboard.statistics"));
         this.action = useService("action");
         this._lt = _lt;
-        
+        this.userService = useService('user');
+
         this.items = registry.category("awesome_dashboard").getAll();
         this.state = useState({
-            disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || []
+            disabledItems: JSON.parse(this.userService.settings.disabled_items)
         });
     }       
 
@@ -66,6 +67,7 @@ class ConfigurationDialog extends Component {
     static props = ["close", "items", "disabledItems", "onUpdateConfiguration"];
 
     setup() {
+        this.userService = useService('user');
         this.items = useState(this.props.items.map((item) => {
             return {
                 ...item,
@@ -84,10 +86,7 @@ class ConfigurationDialog extends Component {
             (item) => !item.enabled
         ).map((item) => item.id)
 
-        browser.localStorage.setItem(
-            "disabledDashboardItems",
-            newDisabledItems,
-        );
+        this.userService.setUserSettings("disabled_items", JSON.stringify(newDisabledItems));
 
         this.props.onUpdateConfiguration(newDisabledItems);
     }
