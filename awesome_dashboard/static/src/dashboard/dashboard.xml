@@ -4,18 +4,38 @@
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="display" className="'o_dashboard h-100'">
             <t t-set-slot="layout-buttons">
-                <button class="btn btn-primary" t-on-click="onClickBtnCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="onClickBtnCustomers"><t t-esc="_lt('Customers')" /></button>
                 <button class="btn btn-primary" t-on-click="onClickBtnLeads">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
             </t>
             <div class="d-flex flex-wrap" t-if="statistics.ready">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size || 1">
+                    <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
                         <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
                         <t t-component="item.Component" t-props="itemProp" />
                     </DashboardItem>
                 </t>
             </div>
         </Layout>    
+    </t>
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
     </t>
 
 </templates>

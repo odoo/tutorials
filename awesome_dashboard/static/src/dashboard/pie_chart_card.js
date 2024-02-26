@@ -12,6 +12,6 @@ export class PieChartCard extends Component {
 
     static props = {
         title: String,
-        value: Number
+        values: Object,
     };
 }

@@ -23,6 +23,8 @@ export class PieChart extends Component {
         });
     }
 
+
+
     renderChart() {
         const labels = Object.keys(this.props.data);
         const data = Object.values(this.props.data);
@@ -39,6 +41,11 @@ export class PieChart extends Component {
                     },
                 ],
             },
+            options: {
+                onClick: (ev, item, legend) =>
+                    console.log(ev, item, legend)
+                  
+            }
         });
     }
 }

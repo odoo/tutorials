@@ -2,8 +2,11 @@
 
 import { NumberCard } from "./number_card";
 import { PieChartCard } from "./pie_chart_card";
+import { registry } from "@web/core/registry";
 
-export const items = [
+import {_lt} from "@web/core/l10n/translation"
+
+const items = [
     {
         id: "average_quantity",
         description: "Average amount of t-shirt",
@@ -18,7 +21,7 @@ export const items = [
         description: "Average time for an order",
         Component: NumberCard,
         props: (data) => ({
-            title: "Average time for an order to go from 'new' to 'sent' or 'cancelled'",
+            title: _lt("Average time for an order to go from 'new' to 'sent' or 'cancelled'"),
             value: data.average_time,
         })
     },
@@ -60,3 +63,7 @@ export const items = [
         })
     }
 ]
+
+items.forEach(item => {
+    registry.category("awesome_dashboard").add(item.id, item);
+})
