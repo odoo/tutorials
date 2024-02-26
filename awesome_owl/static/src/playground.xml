@@ -9,8 +9,17 @@
             <div>The sum is: <t t-esc="sum.count"/></div>
         </div>
         <div>
-            <Card title="'my card 1'" content="this.str1"/>
-            <Card title="'my card 2'" content="this.str2"/>
+            <Card title="'my card 1'">
+                <t t-set-slot="default">
+                    <Counter onChange.bind="incrementSum"/>
+                </t>
+            </Card>
+            <Card title="'my card 2'">
+                <t t-set-slot="default">
+                    My card 2
+                </t>
+            </Card>
         </div>
+        <TodoList/>
     </t>
 </templates>
