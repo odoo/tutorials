@@ -10,13 +10,12 @@ class AwesomeDashboard extends Component {
   static template = "awesome_dashboard.AwesomeDashboard";
   static components = { Layout, DashboardItem };
 
-  setup() {
+  async setup() {
     this.action = useService("action");
     this.rpc = useService("rpc");
+    this.statistics = useService("statistics");
     onWillStart(async () => {
-      const data = await this.rpc("/awesome_dashboard/statistics");
-      this.updateStatistics(data);
-      console.log(data);
+      this.updateStatistics(await this.statistics());
     });
   }
 
