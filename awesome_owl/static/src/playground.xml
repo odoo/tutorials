@@ -16,6 +16,8 @@
         <Card title="'card 1'" text="value1"/>
         <Card title="'card 2'" text="value2"/>
 
+        <TodoList/>
+
     </t>
 
 </templates>
