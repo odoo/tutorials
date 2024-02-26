@@ -22,9 +22,9 @@ class AwesomeDashboard extends Component {
             controlPanel: {},
         };
         this.action = useService("action");
-        this.rpc = useService("rpc");
+        this.statistics = useService("awesome_dashboard.statistics");
         onWillStart(async () => {
-            this.props.stats = await this.rpc("/awesome_dashboard/statistics");
+            this.props.stats = await this.statistics.loadStatistics();
             console.log(this.props.stats);
         })
     }
