@@ -5,8 +5,8 @@
             <menuitem id="estate_model_menu_action" action="estate_model_action"/>
         </menuitem>
         <menuitem id="estate_settings_menu" name="Settings">
-            <menuitem id="estate_type_action" action="estate_type_model_action"/>
-            <menuitem id="estate_tag_action" action="estate_tag_model_action"/>
+            <menuitem id="estate_type_menu_action" action="estate_type_action"/>
+            <menuitem id="estate_tag_menu_action" action="estate_tag_action"/>
         </menuitem>
     </menuitem>
 </odoo>
