@@ -9,18 +9,33 @@
             </t>
             <div class="d-flex flex-wrap">
                 <DashboardItem>
-                <t t-set-slot="default">
-                    some content
-                </t>
-                </DashboardItem>
-                <DashboardItem size="2">
-                    <t t-set-slot="default">
-                        I love milk
+                    Number of new orders this month
+                    <t t-set-slot="value">
+                        <t t-esc="props.stats.nb_new_orders"/>
                     </t>
                 </DashboardItem>
                 <DashboardItem>
-                    <t t-set-slot="default">
-                        some content
+                    Total amount of new orders this month
+                    <t t-set-slot="value">
+                        <t t-esc="props.stats.total_amount"/>
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    Average amount of t-shirt by order this month
+                    <t t-set-slot="value">
+                        <t t-esc="props.stats.average_quantity"/>
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of cancelled orders this month
+                    <t t-set-slot="value">
+                        <t t-esc="props.stats.nb_cancelled_orders"/>
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+                    <t t-set-slot="value">
+                        <t t-esc="props.stats.average_time"/>
                     </t>
                 </DashboardItem>
             </div>

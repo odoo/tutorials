@@ -8,7 +8,8 @@ export class DashboardItem extends Component {
         slots: {
             type: Object,
             shape: {
-                default: Object
+                default: Object,
+                displayNumber: Number,
             },
         },
         size: {
