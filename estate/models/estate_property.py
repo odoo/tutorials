@@ -87,8 +87,6 @@ class EstateProperty(models.Model):
     def _onchange_offer_ids(self):
         if len(self.offer_ids) == 0:
             self.state = "new"
-        else:
-            self.state = "offer_received"
 
     def sold_action(self):
         for record in self:
@@ -111,3 +109,9 @@ class EstateProperty(models.Model):
         for record in self:
             if not float_utils.float_is_zero(record.selling_price, precision_digits=5) and float_utils.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=5) < 0:
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_no_offer(self):
+        for record in self:
+            if record.state not in ("canceled", "new"):
+                raise UserError("You cannot delete properties with an offer!")

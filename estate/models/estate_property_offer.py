@@ -58,9 +58,17 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = None
             record.status = "refused"
         return True
+    
+    @api.model
+    def create(self, vals):
+        if self.env["estate.property"].browse(vals["property_id"]).state == "new":
+            self.env["estate.property"].browse(vals["property_id"]).state = "offer_received"
+        if vals["price"] <= self.env["estate.property"].browse(vals["property_id"]).best_price:
+            raise UserError("You cannot create an offer with a lower price than the best offer!")
+        return super().create(vals)
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_offer_not_accepted(self):
         for record in self:
-            if record.status == 'accepted':
-                raise UserError('You cannot delete accepted offers!')
-        return super(EstatePropertyOffer, self).unlink()
+            if record.status == "accepted":
+                raise UserError("You cannot delete accepted offers!")
