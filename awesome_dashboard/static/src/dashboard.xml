@@ -2,8 +2,16 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout className="'o_dashboard h-100'" display="props.display">
-            hello
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <DashboardItem size="1" title="'Number of new orders this month:'"><t t-esc="result.nb_new_orders"/></DashboardItem>
+            <DashboardItem size="2" title="'Total amount of new orders this month:'"><t t-esc="result.total_amount"/></DashboardItem>
+            <DashboardItem title="'Average amount of t-shirt by order this month:'"><t t-esc="result.average_quantity"/></DashboardItem>
+            <DashboardItem title="'Number of cancelled orders this month:'"><t t-esc="result.nb_cancelled_orders"/></DashboardItem>
+            <DashboardItem title="'Average time for an order to go from new to sent or cancelled:'"><t t-esc="result.average_time"/></DashboardItem>
         </Layout>
     </t>
 
