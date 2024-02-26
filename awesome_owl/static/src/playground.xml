@@ -11,8 +11,8 @@
         </div>
         <div>The sum is: <t t-esc="state.sum"/></div>
         <div>
-            <Card title="'card 1'" content="value1"/>
-            <Card title="'card 2'" content="value2"/>
+            <Card title="'card 1'"><Counter/></Card>
+            <Card title="'card 2'"/>
         </div>
         <div class="card m-2 p-2" style="width: 18rem;">
             <TodoList/>
