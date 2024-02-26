@@ -2,7 +2,29 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerKanbanView">Customer</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                <t t-set-slot="default">
+                    some content
+                </t>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <t t-set-slot="default">
+                        I love milk
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    <t t-set-slot="default">
+                        some content
+                    </t>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
