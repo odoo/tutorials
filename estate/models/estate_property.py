@@ -6,6 +6,7 @@ from odoo.tools import float_utils
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate module"
+    _order = "id desc"
 
     
     name = fields.Char(required=True)
@@ -71,7 +72,6 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
-            prices = record.offer_ids.mapped("price")
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
