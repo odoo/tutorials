@@ -4,6 +4,7 @@ import { Component, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { browser } from "@web/core/browser/browser";
+import { useService } from "@web/core/utils/hooks";
 
 export class ConfigurationDialog extends Component {
   static template = "awesome_dashboard.ConfigurationDialog";
@@ -11,6 +12,9 @@ export class ConfigurationDialog extends Component {
   static props = ["close", "items", "disabledItems", "onUpdateConfiguration"];
 
   setup() {
+    this.orm = useService("orm");
+    this.user = useService("user");
+
     this.items = useState(
       this.props.items.map((item) => {
         return {
@@ -30,8 +34,7 @@ export class ConfigurationDialog extends Component {
     const newDisabledItems = Object.values(this.items)
       .filter((item) => !item.enabled)
       .map((item) => item.id);
-
-    browser.localStorage.setItem("disabledDashboardItems", newDisabledItems);
+    this.user.setUserSettings("stats_visibility", newDisabledItems);
 
     this.props.onUpdateConfiguration(newDisabledItems);
   }

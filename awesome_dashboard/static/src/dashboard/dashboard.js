@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
@@ -21,10 +21,14 @@ class AwesomeDashboard extends Component {
     this.items = registry.category("awesome_dashboard_items").getAll();
     this.dialog = useService("dialog");
     this.state = useState({
-      disabledItems:
-        browser.localStorage.getItem("disabledDashboardItems")?.split(",") ||
-        [],
+      disabledItems: [],
     });
+
+    const user = useService("user");
+
+    onWillStart(async () =>
+      this.updateConfiguration(user.settings["stats_visibility"])
+    );
   }
   openCustomers() {
     this.action.doAction("base.action_partner_form");
