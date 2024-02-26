@@ -27,6 +27,14 @@
                 Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
                 <h1 class="text-success" t-esc="this.averageTime"/>
             </DashboardItem>
+            <DashboardItem>
+                Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+                <h1 class="text-success" t-esc="this.averageTime"/>
+            </DashboardItem>
+            <DashboardItem size="1.5">
+                Shirt orders by size
+                <PieChart labels="this.pieChartLabels" data="this.pieChartData"/>
+            </DashboardItem>
         </Layout>
     </t>
 
