@@ -2,9 +2,11 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.todo_item">
-        <t t-esc="props.todo.id"/>
-        <span>. </span>
-        <t t-esc="props.todo.description"/>
+        <div t-att-class="props.todo.completed?'text-decoration-line-through text-muted':''">
+            <t t-esc="props.todo.id"/>
+            <span>. </span>
+            <t t-esc="props.todo.description"/>
+        </div>
     </t>
 
 </templates>
