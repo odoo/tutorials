@@ -38,6 +38,14 @@ export class PieChart extends Component {
           },
         ],
       },
+      options: {
+        onClick: (ev, el, c) => {
+          if (ev?.type !== "click" || !el[0]) return;
+          const index = el[0].index;
+          console.log(labels?.[index]);
+          // Open the order list view with filter using the size that was clicked on the pie chart
+        },
+      },
     });
   }
 }
