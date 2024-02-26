@@ -21,7 +21,7 @@ export class GalleryController extends Component {
 
     setup() {
         this.orm = useService("orm");
-        this.model = useState(new this.props.Model(this.orm, this.props.resModel, this.props.archInfo));
+        this.model = useState(new this.props.Model(this.orm, this.props.resModel, this.props.archInfo, this.props.fields));
         
         onWillStart(async () => {
             await this.model.loadImages(this.props.domain);

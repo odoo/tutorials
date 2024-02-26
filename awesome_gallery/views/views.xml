@@ -6,7 +6,7 @@
 			<field name="name">awesome_gallery.orders.gallery</field>
 			<field name="model">res.partner</field>
 			<field name="arch" type="xml">
-				<gallery image_field="image_1920" tooltip-field="name"/>
+				<gallery image_field="image_1920" tooltip_field="name"/>
 			</field>
 		</record>
 		
