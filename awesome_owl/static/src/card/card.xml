@@ -4,9 +4,13 @@
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text">
-                    <t t-out="props.text"/>
-                </p>
+                <h6 t-on-click="toggle">  toggle</h6>
+                <t t-if="!state.hide">
+                    <p class="card-text">
+                        <t t-out="props.text"/>
+                        <t t-slot="default"/>
+                    </p>
+                </t>
             </div>
         </div>
     </t>

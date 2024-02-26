@@ -6,15 +6,17 @@
             hello world
         </div>
 
-        <Counter index="0" onChange.bind="update"/>
-        <Counter index="1" onChange.bind="update"/>
-
         <div>
+            <Card title="'card 1'" text="value1">
+                <Counter index="0" onChange.bind="update"/>
+            </Card>
+            
+            <Card title="'card 2'" text="value2">
+                <Counter index="1" onChange.bind="update"/>
+            </Card>
             <t t-esc="state.total"/>
         </div>
 
-        <Card title="'card 1'" text="value1"/>
-        <Card title="'card 2'" text="value2"/>
 
         <TodoList/>
 
