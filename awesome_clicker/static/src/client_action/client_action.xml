@@ -7,6 +7,20 @@
             <i class="fa fa-lg fa-plus"></i>
         </button>
     </div>
+    <div t-if="this.clicker.state.level >= 1" class="ms-1 mt-1">
+        <h2> Bots </h2>
+        <div class="card">
+            <div class="card-header">
+                <t t-esc="this.clicker.state.bots"/>
+                x ClickBots (10 clicks/10seconds)
+            </div>
+            <div class="card-body">
+                <button t-on-click="this.clicker.buyBot" class="btn btn-primary" t-att-disabled="this.clicker.state.count lt 1000">
+                    Buy ClickBot (1000 clicks)
+                </button>
+            </div>
+        </div>
+    </div>
 </t>
 
 </templates>
