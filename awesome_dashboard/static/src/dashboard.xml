@@ -12,6 +12,7 @@
             <DashboardItem title="'Average amount of t-shirt by order this month:'"><t t-esc="result.average_quantity"/></DashboardItem>
             <DashboardItem title="'Number of cancelled orders this month:'"><t t-esc="result.nb_cancelled_orders"/></DashboardItem>
             <DashboardItem title="'Average time for an order to go from new to sent or cancelled:'"><t t-esc="result.average_time"/></DashboardItem>
+            <DashboardItem title="'Shirt orders by size'" size="3"><PieChart data="result['orders_by_size']" /></DashboardItem>
         </Layout>
     </t>
 
