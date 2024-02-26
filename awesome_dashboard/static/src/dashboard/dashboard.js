@@ -1,15 +1,15 @@
 /** @odoo-module **/
 
-import {Component, onWillStart, useState} from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 import {registry} from "@web/core/registry";
 import {Layout} from "@web/search/layout";
 import {useService} from "@web/core/utils/hooks";
 import {DashboardItem} from "./dashboarditem/dashboarditem"
-import {PieChart} from "./piechart/piechart"
+import { items } from "./dashboard_items"
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = {Layout, DashboardItem, PieChart}
+    static components = {Layout, DashboardItem}
 
     setup() {
         this.display = {
@@ -18,6 +18,8 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.dashboardService = useService("dashboard");
         this.result = useState(this.dashboardService);
+        this.items = items;
+        
     }
 
     openCustomers() {
@@ -37,4 +39,4 @@ class AwesomeDashboard extends Component {
     }
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);
