@@ -1,7 +1,12 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.client_action">
-        Clicker view
-    </t>
+        <div class="o_nav_entry">
+            Clicks: <t t-esc="clickerService.state.count"/>
+        <button class="btn btn-secondary" t-on-click="increment">
+            <i class="fa fa-lg fa-plus"></i>
+        </button>
+    </div>
+</t>
 
 </templates>

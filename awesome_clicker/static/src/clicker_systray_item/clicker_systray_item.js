@@ -1,22 +1,17 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { Component, useState, useExternalListener } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 
 export class ClickerSystray extends Component {
   static template = "awesome_clicker.ClickerSystray";
 
   setup() {
-    this.state = useState({ count: 0 });
-    this.actionService = useService("action");
-
-    useExternalListener(
-      window.document.body,
-      "click",
-      () => this.state.count++,
-      { capture: true }
+    this.clickerService = useState(
+      useService("awesome_clicker.clickerService")
     );
+    this.actionService = useService("action");
   }
 
   openClickerView = () =>
@@ -27,7 +22,7 @@ export class ClickerSystray extends Component {
       name: "Clicker",
     });
 
-  increment = () => (this.state.count += 9);
+  increment = () => this.clickerService.increment(9);
 }
 
 export const systrayItem = {
