@@ -9,8 +9,8 @@
         <Counter/>
         <Counter/>
 
-        <Card title="'card 1'" text="'content of card 1'"/>
-        <Card title="'card 2'" text="'content of card 2'"/>
+        <Card title="'card 1'" text="value1"/>
+        <Card title="'card 2'" text="value2"/>
 
     </t>
 
