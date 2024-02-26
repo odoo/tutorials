@@ -18,4 +18,8 @@ export class TodoItem extends Component {
     setup() {
         this.state = useState({});
     }
+
+    toggleState() {
+        this.props.todo.completed = !this.props.todo.completed;
+    }
 }

@@ -4,7 +4,7 @@
     <t t-name="awesome_owl.todo_list">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <input placeholder="Add a todo" t-on-keyup="addTodo"></input>
+                <input placeholder="Add a todo" t-on-keyup="addTodo" t-ref="input_todo"></input>
                 <t t-foreach="todos" t-as="i" t-key="i.id">
                     <p>
                         <TodoItem todo="i"></TodoItem>
