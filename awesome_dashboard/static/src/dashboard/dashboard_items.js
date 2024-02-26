@@ -1,9 +1,11 @@
 /** @odoo-module **/
+import {registry} from "@web/core/registry";
 import { NumberCard } from "./dashboarditem/number_card"
 import { PieChartCard } from "./dashboarditem/pie_chart_card"
 
 
-export const items = [
+
+const items = [
     {
         id: "average_quantity",
         description: "Average amount of t-shirt",
@@ -60,3 +62,5 @@ export const items = [
         })
     }
 ]
+
+items.forEach(item => {registry.category("items").add(item.id, item);})

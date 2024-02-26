@@ -1,22 +1,38 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="display" className="'o_dashboard h-100'" t-if="result.isReady">
             <t t-set-slot="layout-buttons">
-                <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                
             </t>
-
-            <!-- new-->
+            <t t-set-slot="control-panel-additional-actions">
+                <span class="fa fa-gear" t-on-click="openDashboardConfiguration"/>
+            </t>
             <t t-foreach="items" t-as="item" t-key="item.id">
-                <DashboardItem size="item.size || 1">
+                <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
                    <t t-set="itemProp" t-value="item.props ? item.props(result) : {'data': result}"/>
                    <t t-component="item.Component" t-props="itemProp" />
                 </DashboardItem>
              </t>
-             <!-- new-->
         </Layout>
+    </t>
+
+
+    <t t-name="awesome_dashboard.DashboardConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="!item.isDisabled" onChange="(ev) => this.onChange(ev, item)"><t t-esc="item.description"/></CheckBox>
+             </t>
+             <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="closeConfiguration">
+                    Apply
+                </button>
+            </t>
+        </Dialog>
     </t>
 
 </templates>
