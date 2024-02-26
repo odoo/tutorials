@@ -11,4 +11,12 @@ export class Playground extends Component {
     card_content1 = "<div class='text-primary'> card 1 content</div>";
     card_content2 = markup("<div class='text-primary'> card 2 content</div>");
 
+    setup() {
+        this.state = useState({ sum: 2 });
+    }
+
+    incrementSum() {
+        this.state.sum++;
+    }
+
 }
