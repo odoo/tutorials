@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout display="display" className="'o_dashboard h-100'">
+        <Layout display="display" className="'o_dashboard h-100'" t-if="result.isReady">
             <t t-set-slot="layout-buttons">
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
