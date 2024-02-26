@@ -2,7 +2,7 @@
 
     <t t-name="awesome_clicker.client_action">
         <div class="o_nav_entry">
-            Clicks: <t t-esc="clicker.state.count"/>
+            Clicks: <ClickerValue/>
         <button class="btn btn-secondary" t-on-click="increment">
             <i class="fa fa-lg fa-plus"></i>
         </button>
