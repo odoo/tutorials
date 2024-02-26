@@ -6,6 +6,7 @@
             <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-click="changeToggle"/>
             <t t-esc="props.todo.id"/>.
             <t t-esc="props.todo.description"/>
+            <span class="fa fa-remove" t-on-click="removeTodo"/>
         </div>
     </t>
 
