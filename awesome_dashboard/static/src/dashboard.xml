@@ -7,9 +7,26 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <DashboardItem>some content</DashboardItem>
-            <DashboardItem size="2">I love milk</DashboardItem>
-            <DashboardItem>some content</DashboardItem>
+            <DashboardItem>
+                Number of new orders this month
+                <h1 class="text-success" t-esc="this.newOrders"/>
+            </DashboardItem>
+            <DashboardItem>
+                Total amount of new orders this month
+                <h1 class="text-success" t-esc="this.totalOrders"/>
+            </DashboardItem>
+            <DashboardItem>
+                Average amount of t-shirt by order this month
+                <h1 class="text-success" t-esc="this.averageTshirt"/>
+            </DashboardItem>
+            <DashboardItem>
+                Number of cancelled orders this month
+                <h1 class="text-danger" t-esc="this.cancelledOrders"/>
+            </DashboardItem>
+            <DashboardItem>
+                Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+                <h1 class="text-success" t-esc="this.averageTime"/>
+            </DashboardItem>
         </Layout>
     </t>
 

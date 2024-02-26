@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
@@ -12,6 +12,12 @@ class AwesomeDashboard extends Component {
 
   setup() {
     this.action = useService("action");
+    this.rpc = useService("rpc");
+    onWillStart(async () => {
+      const data = await this.rpc("/awesome_dashboard/statistics");
+      this.updateStatistics(data);
+      console.log(data);
+    });
   }
 
   openCustomers() {
@@ -28,6 +34,14 @@ class AwesomeDashboard extends Component {
         [false, "form"],
       ],
     });
+  }
+
+  updateStatistics(data) {
+    this.newOrders = data.nb_new_orders;
+    this.totalOrders = data.total_amount;
+    this.averageTshirt = data.average_quantity;
+    this.cancelledOrders = data.nb_cancelled_orders;
+    this.averageTime = data.average_time;
   }
 }
 
