@@ -17,8 +17,8 @@
         <field name="arch" type="xml">
             <form string="Estate Type">
                 <sheet>
-                    <button type="action" name="%(estate_property_offer_action)d" string="Offers" icon="fa-dollar" 
-                        class="btn oe_stat_button btn-outline-secondary flex-grow-1 flex-lg-grow-0">
+                    <button type="action" name="%(estate_offer_action)d" string="Offers" icon="fa-dollar"
+                            class="btn oe_stat_button btn-outline-secondary flex-grow-1 flex-lg-grow-0">
                         <div class="o_stat_info">
                             <field name="offer_count" widget="statinfo" string="Offers" class="o_stat_text"/>
                         </div>
