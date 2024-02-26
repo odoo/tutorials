@@ -13,6 +13,7 @@ export class TodoItem extends Component {
                 completed: { required: true },
             },
         },
+        delete: { required: true, },
     };
 
     setup() {
@@ -21,5 +22,9 @@ export class TodoItem extends Component {
 
     toggleState() {
         this.props.todo.completed = !this.props.todo.completed;
+    }
+
+    delete() {
+        this.props.delete(this.props.todo.id);
     }
 }

@@ -8,6 +8,8 @@
             <t t-esc="props.todo.id"/>
             <span>. </span>
             <t t-esc="props.todo.description"/>
+            <span>  </span>
+            <span class="fa fa-remove" t-on-click="delete"/>
         </div>
     </t>
 

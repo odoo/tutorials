@@ -7,7 +7,7 @@
                 <input placeholder="Add a todo" t-on-keyup="addTodo" t-ref="input_todo"></input>
                 <t t-foreach="todos" t-as="i" t-key="i.id">
                     <p>
-                        <TodoItem todo="i"></TodoItem>
+                        <TodoItem todo="i" delete.bind="delete"></TodoItem>
                     </p>
                 </t>
             </div>

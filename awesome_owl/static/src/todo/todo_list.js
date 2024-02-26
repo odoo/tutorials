@@ -22,4 +22,9 @@ export class TodoList extends Component {
             ev.target.value = '';
         }
     }
+
+    delete(id) {
+        const index = this.todos.findIndex(elm => elm.id === id);
+        this.todos.splice(index, 1);
+    }
 }
