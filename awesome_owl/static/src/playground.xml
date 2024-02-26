@@ -1,9 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+        </div>
+        <div>
+            <Card title="title_1" content="'content 1'"/>
+            <Card title="title_2" content="'content 2'"/>
+        </div>
+        <div>
+            <t t-out="sum.value"/> 
         </div>
     </t>
 
