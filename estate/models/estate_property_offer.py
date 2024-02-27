@@ -56,6 +56,5 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_refuse_offer(self):
-        for offer in self:
-            offer.status = 'refused'
+        self.status = 'refused'
         return True

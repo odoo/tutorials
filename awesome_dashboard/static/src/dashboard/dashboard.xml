@@ -7,7 +7,7 @@
                 <button class="btn btn-primary" t-on-click="openCustomerKanbanView">Customer</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <div class="d-flex flex-wrap">
+            <div class="d-flex flex-wrap" t-if="statistics.isReady">
                 <DashboardItem>
                     Number of new orders this month
                     <t t-set-slot="content">
