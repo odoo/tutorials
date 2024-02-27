@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0"
+             xmlns:a="http://relaxng.org/ns/annotation/1.0"
+             datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <!-- Handling of element overloading when inheriting from a base
+         template
+    -->
+    <rng:define name="gallery">
+        <rng:element name="gallery">
+            <rng:attribute name="image_field" />
+            <rng:optional><rng:attribute name="tooltip_field"/></rng:optional>
+            <rng:zeroOrMore>
+                <rng:element name="field">
+                    <rng:attribute name="name"/>
+                </rng:element>
+            </rng:zeroOrMore>
+            <rng:optional>
+                <rng:ref name="tooltip-template"/>
+            </rng:optional>
+        </rng:element>
+    </rng:define>
+    
+    <rng:define name="tooltip-template">
+        <rng:element name="tooltip-template">
+            <rng:zeroOrMore>
+                <rng:text/>
+                <rng:ref name="any"/>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+
+    <rng:define name="any">
+        <rng:element>
+            <rng:anyName/>
+            <rng:zeroOrMore>
+                <rng:choice>
+                    <rng:attribute>
+                        <rng:anyName/>
+                    </rng:attribute>
+                    <rng:text/>
+                    <rng:ref name="any"/>
+                </rng:choice>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+
+    <rng:start>
+        <rng:choice>
+            <rng:ref name="gallery" />
+        </rng:choice>
+    </rng:start>
+</rng:grammar>

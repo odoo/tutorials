@@ -7,46 +7,50 @@ export class GalleryModel {
         this.orm = orm;
         this.resModel = resModel;
         this.imageField = archInfo.imageField;
-        this.limit = archInfo.limit;
-        this.tooltipField = archInfo.tooltipField;
+        this.pager = { limit: archInfo.limit, offset: 0 };
+        this.fieldsForTooltip = archInfo.fieldsForTooltip;
         this.fields = fields;
         this.keeplast = new KeepLast();
     }
 
     async loadImages(domain) {
-        const { records } = await this.keeplast.add(
+
+        const specification = {
+            [this.imageField]: {},
+            write_date: {},
+        }
+
+        for(const field of this.fieldsForTooltip) {
+            specification[field] = {};
+        }
+
+        const { length, records } = await this.keeplast.add(
             this.orm.webSearchRead(this.resModel, domain, {
-                limit: this.limit,
-                specification: {
-                    [this.imageField]: {},
-                    ...(this.tooltipField ? {[this.tooltipField] : {}} : {}),
-                },
+                limit: this.pager.limit,
+                offset: this.pager.offset,
+                specification,
                 context: {
                     bin_size: true,
                 }
             })
         );
+        
+        this.recordsLength = length;
+        this.records = records;
+    }
 
-        if(!this.tooltipField) {
-            this.records = records;
-            return;
-        }
+    async uploadImage(record_id, image, domain) {
+        await this.orm.webSave(
+            this.resModel,
+            [record_id],
+            {
+                [this.imageField]: image,
+            },
+            {
+                specification: {}
+            }
+        );
 
-        switch(this.fields[this.tooltipField].type) {
-            case "many2one":
-                this.records = records.map((record) => ({
-                    ...record,
-                    [this.tooltipField]: record[this.tooltipField][1],
-                }));
-                break;
-            case "integer":
-                this.records = records.map((record) => ({
-                    ...record,
-                    [this.tooltipField]: String(record[this.tooltipField]),
-                }));
-                break;
-            default:
-                this.records = records;
-        }
+        await this.loadImages(domain);
     }
 }

@@ -6,9 +6,16 @@
 			<field name="name">awesome_gallery.orders.gallery</field>
 			<field name="model">res.partner</field>
 			<field name="arch" type="xml">
-				<gallery image_field="image_1920" tooltip_field="name"/>
+			   <gallery image_field="image_1920" tooltip_field="name">
+				  <field name="email"/> <!-- Specify to the model that email should be fetched -->
+				  <field name="name"/>  <!-- Specify to the model that name should be fetched -->
+				  <tooltip-template> <!-- Specify the owl template for the tooltip -->
+					 <p class="m-0">name: <field name="name"/></p> <!-- field is compiled into a t-esc-->
+					 <p class="m-0">e-mail: <field name="email"/></p>
+				  </tooltip-template>
+			   </gallery>
 			</field>
-		</record>
+		 </record>
 		
 
 		<record id="contacts.action_contacts" model="ir.actions.act_window">
