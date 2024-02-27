@@ -2,7 +2,9 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{controlPanel: {}}" className="'o_dashboard h-100'">
+        Awesome Dashboard
+        </Layout>
     </t>
 
 </templates>
