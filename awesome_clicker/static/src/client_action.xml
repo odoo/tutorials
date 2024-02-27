@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClientAction">
+        <div class="ms-1 -t-1">
+            Clicks: <ClickValue/> 
+            <button class="btn ms-2 btn-primary" t-on-click="() => this.clicker.increment(9)">
+                Increment
+            </button>
+        </div>    
+        <div t-if="this.clicker.level >= 1" class="ms-1 mt-1">
+            <h2> Bots </h2>
+            <div class="card">
+                <div class="card-header">
+                    <t t-esc="this.clicker.clickBots"/>x ClickBots (10 clicks/10seconds)
+                    <i class="fa fa-android"></i>
+                </div>
+                <div class="card-body">
+                    <button t-on-click="() => this.clicker.buyClickBot()" class="btn btn-primary" t-att-disabled="this.clicker.clicks lt 1000">
+                        Buy ClickBot (1000 clicks)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

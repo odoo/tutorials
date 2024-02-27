@@ -1,0 +1,5 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClickValue">
+        <span t-att-data-tooltip="this.clicker.clicks"><t t-esc="humanizedClicks" /></span>
+    </t>
+</templates>
