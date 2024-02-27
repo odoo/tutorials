@@ -9,7 +9,7 @@ export class DashboardItem extends Component {
             type: Object,
             shape: {
                 default: Object,
-                displayNumber: Number,
+                content: true,
             },
         },
         size: {

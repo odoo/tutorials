@@ -8,7 +8,7 @@
                     <t t-slot="default"/>
                 </p>
                 <p class="text-success font-weight-bold display-4">
-                    <t t-slot="value"/>
+                    <t t-slot="content"/>
                 </p>
             </div>
         </div>

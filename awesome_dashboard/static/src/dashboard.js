@@ -5,17 +5,11 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./item/item";
+import { PieChart } from "./pie_chart/pie_chart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem };
-
-    static props = {
-        stats: {
-            type: Object,
-            optional: true,
-        },
-    }
+    static components = { Layout, DashboardItem, PieChart };
 
     setup() {
         this.display = {
@@ -24,8 +18,8 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.statistics = useService("awesome_dashboard.statistics");
         onWillStart(async () => {
-            this.props.stats = await this.statistics.loadStatistics();
-            console.log(this.props.stats);
+            this.statistics = await this.statistics.loadStatistics();
+            console.log(this.statistics);
         })
     }
 
