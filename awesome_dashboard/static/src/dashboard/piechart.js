@@ -23,8 +23,6 @@ export class PieChart extends Component {
         });
     }
 
-
-
     renderChart() {
         const labels = Object.keys(this.props.data);
         const data = Object.values(this.props.data);

@@ -25,10 +25,11 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this._lt = _lt;
         this.userService = useService('user');
-
+        
         this.items = registry.category("awesome_dashboard").getAll();
+
         this.state = useState({
-            disabledItems: JSON.parse(this.userService.settings.disabled_items)
+            disabledItems: this.userService.settings.disabled_items
         });
     }       
 
@@ -84,9 +85,9 @@ class ConfigurationDialog extends Component {
         changedItem.enabled = checked;
         const newDisabledItems = Object.values(this.items).filter(
             (item) => !item.enabled
-        ).map((item) => item.id)
+        ).map((item) => item.id);
 
-        this.userService.setUserSettings("disabled_items", JSON.stringify(newDisabledItems));
+        this.userService.setUserSettings("disabled_items", newDisabledItems);
 
         this.props.onUpdateConfiguration(newDisabledItems);
     }

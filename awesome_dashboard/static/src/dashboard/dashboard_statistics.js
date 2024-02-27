@@ -10,10 +10,10 @@ const statisticsService = {
 
         async function loadStatistics() {
             const updates = await rpc("/awesome_dashboard/statistics");
-            Object.assign(statistics, updates, {ready: true});
+            Object.assign(statistics, updates, { ready: true });
         }
 
-        setInterval(loadStatistics, 10 * 1000);
+        setInterval(loadStatistics, 10 * 60 * 1000);
         loadStatistics();
 
         return statistics;
