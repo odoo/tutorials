@@ -62,6 +62,14 @@ export class Clicker extends Reactive {
     }
   }
 
+  addBot(type, amount) {
+    if (!Object.keys(this.bots).includes(type)) {
+      throw new Error(`Invalid bot name: ${type}`);
+    }
+
+    this.bots[type].have += amount;
+  }
+
   buyBot(type) {
     if (!Object.keys(this.bots).includes(type)) {
       throw new Error(`Invalid bot name: ${type}`);
@@ -85,7 +93,9 @@ export class Clicker extends Reactive {
         (reward.minLevel <= this.level || !reward.minLevel) &&
         (reward.maxLevel >= this.level || !reward.maxLevel)
     );
+    const reward = choose(availableRewards);
+    this.eventBus.trigger("REWARD", reward);
 
-    return choose(availableRewards);
+    return reward;
   }
 }
