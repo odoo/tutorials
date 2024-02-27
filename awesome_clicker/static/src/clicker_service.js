@@ -4,8 +4,17 @@ import { registry } from "@web/core/registry";
 import { Clicker } from "./model/clicker_model";
 
 const clickerService = {
-  dependencies: [],
-  start: () => new Clicker(),
+  dependencies: ["effect"],
+  start: (_, services) => {
+    const clicker = new Clicker();
+    clicker.eventBus.addEventListener("MILESTONE_1k", () =>
+      services.effect.add({
+        message: "Milestone reached! You can now buy clickbots",
+      })
+    );
+
+    return clicker;
+  },
 };
 
 registry
