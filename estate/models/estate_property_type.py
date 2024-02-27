@@ -16,4 +16,3 @@ class EstatePropertyType(models.Model):
     def _compute_offer_count(self):
         for type in self:
             type.offer_count = len(type.offer_ids)
-        return True

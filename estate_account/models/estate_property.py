@@ -9,16 +9,21 @@ class EstateProperty(models.Model):
             "name": "Test",
             "move_type": "out_invoice",
             "partner_id": self.env["estate.property"].buyer_id,
-            "line_ids": [
+            "invoice_line_ids": [
                 Command.create({
                     "name": "Taxe",
-                    "quantity": "1",
-                    "price_unit": str(float(self.selling_price) * 0.06)
+                    "quantity": 1,
+                    "price_unit": float(self.selling_price) * 0.06
                 }),
                 Command.create({
                     "name": "Administrative fees",
-                    "quantity": "1",
-                    "price_unit": "100"
+                    "quantity": 1,
+                    "price_unit": 100,
+                }),
+                Command.create({
+                    "name": "Total count",
+                    "quantity": 1,
+                    "price_unit": float(self.selling_price) * 1.06 + 100.0,
                 })
             ]
         })
