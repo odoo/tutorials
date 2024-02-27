@@ -6,6 +6,7 @@ import { EventBus } from "@odoo/owl";
 const MILESTONES = [
   { countRequired: 1000, unlock: "clickBot" },
   { countRequired: 5000, unlock: "bigBot" },
+  { clicks: 100000, unlock: "power multiplier" },
 ];
 
 export class Clicker extends Reactive {
@@ -16,7 +17,8 @@ export class Clicker extends Reactive {
 
   setup() {
     this.count = 0;
-    this.level = 0;
+    this.level = 1;
+    this.power = 1;
     this.bots = {
       clickbot: {
         price: 1000,
@@ -37,7 +39,7 @@ export class Clicker extends Reactive {
     setInterval(
       () =>
         Object.values(this.bots).forEach(
-          (bot) => (this.count += bot.amountIncrease * bot.have)
+          (bot) => (this.count += bot.amountIncrease * bot.have * this.power)
         ),
       10 * 1000
     );
@@ -66,5 +68,12 @@ export class Clicker extends Reactive {
 
     this.count -= this.bots[type].price;
     this.bots[type].have += 1;
+  }
+
+  buyMultiplier() {
+    if (this.clicks < 50000) return;
+
+    this.clicks -= 50000;
+    this.power++;
   }
 }
