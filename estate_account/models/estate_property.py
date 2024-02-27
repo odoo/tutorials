@@ -11,6 +11,11 @@ class Property(models.Model):
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [
                     Command.create({
+                        'name': 'Property price',
+                        'quantity': 1,
+                        'price_unit': record.selling_price,
+                    }),
+                    Command.create({
                         'name': '6% of the selling price',
                         'quantity': 1,
                         'price_unit': 0.06 * record.selling_price,
