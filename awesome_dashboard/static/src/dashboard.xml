@@ -6,7 +6,9 @@
         <button t-on-click="showLeads" class="btn-primary m-1 rounded">Leads</button>
 
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {}}">
-            Some content
+            <DashboardItem>Some content</DashboardItem>
+            <DashboardItem size="2">I love milk</DashboardItem>
+            <DashboardItem>Some content</DashboardItem>
         </Layout>
     </t>
 
