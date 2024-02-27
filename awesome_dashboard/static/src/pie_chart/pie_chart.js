@@ -21,15 +21,17 @@ export class PieChart extends Component {
     if (this.chart) {
       this.chart.destroy();
     }
+    let labels = Object.keys(this.props.data);
+    let data = Object.values(this.props.data);
     this.chart = new Chart(this.canvasRef.el, {
       type: "pie",
       data: {
         datasets: [
           {
-            data: this.props.data,
+            data: data,
           },
         ],
-        labels: this.props.labels,
+        labels: labels,
       },
     });
   }
