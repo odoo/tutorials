@@ -2,6 +2,7 @@
 
 import { PieChartCard } from "../pie_chart_card/pie_chard_card";
 import { NumberCard } from "../number_card/number_card";
+import { registry } from "@web/core/registry";
 
 export const items = [
   {
@@ -60,3 +61,5 @@ export const items = [
     }),
   },
 ];
+
+registry.category("dashboard_items").add("awesome_dashboard", items);
