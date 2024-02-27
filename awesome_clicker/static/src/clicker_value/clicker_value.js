@@ -8,7 +8,7 @@ import { useClicker } from "../clicker_hook";
 export class ClickerValue extends Component {
   static template = xml`
     <t t-name="awesome_clicker.clicker_value">
-        <span t-att-data-tooltip="this.clicker.state.count" t-esc="formatedCount()"/>
+        <span t-att-data-tooltip="this.clicker.count" t-esc="formatedCount()"/>
     </t>
     `;
 
@@ -17,7 +17,7 @@ export class ClickerValue extends Component {
   }
 
   formatedCount = () => {
-    const count = this.clicker.state.count;
+    const count = this.clicker.count;
 
     return count.toString().length > 3
       ? humanNumber(count, { decimals: 1 })
