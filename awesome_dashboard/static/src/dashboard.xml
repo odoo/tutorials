@@ -9,31 +9,28 @@
             </t>
             <DashboardItem>
                 Number of new orders this month
-                <h1 class="text-success" t-esc="this.newOrders"/>
+                <h1 class="text-success" t-esc="this.statistics.nb_new_orders"/>
             </DashboardItem>
             <DashboardItem>
                 Total amount of new orders this month
-                <h1 class="text-success" t-esc="this.totalOrders"/>
+                <h1 class="text-success" t-esc="this.statistics.total_amount"/>
             </DashboardItem>
             <DashboardItem>
                 Average amount of t-shirt by order this month
-                <h1 class="text-success" t-esc="this.averageTshirt"/>
+                <h1 class="text-success" t-esc="this.statistics.average_quantity"/>
             </DashboardItem>
             <DashboardItem>
                 Number of cancelled orders this month
-                <h1 class="text-danger" t-esc="this.cancelledOrders"/>
+                <h1 class="text-danger" t-esc="this.statistics.nb_cancelled_orders"/>
             </DashboardItem>
             <DashboardItem>
                 Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
-                <h1 class="text-success" t-esc="this.averageTime"/>
-            </DashboardItem>
-            <DashboardItem>
-                Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
-                <h1 class="text-success" t-esc="this.averageTime"/>
+                <h1 class="text-success" t-esc="this.statistics.average_time"/>
             </DashboardItem>
             <DashboardItem size="1.5">
                 Shirt orders by size
-                <PieChart labels="this.pieChartLabels" data="this.pieChartData"/>
+                <PieChart labels="Object.keys(this.statistics.orders_by_size)"
+            data="Object.values(this.statistics.orders_by_size)"/>
             </DashboardItem>
         </Layout>
     </t>
