@@ -32,11 +32,13 @@ export class PieChart extends Component {
             type: "pie",
             data: {
                 labels: labels,
-                datasets: [{
-                    label: this.props.label,
-                    data: data,
-                    backgroundColor: color,
-                }],
+                datasets: [
+                    {
+                        label: this.props.label,
+                        data: data,
+                        backgroundColor: color,
+                    }
+                ],
             },
         });
     }

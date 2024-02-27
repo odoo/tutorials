@@ -5,7 +5,7 @@
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">
-                    <t t-esc="props.title"/>
+                    <t t-out="props.title"/>
                     <button class="btn" t-on-click="toggleContent">Toggle</button>
                 </h5>
                 <p class="card-text" t-if="state.show">
