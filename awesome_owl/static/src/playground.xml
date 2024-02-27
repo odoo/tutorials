@@ -8,11 +8,17 @@
             <Counter onChange.bind="incrementSum"/>
         </div>
         <div>
-            <Card title="title_1" content="'content 1'"/>
-            <Card title="title_2" content="'content 2'"/>
+            <Card title="title_1">
+                <Counter onChange.bind="incrementSum"/>
+            </Card>
+            <Card title="title_2"/>
         </div>
         <div>
-            <t t-out="sum.value"/> 
+            <p>The sum of the counters is: <t t-out="sum.value"/>
+            </p>
+        </div>
+        <div>
+            <TodoList />
         </div>
     </t>
 

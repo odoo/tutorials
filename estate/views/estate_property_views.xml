@@ -12,9 +12,7 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Properties"
-                decoration-success="state == 'received' or state == 'accepted'"
-                decoration-bf="state == 'accepted'" decoration-muted="state == 'sold'">
+            <tree string="Properties" decoration-success="state == 'received' or state == 'accepted'" decoration-bf="state == 'accepted'" decoration-muted="state == 'sold'">
                 <field name="name" string="Title" />
                 <field name="property_type_id" />
                 <field name="state" invisible="True" />
@@ -41,13 +39,12 @@
                             <div t-if="record.state.raw_value == 'new'">
                                 This is new!
                             </div>
-                            <div>Expected Price: <field name="expected_price" /></div>
-
-                            <div t-if="record.state.raw_value == 'received'"> Best Price: <field
-                                    name="best_price" />
+                            <div>Expected Price: <field name="expected_price" />
                             </div>
-                            <div t-if="record.state.raw_value == 'accepted'"> Selling Price: <field
-                                    name="selling_price" />
+
+                            <div t-if="record.state.raw_value == 'received'"> Best Price: <field name="best_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'accepted'"> Selling Price: <field name="selling_price" />
                             </div>
                             <field name="estate_property_tag_ids" widget="many2many_tags" />
 
@@ -65,20 +62,15 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_set_cancel_state" type="object" string="Cancel"
-                        invisible="state in ('sold', 'canceled')" />
-                    <button name="action_set_sold_state" type="object" string="Sold"
-                        invisible="state in ('sold', 'canceled')" />
-                    <field name="state" widget="statusbar"
-                        options="{'clickable': '1', 'fold_field': 'fold'}"
-                        statusbar_visible="new,received,accepted,sold" />
+                    <button name="action_set_cancel_state" type="object" string="Cancel" invisible="state in ('sold', 'canceled')" />
+                    <button name="action_set_sold_state" type="object" string="Sold" invisible="state in ('sold', 'canceled')" />
+                    <field name="state" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}" statusbar_visible="new,received,accepted,sold" />
                 </header>
                 <sheet>
                     <h1>
                         <field name="name" />
                     </h1>
-                    <field name="estate_property_tag_ids" widget="many2many_tags"
-                        options="{'color_field': 'color'}" />
+                    <field name="estate_property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <group>
                         <group>
 
@@ -102,16 +94,14 @@
                                     <field name="facades" />
                                     <field name="garage" />
                                     <field name="garden" />
-                                    <field name="garden_area" string="Garden Area (sqm)"
-                                        invisible="not garden" />
+                                    <field name="garden_area" string="Garden Area (sqm)" invisible="not garden" />
                                     <field name="garden_orientation" invisible="not garden" />
                                     <field name="total_area" />
                                 </group>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"
-                                readonly="state == 'accepted' or state == 'canceled' or state == 'sold'" />
+                            <field name="offer_ids" readonly="state == 'accepted' or state == 'canceled' or state == 'sold'" />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -133,15 +123,13 @@
         <field name="arch" type="xml">
             <search string="Search Properties">
                 <filter string="Postcode" name="groupby_postcode" context="{'group_by': 'postcode'}" />
-                <filter string="Available" name="available"
-                    domain="[('state', 'in', ('new', 'received'))]" />
+                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'received'))]" />
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="living_area" string="Living Area (sqm)"
-                    filter_domain="[('living_area', '>=', self)]" />
+                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]" />
                 <field name="facades" />
             </search>
         </field>

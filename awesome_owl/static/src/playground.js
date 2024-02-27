@@ -3,7 +3,7 @@
 const { markup, Component, useState } = owl;
 import { Counter } from "./counter/counter";
 import { Card } from "./card/card";
-
+import { TodoList } from "./todo_list/todo_list";
 
 
 export class Playground extends Component {
@@ -16,7 +16,7 @@ export class Playground extends Component {
     incrementSum() {
         this.sum.value++;
     }
-    static components = { Counter, Card };
+    static components = { Counter, Card, TodoList };
 }
 
 
