@@ -7,9 +7,9 @@ const clickerService = {
   dependencies: ["effect"],
   start: (_, services) => {
     const clicker = new Clicker();
-    clicker.eventBus.addEventListener("MILESTONE_1k", () =>
+    clicker.eventBus.addEventListener("MILESTONE", (e) =>
       services.effect.add({
-        message: "Milestone reached! You can now buy clickbots",
+        message: `Milestone reached! You can now buy ${e.detail.unlock}`,
       })
     );
 
