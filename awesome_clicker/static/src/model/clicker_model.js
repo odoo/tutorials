@@ -2,6 +2,8 @@
 
 import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
+import { rewards } from "../clicker_rewards";
+import { choose } from "../utils";
 
 const MILESTONES = [
   { countRequired: 1000, unlock: "clickBot" },
@@ -75,5 +77,15 @@ export class Clicker extends Reactive {
 
     this.clicks -= 50000;
     this.power++;
+  }
+
+  giveReward() {
+    const availableRewards = rewards.filter(
+      (reward) =>
+        (reward.minLevel <= this.level || !reward.minLevel) &&
+        (reward.maxLevel >= this.level || !reward.maxLevel)
+    );
+
+    return choose(availableRewards);
   }
 }
