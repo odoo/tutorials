@@ -2,11 +2,14 @@
 <templates xml:space="preserve">
 
    <t t-name="awesome_owl.card">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
+        <div class="card d-inline-block m-2" style="width: 18rem;" >
             <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text">
-                <t t-out="props.content"/>
+                <h5 class="card-title">
+                    <t t-esc="props.title"/>
+                    <button class="btn btn-primary" t-on-click="toggleCard">Toggle</button>
+                </h5>
+                <p class="card-text" t-if="state.open">
+                    <t t-slot="default"/>
                 </p>
             </div>
         </div>
