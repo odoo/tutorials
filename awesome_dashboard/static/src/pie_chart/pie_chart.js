@@ -13,14 +13,21 @@ export class PieChart extends Component {
         this.canvasRef = useRef("canvas");
 
 
-        onWillStart(() => loadJS(["/web/static/lib/Chart/Chart.js"]));
+        onWillStart(async () => {
+            await loadJS(["/web/static/lib/Chart/Chart.js"]);
+        });
 
         useEffect(() => {
             this.destroyChart();
 
             this.chart = new Chart(this.canvasRef.el, {
                 type: 'pie',
-                data: this.props.data,
+                data: {
+                    labels: Object.keys(this.props.data),
+                    datasets: [{
+                        data: Object.values(this.props.data),
+                    }],
+                },
             });
         });
 
