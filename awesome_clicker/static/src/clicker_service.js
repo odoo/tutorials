@@ -1,12 +1,20 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
+import { browser } from "@web/core/browser/browser";
+
 import { ClickerModel } from "./clicker_model";
+import { migrate } from "./clicker_migration";
 
 const ClickerService = {
     dependencies: ["action", "effect", "notification"],
     start(env, services) { 
-        const clickerModel = new ClickerModel();
+        const localState = migrate(JSON.parse(browser.localStorage.getItem("clickerState")));
+        const clickerModel = localState ? ClickerModel.fromJSON(localState): new ClickerModel();
+
+        setInterval(() => {
+            browser.localStorage.setItem("clickerState", JSON.stringify(clickerModel))
+        }, 10000);
 
         const bus = clickerModel.bus;
 

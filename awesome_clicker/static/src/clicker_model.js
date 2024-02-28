@@ -4,11 +4,13 @@ import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
 import { rewards } from "./clicker_rewards";
 import { choose } from "./utils";
+import { CURRENT_VERSION } from "./clicker_migration";
 
 export class ClickerModel extends Reactive {
     constructor() {
         super();
         this.bus = new EventBus();
+        this.version = CURRENT_VERSION;
         this.clicks = 0;
         this.level = 0;
         this.power = 1;
@@ -39,10 +41,17 @@ export class ClickerModel extends Reactive {
                 produce: "cherry",
                 purchased: 0,
             },
+            peachTree: {
+                price: 1500000,
+                level: 4,
+                produce: "peach",
+                purchased: 0,
+            }
         }
         this.fruits = {
             pear: 0,
             cherry: 0,
+            peach: 0,
         },
 
         setInterval(() => {
@@ -58,6 +67,18 @@ export class ClickerModel extends Reactive {
         }, 30000);
 
         document.addEventListener("click", () => this.increment(1), true);
+    }
+
+    toJSON() {
+        const json = Object.assign({}, this);
+        delete json["bus"];
+        return json;
+    }
+
+    static fromJSON(json) {
+        const clicker = new ClickerModel();
+        const instance = Object.assign(clicker, json);
+        return instance;
     }
 
     giveReward() {
