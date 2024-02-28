@@ -36,6 +36,10 @@
                     <t t-esc="this.stats.total_amount"/>
                 </p>
             </DashboardItem>
+            <DashboardItem>
+                Shirt orders by size
+                <PieChart data="shirts_data"/>
+            </DashboardItem>
         </Layout>
     </t>
 

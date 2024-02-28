@@ -4,10 +4,12 @@ import { useService } from "@web/core/utils/hooks";
 import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
-import { DashboardItem } from "./dasboard_item/dashboard_item";
+import { DashboardItem } from "./dashboard_item/dashboard_item";
+import { PieChart } from "./pie_chart/pie_chart";
+
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem };
+    static components = { Layout, DashboardItem, PieChart };
 
     setup() {
         this.action = useService("action");
@@ -16,6 +18,12 @@ class AwesomeDashboard extends Component {
 
         onWillStart(async () => {
             this.stats = await this.stats_service.load();
+            this.shirts_data = {
+                labels: Object.keys(this.stats.orders_by_size),
+                datasets: [{
+                    data: Object.values(this.stats.orders_by_size),
+                }]
+            };
         });
     }
 
