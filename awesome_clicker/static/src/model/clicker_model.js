@@ -8,7 +8,8 @@ import { choose } from "../utils";
 const MILESTONES = [
   { countRequired: 1000, unlock: "clickBot" },
   { countRequired: 5000, unlock: "bigBot" },
-  { clicks: 100000, unlock: "power multiplier" },
+  { countRequired: 100000, unlock: "power multiplier" },
+  { countRequired: 1000000, unlock: "pear tree & cherry tree" },
 ];
 
 export class Clicker extends Reactive {
@@ -18,7 +19,7 @@ export class Clicker extends Reactive {
   }
 
   setup() {
-    this.count = 0;
+    this.count = 1000000000;
     this.level = 1;
     this.power = 1;
     this.bots = {
@@ -35,6 +36,24 @@ export class Clicker extends Reactive {
         have: 0,
       },
     };
+    this.trees = {
+      pearTree: {
+        price: 1000000,
+        level: 4,
+        produce: "pear",
+        purchased: 0,
+      },
+      cherryTree: {
+        price: 1000000,
+        level: 4,
+        produce: "cherry",
+        purchased: 0,
+      },
+    };
+    this.fruits = {
+      pear: 0,
+      cherry: 0,
+    };
     this.eventBus = new EventBus();
 
     document.addEventListener("click", () => this.increment(1), true);
@@ -45,6 +64,12 @@ export class Clicker extends Reactive {
         ),
       10 * 1000
     );
+    setInterval(() => {
+      Object.keys(this.trees).forEach(
+        (tree) =>
+          (this.fruits[this.trees[tree].produce] += this.trees[tree].purchased)
+      );
+    }, 30 * 1000);
   }
 
   increment(inc) {
@@ -78,6 +103,17 @@ export class Clicker extends Reactive {
 
     this.count -= this.bots[type].price;
     this.bots[type].have += 1;
+  }
+
+  buyTree(name) {
+    if (!Object.keys(this.trees).includes(name)) {
+      throw new Error(`Invalid tree name ${name}`);
+    }
+    if (this.count < this.trees[name].price) {
+      return false;
+    }
+    this.count -= this.trees[name].price;
+    this.trees[name].purchased += 1;
   }
 
   buyMultiplier() {
