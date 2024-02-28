@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClientAction">
+        <div>Clicks: <ClickValue/>
+            <button class="btn btn-primary" t-on-click="onButtonClick">Increment</button>
+        </div>
+        <div t-if="this.clicker.state.clicks > 50000">
+            <button class="btn btn-primary" t-on-click="purchasePowerLevel">Purchase power level (current : <t t-esc="this.clicker.state.power"/>)</button>
+        </div>
+        <div t-if="this.clicker.state.level >= 1">
+            <p>Bots</p>
+            <div>
+                <p><t t-esc="this.clicker.state.bots.clickbot"/> ClickBots (10clicks/10seconds) </p>
+                <button class="btn btn-primary" t-on-click="buyClickBot" t-att-disabled="this.clicker.state.clicks &lt; 1000">Buy ClickBot (1000 clicks)</button>
+            </div>
+            <div t-if="this.clicker.state.level >= 2">
+                <p><t t-esc="this.clicker.state.bots.bigbot"/> BigBots (100clicks/10seconds) </p>
+                <button class="btn btn-primary" t-on-click="buyBigBot" t-att-disabled="this.clicker.state.clicks &lt; 5000">Buy BigBot (5000 clicks)</button>
+            </div>
+        </div>
+    </t>
+</templates>

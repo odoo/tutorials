@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">   
+    <t t-name="awesome_clicker.ClickValue">
+        <span t-att-data-tooltip="this.clicker.state.clicks">
+            <t t-esc="humanNumber(this.clicker.state.clicks)"/>
+        </span>
+    </t>
+</templates>

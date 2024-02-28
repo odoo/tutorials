@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClickerSystrayItem">
+         <div>Clicks: <ClickValue/></div>
+        <button class="btn btn-secondary" t-on-click="openAction">Open</button>
+    </t>
+</templates>
