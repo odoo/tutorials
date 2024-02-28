@@ -31,6 +31,16 @@ class EstateProperty(models.Model):
                 ]
             }
 
-            self.env['account.move'].create(invoice_vals)
+            self.check_access_rights('write')
+            self.check_access_rule('write')
 
+            # Just for learning purposes
+            # if(self.env.user.has_group('estate.estate_group_manager')):
+            #     print(" reached ".center(100, '='))
+            #     self.env['account.move'].sudo().create(invoice_vals)
+            # else:
+            #     raise AccessError("You're not allowed to sold this property contact your manager")
+
+            self.env['account.move'].sudo().create(invoice_vals)
+            
         return super().action_set_sold()
