@@ -14,7 +14,7 @@ export class PieChart extends Component {
 
 
         onWillStart(async () => {
-            await loadJS(["/web/static/lib/Chart/Chart.js"]);
+            await loadJS("/web/static/lib/Chart/Chart.js");
         });
 
         useEffect(() => {
