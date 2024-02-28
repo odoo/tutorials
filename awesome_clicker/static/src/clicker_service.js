@@ -3,11 +3,14 @@
 import { registry } from "@web/core/registry";
 import { Clicker } from "./model/clicker_model";
 import { browser } from "@web/core/browser/browser";
+import { migrate } from "./clicker_migration";
 
 const clickerService = {
   dependencies: ["effect", "action", "notification"],
   start: (_, services) => {
-    const localState = JSON.parse(browser.localStorage.getItem("clickerState"));
+    const localState = migrate(
+      JSON.parse(browser.localStorage.getItem("clickerState"))
+    );
     const clicker = localState ? Clicker.fromJSON(localState) : new Clicker();
     console.log(clicker);
 

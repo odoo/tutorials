@@ -4,6 +4,7 @@ import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
 import { rewards } from "../clicker_rewards";
 import { choose } from "../utils";
+import { CURRENT_VERSION } from "../clicker_migration";
 
 const MILESTONES = [
   { countRequired: 1000, unlock: "clickBot" },
@@ -19,6 +20,7 @@ export class Clicker extends Reactive {
   }
 
   setup() {
+    this.version = CURRENT_VERSION;
     this.count = 1000000000;
     this.level = 1;
     this.power = 1;
