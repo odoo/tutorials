@@ -5,6 +5,18 @@
         <Layout display="{controlPanel: {}}" className="'o_dashboard h-100'">
             <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
             <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            <div class="d-flex flex-wrap">
+                <AwesomeDashboardItem>
+                    Testing first item
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem>
+                    Testing second item
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem size="2">
+                    Testing third item
+                </AwesomeDashboardItem>
+            </div>
+
         </Layout>
     </t>
 
