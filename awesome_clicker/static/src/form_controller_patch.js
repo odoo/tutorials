@@ -8,7 +8,7 @@ const FormControllerPatch = {
     setup() {
         super.setup(...arguments);
         const clicker = useClicker();
-        if (Math.random() < 1) {
+        if (Math.random() < .01) {
             clicker.giveReward();
         }
     },
