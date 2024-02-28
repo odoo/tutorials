@@ -7,13 +7,34 @@
             <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             <div class="d-flex flex-wrap">
                 <AwesomeDashboardItem>
-                    Testing first item
+                    Average amount of t-shirt by order this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="result_statistics.average_quantity"/>
+                    </div>
+                </AwesomeDashboardItem>
+                 <AwesomeDashboardItem size="2">
+                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="result_statistics.average_time"/>
+                    </div>
                 </AwesomeDashboardItem>
                 <AwesomeDashboardItem>
-                    Testing second item
+                    Number of new orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="result_statistics.nb_new_orders"/>
+                    </div>
                 </AwesomeDashboardItem>
-                <AwesomeDashboardItem size="2">
-                    Testing third item
+                <AwesomeDashboardItem>
+                    Number of cancelled orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="result_statistics.nb_cancelled_orders"/>
+                    </div>
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem>
+                    Total amount of new orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="result_statistics.total_amount"/>
+                    </div>
                 </AwesomeDashboardItem>
             </div>
 
