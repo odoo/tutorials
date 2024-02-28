@@ -51,10 +51,17 @@ export class Clicker extends Reactive {
         produce: "cherry",
         purchased: 0,
       },
+      peachTree: {
+        price: 2000000,
+        level: 4,
+        produce: "peach",
+        purchased: 0,
+      },
     };
     this.fruits = {
       pear: 0,
       cherry: 0,
+      peach: 0,
     };
     this.eventBus = new EventBus();
 
