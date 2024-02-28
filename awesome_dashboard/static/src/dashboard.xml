@@ -38,7 +38,7 @@
             </DashboardItem>
             <DashboardItem>
                 Shirt orders by size
-                <PieChart data="shirts_data"/>
+                <PieChart data="{labels:Object.keys(stats.orders_by_size), datasets: [{data: Object.values(stats.orders_by_size)}],}"/>
             </DashboardItem>
         </Layout>
     </t>
