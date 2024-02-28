@@ -6,9 +6,36 @@
         <button t-on-click="showLeads" class="btn-primary m-1 rounded">Leads</button>
 
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {}}">
-            <DashboardItem>Some content</DashboardItem>
-            <DashboardItem size="2">I love milk</DashboardItem>
-            <DashboardItem>Some content</DashboardItem>
+            <DashboardItem size="1.5">
+                Average amount of t-shirt by order this month
+                <p class="h1 text-success text-center">
+                    <t t-esc="this.stats.average_quantity"/>
+                </p>
+            </DashboardItem>
+            <DashboardItem size="2">
+                Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                <p class="h1 text-success text-center">
+                    <t t-esc="this.stats.average_time"/>
+                </p>
+            </DashboardItem>
+            <DashboardItem>
+                Number of new orders this month
+                <p class="h1 text-success text-center">
+                    <t t-esc="this.stats.nb_new_orders"/>
+                </p>
+            </DashboardItem>
+            <DashboardItem>
+                Number of cancelled orders this month
+                <p class="h1 text-success text-center">
+                    <t t-esc="this.stats.nb_cancelled_orders"/>
+                </p>
+            </DashboardItem>
+            <DashboardItem>
+                Total amount of new orders this month
+                <p class="h1 text-success text-center">
+                    <t t-esc="this.stats.total_amount"/>
+                </p>
+            </DashboardItem>
         </Layout>
     </t>
 
