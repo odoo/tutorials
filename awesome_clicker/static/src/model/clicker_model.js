@@ -134,4 +134,17 @@ export class Clicker extends Reactive {
 
     return reward;
   }
+
+  toJSON() {
+    const json = Object.assign({}, this);
+    delete json["bus"];
+    return json;
+  }
+
+  static fromJSON(json) {
+    const clicker = new Clicker();
+    const clickerInstance = Object.assign(clicker, json);
+    clickerInstance.eventBus = new EventBus();
+    return clickerInstance;
+  }
 }
