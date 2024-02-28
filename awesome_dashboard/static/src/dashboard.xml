@@ -10,10 +10,27 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <DashboardItem >some content</DashboardItem>
-            <DashboardItem size="2">I love milk</DashboardItem>
-            <DashboardItem >some content</DashboardItem>
-        </Layout>
+            <DashboardItem >Average amount of t-shirt by order this month <t t-set-slot="numbers">
+                <t t-out="state.statistics.average_quantity"/>
+            </t>
+        </DashboardItem>
+        <DashboardItem size="2">Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’ <t t-set-slot="numbers">
+            <t t-out="state.statistics.average_time"/>
+        </t>
+    </DashboardItem>
+    <DashboardItem >Number of new orders this month <t t-set-slot="numbers">
+        <t t-out="state.statistics.nb_new_orders"/>
     </t>
+</DashboardItem>
+<DashboardItem >Number of cancelled orders this month <t t-set-slot="numbers">
+    <t t-out="state.statistics.nb_cancelled_orders"/>
+</t>
+</DashboardItem>
+<DashboardItem >Total amount of new orders this month <t t-set-slot="numbers">
+<t t-out="state.statistics.total_amount"/>
+</t>
+</DashboardItem>
+</Layout>
+</t>
 
 </templates>
