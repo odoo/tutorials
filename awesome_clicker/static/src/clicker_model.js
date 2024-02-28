@@ -2,6 +2,8 @@
 
 import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
+import { rewards } from "./clicker_rewards";
+import { choose } from "./utils";
 
 export class ClickerModel extends Reactive {
     constructor() {
@@ -9,6 +11,7 @@ export class ClickerModel extends Reactive {
         this.bus = new EventBus();
         this.clicks = 0;
         this.level = 0;
+        this.power = 1;
         this.bots = {
             clickbot: {
                 price: 1000,
@@ -26,11 +29,26 @@ export class ClickerModel extends Reactive {
 
         setInterval(() => {
             for (const bot in this.bots) {
-                this.clicks += this.bots[bot].increment * this.bots[bot].purchased;
+                this.clicks += this.bots[bot].increment * this.bots[bot].purchased * this.power;
             }
         }, 10000)
 
         document.addEventListener("click", () => this.increment(1), true);
+    }
+
+    giveReward() {
+        const availableRewards = [];
+        for(const reward of rewards) {
+            if(reward.minLevel <= this.level || !reward.minLevel) {
+                if(reward.maxLevel >= this.level || !reward.maxLevel) {
+                    availableRewards.push(reward);
+                }
+            }
+        }
+
+        const reward = choose(availableRewards);
+        this.bus.trigger("REWARD", reward);
+        return reward;
     }
 
     increment(count) {
@@ -42,6 +60,14 @@ export class ClickerModel extends Reactive {
             this.bus.trigger("MILESTONE", this.milestones[this.level]);
             this.level += 1;
         }
+    }
+
+    buyMultiplier() {
+        if (this.clicks < 50000) {
+            return false;
+        }
+        this.clicks -= 50000;
+        this.power++;
     }
 
     buyBot(name) {
@@ -60,6 +86,7 @@ export class ClickerModel extends Reactive {
         return [
             { clicks: 1000, unlock: "clickBot" },
             { clicks: 5000, unlock: "bigBot" },
+            { clicks: 100000, unlock: "power multiplier"}
         ];
     }
 }
