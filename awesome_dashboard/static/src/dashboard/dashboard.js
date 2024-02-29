@@ -35,4 +35,4 @@ class AwesomeDashboard extends Component {
 }
 
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);
