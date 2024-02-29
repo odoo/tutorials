@@ -11,29 +11,12 @@ class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
     static components = { Layout, DashboardItem, PieChart }
 
-    setup() {
+    async setup() {
         this.display = { controlPanel: {} };
         this.action = useService("action");
         this.rpc = useService("rpc");
-        this.statistics = useService("awesome_dashboard.statistics");
-
-        this.state = useState({ statistics: {}, shirt_sizes: {} });
-
-        onWillStart(async () => {
-            this.updateStatistics(await this.statistics.loadStatistics());
-        });
-
-
-    }
-
-    updateStatistics(new_statistics) {
-        this.state.statistics = new_statistics
-        this.state.shirt_sizes = {
-            labels: Object.keys(new_statistics.orders_by_size),
-            datasets: [{
-                data: Object.values(new_statistics.orders_by_size),
-            }]
-        };
+        this.statistics = useState(useService("awesome_dashboard.statistics"));
+        console.log(this.statistics);
     }
 
     openCustomers() {
@@ -50,5 +33,6 @@ class AwesomeDashboard extends Component {
     }
 
 }
+
 
 registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);

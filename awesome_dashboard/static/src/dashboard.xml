@@ -2,9 +2,6 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-
-
-
         <Layout className="'o_dashboard h-100'" display="display">
             <t t-set-slot="layout-buttons">
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
@@ -12,32 +9,34 @@
             </t>
             <DashboardItem >Average amount of t-shirt by order this month 
                 <t t-set-slot="numbers">
-                    <t t-out="state.statistics.average_quantity"/>
+                    <t t-out="statistics.average_quantity"/>
                 </t>
             </DashboardItem>
             <DashboardItem size="2">Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’ 
                 <t t-set-slot="numbers">
-                    <t t-out="state.statistics.average_time"/>
+                    <t t-out="statistics.average_time"/>
                 </t>
             </DashboardItem>
             <DashboardItem >Number of new orders this month 
                 <t t-set-slot="numbers">
-                    <t t-out="state.statistics.nb_new_orders"/>
+                    <t t-out="statistics.nb_new_orders"/>
                 </t>
             </DashboardItem>
             <DashboardItem >Number of cancelled orders this month 
                 <t t-set-slot="numbers">
-                    <t t-out="state.statistics.nb_cancelled_orders"/>
+                    <t t-out="statistics.nb_cancelled_orders"/>
                 </t>
             </DashboardItem>
             <DashboardItem >Total amount of new orders this month 
                 <t t-set-slot="numbers">
-                    <t t-out="state.statistics.total_amount"/>
+                    <t t-out="statistics.total_amount"/>
                 </t>
             </DashboardItem>
             <DashboardItem >Total amount of new orders this month 
-                Number of orders per shirt size 
-                <PieChart data="state.shirt_sizes"/>
+                Number of orders per shirt size
+                <div>
+                    <PieChart data="statistics.orders_by_size"/>
+                </div>
             </DashboardItem>
         </Layout>
     </t>

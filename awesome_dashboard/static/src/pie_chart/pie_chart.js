@@ -5,11 +5,6 @@ import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
-    static props = {
-        data: {
-            type: Object
-        }
-    }
 
     setup() {
         this.canvasRef = useRef("canvas");
@@ -22,8 +17,8 @@ export class PieChart extends Component {
         useEffect(
             () => {
                 this.renderChart();
-            },
-            () => []
+            }
+
         );
 
         onWillUnmount(this.onWillUnmount);
@@ -38,7 +33,12 @@ export class PieChart extends Component {
     getChartConfig() {
         let config = {};
         config.type = "pie";
-        config.data = this.props.data;
+        config.data = {
+            labels: Object.keys(this.props.data),
+            datasets: [{
+                data: Object.values(this.props.data)
+            }]
+        };
         return config;
     }
 
@@ -48,7 +48,7 @@ export class PieChart extends Component {
         }
         let config = this.getChartConfig();
         this.chart = new Chart(this.canvasRef.el, config);
-        console.log(config)
+        console.log(config);
     }
 
 }
