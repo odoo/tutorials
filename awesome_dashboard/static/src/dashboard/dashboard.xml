@@ -4,10 +4,13 @@
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <button t-on-click="showCustomers" class="btn-primary m-1 rounded">Customers</button>
         <button t-on-click="showLeads" class="btn-primary m-1 rounded">Leads</button>
+        <button class="btn btn-link" icon="fa fa-gear" t-on-click="openConfiguration">
+            <i class="fa fa-cog"/>
+        </button>
 
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {}}">
             <t t-foreach="items" t-as="item" t-key="item.id">
-                <DashboardItem size="item.size || 1">
+                <DashboardItem t-if="!this.state.uncheckedItems.includes(item.id)" size="item.size || 1">
                     <t t-esc="item.title"/>
                     <t t-component="item.Component" t-props="item.extract(stats)" />
                 </DashboardItem>
