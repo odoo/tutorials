@@ -7,38 +7,12 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <DashboardItem >Average amount of t-shirt by order this month 
-                <t t-set-slot="numbers">
-                    <t t-out="statistics.average_quantity"/>
-                </t>
-            </DashboardItem>
-            <DashboardItem size="2">Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’ 
-                <t t-set-slot="numbers">
-                    <t t-out="statistics.average_time"/>
-                </t>
-            </DashboardItem>
-            <DashboardItem >Number of new orders this month 
-                <t t-set-slot="numbers">
-                    <t t-out="statistics.nb_new_orders"/>
-                </t>
-            </DashboardItem>
-            <DashboardItem >Number of cancelled orders this month 
-                <t t-set-slot="numbers">
-                    <t t-out="statistics.nb_cancelled_orders"/>
-                </t>
-            </DashboardItem>
-            <DashboardItem >Total amount of new orders this month 
-                <t t-set-slot="numbers">
-                    <t t-out="statistics.total_amount"/>
-                </t>
-            </DashboardItem>
-            <DashboardItem >Total amount of new orders this month 
-                Number of orders per shirt size
-                <div>
-                    <PieChart data="statistics.orders_by_size"/>
-                </div>
-            </DashboardItem>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <DashboardItem size="item.size || 1">
+                    <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                    <t t-component="item.Component" t-props="itemProp" />
+                </DashboardItem>
+            </t>
         </Layout>
     </t>
-
 </templates>
