@@ -14,7 +14,7 @@ export const statisticsService = {
 
         await loadStatistics();
 
-        setInterval(loadStatistics, 3000);
+        setInterval(loadStatistics, 10 * 60 * 1000);
 
         return stats;
     }
