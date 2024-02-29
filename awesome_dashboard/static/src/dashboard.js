@@ -5,10 +5,11 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./Dashboard_item/Dashboard_item";
+import { PieChart } from "./pie_chart/pie_chart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem }
+    static components = { Layout, DashboardItem, PieChart }
 
     setup() {
         this.display = { controlPanel: {} };
@@ -16,7 +17,7 @@ class AwesomeDashboard extends Component {
         this.rpc = useService("rpc");
         this.statistics = useService("awesome_dashboard.statistics");
 
-        this.state = useState({ statistics: {} });
+        this.state = useState({ statistics: {}, shirt_sizes: {} });
 
         onWillStart(async () => {
             this.updateStatistics(await this.statistics.loadStatistics());
@@ -27,6 +28,12 @@ class AwesomeDashboard extends Component {
 
     updateStatistics(new_statistics) {
         this.state.statistics = new_statistics
+        this.state.shirt_sizes = {
+            labels: Object.keys(new_statistics.orders_by_size),
+            datasets: [{
+                data: Object.values(new_statistics.orders_by_size),
+            }]
+        };
     }
 
     openCustomers() {
