@@ -2,8 +2,9 @@
 
 import { PieChartCard } from "./pie_chart_card/pie_char_card";
 import { NumberCard } from "./number_card/number_card";
+import { registry } from "@web/core/registry";
 
-export const items = [
+const items = [
     {
         id: "orders_by_size",
         description: "T-Shirt Oders By Size",
@@ -60,3 +61,5 @@ export const items = [
         }),
     },
 ];
+
+registry.category("awesome_dashboard").add("dashboard_items", items);
