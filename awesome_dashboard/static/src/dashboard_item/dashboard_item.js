@@ -14,6 +14,7 @@ export class DashboardItem extends Component {
     };
 
     static props = {
+        title: String,
         size: {
             type: Number,
             optional: true,
