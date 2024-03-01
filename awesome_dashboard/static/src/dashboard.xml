@@ -13,6 +13,15 @@
                     Leads
                 </button>
             </t>
+            <DashboardItem>
+                Hello
+            </DashboardItem>
+            <DashboardItem size="2">
+                Hello
+            </DashboardItem>
+            <DashboardItem>
+                Hello
+            </DashboardItem>
         </Layout>
     </t>
 
