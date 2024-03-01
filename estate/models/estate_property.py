@@ -1,4 +1,5 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_utils
 
 
@@ -87,7 +88,7 @@ class EstateProperty(models.Model):
     def action_set_cancel_state(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError(
+                raise UserError(
                     message="A sold property can not be canceled")
             record.state = 'canceled'
         return True
@@ -95,7 +96,7 @@ class EstateProperty(models.Model):
     def action_set_sold_state(self):
         for record in self:
             if record.state == 'canceled':
-                raise exceptions.UserError(
+                raise UserError(
                     message="A canceled property can not be sold")
             record.state = 'sold'
         return True
@@ -105,12 +106,12 @@ class EstateProperty(models.Model):
         for record in self:
             if record.selling_price:
                 if float_utils.float_compare(record.selling_price, 0.9*record.expected_price, 2) < 0:
-                    raise exceptions.ValidationError(
+                    raise ValidationError(
                         message="The selling price must be greater that 90% of the expected price!")
 
     @api.ondelete(at_uninstall=False)
-    def _unlink_except_sold_or_canceled_property(self):
+    def _unlink_only_new_or_canceled_property(self):
         for record in self:
-            if not (record.state == 'new' or record.state == 'canceled'):
-                raise exceptions.UserError(
-                    f"You can not delete a property in {record.state} state.")
+            if record.state not in ('new', 'canceled'):
+                raise UserError(
+                    ("You can not delete a property in %s state." % (record.state)))
