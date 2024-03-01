@@ -77,10 +77,10 @@ class EstateProperty(models.Model):
 
     def estate_sold(self):
         for property in self:
-            if property.state != "canceled":
+            if property.state != "canceled" and len(property.offer_ids) != 0:
                 property.state = "sold"
             else:
-                raise UserError("Sold property can not be cancel")
+                raise UserError("Sold property and property without offers can not be sold")
         return True
 
     @api.constrains("selling_price")
