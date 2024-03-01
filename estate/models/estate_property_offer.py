@@ -63,12 +63,12 @@ class PropertyOffer(models.Model):
                 offer.property_id.selling_price = 0
             offer.status = "refused"
         return True
-    
+
     @api.model
     def create(self, vals):
-        property_id=self.env["estate.property"].browse(vals["property_id"])
-        max_offer=max((offer.price for offer in property_id.offer_ids),default=0)
+        property_id = self.env["estate.property"].browse(vals["property_id"])
+        max_offer = max((offer.price for offer in property_id.offer_ids), default=0)
         if vals["price"] < max_offer:
             raise UserError(f"The offer must be higher than {max_offer}")
-        property_id.state="offer_received"
+        property_id.state = "offer_received"
         return super().create(vals)

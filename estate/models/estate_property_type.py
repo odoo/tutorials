@@ -22,5 +22,5 @@ class PropertyType(models.Model):
 
     @api.depends("offer_ids")
     def _count_offers(self):
-        for type in self:
-            type.offer_count = len(type.offer_ids)
+        for property_type in self:
+            property_type.offer_count = len(property_type.offer_ids)
