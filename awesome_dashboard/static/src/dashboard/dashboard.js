@@ -25,6 +25,8 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this._lt = _lt;
         this.userService = useService('user');
+
+        console.log(this.userService);
         
         this.items = registry.category("awesome_dashboard").getAll();
 
@@ -86,7 +88,8 @@ class ConfigurationDialog extends Component {
         const newDisabledItems = Object.values(this.items).filter(
             (item) => !item.enabled
         ).map((item) => item.id);
-
+        
+        console.log(this.userService.settings);
         this.userService.setUserSettings("disabled_items", newDisabledItems);
 
         this.props.onUpdateConfiguration(newDisabledItems);

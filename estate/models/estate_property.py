@@ -48,6 +48,7 @@ class EstateModel(models.Model):
     property_tags_ids = fields.Many2many("estate.property.tags", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="offers")
     best_price = fields.Float(compute="_compute_best_price")
+    property_offer_ids = fields.One2many("estate.property.offer", "property_id")
 
     _sql_constraints = [
         ("check_expected_price",
@@ -92,6 +93,8 @@ class EstateModel(models.Model):
         for prop in self:
             if prop.state == "cancelled":
                 raise UserError("Cancelled properties cannot be sold")
+            elif not len(prop.property_offer_ids):
+                raise UserError("Cannot sell property with no offers")
             else:
                 prop.state = "sold"
         return True

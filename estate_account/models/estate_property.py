@@ -7,6 +7,8 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold(self):
+        super().action_set_sold();
+
         for property_sold in self:
             invoice_vals = {
                 'name': f'INV/PROP/{property_sold.id}',
@@ -42,5 +44,3 @@ class EstateProperty(models.Model):
             #     raise AccessError("You're not allowed to sold this property contact your manager")
 
             self.env['account.move'].sudo().create(invoice_vals)
-            
-        return super().action_set_sold()
