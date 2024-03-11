@@ -30,12 +30,12 @@ class TShirtOrder(models.Model):
         ('m', 'M'),
         ('l', 'L'),
         ('xl', 'XL'),
-        ('xxl', 'XXL')], default='m', required="True")
+        ('xxl', 'XXL')], default='m', required=True)
     state = fields.Selection([
         ('new', 'New'),
         ('printed', 'Printed'),
         ('sent', 'Sent'),
-        ('cancelled', 'Cancelled')], default='new', required="True", group_expand='_expand_states')
+        ('cancelled', 'Cancelled')], default='new', required=True, group_expand='_expand_states')
 
     @api.depends('quantity')
     def _compute_amount(self):
