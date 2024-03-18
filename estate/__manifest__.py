@@ -3,17 +3,17 @@
 
 {
     'name': "Estate",
-
-    'summary': """
-        A new app to learn the Odoo framework
-    """,
-
+    'version': '1.0',
+    'depends': ['base'],
+    'author': "Clément Cardot (cacl)",
+    'license': "LGPL-3",
     'description': """
         A new app to learn the Odoo framework
     """,
 
-    'author': "Clément Cardot (cacl)",
+    'data': [
+        'security/ir.model.access.csv',
+    ],
 
-    'depends': ['base'],
     'application': True,
 }
