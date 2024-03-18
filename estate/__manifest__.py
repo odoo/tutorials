@@ -7,4 +7,7 @@
     ],
     'application': True,
     'description': "",
+    'data': [#'data/res.country.state.csv',
+             'security/ir.model.access.csv']
+
 }
