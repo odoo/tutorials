@@ -11,7 +11,7 @@
 
     'version': '0.1',
     'application': True,
-    'category': 'Tutorials',
+    'category': 'Tutorials/AwesomeKanban',
     'installable': True,
     'depends': ['web', 'crm'],
     'demo': [

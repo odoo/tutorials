@@ -12,7 +12,7 @@
 
     'author': "Odoo",
     'website': "https://www.odoo.com/",
-    'category': 'Tutorials',
+    'category': 'Tutorials/AwesomeDashboard',
     'version': '0.1',
     'application': True,
     'installable': True,

@@ -12,7 +12,7 @@
 
     'author': "Odoo",
     'website': "https://www.odoo.com/",
-    'category': 'Tutorials',
+    'category': 'Tutorials/AwesomeClicker',
     'version': '0.1',
     'application': True,
     'installable': True,
