@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 from odoo.tools import relativedelta
 
 class EstateProperty(models.Model):
@@ -44,3 +44,26 @@ class EstateProperty(models.Model):
         ('sold', 'Sold'),
         ('canceled', 'Canceled')
     ], default='new', required=True, copy=False, string="State")
+    
+    # Computed columns
+    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
+    best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_offer = max(record.mapped('offer_ids.price'), default=0.0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
