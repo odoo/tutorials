@@ -29,6 +29,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_set_cancel_state" type="object" string="Cancel"/>
+                    <button name="action_set_sold_state" type="object" string="Sold"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -66,10 +70,6 @@
                         </page>
 
                         <page string="Offers">
-                            !---
-                            TODO: Ask Valeriya about the behavior of this
-                            It's not as expected!
-                            ---!
                             <field name="offer_ids"/>
                         </page>
 
