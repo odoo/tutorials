@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="estate_root" name="Estate App">
+        <menuitem id="estate_property_root" name="dropdrown menu">
+            <menuitem id="estate_property_menu_action" action="estate_property_action" name="Test action name in the dropdown menu"/>
+        </menuitem>
+    </menuitem>
+</odoo>
