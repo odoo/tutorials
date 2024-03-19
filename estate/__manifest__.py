@@ -3,6 +3,7 @@
     'version': '1.0',
     'category': 'Tutorials/Estate',
     'summary': 'Real Estate Advertisement',
+    'author': 'Muhamed Abdalla (muab)',
     'description':
     """
     The top area of the form view summarizes important information for the property, such as the name, the property type, the postcode and so on.
@@ -14,7 +15,9 @@
     'depends': [
         'base'
     ],
-    'data': [],
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'demo': [],
     'css': [],
     'installable': True,
