@@ -12,18 +12,12 @@
     It is up to the seller to accept an offer.
     """,
     'website': "https://www.odoo.com",
-    'depends': [
-        'base'
-    ],
+    'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_view.xml',
         'views/estate_property_menu.xml'
     ],
-    'demo': [],
-    'css': [],
-    'installable': True,
     'application': True,
-    'auto_install': False,
     'license': 'AGPL-3'
 }
