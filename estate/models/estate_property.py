@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
 from odoo.tools import relativedelta
 
-def _compute_three_months_from_now():
-    return fields.Date.today() + relativedelta(months=3)
-
 class EstateProperty(models.Model):
+
+    def _get_default_date_availability(self):
+        return fields.Date.today() + relativedelta(months=3)
 
     _name = "estate.property"
     _description = "Real Estate Property"
@@ -24,7 +23,7 @@ class EstateProperty(models.Model):
     ], default='new', required=True, copy=False)
 
     postcode = fields.Char()
-    date_availability = fields.Date(default=_compute_three_months_from_now(), copy=False)
+    date_availability = fields.Date(default=_get_default_date_availability, copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
 
