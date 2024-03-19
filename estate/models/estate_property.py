@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.tools import relativedelta
 
 class EstateProperty(models.Model):
@@ -45,3 +45,25 @@ class EstateProperty(models.Model):
         ('east', 'East'),
         ('west', 'West')
     ])
+
+    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
+    best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.mapped('offer_ids.price'), default=0)
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if not self.garden:
+            self.garden_area = 0
+            self.garden_orientation = None
+        else:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
