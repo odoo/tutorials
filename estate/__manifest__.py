@@ -4,5 +4,8 @@
     'summary': 'Tracks RealEstate property and buyer offers',
     'description': "Tracks RealEstate property and buyer offers",
     'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv'
+    ],
     'application': True,
 }
