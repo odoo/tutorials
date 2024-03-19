@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-
-from odoo import models, fields
+from odoo import fields, models
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Real Estate module"
+    _description = "Real Estate property"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -20,11 +18,11 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer("Garden Area (sqm)")
-    garden_orientation = fields.Selection(string='Garden Orientation',
-                                          selection=[('north', 'North'), ('south', 'South'), ('east', 'East'),
-                                                     ('west', 'West')])
-    active = fields.Boolean('Active', default=False)
-    state = fields.Selection(string='State', default='new', copy=False, required=True,
-                             selection=[('new', 'New'), ('offer received', 'Offer Received'),
-                                        ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'),
-                                        ('canceled', 'Canceled')])
+    garden_orientation = fields.Selection(string="Garden Orientation",
+                                          selection=[("north", "North"), ("south", "South"), ("east", "East"),
+                                                     ("west", "West")])
+    active = fields.Boolean("Active", default=False)
+    state = fields.Selection(string="State", default="new", copy=False, required=True,
+                             selection=[("new", "New"), ("offer received", "Offer Received"),
+                                        ("offer accepted", "Offer Accepted"), ("sold", "Sold"),
+                                        ("canceled", "Canceled")])
