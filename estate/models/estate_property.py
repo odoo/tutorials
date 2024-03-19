@@ -6,7 +6,6 @@ from odoo import fields, models
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "A property managed by the Estate module."
-    #_order = "sequence"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -26,13 +25,13 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area= fields.Integer()
     garden_orientation = fields.Selection(
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
 
     state = fields.Selection(
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled') ],
+        selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled") ],
         copy=False,
-        default='new',
+        default="new",
         required=True
     )
 
