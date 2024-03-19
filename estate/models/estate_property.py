@@ -2,7 +2,6 @@ from odoo import fields, models
 from odoo.tools import relativedelta
 
 class EstateProperty(models.Model):
-    
     _name = "estate_property"
     _description = "Real Estate Property"
 
