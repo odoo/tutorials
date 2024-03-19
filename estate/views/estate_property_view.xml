@@ -3,29 +3,30 @@
 
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
-        <field name="res_model">estate_property</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <record id="estate_property_tree_view" model="ir.ui.view">
-        <field name="name">estate_property.tree</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name" string="Title"/>
-                <field name="postcode" string="Postcode"/>
-                <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="selling_price" string="Selling Price"/>
-                <field name="date_availability" string="Available From"/>
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
+                <field name="property_type_id"/>
             </tree>
         </field>
     </record>
 
     <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">estate._property.form</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -33,30 +34,45 @@
                         <h1>
                             <field name="name"/>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
 
                     <group>
                         <group>
-                            <field name="postcode" string="Postcode"/>
-                            <field name="date_availability" string="Available From"/>
+                            <field name="property_type_id"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price" string="Expected Price"/>
-                            <field name="selling_price" string="Selling Price"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
 
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" string="Description"/>
-                                <field name="bedrooms" string="Bedrooms"/>
-                                <field name="living_area" string="Living Area (sqm)"/>
-                                <field name="facades" string="Facades"/>
-                                <field name="garage" string="Garage"/>
-                                <field name="garden" string="Garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
+                        </page>
+
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids"/>
+                            </group>
+                        </page>
+
+                        <page string="Other info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -66,16 +82,17 @@
     </record>
 
     <record id="estate_property_search_view" model="ir.ui.view">
-        <field name="name">estate_property.search</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Property">
-                <field name="name" string="Title"/>
-                <field name="postcode" string="Postcode"/>
-                <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="selling_price" string="Selling Price"/>
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="property_type_id"/>
 
                 <separator/>
 
