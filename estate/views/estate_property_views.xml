@@ -1,26 +1,100 @@
 <?xml version="1.0"?>
 <odoo>
-	<record id="new_test_action" model="ir.actions.act_window">
-		<field name="name">TestyTesto</field>
+	<record id="custom_tree_view" model="ir.ui.view">
+		<field name="name">estate.property.tree</field>
+		<field name="model">estate.property</field>
+		<field name="arch" type="xml">
+			<tree string="Channel">
+				<field name="name"/>
+				<field name="postcode"/>
+				<field name="bedrooms" string="Bedrooms"/>
+				<field name="living_area"/>
+				<field name="expected_price"/>
+				<field name="selling_price"/>
+				<field name="date_availability"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="custom_form_view" model="ir.ui.view">
+		<field name="name">estate.property.form</field>
+		<field name="model">estate.property</field>
+		<field name="arch" type="xml">
+			<form string="Estate">
+				<sheet>
+					<h1><field name="name"/></h1>
+					<field name="tag_ids" widget="many2many_tags"/>
+					<group>
+						<group>
+							<field name="type_id"/>
+							<field name="postcode"/>
+							<field name="date_availability"/>
+						</group>
+						<group>
+							<field name="expected_price"/>
+							<field name="best_price"/>
+							<field name="selling_price"/>
+						</group>
+					</group>
+					<notebook>
+						<page string="Description">
+							<group>
+								<field name="description"/>
+								<field name="bedrooms" string="Bedrooms"/>
+								<field name="living_area"/>
+								<field name="facades" string="Facades"/>
+								<field name="garage"/>
+								<field name="garden"/>
+								<field name="garden_area"/>
+								<field name="garden_orientation"/>
+								<field name="total_area"/>
+							</group>
+						</page>
+						<page string="Offers">
+							<field name="offer_ids"/>
+						</page>
+						<page string="Other Info">
+							<group>
+								<field name="buyer_id"/>
+								<field name="salesperson_id"/>
+							</group>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="custom_search_view" model="ir.ui.view">
+		<field name="name">estate.property.search</field>
+		<field name="model">estate.property</field>
+		<field name="arch" type="xml">
+			<search string="Search Estate">
+				<field name="name" string="Title"/>
+				<field name="postcode"/>
+				<field name="expected_price"/>
+				<field name="bedrooms" string="Bedrooms"/>
+				<field name="living_area"/>
+				<field name="facades" string="Facades"/>
+				<separator/>
+				<filter string='Available' name='available_filter' domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
+				<filter string='Postcode' name="groupby_postcode" context="{'group_by': 'postcode'}"/>
+			</search>
+		</field>
+	</record>
+
+	<record id="estate_properties_action" model="ir.actions.act_window">
+		<field name="name">Properties</field>
 		<field name="res_model">estate.property</field>
 		<field name="view_mode">tree,form</field>
 	</record>
+
 	<menuitem id="test_root" name="Estate">
-		<menuitem id="test_1st" name="Menu">
-			<menuitem id="test_2nd" action="new_test_action"/>
-		</menuitem>
-		<menuitem id="test_1st_2" name="the void">
-			<menuitem id="test_3nd" action="new_test_action"/>
-		</menuitem>
-	</menuitem>
-	<!--
-			<menuitem id="test_2nd" name="act" action ="test_action"/>
-	<menuitem id="test_root" name="One">
-		<menuitem id="test_1st_lv" name="Two">
-			<menuitem id="test_2nd_lv" name="Three" action="test_action"/>
-			<menuitem id="test_2nd_lv" action="test_action"/>
+		<menuitem id="estates_list_menuitem" name="Advertisements" action="estate_properties_action"/>
+		<menuitem id="estate_settings_submenu" name="Settings">
+			<menuitem id="estates_types_menuitem" action="estate_types_action"/>
+			<menuitem id="estates_tags_menuitem" action="estate_tags_action"/>
 		</menuitem>
 	</menuitem>
-	-->
 </odoo>
 
