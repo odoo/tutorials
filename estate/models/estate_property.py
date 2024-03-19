@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
-    name = fields.Char(required=True)
+    name = fields.Char(string="Title", required=True)
     description = fields.Text()
     active = fields.Boolean(default=True)
     state = fields.Selection([
@@ -22,16 +22,22 @@ class EstateProperty(models.Model):
         ('canceled', 'Canceled')
     ], default='new', required=True, copy=False)
 
-    postcode = fields.Char()
-    date_availability = fields.Date(default=_get_default_date_availability, copy=False)
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
+    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    salesman_id = fields.Many2one('res.users', string="Salesman", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
+    postcode = fields.Char(string="Postcode")
+    date_availability = fields.Date(string="Available From", default=_get_default_date_availability, copy=False)
+    expected_price = fields.Float(string="Expected Price", required=True)
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    living_area = fields.Integer(string="Living Area (sqm)")
+    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer()
     garden_orientation = fields.Selection([
         ('north', 'North'),
