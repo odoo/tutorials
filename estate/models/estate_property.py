@@ -1,5 +1,5 @@
-from odoo import fields, models, api, exceptions
-from odoo.tools import relativedelta
+from odoo import fields, models, api, exceptions, _
+from odoo.tools import relativedelta, float_utils
 
 class EstateProperty(models.Model):
     # Table meta-data
@@ -45,6 +45,12 @@ class EstateProperty(models.Model):
         ('canceled', 'Canceled')
     ], default='new', required=True, copy=False, string="State")
     
+    # db Constraints
+    _sql_constraints = [
+        ('check_positive_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive.'),
+        ('check_positive_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.')
+    ]
+    
     # Computed columns
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
     best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
@@ -67,6 +73,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_property_pricing(self):
+        for record in self:
+            if record.state != "new" and float_utils.float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 0:
+                raise exceptions.ValidationError(message="The selling price can't be lower than 90%- the expected price!")
 
     def action_set_sold_state(self):
         for record in self:
