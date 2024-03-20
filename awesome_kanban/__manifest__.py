@@ -2,11 +2,11 @@
 {
     'name': "Awesome Kanban",
     'summary': """
-        Starting module for "Master the Odoo web framework, chapter 4: Customize a kanban views"
+        Starting module for "Master the Odoo web framework, chapter 4: Customize a kanban view"
     """,
 
     'description': """
-        Starting module for "Master the Odoo web framework, chapter 4: Customize a kanban views.
+        Starting module for "Master the Odoo web framework, chapter 4: Customize a kanban view.
     """,
 
     'version': '0.1',
