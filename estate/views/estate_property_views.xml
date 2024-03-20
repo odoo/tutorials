@@ -11,15 +11,15 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Properties">
-                <field name="name" string="Title"/>
+                <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="tag_ids" widget="many2many_tags"/>
-                <field name="postcode" string="Postcode"/>
-                <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="selling_price" string="Selling Price"/>
-                <field name="date_availability" string="Available From"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
             </tree>
         </field>
     </record>
@@ -37,25 +37,25 @@
                     <group>
                         <group>
                             <field name="property_type_id"/>
-                            <field name="postcode" string="Postcode"/>
-                            <field name="date_availability" string="Available From"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price" string="Expected Price"/>
-                            <field name="selling_price" string="Selling Price"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description"> 
                             <group>
-                                <field name="description" string="Description"/>
-                                <field name="bedrooms" string="Bedrooms"/>
-                                <field name="living_area" string="Living Area (sqm)"/>
-                                <field name="facades" string="Facades"/>
-                                <field name="garage" string="Garage"/>
-                                <field name="garden" string="Garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -78,13 +78,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Properties">
-                <field name="name" string="Title"/>
+                <field name="name"/>
                 <field name="property_type_id"/>
-                <field name="postcode" string="Postcode"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/> 
-                <field name="facades" string="Facades"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/> 
+                <field name="facades"/>
 
                 <filter name="available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="groupby_postcode" string="Postcode" context="{'group_by': 'postcode'}" />
