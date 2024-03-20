@@ -25,10 +25,19 @@ class EsateProperty(models.Model):
             ('west', 'West')
         ],
         'Garden Orientation', required=True)
-    active = fields.Boolean('Active', default=False)
-    state = fields.Selection([
+    active = fields.Boolean('Active', default=True)
+    status = fields.Selection([
         ('new', 'New'),
         ('offer_received', 'Offer Received'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
-    ], 'State', default='new')
+    ], 'Status', default='new')
+
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+
+    buyer_id = fields.Many2one('res.partner', string='Buyer')
+    salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
+
+    property_tag_ids = fields.Many2many('estate.property.tag', string='Property Tags')
+
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
