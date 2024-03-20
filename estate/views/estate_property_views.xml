@@ -14,6 +14,7 @@
             <tree string="Property Tree">
                 <field name="name"/>
                 <field name="state"/>
+                <field name="property_tag_ids"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -36,6 +37,16 @@
                     </h1>
                     <group>
                         <group>
+                            <field name="property_tag_ids" widget="many2many_tags" string=""/>
+                            <field name="property_type_id"/>
+                        </group>
+                        <group>
+                            <field name="buyer_id"/>
+                            <field name="salesman_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -46,21 +57,26 @@
 
                     </group>
                     <notebook>
-                        <page string="Propriétés">
+                        <page string="Properties">
                             <group>
                                 <field name="description" string="Description">label</field>
                             
                                 <field name="bedrooms" string="Bedrooms"/>
     
                                 <field name="living_area" string="Living Area (sq. ft)"/>
-                                <field name="facades" string="Façades"/>
+                                <field name="facades" string="Facades"/>
                                 <field name="garage" string="Garage"/>
                                 <field name="garden" string="Garden"/>
                                 <field name="garden_area" string="Garden Area (sq. ft)"/>
                                 <field name="garden_orientation" string="Garden Orientation"/>
                             </group>
                         </page>
-                        <page string="Prescription Dopriété">
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" string=""/>
+                            </group>
+                        </page>
+                        <page string="Droperties">
 
                         </page>
                     </notebook>
@@ -73,7 +89,7 @@
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Chercher une propriété...">
+            <search string="Look up property...">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
