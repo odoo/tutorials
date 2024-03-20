@@ -7,7 +7,7 @@ class EsateProperty(models.Model):
 
     name = fields.Char('Title', required=True, index=True)
     description = fields.Text('Description')
-    postcode = fields.Char('Postal Code')
+    postcode = fields.Char('Postcode')
     date_availability = fields.Date('Available From', copy=False, 
                                     default=lambda _: fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float('Expected Price', required=True)
@@ -26,9 +26,9 @@ class EsateProperty(models.Model):
         ],
         'Garden Orientation', required=True)
     active = fields.Boolean('Active', default=False)
-    staus = fields.Selection([
+    state = fields.Selection([
         ('new', 'New'),
         ('offer_received', 'Offer Received'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
-    ], default='new')
+    ], 'State', default='new')
