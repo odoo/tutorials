@@ -1,5 +1,3 @@
-"""docstring property type"""
-
 from odoo import fields, models
 
 class EstatePropertyType(models.Model):

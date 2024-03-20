@@ -1,5 +1,3 @@
-"""docstring property tag"""
-
 from odoo import fields, models
 
 class EstatePropertyTag(models.Model):

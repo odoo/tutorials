@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# manifest
 {
     'name': 'estate',
     'data': [
