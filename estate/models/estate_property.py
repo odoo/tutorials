@@ -23,7 +23,7 @@ class EstateProperty(models.Model):
         help="Type to detect orientation of the garden")
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        default='New',
+        default='new',
         selection=[
             ('new', 'New'),
             ('offer received', 'Offer Received'),
