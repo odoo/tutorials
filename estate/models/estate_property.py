@@ -69,7 +69,7 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         if not self.garden:
             self.garden_area = 0
-            self.garden_orientation = None
+            self.garden_orientation = False
         else:
             self.garden_area = 10
             self.garden_orientation = 'north'
@@ -81,7 +81,7 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'canceled'
         return True
-        
+
     def action_sold(self):
         for record in self:
             if record.state == 'canceled':
@@ -89,7 +89,12 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'sold'
         return True
-    
+
+    def accept_offer(self, price, partner_id):
+        self.ensure_one()
+        self.selling_price = price
+        self.buyer_id = partner_id
+
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:

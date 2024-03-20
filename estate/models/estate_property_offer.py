@@ -23,7 +23,7 @@ class EstatePropertyOffer(models.Model):
         ('check_price_positive', 'CHECK(price > 0)', 'The price must be strictly positive.')
     ]
 
-    @api.depends('validity')
+    @api.depends('validity', 'create_date')
     def _compute_deadline_date(self):
         for record in self:
             if record.create_date:
@@ -43,8 +43,7 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.offer_ids.filtered(lambda r: r.status == 'accepted'):
                 raise exceptions.UserError("Another offer is already accepted on this property.")
             record.status = 'accepted'
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
+            record.property_id.accept_offer(record.price, record.partner_id)
         return True
 
     def action_refuse(self):
