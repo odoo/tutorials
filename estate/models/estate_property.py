@@ -5,6 +5,7 @@ from odoo.tools import float_utils
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     property_type_id = fields.Many2one(string="Property Type", comodel_name="estate.property.type")
     salesperson_id = fields.Many2one(string="Salesperson", comodel_name="res.users", default=lambda self: self.env.user)

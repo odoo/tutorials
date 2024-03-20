@@ -4,15 +4,17 @@ from odoo import fields, models, api, exceptions
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection([
         ("accepted", "Accepted"),
-        ("refused", "Refused"),
+        ("rejected", "Rejected"),
     ], copy=False, string="Status")
 
     partner_id = fields.Many2one(string="Buyer", comodel_name="res.partner", required=True)
     property_id = fields.Many2one(string="Property", comodel_name="estate.property", required=True)
+    property_type_id = fields.Many2one(string="Property Type", comodel_name="estate.property.type", related="property_id.property_type_id", store=True)
     validity = fields.Integer(string="Offer Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_deadline_date", inverse="_inverse_deadline_date")
 
@@ -55,7 +57,7 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.state = 'new'
                 record.property_id.selling_price = 0
             
-            record.status = 'refused'
+            record.status = 'rejected'
         return True
     
     def _is_valid_deal(self, status):
