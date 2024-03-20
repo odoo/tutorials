@@ -4,6 +4,8 @@ from odoo import api, fields, models, exceptions
 from odoo.tools import relativedelta
 from odoo.tools.float_utils import float_compare, float_is_zero
 
+DEFAULT_GARDEN_AREA = 10
+
 class EstateProperty(models.Model):
 
     def _get_default_date_availability(self):
@@ -71,24 +73,24 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
         else:
-            self.garden_area = 10
+            self.garden_area = DEFAULT_GARDEN_AREA
             self.garden_orientation = 'north'
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise exceptions.UserError("Sold properties cannot be canceled!")
-            else:
-                record.state = 'canceled'
-        return True
+        self.ensure_one()
+
+        if self.state == 'sold':
+            raise exceptions.UserError("Sold properties cannot be canceled!")
+
+        return self.write({"state", "canceled"})
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'canceled':
-                raise exceptions.UserError("Canceled properties cannot be sold!")
-            else:
-                record.state = 'sold'
-        return True
+        self.ensure_one()
+
+        if self.state == 'canceled':
+            raise exceptions.UserError("Canceled properties cannot be sold!")
+
+        return self.write({"state", "sold"})
 
     def accept_offer(self, price, partner_id):
         self.ensure_one()

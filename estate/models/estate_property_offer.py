@@ -39,14 +39,14 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - fields.Date.today()).days
 
     def action_accept(self):
-        for record in self:
-            if record.property_id.offer_ids.filtered(lambda r: r.status == 'accepted'):
-                raise exceptions.UserError("Another offer is already accepted on this property.")
-            record.status = 'accepted'
-            record.property_id.accept_offer(record.price, record.partner_id)
-        return True
+        self.ensure_one()
+
+        if self.property_id.offer_ids.filtered(lambda r: r.status == 'accepted'):
+            raise exceptions.UserError("Another offer is already accepted on this property.")
+
+        self.property_id.accept_offer(self.price, self.partner_id)
+        return self.write({'status', 'accepted'})
 
     def action_refuse(self):
-        for record in self:
-            record.status = 'refused'
-        return True
+        self.ensure_one()
+        return self.write({'status', 'refused'})
