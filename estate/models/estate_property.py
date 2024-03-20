@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -8,8 +8,8 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date("Available from", default=lambda _: fields.Date().add(fields.Date().today(), months=3),
-                                    copy=False)
+    date_availability = fields.Date("Available from",
+                                    default=lambda _: fields.Date().add(fields.Date().today(), months=3), copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -19,8 +19,8 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer("Garden Area (sqm)")
     garden_orientation = fields.Selection(string="Garden Orientation",
-                                          selection=[("north", "North"), ("south", "South"), ("east", "East"),
-                                                     ("west", "West")])
+                                          selection=[("north", "North"), ("south", "South"),
+                                                     ("east", "East"), ("west", "West")])
     active = fields.Boolean("Active", default=True)
     state = fields.Selection(string="State", default="new", copy=False, required=True,
                              selection=[("new", "New"), ("offer received", "Offer Received"),
@@ -31,3 +31,24 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string="Salesperson", index=True, default=lambda self: self.env.user)
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
+    total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for estate in self:
+            estate.total_area = estate.living_area + estate.garden_area
+
+    @api.depends("offer_ids")
+    def _compute_best_price(self):
+        for estate in self:
+            estate.best_price = max(estate.offer_ids.mapped("price")) if estate.offer_ids else 0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""

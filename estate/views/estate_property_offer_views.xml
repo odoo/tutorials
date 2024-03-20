@@ -12,6 +12,8 @@
                                 <field name="price"/>
                                 <field name="partner_id"/>
                                 <field name="status"/>
+                                <field name="validity"/>
+                                <field name="date_deadline"/>
                             </group>
                         </page>
                     </notebook>
@@ -28,6 +30,8 @@
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="status"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
             </tree>
         </field>
     </record>
