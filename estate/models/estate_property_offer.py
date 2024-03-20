@@ -1,5 +1,6 @@
 from odoo import fields, models, api, exceptions
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
@@ -15,7 +16,6 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string="Offer Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_deadline_date", inverse="_inverse_deadline_date")
 
-    # db Constraint
     _sql_constraints = [
         ('check_positive_offer_price', 'CHECK(price > 0)', 'The offer price must be positive.'),
     ]
