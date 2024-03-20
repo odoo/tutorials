@@ -26,3 +26,9 @@ class Property(models.Model):
         copy = False,
     )
 
+    # customer - relational field
+    # agent - relational field
+    # property type - m2o
+    # list of tags - m2m
+    # list of offers received - o2m
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")

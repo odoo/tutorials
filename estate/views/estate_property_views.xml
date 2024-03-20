@@ -13,6 +13,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
                 <!-- <field name="facades"/> -->
                 <filter string="Available" name="available_properties" domain="['|',('state','=','Offer Received'),('state','=','New')]"/>
                 <filter string="Postcode" name="group_postcode" context="{'group_by':'postcode'}"/>
@@ -33,7 +34,8 @@
                     <group>
                         <group>
                             <field name="postcode"></field>
-                            <field name="date_availability"></field>
+                            <field name="date_availability"></field>                        
+                            <field name="property_type_id"></field>
                         </group>
                         <group>
                             <field name="expected_price"></field>
