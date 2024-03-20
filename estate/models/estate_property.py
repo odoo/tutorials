@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class EsateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Defines a real estate property'
