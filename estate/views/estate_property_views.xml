@@ -69,6 +69,8 @@
             <tree string="Offers">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
                 <field name="status"/>
             </tree>
         </field>
@@ -101,6 +103,7 @@
                         <field name="date_availability"/>
                         <field name="expected_price"/>  
                         <field name="selling_price"/>
+                        <field name="best_offer"/>
                     </group>
 
                     <notebook>
@@ -114,6 +117,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
                            </group>
                         </page>
 
@@ -174,6 +178,8 @@
                     <group>
                         <field name="price"/>
                         <field name="partner_id"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
                         <field name="status"/>
                     </group>
                 </sheet>
