@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 
 class EstateProperty(models.Model):
@@ -12,7 +13,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default= fields.Date.today()+relativedelta(months=3))
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
+    selling_price = fields.Float(readonly=True, copy=False, default=0)
 
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -44,6 +45,18 @@ class EstateProperty(models.Model):
 
     best_price = fields.Float(compute="_compute_best_price")
 
+    # Do SQL constraints need to be written with single-quotes, as you would in an actual SQL expression? Or are double-quotes always ok?
+    _sql_constraints = [
+        ("expected_price", "CHECK(expected_price > 0)", "Expected price must be positive" ),
+        ("selling_price", "CHECK(selling_price >= 0)", "Can't sell for a negative price!")
+    ]
+
+    @api.constrains("selling_price", "expected_price")
+    def _price_in_expectations(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                raise ValidationError("You may not accept an offer for a price inferior to 90%% of expected sale price!")
+
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
@@ -55,7 +68,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price", "offer_ids.status")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped(lambda x : 0 if x.status == 'refused' else x.price), default=0)
+            record.best_price = max(record.offer_ids.mapped(lambda x : 0 if x.status == "refused" else x.price), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
