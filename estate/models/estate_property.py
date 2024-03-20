@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from odoo.tools import relativedelta
 
 class EstateProperty(models.Model):
@@ -67,3 +67,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 10
             self.garden_orientation = 'north'
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError("Sold properties cannot be canceled!")
+            else:
+                record.state = 'canceled'
+        return True
+        
+    def action_sold(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise exceptions.UserError("Canceled properties cannot be sold!")
+            else:
+                record.state = 'sold'
+        return True

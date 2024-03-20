@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from odoo.tools import relativedelta
 
 class EstatePropertyOffer(models.Model):
@@ -33,3 +33,17 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - fields.Date.to_date(record.create_date)).days
             else:
                 record.validity = (record.date_deadline - fields.Date.today()).days
+
+    def action_accept(self):
+        for record in self:
+            if record.property_id.offer_ids.filtered(lambda r: r.status == 'accepted'):
+                raise exceptions.UserError("Another offer is already accepted on this property.")
+            record.status = 'accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            record.status = 'refused'
+        return True
