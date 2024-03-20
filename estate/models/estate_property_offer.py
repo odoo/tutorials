@@ -37,7 +37,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if self._is_valid_deal(record.property_id.state):
                 raise exceptions.UserError(message="Can't accept/reject offer on a closed deal!!")
-            
             if record.property_id.buyer_id:
                 raise exceptions.UserError(message="This property has a buyer already!!")
 
@@ -51,12 +50,10 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if self._is_valid_deal(record.property_id.state):
                 raise exceptions.UserError(message="Can't accept/reject offer on a closed deal!!")
-            
             if record.property_id.buyer_id == record.partner_id and record.property_id.selling_price == record.price:
                 record.property_id.buyer_id = None
                 record.property_id.state = 'new'
                 record.property_id.selling_price = 0
-            
             record.status = 'rejected'
         return True
     

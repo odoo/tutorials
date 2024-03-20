@@ -12,7 +12,6 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False)
     offer_ids = fields.One2many(string="Offers", comodel_name="estate.property.offer", inverse_name="property_id")
     tag_ids = fields.Many2many(string="Tags", comodel_name="estate.property.tag")
-    
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -42,12 +41,10 @@ class EstateProperty(models.Model):
         ('sold', 'Sold'),
         ('canceled', 'Canceled')
     ], default='new', required=True, copy=False, string="State")
-    
     _sql_constraints = [
         ('check_positive_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive.'),
         ('check_positive_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.')
     ]
-    
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
     best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
 
@@ -82,7 +79,6 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError(message="Already a canceled property")
             if record.state == 'sold':
                 raise exceptions.UserError(message="Already a sold property")
-            
             record.state = 'sold'
         return True
 
@@ -92,6 +88,5 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError(message="Already a canceled property")
             if record.state == 'sold':
                 raise exceptions.UserError(message="A sold property can't be canceled")
-            
             record.state = 'canceled'
         return True
