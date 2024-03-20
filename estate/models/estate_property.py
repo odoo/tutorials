@@ -13,6 +13,7 @@ class EstateProperty(models.Model):
 
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -82,7 +83,7 @@ class EstateProperty(models.Model):
         if self.state == 'sold':
             raise exceptions.UserError("Sold properties cannot be canceled!")
 
-        return self.write({"state", "canceled"})
+        return self.write({'state': 'canceled'})
 
     def action_sold(self):
         self.ensure_one()
@@ -90,7 +91,7 @@ class EstateProperty(models.Model):
         if self.state == 'canceled':
             raise exceptions.UserError("Canceled properties cannot be sold!")
 
-        return self.write({"state", "sold"})
+        return self.write({'state': 'sold'})
 
     def accept_offer(self, price, partner_id):
         self.ensure_one()

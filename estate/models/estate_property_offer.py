@@ -6,6 +6,7 @@ from odoo.tools import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection([
@@ -15,6 +16,7 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
 
     validity = fields.Integer(string="Offer Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_deadline_date", inverse="_inverse_deadline_date")
@@ -45,8 +47,8 @@ class EstatePropertyOffer(models.Model):
             raise exceptions.UserError("Another offer is already accepted on this property.")
 
         self.property_id.accept_offer(self.price, self.partner_id)
-        return self.write({'status', 'accepted'})
+        return self.write({'status': 'accepted'})
 
     def action_refuse(self):
         self.ensure_one()
-        return self.write({'status', 'refused'})
+        return self.write({'status': 'refused'})

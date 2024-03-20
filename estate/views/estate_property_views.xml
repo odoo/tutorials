@@ -5,20 +5,22 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <field name="state"/>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -29,22 +31,23 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_cancel" type="object" string="Cancel"/>
-                    <button name="action_sold" type="object" string="Sold"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ['canceled', 'sold']"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state in ['canceled', 'sold']"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
 
                     <div class="oe_title">
                         <h1><field name="name"/></h1>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
 
                     <separator/>
 
                     <group>
                         <group>
-                            <field name="state"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create_edit':'true', 'no_create':'true'}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -64,13 +67,13 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'canceled']"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -95,13 +98,13 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=10_actions.html', self)]"/>
                 <field name="facades"/>
 
-                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
+                <filter name="available" string="Available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
 
                 <group>
-                    <filter string="By Postcode" name="by_postcode" context="{'group_by': 'postcode'}"/>
+                    <filter name="by_postcode" string="By Postcode" context="{'group_by': 'postcode'}"/>
                 </group>
             </search>
         </field>
