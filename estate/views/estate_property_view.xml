@@ -21,7 +21,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" optional="hide"/>
-                <field name="state" invisible="true"/>
+                <field name="state"/>
                 <field name="property_type_id"/>
             </tree>
         </field>

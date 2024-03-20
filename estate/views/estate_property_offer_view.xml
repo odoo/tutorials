@@ -14,7 +14,7 @@
             <tree editable="top" decoration-success="status == 'accepted'" decoration-danger="status == 'rejected'">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <field name="status" invisible="true"/>
+                <field name="status" column_invisible="True"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <field name="property_type_id"/>

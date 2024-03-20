@@ -56,6 +56,5 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = 0
             record.status = 'rejected'
         return True
-    
     def _is_valid_deal(self, status):
         return status in ['sold', 'canceled']
