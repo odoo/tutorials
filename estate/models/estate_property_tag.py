@@ -8,4 +8,6 @@ class EstatePropertyTag(models.Model):
 
     name = fields.Char(required=True)
 
-    #property_ids = fields.Many2many('estate.property', string="Properties")
+    _sql_constraints = [
+        ('name_unique', 'unique (name)', "Tag name already exists!"),
+    ]
