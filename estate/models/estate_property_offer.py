@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
 
@@ -27,3 +27,20 @@ class EstatePropertyOffer(models.Model):
             origin = record.create_date if record.create_date else fields.Date.today()
             # If there's a way to do this that's less verbose and doesn't require me to correct the duration with a +1, I'd love if you could show me
             record.validity = (datetime.combine(record.date_deadline, datetime.min.time()) - origin).days + 1
+
+
+    def action_accept(self):
+        for record in self:
+            for other_offer in record.property_id.offer_ids:
+                if other_offer == record:
+                    continue
+                other_offer.status = "refused"
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            record.status = "refused"
+        return True

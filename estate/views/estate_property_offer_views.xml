@@ -9,6 +9,8 @@
                 <field name="price"/>
                 <field name="status"/>
                 <field name="partner_id"/>
+                <button name="action_accept" type="object" icon="fa-check" title="accept offer"/>
+                <button name="action_refuse" type="object" icon="fa-times" title="refuse offer"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
             </tree>
@@ -20,6 +22,10 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Property offer Form">
+                <header>
+                    <button name="action_accept" type="object" icon="fa-check" title="accept offer"/>
+                    <button name="action_refuse" type="object" icon="fa-times" title="refuse offer"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="price"/>
