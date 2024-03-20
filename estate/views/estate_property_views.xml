@@ -1,32 +1,41 @@
 <?xml version="1.0"?>
 <odoo>
-	<record id="custom_tree_view" model="ir.ui.view">
+	<record id="property_tree_view" model="ir.ui.view">
 		<field name="name">estate.property.tree</field>
 		<field name="model">estate.property</field>
 		<field name="arch" type="xml">
-			<tree string="Channel">
+			<tree string="Estate List"
+				  decoration-success="state in ['offer_accepted', 'offer_received']"
+				  decoration-bf="state == 'offer_accepted'"
+				  decoration-muted = "state == 'sold'">
+				<field name="state" invisible="True"/>
 				<field name="name"/>
 				<field name="postcode"/>
 				<field name="bedrooms" string="Bedrooms"/>
 				<field name="living_area"/>
 				<field name="expected_price"/>
 				<field name="selling_price"/>
-				<field name="date_availability"/>
+				<field name="date_availability" optional="hide" />
 			</tree>
 		</field>
 	</record>
 
-	<record id="custom_form_view" model="ir.ui.view">
+	<record id="property_form_view" model="ir.ui.view">
 		<field name="name">estate.property.form</field>
 		<field name="model">estate.property</field>
 		<field name="arch" type="xml">
-			<form string="Estate">
+			<form string="Estate Form">
+				<header>
+					<field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+					<button name="action_set_sold" type="object" string="SOLD" invisible="state in ['sold', 'canceled']"/>
+					<button name="action_cancel" type="object" string="CANCEL" invisible="state in ['sold', 'canceled']"/>
+				</header>
 				<sheet>
 					<h1><field name="name"/></h1>
-					<field name="tag_ids" widget="many2many_tags"/>
+					<field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
 					<group>
 						<group>
-							<field name="type_id"/>
+							<field name="type_id" options="{'no_create': True}" />
 							<field name="postcode"/>
 							<field name="date_availability"/>
 						</group>
@@ -45,13 +54,13 @@
 								<field name="facades" string="Facades"/>
 								<field name="garage"/>
 								<field name="garden"/>
-								<field name="garden_area"/>
-								<field name="garden_orientation"/>
+								<field name="garden_area" invisible="not garden" />
+								<field name="garden_orientation" invisible="not garden" />
 								<field name="total_area"/>
 							</group>
 						</page>
 						<page string="Offers">
-							<field name="offer_ids"/>
+							<field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'canceled']" />
 						</page>
 						<page string="Other Info">
 							<group>
@@ -65,7 +74,7 @@
 		</field>
 	</record>
 
-	<record id="custom_search_view" model="ir.ui.view">
+	<record id="estate_search_view" model="ir.ui.view">
 		<field name="name">estate.property.search</field>
 		<field name="model">estate.property</field>
 		<field name="arch" type="xml">
@@ -74,7 +83,7 @@
 				<field name="postcode"/>
 				<field name="expected_price"/>
 				<field name="bedrooms" string="Bedrooms"/>
-				<field name="living_area"/>
+				<field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
 				<field name="facades" string="Facades"/>
 				<separator/>
 				<filter string='Available' name='available_filter' domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
@@ -87,9 +96,10 @@
 		<field name="name">Properties</field>
 		<field name="res_model">estate.property</field>
 		<field name="view_mode">tree,form</field>
+		<field name="context">{'search_default_available_filter':True}</field>
 	</record>
 
-	<menuitem id="test_root" name="Estate">
+	<menuitem id="estate_root_menu" name="Estate">
 		<menuitem id="estates_list_menuitem" name="Advertisements" action="estate_properties_action"/>
 		<menuitem id="estate_settings_submenu" name="Settings">
 			<menuitem id="estates_types_menuitem" action="estate_types_action"/>

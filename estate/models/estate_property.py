@@ -1,16 +1,26 @@
 """module for the estate property model"""
 
-from odoo import models, fields, api
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     "Estate property odoo model"
     _name = "estate.property"
-    _description= "model for real estate assets"
-    #
+    _description= "real estate assets"
+    _order = "id desc"
+    _sql_constraints = [
+            ("positive_expected_price", "CHECK(expected_price > 0)", "expected price must be more than 0"),
+            ("positive_selling_price", "CHECK(selling_price >= 0)", "selling price must be 0 or more")
+            ]
+
     name = fields.Char("Name", required = True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
-    date_availability = fields.Date("Available From", default = lambda _: fields.Date.add(fields.Date.today(), months=3))
+    date_availability = fields.Date(
+            "Available From", 
+            default = lambda _: fields.Date.add(fields.Date.today(), months=3),
+            required = True)
     expected_price = fields.Float("Expected Price", required = True)
     selling_price = fields.Float("Selling Price")
     bedrooms = fields.Integer("# bedrooms", default = 2)
@@ -21,21 +31,62 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer("Garden Area (m2)")
     garden_orientation = fields.Selection([ ("north", "North"), ("south", "South"), ("east", "East"), ("west", "West") ])
     active = fields.Boolean(default = True)
-    state = fields.Selection([ ("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("canceled", "Canceled") ], required = True, default = "new", string = "Bar", copy=False)
-    create_date = fields.Datetime(copy = False)
+    state = fields.Selection(
+            [ ("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("canceled", "Canceled") ],
+            required = True, default = "new", string = "Bar", copy=False)
     type_id = fields.Many2one("estate.property.type", string = "Type")
     buyer_id = fields.Many2one("res.partner", string = "Buyer")
     salesperson_id = fields.Many2one("res.users", string = "Salesperson", default = lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string = "Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string = "Offers")
-    best_price = fields.Float("Best Offer", compute="_best_price")
-    total_area = fields.Float("Total Area (m2)", compute="_total_area", default=0.0)
-    #
+    best_price = fields.Float("Best Offer", compute="_compute_best_price")
+    total_area = fields.Float("Total Area (m2)", compute="_compute_total_area", default=0.0)
+    def action_set_sold(self):
+        self.ensure_one()
+        if self.state != "canceled":
+            self.state = "sold"
+        else:
+            raise UserError("Sale was already canceled")
+
+    def action_cancel(self):
+        self.ensure_one()
+        if self.state != "sold":
+            self.state = "canceled"
+        else:
+            raise UserError("Already sold")
+
     @api.depends("living_area", "garden_area")
-    def _total_area(self):
-        self.total_area = self.living_area + self.garden_area
-    #
-    @api.depends("offer_ids.price")
-    def _best_price(self):
-        self.best_price = max((of.price for of in self.offer_ids), default=0.0)
-    #
+    def _compute_total_area(self):
+        for rec in self:
+            rec.total_area = rec.living_area + rec.garden_area
+
+    @api.depends("offer_ids")
+    def _compute_best_price(self):
+        for rec in self:
+            self.best_price = max(rec.offer_ids.mapped("price"), default=0.0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if (self.garden):
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for rec in self:
+            if float_is_zero(rec.selling_price, precision_digits = 2): 
+                continue
+            if float_compare(rec.selling_price, 0.9 * rec.expected_price, precision_rounding = 0.1) < 0:
+                raise ValidationError("selling price must be above 90% of the expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _constrain_delete(self):
+        for rec in self:
+            if rec.state not in ['new', 'canceled']:
+                raise UserError("Can only delete when status is 'New' or 'Canceled'")
+    
+    # maybe TODO (not in tuto so far): onchange offer_ids, set `state` accordingly
+    
