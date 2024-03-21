@@ -29,6 +29,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
+                <header>
+                    <button name="action_set_sold_state" type="object" string="SOLD"/>
+                    <button name="action_set_canceled_state" type="object" string="CANCEL"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -36,6 +40,7 @@
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -87,7 +92,6 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/> 
                 <field name="facades"/>
-
                 <filter name="available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="groupby_postcode" string="Postcode" context="{'group_by': 'postcode'}" />
             </search>
