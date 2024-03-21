@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="users_model_view_tree" model="ir.ui.view">
+        <field name="name">users.tree</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <tree string="Users">
+                <field name="property_ids" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="res_users_view_form" model="ir.ui.view">
+        <field name="name">users.model.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <sheet>
+                <notebook>
+                    <page name="Properties">
+                        <group name="messaging" position="after">
+                            <field name="property_ids"/>
+                        </group>
+                    </page>
+                </notebook>
+            </sheet>
+        </field>
+    </record>
+
+    <record id="users_model_action" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

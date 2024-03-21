@@ -28,7 +28,7 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for offer in self:
-            if offer.create_date:
+            if offer.create_date and offer.date_deadline:
                 offer.validity = (offer.date_deadline - offer.create_date.date()).days
 
     def action_offer_accepted(self):
@@ -46,3 +46,14 @@ class EstatePropertyOffer(models.Model):
             return True
         else:
             raise exceptions.UserError(_("You can't refuse an accepted offers"))
+
+    @api.model
+    def create(self, vals):
+        prop = self.env["estate.property"].browse(vals["property_id"])
+        if prop.exists() :
+            if float_utils.float_compare(vals['price'], prop.best_price, 2) < 0:
+                raise exceptions.UserError(_("Your price is lower than the best price"))
+            if prop.state == 'new':
+                prop.write({'state': 'offer received'})
+
+        return super().create(vals)
