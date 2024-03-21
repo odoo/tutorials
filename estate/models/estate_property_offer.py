@@ -2,6 +2,7 @@
 
 from odoo import api, fields, models, exceptions
 from odoo.tools import relativedelta
+from odoo.tools.float_utils import float_compare
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -52,3 +53,16 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         self.ensure_one()
         return self.write({'status': 'refused'})
+
+    @api.model_create_multi
+    def create(self, values):
+        best_price = self.env['estate.property'].browse(values[0]['property_id']).best_price
+        records = super().create(values)
+
+        for record in records:
+            if float_compare(record.price, best_price, 2) == -1:
+                raise exceptions.UserError("The price of your offer should not be lower than the best offer.")
+
+            record.property_id.state = 'offer_received'
+
+        return records
