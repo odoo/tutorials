@@ -22,12 +22,41 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type Form">
-                <sheet>
+                <header>
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <button class="oe_stat_button"
+                    name="%(estate.action_offers_matching_type)d"
+                    type="action"
+                    context="{'estate_property_type_id': active_id}"
+                    >
+                        <div class="o_stat_info">
+                            <field class="o_stat_text" name="property_offer_count"/>
+                            <span class="o_stat_text" invisible="False"> Offers</span>
+                        </div>
+                    </button>
+
+                </header>
+                <sheet>
                     <notebook>
                         <page string="Properties">
+                            <group>
+                                <field name="property_ids" string="">
+                                    <tree>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="property_offer_count"/>
+                                <field name="property_offer_ids" string=""/>
+                            </group>
                         </page>
                         <page string="The Bee Movie Script">
                             <group>

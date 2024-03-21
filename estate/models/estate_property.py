@@ -2,16 +2,19 @@ from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero, float_compare
+from odoo.tools.translate import _
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "A property managed by the Estate module."
+    _order = "id desc"
+    sequence = fields.Integer("Sequence", default=1, help="Manual order field")
 
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default= fields.Date.today()+relativedelta(months=3))
+    date_availability = fields.Date(copy=False, default=lambda x: fields.Date.today()+relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False, default=0)
 
@@ -20,7 +23,7 @@ class EstateProperty(models.Model):
     facades = fields.Integer()
 
     active = fields.Boolean(default=True)
-    state = fields.Char()
+    #state = fields.Char()
 
     garage = fields.Boolean()
     garden = fields.Boolean()
@@ -28,7 +31,7 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
-    state = fields.Selection(
+    status = fields.Selection(
         selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled") ],
         copy=False,
         default="new",
@@ -47,7 +50,7 @@ class EstateProperty(models.Model):
 
     # Do SQL constraints need to be written with single-quotes, as you would in an actual SQL expression? Or are double-quotes always ok?
     _sql_constraints = [
-        ("expected_price", "CHECK(expected_price > 0)", "Expected price must be positive" ),
+        ("expected_price", "CHECK(expected_price > 0)", "Expected price must be positive." ),
         ("selling_price", "CHECK(selling_price >= 0)", "Can't sell for a negative price!")
     ]
 
@@ -55,14 +58,14 @@ class EstateProperty(models.Model):
     def _price_in_expectations(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
-                raise ValidationError("You may not accept an offer for a price inferior to 90%% of expected sale price!")
+                raise ValidationError(_("You may not accept an offer for a price inferior to 90%% of expected sale price!"))
 
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
-            lr = record.living_area if record.living_area else 0
-            gr = record.garden_area if record.garden_area else 0
+            lr = record.living_area or 0
+            gr = record.garden_area or 0
             record.total_area = lr + gr
 
     @api.depends("offer_ids.price", "offer_ids.status")
@@ -79,23 +82,18 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def action_property(self):
-        for record in self:
-            record.garage = record.garage
-        return True
-
     def action_cancel(self):
         for record in self:
-            if record.state != "sold":
-                record.state = "cancelled"
+            if record.status != "sold":
+                record.status = "cancelled"
             else:
-                raise UserError("This property has already been sold!")
+                raise UserError(_("This property has already been sold!"))
         return True
 
     def action_is_sold(self):
         for record in self:
-            if record.state != "cancelled":
-                record.state = "sold"
+            if record.status != "cancelled":
+                record.status = "sold"
             else:
-                raise UserError("This property sale has been cancelled and can no longer be sold.")
+                raise UserError(_("This property sale has been cancelled and can no longer be sold."))
         return True

@@ -1,17 +1,20 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
+from odoo.tools.translate import _
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property offer"
+    _order = "price desc"
 
     price = fields.Float(required=True)
     partner_id = fields.Many2one("res.partner", required=True, string="Buyer")
     status = fields.Selection(selection=[("awaiting", "Awaiting"), ("refused", "Refused"), ("accepted", "Accepted")], required=True, default="awaiting", copy=False)
 
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(store=True, related="property_id.property_type_id")
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
@@ -20,31 +23,29 @@ class EstatePropertyOffer(models.Model):
         ("price", "CHECK(price > 0)", "Offer price must be positive.")
     ]
 
-    @api.depends("validity")
+    @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for record in self:
-            origin = record.create_date if record.create_date else fields.Date.today()
+            origin = record.create_date or fields.Date.today()
             record.date_deadline = origin + relativedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
-            origin = record.create_date if record.create_date else fields.Date.today()
-            # If there's a way to do this that's less verbose and doesn't require me to correct the duration with a +1, I'd love if you could show me
-            record.validity = (datetime.combine(record.date_deadline, datetime.min.time()) - origin).days + 1
+            origin = record.create_date or fields.Date.today()
+            record.validity = (record.date_deadline - origin.date()).days
 
 
     def action_accept(self):
-        for record in self:
-            for other_offer in record.property_id.offer_ids:
-                if other_offer == record:
-                    continue
-                other_offer.status = "refused"
-            record.status = "accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
+        self.ensure_one()
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.selling_price = self.price
+        # delayed orm operations with write? or just shorter, either way
+        self.search([("property_id", "=", self.property_id.ids)]).write({"status": "refused"})
+
+        self.status = "accepted"
         return True
 
     def action_refuse(self):
-        for record in self:
-            record.status = "refused"
+        self.ensure_one()
+        self.status = "refused"
         return True
