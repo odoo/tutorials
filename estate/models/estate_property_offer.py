@@ -6,7 +6,7 @@ class EstatePropertyOffer(models.Model):
     _description = "Estate Property Offer"
     _order = "price desc"
 
-    price = fields.Float(string="Price")
+    price = fields.Float(string="Price", required=True)
     status = fields.Selection([
         ("accepted", "Accepted"),
         ("rejected", "Rejected"),
@@ -21,6 +21,14 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ('check_positive_offer_price', 'CHECK(price > 0)', 'The offer price must be positive.'),
     ]
+
+    @api.model
+    def create(self, vals):
+        best_price = self.env['estate.property'].browse(vals['property_id']).best_price
+        if vals['price'] < best_price:
+            raise exceptions.UserError(f"Adding price less than the highest price isn't allowed! \n Highest price is: {best_price}")
+        self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
+        return super().create(vals)
 
     @api.depends("validity", "create_date")
     def _compute_deadline_date(self):

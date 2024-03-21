@@ -48,6 +48,12 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
     best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if not (record.state == 'new' or record.state == 'canceled'):
+                raise exceptions.UserError(f"Removing {record.state} state isn't allowed!")
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
