@@ -1,7 +1,8 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from odoo.tools.float_utils import float_compare
 
 
 class EsateProperty(models.Model):
@@ -14,7 +15,7 @@ class EsateProperty(models.Model):
     date_availability = fields.Date('Available From', copy=False, 
                                     default=lambda _: date.today() + relativedelta(months=3))
     expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price', readonly=True, copy=False, compute="_compute_selling_price")
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False, compute='_compute_selling_price', store=True)
     bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer('Facades')
@@ -51,6 +52,12 @@ class EsateProperty(models.Model):
 
     accepted_offer_id = fields.Many2one('estate.property.offer', string='Accepted Offer')
 
+    _sql_constraints = [
+        ('check_expected_price', 
+         'CHECK(expected_price > 0)', 
+         'Expected price must be strictly positive.'),
+    ]
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -74,6 +81,13 @@ class EsateProperty(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price \
+                and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
+                raise ValidationError('Selling price must be >= 90% of the expected price.')
 
     def action_mark_sold(self):
         for record in self:
