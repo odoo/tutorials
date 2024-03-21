@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -14,8 +15,8 @@ class EstatePropertyOffer(models.Model):
         ('refused', 'Refused')
     ], default='new', copy=False)
 
-    partner_id = fields.Many2one('res.partner', string='Buyer')
-    property_id = fields.Many2one('estate.property', string='Property')
+    buyer_id = fields.Many2one('res.partner', string='Buyer', required=True)
+    property_id = fields.Many2one('estate.property', string='Property', required=True)
 
     validity = fields.Integer('Validity (days)', default=7)
     date_deadline = fields.Date('Deadline', compute='_compute_deadline', inverse='_inverse_deadline')
@@ -32,5 +33,24 @@ class EstatePropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             if record.create_date and record.date_deadline:
-                print(f'diff: {(record.date_deadline - record.create_date).days}')
                 record.validity = (record.date_deadline - record.create_date).days
+
+    def action_accept(self):
+        for record in self:
+            if record.property_id.accepted_offer_id.id == record.id:
+                continue
+
+            if record.property_id.accepted_offer_id:
+                raise UserError('The property already has an accepted offer!')
+
+            record.property_id._accept_offer(record)
+            record.status = 'accepted'
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            if record.property_id.accepted_offer_id.id == record.id:
+                record.property_id.accepted_offer_id = None
+
+            record.status = 'refused'
+        return True
