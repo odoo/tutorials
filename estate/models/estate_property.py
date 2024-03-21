@@ -1,4 +1,5 @@
-from odoo import fields, models, api, exceptions
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_utils
 
 
@@ -52,7 +53,7 @@ class EstateProperty(models.Model):
     def _unlink_property(self):
         for record in self:
             if not (record.state == 'new' or record.state == 'canceled'):
-                raise exceptions.UserError(f"Removing {record.state} state isn't allowed!")
+                raise UserError(f"Removing {record.state} state isn't allowed!")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -77,22 +78,22 @@ class EstateProperty(models.Model):
     def _check_property_pricing(self):
         for record in self:
             if record.state != "new" and float_utils.float_compare(record.selling_price, record.expected_price * 0.9, 2) < 0:
-                raise exceptions.ValidationError(message="The selling price can't be lower than 90%- the expected price!")
+                raise ValidationError(message="The selling price can't be lower than 90%- the expected price!")
 
     def action_set_sold_state(self):
         for record in self:
             if record.state == 'canceled':
-                raise exceptions.UserError(message="Already a canceled property")
+                raise UserError(message="Already a canceled property")
             if record.state == 'sold':
-                raise exceptions.UserError(message="Already a sold property")
+                raise UserError(message="Already a sold property")
             record.state = 'sold'
         return True
 
     def action_set_cancel_state(self):
         for record in self:
             if record.state == 'canceled':
-                raise exceptions.UserError(message="Already a canceled property")
+                raise UserError(message="Already a canceled property")
             if record.state == 'sold':
-                raise exceptions.UserError(message="A sold property can't be canceled")
+                raise UserError(message="A sold property can't be canceled")
             record.state = 'canceled'
         return True

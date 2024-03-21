@@ -1,4 +1,5 @@
-from odoo import fields, models, api, exceptions
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -24,9 +25,9 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        best_price = self.env['estate.property'].browse(vals['property_id']).best_price
-        if vals['price'] < best_price:
-            raise exceptions.UserError(f"Adding price less than the highest price isn't allowed! \n Highest price is: {best_price}")
+        best_offer = self.env['estate.property'].browse(vals['property_id']).best_offer
+        if vals['price'] < best_offer:
+            raise UserError(f"Adding price less than the highest price isn't allowed! \n Highest price is: {best_offer}")
         self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
         return super().create(vals)
 
@@ -44,9 +45,9 @@ class EstatePropertyOffer(models.Model):
     def action_set_accepted_state(self):
         for record in self:
             if self._is_valid_deal(record.property_id.state):
-                raise exceptions.UserError(message="Can't accept/reject offer on a closed deal!!")
+                raise UserError(message="Can't accept/reject offer on a closed deal!!")
             if record.property_id.buyer_id:
-                raise exceptions.UserError(message="This property has a buyer already!!")
+                raise UserError(message="This property has a buyer already!!")
 
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer_accepted'
@@ -57,12 +58,13 @@ class EstatePropertyOffer(models.Model):
     def action_set_rejected_state(self):
         for record in self:
             if self._is_valid_deal(record.property_id.state):
-                raise exceptions.UserError(message="Can't accept/reject offer on a closed deal!!")
+                raise UserError(message="Can't accept/reject offer on a closed deal!!")
             if record.property_id.buyer_id == record.partner_id and record.property_id.selling_price == record.price:
                 record.property_id.buyer_id = None
                 record.property_id.state = 'new'
                 record.property_id.selling_price = 0
             record.status = 'rejected'
         return True
+
     def _is_valid_deal(self, status):
         return status in ['sold', 'canceled']
