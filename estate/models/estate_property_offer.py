@@ -1,4 +1,6 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
+from odoo.tools import float_utils
+from odoo.tools.translate import _
 
 
 class EstatePropertyOffer(models.Model):
@@ -14,7 +16,6 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(related="property_id.property_type_id", stored=True)
 
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
-    create_date = fields.Date(default=lambda _: fields.Date().today())
 
     _sql_constraints = [
         ("check_offer_price", "CHECK(price > 0)", "The offer price must be strictly positive")
@@ -22,18 +23,26 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for offer in self:
-            offer.date_deadline = fields.Date().add(offer.create_date, days=offer.validity)
+            if offer.create_date:
+                offer.date_deadline = fields.Date().add(offer.create_date.date(), days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:
-            offer.validity = (offer.date_deadline - offer.create_date).days
+            if offer.create_date:
+                offer.validity = (offer.date_deadline - offer.create_date.date()).days
 
     def action_offer_accepted(self):
-        self.status = "accepted"
-        self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.partner_id
-        return True
+        if float_utils.float_is_zero(self.property_id.selling_price, 2):
+            self.status = "accepted"
+            self.property_id.selling_price = self.price
+            self.property_id.buyer_id = self.partner_id
+            return True
+        else:
+            raise exceptions.UserError(_("An offer has already been accepted."))
 
     def action_offer_refused(self):
-        self.status = "refused"
-        return True
+        if not self.status:
+            self.status = "refused"
+            return True
+        else:
+            raise exceptions.UserError(_("You can't refuse an accepted offers"))
