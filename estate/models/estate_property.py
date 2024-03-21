@@ -66,7 +66,7 @@ class EsateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self: 
-            record.best_offer = max(self.offer_ids.mapped('price')) if len(self.offer_ids) > 0 else None
+            record.best_offer = max(self.offer_ids.mapped('price'), default=0.)
 
     @api.depends('accepted_offer_id')
     def _compute_selling_price(self):
