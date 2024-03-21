@@ -9,7 +9,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <field name="property_type_id"/>
 
@@ -26,8 +26,12 @@
         <field name="arch" type="xml">
             <form string="Real Estate">
                 <header>
-                    <button name="action_property_sold" type="object" string="Sold"/>
-                    <button name="action_property_canceled" type="object" string="Canceled"/>
+                    <button name="action_property_sold" type="object" string="Sold"
+                            invisible="state == 'sold' or state == 'new' or state == 'offer received'"/>
+                    <button name="action_property_canceled" type="object" string="Canceled"
+                            invisible="state == 'sold' or state == 'new' or state == 'offer received'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted, sold"
+                           options="{'clickable': '1'}"/>
                 </header>
 
                 <sheet>
@@ -37,8 +41,8 @@
 
                     <group>
                         <group>
-                            <field name="property_tag_ids" widget="many2many_tags"/>
-                            <field name="property_type_id"/>
+                            <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="property_type_id" options="{'no_create': true, 'no_open': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -60,8 +64,8 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                     <field name="state"/>
                                     <field name="total_area"/>
                                 </group>
@@ -88,16 +92,18 @@
         <field name="name">estate.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
+            <tree string="Channel" decoration-success="state == 'offer received' or state == 'offer accepted'"
+                  decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
-                <field name="property_tag_ids" widget="many2many_tags"/>
+                <field name="property_tag_ids" options="{'color_field': 'color'}" widget="many2many_tags"/>
                 <field name="offer_ids"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="state" optional="1"/>
+                <field name="date_availability" optional="1"/>
             </tree>
         </field>
     </record>
@@ -106,6 +112,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_state': True, 'search_default_current': True}</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
             Define a new property

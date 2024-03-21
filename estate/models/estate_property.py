@@ -5,6 +5,7 @@ from odoo.tools import float_utils
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
