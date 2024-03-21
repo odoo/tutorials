@@ -25,9 +25,11 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        best_offer = self.env['estate.property'].browse(vals['property_id']).best_offer
+        best_offer = self.env['estate.property'].browse(vals['property_id']).exists().best_offer
+        # Alter way
+        # best_offer = self.env['estate.property'].search([("id", "=", "vals['property_id']")]).best_offer
         if vals['price'] < best_offer:
-            raise UserError(f"Adding price less than the highest price isn't allowed! \n Highest price is: {best_offer}")
+            raise UserError(f"Adding offer less than the highest offer isn't allowed! \n Highest offer is: {best_offer}")
         self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
         return super().create(vals)
 
