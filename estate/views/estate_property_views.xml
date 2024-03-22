@@ -8,7 +8,7 @@
 				  decoration-success="state in ['offer_accepted', 'offer_received']"
 				  decoration-bf="state == 'offer_accepted'"
 				  decoration-muted = "state == 'sold'">
-				<field name="state" invisible="True"/>
+				<field name="state" column_invisible="True"/>
 				<field name="name"/>
 				<field name="postcode"/>
 				<field name="bedrooms" string="Bedrooms"/>
@@ -86,16 +86,47 @@
 				<field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
 				<field name="facades" string="Facades"/>
 				<separator/>
-				<filter string='Available' name='available_filter' domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
+				<filter string='Available' name='available_filter' domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
 				<filter string='Postcode' name="groupby_postcode" context="{'group_by': 'postcode'}"/>
 			</search>
+		</field>
+	</record>
+
+	<record id="estate_kanban_view" model="ir.ui.view">
+		<field name="name">estate.property.kanban</field>
+		<field name="model">estate.property</field>
+		<field name="arch" type="xml">
+			<kanban default_group_by="type_id" records_draggable="False">
+				<field name="state"/>
+				<templates>
+					<t t-name="kanban-box">
+						<div class="oe_kanban_global_click">
+							<h1 class="o_kanban_record_title">
+								<field name="name"/>
+							</h1>
+							<div class="o_kanban_record_body">
+								<field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+								<p> 
+									<em>Expected Price: </em><field name="expected_price"/><br/>
+									<t t-if="record.state.raw_value == 'offer_received'">
+										<em>Best Offer: </em><field name="best_price"/><br/>
+									</t>
+									<t t-if="['offer_accepted', 'sold'].includes(record.state.raw_value)">
+										<em>Selling Price: </em><field name="selling_price"/><br/>
+									</t>
+								</p>
+							</div>
+						</div>
+					</t>
+				</templates>
+			</kanban>
 		</field>
 	</record>
 
 	<record id="estate_properties_action" model="ir.actions.act_window">
 		<field name="name">Properties</field>
 		<field name="res_model">estate.property</field>
-		<field name="view_mode">tree,form</field>
+		<field name="view_mode">kanban,tree,form</field>
 		<field name="context">{'search_default_available_filter':True}</field>
 	</record>
 

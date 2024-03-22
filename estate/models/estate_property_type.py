@@ -1,6 +1,6 @@
 """module for the estate property type model"""
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 class EstatePropertyType(models.Model):
     "Estate property type odoo model"
@@ -15,7 +15,7 @@ class EstatePropertyType(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_type_id")
     offer_count = fields.Integer(compute="_compute_offer_count")
 
+    @api.depends("offer_ids")
     def _compute_offer_count(self):
         for rec in self:
             rec.offer_count = len(rec.offer_ids)
-
