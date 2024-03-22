@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True, string="Title")
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
-    date_availability = fields.Date(default=fields.Date.add(fields.Date.today(), days=90), copy=False, string="Available From")
+    date_availability = fields.Date(default=fields.Date.add(fields.Date.today(), months=3), copy=False, string="Available From")
     expected_price = fields.Float(required=True, string="Expected Price")
     selling_price = fields.Float(readonly=True, copy=False, string="Selling Price")
     bedrooms = fields.Integer(default=2, string="Bedrooms")
@@ -26,7 +26,7 @@ class EstateProperty(models.Model):
         default='new',
         selection=[
             ('new', 'New'),
-            ('offer received', 'Offer Received'),
-            ('offer accepted', 'Offer Accepted'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('canceled', 'Canceled')])
