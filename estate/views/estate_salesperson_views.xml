@@ -1,0 +1,25 @@
+<odoo>
+    <record id="salesperson_view_form" model="ir.ui.view">
+        <field name="name">res.users.view.form.inherit.salesperson</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+
+        <field name="arch" type="xml">
+
+            <group position="after">
+
+            </group>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Property sales">
+                    <field name="property_ids" string=""/>
+                </page>
+            </xpath>
+
+
+        </field>
+
+    </record>
+        
+        
+</odoo>

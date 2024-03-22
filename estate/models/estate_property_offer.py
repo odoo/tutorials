@@ -49,3 +49,8 @@ class EstatePropertyOffer(models.Model):
         self.ensure_one()
         self.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        self.env["estate.property"].browse(vals["property_id"]).status = "offer_received"
+        return super().create(vals)

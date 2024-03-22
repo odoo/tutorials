@@ -49,7 +49,7 @@
                         </group>
                         <group>
                             <field name="buyer_id"/>
-                            <field name="salesman_id"/>
+                            <field name="salesperson_id"/>
                         </group>
                     </group>
                     <group>

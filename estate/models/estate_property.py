@@ -38,7 +38,7 @@ class EstateProperty(models.Model):
         required=True
     )
 
-    salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
+    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     property_type_id = fields.Many2one("estate.property.type")
     property_tag_ids = fields.Many2many("estate.property.tag")
@@ -97,3 +97,8 @@ class EstateProperty(models.Model):
             else:
                 raise UserError(_("This property sale has been cancelled and can no longer be sold."))
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _nodelete_property_with_contents(self):
+        if any((prop.status not in ["new", "cancelled"]) for prop in self):
+            raise UserError(_("Can't delete a property if its status isn't New or Cancelled!"))
