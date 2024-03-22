@@ -15,7 +15,7 @@ class EsateProperty(models.Model):
     date_availability = fields.Date(string='Available From', copy=False, 
                                     default=lambda _: date.today() + relativedelta(months=3))
     expected_price = fields.Float(string='Expected Price', required=True)
-    selling_price = fields.Float(string='Selling Price', readonly=True, copy=False, compute='_compute_selling_price', store=True)
+    selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
     living_area = fields.Integer(string='Living Area (sqm)')
     facades = fields.Integer(string='Facades')
@@ -43,7 +43,6 @@ class EsateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')
     best_offer = fields.Float(string='Best Offer', compute='_compute_best_offer')
-    accepted_offer_id = fields.Many2one('estate.property.offer', string='Accepted Offer')
 
     _sql_constraints = [
         ('check_expected_price', 
@@ -60,11 +59,6 @@ class EsateProperty(models.Model):
     def _compute_best_offer(self):
         for record in self: 
             record.best_offer = max(self.offer_ids.mapped('price'), default=0.)
-
-    @api.depends('accepted_offer_id')
-    def _compute_selling_price(self):
-        for record in self:
-            record.selling_price = record.accepted_offer_id.price if record.accepted_offer_id else None
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -97,7 +91,11 @@ class EsateProperty(models.Model):
 
             record.status = 'cancelled'
             return True
-        
+
     def _accept_offer(self, offer):
-        self.accepted_offer_id = offer
         self.buyer_id = offer.buyer_id
+        self.selling_price = offer.price
+
+    def _refuse_accepted_offer(self):
+        self.buyer_id = None
+        self.selling_price = None

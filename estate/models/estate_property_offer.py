@@ -43,10 +43,10 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if record.property_id.accepted_offer_id.id == record.id:
+            if record.status == 'accepted':
                 continue
 
-            if record.property_id.accepted_offer_id:
+            if record.property_id.selling_price:
                 raise UserError('The property already has an accepted offer!')
 
             record.property_id._accept_offer(record)
@@ -55,8 +55,8 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         for record in self:
-            if record.property_id.accepted_offer_id.id == record.id:
-                record.property_id.accepted_offer_id = None
+            if record.status == 'accepted':
+                record.property_id._refuse_accepted_offer()
 
             record.status = 'refused'
         return True
