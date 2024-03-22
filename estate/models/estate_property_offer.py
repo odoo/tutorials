@@ -1,6 +1,7 @@
 """module for the estate property offer model"""
 
 from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
@@ -50,7 +51,6 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
-        # NOTE: doesn't use `self.env[model_name].browse(value)` (?) as suggested in tuto but seems to work?
         new_offers = super().create(vals)
         for rec in new_offers:
             if rec.property_id.state in ["canceled", "sold"]:
