@@ -2,6 +2,7 @@
 
 from odoo import fields, models
 
+
 class ResUsersChild(models.Model):
     "Estate property tag odoo model"
     _inherit = "res.users"
