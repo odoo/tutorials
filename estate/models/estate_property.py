@@ -23,7 +23,6 @@ class EstateProperty(models.Model):
     facades = fields.Integer()
 
     active = fields.Boolean(default=True)
-    #state = fields.Char()
 
     garage = fields.Boolean()
     garden = fields.Boolean()
@@ -48,7 +47,6 @@ class EstateProperty(models.Model):
 
     best_price = fields.Float(compute="_compute_best_price")
 
-    # Do SQL constraints need to be written with single-quotes, as you would in an actual SQL expression? Or are double-quotes always ok?
     _sql_constraints = [
         ("expected_price", "CHECK(expected_price > 0)", "Expected price must be positive." ),
         ("selling_price", "CHECK(selling_price >= 0)", "Can't sell for a negative price!")

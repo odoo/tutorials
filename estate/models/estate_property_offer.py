@@ -1,7 +1,5 @@
-from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
-from odoo.tools.translate import _
 
 
 class EstatePropertyOffer(models.Model):
@@ -40,7 +38,7 @@ class EstatePropertyOffer(models.Model):
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
         # delayed orm operations with write? or just shorter, either way
-        self.search([("property_id", "=", self.property_id.ids)]).write({"status": "refused"})
+        self.search([("property_id", "in", self.property_id.ids)]).write({"status": "refused"})
 
         self.status = "accepted"
         return True
