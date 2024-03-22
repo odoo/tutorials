@@ -78,6 +78,12 @@ class EsateProperty(models.Model):
                 and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
                 raise ValidationError('Selling price must be >= 90% of the expected price.')
 
+    @api.ondelete(at_uninstall=False)
+    def check_deleted_property(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError('Cannot delete a propoerty unless it\'s newly created or cancelled!')
+
     def action_mark_sold(self):
         for record in self:
             if record.state == 'cancelled':
