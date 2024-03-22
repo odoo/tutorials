@@ -208,7 +208,7 @@
                 <field name="facades"/>
                 <field name="property_type_id"/>
 
-                <filter string="Available" name="available" domain="['|', ('status', '=', 'new'), ('status', '=', 'offer_received')]"/>
+                <filter string="Available" name="available" domain="[('status', 'in', ('new', 'offer_received'))]"/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
 
                 <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
