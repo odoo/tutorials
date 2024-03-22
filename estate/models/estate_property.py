@@ -35,13 +35,19 @@ class EstateProperty(models.Model):
         ('east', 'East'),
         ('west', 'West')
     ], string="Garden Orientation")
-    state = fields.Selection([
-        ('new', 'New'),
-        ('offer_received', 'Offer Received'),
-        ('offer_accepted', 'Offer Accepted'),
-        ('sold', 'Sold'),
-        ('canceled', 'Canceled')
-    ], default='new', required=True, copy=False, string="State")
+    state = fields.Selection(
+        string="State",
+        default='new',
+        required=True,
+        copy=False,
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled')
+        ]
+    )
     _sql_constraints = [
         ('check_positive_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive.'),
         ('check_positive_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.')
