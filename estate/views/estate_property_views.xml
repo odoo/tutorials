@@ -54,18 +54,22 @@
                     </div>
 
                     <group>
-                        <field name="status"/>
-                        <field name="property_type_id"/>
-                        <field name="postcode"/>
-                        <field name="date_availability"/>
-                        <field name="expected_price"/>  
-                        <field name="selling_price"/>
-                        <field name="best_offer"/>
+                        <group>
+                            <field name="status"/>
+                            <field name="property_type_id"/>
+                            <field name="postcode"/>
+                        </group>
+                        <group>
+                            <field name="date_availability"/>
+                            <field name="expected_price"/>  
+                            <field name="selling_price"/>
+                            <field name="best_offer"/>
+                        </group>
                     </group>
 
                     <notebook>
                         <page name="description" string="Description">
-                           <group>
+                            <group>
                                 <field name="description"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
