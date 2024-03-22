@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 DEFAULT_GARDEN_AREA = 10
 
+
 class EstateProperty(models.Model):
 
     def _get_default_date_availability(self):
@@ -109,4 +110,4 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'sold']:
                 raise exceptions.UserError("You cannot delete a property that is not new or sold.")
-        return super(EstateProperty, self)
+        return super()
