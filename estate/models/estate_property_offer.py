@@ -7,9 +7,10 @@ from dateutil.relativedelta import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'An offer for a property'
+    _order = 'price desc'
 
     price = fields.Float(default=0.0)
-    status = fields.Selection([
+    state = fields.Selection([
         ('new', 'New'),
         ('accepted', 'Accepted'),
         ('refused', 'Refused')
@@ -17,9 +18,10 @@ class EstatePropertyOffer(models.Model):
 
     buyer_id = fields.Many2one('res.partner', string='Buyer', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True)
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type', related='property_id.property_type_id', stored=True)
 
-    validity = fields.Integer('Validity (days)', default=7)
-    date_deadline = fields.Date('Deadline', compute='_compute_deadline', inverse='_inverse_deadline')
+    validity = fields.Integer(string='Validity (days)', default=7)
+    date_deadline = fields.Date(string='Deadline', compute='_compute_deadline', inverse='_inverse_deadline')
 
     create_date = fields.Date('Date Created')
 
@@ -43,20 +45,20 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if record.status == 'accepted':
+            if record.state == 'accepted':
                 continue
 
             if record.property_id.selling_price:
                 raise UserError('The property already has an accepted offer!')
 
             record.property_id._accept_offer(record)
-            record.status = 'accepted'
+            record.state = 'accepted'
         return True
 
     def action_refuse(self):
         for record in self:
-            if record.status == 'accepted':
+            if record.state == 'accepted':
                 record.property_id._refuse_accepted_offer()
 
-            record.status = 'refused'
+            record.state = 'refused'
         return True

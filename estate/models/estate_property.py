@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare
 class EsateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Defines a real estate property'
+    _order = 'id desc'
 
     name = fields.Char(string='Title', required=True, index=True)
     description = fields.Text(string='Description')
@@ -30,12 +31,13 @@ class EsateProperty(models.Model):
         ],
         'Garden Orientation')
     active = fields.Boolean(string='Active', default=True)
-    status = fields.Selection([
+    state = fields.Selection([
         ('new', 'New'),
         ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
-        ('cancelled', 'Cancelled')
-    ], 'Status', default='new')
+        ('cancelled', 'Cancelled'),
+    ], 'State', default='new')
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     buyer_id = fields.Many2one('res.partner', string='Buyer')
     salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
@@ -78,23 +80,24 @@ class EsateProperty(models.Model):
 
     def action_mark_sold(self):
         for record in self:
-            if record.status == 'cancelled':
+            if record.state == 'cancelled':
                 raise UserError('A cancelled property cannot be sold')
 
-            record.status = 'sold'
+            record.state = 'sold'
             return True
 
     def action_mark_cancelled(self):
         for record in self:
-            if record.status == 'sold':
+            if record.state == 'sold':
                 raise UserError('A sold property cannot be cancelled')
 
-            record.status = 'cancelled'
+            record.state = 'cancelled'
             return True
 
     def _accept_offer(self, offer):
         self.buyer_id = offer.buyer_id
         self.selling_price = offer.price
+        self.state = 'offer_accepted'
 
     def _refuse_accepted_offer(self):
         self.buyer_id = None
