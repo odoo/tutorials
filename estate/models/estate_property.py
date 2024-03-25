@@ -60,7 +60,7 @@ class EsateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self: 
-            record.best_offer = max(self.offer_ids.mapped('price'), default=0.)
+            record.best_offer = max(self.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -70,6 +70,22 @@ class EsateProperty(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    @api.onchange('state')
+    def _onchange_state(self):
+        if self.state in ['offer_accepted', 'sold'] and not self.env['estate.property.offer'].search([('state', '=', 'accepted')]):
+            raise UserError('No offer has been accepted!')
+
+        if self.state == 'offer_received' and not self.env['estate.property.offer'].search_count([]):
+            raise UserError('No offers have been added!')
+        
+        # Reset accepted offer. It might prove useful to retain the accepted offer in case of cancellation as a form of "history". 
+        if self.state not in ['offer_accepted', 'cancelled']:
+            accepted_offer = next(iter(self.env['estate.property.offer'].search([('state', '=', 'accepted')])), None)
+            if accepted_offer:
+                self.buyer_id = None
+                self.selling_price = None
+                accepted_offer.state = 'new'
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
@@ -104,7 +120,3 @@ class EsateProperty(models.Model):
         self.buyer_id = offer.buyer_id
         self.selling_price = offer.price
         self.state = 'offer_accepted'
-
-    def _refuse_accepted_offer(self):
-        self.buyer_id = None
-        self.selling_price = None

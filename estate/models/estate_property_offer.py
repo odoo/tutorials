@@ -1,5 +1,5 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -14,7 +14,7 @@ class EstatePropertyOffer(models.Model):
         ('new', 'New'),
         ('accepted', 'Accepted'),
         ('refused', 'Refused')
-    ], default='new', copy=False)
+    ], default='new', copy=False, readonly=False)
 
     buyer_id = fields.Many2one('res.partner', string='Buyer', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True)
@@ -48,7 +48,7 @@ class EstatePropertyOffer(models.Model):
             if record.state == 'accepted':
                 continue
 
-            if record.property_id.selling_price:
+            if self.env['estate.property.offer'].search_count([('state', '=', 'accepted')]):
                 raise UserError('The property already has an accepted offer!')
 
             record.property_id._accept_offer(record)
@@ -58,7 +58,7 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             if record.state == 'accepted':
-                record.property_id._refuse_accepted_offer()
+                raise ValidationError('Cannot refuse an accepted offer.')
 
             record.state = 'refused'
         return True
