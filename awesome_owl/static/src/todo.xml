@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+	<t t-name="todo_item">
+		<div t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+			<input type="checkbox" t-on-click="ev => this.props.toggleState?.(ev)"/>
+			<t t-esc="props.todo.id"/>. <t t-esc="props.todo.description"/>
+			<span class="fa fa-remove" t-on-click="ev => props.removeItem(ev)"/>
+		</div>
+	</t>
+
+	<t t-name="todo_list">
+		<t t-foreach="todos" t-as="todo" t-key="todo.id">
+			<TodoItem todo="todo" 
+								toggleState="ev => this.toggleTodo(ev, todo.id)"
+				        removeItem="ev => this.removeTodo(ev, todo.id)"/>
+		</t>
+		<input t-ref="todo_input" placeholder="Enter a new task" t-on-keyup="ev => this.addTodo(ev)"/>
+	</t>
+	
+</templates>
+
+<!--
+<templates xml:space="preserve">
+
+	<t t-name="todo_item">
+		<div t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+			<input type="checkbox" t-on-click="ev => change(ev)"/>
+			<t t-esc="props.todo.id"/>. <t t-esc="props.todo.description"/>
+		</div>
+	</t>
+
+	<t t-name="todo_list">
+		<t t-foreach="todos" t-as="todo" t-key="todo.id">
+			<TodoItem todo="todo"/>
+		</t>
+		<input t-ref="todo_input" placeholder="Enter a new task" t-on-keyup="ev => this.addTodo(ev)"/>
+	</t>
+	
+</templates>
+-->

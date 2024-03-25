@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+	<t t-name="card">
+		<div class="card d-inline-block m-2" style="width: 18rem;">
+			<div class="card-body">
+				<h5 class="card-title">
+					<t t-out="props.title"/>
+					<span class="text-muted text-small" t-on-click="() => {state.show = !(state.show)}">  Toggle</span>
+				</h5>
+				<!-- use t-att-hidden and not t-if so state of inner components is preserved between toggles -->
+				<!-- drawback: must use an html element and not a qweb one like `t` -->
+				<p t-att-hidden="!state.show" class="card-text">
+					<t t-slot="default"/>
+				</p>
+			</div>
+		</div>
+	</t>
+
+</templates>
