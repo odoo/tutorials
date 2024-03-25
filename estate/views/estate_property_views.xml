@@ -4,21 +4,24 @@
         <field name="name">Add Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
+            <tree string="Channel" decoration-success="state in ('offer_accepted', 'offer_received')"
+                decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <field name="state" invisible="1"/>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="date_availability" optional="hide"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
             </tree>
         </field>
     </record>
@@ -32,14 +35,15 @@
                     <h2> 
                         <field name="name"/>
                     </h2>
-                    <field name="tag_ids" widget="many2many_tags"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <header>
-                        <button name="action_set_sold" type="object" string="SOLD"/>
-                        <button name="action_set_canceled" type="object" string="CANCEL"/>
+                        <button name="action_set_sold" type="object" string="SOLD" invisible="state == 'sold'"/>
+                        <button name="action_set_canceled" type="object" string="CANCEL" invisible="state == 'sold'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                     </header>
                     <group>
                         <group>
-                            <field name="state"/>
+                            <field name="type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -58,14 +62,14 @@
                                 <field name="facades"/>
                                 <field name="garage" />
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids"/>
+                                <field name="offer_ids" readonly="state not in ('new', 'offer_recieved')"/>
                             </group>
                         </page>
                         <page string="Other Info"> 
@@ -89,7 +93,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/> 
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/> 
                 <field name="facades"/>
                 <filter name="available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="groupby_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>

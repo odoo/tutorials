@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text(string="Description")
@@ -39,6 +40,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
     best_price = fields.Float(compute="_compute_best_price", string="Best Price")
+    type_id = fields.Many2one("estate.property.type", string="Property Type")
 
     _sql_constraints = [
         ("check_expected_price", "CHECK(expected_price > 0)",
