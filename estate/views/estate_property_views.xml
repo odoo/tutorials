@@ -40,7 +40,7 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <div invisible="state != 'new'">
+                    <div invisible="state in ('sold', 'cancelled')">
                         <button name="action_mark_sold" type="object" string="Sold"/>
                         <button name="action_mark_cancelled" type="object" string="Cancel"/>
                     </div>
