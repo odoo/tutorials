@@ -13,7 +13,7 @@ class EsateProperty(models.Model):
     name = fields.Char(string='Title', required=True, index=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
-    date_availability = fields.Date(string='Available From', copy=False, 
+    date_availability = fields.Date(string='Available From', copy=False,
                                     default=lambda _: date.today() + relativedelta(months=3))
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
@@ -47,8 +47,8 @@ class EsateProperty(models.Model):
     best_offer = fields.Float(string='Best Offer', compute='_compute_best_offer')
 
     _sql_constraints = [
-        ('check_expected_price', 
-         'CHECK(expected_price > 0)', 
+        ('check_expected_price',
+         'CHECK(expected_price > 0)',
          'Expected price must be strictly positive.'),
     ]
 
@@ -59,7 +59,7 @@ class EsateProperty(models.Model):
 
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
-        for record in self: 
+        for record in self:
             record.best_offer = max(self.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('garden')
@@ -78,8 +78,8 @@ class EsateProperty(models.Model):
 
         if self.state == 'offer_received' and not self.env['estate.property.offer'].search_count([]):
             raise UserError('No offers have been added!')
-        
-        # Reset accepted offer. It might prove useful to retain the accepted offer in case of cancellation as a form of "history". 
+
+        # Reset accepted offer. It might prove useful to retain the accepted offer in case of cancellation as a form of "history".
         if self.state not in ['offer_accepted', 'cancelled']:
             accepted_offer = next(iter(self.env['estate.property.offer'].search([('state', '=', 'accepted')])), None)
             if accepted_offer:

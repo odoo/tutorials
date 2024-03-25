@@ -1,6 +1,5 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
-from datetime import date
 from dateutil.relativedelta import relativedelta
 
 
@@ -62,7 +61,7 @@ class EstatePropertyOffer(models.Model):
 
             record.state = 'refused'
         return True
-    
+
     @api.model
     def create(self, vals):
         self.env['estate.property'].browse(vals['property_id']).exists().state = 'offer_received'
