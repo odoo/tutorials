@@ -14,6 +14,12 @@ export class TodoList extends Component {
         useAutoFocus("input_todo");
     }
 
+    removeTodo(id){
+        const index = this.todos.findIndex((elem) => elem.id === id);
+        if(index >= 0)
+            this.todos.splice(index, 1);
+    }
+
     toggleTodo(id){
         const todo = this.todos.find((todo) => todo.id === id);
         if(todo)

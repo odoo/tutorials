@@ -7,6 +7,8 @@
             <t t-esc="props.todo.id"/>
             <t>. </t>
             <t t-esc="props.todo.description"/>
+            <t> </t>
+            <span class="fa fa-remove text-danger" t-on-click="onRemove"/>
         </div>
     </t>
 </templates>
