@@ -57,13 +57,23 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, values):
-        best_price = self.env['estate.property'].browse(values[0]['property_id']).best_price
-        records = super().create(values)
+        # Group the offers by property
+        properties = {}
+        for value in values:
+            property_id = value['property_id']
+            if property_id not in properties:
+                properties[property_id] = []
+            properties[property_id].append(value)
 
-        for record in records:
-            if float_compare(record.price, best_price, 2) == -1:
-                raise exceptions.UserError(_("The price of your offer should not be lower than the best offer."))
+        # For each property, check if the price of each offers is greater than the best price
+        for property_id, offers in properties.items():
+            best_price = self.env['estate.property'].browse(property_id).best_price
+            records = super().create(offers)
 
-            record.property_id.state = 'offer_received'
+            for record in records:
+                if float_compare(record.price, best_price, 2) == -1:
+                    raise exceptions.UserError(_("The price of your offer should not be lower than the best offer."))
+
+                record.property_id.state = 'offer_received'
 
         return records
