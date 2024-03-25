@@ -33,8 +33,13 @@
                         <field name="name"/>
                     </h2>
                     <field name="tag_ids" widget="many2many_tags"/>
+                    <header>
+                        <button name="action_set_sold" type="object" string="SOLD"/>
+                        <button name="action_set_canceled" type="object" string="CANCEL"/>
+                    </header>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
