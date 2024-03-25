@@ -55,7 +55,6 @@
         <field name="arch" type="xml">
             <search string="Look up property offer...">
                 <field name="price"/>
-                <field name="status"/>
                 <field name="partner_id"/>
             </search>
         </field>

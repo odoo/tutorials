@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="context">{ 'search_default_available_properties':True}</field>
 
     
@@ -98,16 +98,32 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_group_by="property_type_id" group_create="False" records_draggable="False">
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
-                            <field name="name"/>
+                            
+                            <h4><field name="name"/></h4>
+
+                            <field name="status" invisible="True"/>
+                            <div>
+                                Expected price: <field name="expected_price" string="Expected Price:"/>
+                            </div>
+                            <div t-if="record.status.raw_value == 'offer_received'">
+                                Best price: <field name="best_price" string="Best Offer"/>
+                            </div>
+                            <div t-if="record.status.raw_value == 'offer_accepted'">
+                                Selling price: <field name="selling_price" string="Selling Price"/>
+                            </div>
+                            
+                            <field name="property_tag_ids"/>
                         </div>
                     </t>
                 </templates>
             </kanban>
+            
         </field>
+        
 
 
 
