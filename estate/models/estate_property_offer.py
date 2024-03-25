@@ -1,8 +1,9 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models, exceptions, _
 from odoo.tools import relativedelta
 from odoo.tools.float_utils import float_compare
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -45,7 +46,7 @@ class EstatePropertyOffer(models.Model):
         self.ensure_one()
 
         if self.property_id.offer_ids.filtered(lambda r: r.status == 'accepted'):
-            raise exceptions.UserError("Another offer is already accepted on this property.")
+            raise exceptions.UserError(_("Another offer is already accepted on this property."))
 
         self.property_id.accept_offer(self.price, self.partner_id)
         return self.write({'status': 'accepted'})
@@ -61,7 +62,7 @@ class EstatePropertyOffer(models.Model):
 
         for record in records:
             if float_compare(record.price, best_price, 2) == -1:
-                raise exceptions.UserError("The price of your offer should not be lower than the best offer.")
+                raise exceptions.UserError(_("The price of your offer should not be lower than the best offer."))
 
             record.property_id.state = 'offer_received'
 

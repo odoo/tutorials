@@ -1,13 +1,5 @@
 <?xml version="1.0"?>
 <odoo>
-
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form,kanban</field>
-        <field name="context">{'search_default_available': True}</field>
-    </record>
-
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
@@ -133,7 +125,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area" filter_domain="[('living_area', '>=10_actions.html', self)]"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
 
                 <filter name="available" string="Available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
@@ -145,4 +137,10 @@
         </field>
     </record>
 
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
 </odoo>

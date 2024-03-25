@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models, exceptions, _
 from odoo.tools import relativedelta
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -82,7 +82,7 @@ class EstateProperty(models.Model):
         self.ensure_one()
 
         if self.state == 'sold':
-            raise exceptions.UserError("Sold properties cannot be canceled!")
+            raise exceptions.UserError(_("Sold properties cannot be canceled!"))
 
         return self.write({'state': 'canceled'})
 
@@ -90,24 +90,24 @@ class EstateProperty(models.Model):
         self.ensure_one()
 
         if self.state == 'canceled':
-            raise exceptions.UserError("Canceled properties cannot be sold!")
+            raise exceptions.UserError(_("Canceled properties cannot be sold!"))
 
         return self.write({'state': 'sold'})
 
-    def accept_offer(self, price, partner_id):
+    def accept_offer(self, offer):
         self.ensure_one()
-        self.selling_price = price
-        self.buyer_id = partner_id
+        self.selling_price = offer.price
+        self.buyer_id = offer.partner_id
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
-                raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
+                raise exceptions.ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
 
     @api.ondelete(at_uninstall=False)
     def _unlink_only_new_or_sold(self):
         for record in self:
             if record.state not in ['new', 'sold']:
-                raise exceptions.UserError("You cannot delete a property that is not new or sold.")
+                raise exceptions.UserError(_("You cannot delete a property that is not new or sold."))
         return super()
