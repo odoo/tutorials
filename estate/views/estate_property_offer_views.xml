@@ -16,9 +16,8 @@
         <field name="arch" type="xml">
             <tree string="Offers"
                   editable="bottom"
-                  decoration-danger="state == 'refused'" 
-                  decoration-success="state == 'accepted'"
-                  decoration-muted="state == 'sold'">
+                  decoration-danger="state == 'refused'"
+                  decoration-success="state == 'accepted'">
                 <field name="price"/>
                 <field name="buyer_id"/>
                 <field name="validity"/>
