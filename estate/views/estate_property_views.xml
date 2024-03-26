@@ -62,7 +62,7 @@
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" readonly="state not in ('new', 'offer_recieved')"/>
+                                <field name="offer_ids" readonly="state not in ('new', 'offer_received')"/>
                             </group>
                         </page>
                         <page string="Other Info"> 
