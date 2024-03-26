@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=lambda x: fields.Date.today()+relativedelta(months=3))
+    date_availability = fields.Date(copy=False, default=lambda x: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False, default=0)
 
@@ -26,12 +26,12 @@ class EstateProperty(models.Model):
 
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area= fields.Integer()
+    garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
     status = fields.Selection(
-        selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled") ],
+        selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")],
         copy=False,
         default="new",
         required=True
@@ -48,7 +48,7 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price")
 
     _sql_constraints = [
-        ("expected_price", "CHECK(expected_price > 0)", "Expected price must be positive." ),
+        ("expected_price", "CHECK(expected_price > 0)", "Expected price must be positive."),
         ("selling_price", "CHECK(selling_price >= 0)", "Can't sell for a negative price!")
     ]
 
@@ -69,7 +69,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price", "offer_ids.status")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped(lambda x : 0 if x.status == "refused" else x.price), default=0)
+            record.best_price = max(record.offer_ids.mapped(lambda x: 0 if x.status == "refused" else x.price), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):

@@ -18,4 +18,4 @@ class EstatePropertyType(models.Model):
 
     def _compute_property_offer_count(self):
         for record in self:
-            record.property_offer_count =  len(record.property_offer_ids) or 0
+            record.property_offer_count = len(record.property_offer_ids) or 0

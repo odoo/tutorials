@@ -10,7 +10,6 @@ class EstateProperty(models.Model):
             {
                 "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",
-                #"journal_id": self.buyer_id.journal_id,
                 "line_ids": [
                     Command.create({
                         "name": f"6% downpayment on property {self.name}",
