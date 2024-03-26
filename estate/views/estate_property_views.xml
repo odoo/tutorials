@@ -1,12 +1,5 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Add Property</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_available': True}</field>
-    </record>
-
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
@@ -31,16 +24,16 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_set_sold" type="object" string="SOLD" invisible="state == 'sold'"/>
+                    <button name="action_set_canceled" type="object" string="CANCEL" invisible="state == 'sold'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
                     <h2> 
                         <field name="name"/>
                     </h2>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                    <header>
-                        <button name="action_set_sold" type="object" string="SOLD" invisible="state == 'sold'"/>
-                        <button name="action_set_canceled" type="object" string="CANCEL" invisible="state == 'sold'"/>
-                        <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
-                    </header>
                     <group>
                         <group>
                             <field name="type_id" options="{'no_create': true}"/>
@@ -101,4 +94,10 @@
         </field>
     </record>
 
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Add Property</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
 </odoo>
