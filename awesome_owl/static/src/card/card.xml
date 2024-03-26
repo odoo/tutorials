@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.card">
+    <t t-name="awesome_owl.Card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title" t-esc="props.title" t-on-click="this.toggleContent"></h5>

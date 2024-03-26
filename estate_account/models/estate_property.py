@@ -2,6 +2,7 @@
 
 from odoo import models, Command
 
+
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
@@ -9,7 +10,6 @@ class EstateProperty(models.Model):
         values = {
             'move_type': 'out_invoice',
             'partner_id': self.buyer_id.id,
-            #'journal_id': self.env['account.journal'].search([('type', '=', 'sale')], limit=1).id
             'invoice_line_ids': [
                 Command.create({
                     'name': self.name + ' - 6% down payment',

@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import { useRef, onMounted } from "@odoo/owl";
+import { onMounted, useRef } from "@odoo/owl";
 
-function useAutoFocus(element_ref){
-    let inputRef = useRef(element_ref);
+function useAutoFocus(elementRef){
+    let inputRef = useRef(elementRef);
     onMounted(() => {
         inputRef.el.focus();
     });

@@ -7,41 +7,14 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <DashboardItem>
-                <h3>Average amount of t-shirt by order this month</h3>
-                <div class="text-center">
-                    <h1 style="color: green"><t t-esc="this.statistics.average_quantity"/></h1>
-                </div>
-            </DashboardItem>
-            <DashboardItem>
-                <h3>Average time for an order to go from 'new' to 'sent' or 'canceled'</h3>
-                <div class="text-center">
-                    <h1 style="color: green"><t t-esc="this.statistics.average_time"/></h1>
-                </div>
-            </DashboardItem>
-            <DashboardItem size="4">
-                <h3>Number of new orders this month</h3>
-                <div class="text-center">
-                    <h1 style="color: green"><t t-esc="this.statistics.nb_new_orders"/></h1>
-                </div>
-            </DashboardItem>
-            <DashboardItem>
-                <h3>Number of cancelled orders this month</h3>
-                <div class="text-center">
-                    <h1 style="color: green"><t t-esc="this.statistics.nb_cancelled_orders"/></h1>
-                </div>
-            </DashboardItem>
-            <DashboardItem>
-                <h3>Total amount of new orders this month</h3>
-                <div class="text-center">
-                    <h1 style="color: green"><t t-esc="this.statistics.total_amount"/></h1>
-                </div>
-            </DashboardItem>
 
-            <DashboardItem size="1" t-if="statistics.isReady">
-                Shirt orders by size
-                <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
-            </DashboardItem>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <DashboardItem size="item.size || 1">
+                   <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                   <t t-component="item.Component" t-props="itemProp" />
+                </DashboardItem>
+            </t>
+
         </Layout>
     </t>
 
