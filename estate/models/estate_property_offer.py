@@ -38,7 +38,7 @@ class EstatePropertyOffer(models.Model):
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
         # delayed orm operations with write? or just shorter, either way
-        self.search([("property_id", "in", self.property_id.ids)]).write({"status": "refused"})
+        self.property_id.write({"status": "refused"})
 
         self.status = "accepted"
         return True
@@ -50,5 +50,5 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        self.env["estate.property"].browse(vals["property_id"]).status = "offer_received"
+        self.env["estate.property"].search([("id", "=", vals["property_id"])]).status = "offer_received"
         return super().create(vals)

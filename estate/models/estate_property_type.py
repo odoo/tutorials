@@ -1,3 +1,4 @@
+from builtins import len
 from odoo import fields, models
 
 class EstatePropertyType(models.Model):
@@ -17,4 +18,4 @@ class EstatePropertyType(models.Model):
 
     def _compute_property_offer_count(self):
         for record in self:
-            record.property_offer_count =  record.property_offer_ids.__len__() or 0
+            record.property_offer_count =  len(record.property_offer_ids) or 0
