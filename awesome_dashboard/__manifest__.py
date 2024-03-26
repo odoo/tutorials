@@ -24,7 +24,13 @@
     'assets': {
         'web.assets_backend': [
             'awesome_dashboard/static/src/**/*',
+            # To remove the asset bundle
+            ('remove', 'awesome_dashboard/static/src/dashboard/**/*'),
         ],
+        # To lazy load the asset bundle
+        'awesome_dashboard.dashboard': [
+            'awesome_dashboard/static/src/dashboard/**/*'
+        ]
     },
     'license': 'AGPL-3'
 }
