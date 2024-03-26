@@ -37,6 +37,11 @@
                     <h1 style="color: green"><t t-esc="this.statistics.total_amount"/></h1>
                 </div>
             </DashboardItem>
+
+            <DashboardItem size="1">
+                Shirt orders by size
+                <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
+            </DashboardItem>
         </Layout>
     </t>
 
