@@ -9,10 +9,23 @@
 
 
 
+                <!--
                 <Card title="'my title'" content="'some content'"/>
                 <Card title="'pfu'" content="'dor'" content2="markup_text"/>
                 <Card title="'Wait'" content="'can you'" content2="markup(' &lt;b>do this?&lt;/b>')"/>
 
+                -->
+                <Card>
+                    <t t-set-slot="title">Can you</t>
+                    <div>do this</div>
+                    <Counter onChange.bind="incrementSum"/>
+
+                </Card>
+
+                <Card>
+                    <t t-set-slot="title">Pfu</t>
+                    <p> dor</p>
+                </Card>
 
                 <div class="card d-inline-block p-2 px-4 m-2">
                     <TodoList />

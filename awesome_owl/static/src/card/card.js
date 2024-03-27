@@ -4,5 +4,5 @@ import { Component, useState } from "@odoo/owl";
 
 export class Card extends Component {
     static template = "awesome_owl.card";
-    static props = [ "title", "content", "content2?"];
+    static props = [ "slots?" ];
 }
