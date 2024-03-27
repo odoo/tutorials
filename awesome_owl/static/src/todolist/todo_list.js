@@ -9,12 +9,24 @@ export class TodoList extends Component {
     static components = { TodoItem }
 
     setup() {
-        this.todos = useState([
-            { id: 1, description: "buy milk", isCompleted: false },
-            //{ id: 2, description: "eat fruit", isCompleted: true },
-            //{ id: 3, description: "bees", isCompleted: false },
+
         
-        ]);
+
+        this.todos = useState([]);
+
+        let todoList = this.todos;
+        this.deleteTodoItem = (id) => {
+            let idx = todoList.findIndex(o => o.id === id);
+            if (idx >= 0) {
+                todoList.splice(idx, 1);
+            }
+        }
+
+        this.todos.push({id: 1, description: "Eat 5 fruits and vegetables a day", isCompleted: false, delete: this.deleteTodoItem});
+        this.todos.push({id: 2, description: "Pet a unicorn", isCompleted: false, delete: this.deleteTodoItem});
+        this.todos.push({id: 3, description: "Vainquish thy enemies", isCompleted: false, delete: this.deleteTodoItem});
+        this.todos.push({id: 4, description: "Turn on the computer", isCompleted: true, delete: this.deleteTodoItem});
+
         this.nextId = this.todos.length + 1;
 
         Autofocus("focus")
@@ -25,9 +37,10 @@ export class TodoList extends Component {
         if (ev.keyCode === 13) {
             let newval = ev.target.value;
             if (newval.length !== 0) {
-                this.todos.push({id: this.nextId, description: newval, isCompleted: false});
+                this.todos.push({id: this.nextId, description: newval, isCompleted: false, delete: this.deleteTodoItem });
                 this.nextId++;
             }
         }
     }
+
 }
