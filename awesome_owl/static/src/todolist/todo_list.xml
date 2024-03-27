@@ -1,7 +1,8 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_list">
         
-            <div>
+            <div class="d-flex flex-column p-2">
+                <input type="text" t-on-keyup="ev => this.addTodo(ev)" placeholder="Enter new todo..." id="todoInput" t-ref="focus"></input>
                 <t t-foreach="todos" t-as="i" t-key="i.id">
                     <TodoItem todo="i"/>
                 </t>
