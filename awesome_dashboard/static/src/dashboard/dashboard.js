@@ -6,11 +6,10 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
 import { DashboardItem } from "./dashboard_item/dashboard_item";
-import { PieChart } from "./charts/pie_chart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart };
+    static components = { Layout, DashboardItem };
 
     setup() {
         this.action = useService("action");
@@ -18,6 +17,7 @@ class AwesomeDashboard extends Component {
         this.display = {
             controlPanel: {},
         };
+        this.items = registry.category("awesome_dashboard").getAll();
     }
 
     openCustomers() {
