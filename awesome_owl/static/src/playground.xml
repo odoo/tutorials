@@ -5,6 +5,8 @@
             Hello, World!
             <Counter/>
             <Counter/>
+            <Card title="'Card A'" content="'Content A'"/>
+            <Card title="'Card B'" content="'Content B'"/>
         </div>
     </t>
 </templates>
