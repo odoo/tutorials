@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="display" className="'o_dashboard h-100'">
             <t t-set-slot="layout-buttons">
-                <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
 
@@ -13,10 +12,10 @@
                     <i class="fa fa-cog"></i>
                 </button>
             </t>
-            <div class="d-flex flex-wrap" t-if="statistics.isReady">
+            <div class="d-flex flex-wrap" t-if="dashboardStatisticsServices.isReady">
                 <t t-foreach="items" t-as="item" t-key="item.id">
                     <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
-                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-set="itemProp" t-value="item.props ? item.props(dashboardStatisticsServices) : {'data': dashboardStatisticsServices}"/>
                         <t t-component="item.Component" t-props="itemProp" />
                     </DashboardItem>
                 </t>
@@ -26,7 +25,7 @@
 
     <t t-name="awesome_dashboard.ConfigurationDialog">
         <Dialog title="'Dashboard items configuration'">
-            Which cards do you whish to see ?
+            Which cards do you wish to see?
             <t t-foreach="items" t-as="item" t-key="item.id">
                 <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
                     <t t-esc="item.description"/>

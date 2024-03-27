@@ -15,15 +15,13 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        this.statistics = useState(useService("awesome_dashboard.statistics"));
+        this.dashboardStatisticsServices = useState(useService("awesome_dashboard.statistics"));
         this.dialog = useService("dialog");
         this.display = {
-            controlPanel: {},
+            controlPanel: {}
         };
         this.items = registry.category("awesome_dashboard").getAll();
-        this.state = useState({
-            disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || []
-        });
+        this.state = useState({ disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || [] });
     }
 
     openConfiguration() {
@@ -38,7 +36,7 @@ class AwesomeDashboard extends Component {
         this.state.disabledItems = newDisabledItems;
     }
 
-    openCustomerView() {
+    openCustomers() {
         this.action.doAction("base.action_partner_form");
     }
 

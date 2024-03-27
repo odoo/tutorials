@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 import { NumberCard } from "./number_card/number_card";
 import { PieChartCard } from "./pie_chart_card/pie_chart_card";
 
-export const items = [
+const items = [
     {
         id: "average_quantity",
         description: "Average amount of t-shirt",
