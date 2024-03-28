@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.TodoList">
+        <div class="d-inline-block border p-2 m-2" style="min-width: 20rem;">
+            <input class="form-control mb-3" type="text" placeholder="Add a todo" t-on-keyup="addTodo" t-ref="todoInput"/>
+            <ul>
+                <li t-foreach="todos" t-as="todo" t-key="todo.id">
+                    <TodoItem id="todo.id"
+                              description="todo.description"
+                              isCompleted="todo.isCompleted"
+                              onToggleCompleted.bind="toggleTodo"
+                              onRemove.bind="removeTodo"/>
+                </li>
+            </ul>
+        </div>
+    </t>
+
+</templates>

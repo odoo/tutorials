@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="awsm-dashboard-item" t-attf-style="min-width: {{ 18 * props.size }}rem;">
+            <t t-slot="default"/>
+        </div>
+    </t>
+
+</templates>

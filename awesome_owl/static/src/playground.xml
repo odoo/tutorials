@@ -2,9 +2,17 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
+        <t t-foreach="[1, 2, 3, 4, 5]" t-as="item" t-key="item">
+            <Counter onChange.bind="incrementSum"/>
+        </t>
+        <br/>
+        <Card title="'this is mine, no touchy'"><span>
+            <Card title="':)'">^ this is a threat</Card>
+            <Card title="':3'">^ this is a <b>bigger</b> threat</Card>
+            <Card title="'total'"><t t-esc="this.state.sum"/></Card>
+            <br/>
+            <TodoList/>
+        </span></Card>
     </t>
 
 </templates>

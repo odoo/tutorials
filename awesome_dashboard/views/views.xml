@@ -5,6 +5,12 @@
       <field name="tag">awesome_dashboard.dashboard</field>
     </record>
 
+    <record id="awesome_dashboard.dashbard_scss" model="ir.asset">
+      <field name="name">Layout SCSS</field>
+      <field name="bundle">awesome_dashboard.assets_frontend</field>
+      <field name="path">website/static/src/dashboard.scss</field>
+    </record>
+
     <menuitem name="Awesome Dashboard" id="awesome_dashboard.menu_root" groups="base.group_user" web_icon="awesome_dashboard,static/description/icon.png"/>
     <menuitem name="Dashboard" id="awesome_dashboard.dashboard_menu" parent="awesome_dashboard.menu_root" action="awesome_dashboard.dashboard" sequence="1"/>
   </data>

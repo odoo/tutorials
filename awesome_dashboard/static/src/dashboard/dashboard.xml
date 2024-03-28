@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"/>
+                </button>
+            </t>
+
+            <!-- Show every item with a description -->
+            <t t-if="statistics.isReady">
+                <t t-foreach="items" t-as="value" t-key="value.key">
+                    <t t-set="key" t-value="value.key"/>
+
+                    <DashboardItem t-if="!state.disabledItems.includes(key)">
+                        <t t-esc="value.description"/>
+                        <t t-if="value.presentation === 'pie-chart'">
+                            <PieChart data="statistics[key]"/>
+                        </t>
+                        <t t-else="">
+                            <div class="awsm-stat-number"><t t-esc="statistics[key]"/></div>
+                        </t>
+                    </DashboardItem>
+                </t>
+            </t>
+        </Layout>
+    </t>
+
+</templates>

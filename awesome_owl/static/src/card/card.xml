@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.Card">
+        <div class="m-2 card d-inline-block" style="min-width: 20rem;">
+            <span class="fa fa-eye" t-on-click="toggleVisible" style="position: absolute; top: .5rem; right: .75rem;"/>
+            <div class="card-body">
+                <h5 class="card-title"><t t-esc="props.title"/></h5>
+                <p t-if="state.visible" class="card-text"><t t-slot="default"/></p>
+            </div>
+        </div>
+    </t>
+
+</templates>
