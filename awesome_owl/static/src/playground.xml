@@ -3,10 +3,11 @@
     <t t-name="awesome_owl.playground">
         <div class="m-2 p-2 border d-inline-block">
             Hello, World!
-            <Counter/>
-            <Counter/>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
             <Card title="'Card A'" content="'Content A'"/>
             <Card title="'Card B'" content="this.html"/>
+            Sum is <t t-esc="sum.value"/>
         </div>
     </t>
 </templates>
