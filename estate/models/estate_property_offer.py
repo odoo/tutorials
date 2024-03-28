@@ -48,7 +48,7 @@ class EstatePropertyOffer(models.Model):
         if self.property_id.offer_ids.filtered(lambda r: r.status == 'accepted'):
             raise exceptions.UserError(_("Another offer is already accepted on this property."))
 
-        self.property_id.accept_offer(self.price, self.partner_id)
+        self.property_id.accept_offer(self)
         return self.write({'status': 'accepted'})
 
     def action_refuse(self):
@@ -65,8 +65,13 @@ class EstatePropertyOffer(models.Model):
                 properties[property_id] = []
             properties[property_id].append(value)
 
-        # For each property, check if the price of each offers is greater than the best price
+        # For each property
         for property_id, offers in properties.items():
+            # Check if the property is not sold
+            if self.env['estate.property'].browse(property_id).state == 'sold':
+                raise exceptions.UserError(_("You cannot create an offer for a sold property."))
+
+            # check if the price of each offers is greater than the best price
             best_price = self.env['estate.property'].browse(property_id).best_price
             records = super().create(offers)
 

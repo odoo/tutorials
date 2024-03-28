@@ -92,12 +92,16 @@ class EstateProperty(models.Model):
         if self.state == 'canceled':
             raise exceptions.UserError(_("Canceled properties cannot be sold!"))
 
+        if self.state != 'offer_accepted':
+            raise exceptions.UserError(_("You cannot sell a property with an accepted offer."))
+
         return self.write({'state': 'sold'})
 
     def accept_offer(self, offer):
         self.ensure_one()
         self.selling_price = offer.price
         self.buyer_id = offer.partner_id
+        self.state = 'offer_accepted'
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
