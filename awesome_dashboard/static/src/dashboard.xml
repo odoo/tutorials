@@ -1,8 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'">
+
+            <div>
+                <button class='btn btn-primary m-2' t-on-click="actionCustomers">Customers</button>
+                <button class='btn btn-primary m-2' t-on-click="actionLeads">Leads</button>
+                <h3 class="m-2">Dashboard</h3>
+
+            </div>
+            <div class="d-flex">
+                
+                <DashboardItem>
+                    truc
+                </DashboardItem>
+                <DashboardItem>
+                    troka
+                </DashboardItem>
+                <DashboardItem size="3">
+                    katro
+                </DashboardItem>                
+            </div>
+            <div class="d-flex">
+                <DashboardItem>
+                    Number of new orders this month
+                    <t t-set-slot="highlight">
+                        <t t-out="rpcResult.nb_new_orders"/></t>
+                </DashboardItem>
+                <DashboardItem>
+                    Total amount of new orders this month
+                    <t t-set-slot="highlight">
+                        <t t-out="rpcResult.total_amount"/>
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    Average amount of t-shirt by order this month
+                    <t t-set-slot="highlight">
+                        <t t-out="rpcResult.average_quantity"/>
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of cancelled orders this month
+                    <t t-set-slot="highlight">
+                        <t t-out="rpcResult.nb_cancelled_orders"/>
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                    <t t-set-slot="highlight">
+                        <t t-out="rpcResult.average_time"/>
+                    </t>
+                </DashboardItem>
+            </div>
+            
+
+
+
+
+        </Layout>
     </t>
 
 </templates>

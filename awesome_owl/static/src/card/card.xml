@@ -2,12 +2,14 @@
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <div class="card-title">
+                <div class="card-title" t-on-click="toggleOpen">
                     <h2>
                         <t t-slot="title"/>
                     </h2>
                 </div>
-                <t t-slot="default"/>
+                <t t-if="isOpen.value">
+                    <t t-slot="default"/>
+                </t>
             </div>
         </div>
     </t>
