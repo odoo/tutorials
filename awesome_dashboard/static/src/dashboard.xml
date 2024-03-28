@@ -7,6 +7,7 @@
 				<button class="btn btn-primary" t-on-click="customersView">Customers</button>
 				<button class="btn btn-primary" t-on-click="leadsView">Leads</button>
 			</t>
+			<!--
 			<t t-foreach="state.showData" t-as="item" t-key="item.id">
 				<DashboardItem size="1">
 					<p><t t-esc="item.label"/>:</p>
@@ -15,15 +16,45 @@
 					</div>
 				</DashboardItem>
 			</t>
+			-->
 			<DashboardItem>
-				<PieChart data="state.rawData.orders_by_size" size="1"/>
-			</DashboardItem>
-			<!--			<DashboardItem size="2">
-				Some content
+				<p>Average amount of t-shirt by order this month:</p>
+				<div style="color:green;text-align:center;text-bold;font-size:30px">
+					<b><t t-esc="state.data.average_quantity"/></b>
+				</div>
 			</DashboardItem>
 			<DashboardItem>
-				Some content
-			</DashboardItem>-->
+				<p>Average time for an order to go from 'new' to 'sent' or 'canceled':</p>
+				<div style="color:green;text-align:center;text-bold;font-size:30px">
+					<b><t t-esc="state.data.average_time"/></b>
+				</div>
+			</DashboardItem>
+			<DashboardItem>
+				<p>Number of new orders this month:</p>
+				<div style="color:green;text-align:center;text-bold;font-size:30px">
+					<b><t t-esc="state.data.nb_new_orders"/></b>
+				</div>
+			</DashboardItem>
+			<DashboardItem>
+				<p>Number of cancelled orders this month:</p>
+				<div style="color:green;text-align:center;text-bold;font-size:30px">
+					<b><t t-esc="state.data.nb_cancelled_orders"/></b>
+				</div>
+			</DashboardItem>
+			<DashboardItem>
+				<p>Total amount of new orders this month:</p>
+				<div style="color:green;text-align:center;text-bold;font-size:30px">
+					<b><t t-esc="state.data.total_amount"/></b>
+				</div>
+			</DashboardItem>
+			<DashboardItem>
+				<!--
+				s:<t t-esc="state.data.orders_by_size.s"/><br/>
+				m:<t t-esc="state.data.orders_by_size.m"/><br/>
+				xl:<t t-esc="state.data.orders_by_size.xl"/><br/>
+				-->
+				<PieChart data="state.data.orders_by_size" size="1"/>
+			</DashboardItem>
 		</Layout>
 	</t>
 

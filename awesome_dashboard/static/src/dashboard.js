@@ -16,19 +16,16 @@ class AwesomeDashboard extends Component {
 	static components = { Layout, DashboardItem, PieChart };
 
 	setup() {
-		this.state = useState({rawDate: {}, showData: []});
+// 		this.state = useState({data: {}});
+		this.state = useState( useService("awesome_dashboard.statistics") );
 		this.action = useService("action");
-		this.mem_rpc = useService("awesome_dashboard.statistics").mem_rpc;
-		onWillStart(async () => {
-			const data = await this.mem_rpc("awesome_dashboard/statistics");
-			this.state.rawData = data;
-			this.state.showData = [
-				{id: 1, label: "Average amount of t-shirt by order this month", val: data.average_quantity},
-				{id: 2, label: "Average time for an order to go from 'new' to 'sent' or 'canceled'", val: data.average_time},
-				{id: 3, label: "Number of new orders this month", val: data.nb_new_orders},
-				{id: 4, label: "Number of cancelled orders this month", val: data.nb_cancelled_orders},
-				{id: 5, label: "Total amount of new orders this month", val: data.total_amount},
-			];
+// 		this.mem_rpc = useService("awesome_dashboard.statistics").mem_rpc;
+// 		onWillStart(async () => {
+// 			this.state.data = await this.mem_rpc("awesome_dashboard/statistics");
+// 			console.log(this.state.data);
+// 		});
+		onWillStart( () => {
+			console.log(this.state);
 		});
 	}
 
