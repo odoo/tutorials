@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, onWillStart, onWillUnmount, useRef, onMounted } from "@odoo/owl";
+import { Component, onWillStart, onWillUnmount, onMounted, useEffect, useRef } from "@odoo/owl";
 import { getColor } from "@web/core/colors/colors";
 import { loadJS } from "@web/core/assets"
 
@@ -21,8 +21,15 @@ export class PieChart extends Component {
         onMounted(() => this.renderChart());
 
         onWillUnmount(() => {
-                this.chart.destroy();
+            this.chart.destroy();
         });
+
+        useEffect(() => {
+            const data = this.props.data;
+            this.chart.data.datasets[0].data = Object.values(data);
+            this.chart.update();
+        });
+
     }
 
     renderChart() {
