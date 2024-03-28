@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_item">
+        <div class="card-content">
+            <p class="card-content"><t t-out="props.todo.id"/> - <t t-out="props.todo.description"/></p>
+        </div>
+    </t>
+</templates>

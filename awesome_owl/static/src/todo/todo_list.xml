@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_list">
+        <div class="card d-inline-block m-1" style="width: 10rem;" t-foreach="todos" t-as="todo" t-key="todo">
+            <TodoItem todo="todo"/>
+        </div>
+    </t>
+</templates>

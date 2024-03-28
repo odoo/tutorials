@@ -9,5 +9,9 @@
             <Card title="'Card B'" content="this.html"/>
             Sum is <t t-esc="sum.value"/>
         </div>
+
+        <div class="m-2 p-2 border d-inline-block">
+            <TodoList/>
+        </div>
     </t>
 </templates>
