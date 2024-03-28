@@ -5,7 +5,6 @@ class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Real Estate Property Type"
     _order = "sequence, name"
-
     _sql_constraints = [
         ("check_unique_name", "UNIQUE(name)",
         "A property tag name must be unique")

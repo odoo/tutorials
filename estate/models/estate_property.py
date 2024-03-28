@@ -8,6 +8,12 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)",
+         "A property expected price must be strictly positive."),
+        ("check_selling_price", "CHECK(selling_price >= 0)",
+         "A property selling price must be positive.")
+    ]
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text(string="Description")
@@ -42,20 +48,6 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price", string="Best Price")
     type_id = fields.Many2one("estate.property.type", string="Property Type")
 
-    _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)",
-         "A property expected price must be strictly positive."),
-        ("check_selling_price", "CHECK(selling_price >= 0)",
-         "A property selling price must be positive.")
-    ]
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, precision_digits = 2) \
-                and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits = 2) < 0:
-                raise ValidationError(message="The selling price must be atleast 90% of exptected price")
-
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -65,6 +57,13 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits = 2) \
+                and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits = 2) < 0:
+                raise ValidationError(message="The selling price must be atleast 90% of exptected price")
 
     @api.onchange('garden')
     def _onchange_garden(self):
