@@ -1,14 +1,5 @@
 <?xml version="1.0"?>
 <odoo>
-
-    <!--Actions-->
-
-    <record id="estate_property_tag_action" model="ir.actions.act_window">
-        <field name="name">Property Types</field>
-        <field name="res_model">estate.property.tag</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
     <!--Tree views-->
 
     <record id="estate_property_tag_view_tree" model="ir.ui.view">
@@ -49,5 +40,13 @@
                 <field name="name"/>
             </search>
         </field>
+    </record>
+
+    <!--Actions-->
+
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">tree,form</field>
     </record>
 </odoo>

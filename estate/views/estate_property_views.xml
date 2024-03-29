@@ -1,14 +1,5 @@
 <?xml version="1.0"?>
 <odoo>
-    <!--Actions-->
-
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form,kanban</field>
-        <field name="context">{'search_default_available': True}</field>
-    </record>
-
     <!--Tree views-->
 
     <record id="estate_property_view_tree" model="ir.ui.view">
@@ -159,5 +150,14 @@
                 <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>
+    </record>
+
+    <!--Actions-->
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 </odoo>
