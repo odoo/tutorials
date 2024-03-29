@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+	<t t-name="config_dialog">
+		<Dialog title="'Dashboard Picker'">
+			<t t-foreach="props.items" t-as="item" t-key="item.id">
+				<CheckBox value="!props.disabled.has(item.id)" onChange="(checked) => { this.toggleItem(checked, item.id); }">
+					<t t-esc="item.description"/>
+				</CheckBox>
+				<t t-set-slot="footer">
+					<button class="btn btn-primary" t-on-click="done">Done</button>
+				</t>
+			</t>
+		</Dialog>
+	</t>
+
+	<t t-name="awesome_dashboard.AwesomeDashboard">
+		<Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+			<t t-set-slot="layout-buttons">
+				<button class="btn btn-primary" t-on-click="customersView">Customers</button>
+				<button class="btn btn-primary" t-on-click="leadsView">Leads</button>
+			</t>
+			<t t-set-slot="control-panel-additional-actions">
+				<button t-on-click="openConf" class="btn p-0 ms-1 border-0">
+					<i class="fa fa-cog"></i>
+				</button>
+			</t>
+			<t t-if="state.isReady">
+
+				<t t-foreach="items" t-as="item" t-key="item.id">
+					<t t-if="!disabled.has(item.id)">
+						<DashboardItem size="item.size || 1">
+							<t t-set="itemProp" t-value="item.props ? item.props(state.data) : {'data': statistics}"/>
+							<t t-component="item.Component" t-props="itemProp" />
+						</DashboardItem>
+					</t>
+				</t>
+
+			</t>
+		</Layout>
+	</t>
+
+</templates>
+
+	<!--
+				<DashboardItem>
+					<p>Average amount of t-shirt by order this month:</p>
+					<div style="color:green;text-align:center;text-bold;font-size:30px">
+						<b><t t-esc="state.data.average_quantity"/></b>
+					</div>
+				</DashboardItem>
+				<DashboardItem>
+					<p>Average time for an order to go from 'new' to 'sent' or 'canceled':</p>
+					<div style="color:green;text-align:center;text-bold;font-size:30px">
+						<b><t t-esc="state.data.average_time"/></b>
+					</div>
+				</DashboardItem>
+				<DashboardItem>
+					<p>Number of new orders this month:</p>
+					<div style="color:green;text-align:center;text-bold;font-size:30px">
+						<b><t t-esc="state.data.nb_new_orders"/></b>
+					</div>
+				</DashboardItem>
+				<DashboardItem>
+					<p>Number of cancelled orders this month:</p>
+					<div style="color:green;text-align:center;text-bold;font-size:30px">
+						<b><t t-esc="state.data.nb_cancelled_orders"/></b>
+					</div>
+				</DashboardItem>
+				<DashboardItem>
+					<p>Total amount of new orders this month:</p>
+					<div style="color:green;text-align:center;text-bold;font-size:30px">
+						<b><t t-esc="state.data.total_amount"/></b>
+					</div>
+				</DashboardItem>
+	-->
+
+			<!--
+			<t t-foreach="state.showData" t-as="item" t-key="item.id">
+				<DashboardItem size="1">
+					<p><t t-esc="item.label"/>:</p>
+					<div style="color:green;text-align:center;text-bold;font-size:30px">
+						<b><t t-esc="item.val"/></b>
+					</div>
+				</DashboardItem>
+			</t>
+			-->

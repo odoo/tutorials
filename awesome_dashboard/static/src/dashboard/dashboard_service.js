@@ -19,13 +19,20 @@ import { reactive } from "@odoo/owl";
 
 const statisticsService = {
 	dependencies: ["rpc"],
-	async start(env, { rpc }) {
-		let state = reactive({data: await rpc("awesome_dashboard/statistics")});
+
+	start(env, { rpc }) {
+		let state = reactive({state: null, isReady: false});
+		async function loadData() {
+			state.data = await rpc("/awesome_dashboard/statistics");
+			state.isReady = true;
+		};
+		loadData();
 		setInterval(async () => {
-			state.data = await rpc("awesome_dashboard/statistics");
+			loadData();
 		}, 3 * 1000);
 		return state;
 	},
+
 };
 
 registry.category("services").add("awesome_dashboard.statistics", statisticsService);
