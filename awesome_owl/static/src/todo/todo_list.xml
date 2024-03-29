@@ -2,12 +2,12 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_list">
         <div class="d-inline-block border p-2 m-2">
-            <input type="text" id="idescription" name="description" placeholder="Add item" t-on-keyup="addTodo"/>
+            <input type="text" id="idescription" name="description" placeholder="Add item" t-on-keyup="addTodo" t-ref="description"/>
 
             <br style="clear: both;"/>
-            
+
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo"/>
+                <TodoItem todo="todo" toggleState.bind="toggleState" onRemove.bind="onRemove"/>
             </t>
         </div>
     </t>
