@@ -14,7 +14,7 @@ class EsateProperty(models.Model):
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
     date_availability = fields.Date(string='Available From', copy=False,
-                                    default=lambda _: date.today() + relativedelta(months=3))
+                                    default=lambda _: fields.Date().add(fields.Date().today(), months=3)
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
