@@ -3,8 +3,13 @@
     <t t-name="awesome_owl.card">
        <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text">
+                <h5 class="card-title">
+                    <t t-esc="props.title"/>
+                    <span role="button" class="fa" style="font-size: 20px; margin-left: 1em;" t-on-click="toggleContent">
+                        Toggle
+                    </span>
+                </h5>
+                <p class="card-content" t-if="contentVisible.value">
                     <t t-slot="default"/>
                 </p>
             </div>
