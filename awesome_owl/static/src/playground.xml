@@ -5,8 +5,9 @@
             Hello, World!
             <Counter onChange.bind="incrementSum"/>
             <Counter onChange.bind="incrementSum"/>
-            <Card title="'Card A'" content="'Content A'"/>
-            <Card title="'Card B'" content="this.html"/>
+            <Card title="'Card A'">
+                <p> Content A</p>
+            </Card>
             <br style="clear: both;"/>
             Sum is <t t-esc="sum.value"/>
         </div>
@@ -14,5 +15,17 @@
         <br style="clear: both;"/>
 
         <TodoList/>
+
+        <br style="clear: both;"/>
+
+        <div class="m-2 p-2 border d-inline-block">
+            <Card title="'Counter #3'"> 
+                <Counter/>
+            </Card>
+
+            <Card title="'Counter #4'"> 
+                <Counter/>
+            </Card>
+        </div>
     </t>
 </templates>
