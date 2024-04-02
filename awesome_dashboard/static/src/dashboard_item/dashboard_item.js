@@ -25,7 +25,7 @@ export class DashboardItem extends Component {
     <div class="card m-2 border-dark" t-attf-style="width: {{18*size}}rem">
         <div class="card-body">
             <t t-slot="default"/>
-            <div class="text-center font-weight-bold text-success">
+            <div class="text-center fw-bold text-success">
                 <t t-slot="highlight"/>
             </div>
         </div>

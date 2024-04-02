@@ -52,6 +52,12 @@
                     </t>
                 </DashboardItem>
             </div>
+            <div>
+                <DashboardItem size="2">
+                    Orders by size
+                    <PieChart caption="'Orders by size'" data="rpcResult['orders_by_size']"/>
+                </DashboardItem>
+            </div>
             
 
 
