@@ -1,10 +1,8 @@
 /** @odoo-module **/
 
 import { Component, xml, useRef } from "@odoo/owl";
-//import { registry } from "@web/core/registry";
 
 export class DashboardItem extends Component {
-    //static template = "awesome_dashboard.dashboard_item";
     static props = { 
         slots: {
             type: Object,
@@ -36,5 +34,3 @@ export class DashboardItem extends Component {
     `;
     
 }
-
-//registry.category("actions").add("awesome_dashboard.dashboard_item", DashboardItem);

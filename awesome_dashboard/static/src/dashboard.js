@@ -11,14 +11,15 @@ class AwesomeDashboard extends Component {
     static components = { Layout , DashboardItem }
 
     setup() {
-        this.rpc = useService("rpc");
         this.action = useService("action");
+        this.statistics = useService("awesome_dashboard.statistics");
         this.rpcResult = {}
+
 
         onWillStart(
             async () => {
-                const result = await this.rpc("/awesome_dashboard/statistics/");
-                this.rpcResult = result;
+
+                this.rpcResult = await this.statistics.loadStatistics();
             });
     }
 
