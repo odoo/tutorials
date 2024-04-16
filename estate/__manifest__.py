@@ -5,5 +5,8 @@
     'author': "Author Name",
     'category': 'Category',
     'summary': 'Manage estate offers',
-    'application': True
+    'application': True,
+    'data': [
+        'security/ir.model.access.csv'
+    ]
 }
