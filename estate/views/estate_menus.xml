@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem id="estate_menu_root" name="Test">
+            <menuitem id="estate_first_level_menu" name="First Level">
+                <menuitem id="estate_model_menu_action" action="get_estate_view_action"/>
+            </menuitem>
+        </menuitem>
+    </data>
+</odoo>
