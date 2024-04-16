@@ -8,3 +8,6 @@ It has 3 branches for each Odoo version: one for the bases, one for
 The first contains the code of the modules that serve as base for the tutorials,
 and the others contains the code of each chapter with the complete
 solution.
+
+
+Hello world ! 
