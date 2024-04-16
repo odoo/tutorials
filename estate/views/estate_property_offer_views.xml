@@ -11,7 +11,9 @@
                 <field name="status"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-
+                <button name="action_set_accepted_status" type="object" string="Accept" icon="fa-check"/>
+                <button name="action_set_refused_status" type="object" string="Refused" icon="fa-close"/>
+                <field name="status" />
             </tree>
         </field>
     </record>

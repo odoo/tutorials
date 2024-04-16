@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 
 
 class EstateProperty(models.Model):
@@ -27,7 +27,7 @@ class EstateProperty(models.Model):
             ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
-            ('cancelled', 'Canceled')])
+            ('cancelled', 'Cancelled')])
     active = fields.Boolean(default=True)
 
     property_type_id = fields.Many2one("estate.property.type", string='Property Type')
@@ -63,3 +63,24 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def action_set_sold_state(self):
+        for record in self:
+            if record.state == 'cancel':
+                raise exceptions.UserError(message="Already a canceled property")
+            if record.state == 'sold':
+                raise exceptions.UserError(message="Already a sold property")
+
+            record.state = 'sold'
+        return True
+
+    def action_set_cancel_state(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError(message="A sold property can't be cancelled")
+            if record.state == 'cancelled':
+                raise exceptions.UserError(message="Already a cancelled property")
+
+            record.state = 'cancelled'
+
+        return True
