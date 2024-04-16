@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create your first property
+        </p>
+        <p>
+            Use the "New" button to create a new property
+        </p>
+        </field>
+    </record>
+</odoo>
