@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.tools import date_utils
+from odoo.exceptions import UserError
 
 def date_in_3_months(*args):
     return date_utils.add(fields.Date.today(), months=3)
@@ -40,7 +41,7 @@ class EstateProperty(models.Model):
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-         for property in self:
+        for property in self:
             property.total_area = property.living_area + property.garden_area
 
     @api.depends("offer_ids")
@@ -59,3 +60,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = False
             self.garden_orientation = False
+    
+    def action_set_sold_property(self):
+        for property in self:
+            if(property.state == "canceled"): 
+                raise UserError("Canceled properties cannot be sold.")
+                continue
+            property.state = "sold"
+        return True
+    
+    def action_set_canceled_property(self):
+        for property in self:
+            if(property.state == "sold"):
+                raise UserError("Sold properties cannot be canceled.")
+                continue
+            property.state = "canceled"
+        return True
