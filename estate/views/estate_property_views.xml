@@ -57,6 +57,14 @@
                                 </group>
                             </group>
                         </page>
+                        <page name="other_page" string="Other Info">
+                            <group>
+                                <group>
+                                    <field name="user_id"/>
+                                    <field name="partner_id"/>
+                                </group>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
