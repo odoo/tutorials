@@ -7,17 +7,26 @@ class EstateProterty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date()
+    date_availability = fields.Date(default= fields.Date.today(), copy=False)
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
-    bedrooms = fields.Integer()
+    selling_price = fields.Float(copy=False, readonly=True)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientaton = fields.Selection(
-        string='Type',
         selection=[('north','North'), ('south','South'),
                      ('east', 'East'), ('west','West')]
+    )
+
+    active = fields.Boolean(default=True, active=False)
+    state = fields.Selection(
+        default='new',
+        copy=False,
+        required=True,
+        selection=[('new', 'New'), ('offer received', 'Offer Received'),
+                   ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'),
+                   ('canceled', 'Canceled')]
     )
