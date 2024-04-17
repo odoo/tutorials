@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
 from datetime import date
 
@@ -28,3 +28,17 @@ class PropertyOffer(models.Model):
     def _inverse_deadline(self):
         for offer in self:
             offer.validity = (offer.date_deadline - offer.create_date.date()).days
+
+    def action_accept(self):
+        for offer in self:
+            if offer.property_id.state not in ['new', 'offer_received']:
+                raise exceptions.UserError("Another offer was already accepted")
+            offer.status = 'accepted'
+            offer.property_id.selling_price = offer.price
+            offer.property_id.state = 'offer_accepted'
+        return True
+
+    def action_refuse(self):
+        for offer in self:
+            offer.status = 'refused'
+        return True
