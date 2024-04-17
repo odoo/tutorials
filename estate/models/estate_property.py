@@ -1,10 +1,9 @@
 from odoo import models,fields
 
 class Property(models.Model):
-    """Class representing the properties of the estate module"""
 
     _name = "estate_property"
-    _description = "The properties of the real estate module"
+    _description = "The properties of the real estate property"
     name = fields.Char(required = True)
     description = fields.Text()
     postcode = fields.Char()
