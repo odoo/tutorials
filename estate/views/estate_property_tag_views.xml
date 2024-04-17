@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="estate_property_tag_list_view" model="ir.ui.view">
+        <field name="name">Real Estate Property Tags List</field>
+        <field name="model">estate_property_tag</field>
+        <field name="arch" type="xml">
+            <tree string="estate_property_tag_list">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="estate_property_tag_form_view" model="ir.ui.view">
+        <field name="name">Real Estate Property Tag Form</field>
+        <field name="model">estate_property_tag</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_tag_search_view" model="ir.ui.view">
+        <field name="name">Real Estate Property Tag Search</field>
+        <field name="model">estate_property_tag</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>
