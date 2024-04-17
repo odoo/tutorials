@@ -24,7 +24,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property Form">
-                <sheet>
+                <sheet class="mx-auto">
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
                         invisible="active == True" />
                     <div class="oe_title mb32">
@@ -59,6 +59,9 @@
                                     <field name="garden_orientation" />
                                 </group>
                             </group>
+                        </page>
+                        <page name="offer_page" string="Offers">
+                            <field name="offer_ids" />
                         </page>
                         <page name="other_page" string="Other Info">
                             <group>
