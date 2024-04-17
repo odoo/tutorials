@@ -48,16 +48,20 @@
                         <page string="Description">
                             <separator/>
                             <group>
-                                <group>
-                                    <field name="description"/>
-                                    <field name="bedrooms"/>
-                                    <field name="living_area" string="Living Area (sqm)"/>
-                                    <field name="facades"/>
-                                    <field name="garage"/>
-                                    <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
-                                </group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area" string="Living Area (sqm)"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <separator/>
+                            <group>
+                                <field name="property_offer_ids"/>
                             </group>
                         </page>
                         <page string="Other Info">
@@ -69,6 +73,7 @@
                                 </group>
                             </group>
                         </page>
+
                     </notebook>
                 </sheet>
             </form>
