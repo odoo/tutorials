@@ -30,15 +30,18 @@ class PropertyOffer(models.Model):
             offer.validity = (offer.date_deadline - offer.create_date.date()).days
 
     def action_accept(self):
-        for offer in self:
-            if offer.property_id.state not in ['new', 'offer_received']:
-                raise exceptions.UserError("Another offer was already accepted")
-            offer.status = 'accepted'
-            offer.property_id.selling_price = offer.price
-            offer.property_id.state = 'offer_accepted'
+        # To get the statuses of all offers related to the property
+        # print(self.mapped("property_id.offer_ids.status"))
+        related_offers = self.mapped("property_id.offer_ids.status")
+        if any([x == 'accepted' or False for x in related_offers]):
+            raise exceptions.UserError("Another offer was already accepted")
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.state = 'offer_accepted'
+        self.property_id.buyer_id = self.partner_id
         return True
 
     def action_refuse(self):
-        for offer in self:
-            offer.status = 'refused'
+        self.status = 'refused'
         return True
+
