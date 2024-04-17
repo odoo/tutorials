@@ -1,6 +1,7 @@
 from odoo import api, fields, models
 from odoo.tools import date_utils
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 def date_in_3_months(*args):
     return date_utils.add(fields.Date.today(), months=3)
@@ -38,6 +39,12 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'A property expected price must be strictly positive.'),
+         ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'A property selling price must be positive.')
+    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -76,3 +83,9 @@ class EstateProperty(models.Model):
                 continue
             property.state = "canceled"
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_date_end(self):
+        for property in self:
+            if float_compare(property.selling_price, property.expected_price * 0.9, 2) < 0 and float_compare(property.selling_price, 0, 2) > 0:
+                raise ValidationError('The selling price cannot be lower than 90% of the expected price.')
