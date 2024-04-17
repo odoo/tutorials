@@ -1,7 +1,8 @@
+from datetime import date
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models, exceptions
 from odoo.tools import float_utils
-from dateutil.relativedelta import relativedelta
-from datetime import date
 
 class Property(models.Model):
 
@@ -12,6 +13,13 @@ class Property(models.Model):
 
     _name = "estate.property"
     _description = "Estate properties"
+
+    _sql_constraints = [
+        ('check_positive_prices', 'CHECK(expected_price > 0 AND selling_price > 0)',
+         'A property expected price and selling price must be strictly positive.')
+    ]
+
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -26,14 +34,26 @@ class Property(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ]
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
+        string="Status",
         required=True,
         default='new',
         copy=False,
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')]
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled')
+        ]
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
@@ -43,24 +63,21 @@ class Property(models.Model):
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
 
-    _sql_constraints = [
-        ('check_positive_prices', 'CHECK(expected_price > 0 AND selling_price > 0)',
-         'A property expected price and selling price must be strictly positive.')
-    ]
+    
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-        for property in self:
-            if float_utils.float_is_zero(property.selling_price, precision_digits=2):
+        for record in self:
+            if float_utils.float_is_zero(record.selling_price, precision_digits=2):
                 continue
-            if float_utils.float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) < 0:
+            if float_utils.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
                 raise exceptions.ValidationError("The selling price can't be lower than 90% of the expected price")
 
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        for property in self:
-            property.total_area = property.living_area + property.garden_area
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     # Naive solution
     # @api.depends("offer_ids.price")
@@ -74,11 +91,11 @@ class Property(models.Model):
     # mapped() solution
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
-        for property in self:
-            if property.offer_ids:
-                property.best_offer = max(property.offer_ids.mapped("price"))
+        for record in self:
+            if record.offer_ids:
+                record.best_offer = max(record.offer_ids.mapped("price"))
             else:
-                property.best_offer = 0
+                record.best_offer = 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -94,7 +111,7 @@ class Property(models.Model):
             raise exceptions.UserError("Canceled properties cannot be sold")
         self.state = 'sold'
         return True
-    
+
     def action_set_canceled(self):
         if self.state == 'sold':
             raise exceptions.UserError("Sold properties cannot be canceled")
