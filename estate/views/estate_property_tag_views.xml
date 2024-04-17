@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create a property tag
+        </p>
+        <p>
+            Use the "New" button to create a new property tag
+        </p>
+        </field>
+    </record>
+</odoo>

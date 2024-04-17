@@ -18,7 +18,7 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
+            <tree string="Property">
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -26,6 +26,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" string="Available From"/>
+                <field name="property_type_id"/>
             </tree>
         </field>
     </record>
@@ -37,10 +38,10 @@
             <form string="Property">
                 <sheet>
                     <div class="oe_title">
-                        <h1 class="mb32">
+                        <h1>
                             <field name="name" class="mb16"/>
                         </h1>
-                        <field name="active" invisible="1"/>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group>
@@ -56,6 +57,7 @@
                         <page string="Description">
                             <group>
                                 <field name="description"/>
+                                <field name="property_type_id"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area" string="Living Area (sqm)"/>
                                 <field name="facades"/>
@@ -63,6 +65,15 @@
                                 <field name="garden"/>
                                 <field name="garden_area" string="Garden Area (sqm)" />
                                 <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" widget="one2many"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -82,6 +93,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
                 <separator/>
                 <filter string="Available" name="active" domain="['|',
                                                                     ('state', '=', 'new'),

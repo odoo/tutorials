@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create a property type
+        </p>
+        <p>
+            Use the "New" button to create a new property type
+        </p>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property Type">
+                <sheet class="mx-auto">
+                    <div class="oe_title">
+                        <h1 class="mb32">
+                            <field name="name" class="mb16"/>
+                        </h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
