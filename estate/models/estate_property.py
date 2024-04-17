@@ -11,7 +11,9 @@ class EstateProperty(models.Model):
     name = fields.Char("Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date("Available From", default=(date.today() + relativedelta(months=+3)), copy=False)
+    date_availability = fields.Date(
+        "Available From", default=(date.today() + relativedelta(months=+3)), copy=False
+    )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -21,16 +23,29 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer("Garden Area (sqm)")
     garden_orientation = fields.Selection(
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
+        ]
     )
-    active = fields.Boolean('Active', default=True)
+    active = fields.Boolean("Active", default=True)
     state = fields.Selection(
         required=True,
         copy=False,
-        default='new',
-        selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')]
+        default="new",
+        selection=[
+            ("new", "New"),
+            ("offer received", "Offer Received"),
+            ("offer accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Canceled"),
+        ],
     )
     property_type_id = fields.Many2one("estate.property.type")
     partner_id = fields.Many2one("res.partner", string="Buyer")
-    user_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
+    user_id = fields.Many2one(
+        "res.users", string="Salesman", default=lambda self: self.env.user
+    )
     tag_ids = fields.Many2many("estate.property.tag")
