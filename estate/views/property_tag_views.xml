@@ -5,7 +5,7 @@
             <field name="name">property.tags.view.tree</field>
             <field name="model">estate.property.tag</field>
             <field name="arch" type="xml">
-                <tree string="Estate">
+                <tree string="Estate" editable="top">
                     <field name="name"/>
                 </tree>
             </field>

@@ -5,20 +5,24 @@ from odoo.exceptions import UserError
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "describes an offer made on a property"
-
-    price = fields.Float()
-    status = fields.Selection(
-        selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
-        copy = False
-    )
-    partner_id = fields.Many2one("res.partner", required = True)
-    property_id = fields.Many2one("estate.property", required = True)
-    validity = fields.Integer()
-    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
+    _order = "price desc"
     _sql_constraints = [
          ('check_price', 'CHECK(price > 0)',
          'An offer price must be strictly positive.')
     ]
+
+    price = fields.Float()
+    status = fields.Selection(
+        selection=[
+            ('accepted', 'Accepted'),
+            ('refused', 'Refused')],
+        copy = False
+    )
+    partner_id = fields.Many2one("res.partner", required = True)
+    property_id = fields.Many2one("estate.property", required = True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store = True)
+    validity = fields.Integer()
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
 
     @api.depends("validity")
     def _compute_date_deadline(self):
@@ -38,7 +42,6 @@ class PropertyOffer(models.Model):
     def action_confirm_offer(self):
         if "accepted" in self.mapped("property_id.offer_ids.status"): 
             raise UserError("Another offer is accepted.") 
-            return True
         self.status = "accepted"
         self.property_id.buyer = self.partner_id
         self.property_id.selling_price = self.price

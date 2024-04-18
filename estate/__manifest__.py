@@ -8,5 +8,6 @@
         'views/property_type_views.xml',
         'views/menus.xml',
         'views/property_tag_views.xml',
+        'views/property_offer_views.xml'
     ]
 }
