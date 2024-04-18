@@ -54,3 +54,7 @@ class EstatePropertyOffer(models.Model):
             record.status = 'accepted'
             record.property_id.selling_price = record.price
         return True
+
+    _sql_constraints = [
+        ('check_positive_offer_price', 'CHECK(price > 0)', 'An offer price must be strictly positive.')
+    ]
