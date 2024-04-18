@@ -6,7 +6,7 @@ class Property(models.Model):
 
     def action_set_sold(self):
         # print("INHERITED")
-        new_invoice = self.env['account.move'].create(
+        self.env['account.move'].create(
             {
                 "move_type": "out_invoice",
                 "partner_id": self.buyer_id.id,
@@ -24,8 +24,4 @@ class Property(models.Model):
                 ],
             }
         )
-        print(new_invoice)
         return super().action_set_sold()
-
-    # def inherited_action(self):
-    #     return super().inherited_action()
