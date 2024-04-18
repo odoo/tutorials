@@ -1,6 +1,36 @@
 <?xml version="1.0"?>
 <odoo>
 
+    <!--Search-->
+
+    <record id="estate_search" model="ir.ui.view">
+        <field name="name">estate.search</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <search string="Channel">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
+                <separator/>
+                <filter string="Available" name="active" domain="['&amp;',
+                                                                    ('active', '=', True),
+                                                                    '|', ('state', '=', 'new'),
+                                                                                ('state', '=', 'offer received')]"/>
+                <group expand="1" string="Postcode" name="Group by">
+                    <filter string="PostCode" name="postcode" context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!--Tree view-->
     <record id="estate_view_tree" model="ir.ui.view">
         <field name="name">estate.tree</field>
         <field name="model">estate_property</field>
@@ -17,7 +47,53 @@
         </field>
     </record>
 
-    <!---->
+    <!--Form view-->
+
+    <record id="estate_view_form" model="ir.ui.view">
+        <field name="name">estate.form</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <form string="Channel">
+                <sheet>
+                    <group>
+                        <group>
+                            <h1 class="mb32">
+                                <field name="name" class="mb16"/>
+                            </h1>
+                            <group>
+                                <field name="postcode"/>
+                                <field name="date_availability"/>
+                            </group>
+                            <group>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <field name="description"/>
+                                    <field name="state"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area"/>
+                                    <field name="garden_orientation"/>
+                                    <field name="active"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Estate action</field>
         <field name="res_model">estate_property</field>
