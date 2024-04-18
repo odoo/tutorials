@@ -43,19 +43,16 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - record.create_date).days
 
     def action_set_offer_accepted(self):
-        for record in self:
-            if "accepted" in record.property_id.offer_ids.mapped("status"):
-                raise UserError(
-                    "cannot accept this offer, another offer has been accepted"
-                )
-
-            record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.partner_id = record.partner_id
-            record.property_id.state = "offer accepted"
+        if "accepted" in self.property_id.offer_ids.mapped("status"):
+            raise UserError(
+                "Cannot accept this offer, another offer has already been accepted"
+            )
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.partner_id = self.partner_id
+        self.property_id.state = "offer accepted"
         return True
 
     def action_set_offer_refused(self):
-        for record in self:
-            record.status = "refused"
+        self.status = "refused"
         return True
