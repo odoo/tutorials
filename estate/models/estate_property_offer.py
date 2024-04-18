@@ -27,24 +27,31 @@ class PropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     @api.depends("validity", "create_date")
-    def _compute_deadline(self):
+    def _compute_date_deadline(self):
         for offer in self:
             if offer.create_date:
                 offer.date_deadline = offer.create_date + relativedelta(days=offer.validity)
             else:
                 offer.date_deadline = date.today() + relativedelta(days=offer.validity)
 
-    def _inverse_deadline(self):
+    def _inverse_date_deadline(self):
         for offer in self:
             offer.validity = (offer.date_deadline - offer.create_date.date()).days
 
+    @api.model
+    def create(self, vals):
+        related_property = self.env['estate.property'].browse(vals['property_id'])
+        for offer in related_property.offer_ids:
+            if offer.price > self.price:
+                raise exceptions.UserError("Higher offer already present")
+        related_property.state = 'offer_received'
+        return super().create(vals)
+
     def action_accept(self):
-        # To get the statuses of all offers related to the property
-        # print(self.mapped("property_id.offer_ids.status"))
         related_offers_statuses = self.mapped("property_id.offer_ids.status")
         if any(x == 'accepted' for x in related_offers_statuses):
             raise exceptions.UserError("Another offer was already accepted")
@@ -57,11 +64,3 @@ class PropertyOffer(models.Model):
         self.status = 'refused'
         return True
 
-    @api.model
-    def create(self, vals):
-        related_property = self.env['estate.property'].browse(vals['property_id'])
-        for offer in related_property.offer_ids:
-            if offer.price > self.price:
-                raise exceptions.UserError("Higher offer already present")
-        related_property.state = 'offer_received'
-        return super().create(vals)

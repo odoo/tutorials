@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Property Types</field>
+        <field name="name">Property Type Main Action</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -15,7 +15,7 @@
     </record>
 
     <record id="estate_property_type_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.type.tree</field>
+        <field name="name">estate.property.type.view.tree</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Property Type">
@@ -27,7 +27,7 @@
     </record>
 
     <record id="estate_property_type_view_form" model="ir.ui.view">
-        <field name="name">estate.property.type.form</field>
+        <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">

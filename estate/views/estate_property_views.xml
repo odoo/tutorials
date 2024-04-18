@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
+        <field name="name">Property Main Action</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form,kanban</field>
         <field name="search_view_id" ref="estate.estate_property_view_search"/>
@@ -17,7 +17,7 @@
     </record>
 
     <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.tree</field>
+        <field name="name">estate.property.view.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Property"
@@ -39,7 +39,7 @@
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
@@ -98,7 +98,7 @@
     </record>
 
     <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Property">
@@ -123,7 +123,7 @@
     </record>
 
     <record id="estate_property_view_kanban" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
+        <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="state" records_draggable="0">

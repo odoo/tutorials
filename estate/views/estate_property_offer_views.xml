@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="estate_property_offer_action" model="ir.actions.act_window">
-        <field name="name">Property Offers</field>
+        <field name="name">Property Offer Main Action</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
     
     <record id="estate_property_offer_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.offer.tree</field>
+        <field name="name">estate.property.offer.view.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <tree string="Offers"
@@ -28,7 +28,7 @@
     </record>
 
     <record id="estate_property_offer_view_form" model="ir.ui.view">
-        <field name="name">estate.property.offer.form</field>
+        <field name="name">estate.property.offer.view.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Property offer">
