@@ -57,7 +57,7 @@ class PropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         property_id = self.env['estate.property'].browse(vals['property_id'])
-        if vals['price']<property_id.best_price:
+        if vals['price'] < property_id.best_price:
             raise UserError("An offer cannot be created if another offer has a higher price.")
         property_id.state = 'offer_received'
         return super().create(vals)

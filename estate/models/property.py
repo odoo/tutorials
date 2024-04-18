@@ -100,5 +100,5 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_only_new_and_canceled_sate(self):
-        if self.state!="new" and self.state!="canceled":
+        if self.state != "new" and self.state != "canceled":
             raise UserError("Can't delete a property if its state is not 'New' or 'Canceled'!")
