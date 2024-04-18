@@ -1,4 +1,4 @@
-from odoo import fields, models  # type: ignore
+from odoo import api, fields, models  # type: ignore
 from datetime import timedelta
 
 
@@ -56,3 +56,9 @@ class EstateProterty(models.Model):
     buyer = fields.Char(string="buyer", copy=False)
     tag_ids = fields.Many2many("estate_property_tag", string="Tags")
     offer_ids = fields.One2many("estate_property_offer", "property_id", string="Offer")
+    total_area = fields.Float(compute="_compute_total_area")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area

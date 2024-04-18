@@ -87,6 +87,7 @@
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
                                     <field name="active"/>
+                                    <field name="total_area"/>
                                 </group>
                             </page>
                             <page string="Other info">
