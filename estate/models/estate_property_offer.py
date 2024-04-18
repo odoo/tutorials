@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 class PropertyOffer(models.Model):
 
@@ -10,7 +10,7 @@ class PropertyOffer(models.Model):
             ('Accepted', 'Accepted'),
             ('Refused', 'Refused'),
         ],
-        copy = False
+        copy=False
     )
-    partner_id = fields.Many2one('res.partner', string = "Partner", required = True)
-    property_id = fields.Many2one('estate_property', required = True)
+    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
+    property_id = fields.Many2one('estate_property', required=True)
