@@ -33,14 +33,14 @@
             <form string="Property Type">
                 <sheet class="mx-auto">
                     <div class="oe_button_box" name="button_box" groups="base.group_user">
-                            <button name="%(estate.estate_property_offer_action)d"
-                                    type="action"
-                                    class="oe_stat_button"
-                                    icon="fa-money"
-                                    help="Offers involving this property type">
-                                <field name="offer_count" widget="statinfo" string="Offer(s)"/>
-                            </button>
-                        </div>
+                        <button name="%(estate.estate_property_offer_action)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-money"
+                                help="Offers involving this property type">
+                            <field name="offer_count" widget="statinfo" string="Offer(s)"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1 class="mb32">
                             <field name="name" class="mb16"/>

@@ -55,3 +55,12 @@ class PropertyOffer(models.Model):
     def action_refuse(self):
         self.status = 'refused'
         return True
+
+    @api.model
+    def create(self, vals):
+        related_property = self.env['estate.property'].browse(vals['property_id'])
+        for offer in related_property.offer_ids:
+            if offer.price > self.price:
+                raise exceptions.UserError("Higher offer already present")
+        related_property.state = 'offer_received'
+        return super().create(vals)
