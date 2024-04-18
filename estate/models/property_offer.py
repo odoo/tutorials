@@ -45,10 +45,13 @@ class PropertyOffer(models.Model):
         self.status = "accepted"
         self.property_id.buyer = self.partner_id
         self.property_id.selling_price = self.price
+        self.property_id.state = "offer_accepted"
         return True
 
     def action_refuse_offer(self):
         for record in self:
+            if (record.status == "accepted"):
+                self.property_id.state = "offer_received"
             record.status = "refused"
             record.property_id.buyer = False
             record.property_id.selling_price = False

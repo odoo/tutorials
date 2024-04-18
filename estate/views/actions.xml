@@ -4,7 +4,7 @@
         <record id="estate_property" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
-            <field name="view_mode">tree,form,search</field>
+            <field name="view_mode">tree,form,search,kanban</field>
             <field name="search_view_id" ref="property_view_search"/>
             <field name="context">{'search_default_available': True}</field>
         </record>

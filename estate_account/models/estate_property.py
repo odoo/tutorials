@@ -12,7 +12,7 @@ class InheritedProperty(models.Model):
                 Command.create({
                     "name": super().name,
                     "quantity": 1,
-                    "price_unit": super().selling_price*0.06,
+                    "price_unit": super().selling_price * 0.06,
                 }),
                 Command.create({
                     "name": "Administrative fees",
@@ -21,5 +21,5 @@ class InheritedProperty(models.Model):
                 })
             ],
         }
-        move = self.env['account.move'].create(move_dict)
+        self.env['account.move'].create(move_dict)
         return super().action_set_sold_property()
