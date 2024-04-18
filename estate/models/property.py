@@ -45,7 +45,7 @@ class EstateProperty(models.Model):
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('canceled', 'Canceled')],
-        default = 'new',
+        default='new',
         copy=False
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -58,20 +58,20 @@ class EstateProperty(models.Model):
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        for property in self:
-            property.total_area = property.living_area + property.garden_area
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids")
     def _compute_best_price(self):
-        for property in self:
-            if len(property.offer_ids) == 0: 
-                property.best_price = False
+        for record in self:
+            if len(record.offer_ids) == 0:
+                record.best_price = False
                 continue
-            property.best_price = max(property.offer_ids.mapped('price'))
+            record.best_price = max(record.offer_ids.mapped('price'))
 
     @api.onchange("garden")
     def _onchange_partner_id(self):
-        if(self.garden):
+        if (self.garden):
             self.garden_area = 10
             self.garden_orientation = "south"
         else:
@@ -79,21 +79,21 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_set_sold_property(self):
-        for property in self:
-            if property.state == "canceled":
+        for record in self:
+            if record.state == "canceled":
                 raise UserError("Canceled properties cannot be sold.")
-            property.state = "sold"
+            record.state = "sold"
         return True
 
     def action_set_canceled_property(self):
-        for property in self:
-            if property.state == "sold":
+        for record in self:
+            if record.state == "sold":
                 raise UserError("Sold properties cannot be canceled.")
-            property.state = "canceled"
+            record.state = "canceled"
         return True
 
     @api.constrains('selling_price', 'expected_price')
     def _check_date_end(self):
-        for property in self:
-            if float_compare(property.selling_price, property.expected_price * 0.9, 2) < 0 and not float_is_zero(property.selling_price, 2):
+        for record in self:
+            if float_compare(record.selling_price, record.expected_price * 0.9, 2) < 0 and not float_is_zero(record.selling_price, 2):
                 raise ValidationError('The selling price cannot be lower than 90% of the expected price.')
