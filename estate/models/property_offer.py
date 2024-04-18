@@ -44,8 +44,8 @@ class PropertyOffer(models.Model):
     def action_accept(self):
         # To get the statuses of all offers related to the property
         # print(self.mapped("property_id.offer_ids.status"))
-        related_offers = self.mapped("property_id.offer_ids.status")
-        if any([x == 'accepted' for x in related_offers]):
+        related_offers_statuses = self.mapped("property_id.offer_ids.status")
+        if any(x == 'accepted' for x in related_offers_statuses):
             raise exceptions.UserError("Another offer was already accepted")
         self.status = 'accepted'
         self.property_id.selling_price = self.price

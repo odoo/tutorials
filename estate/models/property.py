@@ -62,7 +62,7 @@ class Property(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
-    
+
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
