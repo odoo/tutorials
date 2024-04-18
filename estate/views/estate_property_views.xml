@@ -17,6 +17,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="estate_property_type_id"/>
                 <separator/>
                 <filter string="Available" name="active" domain="['&amp;',
                                                                     ('active', '=', True),
@@ -37,12 +38,14 @@
         <field name="arch" type="xml">
             <tree string="Channel">
                 <field name="name"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="estate_property_type_id"/>
             </tree>
         </field>
     </record>
@@ -60,9 +63,11 @@
                             <h1 class="mb32">
                                 <field name="name" class="mb16"/>
                             </h1>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <group>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
+                                <field name="estate_property_type_id"/>
                             </group>
                             <group>
                                 <field name="expected_price"/>
@@ -84,6 +89,17 @@
                                     <field name="active"/>
                                 </group>
                             </page>
+                            <page string="Other info">
+                                <group>
+                                    <field name="user_id"/>
+                                    <field name="buyer"/>
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                <group>
+                                    <field name="offer_ids"/>
+                                </group>
+                            </page>
                         </notebook>
                     </group>
                 </sheet>
@@ -95,7 +111,7 @@
 
 
     <record id="estate_model_action" model="ir.actions.act_window">
-        <field name="name">Estate action</field>
+        <field name="name">Property</field>
         <field name="res_model">estate_property</field>
         <field name="view_mode">tree,form</field>
     </record>
