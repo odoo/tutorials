@@ -1,4 +1,5 @@
 from odoo import api, fields, models  # type: ignore
+from odoo.exceptions import UserError
 from datetime import timedelta
 
 
@@ -30,3 +31,14 @@ class EstatePropertyOffer(models.Model):
             if record.create_date and record.date_deadline:
                 record.validity = (record.date_deadline - record.create_date.date()).days
 
+    def action_accepted(self):
+        if "accepted" in self.property_id.offer_ids.mapped("status"):
+            raise UserError("Cannot accept this offer, another offer has been accepted")
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer = self.partner_id.name
+        return True
+
+    def action_refused(self):
+        self.status = "refused"
+        return True

@@ -58,6 +58,10 @@
         <field name="arch" type="xml">
             <form string="Channel">
                 <sheet>
+                    <header>
+                        <button name="action_sold" string="Sold" type="object" />
+                        <button name="action_cancel" string="Cancel" type="object"/>
+                    </header>
                     <group>
                         <group>
                             <h1 class="mb32">
