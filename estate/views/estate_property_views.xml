@@ -25,8 +25,8 @@
         <field name="arch" type="xml">
             <form string="Estate Property Form">
                 <header>
-                    <button name="action_set_property_sold" type="object" string="Sold" />
-                    <button name="action_set_property_canceled" type="object" string="Cancel" />
+                    <button name="action_set_property_sold" type="object" string="Sold" class="oe_highlight" invisible="state in ['sold', 'canceled']" />
+                    <button name="action_set_property_canceled" type="object" string="Cancel" invisible="state in ['sold', 'canceled']" />
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet class="mx-auto">
