@@ -1,9 +1,11 @@
 from odoo import api, fields, models
 
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 from datetime import date
 from dateutil.relativedelta import relativedelta
+
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -85,6 +87,21 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = False
             self.garden_orientation = False
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if (
+                float_compare(
+                    value1=record.selling_price,
+                    value2=(record.expected_price * 0.9),
+                    precision_digits=2,
+                )
+                < 0
+            ) and (not float_is_zero(value=record.selling_price, precision_digits=2)):
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price"
+                )
 
     def action_set_property_sold(self):
         for record in self:
