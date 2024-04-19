@@ -110,4 +110,3 @@ class Property(models.Model):
             raise exceptions.UserError("Sold properties cannot be canceled")
         self.state = 'canceled'
         return True
-

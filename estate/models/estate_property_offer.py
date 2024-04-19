@@ -63,4 +63,3 @@ class PropertyOffer(models.Model):
     def action_refuse(self):
         self.status = 'refused'
         return True
-
