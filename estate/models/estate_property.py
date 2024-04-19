@@ -43,7 +43,6 @@ class Property(models.Model):
         required=True,
         copy=False,
         default='New',
-        readonly=True,
     )
     property_type_id = fields.Many2one("estate_property_type", string="Property Type")
     user_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)

@@ -1,4 +1,3 @@
-from random import randint
 from odoo import fields, models
 
 class PropertyTag(models.Model):
