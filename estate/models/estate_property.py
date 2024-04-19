@@ -1,5 +1,6 @@
 from odoo import api, fields, models  # type: ignore
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 from datetime import timedelta
 
 
@@ -96,7 +97,14 @@ class EstateProterty(models.Model):
     @api.constrains("expected_price", "selling_price")
     def _check_positif(self):
         for record in self:
-            if self.expected_price <= 0:
+            if record.expected_price <= 0:
                 raise ValidationError("Expected price must be positif")
-            if self.selling_price < 0:
+            if record.selling_price < 0:
                 raise ValidationError("Selling price must be positif")
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2) and not float_is_zero(record.expected_price, precision_digits=2):
+                if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
+                    raise models.ValidationError("Selling price cannot be lower than 90% of the expected price.")
