@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
+        <record id="property_type_action" model="ir.actions.act_window">
+            <field name="name">Property Types</field>
+            <field name="res_model">estate.property.type</field>
+            <field name="view_mode">tree,form,search</field>
+        </record>
+
         <record id="property_type_view_tree" model="ir.ui.view">
             <field name="name">property.types.view.tree</field>
             <field name="model">estate.property.type</field>
@@ -18,10 +24,9 @@
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
                 <form string="Estate">
-                    
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name="%(estate_property_offer)d" class="oe_stat_button" type="action" icon="fa-bars">
+                            <button name="%(property_offer_action)d" class="oe_stat_button" type="action" icon="fa-bars">
                                 <field string="Offers" name="offer_count" widget="statinfo"/>
                             </button>
                         </div>

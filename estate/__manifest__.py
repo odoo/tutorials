@@ -2,13 +2,12 @@
     'name': "Estate",
     'application': True,
     'data': [
+        'views/inherited_user_views.xml',
         'security/ir.model.access.csv',
-        'views/actions.xml',
         'views/property_views.xml',
-        'views/property_type_views.xml',
-        'views/menus.xml',
-        'views/property_tag_views.xml',
         'views/property_offer_views.xml',
-        'views/inherited_user_view.xml'
+        'views/property_tag_views.xml',
+        'views/property_type_views.xml',
+        'views/estate_menus.xml',
     ]
 }
