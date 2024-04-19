@@ -1,10 +1,14 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
-
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 class Property(models.Model):
 
     _name = "estate_property"
     _description = "The properties of the real estate property"
+    _sql_constraints = [
+        ('check_positive_expected_price', 'CHECK (expected_price > 0)', 'The expected price must be strictly postive'),
+        ('check_positive_selling_price', 'CHECK (selling_price >= 0)', 'The selling price must be positive'),
+    ]
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -46,7 +50,7 @@ class Property(models.Model):
     property_tag_ids = fields.Many2many("estate_property_tag")
     property_offer_ids = fields.One2many("estate_property_offer", "property_id", string="Offers")
     best_offer = fields.Float(compute="_compute_best_offer")
-
+    PRECISION_ROUNDING = 1e-5
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -84,3 +88,18 @@ class Property(models.Model):
 
         property.state = "Canceled"
         return True
+    @api.constrains('expected_price', 'selling_price')
+    def check_selling_price(self):
+        for estate_property in self:
+            if (
+                not float_is_zero(
+                    estate_property.selling_price,
+                    precision_rounding=self.PRECISION_ROUNDING,
+                ) and
+                float_compare(
+                    estate_property.selling_price,
+                    0.9 * estate_property.expected_price,
+                    precision_rounding=self.PRECISION_ROUNDING,
+                ) < 0
+            ):
+                raise ValidationError('The selling price cannot be less than 90% of the expected price')
