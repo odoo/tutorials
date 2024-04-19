@@ -9,6 +9,18 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate property"
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "The expected price must be stricly positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "The selling price must be stricly positive",
+        ),
+    ]
 
     name = fields.Char("Title", required=True)
     description = fields.Text()

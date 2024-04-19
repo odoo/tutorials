@@ -7,6 +7,13 @@ from odoo.tools import date_utils
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate property offer"
+    _sql_constraints = [
+        (
+            "check_offer_price",
+            "CHECK(price > 0)",
+            "The offer price must be stricly positive",
+        )
+    ]
 
     price = fields.Float()
     status = fields.Selection(
