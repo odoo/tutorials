@@ -40,8 +40,15 @@
                             </h1>
                         </group>
                         <notebook>
-                            <page string="Description">
+                            <page string="Properties">
                                 <group>
+                                    <field name="property_ids">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="expected_price"/>
+                                            <field name="state"/>
+                                        </tree>
+                                    </field>
                                 </group>
                             </page>
                         </notebook>
