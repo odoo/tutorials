@@ -2,7 +2,6 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, exceptions
-from odoo.tools.float_utils import float_compare
 
 
 class PropertyOffer(models.Model):

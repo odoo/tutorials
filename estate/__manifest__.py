@@ -13,5 +13,10 @@
         'views/res_users_views.xml',
         'views/estate_menus.xml'
     ],
+    'demo': [
+        'demo/estate_property_type_data.xml',
+        'demo/estate_property_data.xml',
+        'demo/estate_property_offer_data.xml',
+    ],
     'application': True
 }
