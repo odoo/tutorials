@@ -2,6 +2,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, exceptions
+from odoo.tools.float_utils import float_compare
 
 
 class PropertyOffer(models.Model):
@@ -46,7 +47,7 @@ class PropertyOffer(models.Model):
     def create(self, vals):
         related_property = self.env['estate.property'].browse(vals['property_id'])
         for offer in related_property.offer_ids:
-            if offer.price > self.price:
+            if offer.price > vals["price"]:
                 raise exceptions.UserError("Higher offer already present")
         related_property.state = 'offer_received'
         return super().create(vals)
