@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 class PropertyOffer(models.Model):
 
@@ -31,3 +32,18 @@ class PropertyOffer(models.Model):
             # No need to check whether record.create_date is present because the inverse function is called
             # when the record is saved, so the create date will be present.
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    def action_accept(self):
+
+        if "Accepted" in self.mapped('property_id.property_offer_ids.status'):
+            raise UserError("There can only be one accepted offer")
+
+        self.status = "Accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.partner_id = self.partner_id
+        return True
+
+    def action_refuse(self):
+
+        self.status = "Refused"
+        return True
