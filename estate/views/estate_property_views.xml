@@ -36,12 +36,12 @@
                         <h1>
                             <field name="name" class="mb16" />
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags" />
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                         <field name="active" invisible="1" />
                     </div>
                     <group>
                         <group>
-                            <field name="property_type_id" />
+                            <field name="property_type_id" options="{'no_create': true, 'no_open': true}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
