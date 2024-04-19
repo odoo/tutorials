@@ -1,5 +1,5 @@
 from odoo import api, fields, models  # type: ignore
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import timedelta
 
 
@@ -42,3 +42,9 @@ class EstatePropertyOffer(models.Model):
     def action_refused(self):
         self.status = "refused"
         return True
+
+    @api.constrains('price')
+    def _check_positif(self):
+        for record in self:
+            if self.price <= 0:
+                raise ValidationError("Expected price must be positif")
