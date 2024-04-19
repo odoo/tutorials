@@ -7,6 +7,7 @@ from odoo.tools import date_utils
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate property offer"
+    _order = "price desc"
     _sql_constraints = [
         (
             "check_offer_price",
