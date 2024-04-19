@@ -9,6 +9,7 @@ class Property(models.Model):
         ('check_positive_expected_price', 'CHECK (expected_price > 0)', 'The expected price must be strictly postive'),
         ('check_positive_selling_price', 'CHECK (selling_price >= 0)', 'The selling price must be positive'),
     ]
+    _order = 'id desc'
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -83,11 +84,12 @@ class Property(models.Model):
 
     def action_cancel(self):
 
-        if property.state == "Sold":
+        if self.state == "Sold":
             raise UserError("A sold property cannot be canceled")
 
-        property.state = "Canceled"
+        self.state = "Canceled"
         return True
+
     @api.constrains('expected_price', 'selling_price')
     def check_selling_price(self):
         for estate_property in self:

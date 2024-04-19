@@ -25,8 +25,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_sold" type="object" string="Sold"/>
-                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state == 'Sold' or state == 'Canceled'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state == 'Sold' or state == 'Canceled'"/>
+                    <field name='state' widget='statusbar' statusbar_visible='New, Offer Received, Offer Accepted, Sold'/>
                 </header>
                 <sheet>
                     <group>
@@ -35,12 +36,12 @@
                         </h1>
                         <separator/>
                         <group>
-                            <field name="property_tag_ids" widget="many2many_tags"/>
+                            <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                         <separator/>
                         <group>
                             <field name="state" string="Status"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -60,15 +61,15 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area" string="Total Area (sqm)"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <separator/>
                             <group>
-                                <field name="property_offer_ids"/>
+                                <field name="property_offer_ids" readonly="state in ['Offer Accepter', 'Sold', 'Canceled']"/>
                             </group>
                         </page>
                         <page string="Other Info">

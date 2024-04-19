@@ -1,3 +1,4 @@
+from random import randint
 from odoo import fields, models
 
 class PropertyTag(models.Model):
@@ -7,4 +8,6 @@ class PropertyTag(models.Model):
     _sql_constraints = [
         ('unique_name', 'unique(name)', 'The tag name must be unique'),
     ]
+    _order = 'name'
     name = fields.Char(required=True)
+    color = fields.Integer()

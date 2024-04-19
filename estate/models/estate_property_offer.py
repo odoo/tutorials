@@ -8,6 +8,7 @@ class PropertyOffer(models.Model):
     _sql_constraints = [
         ('check_positive_price', 'CHECK (price > 0)', 'The Price must be strictly positive'),
     ]
+    _order = 'price desc'
     price = fields.Float()
     status = fields.Selection(
         selection=[
@@ -44,6 +45,7 @@ class PropertyOffer(models.Model):
         self.status = "Accepted"
         self.property_id.selling_price = self.price
         self.property_id.partner_id = self.partner_id
+        self.property_id.state = "Offer Accepted"
         return True
 
     def action_refuse(self):
