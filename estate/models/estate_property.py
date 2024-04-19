@@ -59,10 +59,10 @@ class Property(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden :
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = "North"
-        else :
+        else:
             self.garden_area = 0
             self.garden_orientation = ""
 
@@ -71,7 +71,7 @@ class Property(models.Model):
         if self.state == "Canceled":
             raise UserError("A canceled property cannot be sold")
 
-        if "Accepted" not in self.mapped("property_offer_ids.status") :
+        if "Accepted" not in self.mapped("property_offer_ids.status"):
             raise UserError("A property cannot be sold without accepted offers")
 
         self.state = "Sold"
