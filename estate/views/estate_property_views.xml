@@ -5,7 +5,10 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Tests">
+            <tree string="Properties" 
+                decoration-muted="state=='sold'" 
+                decoration-success="state in ['offer accepted','offer received']" 
+                decoration-bf="state=='offer accepted'">
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="tag_ids" widget="many2many_tags" />
@@ -15,6 +18,7 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" optional="hidden" />
+                <field name="state" />
             </tree>
         </field>
     </record>
