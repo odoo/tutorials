@@ -56,7 +56,7 @@ class Property(models.Model):
     property_offer_ids = fields.One2many("estate_property_offer", "property_id", string="Offers")
     best_offer = fields.Float(compute="_compute_best_offer")
     PRECISION_ROUNDING = 1e-5
-    
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -99,7 +99,7 @@ class Property(models.Model):
                 raise UserError('You cannot delete a property that is not new or canceled.')
 
     def action_sold(self):
-        """ 
+        """
         On selling a property, change its state to sold.
         A property cannot be sold if its advertisement is canceled or if it doesn't have an
         accepted offer.

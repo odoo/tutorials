@@ -9,7 +9,7 @@ class Property(models.Model):
     _inherit = "estate_property"
 
     def action_sold(self):
-        """ 
+        """
         On selling a property, change its state to sold and create a customer invoice.
         A property cannot be sold if its advertisement is canceled or if it doesn't have an
         accepted offer.
@@ -23,7 +23,7 @@ class Property(models.Model):
         invoice_lines = self._prepare_invoice_lines()
         invoice['invoice_line_ids'] = [Command.create(invoice_line) for invoice_line in invoice_lines]
         self.env['account.move'].sudo().with_context(default_move_type='out_invoice').create(invoice)
-    
+
     def _prepare_invoice(self):
         return {
             'move_type': 'out_invoice',
