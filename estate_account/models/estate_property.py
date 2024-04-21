@@ -1,9 +1,19 @@
 from odoo import Command, models
 
-class EstateProperty(models.Model):
+class Property(models.Model):
+    """
+    Inherits from estate_property to extend the behavior of selling a property. The additional behavior
+    is generating an invoice whenever a property is sold to a customer.
+    """
+
     _inherit = "estate_property"
 
     def action_sold(self):
+        """ 
+        On selling a property, change its state to sold and create a customer invoice.
+        A property cannot be sold if its advertisement is canceled or if it doesn't have an
+        accepted offer.
+        """
         self.ensure_one()
         self._create_account_move()
         return super().action_sold()

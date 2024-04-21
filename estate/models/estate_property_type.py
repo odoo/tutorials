@@ -1,7 +1,11 @@
+""" A module defining types of properties"""
+
 from odoo import api, fields, models
 
 class PropertyType(models.Model):
-
+    """
+    Represents a real estate property type such as House, Apartment, etc.
+    """
     _name = "estate_property_type"
     _description = "The type of the real estate property i.e. house, apartment, etc"
     _sql_constraints = [

@@ -1,8 +1,13 @@
+""" A module defining a real estate property and the related behavior"""
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 class Property(models.Model):
-
+    """
+    Represents a real estate property with all its
+    attributes such as no bedrooms, living area, garden area,etc.
+    """
     _name = "estate_property"
     _description = "The properties of the real estate property"
     _sql_constraints = [
@@ -51,6 +56,7 @@ class Property(models.Model):
     property_offer_ids = fields.One2many("estate_property_offer", "property_id", string="Offers")
     best_offer = fields.Float(compute="_compute_best_offer")
     PRECISION_ROUNDING = 1e-5
+    
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -93,21 +99,29 @@ class Property(models.Model):
                 raise UserError('You cannot delete a property that is not new or canceled.')
 
     def action_sold(self):
+        """ 
+        On selling a property, change its state to sold.
+        A property cannot be sold if its advertisement is canceled or if it doesn't have an
+        accepted offer.
+        """
         self.ensure_one()
         if self.state == "Canceled":
             raise UserError("A canceled property cannot be sold")
 
         if "Accepted" not in self.mapped("property_offer_ids.status"):
-            raise UserError("A property cannot be sold without accepted offers")
+            raise UserError("A property cannot be sold without an accepted offer")
 
         self.state = "Sold"
         return True
 
     def action_cancel(self):
+        """
+        On canceling the advertisement of a property, change its state to canceled.
+        An advertisement of a property cannot be canceled if the property has been sold.
+        """
         self.ensure_one()
         if self.state == "Sold":
             raise UserError("A sold property cannot be canceled")
 
         self.state = "Canceled"
         return True
-
