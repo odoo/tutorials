@@ -61,36 +61,8 @@ class Property(models.Model):
         for record in self:
             record.best_offer = max(record.mapped("property_offer_ids.price")) if record.property_offer_ids else 0
 
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "North"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = ""
-
-    def action_sold(self):
-
-        if self.state == "Canceled":
-            raise UserError("A canceled property cannot be sold")
-
-        if "Accepted" not in self.mapped("property_offer_ids.status"):
-            raise UserError("A property cannot be sold without accepted offers")
-
-        self.state = "Sold"
-        return True
-
-    def action_cancel(self):
-
-        if self.state == "Sold":
-            raise UserError("A sold property cannot be canceled")
-
-        self.state = "Canceled"
-        return True
-
     @api.constrains('expected_price', 'selling_price')
-    def check_selling_price(self):
+    def _check_selling_price(self):
         for estate_property in self:
             if (
                 not float_is_zero(
@@ -105,8 +77,37 @@ class Property(models.Model):
             ):
                 raise ValidationError('The selling price cannot be less than 90% of the expected price')
 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "North"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""
+
     @api.ondelete(at_uninstall=False)
     def _unlink_property_except_new_canceled(self):
-        for record in self :
+        for record in self:
             if record.state not in ['New', 'Canceled']:
                 raise UserError('You cannot delete a property that is not new or canceled.')
+
+    def action_sold(self):
+        self.ensure_one()
+        if self.state == "Canceled":
+            raise UserError("A canceled property cannot be sold")
+
+        if "Accepted" not in self.mapped("property_offer_ids.status"):
+            raise UserError("A property cannot be sold without accepted offers")
+
+        self.state = "Sold"
+        return True
+
+    def action_cancel(self):
+        self.ensure_one()
+        if self.state == "Sold":
+            raise UserError("A sold property cannot be canceled")
+
+        self.state = "Canceled"
+        return True
+
