@@ -75,7 +75,7 @@
                         <page string="Offers">
                             <separator/>
                             <group>
-                                <field name="property_offer_ids" readonly="state in ['Offer Accepter', 'Sold', 'Canceled']"/>
+                                <field name="property_offer_ids" readonly="state in ['Offer Accepted', 'Sold', 'Canceled']"/>
                             </group>
                         </page>
                         <page string="Other Info">

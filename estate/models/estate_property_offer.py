@@ -53,3 +53,11 @@ class PropertyOffer(models.Model):
 
         self.status = "Refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        property = self.env['estate_property'].browse(vals['property_id'])
+        if vals['price'] < min(property.mapped('property_offer_ids.price'), default=vals['price']):
+            raise UserError('The price given is lower than the price of an existing offer.')
+        property.state = "Offer Received"
+        return super(PropertyOffer, self).create(vals)
