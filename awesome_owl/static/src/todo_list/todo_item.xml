@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <div class="m-2 p-2 border">
+            <span class="me-2">Task ID: <t t-esc="this.props.todo.id"/></span>
+            <span class="me-2">Task Description: <t t-esc="this.props.todo.description"/></span>
+            <span class="me-2">Done: <t t-esc="this.props.todo.isCompleted"/></span>
+        </div>
+    </t>
+</templates>

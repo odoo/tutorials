@@ -11,5 +11,8 @@
             <Card title="'Card 1'" content="this.html"/>
             <Card title="'Card 2'" content="this.html_markup"/>
         </div>
+        <div class="m-2 p-2 border d-inline-block" display="flex" flex-direction="column">
+            <TodoList/>
+        </div>
     </t>
 </templates>
