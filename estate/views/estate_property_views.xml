@@ -12,7 +12,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
@@ -36,8 +36,12 @@
         <field name="name">estate.tree</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
+            <tree string="Property"
+                decoration-success="state=='offer received' or state=='offer accepted'" 
+                decoration-bf="state=='offer accepted'" 
+                decoration-muted="state=='sold'">
                 <field name="name"/>
+                <field name="state" invisible="1" nolabel="1"/>
                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -59,19 +63,22 @@
             <form string="Channel">
                 <sheet>
                     <header>
-                        <button name="action_sold" string="Sold" type="object" />
-                        <button name="action_cancel" string="Cancel" type="object"/>
+                        <group invisible="state == 'sold'">
+                            <button name="action_sold" string="Sold" type="object"/>
+                            <button name="action_cancel" string="Cancel" type="object"/>
+                        </group>
+                        <field name="state" widget="statusbar"/>
                     </header>
                     <group>
                         <group>
                             <h1 class="mb32">
                                 <field name="name" class="mb16"/>
                             </h1>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <group>
                                 <field name="postcode"/>
-                                <field name="date_availability"/>
-                                <field name="estate_property_type_id"/>
+                                <field name="date_availability" optional="hide"/>
+                                <field name="estate_property_type_id" options="{'no_create_edit': True, 'no_quick_create': True}"/>
                             </group>
                             <group>
                                 <field name="expected_price"/>
@@ -89,8 +96,8 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="garden == False"/>
+                                    <field name="garden_orientation" invisible="garden == False"/>
                                     <field name="active"/>
                                     <field name="total_area"/>
                                 </group>
@@ -102,9 +109,7 @@
                                 </group>
                             </page>
                             <page string="Offers">
-                                <group>
-                                    <field name="offer_ids"/>
-                                </group>
+                                <field name="offer_ids"  readonly="state in ['offer accepted', 'sold', 'canceled']"/>
                             </page>
                         </notebook>
                     </group>
@@ -120,5 +125,7 @@
         <field name="name">Property</field>
         <field name="res_model">estate_property</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="estate_search"/>
+        <field name="context">{'search_default_active': True}</field>
     </record>
 </odoo>

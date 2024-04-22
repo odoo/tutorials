@@ -1,12 +1,13 @@
 from odoo import api, fields, models  # type: ignore
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.exceptions import UserError, ValidationError # type: ignore
+from odoo.tools.float_utils import float_compare, float_is_zero # type: ignore
 from datetime import timedelta
 
 
 class EstateProterty(models.Model):
     _name = "estate_property"
     _description = "estate property"
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")

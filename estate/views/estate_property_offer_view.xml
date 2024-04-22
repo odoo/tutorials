@@ -7,14 +7,15 @@
         <field name="name">Estate Offer tree</field>
         <field name="model">estate_property_offer</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
+            <tree string="Offers" editable="top" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
                 <field name="price"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <field name="partner_id"/>
-                <button name="action_accepted" string="Accept" type="object" icon="fa-check"/>
-                <button name="action_refused" string="Refuse" type="object" icon="fa-level-down"/>
-                <field name="status"/>
+                <field name="property_type_id"/>
+                <button name="action_accepted" string="Accept" type="object" icon="fa-check" invisible="status != False"/>
+                <button name="action_refused" string="Refuse" type="object" icon="fa-level-down" invisible="status != False"/>
+                <field name="status" invisible="1" nolabel="1"/>
             </tree>
         </field>
     </record>
@@ -38,7 +39,7 @@
                                 <group>
                                     <field name="partner_id"/>
                                     <field name="validity"/>
-                                    <field name="date_deadline"/>  
+                                    <field name="date_deadline"/>
                                     <field name="status"/>
                                 </group>
                             </page>
@@ -48,4 +49,6 @@
             </form>
         </field>
     </record>
+
+
 </odoo>

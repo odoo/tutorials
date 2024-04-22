@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 <odoo>
 
+    <record id="estate_property_offer" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate_property_offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
     <!--Search-->
 
     <record id="estate_type_search" model="ir.ui.view">
@@ -20,6 +26,7 @@
         <field name="model">estate_property_type</field>
         <field name="arch" type="xml">
             <tree string="Channel">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
         </field>
@@ -33,6 +40,11 @@
         <field name="arch" type="xml">
             <form string="Channel">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate_property_offer)d" class="oe_stat_button" type="action" icon="fa-bars">
+                            <field string="Offers" name="offer_count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <h1>
@@ -41,15 +53,13 @@
                         </group>
                         <notebook>
                             <page string="Properties">
-                                <group>
-                                    <field name="property_ids">
-                                        <tree>
-                                            <field name="name"/>
-                                            <field name="expected_price"/>
-                                            <field name="state"/>
-                                        </tree>
-                                    </field>
-                                </group>
+                                <field name="property_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
                             </page>
                         </notebook>
                     </group>
@@ -63,4 +73,5 @@
         <field name="res_model">estate_property_type</field>
         <field name="view_mode">tree,form</field>
     </record>
+
 </odoo>
