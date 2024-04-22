@@ -72,3 +72,13 @@ class EstatePropertyOffer(models.Model):
             self.property_id.state = "offer received"
         self.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        linked_property = self.env["estate.property"].browse(vals["property_id"])
+        highest_offer = max(linked_property.mapped("offer_ids.price"), default=0)
+        if vals["price"] < highest_offer:
+            raise UserError("Offer must be higher than %s" % highest_offer)
+        linked_property.state = "offer received"
+
+        return super().create(vals)
