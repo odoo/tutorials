@@ -7,6 +7,7 @@
         "views/estate_property_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_offer_view.xml",
+        "views/users_view.xml",
         "views/estate_menus.xml",
     ],
 }  # type: ignore

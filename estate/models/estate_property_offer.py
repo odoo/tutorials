@@ -63,3 +63,11 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.price <= 0:
                 raise ValidationError("Expected price must be positif")
+
+    @api.model
+    def create(self, vals):
+        property_id = self.env['estate_property'].browse(vals['property_id'])
+        if vals['price'] < property_id.best_price:
+            raise ValidationError("Cannot create offer with a lower amount than an existing offer.")
+        property_id.state = 'offer received'
+        return super().create(vals)
