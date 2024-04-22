@@ -14,6 +14,13 @@ export class TodoItem extends Component {
                 isCompleted: Boolean,
             },
         },
+        toggleTodoState: Function,
+    }
+
+    checkboxStateChanged(){
+        if(this.props.toggleTodoState){
+            this.props.toggleTodoState(this.props.todo.id)
+        }
     }
 
 }

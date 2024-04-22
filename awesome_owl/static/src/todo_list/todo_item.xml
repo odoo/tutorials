@@ -6,7 +6,9 @@
             t-att-class="{'text-muted': this.props.todo.isCompleted, 'text-decoration-line-through': this.props.todo.isCompleted}"
         >
             <span class="me-2">
-                <t t-esc="this.props.todo.id"/>. <t t-esc="this.props.todo.description"/>
+                <input type="checkbox" t-on-change="this.checkboxStateChanged"/>
+                <t t-esc="this.props.todo.id"/>.
+                <t t-esc="this.props.todo.description"/>   
             </span>
         </div>
     </t>

@@ -27,4 +27,9 @@ export class TodoList extends Component {
             }
         }
     }
+
+    toggleTodoState(todoItemId){
+        let todo = this.state.todos[todoItemId - 1]
+        todo.isCompleted = !todo.isCompleted 
+    }
 }
