@@ -8,7 +8,7 @@ export class Playground extends Component {
     static components = { Counter, Card }
 
     setup(){
-        html = "<div> This is a dev </div>";
-        html_markup = markup(this.html);
+        this.html = "<div> This is a dev </div>";
+        this.html_markup = markup(this.html);
     }
 }
