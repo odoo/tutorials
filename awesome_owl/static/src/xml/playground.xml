@@ -7,8 +7,8 @@
             <Counter/>
         </div>
         <div>
-            <Card title="'Card 1'" content="'Card 1 Content'"/>
-            <Card title="'Card 2'" content="'Card 2 Content'"/>
+            <Card title="'Card 1'" content="this.html"/>
+            <Card title="'Card 2'" content="this.html_markup"/>
         </div>
     </t>
 </templates>
