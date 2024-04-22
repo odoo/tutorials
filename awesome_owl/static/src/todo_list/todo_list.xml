@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-name="awesome_owl.TodoList" t-foreach="this.state.todos" t-as="todo" t-key="todo.id">
-        <TodoItem todo="todo"/>
+    <t t-name="awesome_owl.TodoList">
+        <input type="text" placeholder="Add a Todo" t-on-keyup="this.addTodo"/>
+        <div t-foreach="this.state.todos" t-as="todo" t-key="todo.id">
+            <TodoItem todo="todo"/>
+        </div>
     </t>
 </templates>

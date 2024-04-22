@@ -8,20 +8,22 @@ export class TodoList extends Component {
     static components = { TodoItem }
 
     setup() {
+        this.todosCount = 0,
         this.state = useState({
-            todos: [
-                {
-                    id: 3,
-                    description: "Buy Milk",
-                    isCompleted: true,
-                },
-
-                {
-                    id: 5,
-                    description: "Study",
-                    isCompleted: false,
-                },
-            ],
+            todos: [],
         })
+    }
+
+    addTodo(event){
+        if(event.keyCode === 13){
+            if(event.target.value){
+                this.state.todos.push({
+                    id: ++this.todosCount,
+                    description: event.target.value,
+                    isCompleted: false
+                })
+                event.target.value = ""
+            }
+        }
     }
 }
