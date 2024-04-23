@@ -6,11 +6,18 @@
             display="{controlPanel: {}}"
             className="'o_dashboard h-100'"
         >
-        <t t-set-slot="layout-buttons">
-            <button class="btn primary-btn" t-on-click="openCustomersKanbanView">Customers</button>
-            <button class="btn primary-btn" t-on-click="openCrmLeadsView">Leads</button>
-        </t>
-
+            <t t-set-slot="layout-buttons">
+                <button class="btn primary-btn" t-on-click="openCustomersKanbanView">Customers</button>
+                <button class="btn primary-btn" t-on-click="openCrmLeadsView">Leads</button>
+            </t>
+            <div>
+                <DashboardItem>
+                    <p>HERE WE ARE</p>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <p>HERE WE ARE AGAIN</p>
+                </DashboardItem>
+            </div>
         </Layout>
     </t>
 
