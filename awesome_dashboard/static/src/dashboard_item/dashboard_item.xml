@@ -3,10 +3,9 @@
 
     <t t-name="awesome_dashboard.DashboardItem">
         <div class="card d-inline-block m-2 p-2" t-attf-style="width: {{18 * props.size}}rem;'">
-            <div class="card-body">
-                <p class="card-text">
-                    <t t-slot="default"/>
-                </p>
+            <div class="card-body text-center">
+                    <t t-slot="card-title"/>
+                    <t t-slot="card-text"/>
             </div>
         </div>
     </t>
