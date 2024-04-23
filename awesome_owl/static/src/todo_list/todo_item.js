@@ -14,13 +14,17 @@ export class TodoItem extends Component {
                 isCompleted: Boolean,
             },
         },
-        toggleTodoState: Function,
+        toggleTodoItemState: Function,
+        removeTodoItem: Function,
     }
 
-    checkboxStateChanged(){
-        if(this.props.toggleTodoState){
-            this.props.toggleTodoState(this.props.todo.id)
-        }
+    toggleTodoItemState(){
+        this.props.toggleTodoItemState(this.props.todo.id)
     }
+
+    removeTodoItem(){
+        this.props.removeTodoItem(this.props.todo.id)
+    }
+    
 
 }

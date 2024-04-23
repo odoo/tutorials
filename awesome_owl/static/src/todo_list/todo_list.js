@@ -28,8 +28,15 @@ export class TodoList extends Component {
         }
     }
 
-    toggleTodoState(todoItemId){
-        let todo = this.state.todos[todoItemId - 1]
-        todo.isCompleted = !todo.isCompleted 
+    toggleTodoItemState(todoItemId){
+        const todoItem = this.state.todos.find((todoItem) => todoItem.id === todoItemId)
+        todoItem.isCompleted = !todoItem.isCompleted 
+    }
+
+    removeTodoItem(todoItemId){
+        const todoItemIndexInTodos = this.state.todos.findIndex((todoItem) => todoItem.id === todoItemId)
+        if(todoItemIndexInTodos >= 0){
+            this.state.todos.splice(todoItemIndexInTodos, 1)
+        }
     }
 }

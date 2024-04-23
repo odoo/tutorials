@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-name="awesome_owl.TodoItem">        
-        <div class="m-2 p-2 border">
-            <input class="form-check-input" t-att-id="todo_checkbox" type="checkbox" t-att-checked="this.props.todo.isCompleted" t-on-change="this.checkboxStateChanged"/>
-            <label t-att-for="todo_checkbox" t-att-class="this.props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''">
+    <t t-name="awesome_owl.TodoItem" >        
+            <input class="form-check-input" 
+                t-att-id="todo_checkbox" 
+                type="checkbox" 
+                t-att-checked="this.props.todo.isCompleted" 
+                t-on-change="this.toggleTodoItemState"
+            />
+            <label 
+                class="form-check-label ms-2" 
+                t-att-for="todo_checkbox" 
+                t-att-class="this.props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''"
+            >
                 <t t-esc="this.props.todo.id"/>.
-                <t t-esc="this.props.todo.description"/> 
+                <t t-esc="this.props.todo.description"/>
+                <span class="fa fa-remove ms-2 text-danger" t-on-click="this.removeTodoItem"/> 
             </label>  
-        </div>
     </t>
 </templates>
