@@ -151,3 +151,15 @@
         <field name="context">{'search_default_available': True, 'search_default_current': True}</field>
     </record>
 </odoo>
+
+<!-- 
+Improve the Kanban view.
+
+Add the following fields to the Kanban view: 
+expected price, 
+best price, 
+selling price and 
+tags. Pay attention: the best price is only displayed when an offer is received, while the selling
+price is only displayed when an offer is accepted.
+
+Refer to the Goal of the section for a visual example. -->
