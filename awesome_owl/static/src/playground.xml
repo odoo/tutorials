@@ -8,8 +8,12 @@
             <span>The sum is: <t t-esc="this.state.sum"/></span>
         </div>
         <div>
-            <Card title="'Card 1'" content="this.html"/>
-            <Card title="'Card 2'" content="this.html_markup"/>
+            <Card title="'Card 1'">
+                Hello There
+            </Card>
+            <Card title="'Card 2'">
+                <Counter onChange.bind="incrementSum"/>
+            </Card>
         </div>
         <div class="m-2 p-2 border d-inline-block" display="flex" flex-direction="column">
             <TodoList/>
