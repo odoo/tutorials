@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
     <!--Search-->
@@ -36,10 +36,7 @@
         <field name="name">estate.tree</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
-            <tree string="Property"
-                decoration-success="state=='offer received' or state=='offer accepted'" 
-                decoration-bf="state=='offer accepted'" 
-                decoration-muted="state=='sold'">
+            <tree string="Property" decoration-success="state=='offer received' or state=='offer accepted'" decoration-bf="state=='offer accepted'" decoration-muted="state=='sold'">
                 <field name="name"/>
                 <field name="state" invisible="1" nolabel="1"/>
                 <field name="tag_ids" widget="many2many_tags"/>
@@ -109,7 +106,7 @@
                                 </group>
                             </page>
                             <page string="Offers">
-                                <field name="offer_ids"  readonly="state in ['offer accepted', 'sold', 'canceled']"/>
+                                <field name="offer_ids" readonly="state in ['offer accepted', 'sold', 'canceled']"/>
                             </page>
                         </notebook>
                     </group>
@@ -120,11 +117,37 @@
 
 
 
+    <record id="estate_view_kanban" model="ir.ui.view">
+        <field name="name">estate.view.kanban</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="estate_property_type_id">
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <field name="name"/>
+                            <div>
+                                <field name="expected_price"/>
+                            </div>
+                            <div t-if="record.state.raw_value = 'offer received'">
+                                <field name="best_price"/>
+                            </div>
+                            <div t-if="record.state.raw_value = 'offer accepted'">
+                                <field name="selling_price"/>
+                            </div>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Property</field>
         <field name="res_model">estate_property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="search_view_id" ref="estate_search"/>
         <field name="context">{'search_default_active': True}</field>
     </record>
