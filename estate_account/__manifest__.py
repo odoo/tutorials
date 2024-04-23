@@ -1,6 +1,5 @@
 {
     "name": "estate_account",
-    "depends": ["base"],
+    "depends": ["base", "estate", "account"],
     "author": "loje",
-    "depends": ["estate", "account"],
 }  # type: ignore
