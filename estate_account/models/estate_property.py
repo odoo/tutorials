@@ -2,7 +2,7 @@ from odoo import models, Command  # type: ignore
 
 
 class EstateProperty(models.Model):
-    _inherit = "estate_property"
+    _inherit = "estate.property"
 
     def action_sold(self):
         fee_amount = 100.00

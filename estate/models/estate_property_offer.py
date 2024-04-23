@@ -1,10 +1,11 @@
+from datetime import timedelta
+
 from odoo import api, fields, models  # type: ignore
 from odoo.exceptions import UserError, ValidationError  # type: ignore
-from datetime import timedelta
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate_property_offer"
+    _name = "estate.property.offer"
     _description = "estate property offer"
     _order = "price desc"
 
@@ -15,7 +16,7 @@ class EstatePropertyOffer(models.Model):
         string="Status",
     )
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate_property", required=True)
+    property_id = fields.Many2one("estate.property", required=True)
     property_type_id = fields.Many2one(
         related="property_id.estate_property_type_id", store=True
     )
@@ -58,16 +59,18 @@ class EstatePropertyOffer(models.Model):
         self.status = "refused"
         return True
 
+    @api.model
+    def create(self, vals):
+        property_id = self.env["estate.property"].browse(vals["property_id"])
+        if vals["price"] < property_id.best_price:
+            raise ValidationError(
+                "Cannot create offer with a lower amount than an existing offer."
+            )
+        property_id.state = "offer received"
+        return super().create(vals)
+
     @api.constrains("price")
     def _check_positif(self):
         for record in self:
             if record.price <= 0:
                 raise ValidationError("Expected price must be positif")
-
-    @api.model
-    def create(self, vals):
-        property_id = self.env['estate_property'].browse(vals['property_id'])
-        if vals['price'] < property_id.best_price:
-            raise ValidationError("Cannot create offer with a lower amount than an existing offer.")
-        property_id.state = 'offer received'
-        return super().create(vals)

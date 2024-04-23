@@ -1,11 +1,12 @@
-from odoo import api, fields, models  # type: ignore
-from odoo.exceptions import UserError, ValidationError # type: ignore
-from odoo.tools.float_utils import float_compare, float_is_zero # type: ignore
 from datetime import timedelta
+
+from odoo import api, fields, models  # type: ignore
+from odoo.exceptions import UserError, ValidationError  # type: ignore
+from odoo.tools.float_utils import float_compare, float_is_zero  # type: ignore
 
 
 class EstateProterty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "estate property"
     _order = "id desc"
 
@@ -49,7 +50,7 @@ class EstateProterty(models.Model):
         copy=False,
         required=True,
     )
-    estate_property_type_id = fields.Many2one("estate_property_type", string="Type")
+    estate_property_type_id = fields.Many2one("estate.property.type", string="Type")
     user_id = fields.Many2one(
         "res.users",
         string="Salesperson",
@@ -58,8 +59,8 @@ class EstateProterty(models.Model):
     )
     buyer = fields.Char(string="buyer", copy=False)
     buyer_id = fields.Many2one("res.partner", copy=False)
-    tag_ids = fields.Many2many("estate_property_tag", string="Tags")
-    offer_ids = fields.One2many("estate_property_offer", "property_id", string="Offer")
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(string="Best offer", compute="_compute_best_price")
 
@@ -107,12 +108,25 @@ class EstateProterty(models.Model):
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
         for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2) and not float_is_zero(record.expected_price, precision_digits=2):
-                if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
-                    raise models.ValidationError("Selling price cannot be lower than 90% of the expected price.")
+            if not float_is_zero(
+                record.selling_price, precision_digits=2
+            ) and not float_is_zero(record.expected_price, precision_digits=2):
+                if (
+                    float_compare(
+                        record.selling_price,
+                        0.9 * record.expected_price,
+                        precision_digits=2,
+                    )
+                    < 0
+                ):
+                    raise models.ValidationError(
+                        "Selling price cannot be lower than 90% of the expected price."
+                    )
 
     @api.ondelete(at_uninstall=False)
     def check_property_state_before_deletion(self):
         for record in self:
             if record.state not in ["new", "canceled"]:
-                raise models.ValidationError("Cannot delete property with state other than 'New' or 'Canceled'.")
+                raise models.ValidationError(
+                    "Cannot delete property with state other than 'New' or 'Canceled'."
+                )

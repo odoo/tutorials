@@ -5,7 +5,7 @@
     <!--Tree view-->
     <record id="estate_offer_view_tree" model="ir.ui.view">
         <field name="name">Estate Offer tree</field>
-        <field name="model">estate_property_offer</field>
+        <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <tree string="Offers" editable="top" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
                 <field name="price"/>
@@ -24,7 +24,7 @@
 
     <record id="estate_offer_view_form" model="ir.ui.view">
         <field name="name">Estate Offer form</field>
-        <field name="model">estate_property_offer</field>
+        <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Channel">
                 <sheet>
@@ -50,5 +50,11 @@
         </field>
     </record>
 
+    <record id="estate_property_offer" model="ir.actions.act_window">
+        <field name="name">Property Offers action</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
 
 </odoo>
