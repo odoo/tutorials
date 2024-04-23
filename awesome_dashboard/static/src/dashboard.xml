@@ -5,7 +5,13 @@
         <Layout 
             display="{controlPanel: {}}"
             className="'o_dashboard h-100'"
-        />
+        >
+        <t t-set-slot="layout-buttons">
+            <button class="btn primary-btn" t-on-click="openCustomersKanbanView">Customers</button>
+            <button class="btn primary-btn" t-on-click="openCrmLeadsView">Leads</button>
+        </t>
+
+        </Layout>
     </t>
 
 </templates>
