@@ -4,10 +4,11 @@
         <div class="card d-inline-flex ">
             <div class="card-body d-flex flex-row align-items-center justify-content-between gap-4">
                 <p class="m-0">Hello World</p>
-                <Counter />
-                <Counter />
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
                 <Card title="'Card 1'" content="card_1_content" />
                 <Card title="'Card 2'" content="card_2_content" />
+                <p>The Sum: <t t-esc="state.value"/></p>
             </div>
         </div>
     </t>
