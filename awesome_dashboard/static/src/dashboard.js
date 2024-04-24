@@ -20,11 +20,10 @@ class AwesomeDashboard extends Component {
         }
         
         this.action = useService("action")
-        this.rpc = useService("rpc")
+        this.statisticsService = useService("statisticsService")
 
         onWillStart(async () => {
-            this.result = await this.rpc("/awesome_dashboard/statistics", {})
-            console.log(this.result)
+            this.statistics = await this.statisticsService.loadStatistics()
         })
     }
 
