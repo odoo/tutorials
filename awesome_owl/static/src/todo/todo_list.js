@@ -10,7 +10,7 @@ export class TodoList extends Component {
 
     setup() {
         this.todos = useState([]);
-        this.todoCounter = useState({value: 1});
+        this.todoCounter = useState({ value: 1 });
         useAutofocus('todo_input');
         // this.inputRef = useRef('todo_input');
         // onMounted(() => {
@@ -18,9 +18,9 @@ export class TodoList extends Component {
         // })
     }
 
-    addTodo(e){
-        if (e.keyCode === 13 && e.target.value){
-            this.todos.push({ 
+    addTodo(e) {
+        if (e.keyCode === 13 && e.target.value) {
+            this.todos.push({
                 id: this.todoCounter.value,
                 description: e.target.value,
                 isCompleted: false
@@ -28,5 +28,11 @@ export class TodoList extends Component {
             this.todoCounter.value++;
             e.target.value = '';
         }
+    }
+
+    updateState(id) {
+        this.todos.forEach(todo => (todo.id === id 
+            ? (todo.isCompleted = !todo.isCompleted) 
+            : todo))
     }
 }
