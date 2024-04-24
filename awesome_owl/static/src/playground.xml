@@ -4,10 +4,8 @@
         <div class="card d-inline-flex ">
             <div class="card-body d-flex flex-row align-items-center justify-content-between gap-4">
                 <p class="m-0">Hello World</p>
-                <div class="card d-flex flex-row">
-                    <p class="card-body m-0">Counter: <t t-esc="state.value"/></p>
-                    <button class="btn btn-primary" t-on-click="increment">Increment</button>
-                </div>
+                <Counter />
+                <Counter />
             </div>
         </div>
     </t>
