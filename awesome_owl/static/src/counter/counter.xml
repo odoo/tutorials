@@ -4,6 +4,6 @@
         <div class="card d-flex flex-row">
             <p class="card-body m-0">Counter: <t t-esc="state.value"/></p>
             <button class="btn btn-primary" t-on-click="increment">Increment</button>
-        </div>                
+        </div>
     </t>
 </templates>

@@ -6,6 +6,8 @@
                 <p class="m-0">Hello World</p>
                 <Counter />
                 <Counter />
+                <Card title="'Card 1'" content="'Card 1 has some content'" />
+                <Card title="'Card 2'" content="'Card 2 has some  other content'" />
             </div>
         </div>
     </t>
