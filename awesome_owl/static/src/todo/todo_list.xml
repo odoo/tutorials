@@ -5,7 +5,7 @@
             <div class="card-body ">
                 <input type="text" placeholder="Add a todo" t-on-keyup="addTodo" t-ref="todo_input" />
                 <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo" toggleState.bind="updateState" />
+                    <TodoItem todo="todo" toggleState.bind="updateState" deleteTodo.bind="removeTodo" />
                 </t>
             </div>
         </div>

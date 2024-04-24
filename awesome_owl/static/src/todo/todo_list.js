@@ -31,8 +31,15 @@ export class TodoList extends Component {
     }
 
     updateState(id) {
-        this.todos.forEach(todo => (todo.id === id 
-            ? (todo.isCompleted = !todo.isCompleted) 
+        this.todos.forEach(todo => (todo.id === id
+            ? (todo.isCompleted = !todo.isCompleted)
             : todo))
+    }
+
+    removeTodo(id) {
+        const index = this.todos.findIndex((elem) => elem.id === id);
+        if (index >= 0) {
+            this.todos.splice(index, 1);
+        }
     }
 }

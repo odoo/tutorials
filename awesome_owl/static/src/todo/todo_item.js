@@ -11,10 +11,15 @@ export class TodoItem extends Component {
             description: String,
             isCompleted: Boolean
         },
-        toggleState : Function
+        toggleState : Function,
+        deleteTodo : Function
     }
 
     onChange(){
         this.props.toggleState(this.props.todo.id)
+    }
+    
+    onClick(){
+        this.props.deleteTodo(this.props.todo.id)
     }
 }
