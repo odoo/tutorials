@@ -13,5 +13,4 @@ export class DashboardItem extends Component {
     static defaultProps = {
         size: 1,
     };
-
 }
