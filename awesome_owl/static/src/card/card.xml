@@ -3,10 +3,11 @@
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h3 class="card-title">
+                <h3 class="card-title d-flex gap-2">
                     <t t-esc="props.title"/>
+                    <button class="btn" t-on-click="toggleState">Show/Hide</button>
                 </h3>
-                <p class="card-text">
+                <p class="card-text" t-if="state.isOpen">
                     <t t-slot="default" />
                 </p>
             </div>
