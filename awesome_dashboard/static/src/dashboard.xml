@@ -11,13 +11,35 @@
                 <button class="btn primary-btn" t-on-click="openCrmLeadsView">Leads</button>
             </t>
             <div>
-                <DashboardItem t-foreach="statistics" t-as="statistic" t-key="statistic_index" t-if="statistic != 'orders_by_size'">
-                    <t t-set-slot="card-title">
-                        <p class="card-title" t-esc="this.statisticsDescription[statistic]"/>
-                    </t>
-                    <t t-set-slot="card-text">
-                        <p class="card-text text-success" t-esc="statistic_value"/>
-                    </t>                       
+
+                <DashboardItem>
+                    <p class="card-title" t-esc="statisticsDescription['average_quantity']"/>
+                    <p class="card-text text-success" t-esc="statistics['average_quantity']"/>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <p class="card-title" t-esc="statisticsDescription['average_time']"/>
+                    <p class="card-text text-success" t-esc="statistics['average_time']"/>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <p class="card-title" t-esc="statisticsDescription['nb_new_orders']"/>
+                    <p class="card-text text-success" t-esc="statistics['nb_new_orders']"/>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <p class="card-title" t-esc="statisticsDescription['nb_cancelled_orders']"/>
+                    <p class="card-text text-success" t-esc="statistics['nb_cancelled_orders']"/>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <p class="card-title" t-esc="statisticsDescription['total_amount']"/>
+                    <p class="card-text text-success" t-esc="statistics['total_amount']"/>
+                </DashboardItem>
+
+                <DashboardItem t-if="statistics.isReady">
+                    <p class="card-title" t-esc="statisticsDescription['orders_by_size']"/>
+                    <PieChart data="statistics['orders_by_size']"  label="'Shirt Orders By Size'"/>   
                 </DashboardItem>
             </div>
         </Layout>

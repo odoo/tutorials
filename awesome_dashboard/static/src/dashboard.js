@@ -4,27 +4,26 @@ import { Component } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout"
 import { useService } from "@web/core/utils/hooks"
-import { onWillStart } from "@odoo/owl";
+import { useState } from "@odoo/owl";
 import { DashboardItem } from "./dashboard_item/dashboard_item"
+import { PieChart } from "./pie_chart/pie_chart"; 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem }
+    static components = { Layout, DashboardItem, PieChart }
 
     setup(){
         this.statisticsDescription = {
             'average_quantity':'Average amount of t-shirt by order this month',
             'average_time':'Average time for an order to get from "new" to "sold" or "canceled"',
-            'nb_cancelled_orders':'Number of canceled orders this month',
             'nb_new_orders':'Number of new orders this month',
+            'nb_cancelled_orders':'Number of canceled orders this month',
             'total_amount':'Total number of new orders this month',
+            'orders_by_size': 'Shirt orders by size',
         }
         
         this.action = useService("action")
-        this.statisticsService = useService("statisticsService")
+        this.statistics= useState(useService("statisticsService"))
 
-        onWillStart(async () => {
-            this.statistics = await this.statisticsService.loadStatistics()
-        })
     }
 
     openCustomersKanbanView(){

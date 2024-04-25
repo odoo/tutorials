@@ -7,5 +7,4 @@ export class DashboardItem extends Component {
         size: {type: Number, default: 1},
         slots: {type: Object, shape: {type: Object, optional: true}}
     }
-
 }
