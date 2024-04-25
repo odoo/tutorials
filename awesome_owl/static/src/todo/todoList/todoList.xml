@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoList">
-        <div>
+        <div class="d-inline-block border p-2 m-2">
+            <input type="text" id="todoInput" t-on-keyup="addTodo" placeholder="Add a todo" t-ref="input"/>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
                 <TodoItem todo="todo"/>
             </t>

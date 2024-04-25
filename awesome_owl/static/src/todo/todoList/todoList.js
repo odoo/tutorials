@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, useRef, onMounted } from "@odoo/owl";
 import { TodoItem } from "../todoItem/todoItem";
 
 
@@ -10,10 +10,23 @@ export class TodoList extends Component {
     static components = { TodoItem };
 
     setup(){
-        this.todos = useState([
-            { id: 1, description: "Faire les courses", flag: false },
-            { id: 2, description: "Répondre aux e-mails", flag: true },
-            { id: 3, description: "Préparer la réunion", flag: false }
-        ]);
+        this.todos = useState([]);
+        this.id = 0;
+        this.myRef = useRef('input');
+        onMounted(() => {
+            this.myRef.el;
+        })
+    }
+
+    addTodo(ev){
+        if(ev.keyCode === 13 && ev.target.value != "")
+        {
+            this.todos.push({
+                id: this.id++,
+                description: ev.target.value,
+                flag: false
+            });
+            ev.target.value = "";
+        }
     }
 }
