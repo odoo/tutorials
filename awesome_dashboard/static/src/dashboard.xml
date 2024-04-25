@@ -9,10 +9,24 @@
             </t>
             <div class="d-flex p-3 gap-3">
                 <DashboardItem >
-                    Some Content
+                    <p>Number of new orders this month</p>
+                    <h3 class="text-info text-center m-0"><t t-out="statistics.nb_new_orders" /></h3>
                 </DashboardItem>
-                <DashboardItem size="2">
-                    <em>Some italic content</em>
+                <DashboardItem >
+                    <p>Total amount of new orders this month</p>
+                    <h3 class="text-info text-center m-0"><t t-out="statistics.total_amount" /></h3>
+                </DashboardItem>
+                <DashboardItem >
+                    <p>Average amount of t-shirt by order this month</p>
+                    <h3 class="text-info text-center m-0"><t t-out="statistics.average_quantity" /></h3>
+                </DashboardItem>
+                <DashboardItem >
+                    <p>Number of cancelled orders this month</p>
+                    <h3 class="text-info text-center m-0"><t t-out="statistics.nb_cancelled_orders" /></h3>
+                </DashboardItem>
+                <DashboardItem >
+                    <p>Average time for an order to go from 'new' to 'sent' or 'cancelled'</p>
+                    <h3 class="text-info text-center m-0"><t t-out="statistics.average_time" /></h3>
                 </DashboardItem>
             </div>
         </Layout>
