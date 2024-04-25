@@ -7,8 +7,15 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            This is my golden dashboard
+            <div class="d-flex p-3 gap-3">
+                <DashboardItem >
+                    Some Content
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <em>Some italic content</em>
+                </DashboardItem>
+            </div>
         </Layout>
     </t>
-    
+
 </templates>
