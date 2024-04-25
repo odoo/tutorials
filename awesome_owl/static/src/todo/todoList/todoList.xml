@@ -4,7 +4,7 @@
         <div class="d-flex flex-column border p-2 m-2">
             <input type="text" id="todoInput" t-on-keyup="addTodo" placeholder="Add a todo" t-ref="input"/>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo" toggleState.bind="toggleTodo"/>
+                <TodoItem todo="todo" toggleState.bind="toggleTodo" removeTodo.bind="removeTodo"/>
             </t>
         </div>
     </t>
