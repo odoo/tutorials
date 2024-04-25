@@ -5,9 +5,17 @@
             <div class="card-body d-flex flex-row align-items-center justify-content-between gap-4">
                 <p class="m-0">Hello World</p>
                 <Counter onChange.bind="incrementSum" />
-                <Counter onChange.bind="incrementSum" />
-                <Card title="'Card 1'" content="card_1_content" />
-                <Card title="'Card 2'" content="card_2_content" />
+                <Card title="'Card 1'" >
+                    <p>Hello this is card 1</p>
+                    <strong>This is bold</strong>
+                </Card> 
+                <Card title="'Card 2'" >
+                    <p>Hello This is card 2</p>
+                    <em>This is italic</em>
+                </Card>
+                <Card title="'Card 2'" >
+                    <Counter onChange.bind="incrementSum" />
+                </Card>
                 <p>The Sum: <t t-esc="state.value"/></p>
             </div>
         </div>

@@ -7,7 +7,7 @@
                     <t t-esc="props.title"/>
                 </h3>
                 <p class="card-text">
-                    <t t-out="props.content"/>
+                    <t t-slot="default" />
                 </p>
             </div>
         </div>
