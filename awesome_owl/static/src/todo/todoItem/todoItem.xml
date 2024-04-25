@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoItem">
-        <input type="checkbox" id="todoCheckBox" t-att-id="props.todo.id" t-att-check="props.todo.flag" t-on-change="onChange"/>
-        <div t-att-for="props.todo.id" class="m-2 p-2 border d-inline-block" t-att-class="props.todo.flag ? 'text-muted text-decoration-line-through' : ''">
+        <div t-att-for="props.todo.id" class="m-2 p-2 border d-flex" t-att-class="props.todo.flag ? 'text-muted text-decoration-line-through' : ''">
+            <input type="checkbox" id="todoCheckBox" t-att-id="props.todo.id" t-att-check="props.todo.flag" t-on-change="onChange"/>
             <t t-esc="props.todo.id"/>
             <t t-esc="props.todo.description"/>
         </div>
