@@ -2,20 +2,37 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <header>
-            <button class="btn btn-primary" t-on-click="showCustomers">Customers</button>
-            <button class="btn btn-primary" t-on-click="showLeads">Leads</button>
-        </header>
         <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="showCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="showLeads">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
             <div class="d-flex flex-wrap">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size || 1">
+                    <DashboardItem size="item.size || 1" t-if="!(hidden_items['array'].includes(item.id))">
                        <t t-set="itemProp" t-value="item.props ? item.props(stats_proxy.data) : {'data': stats_proxy.data}"/>
                        <t t-component="item.Component" t-props="itemProp" />
                     </DashboardItem>
                  </t>
             </div>
         </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.ConfigDialog">
+        <Dialog title="props.title">
+            <p t-esc="props.question"/>
+            <t t-foreach="props.body" t-as="item" t-key="item.id">
+                <input type="checkbox" t-on-change="(ev) => itemCheckboxChanged(item.id, ev.target.checked)" t-att-checked="!currentConfig.includes(item.id)"/> <t t-esc="item.description"/><br/>
+             </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="_confirm">Done</button>
+            </t>
+        </Dialog>
     </t>
 
 </templates>
