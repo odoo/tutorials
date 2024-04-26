@@ -1,10 +1,11 @@
 /** @odoo-module **/
 
+import { registry } from "@web/core/registry";
 import { NumberCard } from "./number_card/number_card"
 import { PieChartCard } from "./pie_chart_card/pie_chart_card"
 
 
-export const dashboardItems = [
+const dashboardItems = [
     {
         id: "nb_new_orders",
         description: "Number of new orders this month",
@@ -61,3 +62,7 @@ export const dashboardItems = [
         }),
     },
 ]
+
+dashboardItems.forEach((item) => (
+    registry.category("awesome_dashboard").add(item.id, item)
+))
