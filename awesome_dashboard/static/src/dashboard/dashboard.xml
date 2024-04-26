@@ -7,7 +7,7 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <div class="d-flex p-3 gap-3 flex-wrap">
+            <div class="d-flex p-3 gap-3 flex-wrap" t-if="statistics.isReady">
                 <DashboardItem >
                     <p>Number of new orders this month</p>
                     <h3 class="text-info text-center m-0"><t t-out="statistics.nb_new_orders" /></h3>

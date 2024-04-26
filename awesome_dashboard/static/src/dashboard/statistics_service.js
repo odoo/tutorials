@@ -6,10 +6,12 @@ import { registry } from "@web/core/registry";
 const statistics = {
     dependencies: ['rpc'],
     start(env, { rpc }) {
-        let stats = reactive({});
+        let stats = reactive({ isReady: false });
 
         async function loadStatistics() {
-            Object.assign(stats, await rpc('/awesome_dashboard/statistics'))
+            const data = await rpc('/awesome_dashboard/statistics')
+            Object.assign(stats, data, { isReady: true })
+            console.log(stats)
         }
 
         setInterval(loadStatistics, 10000);
