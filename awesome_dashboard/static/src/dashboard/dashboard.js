@@ -14,7 +14,6 @@ export class AwesomeDashboard extends Component {
 
     static components = { Layout, DashboardItem, PieChart, ConfigurationDialog }
 
-    
     setup() {
         this.action = useService("action");
         this.statisticsService = useService("statistics");
@@ -23,11 +22,6 @@ export class AwesomeDashboard extends Component {
         this.items = registry.category("awesome_dashboard").getAll();
         const saved = localStorage.getItem("unchecked_ids");
         this.unchecked_ids = useState({ids: saved ? JSON.parse(saved) : []})
-        // statisticsService.data.useState({})
-        // onWillStart(async () => {
-        //     const result = await this.statisticsService.loadStatistics();
-        //     this.statistics = result;
-        // });
     }
 
     showCustomers() {
@@ -37,7 +31,7 @@ export class AwesomeDashboard extends Component {
     showLeads() {
         this.action.doAction({
             type: 'ir.actions.act_window',
-            name: 'Leads',
+            name: _t('Leads'),
             res_model: 'crm.lead',
             views: [[false, 'tree'], [false, 'form']],
         });

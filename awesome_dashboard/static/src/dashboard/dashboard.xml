@@ -12,7 +12,6 @@
                     <i class="fa fa-cog"></i>
                 </button>
             </t>
-            <p t-esc="unchecked_ids.ids"/>
             <t t-foreach="items" t-as="item" t-key="item.id">
                 <DashboardItem size="item.size || 1" t-if="!unchecked_ids.ids.includes(item.id)">
                     <t t-set="itemProp" t-value="item.props ? item.props(statistics.values) : {'data': statistics.values}"/>
