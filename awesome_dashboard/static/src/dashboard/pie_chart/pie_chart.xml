@@ -2,7 +2,6 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.PieChart">
-        Shirt orders by size
         <canvas t-ref="canvas"></canvas>
    </t> 
 </templates>

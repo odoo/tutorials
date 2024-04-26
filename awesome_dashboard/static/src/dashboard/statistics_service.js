@@ -11,7 +11,6 @@ const statistics = {
         async function loadStatistics() {
             const data = await rpc('/awesome_dashboard/statistics')
             Object.assign(stats, data, { isReady: true })
-            console.log(stats)
         }
 
         setInterval(loadStatistics, 10000);
