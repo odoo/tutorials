@@ -2,8 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.ClickerSystray">
-        <p>Clicks: <t t-esc="clicks.value"/></p>
-        <button class="btn fa fa-plus" t-on-mousedown="() => increment(9)"/>
+        <p>Clicks: <t t-esc="clicker_hook.state.clicks"/></p>
         <button class="btn btn-secondary" t-on-click="displayClickerPanel">Open</button>
     </t>
 

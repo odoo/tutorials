@@ -2,7 +2,8 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.ClientAction">
-        <p>OUIIUOIU</p>
+        <ClickerValue/>
+        <button class="btn btn-primary" t-on-mousedown="() => clicker_hook.increment(99)">Increment</button>
     </t>
 
 </templates>
