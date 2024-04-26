@@ -4,7 +4,7 @@
     <t t-name="awesome_dashboard.NumberCard">
         <div class="card d-inline-block m-2 p-2">
             <p t-esc="props.title"/>
-            <p class="text-success" t-sec="props.value"/>
+            <p class="text-success" t-esc="props.value"/>
         </div>
     </t>
 </templates>

@@ -10,7 +10,7 @@ export const items = [
         description: "Average amount of t-shirt",
         Component: NumberCard,
         // size and props are optionals
-        size: 3,
+        size: 1,
         props: (data) => ({
             title: "Average amount of t-shirt by order this month",
             value: data.average_quantity
@@ -21,7 +21,7 @@ export const items = [
         description: "Average time for an order",
         Component: NumberCard,
         // size and props are optionals
-        size: 3,
+        size: 1,
         props: (data) => ({
             title: "'Average time for an order to get from 'new' to 'sold' or 'canceled'",
             value: data.average_time
@@ -32,7 +32,7 @@ export const items = [
         description: "Number of new orders",
         Component: NumberCard,
         // size and props are optionals
-        size: 3,
+        size: 1,
         props: (data) => ({
             title: "Number of new orders this month",
             value: data.nb_new_orders
@@ -43,7 +43,7 @@ export const items = [
         description: "Number of canceled orders",
         Component: NumberCard,
         // size and props are optionals
-        size: 3,
+        size: 1,
         props: (data) => ({
             title: "Number of canceled orders this month",
             value: data.nb_cancelled_orders
@@ -54,7 +54,7 @@ export const items = [
         description: "Total number of new orders",
         Component: NumberCard,
         // size and props are optionals
-        size: 3,
+        size: 1,
         props: (data) => ({
             title: "Total number of new orders this month",
             value: data.total_amount
@@ -65,7 +65,7 @@ export const items = [
         description: "Shirt orders by size",
         Component: PieChartCard,
         // size and props are optionals
-        size: 3,
+        size: 1,
         props: (data) => ({
             title: "Shirt orders by size",
             data: data.orders_by_size
