@@ -1,16 +1,21 @@
 /** @odoo-module **/
 
-import { memoize } from "@web/core/utils/functions";
+import { reactive } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 
-export const statistics = {
+const statistics = {
     dependencies: ['rpc'],
     start(env, { rpc }) {
-        return {
-            loadStatistics: memoize(() => {
-                return rpc("/awesome_dashboard/statistics")
-            })
+        let stats = reactive({});
+
+        async function loadStatistics() {
+            Object.assign(stats, await rpc('/awesome_dashboard/statistics'))
         }
+
+        setInterval(loadStatistics, 10000);
+        loadStatistics();
+
+        return stats;
     }
 }
 
