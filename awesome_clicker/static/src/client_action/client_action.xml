@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.ClientAction">
+        <div class="p-3">
+            Clicks: <ClickValue clicks="clicker.state.clicks"/>
+            <button class="mx-2 btn btn-primary" t-on-click="clicker.increment.bind(this, 9)">Increment</button>
+            <div t-if="clicker.state.level >= 1">
+                <h2>Bots</h2>
+                <div class="border p-3">
+                    <t t-esc="clicker.state.clickBots"/>x ClickBots (10 clicks/10 seconds)<i class="fa fa-android mx-2"/>
+                </div>
+                <div class="border p-3">
+                    <button
+                        t-att-disabled="clicker.state.clicks &lt; 1000"
+                        class="btn btn-primary" 
+                        t-on-click="clicker.buyClickBot">
+                        Buy ClickBot (1000 clicks)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
