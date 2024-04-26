@@ -2,8 +2,8 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.ClickerSystrayItem">
-        Clicks: <ClickValue clicks="clicker.state.clicks"/>
-        <button class="mx-2 btn btn-secondary" t-on-click="clicker.increment.bind(this, 49)"><i class="fa fa-plus align-top"></i></button>
+        Clicks: <ClickValue clicks="clicker.clicks"/>
+        <button class="mx-2 btn btn-secondary" t-on-click="() => clicker.increment(99999)"><i class="fa fa-plus align-top"></i></button>
         <button class="btn btn-secondary d-flex align-items-center" t-on-click="openClientAction">Open</button>
     </t>
 

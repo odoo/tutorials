@@ -3,19 +3,48 @@
 
     <t t-name="awesome_owl.ClientAction">
         <div class="p-3">
-            Clicks: <ClickValue clicks="clicker.state.clicks"/>
-            <button class="mx-2 btn btn-primary" t-on-click="clicker.increment.bind(this, 9)">Increment</button>
-            <div t-if="clicker.state.level >= 1">
-                <h2>Bots</h2>
+            Clicks: <ClickValue clicks="clicker.clicks"/>
+            <button class="mx-2 btn btn-primary" t-on-click="() => clicker.increment(9)">Increment</button>
+            <h2 t-if="clicker.level >= 1">Bots</h2>
+            <div class="d-flex flex-row gap-3">
+                <div t-if="clicker.level >= 1">
+                    <div class="border p-3">
+                        <t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)<i class="fa fa-android mx-2"/>
+                    </div>
+                    <div class="border p-3">
+                        <button
+                            t-att-disabled="clicker.clicks &lt; 1000"
+                            class="btn btn-primary" 
+                            t-on-click="() => clicker.buyClickBot()">
+                            Buy ClickBot (1000 clicks)
+                        </button>
+                    </div>
+                </div>
+                <div t-if="clicker.level >= 2">
+                    <div class="border p-3">
+                        <t t-esc="clicker.bigBots"/>x BigBots (100 clicks/10 seconds)<i class="fa fa-android mx-2"/>
+                    </div>
+                    <div class="border p-3">
+                        <button
+                            t-att-disabled="clicker.clicks &lt; 5000"
+                            class="btn btn-primary" 
+                            t-on-click="() => clicker.buyBigBot()">
+                            Buy BigBot (5000 clicks)
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div t-if="clicker.level >= 3" class="my-2">
+                <h2>Power multiplier</h2>
                 <div class="border p-3">
-                    <t t-esc="clicker.state.clickBots"/>x ClickBots (10 clicks/10 seconds)<i class="fa fa-android mx-2"/>
+                    <t t-esc="clicker.power"/>x<i class="fa fa-bolt mx-2"/>
                 </div>
                 <div class="border p-3">
                     <button
-                        t-att-disabled="clicker.state.clicks &lt; 1000"
+                        t-att-disabled="clicker.clicks &lt; 50000"
                         class="btn btn-primary" 
-                        t-on-click="clicker.buyClickBot">
-                        Buy ClickBot (1000 clicks)
+                        t-on-click="() => clicker.buyPower()">
+                        Buy Power Multiplier (50000 clicks)
                     </button>
                 </div>
             </div>

@@ -5,11 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 
 export function useClicker() {
     const clickerService = useService("clicker");
-    const state = useState(clickerService.state);
+    const clicker = useState(clickerService)
 
-    return {
-        state: state,
-        increment: clickerService.increment,
-        buyClickBot: clickerService.buyClickBot
-    }
+    return clicker;
 }

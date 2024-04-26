@@ -14,7 +14,7 @@ export class ClickerSystrayItem extends Component {
     setup() {
         this.action = useService("action");
         this.clicker = useClicker();
-        useExternalListener(window, "click", this.clicker.increment.bind(this, 1), { capture: true });
+        useExternalListener(window, "click", () => this.clicker.increment(1), { capture: true });
     }
 
     openClientAction() {
