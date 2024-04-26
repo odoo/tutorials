@@ -14,7 +14,7 @@ class AwesomeDashboard extends Component {
     setup(){
         this.action = useService("action")
         this.statistics= useState(useService("statisticsService"))
-        this.items = items
+        this.items = registry.category("awesome_dashboard").getAll()
     }
 
     openCustomersKanbanView(){
