@@ -6,24 +6,15 @@ import { Layout } from "@web/search/layout"
 import { useService } from "@web/core/utils/hooks"
 import { useState } from "@odoo/owl";
 import { DashboardItem } from "./dashboard_item/dashboard_item"
-import { PieChart } from "./pie_chart/pie_chart"; 
+import { items } from "./dashboard_items";
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart }
+    static components = { Layout, DashboardItem }
 
     setup(){
-        this.statisticsDescription = {
-            'average_quantity':'Average amount of t-shirt by order this month',
-            'average_time':'Average time for an order to get from "new" to "sold" or "canceled"',
-            'nb_new_orders':'Number of new orders this month',
-            'nb_cancelled_orders':'Number of canceled orders this month',
-            'total_amount':'Total number of new orders this month',
-            'orders_by_size': 'Shirt orders by size',
-        }
-        
         this.action = useService("action")
         this.statistics= useState(useService("statisticsService"))
-
+        this.items = items
     }
 
     openCustomersKanbanView(){

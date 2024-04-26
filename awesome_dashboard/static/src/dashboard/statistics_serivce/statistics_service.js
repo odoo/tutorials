@@ -6,6 +6,9 @@ import { reactive } from "@odoo/owl"
 export const statisticsService = {
     dependencies: ["rpc"],
     start(env, { rpc }){
+        const delay = (delayInms) => {
+            return new Promise(resolve => setTimeout(resolve, delayInms));
+          };
         const statistics = reactive({isReady: false})
         async function loadData(){
             const updates = await rpc('/awesome_dashboard/statistics')

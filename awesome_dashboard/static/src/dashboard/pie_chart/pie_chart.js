@@ -1,4 +1,4 @@
-/* @odoo-module */
+/** @odoo-module */
 
 import { Component, onWillStart, onMounted, onWillUnmount, useRef } from "@odoo/owl"
 import { loadJS } from "@web/core/assets"

@@ -11,36 +11,12 @@
                 <button class="btn primary-btn" t-on-click="openCrmLeadsView">Leads</button>
             </t>
             <div>
-
-                <DashboardItem>
-                    <p class="card-title" t-esc="statisticsDescription['average_quantity']"/>
-                    <p class="card-text text-success" t-esc="statistics['average_quantity']"/>
-                </DashboardItem>
-
-                <DashboardItem>
-                    <p class="card-title" t-esc="statisticsDescription['average_time']"/>
-                    <p class="card-text text-success" t-esc="statistics['average_time']"/>
-                </DashboardItem>
-
-                <DashboardItem>
-                    <p class="card-title" t-esc="statisticsDescription['nb_new_orders']"/>
-                    <p class="card-text text-success" t-esc="statistics['nb_new_orders']"/>
-                </DashboardItem>
-
-                <DashboardItem>
-                    <p class="card-title" t-esc="statisticsDescription['nb_cancelled_orders']"/>
-                    <p class="card-text text-success" t-esc="statistics['nb_cancelled_orders']"/>
-                </DashboardItem>
-
-                <DashboardItem>
-                    <p class="card-title" t-esc="statisticsDescription['total_amount']"/>
-                    <p class="card-text text-success" t-esc="statistics['total_amount']"/>
-                </DashboardItem>
-
-                <DashboardItem t-if="statistics.isReady">
-                    <p class="card-title" t-esc="statisticsDescription['orders_by_size']"/>
-                    <PieChart data="statistics['orders_by_size']"  label="'Shirt Orders By Size'"/>   
-                </DashboardItem>
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                       <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                       <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                 </t>
             </div>
         </Layout>
     </t>
