@@ -2,6 +2,7 @@
 
 import { Component, onWillStart, useEffect, useRef } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
+import { useService } from "@web/core/utils/hooks";
 
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
@@ -10,12 +11,24 @@ export class PieChart extends Component {
        };
     
     setup() {
+        this.action = useService("action");
         this.canvasRef = useRef("canvas");
         this.chart = null;
         onWillStart(async () =>
             await loadJS("/web/static/lib/Chart/Chart.js"));
         useEffect(() => {
             this.renderChart();
+        });
+    }
+
+    displayPieChartInfo(id) {
+        return this.action.doAction({
+            res_model: "sale.order",
+            name: "T-shirts",
+            type: "ir.actions.act_window",
+            views: [[false, "tree"]],
+            view_mode: "tree",
+            //domain: [['order_line.product_id', '=', 'id']],
         });
     }
 
@@ -31,6 +44,11 @@ export class PieChart extends Component {
                 }],
                 labels: Object.keys(this.props.stats_data)
             },
+            options: {
+                onClick: (e, temp) => {
+                    this.displayPieChartInfo(temp);
+                }
+            }
         });
     }
 }
