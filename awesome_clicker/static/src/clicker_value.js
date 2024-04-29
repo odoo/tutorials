@@ -6,12 +6,13 @@ import { humanNumber } from "@web/core/utils/numbers";
 
 export class ClickerValue extends Component {
     static template = "awesome_clicker.ClickerValue";
+    static props = {};
 
     setup() {
         this.clicker_hook = useClicker();
     }
 
     humanDisplayMode() {
-        return humanNumber(this.clicker_hook.state.clicks);
+        return humanNumber(this.clicker_hook.clicks);
     }
 }

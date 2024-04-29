@@ -1,18 +1,20 @@
 /** @odoo-module **/
 
-import { reactive } from "@odoo/owl";
 import { registry } from "@web/core/registry";
+import { ClickerModel } from "./clicker_model";
 
-const state = reactive({ clicks: 0 });
-
-export const clicker_service = {
-    start() {
-        return { 
-            state, 
-            increment(inc) {
-                state.clicks += inc
-            }
-        };
+const clicker_service = {
+    dependencies: ["effect"],
+    start(env, services) {
+        const model = new ClickerModel();
+        model.bus.addEventListener("MILESTONE_1k", () => { 
+            services.effect.add({
+                type: "rainbow_man",
+                message: "Milestone reached! You can now buy clickbots!",
+            });
+            console.log("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        });
+        return model;
     },
 };
 

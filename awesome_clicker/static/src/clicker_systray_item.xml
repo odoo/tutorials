@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.ClickerSystray">
-        <p>Clicks: <t t-esc="clicker_hook.state.clicks"/></p>
+        <ClickerValue/>
         <button class="btn btn-secondary" t-on-click="displayClickerPanel">Open</button>
     </t>
 

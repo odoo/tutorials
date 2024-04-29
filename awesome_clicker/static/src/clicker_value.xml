@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.ClickerValue">
-        <span t-att-data-tooltip="clicker_hook.state.clicks">
+        <span t-att-data-tooltip="clicker_hook.clicks">
             Clicks: <t t-esc="humanDisplayMode()"/>
         </span>
     </t>

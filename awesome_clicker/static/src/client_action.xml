@@ -4,6 +4,21 @@
     <t t-name="awesome_clicker.ClientAction">
         <ClickerValue/>
         <button class="btn btn-primary" t-on-mousedown="() => clicker_hook.increment(99)">Increment</button>
+        <div t-if="clicker_hook.level >= 1">
+            <h2>Bots</h2>
+            <div class="card me-3">
+                <p><t t-esc="clicker_hook.clickBots"/>x ClickBots (10 clicks/seconds)</p>
+                <button class="btn btn-primary" t-on-click="buyClickBot" t-att-disabled="clicker_hook.clicks lt 1000">Buy ClickBot (1 000 clicks)</button>
+            </div>
+            <div class="card me-3">
+                <p><t t-esc="clicker_hook.bigBots"/>x BigBots (100 clicks/seconds)</p>
+                <button class="btn btn-primary" t-on-click="buyBigBot" t-att-disabled="clicker_hook.clicks lt 5000">Buy BigBot (5 000 clicks)</button>
+            </div>
+            <div class="card me-3">
+                <p>Power level: <t t-esc="clicker_hook.power"/> (multiplier on bots)</p>
+                <button class="btn btn-primary" t-on-click="buyPower" t-att-disabled="clicker_hook.clicks lt 50000">Increase Power level (50 000 clicks)</button>
+            </div>
+        </div>
     </t>
 
 </templates>
