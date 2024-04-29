@@ -5,6 +5,7 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { browser } from "@web/core/browser/browser";
+import { _t } from "@web/core/l10n/translation";
 
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { Dialog } from "@web/core/dialog/dialog";
@@ -37,7 +38,7 @@ class AwesomeDashboard extends Component {
     openLeads() {
         this.action.doAction({
             type: "ir.actions.act_window",
-            name: "CRM Leads",
+            name: _t("CRM Leads"),
             target: "current",
             res_model: "crm.lead",
             views: [
