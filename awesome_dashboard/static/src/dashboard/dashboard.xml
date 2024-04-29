@@ -7,15 +7,36 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn" t-on-click="openSettings">
+                    <i class="fa fa-cog" />
+                </button>
+            </t>
+
             <div class="d-flex p-3 gap-3 flex-wrap" t-if="statistics.isReady">
                 <t t-foreach="dashboardItems" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size || 1">
+                    <DashboardItem t-if="state.visibleItems.includes(item.id)" size="item.size || 1">
                         <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}" />
                         <t t-component="item.Component" t-props="itemProp" />
                      </DashboardItem>
                 </t>
             </div>
         </Layout>
+    </t>
+    <t t-name="awesome_dashboard.SettingsDialog">
+        <Dialog title="'Dashboard items configuration'" >
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <CheckBox value="item.visible" onChange="(ev) => this.onChange(ev, item)">
+                        <p><t t-esc="item.description" /></p>
+                    </CheckBox>
+                </t>
+
+                <t t-set-slot="footer">
+                    <button class="btn btn-primary" t-on-click="closeDialog">Done</button>
+                </t>
+        </Dialog>
+
     </t>
 
 </templates>
