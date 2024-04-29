@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.ClickerSystrayItem">
+        <div class="o_nav_entry">
+            <p class="mb-0 me-1">
+                Clicks: <t t-esc="state.score" />
+            </p>
+            <button class="btn btn-secondary" t-on-click="incrementScore">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+   </t> 
+
+</templates>
