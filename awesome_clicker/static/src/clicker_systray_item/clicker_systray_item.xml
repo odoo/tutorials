@@ -2,9 +2,30 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.ClickerSystrayItem">
-        Clicks: <ClickValue clicks="clicker.clicks"/>
+        <!-- Clicks: <ClickValue clicks="clicker.clicks"/> -->
         <button class="mx-2 btn btn-secondary" t-on-click="() => clicker.increment(99999)"><i class="fa fa-plus align-top"></i></button>
-        <button class="btn btn-secondary d-flex align-items-center" t-on-click="openClientAction">Open</button>
+        <button class="mx-2 btn btn-secondary" t-on-click="() => clicker.loadState({clicks: 0, level: 0})">RESET</button>
+        <!-- <button class="btn btn-secondary d-flex align-items-center" t-on-click="openClientAction">Open</button>
+        <button class="btn btn-secondary d-flex align-items-center" t-on-click="() => clicker.getReward()">Reward</button> -->
+        <Dropdown>
+            <t t-set-slot="toggler">
+                <ClickValue clicks="clicker.clicks"/><i class="fa fa-mouse-pointer mx-1"></i>
+                <span t-if="clicker.getTotalTrees()">, <t t-esc="clicker.getTotalTrees()"/> <i class="fa fa-tree mx-1"></i></span>
+                <span t-if="clicker.getTotalFruits()">, <t t-esc="clicker.getTotalFruits()"/><i class="fa fa-apple mx-1"></i></span>
+            </t>
+            <div class="px-4 py-1">
+                <button class="btn btn-secondary d-flex align-items-center my-2" t-on-click="openClientAction">Open the clicker game</button>
+                <button class="btn btn-secondary d-flex align-items-center my-2" t-on-click="() => clicker.buyClickBot()">Buy a ClickBot</button>
+                <t t-if="clicker.getTotalTrees()">
+                    <t t-esc="clicker.pearTrees"/>x Pear Trees<br/>
+                    <t t-esc="clicker.cherryTrees"/>x Cherry Trees<br/>
+                    <t t-esc="clicker.peachTrees"/>x Peach Trees<br/>
+                    <t t-esc="clicker.pears"/>x pear<br/>
+                    <t t-esc="clicker.cherries"/>x cherry<br/>
+                    <t t-esc="clicker.peaches"/>x peach<br/>
+                </t>
+            </div>
+        </Dropdown>
     </t>
 
 </templates>

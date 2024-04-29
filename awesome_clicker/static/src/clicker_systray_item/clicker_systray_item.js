@@ -5,11 +5,12 @@ import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { useClicker } from "../useClicker";
 import { ClickValue } from "../click_value/click_value";
+import { Dropdown } from "@web/core/dropdown/dropdown";
 
 export class ClickerSystrayItem extends Component {
     static template = "awesome_owl.ClickerSystrayItem";
     
-    static components = { ClickValue }
+    static components = { ClickValue, Dropdown }
 
     setup() {
         this.action = useService("action");

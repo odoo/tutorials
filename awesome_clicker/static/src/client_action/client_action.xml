@@ -5,50 +5,118 @@
         <div class="p-3">
             Clicks: <ClickValue clicks="clicker.clicks"/>
             <button class="mx-2 btn btn-primary" t-on-click="() => clicker.increment(9)">Increment</button>
-            <h2 t-if="clicker.level >= 1">Bots</h2>
-            <div class="d-flex flex-row gap-3">
-                <div t-if="clicker.level >= 1">
-                    <div class="border p-3">
-                        <t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)<i class="fa fa-android mx-2"/>
-                    </div>
-                    <div class="border p-3">
-                        <button
-                            t-att-disabled="clicker.clicks &lt; 1000"
-                            class="btn btn-primary" 
-                            t-on-click="() => clicker.buyClickBot()">
-                            Buy ClickBot (1000 clicks)
-                        </button>
-                    </div>
-                </div>
-                <div t-if="clicker.level >= 2">
-                    <div class="border p-3">
-                        <t t-esc="clicker.bigBots"/>x BigBots (100 clicks/10 seconds)<i class="fa fa-android mx-2"/>
-                    </div>
-                    <div class="border p-3">
-                        <button
-                            t-att-disabled="clicker.clicks &lt; 5000"
-                            class="btn btn-primary" 
-                            t-on-click="() => clicker.buyBigBot()">
-                            Buy BigBot (5000 clicks)
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div t-if="clicker.level >= 3" class="my-2">
-                <h2>Power multiplier</h2>
-                <div class="border p-3">
-                    <t t-esc="clicker.power"/>x<i class="fa fa-bolt mx-2"/>
-                </div>
-                <div class="border p-3">
-                    <button
-                        t-att-disabled="clicker.clicks &lt; 50000"
-                        class="btn btn-primary" 
-                        t-on-click="() => clicker.buyPower()">
-                        Buy Power Multiplier (50000 clicks)
-                    </button>
-                </div>
-            </div>
         </div>
+        <Notebook orientation="'horizontal'" t-if="clicker.level >= 1">
+            <t t-set-slot="page_1" title="'Clicks'" isVisible="true">
+              <div class="p-3">
+                  <h2 t-if="clicker.level >= 1">Bots</h2>
+                  <div class="d-flex flex-row gap-3">
+                      <div t-if="clicker.level >= 1">
+                          <div class="border p-3 bg-secondary">
+                              <t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)<i class="fa fa-android mx-2"/>
+                          </div>
+                          <div class="border p-3">
+                              <button
+                                  t-att-disabled="clicker.clicks &lt; 1000"
+                                  class="btn btn-primary" 
+                                  t-on-click="() => clicker.buyClickBot()">
+                                  Buy ClickBot (1000 clicks)
+                              </button>
+                          </div>
+                      </div>
+                      <div t-if="clicker.level >= 2">
+                          <div class="border p-3 bg-secondary">
+                              <t t-esc="clicker.bigBots"/>x BigBots (100 clicks/10 seconds)<i class="fa fa-android mx-2"/>
+                          </div>
+                          <div class="border p-3">
+                              <button
+                                  t-att-disabled="clicker.clicks &lt; 5000"
+                                  class="btn btn-primary" 
+                                  t-on-click="() => clicker.buyBigBot()">
+                                  Buy BigBot (5000 clicks)
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+                  <div t-if="clicker.level >= 3" class="my-2">
+                      <h2>Power multiplier</h2>
+                      <div class="border p-3 bg-secondary mw-50">
+                          <t t-esc="clicker.power"/>x<i class="fa fa-bolt mx-2"/>
+                      </div>
+                      <div class="border p-3 mw-50">
+                          <button
+                              t-att-disabled="clicker.clicks &lt; 50000"
+                              class="btn btn-primary" 
+                              t-on-click="() => clicker.buyPower()">
+                              Buy Power Multiplier (50 000 clicks)
+                          </button>
+                      </div>
+                  </div>
+              </div>
+            </t>
+            <t t-set-slot="page_2" title="'Trees and Fruits'" isVisible="clicker.level >= 4">
+              <div class="p-3">
+                  <div class="my-2">
+                      <h2>Trees</h2>
+                      <div class="d-flex flex-row gap-3">
+                          <div>
+                              <div class="border p-3 bg-secondary">
+                                  <t t-esc="clicker.pearTrees"/>x Pear Tree<i class="fa fa-tree mx-2"/>
+                              </div>
+                              <div class="border p-3">
+                                  <button
+                                      t-att-disabled="clicker.clicks &lt; 1000000"
+                                      class="btn btn-primary" 
+                                      t-on-click="() => clicker.buyPearTree()">
+                                      Buy Pear Tree (1 000 000 clicks)
+                                  </button>
+                              </div>
+                          </div>
+                          <div>
+                              <div class="border p-3 bg-secondary">
+                                  <t t-esc="clicker.cherryTrees"/>x Cherry Tree<i class="fa fa-tree mx-2"/>
+                              </div>
+                              <div class="border p-3">
+                                  <button
+                                      t-att-disabled="clicker.clicks &lt; 1000000"
+                                      class="btn btn-primary" 
+                                      t-on-click="() => clicker.buyCherryTree()">
+                                      Buy Cherry Tree (1 000 000 clicks)
+                                  </button>
+                              </div>
+                          </div>
+                          <div>
+                            <div class="border p-3 bg-secondary">
+                                <t t-esc="clicker.peachTrees"/>x Peach Tree<i class="fa fa-tree mx-2"/>
+                            </div>
+                            <div class="border p-3">
+                                <button
+                                    t-att-disabled="clicker.clicks &lt; 1500000"
+                                    class="btn btn-primary" 
+                                    t-on-click="() => clicker.buyPeachTree()">
+                                    Buy Cherry Tree (1 500 000 clicks)
+                                </button>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="my-2">
+                      <h2>Fruits</h2>
+                      <div class="d-flex flex-row gap-3">
+                          <div class="p-3 bg-secondary">
+                              <t t-esc="clicker.pears"/>x pear
+                          </div>
+                          <div class="p-3 bg-secondary">
+                              <t t-esc="clicker.cherries"/>x cherry
+                          </div>
+                          <div class="p-3 bg-secondary">
+                            <t t-esc="clicker.peaches"/>x peach
+                        </div>
+                      </div>
+                  </div>
+              </div>
+            </t>
+          </Notebook>
     </t>
 
 </templates>
