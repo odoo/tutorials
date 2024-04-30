@@ -4,9 +4,9 @@
     <t t-name="awesome_clicker.ClickerSystrayItem">
         <div class="o_nav_entry gap-1">
             <p class="mb-0">
-                Clicks: <t t-esc="state.score" />
+                Clicks: <t t-esc="clickerService.state.score" />
             </p>
-            <button class="btn btn-secondary" t-on-click="incrementScore">
+            <button class="btn btn-secondary" t-on-click="() => this.clickerService.incrementScore(9)">
                 <i class="fa fa-plus"></i>
             </button>
             <button class="btn btn-secondary" t-on-click="openClientAction">

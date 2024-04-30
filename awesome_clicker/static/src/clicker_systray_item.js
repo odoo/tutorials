@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { Component, useExternalListener, useState } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 
 class ClickerSystrayItem extends Component {
@@ -9,12 +9,11 @@ class ClickerSystrayItem extends Component {
 
     setup() {
         this.action = useService("action");
-        this.state = useState({ score: 0 })
-        useExternalListener(document.body, "click", () => this.state.score++, { capture: true });
+        this.clickerService  = useState(useService('clicker_service'))
     }
 
     incrementScore() {
-        this.state.score += 9;
+        this.clickerService.incrementScore(9)
     }
 
     openClientAction() {

@@ -2,8 +2,13 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.ClientAction">
-        <div class="p-3">
-            Clicker client action 
+        <div class="p-3 d-flex align-items-center gap-1">
+            <button class="btn btn-primary" t-on-click="() => this.clickerService.incrementScore(9)">
+                Increment
+            </button>
+            <p class="mb-0">
+                Clicks: <t t-esc="clickerService.state.score" />
+            </p>
         </div>
    </t> 
 
