@@ -1,4 +1,4 @@
 {'name': 'Estate',
- 'depends': 'base',
+ 'depends': ['base_setup'],
  'application': True,
  }
