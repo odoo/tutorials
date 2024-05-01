@@ -8,10 +8,10 @@ class properties(models.Model):
     name = fields.Char('name')
     description = fields.Text("description")
     postcode = fields.Char("Postal code")
-    date_availability = fields.Date("Date availability")
+    date_availability = fields.Date("Date availability", copy=False, default=3)    
     expected_price = fields.Float("Expected price")
-    selling_price = fields.Float("Selling price")
-    bedrooms = fields.Integer("Bedrooms")
+    selling_price = fields.Float("Selling price", readonly=True, copy=False)
+    bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living area")
     facades = fields.Integer("Facades")
     garage = fields.Boolean("Garage")
@@ -19,3 +19,6 @@ class properties(models.Model):
     garden_area = fields.Integer("Garden area")
     garden_orientation = fields.Selection(string='Type',
                                           selection=[("North"), ('South'), ("East"), ("West")])
+    active = fields.Boolean(default=True)
+    estate = fields.Selection(string='Type', selection=[("New"), ('Offer Received'), ("Sold"), ("Offer Accepted"), ("Cancelled"),]
+                              , required=True, copy=False, default="New")
