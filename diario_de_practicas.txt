@@ -1,0 +1,4 @@
+
+2/5/2024
+
+Instalado kubuntu y docker. El segundo resulta bastante latoso y requiere varios intentos. Al final consigo iniciar Odoo. Dejo anotaciones en papel
