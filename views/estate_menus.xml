@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <menuitem id="test_menu_root" name="Estate">
-    <menuitem id="test_first_level_menu" name="First Level">
+  <menuitem id="estate_menu_root" name="Estate">
+    <menuitem id="estate_first_level_menu" name="First Level">
       <menuitem id="estate_action" action="estate_action" />
     </menuitem>
   </menuitem>
