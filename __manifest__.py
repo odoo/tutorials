@@ -1,4 +1,4 @@
-{'name': 'Real Estate',
+{'name': 'Inmobiliaria',
  'depends': ['base_setup'],
  'application': True,
  'Data': ['security/ir.model.access.csv',
