@@ -9,4 +9,5 @@ El docker funcionaba mal. Se consigue instalar finalmente con ayuda. Se necesita
 
 6/5/2024
 
-Creado e instalado el módulo estate del tutorial. Terminado hasta las vistas. Que no las reconoce
+Creado e instalado el módulo estate del tutorial. Terminado hasta las vistas. Que no las reconoce. Es necesario probar linea a linea manualmente hasta que el
+servidor las acepta.
