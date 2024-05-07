@@ -2,7 +2,7 @@ from odoo import fields, models
 
 
 class Propiedad(models.Model):
-    _name = 'estate_propiedad'
+    _name = 'estate.propiedad'
     _description = 'Propiedades Inmobiliaria'
 
     nombre = fields.Char('Nombre', required=True)
@@ -16,7 +16,7 @@ class Propiedad(models.Model):
     fachadas = fields.Integer('Fachadas')
     garaje = fields.Boolean('Garaje')
     jarin = fields.Boolean('Jardín')
-    area_jardom = fields.Integer('Área de jardín')
+    area_jardin = fields.Integer('Área de jardín')
     activo = fields.Boolean(default=True)
 
     orientation_jardin = fields.Selection(

@@ -1,8 +1,8 @@
 {'name': 'Real Estate',
- 'depends': ['base_setup'],
+ 'depends': ['base'],
  'application': True,
- 'Data': ['security/ir.model.access.csv',
-          'views/estate_property_views.xml',
-          'views/estate_menus.xml',],
-
+ 'data': 
+        ['security/ir.model.access.csv',
+         'views/estate_property_views.xml',
+         'views/estate_menus.xml',],
  }
