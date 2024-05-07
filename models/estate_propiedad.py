@@ -15,7 +15,7 @@ class Propiedad(models.Model):
     area_habitable = fields.Integer('Área habitable')
     fachadas = fields.Integer('Fachadas')
     garaje = fields.Boolean('Garaje')
-    jarin = fields.Boolean('Jardín')
+    jardin = fields.Boolean('Jardín')
     area_jardin = fields.Integer('Área de jardín')
     activo = fields.Boolean(default=True)
 
