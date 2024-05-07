@@ -6,15 +6,22 @@
     <field name="view_mode">tree</field>
   </record>
 
-  <!-- <record id="estate_view_tree" model="ir.ui.view">
+  <record id="estate_view_tree" model="ir.ui.view">
     <field name="name">estate.view.tree</field>
-    <field name="model">estate.report</field>
+    <field name="model">estate.propiedad</field>
     <field name="arch" type="xml">
       <tree string="Propiedades">        
+        <field name="nombre" ></field>
+        <field name="cp"></field>
+        <field name="dormitorios"></field>
+        <field name="area_habitable"></field>
+        <field name="precio_esperado"></field>
+        <field name="precio_venta"></field>
+        <field name="fecha_disponibilidad"></field>
       </tree>
     </field>
 
 
-  </record> -->
+  </record>
 
 </odoo>
