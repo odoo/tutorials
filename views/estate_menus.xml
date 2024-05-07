@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <menuitem id="estate_root" name="Inmobiliaria">
-    <menuitem id="estate_first_level_menu" name="Nivel Uno">
-      <menuitem id="estate_action" action="estate_action" />
-    </menuitem>
-  </menuitem>
+
+<menuitem id="estate_menu_root" 
+          name="Real Estate"  
+          sequence="1"
+          group="base.group_user"/>
+
+<menuitem id="estate_menu_properties" 
+          name="Properties" 
+          parent="estate_menu_root" 
+          group="base.group_user"
+          sequence="1"/>
+
+<menuitem id="action" 
+          parent="properties" 
+          action="estate.estate_action" 
+          group="base.group_user"
+          sequence="1"/>
+
 </odoo>

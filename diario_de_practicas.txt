@@ -11,3 +11,5 @@ El docker funcionaba mal. Se consigue instalar finalmente con ayuda. Se necesita
 
 Creado e instalado el módulo estate del tutorial. Terminado hasta las vistas. Que no las reconoce. Es necesario probar linea a linea manualmente hasta que el
 servidor las acepta.
+
+7/05/2024
