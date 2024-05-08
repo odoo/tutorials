@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <record id="estate_action" model="ir.actions.act_window">
-        <field name="name">Accion</field>
-        <field name="res_model">estate.propiedad</field>
-        <field name="view_mode">tree</field>
-    </record>
 
     <!-- vista en lista -->
 
     <record id="estate_view_tree" model="ir.ui.view">
-        <field name="name">estate.view.tree</field>
+        <field name="name">estate.propiedad.view.tree</field>
         <field name="model">estate.propiedad</field>
         <field name="arch" type="xml">
             <tree string="Propiedades">
@@ -29,7 +24,7 @@
     <!-- Vista formulario -->
 
     <record id="estate_view_form" model="ir.ui.view">
-        <field name="name">estate.view.form</field>
+        <field name="name">estate.propiedad.view.form</field>
         <field name="model">estate.propiedad</field>
         <field name="arch" type="xml">
             <form string="Propiedades">
@@ -39,7 +34,6 @@
                         <separator></separator>
                     </header>
                     <separator></separator>
-                    <!-- No funcionan las columnas -->
                     <group colspan="2">
                     <group>
                         <field name="cp"></field>
@@ -65,6 +59,19 @@
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+
+    <!-- Búsqueda -->
+
+    <record id="estate_search" model="ir.ui.view">
+        <field name="name">estate.propiedad.search</field>
+        <field name="model">estate.propiedad</field>
+        <field name="arch" type="xml">
+            <searh string="Búsqueda">
+                <field name="nombre" string="Nombre"></field>
+            </searh>
         </field>
     </record>
 
