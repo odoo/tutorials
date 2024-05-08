@@ -36,6 +36,7 @@
                     <separator></separator>
                     <group colspan="2">
                     <group>
+                        <field name="type"></field>
                         <field name="cp"></field>
                         <field name="fecha_disponibilidad"></field>
                     </group>
@@ -57,7 +58,10 @@
                             </group>
                         </page>
                         <page name="other_info" string="Otra información">
-
+                            <group>
+                                <field name="seller"></field>
+                                <field name="buyer"></field>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>

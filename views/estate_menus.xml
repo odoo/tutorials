@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <!-- Acciones ventana Principal -->
+    <!-- Acciones ventana Propiedades -->
 
     <record model="ir.actions.act_window" id="action_form">
         <field name="name">Propiedades</field>
@@ -28,7 +28,7 @@
 
     <menuitem id="menu_principal" name="Real Estate"></menuitem>
 
-    <!-- Principal -->
+    <!-- Propiedades -->
 
     <menuitem id="menu_secundario_advertisement" name="Advertisement" parent="menu_principal"></menuitem>
     <menuitem id="menu_terciario_tree" name="Properties" parent="menu_secundario_advertisement"
