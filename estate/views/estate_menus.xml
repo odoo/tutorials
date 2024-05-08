@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--Menu Items-->
+    <!--=================================================================-->
+    <menuitem
+            id="estate_menu_root"
+            name="Real Estate"
+            web_icon="estate,static/description/icon2.png">
+        <menuitem id="advertisement_menu" name="Advertisement" sequence="1">
+            <menuitem id="properties_list" name="Properties" action="estate_property_action"/>
+        </menuitem>
+        <menuitem id="settings_menu" name="Settings" sequence="2">
+            <menuitem id="property_type_list" name="Types" action="estate_property_type_action"/>
+            <menuitem id="property_tag_list" name="Tags" action="estate_property_tag_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>
