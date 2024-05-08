@@ -8,7 +8,7 @@ class Propiedad(models.Model):
     nombre = fields.Char('Nombre', required=True)
     descripcion = fields.Text('Descripción')
     cp = fields.Char('Código postal')
-    fecha_disponibilidad = fields.Date('Fecha de disponibilidad', copy=False, default=3)    
+    fecha_disponibilidad = fields.Date('Fecha de disponibilidad', copy=False)
     precio_esperado = fields.Float('Precio esperado', required=True)
     precio_venta = fields.Float('Precio de venta', readonly=True, copy=False)
     dormitorios = fields.Integer('Dormitorios', default=2)
@@ -19,20 +19,16 @@ class Propiedad(models.Model):
     area_jardin = fields.Integer('Área de jardín')
     activo = fields.Boolean(default=True)
 
-    orientation_jardin = fields.Selection(
-        string='orientacion',
-        selection=[('norte', 'Norte'), 
-                ('sur', 'Sur'), 
-                ('este','Este'), 
-                ('oeste','Oeste')])
-    
+    orientacion_jardin = fields.Selection(string='Orientación',
+                                          selection=[('norte', 'Norte'), ('sur', 'Sur'), ('este', 'Este'),
+                                                     ('oeste', 'Oeste')])
+
     estado = fields.Selection(string='estado',
-                               selection=[('nueva', 'Nueva'), 
-                                ('oferta_recibida', 'Oferta recibida'),
-                                ('vendida', 'vendida'),
-                                ('oferta_aceptada', 'Oferta Aceptada'),
-                                ('cancelada', 'Cancelada'),], 
-                                required=True, 
-                                copy=False, 
-                                default="nueva")
-    
+                              selection=[('nueva', 'Nueva'),
+                                         ('oferta_recibida', 'Oferta recibida'),
+                                         ('vendida', 'vendida'),
+                                         ('oferta_aceptada', 'Oferta Aceptada'),
+                                         ('cancelada', 'Cancelada'), ],
+                              required=True,
+                              copy=False,
+                              default="nueva")

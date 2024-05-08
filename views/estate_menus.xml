@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-  <!-- Accion ventana -->
+    <!-- Accion ventana -->
 
-<record model="ir.actions.act_window" id="action_menu">
-  <field name="name">Properties</field>
-  <field name="res_model">estate.propiedad</field>
-  <field name="view_mode">form</field>
-</record>
+    <record model="ir.actions.act_window" id="action_menu">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.propiedad</field>
+        <field name="view_mode">form</field>
+    </record>
 
-<menuitem id="menu_principal" name="Real Estate"></menuitem>
-<menuitem id="menu_secundario_advertisement" name="Advertisements" parent="menu_principal"></menuitem>
-<menuitem id="menu_terciario_properties" name="Properties" parent="menu_secundario_advertisement" action="action_menu"></menuitem>
+    <!-- Items del menu -->
+
+    <menuitem id="menu_principal" name="Real Estate"></menuitem>
+    <menuitem id="menu_secundario_advertisement" name="Advertisements" parent="menu_principal"></menuitem>
+    <menuitem id="menu_terciario_properties" name="Properties" parent="menu_secundario_advertisement"
+              action="action_menu"></menuitem>
+
 
 </odoo>
