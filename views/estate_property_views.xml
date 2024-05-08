@@ -71,6 +71,18 @@
         <field name="arch" type="xml">
             <searh string="Búsqueda">
                 <field name="nombre" string="Nombre"></field>
+                <field name="cp"></field>
+                <field name="precio_esperado"></field>
+                <field name="dormitorios"></field>
+                <field name="area_habitable"></field>
+                <field name="fachadas"></field>
+                <filter string="Disponible" 
+                        name="filter_activo" 
+                        domain="[('activo', '=', True)]"/>
+                <filter string="Código postal" 
+                        name="group_by_cp" 
+                        domain="[]" 
+                        context="{'group_by':'cp'}"/>
             </searh>
         </field>
     </record>

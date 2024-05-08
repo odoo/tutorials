@@ -17,3 +17,5 @@ servidor las acepta.
 modulo movido a private. A la tarde aparece por fin. La vista tree valida pere la form no
 
 8/5/2024
+
+Aparecen ambas vistas configurando menus y acciones. Es preciso hacer upgrade cada vez que se modifican los menus y acciones.
