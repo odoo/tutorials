@@ -1,10 +1,45 @@
-    <!-- vista en lista -->
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
 
-    <record id="estate_view_tree" model="ir.ui.view">
+   
+   <!-- vista en lista -->
+
+    <record id="estate_type_tree" model="ir.ui.view">
       <field name="name">estate.propiedad.view.tree</field>
       <field name="model">estate.property.type</field>
       <field name="arch" type="xml">
           <tree string="Tipos">
-          </tree>
+            <field name="name"></field>
+        </tree>
       </field>
   </record>
+
+    <!-- vista en lista -->
+
+    <record id="estate_view_form" model="ir.ui.view">
+        <field name="name">estate.type.view.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Propiedades">
+                <sheet>
+                    <header>
+                        <h1><field name="name"></field></h1>
+                    </header>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Búsqueda -->
+
+    <record id="estate_search" model="ir.ui.view">
+        <field name="name">estate.type.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search string="Búsqueda">
+                <field name="name" string="Nombre"></field>
+            </search>
+        </field>
+    </record>
+
+</odoo>

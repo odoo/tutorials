@@ -28,15 +28,14 @@
         <field name="model">estate.propiedad</field>
         <field name="arch" type="xml">
             <form string="Propiedades">
-                <sheet>
-                    <header>
-                        <h1><field name="nombre"></field></h1>
-                        <separator></separator>
-                    </header>
+                <sheet><header>
+                    <h1><field name="nombre"></field></h1>
+                    <separator></separator>
+                </header>                        
                     <separator></separator>
                     <group colspan="2">
                     <group>
-                        <field name="type"></field>
+                        <field name="property_type_id"></field>
                         <field name="cp"></field>
                         <field name="fecha_disponibilidad"></field>
                     </group>
@@ -59,8 +58,8 @@
                         </page>
                         <page name="other_info" string="Otra información">
                             <group>
-                                <field name="seller"></field>
-                                <field name="buyer"></field>
+                                <field name="seller_id"></field>
+                                <field name="buyer_id"></field>
                             </group>
                         </page>
                     </notebook>
@@ -73,10 +72,10 @@
     <!-- Búsqueda -->
 
     <record id="estate_search" model="ir.ui.view">
-        <field name="name">estate.propiedad.search</field>
+        <field name="name">estate.propiedad.view.search</field>
         <field name="model">estate.propiedad</field>
         <field name="arch" type="xml">
-            <searh string="Búsqueda">
+            <search string="Búsqueda">
                 <field name="nombre" string="Nombre"></field>
                 <field name="cp"></field>
                 <field name="precio_esperado"></field>
@@ -91,7 +90,7 @@
                 <filter string="Código postal" 
                         name="group_by_cp" 
                         context="{'group_by':'cp'}"/>
-            </searh>
+            </search>
         </field>
     </record>
 

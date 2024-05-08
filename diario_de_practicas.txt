@@ -18,4 +18,5 @@ modulo movido a private. A la tarde aparece por fin. La vista tree valida pere l
 
 8/5/2024
 
-Aparecen ambas vistas configurando menus y acciones. Es preciso hacer upgrade cada vez que se modifican los menus y acciones.
+Aparecen ambas vistas configurando menus y acciones. Es preciso hacer upgrade cada vez que se modifican los menus y acciones. La vista form se ha descontrolado
+al meter many2one. Solucionarlo quitandolos mañana
