@@ -56,6 +56,9 @@
                                 <field name="orientacion_jardin"></field>
                             </group>
                         </page>
+                        <page name="other_info" string="Otra información">
+
+                        </page>
                     </notebook>
                 </sheet>
             </form>

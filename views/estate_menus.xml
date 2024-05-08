@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <!-- Acciones ventana -->
+    <!-- Acciones ventana Principal -->
 
     <record model="ir.actions.act_window" id="action_form">
         <field name="name">Propiedades</field>
@@ -15,14 +15,29 @@
       <field name="view_mode">tree,search</field>        
   </record>
 
+    <!-- Acciones ventana tipos -->
+
+    <record model="ir.actions.act_window" id="action_type_tree">
+        <field name="name">Propiedades</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree</field>        
+    </record>
 
 
     <!-- Items del menu -->
 
     <menuitem id="menu_principal" name="Real Estate"></menuitem>
-    <menuitem id="menu_secundario_advertisement" name="Advertisements" parent="menu_principal"></menuitem>
+
+    <!-- Principal -->
+
+    <menuitem id="menu_secundario_advertisement" name="Advertisement" parent="menu_principal"></menuitem>
     <menuitem id="menu_terciario_tree" name="Properties" parent="menu_secundario_advertisement"
               action="action_tree"></menuitem>
     <menuitem id="menu_terciario_form" name="New Property" parent="menu_secundario_advertisement" action="action_form"></menuitem>
+
+    <!-- Tipos -->
+
+    <menuitem id="menu_secundario_ajustes" name="Ajustes" parent="menu_principal"></menuitem>
+    <menuitem id="menu_terciario_tipos" name="Tipos de propiedad" parent="menu_secundario_ajustes" action="action_type_tree"></menuitem>
 
 </odoo>
