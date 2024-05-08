@@ -78,10 +78,11 @@
                 <field name="fachadas"></field>
                 <filter string="Disponible" 
                         name="filter_activo" 
-                        domain="[('activo', '=', True)]"/>
+                        domain="['|', 
+                        ('estado', '=', 'nueva'),
+                        ('estado', '=', 'oferta_recibida')]"/>
                 <filter string="Código postal" 
                         name="group_by_cp" 
-                        domain="[]" 
                         context="{'group_by':'cp'}"/>
             </searh>
         </field>

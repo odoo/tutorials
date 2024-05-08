@@ -4,13 +4,13 @@
     <!-- Acciones ventana -->
 
     <record model="ir.actions.act_window" id="action_form">
-        <field name="name">Properties</field>
+        <field name="name">Propiedades</field>
         <field name="res_model">estate.propiedad</field>
         <field name="view_mode">form,search</field>        
     </record>
 
     <record model="ir.actions.act_window" id="action_tree">
-      <field name="name">Lista</field>
+      <field name="name">Propiedades</field>
       <field name="res_model">estate.propiedad</field>
       <field name="view_mode">tree,search</field>        
   </record>
