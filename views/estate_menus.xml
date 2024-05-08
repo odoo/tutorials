@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
+  <!-- Accion ventana -->
+
 <record model="ir.actions.act_window" id="action_menu">
   <field name="name">Properties</field>
   <field name="res_model">estate.propiedad</field>
-  <field name="view_mode">tree</field>
+  <field name="view_mode">form</field>
 </record>
 
 <menuitem id="menu_principal" name="Real Estate"></menuitem>

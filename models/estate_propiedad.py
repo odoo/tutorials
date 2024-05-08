@@ -9,7 +9,7 @@ class Propiedad(models.Model):
     descripcion = fields.Text('Descripción')
     cp = fields.Char('Código postal')
     fecha_disponibilidad = fields.Date('Fecha de disponibilidad', copy=False, default=3)    
-    precio_esperado = fields.Float('Pricio esperado', required=True)
+    precio_esperado = fields.Float('Precio esperado', required=True)
     precio_venta = fields.Float('Precio de venta', readonly=True, copy=False)
     dormitorios = fields.Integer('Dormitorios', default=2)
     area_habitable = fields.Integer('Área habitable')
