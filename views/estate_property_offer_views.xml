@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <!-- vista tree -->
+
+  <record id="estate_tag_view_tree" model="ir.ui.view">
+    <field name="name">estate.property.offer.view.tree</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+      <tree string="offer">
+        <field name="price"></field>
+        <field name="partner_id"></field>
+        <field name="status"></field>
+      </tree>
+    </field>
+  </record>
+
+
+  <!-- Vista formulario -->
+
+  <record id="estate_offer_view_form" model="ir.ui.view">
+    <field name="name">estate.property.offer.view.form</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+      <form string="offer">
+        <sheet>
+          <group>
+            <field name="price"></field>
+            <field name="partner_id"></field>
+            <field name="status"></field>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+</odoo>

@@ -46,3 +46,7 @@ class Property(models.Model):
     # Tags many2many
 
     tags_id = fields.Many2many('estate.property.tag', string='Etiqueta')
+
+    # Ofertas
+
+    offer_ids = fields.Many2one('estate.property.offer', string='Oferta')

@@ -60,11 +60,17 @@
                                 <field name="orientacion_jardin"></field>
                             </group>
                         </page>
-                        <page name="other_info" string="Otra información"></page>
-                        <group>
-                            <field name="buyer_id"></field>
-                            <field name="seller_id"></field>
-                        </group>
+                        <page name="other_info" string="Otra información">
+                            <group>
+                                <field name="buyer_id"></field>
+                                <field name="seller_id"></field>
+                            </group>
+                        </page>
+                        <page name="offers" string="Ofertas">
+                            <group>
+                                <field name="offer_ids"></field>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
