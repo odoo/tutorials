@@ -33,12 +33,13 @@
                         <h1>
                             <field name="nombre"></field>
                         </h1>
+                        <field name="tags_id" widget="many2many_tags" />
                         <separator></separator>
                     </header>
                     <separator></separator>
                     <group colspan="2">
                         <group>
-                            <field name="type_id"></field>
+                            <field name="property_type_id"></field>
                             <field name="cp"></field>
                             <field name="fecha_disponibilidad"></field>
                         </group>
@@ -60,10 +61,10 @@
                             </group>
                         </page>
                         <page name="other_info" string="Otra información"></page>
-                            <group>
-                                <field name="buyer_id"></field>
-                                <field name="seller_id"></field>
-                            </group>
+                        <group>
+                            <field name="buyer_id"></field>
+                            <field name="seller_id"></field>
+                        </group>
                     </notebook>
                 </sheet>
             </form>

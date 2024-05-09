@@ -5,6 +5,8 @@ class Property(models.Model):
     _name = 'estate.propiedad'
     _description = 'Propiedades Inmobiliaria'
 
+    # Atributos
+
     nombre = fields.Char('Nombre', required=True)
     descripcion = fields.Text('Descripción')
     cp = fields.Char('Código postal')
@@ -18,9 +20,8 @@ class Property(models.Model):
     jardin = fields.Boolean('Jardín')
     area_jardin = fields.Integer('Área de jardín')
     activo = fields.Boolean(default=True)
-    property_type_id = fields.Many2one('estate.propiedad', string='Tipo')
-    seller_id = fields.Many2one("res.users", string="Vendedor", default=lambda self: self.env.user)
-    buyer_id = fields.Many2one("res.partner", string="Comprador", readonly=True)
+
+    # Selecciones
 
     orientacion_jardin = fields.Selection(string='Orientación',
                                           selection=[('norte', 'Norte'), ('sur', 'Sur'), ('este', 'Este'),
@@ -35,5 +36,13 @@ class Property(models.Model):
                               required=True,
                               copy=False,
                               default="nueva")
-    type_id = fields.Many2one("estate.propiedad", string="Tipo de propiedad")
 
+    # Tipos Many2one
+
+    property_type_id = fields.Many2one('estate.property.type', string='Tipo')
+    seller_id = fields.Many2one("res.users", string="Vendedor", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", string="Comprador", readonly=True)
+
+    # Tags many2many
+
+    tags_id = fields.Many2many('estate.property.tag', string='Etiqueta')
