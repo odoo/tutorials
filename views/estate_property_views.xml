@@ -30,20 +30,22 @@
             <form string="Propiedades">
                 <sheet>
                     <header>
-                        <h1><field name="nombre"></field></h1>
+                        <h1>
+                            <field name="nombre"></field>
+                        </h1>
                         <separator></separator>
                     </header>
                     <separator></separator>
                     <group colspan="2">
-                    <group>
-                        <field name="cp"></field>
-                        <field name="fecha_disponibilidad"></field>
+                        <group>
+                            <field name="cp"></field>
+                            <field name="fecha_disponibilidad"></field>
+                        </group>
+                        <group col="2">
+                            <field name="precio_esperado"></field>
+                            <field name="precio_venta"></field>
+                        </group>
                     </group>
-                    <group col="2">
-                        <field name="precio_esperado"></field>
-                        <field name="precio_venta"></field>
-                    </group>
-                </group>
                     <notebook>
                         <page name="description" string="Descripción">
                             <group>
@@ -69,22 +71,22 @@
         <field name="name">estate.propiedad.search</field>
         <field name="model">estate.propiedad</field>
         <field name="arch" type="xml">
-            <searh string="Búsqueda">
+            <search string="Búsqueda">
                 <field name="nombre" string="Nombre"></field>
                 <field name="cp"></field>
                 <field name="precio_esperado"></field>
                 <field name="dormitorios"></field>
                 <field name="area_habitable"></field>
                 <field name="fachadas"></field>
-                <filter string="Disponible" 
-                        name="filter_activo" 
-                        domain="['|', 
+                <filter string="Disponible"
+                    name="filter_activo"
+                    domain="['|', 
                         ('estado', '=', 'nueva'),
-                        ('estado', '=', 'oferta_recibida')]"/>
-                <filter string="Código postal" 
-                        name="group_by_cp" 
-                        context="{'group_by':'cp'}"/>
-            </searh>
+                        ('estado', '=', 'oferta_recibida')]" />
+                <filter string="Código postal"
+                    name="group_by_cp"
+                    context="{'group_by':'cp'}" />
+            </search>
         </field>
     </record>
 

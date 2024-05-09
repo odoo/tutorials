@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class Propiedad(models.Model):
+class Property(models.Model):
     _name = 'estate.propiedad'
     _description = 'Propiedades Inmobiliaria'
 

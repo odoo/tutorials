@@ -3,26 +3,44 @@
 
     <!-- Acciones ventana -->
 
+    <!-- Propiedades -->
+
     <record model="ir.actions.act_window" id="action_form">
         <field name="name">Propiedades</field>
         <field name="res_model">estate.propiedad</field>
-        <field name="view_mode">form,search</field>        
+        <field name="view_mode">form,search</field>
     </record>
 
     <record model="ir.actions.act_window" id="action_tree">
-      <field name="name">Propiedades</field>
-      <field name="res_model">estate.propiedad</field>
-      <field name="view_mode">tree,search</field>        
-  </record>
+        <field name="name">Propiedades</field>
+        <field name="res_model">estate.propiedad</field>
+        <field name="view_mode">tree,search</field>
+    </record>
 
+    <!-- Tipos -->
+
+    <record model="ir.actions.act_window" id="action_type_view_form">
+        <field name="name">Tipos</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">form,search</field>
+    </record>
 
 
     <!-- Items del menu -->
 
+    <!-- Propiedades -->
+
     <menuitem id="menu_principal" name="Real Estate"></menuitem>
     <menuitem id="menu_secundario_advertisement" name="Advertisements" parent="menu_principal"></menuitem>
     <menuitem id="menu_terciario_tree" name="Properties" parent="menu_secundario_advertisement"
-              action="action_tree"></menuitem>
-    <menuitem id="menu_terciario_form" name="New Property" parent="menu_secundario_advertisement" action="action_form"></menuitem>
+        action="action_tree"></menuitem>
+    <menuitem id="menu_terciario_form" name="New Property" parent="menu_secundario_advertisement"
+        action="action_form"></menuitem>
+
+    <!-- Tipos -->
+
+    <menuitem id="menu_secundario_ajustes" name="Ajustes" parent="menu_principal"></menuitem>
+    <menuitem id="menu_terciario_tipos" name="Tipos de propiedad" parent="menu_secundario_ajustes"
+        action="action_type_view_form"></menuitem>
 
 </odoo>
