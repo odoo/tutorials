@@ -51,11 +51,23 @@ class Property(models.Model):
 
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Oferta')
 
-    # Atributo calculado
+    # Atributos calculados
 
-    total_area = fields.Float(compute="_compute_total")
+    total_area = fields.Float(compute="_compute_total", string="Área total")
 
     @api.depends('area_habitable', 'area_jardin')
     def _compute_total(self):
         for record in self:
             record.total_area = record.area_habitable + record.area_jardin
+
+    # Calculos con atributos relacionados
+
+    best_offer = fields.Float(compute="_compute_best_offer", string="Mejor oferta", default="0.0")
+
+    @api.depends('offer_ids.price')
+    def _compute_best_offer(self):
+        offers = []
+        for record in self:
+            offers.append(record.offer_ids.price)
+            best_offer = max(offers)
+

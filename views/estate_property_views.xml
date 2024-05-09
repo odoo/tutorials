@@ -45,6 +45,7 @@
                         </group>
                         <group col="2">
                             <field name="precio_esperado"></field>
+                            <field name="best_offer"></field>
                             <field name="precio_venta"></field>
                         </group>
                     </group>
@@ -58,6 +59,7 @@
                                 <field name="garaje"></field>
                                 <field name="area_jardin"></field>
                                 <field name="orientacion_jardin"></field>
+                                <field name="total_area"></field>
                             </group>
                         </page>
                         <page name="other_info" string="Otra información">
