@@ -38,6 +38,7 @@
                     <separator></separator>
                     <group colspan="2">
                         <group>
+                            <field name="type_id"></field>
                             <field name="cp"></field>
                             <field name="fecha_disponibilidad"></field>
                         </group>
@@ -58,6 +59,13 @@
                                 <field name="orientacion_jardin"></field>
                             </group>
                         </page>
+                        <page name="other_info" string="Otra información"></page>
+                        <sheet>
+                            <group>
+                                <field name="buyer_id"></field>
+                                <field name="seller_id"></field>
+                            </group>
+                        </sheet>
                     </notebook>
                 </sheet>
             </form>
