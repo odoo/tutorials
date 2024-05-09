@@ -3,7 +3,7 @@
 
     <!-- Acciones ventana -->
 
-    <!-- Propiedades -->
+    <!-- Anuncios -->
 
     <record model="ir.actions.act_window" id="action_form">
         <field name="name">Propiedades</field>
@@ -17,7 +17,7 @@
         <field name="view_mode">tree,search</field>
     </record>
 
-    <!-- Tipos -->
+    <!-- Ajustes -->
 
     <record model="ir.actions.act_window" id="action_type_view_form">
         <field name="name">Tipos</field>
@@ -26,9 +26,16 @@
     </record>
 
 
+    <record model="ir.actions.act_window" id="action_tag_view_form">
+        <field name="name">Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">form,search</field>
+    </record>
+
+
     <!-- Items del menu -->
 
-    <!-- Propiedades -->
+    <!-- Anuncios -->
 
     <menuitem id="menu_principal" name="Real Estate"></menuitem>
     <menuitem id="menu_secundario_advertisement" name="Advertisements" parent="menu_principal"></menuitem>
@@ -37,10 +44,14 @@
     <menuitem id="menu_terciario_form" name="New Property" parent="menu_secundario_advertisement"
         action="action_form"></menuitem>
 
-    <!-- Tipos -->
+    <!-- Ajustes -->
 
     <menuitem id="menu_secundario_ajustes" name="Ajustes" parent="menu_principal"></menuitem>
     <menuitem id="menu_terciario_tipos" name="Tipos de propiedad" parent="menu_secundario_ajustes"
         action="action_type_view_form"></menuitem>
+
+    <menuitem id="menu_terciario_tags" name="Tags de propiedad" parent="menu_secundario_ajustes"
+        action="action_tag_view_form"></menuitem>
+
 
 </odoo>

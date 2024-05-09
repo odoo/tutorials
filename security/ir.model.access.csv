@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 estate.access_estate_propiedad,access_estate_propiedad,estate.model_estate_propiedad,base.group_user,1,1,1,1
 estate.access_estate_property_type,access_estate_property_type,estate.model_estate_property_type,base.group_user,1,1,1,1
-
+estate.access_estate_property_tag,access_estate_property_tag,estate.model_estate_property_tag,base.group_user,1,1,1,1
