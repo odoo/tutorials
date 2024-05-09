@@ -18,6 +18,9 @@ class Property(models.Model):
     jardin = fields.Boolean('Jardín')
     area_jardin = fields.Integer('Área de jardín')
     activo = fields.Boolean(default=True)
+    property_type_id = fields.Many2one('estate.propiedad', string='Tipo')
+    seller_id = fields.Many2one('estate.propiedad', string='Vendedor')
+    buyer_id = fields.Many2one('estate.propiedad', string='Comprador')
 
     orientacion_jardin = fields.Selection(string='Orientación',
                                           selection=[('norte', 'Norte'), ('sur', 'Sur'), ('este', 'Este'),
