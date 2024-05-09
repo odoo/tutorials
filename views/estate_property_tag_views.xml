@@ -23,6 +23,12 @@
     <field name="arch" type="xml">
       <form string="Tags">
         <sheet>
+          <header>
+            <h1>
+              Crear etiqueta
+            </h1>
+          </header>
+          <separator></separator>
           <group>
             <field name="name"></field>
           </group>

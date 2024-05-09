@@ -14,7 +14,7 @@
     <record model="ir.actions.act_window" id="action_tree">
         <field name="name">Propiedades</field>
         <field name="res_model">estate.propiedad</field>
-        <field name="view_mode">tree,search</field>
+        <field name="view_mode">tree,form,search</field>
     </record>
 
     <!-- Ajustes -->

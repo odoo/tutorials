@@ -25,9 +25,13 @@
         <sheet>
           <header>
             <h1>
-              <field name="name"></field>
+              Crear tipo
             </h1>
           </header>
+          <separator></separator>
+          <group>
+            <field name="name"></field>
+          </group>
         </sheet>
       </form>
     </field>

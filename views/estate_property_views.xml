@@ -31,11 +31,11 @@
                 <sheet>
                     <header>
                         <h1>
-                            <field name="nombre"></field>
+                            <field name="nombre" string="nombre"></field>
                         </h1>
-                        <field name="tags_id" widget="many2many_tags" />
                         <separator></separator>
                     </header>
+                    <field name="tags_id" widget="many2many_tags" string="etiquetas"/>
                     <separator></separator>
                     <group colspan="2">
                         <group>

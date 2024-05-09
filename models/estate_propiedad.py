@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class Property(models.Model):
@@ -50,3 +50,12 @@ class Property(models.Model):
     # Ofertas
 
     offer_ids = fields.Many2one('estate.property.offer', string='Oferta')
+
+    # Atributo calculado
+
+    total_area = fields.Float(compute="_compute_total")
+
+    @api.depends('area_habitable', 'area_jardin')
+    def _compute_total(self):
+        for record in self:
+            record.total_area = record.area_habitable + record.area_jardin
