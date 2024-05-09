@@ -60,12 +60,10 @@
                             </group>
                         </page>
                         <page name="other_info" string="Otra información"></page>
-                        <sheet>
                             <group>
                                 <field name="buyer_id"></field>
                                 <field name="seller_id"></field>
                             </group>
-                        </sheet>
                     </notebook>
                 </sheet>
             </form>
