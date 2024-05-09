@@ -5,11 +5,7 @@
 
     <!-- Anuncios -->
 
-    <record model="ir.actions.act_window" id="action_form">
-        <field name="name">Propiedades</field>
-        <field name="res_model">estate.propiedad</field>
-        <field name="view_mode">form,search</field>
-    </record>
+
 
     <record model="ir.actions.act_window" id="action_tree">
         <field name="name">Propiedades</field>
@@ -19,12 +15,15 @@
 
     <!-- Ajustes -->
 
+    <!-- Tipos -->
+
     <record model="ir.actions.act_window" id="action_type_view_form">
         <field name="name">Tipos</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">form,search</field>
     </record>
 
+    <!-- Etiquetas -->
 
     <record model="ir.actions.act_window" id="action_tag_view_form">
         <field name="name">Tags</field>
@@ -41,8 +40,7 @@
     <menuitem id="menu_secundario_advertisement" name="Advertisements" parent="menu_principal"></menuitem>
     <menuitem id="menu_terciario_tree" name="Properties" parent="menu_secundario_advertisement"
         action="action_tree"></menuitem>
-    <menuitem id="menu_terciario_form" name="New Property" parent="menu_secundario_advertisement"
-        action="action_form"></menuitem>
+
 
     <!-- Ajustes -->
 

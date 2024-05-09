@@ -49,7 +49,7 @@ class Property(models.Model):
 
     # Ofertas
 
-    offer_ids = fields.Many2one('estate.property.offer', string='Oferta')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Oferta')
 
     # Atributo calculado
 
