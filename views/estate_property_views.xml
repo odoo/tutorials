@@ -57,6 +57,7 @@
                                 <field name="area_habitable"></field>
                                 <field name="fachadas"></field>
                                 <field name="garaje"></field>
+                                <field name="jardin"></field>
                                 <field name="area_jardin"></field>
                                 <field name="orientacion_jardin"></field>
                                 <field name="total_area"></field>

@@ -72,3 +72,19 @@ class Property(models.Model):
                 record.best_offer = 0.0
             else:
                 record.best_offer = max(prices)
+
+    @api.onchange('jardin')
+    def _onchange_jardin(self):
+        if self.jardin:
+            self.area_jardin = 10
+            self.orientacion_jardin = 'norte'
+        else:
+            self.orientacion_jardin = None
+            self.area_jardin = None
+
+
+
+
+
+
+
