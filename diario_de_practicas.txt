@@ -24,3 +24,8 @@ al meter many2one. Solucionarlo quitandolos mañana
 9/5/2024
 
 Al final hubo que hacer checkout para que volvieran las vistas. Se crean campos relacionales pero falla el calculo con ellos. Solucionarlo mañana
+
+10/5/2024
+
+Soluciono el cálculo con atributos de clases diferentes. La base de datos da problemas pero al final se solucionan haciendo ipgrade del módulo.
+Termino el capítulo 9 de los tutoriales, onchange e inverted.
