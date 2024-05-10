@@ -63,11 +63,16 @@ class Property(models.Model):
     # Calculos con atributos relacionados
 
     best_offer = fields.Float(compute="_compute_best_offer", string="Mejor oferta", default="0.0")
+    offer_price_ids = fields.One2many('estate.property.offer', 'price')
 
-    @api.depends('offer_ids.price')
+    @api.depends('offer_price_ids')
     def _compute_best_offer(self):
+
         offers = []
         for record in self:
-            offers.append(record.offer_ids.price)
-            best_offer = max(offers)
-
+            for price in record.offer_price_ids:
+                offers.append(price)
+            if not offers:
+                record.best_offer = 0.0
+            else:
+                record.best_offer = max(offers)
