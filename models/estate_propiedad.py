@@ -21,6 +21,9 @@ class Property(models.Model):
     area_jardin = fields.Integer('Área de jardín')
     activo = fields.Boolean(default=True)
 
+
+
+
     # Selecciones
 
     orientacion_jardin = fields.Selection(string='Orientación',
