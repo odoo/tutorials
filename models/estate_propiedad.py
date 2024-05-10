@@ -21,9 +21,6 @@ class Property(models.Model):
     area_jardin = fields.Integer('Área de jardín')
     activo = fields.Boolean(default=True)
 
-
-
-
     # Selecciones
 
     orientacion_jardin = fields.Selection(string='Orientación',
@@ -69,13 +66,9 @@ class Property(models.Model):
 
     @api.depends('offer_ids')
     def _compute_best_offer(self):
-        # Esto busca todos los registros en ofertas
-        offers = self.env['estate.property.offer'].search([])
-        # Esto saca los precios de cada registro
-        prices = offers.mapped('price')
-
         for record in self:
-            if not offers:
+            prices = record.offer_ids.mapped('price')
+            if not prices:
                 record.best_offer = 0.0
             else:
                 record.best_offer = max(prices)
