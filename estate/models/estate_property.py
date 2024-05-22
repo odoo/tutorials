@@ -2,13 +2,14 @@ from dateutil.utils import today
 
 from odoo.tools.date_utils import add
 
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate base property model"
 
+    # Reserved fields
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -19,6 +20,7 @@ class EstateProperty(models.Model):
         copy=False
     )
 
+    # Model fields
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=add(today(), months=3))
@@ -34,10 +36,35 @@ class EstateProperty(models.Model):
         selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
 
+    # Relational fields
     buyer = fields.Many2one("res.partner", copy=False)
     salesman = fields.Many2one("res.users", default=lambda self: self.env.user)
     property_type_id = fields.Many2one("estate.property.type")
-
     tag_ids = fields.Many2many("estate.property.tag")
-
     offer_ids = fields.One2many("estate.property.offer", "property_id")
+
+    # Computed fields
+    total_area = fields.Float(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_offer")
+
+    # Computation methods
+    @api.depends("garden_area", "living_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price'))
+
+    # Onchange listeners
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        for record in self:
+            if record.garden:
+                record.garden_orientation = "north"
+                record.garden_area = 10
+            else:
+                record.garden_orientation = None
+                record.garden_area = None

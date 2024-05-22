@@ -44,6 +44,7 @@
                             <group>
                                 <field name="expected_price"/>
                                 <field name="selling_price"/>
+                                <field name="best_price" string="Best Offer"/>
                             </group>
                         </group>
                         <notebook>
@@ -55,8 +56,9 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area" invisible="garden == False" string="Garden Area (sqm)"/>
-                                    <field name="garden_orientation" invisible="garden == False"/>
+                                    <field name="garden_area" string="Garden Area (sqm)"/>
+                                    <field name="garden_orientation"/>
+                                    <field name="total_area" string="Total Area (sqm)"/>
                                 </group>
                             </page>
                             <page string="Offers">
