@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Real Estate",
     'summary': """
@@ -15,6 +14,7 @@
 
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+        'views/estate_views.xml',
     ],
     'license': 'AGPL-3'
 }

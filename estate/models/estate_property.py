@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from dateutil.utils import today
 
 from odoo.tools.date_utils import add
