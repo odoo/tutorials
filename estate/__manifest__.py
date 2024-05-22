@@ -10,4 +10,5 @@
     'application': True,
     'installable': True,
     'depends': ['base'],
+    'license': 'AGPL-3'
 }
