@@ -1,6 +1,6 @@
 {
     'name': 'estate',
-    'licence': 'LGPL-3',
+    'license': 'LGPL-3',
     'application': True,
     'depends': ['base']
 }
