@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="real_estate_root" name="Real Estate">
+        <menuitem id="advertisements" name="Advertisements">
+            <menuitem id="real_estate_action" action="estate_property_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>
