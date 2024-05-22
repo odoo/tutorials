@@ -1,4 +1,5 @@
 {
     'name': 'estate',
-    'licence': 'LGPL-3'
+    'licence': 'LGPL-3',
+    'application': True,
 }
