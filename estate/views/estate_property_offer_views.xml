@@ -7,8 +7,10 @@
             <form string="Tag">
                 <group>
                     <field name="price" />
-                    <field name="status" />
                     <field name="partner_id" />
+                    <field name="validity" />
+                    <field name="date_deadline" />
+                    <field name="status" />
                 </group>
             </form>
         </field>
@@ -20,8 +22,10 @@
         <field name="arch" type="xml">
             <tree string="Tags">
                 <field name="price" />
-                <field name="status" />
                 <field name="partner_id" />
+                <field name="validity" />
+                <field name="date_deadline" />
+                <field name="status" />
             </tree>
         </field>
     </record>
