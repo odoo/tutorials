@@ -72,9 +72,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = 0
             for offer in record.offer_ids:
-                record.best_price = (
-                    offer.price if offer.price > record.best_price else record.best_price
-                )
+                record.best_price = max(record.best_price, offer.price)
 
     @api.onchange("garden")
     def _onchange_garden(self):

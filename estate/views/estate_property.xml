@@ -17,7 +17,7 @@
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}" />
                 </group>
-                <filter string="Available" name="state" domain="['|',('state', '=', 'new'), ('state', '=', 'offer_received')]" />
+                <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offer_received'])]" />
             </search>
         </field>
     </record>

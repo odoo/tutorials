@@ -14,7 +14,7 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <field name="name" placeholder="e.g. House" />
+                    <field name="name" placeholder="Tag" />
                 </sheet>
             </form>
         </field>

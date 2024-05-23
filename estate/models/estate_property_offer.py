@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.tools.date_utils import add, subtract
+from odoo.tools.date_utils import add
 
 
 class EstatePropertyOffer(models.Model):
