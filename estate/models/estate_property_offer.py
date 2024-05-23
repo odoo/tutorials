@@ -2,8 +2,8 @@ from odoo import models, fields
 
 
 class EstatePropertyOffer(models.Model):
-    _name="estate.property.offer"
-    _description="Offer for a real estate property"
+    _name = "estate.property.offer"
+    _description = "Offer for a real estate property"
 
     price = fields.Float()
     status = fields.Selection(
