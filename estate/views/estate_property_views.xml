@@ -19,7 +19,6 @@
         </field>
     </record>
 
-
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -29,8 +28,10 @@
                     <h1>
                         <field name="name" placeholder="e.g Big House" />
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags" />
                     <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -43,17 +44,23 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <group>
-                                    <field name="description" />
-                                    <field name="bedrooms" />
-                                    <field name="living_area" />
-                                    <field name="facades" />
-                                    <field name="garage" />
-                                    <field name="garden" />
-                                    <field name="garden_area" />
-                                    <field name="garden_orientation" />
-                                </group>
-                                <group></group>
+                                <field name="description" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="user_id" />
+                                <field name="partner_id" />
                             </group>
                         </page>
                     </notebook>
@@ -77,6 +84,7 @@
             </tree>
         </field>
     </record>
+
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
