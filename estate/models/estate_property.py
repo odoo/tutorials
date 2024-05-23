@@ -29,7 +29,6 @@ class estate_property(models.Model):
             ("west", "West"),
             ("east", "East"),
         ],
-        help="Type is used to separate Leads and Opportunities",
     )
     state = fields.Selection(
         selection=[
