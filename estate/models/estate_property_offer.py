@@ -1,6 +1,6 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
-
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -18,6 +18,10 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
     property_id = fields.Many2one('estate.property', string="Property", required=True)
 
+    _sql_constraints = [
+        ('price', 'CHECK(price > 0)', "The price must be strictly positive."),
+    ]
+    
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -42,6 +46,9 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.property_id.state == 'sold':
                 raise UserError("Cannot accept offers for sold properties.")
+            price_dif = float_compare(record.price, 0.9 * record.property_id.expected_price, precision_digits=2)
+            if price_dif == -1 :
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
             record.status = 'accepted'
             record.property_id.write({
                 'state': 'sold',
