@@ -33,6 +33,17 @@ class EstateProperty(models.Model):
         help="Garden orientation is used to describe orientation of garden",
     )
 
+    tags = fields.Many2many("estate.property.tag", string="tags")
+
+    partner_id = fields.Many2one("res.partner", string="Partner")
+    property_type = fields.Many2one("estate.property.type", string="Property Type")
+
+    salesman = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user
+    )
+    buyer = fields.Many2one("res.partner", string="Buyer")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
     active = fields.Boolean("Active", default=True)
     state = fields.Selection(
         string="State",
