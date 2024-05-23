@@ -11,10 +11,12 @@
                 <field name='bedrooms' />
                 <field name='living_area' />
                 <field name='facades' />
-                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <field name="property_type_id" />
+                <filter string="Available" name="available"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
                 <group expand="0" string="Group By">
-                    <filter string="Postcode" name="postode" context="{'group_by': 'postcode'}"/>
-                 </group>
+                    <filter string="Postcode" name="postode" context="{'group_by': 'postcode'}" />
+                </group>
             </search>
         </field>
     </record>
@@ -29,6 +31,7 @@
                 </h1>
                 <group col="2">
                     <group>
+                        <field name="property_type_id" />
                         <field name='postcode' />
                         <field name='date_availability' />
                     </group>
@@ -50,6 +53,12 @@
                             <field name='garden_orientation' />
                         </group>
                     </page>
+                    <page string="Other Info">
+                        <group>
+                            <field name="seller_id"/>
+                            <field name="buyer_id"/>
+                        </group>
+                    </page>
                 </notebook>
             </form>
         </field>
@@ -67,6 +76,7 @@
                 <field name='expected_price' />
                 <field name='selling_price' />
                 <field name='date_availability' />
+                <field name="property_type_id" />
             </tree>
         </field>
     </record>
