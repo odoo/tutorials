@@ -4,7 +4,7 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Property">
+            <form string="Property Type">
                 <h1>
                     <field name='name' />
                 </h1>
@@ -16,7 +16,7 @@
         <field name="name">estate.property.type.tree</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <tree string="Properties">
+            <tree string="Property Types">
                 <field name="name" />
             </tree>
         </field>
