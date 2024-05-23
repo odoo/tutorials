@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="action_estate_property_tag" model="ir.actions.act_window">
         <field name="name">Property Tags</field>

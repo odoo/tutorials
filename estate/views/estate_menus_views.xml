@@ -1,4 +1,4 @@
-<!-- views/estate_menus_views.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <menuitem id="estate_menu_root" name="Estate">
         <menuitem id="test_first_level_menu" name="Advertisement">
