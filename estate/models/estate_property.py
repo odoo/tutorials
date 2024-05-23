@@ -10,7 +10,9 @@ class EstateProperty(models.Model):
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
     date_availability = fields.Date(
-        copy=False, default=add(fields.Date.today(), months=3)
+        "Available From",
+        copy=False,
+        default=add(fields.Date.today(), months=3),
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -31,7 +33,7 @@ class EstateProperty(models.Model):
         help="Garden orientation is used to describe orientation of garden",
     )
 
-    active = fields.Boolean("Active", default=False)
+    active = fields.Boolean("Active", default=True)
     state = fields.Selection(
         string="State",
         selection=[
