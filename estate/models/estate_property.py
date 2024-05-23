@@ -1,5 +1,7 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools.date_utils import add
+from odoo.tools.translate import _
 
 
 class EstateProperty(models.Model):
@@ -64,3 +66,17 @@ class EstateProperty(models.Model):
     @api.onchange('garden')
     def _onchange_garden(self):
         self.garden_area, self.garden_orientation = (10, 'north') if self.garden else (0, None)
+
+    def action_sell(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError(_('Can\'t sell canceled estate'))
+            record.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(_('Can\'t cancel sold estate'))
+            record.state = 'canceled'
+        return True
