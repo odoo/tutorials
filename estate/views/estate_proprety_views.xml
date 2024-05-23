@@ -29,9 +29,10 @@
                 <sheet>
                     <group>
                         <div class="oe_title">
-                            <h1 class="mb32">
-                                <field name="name" class="mb16"/>
+                            <h1>
+                                <field name="name"/>
                             </h1>
+                            <field name="tag_ids" widget="many2many_tags" class="mb16"/>
                         </div>
                         <p/>
                         <group>
@@ -55,7 +56,23 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="property_type_id" string="Property Type"/>
                                 </group>
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <field name="salesman_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                <field name="offer_ids">
+                                <tree string="Estate">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </tree>
+                                </field>
                             </page>
                         </notebook>
                     </group>
@@ -74,8 +91,9 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
-                <filter string="Available" name="date_availability" domain="[('state', 'in',['New','Offer Received'])]"/>
-                <filter string="Postcode"  context="{'group_by': 'postcode'}"/>
+                <filter string="Available" name="date_availability"
+                        domain="[('state', 'in',['New','Offer Received'])]"/>
+                <filter string="Postcode" name="groupby_postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>
     </record>
