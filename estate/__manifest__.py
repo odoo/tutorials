@@ -2,6 +2,7 @@
     'name': "Estate",
     'depends': ['base'],
     'application': True,
+    'license': 'OEEL-1',
     'data': [
         'security/ir.model.access.csv',
         'views/estate_proprety_views.xml',
