@@ -29,6 +29,9 @@
                 <h1>
                     <field name='name' />
                 </h1>
+                <h2>
+                    <field name="tag_ids" widget="many2many_tags"/>
+                </h2>
                 <group col="2">
                     <group>
                         <field name="property_type_id" />
