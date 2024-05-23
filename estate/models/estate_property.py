@@ -1,6 +1,6 @@
 from dateutil.utils import today
 
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools import float_compare
 from odoo.tools.date_utils import add
 
@@ -103,3 +103,10 @@ class EstateProperty(models.Model):
             if float_compare(record.selling_price / record.expected_price,
                              self.DOWN_PRICE_ACCEPTED_POURCENTAGE, 2) < 0:
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_verif(self):
+        for record_id in self.ids:
+            record = self.browse(record_id)
+            if record.state not in ('new', 'canceled'):
+                raise UserError("Can't delete a property which is not in state between 'new' and 'canceled'")

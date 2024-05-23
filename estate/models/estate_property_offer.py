@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from odoo.tools import add
 
 
@@ -50,3 +51,16 @@ class EstatePropertyOffer(models.Model):
     def action_cancel(self):
         for record in self:
             record.status = "refused"
+
+    @api.model
+    def create(self, vals):
+        if self.env['estate.property.offer'].search([
+            ('property_id', '=', vals['property_id']),
+            ('price', '>', vals['price'])
+        ], limit=1):
+            raise UserError("You're trying to create an offer with a lower price than an existing offer")
+
+        property_record = self.env["estate.property"].browse([vals['property_id']])
+        property_record.state = "offer_received"
+
+        return super().create(vals)
