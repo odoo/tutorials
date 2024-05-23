@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="property_type_offers_action" model="ir.actions.act_window">
+            <field name="name">Offers</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('property_type_id', '=', active_id)]</field>
+        </record>
+
         <record id="property_form_offers_view_tree" model="ir.ui.view">
             <field name="name">estate.property.form.offers.tree</field>
             <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree editable="bottom" decoration-success="status == 'accepted'"
+                      decoration-danger="status == 'refused'">
                     <field name="price"/>
                     <field name="partner_id"/>
                     <field name="validity"/>
                     <field name="date_deadline"/>
-                    <button name="action_validate" type="object" icon="fa-check" string="Accept"/>
-                    <button name="action_cancel" type="object" icon="fa-times" string="Refuse"/>
-                    <field name="status"/>
+                    <button name="action_validate" type="object" icon="fa-check" string="Accept" invisible="status"/>
+                    <button name="action_cancel" type="object" icon="fa-times" string="Refuse" invisible="status"/>
+                    <field name="status" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -33,6 +41,5 @@
                 </form>
             </field>
         </record>
-
     </data>
 </odoo>

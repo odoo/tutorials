@@ -5,6 +5,7 @@ from odoo.tools import add
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
     _sql_constraints = [
         ('check_positive_price', 'CHECK (price > 0)', 'The price of an offer should be strictly positive')
@@ -21,6 +22,7 @@ class EstatePropertyOffer(models.Model):
     # Computed Fields
     validity = fields.Integer(default="7")
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     # Computation methods
     @api.depends("validity")
@@ -42,6 +44,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.action_refuse_all_offer()
             record.property_id.selling_price = record.price
             record.property_id.buyer = record.partner_id
+            record.property_id.state = "offer_accepted"
             record.status = "accepted"
 
     def action_cancel(self):
