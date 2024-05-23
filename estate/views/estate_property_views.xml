@@ -30,7 +30,7 @@
                     <field name='name' />
                 </h1>
                 <h2>
-                    <field name="tag_ids" widget="many2many_tags"/>
+                    <field name="tag_ids" widget="many2many_tags" />
                 </h2>
                 <group col="2">
                     <group>
@@ -56,10 +56,13 @@
                             <field name='garden_orientation' />
                         </group>
                     </page>
+                    <page string="Offers">
+                        <field name="offer_ids" context="{'tree_view':'estate_property_offer_tree'}" mode="tree"/>
+                    </page>
                     <page string="Other Info">
                         <group>
-                            <field name="seller_id"/>
-                            <field name="buyer_id"/>
+                            <field name="seller_id" />
+                            <field name="buyer_id" />
                         </group>
                     </page>
                 </notebook>
