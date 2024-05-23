@@ -6,6 +6,10 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
 
+    _sql_constraints = [
+        ('check_positive_price', 'CHECK (price > 0)', 'The price of an offer should be strictly positive')
+    ]
+
     # Model Fields
     price = fields.Float()
     status = fields.Selection(copy=False, selection=[("accepted", "Accepted"), ("refused", "Refused")])
@@ -15,7 +19,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
 
     # Computed Fields
-    validity = fields.Integer(default=7)
+    validity = fields.Integer(default="7")
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
 
     # Computation methods
@@ -24,6 +28,8 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date:
                 record.date_deadline = fields.Date.to_date(add(record.create_date, days=record.validity))
+            else:
+                record.date_deadline = fields.Date.to_date(add(fields.Date.today(), days=record.validity))
 
     def _inverse_deadline(self):
         for record in self:

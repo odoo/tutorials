@@ -1,5 +1,7 @@
 from dateutil.utils import today
 
+from odoo.exceptions import ValidationError
+from odoo.tools import float_compare
 from odoo.tools.date_utils import add
 
 from odoo import fields, models, api
@@ -8,6 +10,14 @@ from odoo import fields, models, api
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate base property model"
+
+    _sql_constraints = [
+        ('check_positive_expected_price', 'CHECK (expected_price > 0)',
+         'The expected price should be strictly positive'),
+        ('check_positive_selling_price', 'CHECK (selling_price >= 0)', 'The selling price should be positive')
+    ]
+
+    DOWN_PRICE_ACCEPTED_POURCENTAGE = 0.9
 
     # Reserved fields
     name = fields.Char(required=True)
@@ -85,3 +95,9 @@ class EstateProperty(models.Model):
         for record in self:
             for offer in record.offer_ids:
                 offer.status = "refused"
+
+    @api.constrains("selling_price")
+    def check_selling_price(self):
+        for record in self:
+            if float_compare(record.selling_price / record.expected_price, self.DOWN_PRICE_ACCEPTED_POURCENTAGE) >= 0:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
