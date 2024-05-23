@@ -6,9 +6,8 @@ class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "estate properties offers"
 
-    price = fields.Float("Price")
+    price = fields.Float()
     status = fields.Selection(
-        string="Status",
         selection=[
             ('accepted', "Accepted"),
             ('refused', "Refused"),

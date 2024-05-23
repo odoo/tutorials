@@ -7,21 +7,20 @@ class EstateProperty(models.Model):
     _description = "estate properties"
 
     name = fields.Char("Title", required=True)
-    description = fields.Text("Description")
-    postcode = fields.Integer("Postcode")
+    description = fields.Text()
+    postcode = fields.Integer()
     date_availability = fields.Date(
         "Available from", copy=False, default=add(fields.Date.today(), months=3)
     )
-    expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
-    bedrooms = fields.Integer("Bedrooms", default=2)
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer("Living Area (sqm)")
-    facades = fields.Integer("Facades")
-    garage = fields.Boolean("Garage")
-    garden = fields.Boolean("Garden")
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
     garden_area = fields.Integer("Garden Area (sqm)")
     garden_orientation = fields.Selection(
-        string="Garden Orientation",
         selection=[
             ('north', "North"),
             ('south', "South"),
@@ -31,7 +30,6 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        string="State",
         selection=[
             ('new', "New"),
             ('offer_received', "Offer Received"),
@@ -50,8 +48,8 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', inverse_name="property_id")
 
-    total_area = fields.Integer(string="Total Area (sqm)", compute='_compute_total_area')
-    best_price = fields.Float(string="Best Offer", compute='_compute_best_price')
+    total_area = fields.Integer("Total Area (sqm)", compute='_compute_total_area')
+    best_price = fields.Float("Best Offer", compute='_compute_best_price')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
