@@ -56,7 +56,10 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'))
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_price = 0
 
     # Onchange listeners
     @api.onchange("garden")
@@ -68,3 +71,17 @@ class EstateProperty(models.Model):
             else:
                 record.garden_orientation = None
                 record.garden_area = None
+
+    # Buttons methods
+    def action_set_canceled(self):
+        for record in self:
+            record.state = "canceled"
+
+    def action_set_sold(self):
+        for record in self:
+            record.state = "sold"
+
+    def action_refuse_all_offer(self):
+        for record in self:
+            for offer in record.offer_ids:
+                offer.status = "refused"

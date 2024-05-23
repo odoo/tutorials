@@ -8,6 +8,10 @@
                 <tree>
                     <field name="price"/>
                     <field name="partner_id"/>
+                    <field name="validity"/>
+                    <field name="date_deadline"/>
+                    <button name="action_validate" type="object" icon="fa-check" string="Accept"/>
+                    <button name="action_cancel" type="object" icon="fa-times" string="Refuse"/>
                     <field name="status"/>
                 </tree>
             </field>
