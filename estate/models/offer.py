@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime
-
+from odoo.exceptions import UserError
 from odoo import fields, models, api
 from odoo.tools import add,subtract
 
@@ -24,3 +24,14 @@ class Offer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
 
+    def accept(self):
+        for record in self:
+            for i in record.property_id.offer_ids:
+                if i.status=="accepted":
+                    raise UserError("An offer was already accepted")
+            record.status="accepted"
+        return True
+
+    def refuse(self):
+        for record in self:
+            record.status="refused"
