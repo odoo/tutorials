@@ -33,3 +33,14 @@ class EstatePropertyOffer(models.Model):
             end_date = fields.Date.from_string(offer.date_deadline)
             difference = (end_date - start_date).days
             offer.validity = difference
+
+    def action_accept(self):
+        for record in self:
+            record.property_id.offer_ids.mapped(lambda r: r.action_refuse())
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+
+    def action_refuse(self):
+        for record in self:
+            record.status = "refused"
