@@ -9,3 +9,4 @@ class EstatePropertyType(models.Model):
         ('check_unique', 'UNIQUE(name)',
          'Value must be unique.')
     ]
+    property_ids = fields.One2many("estate_property", "property_type_id")

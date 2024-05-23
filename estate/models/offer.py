@@ -22,7 +22,7 @@ class Offer(models.Model):
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
-            record.date_deadline = add(record.create_date if record.create_date else fields.Date.today(),
+            record.date_deadline = add(record.create_date or fields.Date.today(),
                                        days=record.validity)
 
     def _inverse_total(self):

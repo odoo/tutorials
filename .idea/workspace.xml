@@ -6,11 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="d51057cc-d46c-4035-9ad7-7596e3cca359" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/models/estate_property_tag.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_tag.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property_type.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_type.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/offer.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/offer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_type.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_type.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_proprety_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_proprety_views.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +76,7 @@
       <option name="presentableId" value="Default" />
       <updated>1716379535246</updated>
       <workItem from="1716379536521" duration="12126000" />
-      <workItem from="1716414425300" duration="16978000" />
+      <workItem from="1716414425300" duration="19414000" />
     </task>
     <servers />
   </component>
