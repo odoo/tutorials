@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Actions -->
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Properties Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Forms -->
+    <record id="estate_property_types_form_view" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="e.g. House" />
+                    </h1>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
