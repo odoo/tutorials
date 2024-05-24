@@ -5,9 +5,20 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
-                <h1>
+                <div class="oe_title">
                     <field name='name' />
-                </h1>
+                </div>
+                <notebook>
+                    <page string="Properties">
+                        <field name="property_ids">
+                            <tree>
+                                <field name="name" string="Title" />
+                                <field name="expected_price"/>
+                                <field name="state" string="Status"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>
