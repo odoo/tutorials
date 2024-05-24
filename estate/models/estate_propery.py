@@ -1,5 +1,6 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
 
 class EstateProperty(models.Model):
@@ -42,6 +43,13 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK (expected_price > 0)',
+        'Expected price must be strictly positive!'),
+        ('check_selling_price', 'CHECK (selling_price >= 0)',
+        'Selling price must be positive!')
+    ]
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -77,3 +85,9 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'canceled'
         return True
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:    
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                raise ValidationError(_('Selling price must be at least 90%% of expected price'))
