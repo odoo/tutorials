@@ -109,9 +109,11 @@ class EstateProperty(models.Model):
         self.state = 'canceled'
 
     def action_set_sold(self):
+        if not self.offer_ids:
+            raise UserError("You cannot sell a property without having received an offer!")
         self.state = 'sold'
 
-    @api.constrains('selling_price', 'expected_price')
+    @api.constrains('selling_price')
     def check_selling_price(self):
         for record in self:
             if float_compare(record.selling_price / record.expected_price,

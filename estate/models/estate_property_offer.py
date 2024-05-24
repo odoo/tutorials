@@ -65,12 +65,16 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
+        property_id = self.env['estate.property'].browse([vals['property_id']])
+        if property_id.state == 'sold':
+            raise UserError("You cannot create an offer for a sold property")
+
         if self.env['estate.property.offer'].search_count([
             ('property_id', '=', vals['property_id']),
             ('price', '>', vals['price'])
         ]):
             raise UserError("You're trying to create an offer with a lower price than an existing offer")
 
-        self.env['estate.property'].browse([vals['property_id']]).state = 'offer_received'
+        property_id.state = 'offer_received'
 
         return super().create(vals)
