@@ -14,6 +14,7 @@ class EstatePropertyOffer(models.Model):
             "Offer Price must be strictly positive",
         ),
     ]
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection(
@@ -28,6 +29,12 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date(
         "Deadline", compute='_compute_date_deadline', inverse='_inverse_date_deadline'
+    )
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        string="Property Type",
+        related='property_id.property_type_id',
+        store=True,
     )
 
     @api.depends('validity')
@@ -46,14 +53,15 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if state := self.property_id.state in ('sold', 'canceled'):
-                raise UserError(_(f'Can\'t accept offer on {state} estate'))
+            if (state := self.property_id.state) in ('sold', 'canceled'):
+                raise UserError(_('Can\'t accept offer on %s estate') % state)
 
             self.property_id.offer_ids.filtered(lambda o: o.id != record.id).update(
                 {'status': 'refused'}
             )
 
             record.status = 'accepted'
+            self.property_id.state = 'offer_accepted'
             self.property_id.partner_id = record.partner_id
             self.property_id.selling_price = record.price
 

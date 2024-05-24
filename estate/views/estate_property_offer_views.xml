@@ -4,14 +4,21 @@
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree string="Offers">
+            <tree
+                string="Offers"
+                editable="bottom"
+                decoration-success="status == 'accepted'"
+                decoration-danger="status == 'refused'">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="validity" />
+                <button name="action_accept" type="object" string="Accept" icon="fa-check"
+                    invisible="status" />
+                <button name="action_refuse" type="object" string="Refuse" icon="fa-times"
+                    invisible="status" />
                 <field name="date_deadline" />
-                <button name="action_accept" type="object" string="Accept" icon="fa-check" />
-                <button name="action_refuse" type="object" string="Refuse" icon="fa-times" />
-                <field name="status" />
+                <field name="status" column_invisible="True" />
+                <field name="property_type_id" column_invisible="True" />
             </tree>
         </field>
     </record>
@@ -32,5 +39,12 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="estate_property_offer_action">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 </odoo>
