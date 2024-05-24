@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     date_availability = fields.Date(default=fields.Date.add(fields.Date.today(), months=3))
 
-    expected_price = fields.Float(required=True, copy=False)
+    expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -91,12 +91,17 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'sold':
                 raise UserError("Sold properties cannot be cancelled.")
-            record.state = 'cancelled'
+            record.state = 'canceled'
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def unlink(self):
+        if self.filtered(lambda x: x.state not in ['new', 'canceled']):
+            raise UserError("Only property in New/Canceled state can be deleted from database.")
 
     def action_sold(self):
         for record in self:
-            if record.state == 'cancelled':
+            if record.state == 'canceled':
                 raise UserError("Cancelled properties cannot be sold.")
             record.state = 'sold'
         return True

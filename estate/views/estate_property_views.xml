@@ -13,7 +13,7 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="action_sold" string="Sold" type="object" invisible="state in ['sold', 'canceled']"/>                    />
+                    <button name="action_sold" string="Sold" type="object" invisible="state in ['sold', 'canceled']"/> 
                     <button name="action_cancel" string="Cancel" type="object" invisible="state == 'canceled'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
 

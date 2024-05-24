@@ -51,11 +51,19 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        record = super(EstatePropertyOffer, self).create(vals)
-        if record.property_id and record.property_id.state == 'new':
-            record.property_id.state = 'offer_received'
+        property = self.env['estate.property'].browse(vals['property_id'])
+        if property.state == 'new':
+            property.state = 'offer_received'
 
-        return record
+        existing_offers = self.env['estate.property.offer'].search(
+            [('property_id', '=', vals['property_id'])]
+        )
+        if existing_offers and any(offer.price >= vals['price'] for offer in existing_offers):
+            raise ValidationError(
+                "You cannot create an offer with a price lower than existing offers."
+            )
+
+        return super().create(vals)
 
     def action_accept(self):
         for record in self:
