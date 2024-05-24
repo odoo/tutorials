@@ -30,7 +30,7 @@
             <form string="Estate" >
                 <sheet>
                     <h1>
-                        <field name="name"/>
+                        <field name="name" placeholder="Property Name"/>
                     </h1>
                     <field name="property_tag_ids" widget="many2many_tags"/>
                     <group>
@@ -92,7 +92,7 @@
                 <field name="property_type_id" string="Property Type"/>
                 <field name="property_tag_ids" string="Property Tag"/>
                 <separator/>
-                <filter string="Available" name="available_filter" domain="['|', ('state', '=', 'offer_received'), ('state', '=', 'new')]"/>
+                <filter string="Available" name="available_filter" domain="[('state', 'in', ['offer_received', 'new'])]"/>
                 <filter string="Postcode" name="group_postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
