@@ -32,7 +32,8 @@
                     <button name="action_set_cancel" type="object" string="Cancel"
                         invisible="state in ['sold', 'canceled']" />
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new,offer_received,offer_acepted,sold" />
+                        statusbar_visible="new,offer_received,offer_acepted,sold"
+                        options="{'clickable': '1'}" />
                 </header>
                 <sheet>
                     <h1>
@@ -88,15 +89,18 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Properties">
+            <tree string="Properties" decoration-muted="state == 'sold'"
+                decoration-success="state == 'offer_received' or state == 'offer_acepted'"
+                decoration-bf="state == 'offer_acepted'">
                 <field name="name" />
                 <field name='postcode' />
                 <field name='bedrooms' />
                 <field name='living_area' />
                 <field name='expected_price' />
                 <field name='selling_price' />
-                <field name='date_availability' optional="hidden"/>
+                <field name='date_availability' optional="hidden" />
                 <field name="property_type_id" />
+                <field name="state" optional="hide" />
             </tree>
         </field>
     </record>
