@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="estate_property_type_action" model="ir.actions.act_window">
+        <record id="estate_property_type_action_view_tree" model="ir.actions.act_window">
             <field name="name">Property Types</field>
             <field name="res_model">estate.property.type</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <record id="property_types_view_tree" model="ir.ui.view">
+        <record id="estate_property_type_view_tree" model="ir.ui.view">
             <field name="name">estate.property.type.tree</field>
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
@@ -18,14 +18,15 @@
             </field>
         </record>
 
-        <record id="property_type_view_form" model="ir.ui.view">
+        <record id="estate_property_type_view_form" model="ir.ui.view">
             <field name="name">estate.property.type.form</field>
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
                 <form string="Property">
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" type="action" name="%(estate.property_type_offers_action)d"
+                            <button class="oe_stat_button" type="action"
+                                    name="%(estate.estate_property_offer_action_view_tree)d"
                                     icon="fa-gift">
                                 <field string="Offers" name="offer_count" widget="statinfo"/>
                             </button>
