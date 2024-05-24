@@ -4,9 +4,46 @@
         <record id="estate_property_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,kanban</field>
             <field name="search_view_id" ref="estate.properties_view_search"/>
             <field name="context">{'search_default_filter_available': True}</field>
+        </record>
+
+        <record id="property_view_kanban" model="ir.ui.view">
+            <field name="name">estate.property.kanban</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="property_type_id">
+                    <field name="state" invisible="1"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div>
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
+                                </div>
+                                <div>
+                                    <span>Expected Price :<field name="expected_price"/>&amp;nbsp;
+                                    </span>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_received'">
+                                    <span>Best Offer :
+                                        <field name="best_price"/>
+                                    </span>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_accepted'">
+                                    <span>Selling Price :
+                                        <field name="selling_price"/>
+                                    </span>
+                                </div>
+                                <field name="tag_ids" widget="many2many_tags"
+                                       options="{'color_field': 'color', 'no_edit_color': true}"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
         </record>
 
         <record id="properties_view_tree" model="ir.ui.view">

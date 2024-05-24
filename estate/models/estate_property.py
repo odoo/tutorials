@@ -1,10 +1,9 @@
 from dateutil.utils import today
 
+from odoo import fields, models, api
 from odoo.exceptions import ValidationError, UserError
 from odoo.tools import float_compare
 from odoo.tools.date_utils import add
-
-from odoo import fields, models, api
 
 
 class EstateProperty(models.Model):
@@ -24,8 +23,13 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"),
-                   ("sold", "Sold"), ("canceled", "Canceled")],
+        selection=[
+            ('new', "New"),
+            ('"offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('canceled', "Canceled")
+        ],
         default="new",
         required=True,
         copy=False
