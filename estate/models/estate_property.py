@@ -1,6 +1,7 @@
 from odoo import api, fields, models
+from odoo.tools import float_compare
 from odoo.tools.date_utils import add
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -49,19 +50,32 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         string="State",
         selection=[
-            ("new", "New"),
-            ("offer_received", "Offer Recieved"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Canceled"),
+            ('new', "New"),
+            ('offer_received', "Offer Recieved"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Canceled"),
         ],
         copy=False,
-        default="new",
+        default='new',
         required=True,
     )
 
-    total_area = fields.Float(compute="_compute_total", string="Total area (sqm)")
-    best_price = fields.Float(compute="_compute_best_price", string="Best offer")
+    total_area = fields.Float(compute='_compute_total', string="Total area (sqm)")
+    best_price = fields.Float(compute='_compute_best_price', string="Best offer")
+
+    _sql_constraints = [
+        (
+            'check_expected_price',
+            'CHECK(expected_price > 0)',
+            'A property expected price must be strictly positive.',
+        ),
+        (
+            'check_selling_price',
+            'CHECK(selling_price > 0)',
+            'A property selling price must be positive.',
+        ),
+    ]
 
     @api.depends("garden_area", "living_area")
     def _compute_total(self):
@@ -101,3 +115,19 @@ class EstateProperty(models.Model):
             record.state = "cancelled"
 
         return True
+
+    @api.constrains(
+        'selling_price',
+        'expected_price',
+    )
+    def _check_selling_price(self):
+        for record in self:
+            for offer in record.offer_ids:
+                if (
+                    float_compare(offer.price, 0.9 * record.expected_price, precision_digits=5)
+                    == -1
+                    and offer.status == 'accepted'
+                ):
+                    raise ValidationError(
+                        "An offer lower than 90% of expected price cannot be accepted."
+                    )

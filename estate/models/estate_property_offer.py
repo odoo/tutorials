@@ -11,21 +11,29 @@ class EstatePropertyOffer(models.Model):
         copy=False,
         string="Status",
         selection=[
-            ("accepted", "Accepted"),
-            ("refused", "Refused"),
+            ('accepted', "Accepted"),
+            ('refused', "Refused"),
         ],
     )
-    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
     property_id = fields.Many2one(
-        "estate.property",
+        'estate.property',
         string="Property",
         required=True,
     )
 
     validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
+    date_deadline = fields.Date(compute='_compute_deadline', inverse="_inverse_deadline")
 
-    @api.depends("validity", "create_date")
+    _sql_constraints = [
+        (
+            'check_offer_price',
+            'CHECK(offer_price > 0)',
+            'An offer price must be strictly positive.',
+        )
+    ]
+
+    @api.depends('validity', 'create_date')
     def _compute_deadline(self):
         for record in self:
             if record.create_date:
@@ -41,16 +49,16 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - fields.Date.today()).days
 
     def action_accept(self):
-        self.status = "accepted"
+        self.status = 'accepted'
         self.property_id.update({'buyer': self.partner_id, 'selling_price': self.price})
         for record in self.property_id.offer_ids:
             if record != self:
-                record.status = "refused"
+                record.status = 'refused'
 
         return True
 
     def action_refuse(self):
-        self.status = "refused"
+        self.status = 'refused'
         self.property_id.update({'buyer': None, 'selling_price': 0})
 
         return True
