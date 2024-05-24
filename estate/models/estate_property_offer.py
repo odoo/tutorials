@@ -2,6 +2,7 @@ from odoo import api, fields, models
 from odoo.tools.date_utils import add
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -75,3 +76,18 @@ class EstatePropertyOffer(models.Model):
             record.status = 'refused'
 
         return True
+
+    @api.model
+    def create(self, vals):
+        property = self.env['estate.property'].browse(vals['property_id'])
+        if any(
+            [
+                float_compare(offer.price, vals['price'], precision_rounding=0.1) > 0
+                for offer in property.offer_ids
+            ]
+        ):
+            raise UserError(_('Can\'t create an offer with a lower amount than existing offer'))
+
+        property.state = 'offer_received'
+
+        return super().create(vals)
