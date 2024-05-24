@@ -12,6 +12,7 @@
                 <field name="facades"/>
                 <field name="living_area"/>
                 <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <field name="total_area" filter_domain="[('total_area', '>=', self)]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
