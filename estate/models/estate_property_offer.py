@@ -7,6 +7,13 @@ from odoo.tools.translate import _
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "estate properties offers"
+    _sql_constraints = [
+        (
+            'check_strictly_positive_offer_price',
+            'CHECK(price > 0)',
+            "Offer Price must be strictly positive",
+        ),
+    ]
 
     price = fields.Float()
     status = fields.Selection(
