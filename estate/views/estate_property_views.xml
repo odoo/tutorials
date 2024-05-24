@@ -4,15 +4,6 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
-        <!-- <field name="help" type="html">
-          <p class="o_view_nocontent_smiling_face">
-            Define a new lost reason
-          </p><p>
-            Use lost reasons to explain why an opportunity is lost.
-          </p><p>
-            Some examples of lost reasons: "We don't have people/skill", "Price too high"
-          </p>
-        </field> -->
     </record>
 
     <record id="estate_property_view_tree" model="ir.ui.view">
@@ -27,6 +18,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="property_type_id" string="Property Type"/>
             </tree>
         </field>
     </record>
@@ -40,8 +32,10 @@
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <field name="property_tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="property_type_id" string="Property Type"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -63,6 +57,21 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <tree string="Offers">
+                                    <field name="price"/>
+                                    <field name="status"/>
+                                    <field name="partner_id"/>
+                                </tree>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>            
@@ -80,6 +89,8 @@
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="facades"/>
+                <field name="property_type_id" string="Property Type"/>
+                <field name="property_tag_ids" string="Property Tag"/>
                 <separator/>
                 <filter string="Available" name="available_filter" domain="['|', ('state', '=', 'offer_received'), ('state', '=', 'new')]"/>
                 <filter string="Postcode" name="group_postcode" context="{'group_by':'postcode'}"/>
