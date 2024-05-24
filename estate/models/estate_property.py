@@ -6,6 +6,7 @@ from odoo.tools import float_compare
 class EstateProperty(models.Model):
     _name = "estate_property"
     _description = "Estate property"
+    _order = "id desc"
     name = fields.Char(required=True)
 
     description = fields.Text()
@@ -14,9 +15,9 @@ class EstateProperty(models.Model):
 
     date_availability = fields.Date(copy=False, default=fields.Date.add(fields.Date.today(), months=3))
 
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(required=True, copy=False)
 
-    selling_price = fields.Float(readonly=True)
+    selling_price = fields.Float(readonly=True, copy=False)
 
     bedrooms = fields.Integer(default=2)
 
@@ -57,7 +58,8 @@ class EstateProperty(models.Model):
 
     @api.depends("garden_area", "living_area")
     def _compute_total(self):
-        self.total_area = self.garden_area + self.living_area
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
 
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
@@ -70,16 +72,16 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = None
+            self.garden_orientation = False
 
-    def cancel(self):
+    def _cancel(self):
         for record in self:
             if record.state == 'Sold':
                 raise UserError("Canceled property can not be sold")
             record.state = "Canceled"
         return True
 
-    def sell(self):
+    def _sell(self):
         for record in self:
             if record.state == 'Canceled':
                 raise UserError("Sold property can not be canceled")
@@ -91,3 +93,9 @@ class EstateProperty(models.Model):
         for record in self:
             if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=5) < 0:
                 raise ValidationError("The selling price must be greater than 90% of the expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_user_inactive(self):
+        for record in self:
+            if record.state not in ['New', 'Canceled']:
+                raise UserError("Can't delete a none new or canceled property!")

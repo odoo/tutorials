@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d51057cc-d46c-4035-9ad7-7596e3cca359" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/estate/views/estate_property_offer.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/models/estate_property_tag.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_tag.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property_type.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_type.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/offer.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/offer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_tag.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_tag.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/views/estate_property_type.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_type.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/views/estate_proprety_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_proprety_views.xml" afterDir="false" />
     </list>
@@ -39,20 +40,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "17.0-training",
-    "last_opened_file_path": "/home/odoo/odoo/tutorials/estate/views",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;17.0-training&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/odoo/odoo/tutorials/estate/views&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/estate/views" />

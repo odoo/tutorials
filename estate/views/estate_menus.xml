@@ -10,6 +10,5 @@
         <menuitem id="setting_level_menu" name="Setting">
             <menuitem id="setting_tag_menu_action" action="estate_property_tag_action"/>
         </menuitem>
-
     </menuitem>
 </odoo>

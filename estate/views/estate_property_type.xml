@@ -10,9 +10,26 @@
         <field name="model">estate_property_type</field>
         <field name="arch" type="xml">
             <tree string="Estate">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
-
+        </field>
+    </record>
+    <record id="offer_action" model="ir.actions.act_window">
+        <field name="name">offer_action</field>
+        <field name="res_model">offer</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('property_type_id', '==', active_id)]</field>
+    </record>
+    <record id="offer_view_tree" model="ir.ui.view">
+        <field name="name">Offer tree</field>
+        <field name="model">offer</field>
+        <field name="arch" type="xml">
+            <tree string="Offer" editable="bottom">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="property_id"/>
+            </tree>
         </field>
     </record>
     <record id="estate_property_type_view_form" model="ir.ui.view">
@@ -20,22 +37,35 @@
         <field name="model">estate_property_type</field>
         <field name="arch" type="xml">
             <form string="Estate property">
+                <header>
+                    <button name="%(estate.offer_action)d" type="action" string="Offers"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="offer_count"/>
                     </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <tree string="Property">
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+<!--                        <page string="Offers">-->
+<!--                            <field name="offer_ids">-->
+<!--                                <tree string="Offer">-->
+<!--                                    <field name="price"/>-->
+<!--                                    <field name="partner_id"/>-->
+<!--                                    <field name="property_id"/>-->
+<!--                                </tree>-->
+<!--                            </field>-->
+<!--                        </page>-->
+                    </notebook>
                 </sheet>
-                <notebook>
-                    <page string="Properties">
-                        <field name="property_ids">
-                            <tree string="Property">
-                                <field name="name"/>
-                                <field name="expected_price"/>
-                                <field name="state"/>
-                            </tree>
-                        </field>
-                    </page>
-                </notebook>
             </form>
         </field>
     </record>
