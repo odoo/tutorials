@@ -11,7 +11,7 @@
                 <field name="expected_price" />
                 <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades" />
-                <field name="salesman" />
+                <field name="salesman_id" />
                 <field name="buyer" />
                 <field name="property_type_id" />
                 <group expand="1" string="Group By">
@@ -101,7 +101,7 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesman" />
+                                <field name="salesman_id" />
                                 <field name="buyer" />
                             </group>
                         </page>

@@ -1,5 +1,7 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools.date_utils import add
+from odoo.tools.translate import _
 
 
 class EstatePropertyOffer(models.Model):
@@ -22,7 +24,9 @@ class EstatePropertyOffer(models.Model):
         string="Property",
         required=True,
     )
-    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
+    property_type_id = fields.Many2one(
+        related='property_id.property_type_id', string="Property Type", store=True
+    )
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_deadline', inverse="_inverse_deadline")
@@ -64,3 +68,14 @@ class EstatePropertyOffer(models.Model):
         self.property_id.update({'buyer': None, 'selling_price': 0.00001})
 
         return True
+
+    @api.model
+    def create(self, vals):
+        property = self.env['estate.property'].browse(vals['property_id'])
+
+        if any([vals['price'] < offer.price for offer in property.offer_ids]):
+            raise UserError(_("Offer cannot be cheaper than existing ones."))
+
+        property.state = 'offer_received'
+
+        return super().create(vals)

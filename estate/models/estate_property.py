@@ -1,7 +1,8 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 from odoo.tools.date_utils import add
-from odoo.exceptions import UserError, ValidationError
+from odoo.tools.translate import _
 
 
 class EstateProperty(models.Model):
@@ -41,7 +42,7 @@ class EstateProperty(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner")
     property_type_id = fields.Many2one("estate.property.type")
 
-    salesman = fields.Many2one(
+    salesman_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
     buyer = fields.Many2one('res.partner', string="Buyer")
@@ -134,3 +135,8 @@ class EstateProperty(models.Model):
                     raise ValidationError(
                         "An offer lower than 90% of expected price cannot be accepted."
                     )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_records(self):
+        if self.filtered(lambda o: o.state in ['new', 'cancelled']):
+            raise UserError(_("Cannot delete or 'new' or 'cancelled' property."))
