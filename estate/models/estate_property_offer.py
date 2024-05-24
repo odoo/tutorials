@@ -15,7 +15,7 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one('res.partner', required=True, help="The client who made this offer")
     property_id = fields.Many2one('estate.property', required=True, help="The property for which the current offer is being made")
-    validity = fields.Integer(default=7, string="Offer Validity (Days)",help="How many days is this offer valid for?")
+    validity = fields.Integer(default=7, string="Offer Validity (Days)", help="How many days is this offer valid for?")
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
 
     _sql_constraints = [
