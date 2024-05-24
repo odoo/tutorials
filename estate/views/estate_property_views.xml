@@ -34,48 +34,52 @@
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_acepted,sold" />
                 </header>
-                <h1>
-                    <field name='name' />
-                </h1>
-                <h2>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
-                </h2>
-                <group col="2">
-                    <group>
-                        <field name="property_type_id" options="{'no_create': true}" />
-                        <field name='postcode' />
-                        <field name='date_availability' />
-                    </group>
-                    <group>
-                        <field name='expected_price' />
-                        <field name="best_price" string="Best Offer" />
-                        <field name='selling_price' />
-                    </group>
-                </group>
-                <notebook>
-                    <page string="Description">
+                <sheet>
+                    <h1>
+                        <field name='name' />
+                    </h1>
+                    <h2>
+                        <field name="tag_ids" widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
+                    </h2>
+                    <group col="2">
                         <group>
-                            <field name="description" />
-                            <field name='bedrooms' />
-                            <field name='living_area' />
-                            <field name='facades' />
-                            <field name='garage' />
-                            <field name='garden' />
-                            <field name='garden_area' invisible="not garden" />
-                            <field name='garden_orientation' invisible="not garden" />
-                            <field name="total_area" />
+                            <field name="property_type_id" options="{'no_create': true}" />
+                            <field name='postcode' />
+                            <field name='date_availability' />
                         </group>
-                    </page>
-                    <page string="Offers">
-                        <field name="offer_ids" readonly="state in ['offer_acepted', 'sold', 'canceled']"/>
-                    </page>
-                    <page string="Other Info">
                         <group>
-                            <field name="seller_id" />
-                            <field name="buyer_id" />
+                            <field name='expected_price' />
+                            <field name="best_price" string="Best Offer" />
+                            <field name='selling_price' />
                         </group>
-                    </page>
-                </notebook>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" />
+                                <field name='bedrooms' />
+                                <field name='living_area' />
+                                <field name='facades' />
+                                <field name='garage' />
+                                <field name='garden' />
+                                <field name='garden_area' invisible="not garden" />
+                                <field name='garden_orientation' invisible="not garden" />
+                                <field name="total_area" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"
+                                readonly="state in ['offer_acepted', 'sold', 'canceled']" />
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="seller_id" />
+                                <field name="buyer_id" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
         </field>
     </record>
