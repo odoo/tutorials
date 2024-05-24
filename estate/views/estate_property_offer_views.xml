@@ -29,7 +29,7 @@
                     invisible="status" />
                 <button name="action_refuse" string="Refuse" type="object" icon="fa-times"
                     invisible="status" />
-                <field name="status" />
+                <field name="status" column_invisible="1"/>
             </tree>
         </field>
     </record>

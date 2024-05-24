@@ -100,7 +100,7 @@
                 <field name='selling_price' />
                 <field name='date_availability' optional="hidden" />
                 <field name="property_type_id" />
-                <field name="state" optional="hide" />
+                <field name="state" column_invisible="1" />
             </tree>
         </field>
     </record>
