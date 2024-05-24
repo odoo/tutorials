@@ -1,4 +1,6 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.tools.float_utils import float_compare
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -47,3 +49,11 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         self.status = "refused"
+
+    @api.model
+    def create(self, vals):
+        prop = self.env['estate.property'].browse(vals['property_id'])
+        if float_compare(vals['price'], max(prop.offer_ids.mapped('price'), default=0), precision_digits=2) < 0:
+            raise UserError(_("Price must be higher than highest bid!"))
+        prop.state = 'offer_received'
+        return super().create(vals)
