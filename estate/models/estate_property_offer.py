@@ -39,3 +39,18 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - record.create_date.date()).days
             else:
                 record.validity = (record.date_deadline - fields.Date.today()).days
+
+    def action_accept(self):
+        self.status = "accepted"
+        self.property_id.update({'buyer': self.partner_id, 'selling_price': self.price})
+        for record in self.property_id.offer_ids:
+            if record != self:
+                record.status = "refused"
+
+        return True
+
+    def action_refuse(self):
+        self.status = "refused"
+        self.property_id.update({'buyer': None, 'selling_price': 0})
+
+        return True
