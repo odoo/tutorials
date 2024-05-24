@@ -30,7 +30,7 @@ class Offer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - (record.create_date.date() or fields.Date.today())).days
 
-    def _accept(self):
+    def accept_(self):
         for record in self:
             for i in record.property_id.mapped('offer_ids'):
                 if i.status == "accepted":
@@ -40,7 +40,7 @@ class Offer(models.Model):
             record.property_id.buyer_id = self.partner_id.id
         return True
 
-    def _refuse(self):
+    def refuse_(self):
         for record in self:
             record.status = "refused"
             record.property_id.selling_price = 0
@@ -48,7 +48,6 @@ class Offer(models.Model):
 
     @api.model
     def create(self, vals):
-        temp = self.env['gamification.badge'].browse(vals['property_id']).state
-        if temp == "New":
-            state = "Offer Received"
+        if self.env['estate_property'].browse(vals['property_id']).state == "New":
+            self.env['estate_property'].browse(vals['property_id']).state = "Offer Received"
         return super().create(vals)

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="test_menu_root" name="Test">
+    <menuitem id="test_menu_root" name="Estate">
         <menuitem id="test_first_level_menu" name="List">
             <menuitem id="test_model_menu_action" action="estate_property_action"/>
         </menuitem>

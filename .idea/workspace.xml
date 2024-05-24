@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d51057cc-d46c-4035-9ad7-7596e3cca359" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/estate/views/estate_property_offer.xml" afterDir="false" />
+    <list default="true" id="6726c28a-ee73-41d1-8c6e-cf1701a8184f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/estate/models/res_users.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/estate/views/res_users_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/__manifest__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/__manifest__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/models/estate_property_tag.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_tag.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/models/estate_property_type.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_type.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/offer.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/offer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_tag.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_tag.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_type.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_type.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_menus.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_menus.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/views/estate_proprety_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_proprety_views.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,37 +31,27 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 4
-}</component>
-  <component name="ProjectId" id="2gp178IwCDWBhlGjHb0B5czMAc6" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2guhmG4jXBKIQuZuptW2DEKTkbJ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;17.0-training&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/odoo/odoo/tutorials/estate/views&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/home/odoo/odoo/enterprise",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/estate/views" />
-      <recent name="$PROJECT_DIR$/estate/models" />
-    </key>
-  </component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -71,13 +63,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d51057cc-d46c-4035-9ad7-7596e3cca359" name="Changes" comment="" />
-      <created>1716379535246</created>
+      <changelist id="6726c28a-ee73-41d1-8c6e-cf1701a8184f" name="Changes" comment="" />
+      <created>1716553526883</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1716379535246</updated>
-      <workItem from="1716379536521" duration="12126000" />
-      <workItem from="1716414425300" duration="19414000" />
+      <updated>1716553526883</updated>
+      <workItem from="1716553527933" duration="3252000" />
     </task>
     <servers />
   </component>
