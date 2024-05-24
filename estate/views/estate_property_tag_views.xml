@@ -5,9 +5,9 @@
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <form string="Tag">
-                <h1>
-                    <field name='name' />
-                </h1>
+                <div class="oe_title">
+                    <field name='name' placeholder="Tag name"/>
+                </div>
             </form>
         </field>
     </record>

@@ -1,6 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare, float_is_zero, float_round
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -59,7 +59,7 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             prices = record.offer_ids.mapped('price')
-            record.best_price = max(prices) if prices else 0
+            record.best_price = max(prices, default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -67,8 +67,8 @@ class EstateProperty(models.Model):
             self.garden_area = 10
             self.garden_orientation = 'north'
         else:
-            self.garden_area = None
-            self.garden_orientation = None
+            self.garden_area = 0
+            self.garden_orientation = False
 
     def action_set_sold(self):
         for record in self:
@@ -79,15 +79,13 @@ class EstateProperty(models.Model):
         return True
 
     def action_set_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError(_("Sold properties cannot be canceled"))
-            else:
-                record.state = 'canceled'
+        if 'sold' in self.mapped('state'):
+            raise UserError(_("Sold properties cannot be canceled"))
+        self.state = 'canceled'
         return True
 
     @api.constrains('selling_price')
     def _check_selling_price(self):
-        for record in self:    
+        for record in self:
             if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
                 raise ValidationError(_('Selling price must be at least 90%% of expected price'))
