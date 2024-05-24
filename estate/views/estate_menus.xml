@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
-        <menuitem id="estate_property_menu_root" name="Estate">
-            <menuitem id="estate_property_menu_advertisement" name="Advertisements">
-                <menuitem id="estate_property_menu_properties" action="estate_property_action"/>
-            </menuitem>
-            <menuitem id="estate_property_menu_settings" name="Settings">
-                <menuitem id="estate_property_type_menu_types" action="estate_property_type_action_view_tree"/>
-                <menuitem id="estate_property_tag_menu_tags" action="estate_property_tag_action_view_tree"/>
-            </menuitem>
+    <menuitem id="estate_property_menu_root" name="Estate">
+        <menuitem id="estate_property_menu_advertisement" name="Advertisements">
+            <menuitem id="estate_property_menu_properties" action="estate_property_action"/>
         </menuitem>
-    </data>
+        <menuitem id="estate_property_menu_settings" name="Settings">
+            <menuitem id="estate_property_type_menu_types" action="estate_property_type_action_view_tree"/>
+            <menuitem id="estate_property_tag_menu_tags" action="estate_property_tag_action_view_tree"/>
+        </menuitem>
+    </menuitem>
 </odoo>

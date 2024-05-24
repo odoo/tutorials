@@ -1,58 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <record id="estate_property_type_action_view_tree" model="ir.actions.act_window">
-            <field name="name">Property Types</field>
-            <field name="res_model">estate.property.type</field>
-            <field name="view_mode">tree,form</field>
-        </record>
+    <record id="estate_property_type_action_view_tree" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
-        <record id="estate_property_type_view_tree" model="ir.ui.view">
-            <field name="name">estate.property.type.tree</field>
-            <field name="model">estate.property.type</field>
-            <field name="arch" type="xml">
-                <tree string="Property Types">
-                    <field name="sequence" widget="handle"/>
-                    <field name="name"/>
-                </tree>
-            </field>
-        </record>
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="Property Types">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
 
-        <record id="estate_property_type_view_form" model="ir.ui.view">
-            <field name="name">estate.property.type.form</field>
-            <field name="model">estate.property.type</field>
-            <field name="arch" type="xml">
-                <form string="Property">
-                    <sheet>
-                        <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" type="action"
-                                    name="%(estate.estate_property_offer_action_view_tree)d"
-                                    icon="fa-gift">
-                                <field string="Offers" name="offer_count" widget="statinfo"/>
-                            </button>
-                        </div>
-                        <div class="oe_title">
-                            <h1>
-                                <div class="d-flex">
-                                    <field class="text-break" name="name" options="{'line_breaks': False}"
-                                           widget="text"/>
-                                </div>
-                            </h1>
-                        </div>
-                        <notebook>
-                            <page string="Properties">
-                                <field name="property_ids">
-                                    <tree create="False" edit="False" delete="False">
-                                        <field name="name" string="Title"/>
-                                        <field name="expected_price"/>
-                                        <field name="state"/>
-                                    </tree>
-                                </field>
-                            </page>
-                        </notebook>
-                    </sheet>
-                </form>
-            </field>
-        </record>
-    </data>
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action"
+                                name="%(estate.estate_property_offer_action_view_tree)d"
+                                icon="fa-gift">
+                            <field string="Offers" name="offer_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <div class="d-flex">
+                                <field name="name"/>
+                            </div>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <tree create="False" edit="False" delete="False">
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>
