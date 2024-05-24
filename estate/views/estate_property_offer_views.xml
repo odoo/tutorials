@@ -20,15 +20,15 @@
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree string="Tags">
+            <tree string="Tags" editable="bottom">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="validity" />
                 <field name="date_deadline" />
                 <button name="action_accept" string="Accept" type="object" icon="fa-check"
-                    invisible="status != ''" />
+                    invisible="status" />
                 <button name="action_refuse" string="Refuse" type="object" icon="fa-times"
-                    invisible="status != ''" />
+                    invisible="status" />
                 <field name="status" />
             </tree>
         </field>
