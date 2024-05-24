@@ -7,6 +7,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "description"
+    _order = "id desc"
 
     name = fields.Char("Property Name", required=True)
     description = fields.Text("Description")
@@ -43,15 +44,15 @@ class EstateProperty(models.Model):
     salesman = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
-    buyer = fields.Many2one("res.partner", string="Buyer")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    buyer = fields.Many2one('res.partner', string="Buyer")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
     active = fields.Boolean("Active", default=True)
     state = fields.Selection(
         string="State",
         selection=[
             ('new', "New"),
-            ('offer_received', "Offer Recieved"),
+            ('offer_received', "Offer Received"),
             ('offer_accepted', "Offer Accepted"),
             ('sold', "Sold"),
             ('cancelled', "Canceled"),
@@ -60,6 +61,8 @@ class EstateProperty(models.Model):
         default='new',
         required=True,
     )
+
+    property_type_id = fields.Many2one('estate.property.type', string="Property", required=True)
 
     total_area = fields.Float(compute='_compute_total', string="Total area (sqm)")
     best_price = fields.Float(compute='_compute_best_price', string="Best offer")

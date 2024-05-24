@@ -5,6 +5,7 @@ from odoo.tools.date_utils import add
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "description"
+    _order = "price desc"
 
     price = fields.Float("Price")
     status = fields.Selection(
@@ -21,6 +22,7 @@ class EstatePropertyOffer(models.Model):
         string="Property",
         required=True,
     )
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_deadline', inverse="_inverse_deadline")
@@ -28,7 +30,7 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         (
             'check_offer_price',
-            'CHECK(offer_price > 0)',
+            'CHECK(price > 0)',
             'An offer price must be strictly positive.',
         )
     ]
@@ -59,6 +61,6 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         self.status = 'refused'
-        self.property_id.update({'buyer': None, 'selling_price': 0})
+        self.property_id.update({'buyer': None, 'selling_price': 0.00001})
 
         return True

@@ -7,6 +7,17 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <record id="estate_property_type_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="Property Types">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
     <!-- Forms -->
     <record id="estate_property_types_form_view" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
@@ -14,9 +25,27 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="%(estate_property_offers_action)d" type="action" icon="fa-money">
+                            <field name="offer_count" string="Offers" widget="statinfo" />
+                        </button>
+                    </div>
+
                     <h1>
                         <field name="name" placeholder="e.g. House" />
                     </h1>
+
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <tree string="Properties">
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
