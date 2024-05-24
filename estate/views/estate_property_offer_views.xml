@@ -25,8 +25,10 @@
                 <field name="partner_id" />
                 <field name="validity" />
                 <field name="date_deadline" />
-                <button name="action_accept" string="Accept" type="object" icon="fa-check"/>
-                <button name="action_refuse" string="Refuse" type="object" icon="fa-times"/>
+                <button name="action_accept" string="Accept" type="object" icon="fa-check"
+                    invisible="status != ''" />
+                <button name="action_refuse" string="Refuse" type="object" icon="fa-times"
+                    invisible="status != ''" />
                 <field name="status" />
             </tree>
         </field>

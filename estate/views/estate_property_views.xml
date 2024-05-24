@@ -27,19 +27,22 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_set_sold" type="object" string="Sold" />
-                    <button name="action_set_cancel" type="object" string="Cancel" />
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_acepted,sold"/>
+                    <button name="action_set_sold" type="object" string="Sold"
+                        invisible="state in ['sold', 'canceled']" />
+                    <button name="action_set_cancel" type="object" string="Cancel"
+                        invisible="state in ['sold', 'canceled']" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_acepted,sold" />
                 </header>
                 <h1>
                     <field name='name' />
                 </h1>
                 <h2>
-                    <field name="tag_ids" widget="many2many_tags" />
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                 </h2>
                 <group col="2">
                     <group>
-                        <field name="property_type_id" />
+                        <field name="property_type_id" options="{'no_create': true}" />
                         <field name='postcode' />
                         <field name='date_availability' />
                     </group>
@@ -58,13 +61,13 @@
                             <field name='facades' />
                             <field name='garage' />
                             <field name='garden' />
-                            <field name='garden_area' />
-                            <field name='garden_orientation' />
+                            <field name='garden_area' invisible="not garden" />
+                            <field name='garden_orientation' invisible="not garden" />
                             <field name="total_area" />
                         </group>
                     </page>
                     <page string="Offers">
-                        <field name="offer_ids" />
+                        <field name="offer_ids" readonly="state in ['offer_acepted', 'sold', 'canceled']"/>
                     </page>
                     <page string="Other Info">
                         <group>
