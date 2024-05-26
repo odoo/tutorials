@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+<record id="estate_property_action" model="ir.actions.act_window">
+    <field name="name">Estate Properties</field>
+    <field name="res_model">estate.estate_property</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+
+
+
+
+<record id="estate_property_action1" model="ir.actions.act_window">
+    <field name="name">KOKOSH Properties</field>
+    <field name="res_model">estate.estate_property</field>
+    <field name="view_mode">form</field>
+</record>
+</odoo>
+
+
+
