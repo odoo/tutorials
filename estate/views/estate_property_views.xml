@@ -1,5 +1,36 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="False" quick_create="False">
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div>
+                                <field name="name" />
+                            </div>
+                            <div> Expected price: <field name="expected_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_received'"> Best price: <field
+                                    name="best_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'"> Selling price: <field
+                                    name="selling_price" />
+                            </div>
+                            <div>
+                                <field name="tag_ids" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+
+    </record>
+
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -100,7 +131,7 @@
                 <field name="postcode" />
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}}" />
                 <field name="bedrooms" />
-                <field name="living_area" filter_domain="[('living_area'), '>=', self]"/>
+                <field name="living_area" filter_domain="[('living_area'), '>=', self]" />
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" optional="hide" />
@@ -112,7 +143,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
 </odoo>
