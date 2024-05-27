@@ -2,10 +2,11 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
+
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "estate property"
-    
+
     # simple fields
     name = fields.Char()
     description = fields.Text()
@@ -37,19 +38,19 @@ class EstateProperty(models.Model):
         default='new',
         copy=False,
         )
-    
+
     # relational fields
     property_type_id = fields.Many2one('estate.property.type', string="Type")
     buyer_id = fields.Many2one('res.partner', copy=False)
     salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
     property_tag_ids = fields.Many2many('estate.property.tag', string="Tag")
     offer_ids = fields.One2many('estate.property.offer', "property_id")
-    
-    #computed fields
+
+    # computed fields
     total_area = fields.Integer(compute='_compute_area')
     best_price = fields.Float(compute='_compute_best_price')
 
-    #sql constraints
+    # sql constraints
     _sql_constraints = [
         ('check_positive_expected_price', 'CHECK(expected_price > 0)',
          'The expected price should be strictly positive number.'),
@@ -57,23 +58,24 @@ class EstateProperty(models.Model):
          'The selling price should be a positive number.'),
     ]
 
-    #python constraints
-    @api.constrains('selling_price','expected_price')
+    # python constraints
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if ((not float_is_zero(record.selling_price, precision_digits = 2))
-                and (float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits = 2) < 0)):
+            if ((not float_is_zero(record.selling_price, precision_digits=2))
+                and (float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0)):
                 raise ValidationError("selling price can't be less than 90% of expected price")
 
-    #compute methods
+    # compute methods
     @api.depends('living_area', 'garden_area')
     def _compute_area(self):
         for record in self:
             self.total_area = record.living_area + record.garden_area
+
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'), default = 0)
+            record.best_price = max(record.offer_ids.mapped('price'), default=0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -84,7 +86,7 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    #action methods
+    # action methods
     def action_set_sold(self):
         for record in self:
             if record.state == 'canceled':
