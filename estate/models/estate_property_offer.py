@@ -79,15 +79,14 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        property = self.env['estate.property'].browse(vals['property_id'])
+        estate_property = self.env['estate.property'].browse(vals['property_id'])
         if any(
-            [
-                float_compare(offer.price, vals['price'], precision_rounding=0.1) > 0
-                for offer in property.offer_ids
-            ]
+            float_compare(offer.price, vals['price'], precision_rounding=0.1) > 0
+            for offer in estate_property.offer_ids
         ):
             raise UserError(_('Can\'t create an offer with a lower amount than existing offer'))
 
-        property.state = 'offer_received'
+        if estate_property.state == 'new':
+            estate_property.state = 'offer_received'
 
         return super().create(vals)
