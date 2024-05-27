@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.dashboard_config_dialog">
+        <Dialog title="'Dashboard items configuration'" contentClass="'o-web-studio-appmenu-editor'" size="'md'">
+            <p>Which cards do you wish to see?</p>
+            <t t-foreach="dashboardItems" t-as="item" t-key="item.id">
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input"
+                           t-att-name="item.id"
+                           t-attf-id="dashboard-config-{{item.id}}"
+                           t-att-checked="dashboardConfig.disabledItems.indexOf(item.id) &lt; 0"
+                           t-on-change="updateItem"/>
+                    <label class="form-check-label" t-attf-for="dashboard-config-{{item.id}}">
+                        <t t-esc="item.description"/>
+                    </label>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
