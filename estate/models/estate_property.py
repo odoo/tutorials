@@ -40,7 +40,6 @@ class EstateProperty(models.Model):
     tags_ids = fields.Many2many("estate.property.tag")
 
     partner_id = fields.Many2one("res.partner", string="Partner")
-    property_type_id = fields.Many2one("estate.property.type")
 
     salesman_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user

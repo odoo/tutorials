@@ -61,6 +61,8 @@ class EstatePropertyOffer(models.Model):
             if record != self:
                 record.status = 'refused'
 
+        self.property_id.state = 'offer_accepted'
+
         return True
 
     def action_refuse(self):
@@ -71,11 +73,11 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        property = self.env['estate.property'].browse(vals['property_id'])
+        property_id = self.env['estate.property'].browse(vals['property_id'])
 
-        if any([vals['price'] < offer.price for offer in property.offer_ids]):
+        if any([vals['price'] < offer.price for offer in property_id.offer_ids]):
             raise UserError(_("Offer cannot be cheaper than existing ones."))
 
-        property.state = 'offer_received'
+        property_id.state = 'offer_received'
 
         return super().create(vals)
