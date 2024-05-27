@@ -1,15 +1,14 @@
 /** @odoo-module **/
 
-import { browser } from "@web/core/browser/browser";
-import { mount, whenReady } from "@odoo/owl";
-import { Playground } from "./playground";
-import { templates } from "@web/core/assets";
+import {browser} from "@web/core/browser/browser";
+import {mount, whenReady} from "@odoo/owl";
+import {Playground} from "./playground";
+import {templates} from "@web/core/assets";
 
 // Mount the Playground component when the document.body is ready
-whenReady( () => {
-    mount(Playground, document.body, { templates, dev: true, name: "Owl Tutorial" });
+whenReady(() => {
+    mount(Playground, document.body, {templates, dev: true, name: "Owl Tutorial"});
 });
-
 
 
 /**
@@ -19,7 +18,7 @@ whenReady( () => {
  */
 function logError(ev) {
     ev.preventDefault();
-    let error = ev ?.error || ev.reason;
+    let error = ev?.error || ev.reason;
 
     if (error.seen) {
         // If an error causes the mount to crash, Owl will reject the mount promise and throw the
@@ -37,5 +36,9 @@ function logError(ev) {
     console.error(errorMessage);
 }
 
-browser.addEventListener("error", (ev) => {logError(ev)});
-browser.addEventListener("unhandledrejection", (ev) => {logError(ev)});
+browser.addEventListener("error", (ev) => {
+    logError(ev)
+});
+browser.addEventListener("unhandledrejection", (ev) => {
+    logError(ev)
+});

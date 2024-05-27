@@ -3,7 +3,21 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <Card title="'Card 1'">
+                content1
+            </Card>
+            <Card title="'Card 2'">
+                <Counter title="'Inside Card'"/>
+            </Card>
+        </div>
+        <div class="p-3">
+            <h2>Sum : <t t-esc="state.sum"/></h2>
+            <Counter onChange.bind="incrementSum" title="'Should not impact sum 1'"/>
+            <Counter onChange.bind="incrementSum" title="'Should not impact sum 2'"/>
+            <Counter title="'Should not impact sum'"/>
+        </div>
+        <div class="p-3">
+            <TodoList/>
         </div>
     </t>
 
