@@ -16,6 +16,7 @@
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
+                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="date_availability" optional="hide"/>
             </tree>
         </field>
