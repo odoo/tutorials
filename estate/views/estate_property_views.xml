@@ -29,12 +29,17 @@
         <field name="arch" type="xml">
             <form string="Estate" >
                 <sheet>
+                    <header>
+                        <button name='action_set_sold' string="SOLD" type="object" class="oe_highlight"/>
+                        <button name='action_set_cancel' string="CANCEL" type="object"/>
+                    </header>
                     <h1>
                         <field name="name" placeholder="Property Name"/>
                     </h1>
                     <field name="property_tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="state" string="Status"/>
                             <field name="property_type_id" string="Property Type"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -69,6 +74,8 @@
                             <field name="offer_ids">
                                 <tree string="Offers">
                                     <field name="price"/>
+                                    <button name="action_offer_accept" string="Accept" type="object" icon="fa-check"/>
+                                    <button name="action_offer_refuse" string="Refuse" type="object" icon="fa-times"/>
                                     <field name="status"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>            
