@@ -6,6 +6,8 @@ export class Card extends Component {
     static template = "awesome_owl.card";
     static props = {
         num: Number,
-        content: String,
+        slots:{shape: {
+                default: true
+            },}
     };
 }
