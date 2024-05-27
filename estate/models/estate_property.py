@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 
@@ -33,9 +34,9 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(string='State',
-                             selection=[('New', 'New'), ('Offer Received', 'Offer Received'),
-                                        ('Offer Accepted', 'Offer Accepted'), ('Sold', 'Sold'),
-                                        ('Canceled', 'Canceled')],
+                             selection=[('New', "New"), ('Offer Received', "Offer Received"),
+                                        ('Offer Accepted', "Offer Accepted"), ('Sold', "Sold"),
+                                        ('Canceled', "Canceled")],
                              help="help", required=True, copy=False, default="New")
     property_type_id = fields.Many2one('estate_property_type', string='Property Type')
     salesman_id = fields.Many2one('res.users', string='Salesperson',

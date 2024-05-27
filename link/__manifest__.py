@@ -1,6 +1,6 @@
 {
     'name': "Link",
-    'depends': ['estate',"account"],
+    'depends': ['estate', 'account', ],
     'license': 'OEEL-1',
     'data': [
     ]

@@ -1,12 +1,11 @@
-from odoo import models, Command
+from odoo import Command, models
 
 
 class ResUser(models.Model):
     _inherit = "estate_property"
 
     def sell_(self):
-        print("override")
-        account_move = self.env['account.move'].with_context().create({
+        self.env['account.move'].with_context().create({
 
             'partner_id': self.buyer_id.id,
 

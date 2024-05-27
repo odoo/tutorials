@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+
 from odoo.exceptions import UserError
 from odoo.tools import add
 
@@ -8,7 +9,7 @@ class Offer(models.Model):
     _description = "Offer"
     _order = "price desc"
     price = fields.Float(string="Price")
-    status = fields.Selection(copy=False, string="Status", selection=[("accepted", "Accepted"), ("refused", "Refused")])
+    status = fields.Selection(copy=False, string="Status", selection=[('accepted', "Accepted"), ('refused', "Refused")])
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate_property", string="Estate Property", required=True)
     validity = fields.Integer(string="Validity days", default=7)
