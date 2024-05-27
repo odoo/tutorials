@@ -75,7 +75,7 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         property_id = self.env['estate.property'].browse(vals['property_id'])
 
-        if any([vals['price'] < offer.price for offer in property_id.offer_ids]):
+        if any(vals['price'] < offer.price for offer in property_id.offer_ids):
             raise UserError(_("Offer cannot be cheaper than existing ones."))
 
         property_id.state = 'offer_received'
