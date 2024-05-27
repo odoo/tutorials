@@ -1,9 +1,8 @@
-from odoo import fields, models, Command
+from odoo import models, Command
 
 
 class ResUser(models.Model):
     _inherit = "estate_property"
-
 
     def sell_(self):
         print("override")
@@ -17,7 +16,7 @@ class ResUser(models.Model):
                 Command.create({
                     'name': '6% of the selling price',
                     'quantity': 1,
-                    'price_unit': self.selling_price*0.06,
+                    'price_unit': self.selling_price * 0.06,
                 }),
                 Command.create({
                     'name': 'Administrative fees',
