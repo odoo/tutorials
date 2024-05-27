@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.counter">
+        <div class="p-3 border d-inline-block m-2">
+            hellow world
+            <div class="border p-2 d-inline-block">
+                <span class="m-2">Counter: <t t-esc="counter.value"/></span>
+                <button class="btn btn-primary" t-on-click="increment">Increment</button>
+            </div>
+        </div>
+    </t>
+</templates>

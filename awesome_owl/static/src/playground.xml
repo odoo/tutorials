@@ -2,8 +2,14 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="border m-2">
+            <Counter myfnc.bind="incre"/>
+            <Counter myfnc.bind="incre"/>
+            <div>Somme : <t t-esc="count.value"/></div>
+        </div>
+        <div class="border m-2">
+            <Card num="1" content="cnt1"/>
+            <Card num="2" content="cnt2"/>
         </div>
     </t>
 

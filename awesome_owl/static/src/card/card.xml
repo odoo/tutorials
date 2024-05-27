@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="p-3 border m-2 d-inline-block">
+            <h5>Card <t t-out="props.num"/></h5>
+            <p><t t-out="props.content"/></p>
+        </div>
+    </t>
+</templates>
