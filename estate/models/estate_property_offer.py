@@ -51,9 +51,9 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        property = self.env['estate.property'].browse(vals['property_id'])
-        if property.state == 'new':
-            property.state = 'offer_received'
+        estate = self.env['estate.property'].browse(vals['property_id'])
+        if estate.state == 'new':
+            estate.state = 'offer_received'
 
         existing_offers = self.env['estate.property.offer'].search(
             [('property_id', '=', vals['property_id'])]
