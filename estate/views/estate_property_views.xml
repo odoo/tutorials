@@ -1,0 +1,5 @@
+<record id="estate_property_action" model="ir.actions.act_window">
+    <field name="name">Test action</field>
+    <field name="res_model">estate_property</field>
+    <field name="view_mode">tree,form</field>
+</record>
