@@ -103,3 +103,10 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'canceled'
         return True
+
+    # overriding methods
+    @api.ondelete(at_uninstall=False)
+    def unlink_chcek_state(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError("Can only delete new or canceled properties!")

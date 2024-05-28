@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -70,3 +71,13 @@ class EstatePropertyOffer(models.Model):
                 if p_offer.status == 'accepted':
                     return True
         return False
+
+    # overriding methods
+    @api.model
+    def create(self, vals):
+        p = self.env['estate.property'].browse(vals['property_id'])
+        if any(float_compare(p_offer.price, vals['price'], precision_digits=2) > 0 for p_offer in p.offer_ids):
+            raise UserError("Offer price can't be smaller than any existing offer")
+        elif p.state == 'new':
+            p.state = 'offer_received'
+        return super().create(vals)
