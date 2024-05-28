@@ -2,7 +2,46 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button t-on-click="_openKanbanViewAllCustomers">Customers</button>
+                <button t-on-click="_openLeads">Leads</button>
+            </t>
+            <DashboardItem>
+                Average amount of t-shirt by order this month
+                <div t-att-style="'font-size: 2.5em; color: green; text-align: center;'">
+                    <t t-esc="statistics.average_quantity" />
+                </div>
+            </DashboardItem>
+            <DashboardItem>
+                Average amount of t-shirt by order this month
+                <div t-att-style="'font-size: 2.5em; color: green; text-align: center;'">
+                    <t t-esc="statistics.average_quantity" />
+                </div>
+            </DashboardItem>
+            <DashboardItem>
+                the average time (in hours) elapsed between the
+                moment an order is created, and the moment is it sent
+                <div t-att-style="'font-size: 2.5em; color: green; text-align: center;'">
+                    <t t-esc="statistics.average_time" />
+                </div>
+            </DashboardItem>
+            <DashboardItem>
+                the number of cancelled orders, this month
+                <div t-att-style="'font-size: 2.5em; color: green; text-align: center;'">
+                    <t t-esc="statistics.nb_new_orders" />
+                </div>
+            </DashboardItem>
+            <DashboardItem>
+                the total amount of orders, this month
+                <div t-att-style="'font-size: 2.5em; color: green; text-align: center;'">
+                    <t t-esc="statistics.total_amount" />
+                </div>
+            </DashboardItem>
+
+        </Layout>
+
     </t>
 
 </templates>
