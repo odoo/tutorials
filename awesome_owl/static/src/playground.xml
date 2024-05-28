@@ -3,6 +3,12 @@
 
     <t t-name="awesome_owl.playground">
       <TodoList/>
+      <Card title="'my test card'">
+        some content
+      </Card>
+      <Card title="'a counter'">
+        <Counter/>
+      </Card>
     </t>
 
 </templates>
