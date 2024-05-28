@@ -11,20 +11,39 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Property Type">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="offer_ids"/>
+                <field name="offer_count"/>
             </tree>
         </field>
     </record>
-    
+
     <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Property Type" >
+            <form string="Property Type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate_property_offer_action)d" type="action" icon="fa-money" class="oe_stat_button">
+                            <field string="Offers" name="offer_count" widget="statinfo" />
+                        </button>
+                    </div>
                     <h1>
                         <field name="name" placeholder="Type Name"/>
                     </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <tree string="Properties">
+                                    <field name="name"/>
+                                    <field name="expected_price"/>            
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>            
         </field>
