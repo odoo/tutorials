@@ -1,0 +1,28 @@
+<odoo>
+    <data noupdate="1">
+        <record model="estate_property" id="estate_1">
+            <field name="name">uhuru house</field>
+            <field name="description">uhuru house is the best house for family location</field>
+            <field name="postcode">00100</field>
+            <field name="date_availability">2024-06-01</field>
+            <field name="expected_price">1000000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">200</field>
+            <field name="facades">6</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">100</field>
+            <field name="garden_orientation" type="select">north</field>
+        </record>
+        <record model="estate_property" id="estate_2">
+            <field name="name">seraphin house</field>
+            <field name="description">seraphin house is the best house for developer location</field>
+            <field name="postcode">00100</field>
+            <field name="date_availability">2024-07-01</field>
+            <field name="expected_price">500000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">100</field>
+            <field name="facades">4</field>
+        </record>
+    </data>
+</odoo>
