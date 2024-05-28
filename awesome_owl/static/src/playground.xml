@@ -2,8 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-      <Counter/>
-      <Counter />
+      <TodoList/>
     </t>
 
 </templates>
