@@ -1,13 +1,17 @@
 /** @odoo-module **/
 
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 
 export class Card extends Component {
     static template = "awesome_owl.card";
     static props = {
         num: Number,
-        slots:{shape: {
-                default: true
-            },}
+        slots:{},
     };
+    setup(){
+        this.hide=useState({value:false});
+    }
+    hideCard() {
+        this.hide.value=!this.hide.value;
+    }
 }

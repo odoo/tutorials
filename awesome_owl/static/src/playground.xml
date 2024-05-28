@@ -9,10 +9,10 @@
         </div>
         <div class="border m-2">
             <Card num="1">
-                <Counter myfnc.bind="incre"/>
+                <Counter/>
             </Card>
             <Card num="2">
-                <Counter myfnc.bind="incre"/>
+                <Counter/>
             </Card>
         </div>
         <div>
