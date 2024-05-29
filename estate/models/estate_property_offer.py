@@ -7,6 +7,7 @@ class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'The property Offer'
     _order = 'price desc'
+
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         string="Deadline Date",

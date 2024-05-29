@@ -3,10 +3,10 @@ from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
-
     _name = 'estate.property'
     _description = 'The estate property'
     _order = 'id desc'
+
     name = fields.Char("Property name", required=True)
     description = fields.Text()
     postcode = fields.Char()
