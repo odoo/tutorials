@@ -7,13 +7,14 @@ export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
     static props = {
         label: String,
-        result: {}
+        data: {}
     };
 
     setup() {
         onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
         this.board = useRef("board");
         onMounted(() => {
+            console.log("mounted")
             console.log(this.props.data);
             const keys = Object.keys(this.props.data);
             const values = Object.values(this.props.data);
@@ -25,13 +26,15 @@ export class PieChart extends Component {
                         {
                             label: this.props.label,
                             data: values,
-                            // backgroundColor: color,
                         },
                     ],
                 },
             });
         });
+
         onWillUnmount(() => {
+            console.log("unmounted")
+            console.log(this.pie);
             this.pie.destroy();
         });
     }

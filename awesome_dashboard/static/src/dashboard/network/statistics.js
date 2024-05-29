@@ -1,18 +1,18 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { memoize } from "@web/core/utils/functions";
 
 
 const myService = {
     dependencies: ["rpc"],
     start(env, { rpc }) {
-        return {loadStatistics:myfnc(rpc)};
+        setInterval(() => myfnc(rpc),10000);
+        return {loadStatistics:() =>myfnc(rpc)}
     },
 };
 
-function myfnc(rpc) {
-    return memoize(() => rpc("/awesome_dashboard/statistics"));
+async function myfnc(rpc) {
+    return rpc("/awesome_dashboard/statistics");
 }
 
 

@@ -1,11 +1,10 @@
 /** @odoo-module **/
 
-import {Component, onWillStart} from "@odoo/owl";
+import {Component, onWillStart, useState} from "@odoo/owl";
 import {Layout} from "@web/search/layout";
 import {registry} from "@web/core/registry";
 import {useService} from "@web/core/utils/hooks";
 import {DashboardItem} from "./dashboard_item/dashboard_item";
-import {loadJS} from "@web/core/assets";
 import {PieChart} from "./piechart/piechart";
 
 class AwesomeDashboard extends Component {
@@ -17,12 +16,13 @@ class AwesomeDashboard extends Component {
             controlPanel: {},
         };
         this.myact = useService("action");
-        this.myservice = useService("awesome_dashboard.statistics");
+        this.myservice = useState(useService("awesome_dashboard.statistics"));
         onWillStart(async () => {
-            this.result = await this.myservice.loadStatistics();
-            this.orderSize=this.result["orders_by_size"];
-            delete this.result["orders_by_size"];
-            console.log(this.result);
+        console.log("started dashboard");
+        const { orders_by_size, ...rest } = await this.myservice.loadStatistics();
+        this.result=rest;
+        this.orderSize=orders_by_size;
+        console.log(this.orderSize)
         });
 
     }
@@ -42,5 +42,5 @@ class AwesomeDashboard extends Component {
     }
 
 }
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
