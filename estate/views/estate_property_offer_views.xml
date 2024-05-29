@@ -1,0 +1,46 @@
+<odoo>
+    <record id="estate.estate_property_offer_search_view" model="ir.ui.view">
+        <field name="name">estate_property_offer.view.search</field>
+        <field name="model">estate_property_offer</field>
+        <field name="arch" type="xml">
+            <search string="Search  type">
+                <field name="price"/>
+                <field name="status" />
+            </search>
+        </field>
+    </record>
+
+    <record id="estate.estate_property_offer_tree_view" model="ir.ui.view">
+        <field name="name">estate_property_offer.view.tree</field>
+        <field name="model">estate_property_offer</field>
+        <field name="arch" type="xml">
+            <tree string="Properties" create="True" delete="True">
+                <field name="price" string="Price"/>
+                <field name="status" string="Status"/>
+                <field name="partner_id" string="Partner"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="estate.estate_property_offer_form_view" model="ir.ui.view">
+        <field name="name">estate_property_offer.view.form</field>
+        <field name="model">estate_property_offer</field>
+        <field name="arch" type="xml">
+            <form string="Property" create="True" duplicate="True">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="price" string="Price"/>
+                        <h1>
+                            <field class="text-break" name="price" options="{'line_breaks': False}" widget="text"
+                                   placeholder="e.g. 1000 "/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="partner_id" string="Partner"/>
+                        <field name="status" string="Status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -5,6 +5,7 @@
         </menuitem>
         <menuitem id="estate_setting_first_level_menu" name="Settings">
             <menuitem id="estate_property_type_model_menu_action" name="Properties type" action="estate_property_type_action"/>
+            <menuitem id="estate_property_tags_model_menu_action" name="Properties tags" action="estate_property_tags_action"/>
         </menuitem>
     </menuitem>
 </odoo>
