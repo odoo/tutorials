@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="awesome_dashboard.DialogItems">
+        <Dialog size="'md'" title="'Dashboard items configuration'">
+            <t t-foreach="itemsSelection" t-as="item" t-key="item.id">
+                <div class="d-flex align-items-center gap-2" t-on-click="() => toggleVisibility(item)">
+                    <input type="checkbox" t-att-checked="item.visible"/>
+                    <t t-esc="item.description"/>
+                </div>
+            </t>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary rounded" t-on-click="apply">Apply</button>
+                <button class="btn btn-outline-primary rounded" t-on-click="close">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
