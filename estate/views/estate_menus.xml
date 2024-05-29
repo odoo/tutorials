@@ -1,5 +1,7 @@
-<menuitem id="estate_menu_root" name="Real estate">
-    <menuitem id="estate_first_level_menu" name="Advertissements">
-        <menuitem id="estate_model_menu_action" name="Properties" action="estate_property_action"/>
+<odoo>
+    <menuitem id="estate_menu_root" name="Real estate">
+        <menuitem id="estate_first_level_menu" name="Advertissements">
+            <menuitem id="estate_model_menu_action" name="Properties" action="estate_property_action"/>
+        </menuitem>
     </menuitem>
-</menuitem>
+</odoo>

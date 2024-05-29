@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields
-from datetime import date as Date, timedelta
+
 
 class EstateProperty(models.Model):
     _name = 'estate_property'
     _description = 'Real Estate Property'
 
+    def _in_three_months(self):
+        return fields.date.today() + fields.date_utils.relativedelta(months=3)
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, 
-        default= Date.today() + timedelta(days=90)
+        copy=False,
+        default=_in_three_months
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False) 
