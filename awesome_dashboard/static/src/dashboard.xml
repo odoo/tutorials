@@ -2,7 +2,21 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <button t-on-click="openCustomers" type="button" class="btn btn-primary m-2">Customers</button>
+        <button t-on-click="openCrm" type="button" class="btn btn-primary">Leads</button>
+        Dashboard
+        <Layout className="'o_dashboard h-100'">
+            <div class="d-flex w-auto flex-wrap">
+                <t t-foreach="result" t-as="item" t-key="item">
+                    <DashboardItem title="item">
+                        <t t-esc="result[item]"/>
+                    </DashboardItem>
+                </t>
+                <DashboardItem size="2">
+                    <PieChart data="orderSize" label="'Shirts ordered'"/>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
