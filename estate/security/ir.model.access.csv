@@ -2,3 +2,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 estate.access_estate_property,access_estate_property,estate.model_estate_property,base.group_user,1,0,0,0
 estate.access_estate_property_user,access_estate_property_user,estate.model_estate_property,estate.estate_user,1,1,0,0
 estate.access_estate_property_admin,access_estate_property_admin,estate.model_estate_property,estate.estate_admin,1,1,1,1
+estate.access_estate_property_type_user,access_estate_property_type_user,estate.model_estate_property_type,estate.estate_user,1,1,0,0
+estate.access_estate_property_type_admin,access_estate_property_type_admin,estate.model_estate_property_type,estate.estate_admin,1,1,1,1
