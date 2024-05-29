@@ -1,4 +1,24 @@
 <odoo>
+    <record id="estate.estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate_property.view.search</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <search string="Search Property">
+                <field name="name" />
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <filter name="state" string="New properties" domain="[('state', '=', 'new')]" />
+                <filter name="state" string="Offer Received" domain="[('state', '=', 'offer_received')]" />
+                <group expand="1" string="group by">
+                    <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="estate.estate_property_tree_view" model="ir.ui.view">
         <field name="name">estate_property.view.tree</field>
         <field name="model">estate_property</field>
@@ -57,7 +77,6 @@
             </form>
         </field>
     </record>
-
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate_property</field>
