@@ -29,6 +29,13 @@ class EstateProperty(models.Model):
         copy=False,
         default=_in_three_months
     )
+
+    @api.onchange('date_availability')
+    def _onchange_date_availability(self):
+        if self.date_availability < fields.date.today():
+            return {"warning": {"title": ("Warning"), 
+                    "message": ("impossible to set a date prior than today")}}
+
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False) 
     bedrooms = fields.Integer(default=2)
@@ -43,6 +50,17 @@ class EstateProperty(models.Model):
         ('east', 'East'),
         ('west', 'West'),
     ])
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if not self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
+
+
     active = fields.Boolean(default=True)
     state = fields.Selection([
         ('new', 'New'),
