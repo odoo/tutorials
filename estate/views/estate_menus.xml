@@ -2,6 +2,7 @@
     <menuitem id="estate_menu_root" name="Real estate">
         <menuitem id="estate_advertisement_first_level_menu" name="Advertisements">
             <menuitem id="estate_property_model_menu_action" name="Properties" action="estate_property_action"/>
+            <menuitem id="estate_property_offer_model_menu_action" name="Properties offers" action="estate_property_offer_action"/>
         </menuitem>
         <menuitem id="estate_setting_first_level_menu" name="Settings">
             <menuitem id="estate_property_type_model_menu_action" name="Properties type" action="estate_property_type_action"/>

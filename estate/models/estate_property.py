@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class EstateProperty(models.Model):
@@ -11,6 +11,16 @@ class EstateProperty(models.Model):
 
     def _default_salesperson(self):
         return self.env.user
+    
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for rec in self:
+            rec.total_area = rec.living_area + rec.garden_area
+
+    @api.depends('offers_ids.price')
+    def _compute_best_price(self):
+        for rec in self:
+            rec.best_price = max(rec.offers_ids.mapped('price')) or 0.0 
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -50,3 +60,8 @@ class EstateProperty(models.Model):
     salesperson = fields.Many2one('res.users', default=_default_salesperson)
     offers_ids = fields.One2many('estate_property_offer', 'property_id')
     tag_ids = fields.Many2many('estate_property_tags')
+
+    total_area = fields.Integer(compute='_compute_total_area')
+    best_price = fields.Float(compute='_compute_best_price')
+
+
