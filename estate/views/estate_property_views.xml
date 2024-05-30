@@ -37,6 +37,14 @@
     </record>
 
     <record id="estate.estate_property_form_view" model="ir.ui.view">
+        <header>
+            <button name="action_set_sold_property"
+                string="sold"
+                type="object" />
+            <button name="action_set_canceld_property"
+                string="cancel"
+                type="object" />
+        </header>
         <field name="name">estate_property.view.form</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
@@ -80,15 +88,17 @@
                                     <field name="total_area" string="Total Area(sqm)"
                                         help="this compute fiel it define as the sum on Living Area and Granden Area" />
                                 </group>
-                                <group>
-                                    <field name="buyer" string="Buyer" />
-                                    <field name="salesperson" string="Salesperson" />
-                                </group>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
                                 <field name="offers_ids" string="All offers" />
+                            </group>
+                        </page>
+                        <page string="Othe Info">
+                            <group>
+                                <field name="buyer" string="Buyer" />
+                                <field name="salesperson" string="Salesperson" />
                             </group>
                         </page>
                     </notebook>

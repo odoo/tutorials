@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
-
+from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     _name = 'estate_property'
@@ -53,7 +53,7 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if not self.garden:
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
@@ -82,4 +82,28 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price')
 
+    def action_set_sold_property(self):
+        if self.state == "canceled":
+            raise UserError("You cannot set a canceled property to sold")
+        
+        self.state = 'sold'
 
+    def action_set_canceld_property(self):
+        if self.state == "sold":
+            raise UserError("You cannot set a sold property to canceled")
+        
+        self.state = 'canceled'
+
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be positive"),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive"),
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for rec in self:
+            nighty_percent_expected_price = rec.expected_price * 0.9
+            if (rec.selling_price < nighty_percent_expected_price and rec.selling_price != 0.0):
+                rec.selling_price = 0.0
+                rec.partner_id = None
+                raise ValidationError("The selling price cannot be less than 90% of the expected price")

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate_property_offer'
@@ -35,3 +35,16 @@ class EstatePropertyOffer(models.Model):
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
     )
+
+    def action_accept_offer(self):
+        for rec in self:
+            if rec.property_id.buyer:
+                raise UserError(
+                    'This property already has a buyer.'
+                )
+        self.property_id.selling_price = self.price
+        self.property_id.buyer = self.partner_id.id
+    
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "Price must be positive."),
+    ]
