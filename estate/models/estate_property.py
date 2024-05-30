@@ -6,6 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = 'estate_property'
     _description = 'Real Estate Property'
+    _order = 'id desc'
 
     def _default_salesperson(self):
         return self.env.user
@@ -72,7 +73,7 @@ class EstateProperty(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('canceled', 'Canceled'),
-    ], default='new', copy=False)
+    ], default='new',  copy=False, string="Status")
 
     property_type_id = fields.Many2one(
         'estate_property_type',

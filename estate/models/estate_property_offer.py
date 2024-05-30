@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate_property_offer'
     _description = 'Real Estate Property Offer'
+    _order = 'price desc'
 
     price = fields.Float(required=True)
     status = fields.Selection([
@@ -47,6 +48,7 @@ class EstatePropertyOffer(models.Model):
                     'This property already has a buyer.'
                 )
         self.status = 'accepted'
+        self.property_id.state = 'offer_accepted'
         self.property_id.selling_price = self.price
         self.property_id.buyer = self.partner_id.id
 
@@ -55,6 +57,7 @@ class EstatePropertyOffer(models.Model):
             self.property_id.selling_price = 0.0
             self.property_id.buyer = None
         self.status = 'refused'
+        self.property_id.state = 'new'
 
     _sql_constraints = [
         ("check_price", "CHECK(price > 0)", "Price must be positive."),

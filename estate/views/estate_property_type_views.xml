@@ -14,6 +14,7 @@
         <field name="model">estate_property_type</field>
         <field name="arch" type="xml">
             <tree string="Properties" create="True" delete="True">
+                <field name="sequence" widget="handle" />
                 <field name="name" string="Title"/>
             </tree>
         </field>
@@ -32,6 +33,19 @@
                                    placeholder="e.g. Apartment "/>
                         </h1>
                     </div>
+                    <notebook>
+                        <page string="properties">
+                            <group>
+                                <field name="property_ids" string="">
+                                    <tree>
+                                        <field name="name" string="Title"/>
+                                        <field name="expected_price" string="Expected Price"/>
+                                        <field name="state" string="Status"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

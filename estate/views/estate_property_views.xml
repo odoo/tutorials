@@ -42,11 +42,15 @@
             <form string="Property" create="True" duplicate="True">
                 <header>
                     <button name="action_set_sold_property"
+                            invisible="state == 'sold' or state == 'canceled'"
                             string="sold"
                             type="object"/>
                     <button name="action_set_canceled_property"
+                            invisible="state == 'sold' or state == 'canceled'"
                             string="cancel"
                             type="object"/>
+                    <field name="state" widget="statusbar" string="Status"
+                           statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -59,9 +63,13 @@
                     </div>
                     <group>
                         <group>
-                            <field name="state" string="State"/>
-                            <field name="tag_ids" widget="many2many_tags" string="Tags"/>
-                            <field name="property_type_id" string="Property Type"/>
+                            <field name="tag_ids" widget="many2many_tags" string="Tags"
+                                   options="{'color_field': 'color'}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="property_type_id" string="Property Type" options="{'no_create':true}"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -80,9 +88,14 @@
                                     <field name="living_area" string="Living Area(sqm)"/>
                                     <field name="facades" string="Facades"/>
                                     <field name="garage" string="Garage"/>
+                                </group>
+                                <group>
                                     <field name="garden" string="Garden"/>
-                                    <field name="garden_area" string="Garden Area(sqm)"/>
-                                    <field name="garden_orientation" string="Garden Orientation"/>
+                                    <field name="garden_area" invisible="not garden"
+                                           string="Garden Area(sqm)"/>
+                                    <field name="garden_orientation" invisible="not garden"
+                                           widget="radio"
+                                           string="Garden Orientation"/>
                                     <field name="total_area" string="Total Area(sqm)"
                                            help="this compute field it define as the sum on Living Area and Garden Area"/>
                                 </group>
@@ -90,7 +103,7 @@
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offers_ids" string="">
+                                <field name="offers_ids" string="" readonly="parent.state == 'offer_accepted'">
                                     <form string="Property" create="True" duplicate="True">
                                         <sheet>
                                             <div class="oe_title">
@@ -110,15 +123,19 @@
                                             </group>
                                         </sheet>
                                     </form>
-                                    <tree string="Properties" create="True" delete="True">
+                                    <tree string="Properties" create="True" edit="true" delete="True">
                                         <field name="price" string="Price"/>
+                                        <field name="state" optional="True" invisible="1"/>
                                         <field name="partner_id" string="Partner"/>
                                         <field name="status" string="Status"/>
                                         <field name="validity" string="Validity (days)"/>
+
                                         <field name="date_deadline" string="Deadline"/>
                                         <button name="action_accept_offer" string="accept" type="object"
+                                                invisible="state != 'new' and state != 'offer_refused'"
                                                 icon="fa-check"/>
                                         <button name="action_refuse_offer" string="refuse" type="object"
+                                                invisible="state != 'new'"
                                                 icon="fa-times"/>
                                         <field name="property_type_id" string="Property Type"/>
                                     </tree>
