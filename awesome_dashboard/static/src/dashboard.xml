@@ -7,30 +7,32 @@
                 <button class="btn btn-primary" t-on-click="showCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="showLeads">Leads</button>
             </t>
-            <DashboardItem>
-                Average amount of t-shirt by order this month
-                <span class="h1 text-success"><t t-esc="stats.average_quantity" /></span>
-            </DashboardItem>
-            <DashboardItem>
-                Average time for an order to go from 'new' to 'sent' or 'cancelled'
-                <span class="h1 text-success"><t t-esc="stats.average_time" class="text-primary"/></span>
-            </DashboardItem>
-            <DashboardItem>
-                Number of new orders this month
-                <span class="h1 text-success"><t t-esc="stats.nb_new_orders" class="text-primary"/></span>
-            </DashboardItem>
-            <DashboardItem>
-                Number of cancelled orders this month
-                <span class="h1 text-success"><t t-esc="stats.nb_cancelled_orders" class="text-primary"/></span>
-            </DashboardItem>
-            <DashboardItem>
-                Total amount of new orders this month
-                <span class="h1 text-success"><t t-esc="stats.total_amount" class="text-primary"/></span>
-            </DashboardItem>
-            <DashboardItem>
-                Shirt orders by size
-                <PieChart data="stats['orders_by_size']" label="'Shirt orders by size'"/>
-            </DashboardItem>
+            <div t-if="stats.isReady">
+                <DashboardItem>
+                    Average amount of t-shirt by order this month
+                    <span class="h1 text-success"><t t-esc="stats.average_quantity" /></span>
+                </DashboardItem>
+                <DashboardItem>
+                    Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                    <span class="h1 text-success"><t t-esc="stats.average_time" class="text-primary"/></span>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of new orders this month
+                    <span class="h1 text-success"><t t-esc="stats.nb_new_orders" class="text-primary"/></span>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of cancelled orders this month
+                    <span class="h1 text-success"><t t-esc="stats.nb_cancelled_orders" class="text-primary"/></span>
+                </DashboardItem>
+                <DashboardItem>
+                    Total amount of new orders this month
+                    <span class="h1 text-success"><t t-esc="stats.total_amount" class="text-primary"/></span>
+                </DashboardItem>
+                <DashboardItem>
+                    Shirt orders by size
+                    <PieChart data="stats.orders_by_size" label="'Shirt orders by size'"/>
+                </DashboardItem>
+            </div>
         </Layout>
     </t>
 

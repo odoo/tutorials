@@ -17,7 +17,7 @@ export class PieChart extends Component {
         });
 
         onMounted(() => {
-            new Chart(this.canvas.el, {
+            this.chart = new Chart(this.canvas.el, {
                 type: 'pie',
                 data: {
                     labels: Object.keys(this.props.data),
