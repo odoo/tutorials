@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChartCard">
+        <DashboardItem size="size">
+            <PieChart data="props.data" label="props.label"/>
+        </DashboardItem>
+    </t>
+</templates>
