@@ -4,17 +4,16 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <search string="Search Property">
-                <field name="name" />
-                <field name="postcode" />
-                <field name="expected_price" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="facades" />
-                <filter name="state" string="New properties" domain="[('state', '=', 'new')]" />
-                <filter name="state" string="Offer Received"
-                    domain="[('state', '=', 'offer_received')]" />
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <filter name="state" string="New properties" domain="[('state', '=', 'new')]"/>
+                <filter name="state" string="Offer Received" domain="[('state', '=', 'offer_received')]"/>
                 <group expand="1" string="group by">
-                    <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}" />
+                    <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
@@ -25,80 +24,111 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <tree string="Properties" create="True" delete="True">
-                <field name="name" string="Title" />
-                <field name="postcode" string="postcode" />
-                <field name="bedrooms" string="Bedrooms" />
-                <field name="living_area" string="Living Area(sqm)" />
-                <field name="expected_price" string="Expected Price" />
-                <field name="selling_price" string="Selling Price" />
-                <field name="date_availability" string="Available From" />
+                <field name="name" string="Title"/>
+                <field name="postcode" string="postcode"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area(sqm)"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="date_availability" string="Available From"/>
             </tree>
         </field>
     </record>
 
     <record id="estate.estate_property_form_view" model="ir.ui.view">
-        <header>
-            <button name="action_set_sold_property"
-                string="sold"
-                type="object" />
-            <button name="action_set_canceld_property"
-                string="cancel"
-                type="object" />
-        </header>
         <field name="name">estate_property.view.form</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Property" create="True" duplicate="True">
+                <header>
+                    <button name="action_set_sold_property"
+                            string="sold"
+                            type="object"/>
+                    <button name="action_set_canceled_property"
+                            string="cancel"
+                            type="object"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" string="Name" />
+                        <label for="name" string="Name"/>
                         <h1>
                             <field class="text-break" name="name" options="{'line_breaks': False}"
-                                widget="text"
-                                placeholder="e.g. House 1 " />
+                                   widget="text"
+                                   placeholder="e.g. House 1 "/>
                         </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" string="Tags" />
-                            <field name="property_type_id" string="Property Type" />
-                            <field name="postcode" string="Postcode" />
-                            <field name="date_availability" string="Available From" />
+                            <field name="state" string="State"/>
+                            <field name="tag_ids" widget="many2many_tags" string="Tags"/>
+                            <field name="property_type_id" string="Property Type"/>
+                            <field name="postcode" string="Postcode"/>
+                            <field name="date_availability" string="Available From"/>
                         </group>
                         <group>
-                            <field name="expected_price" string="Expected Price" />
-                            <field name="selling_price" string="Selling Price" />
-                            <field name="best_price" string="Best Price" />
+                            <field name="expected_price" string="Expected Price"/>
+                            <field name="selling_price" string="Selling Price"/>
+                            <field name="best_price" string="Best Price"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
                                 <group>
-                                    <field name="description" string="Description" />
-                                    <field name="bedrooms" string="Bedrooms" />
-                                    <field name="living_area" string="Living Area(sqm)" />
-                                    <field name="facades" string="Facades" />
-                                    <field name="garage" string="Garage" />
-                                    <field name="garden" string="Garden" />
-                                    <field name="garden_area" string="Garden Area(sqm)"
-                                        invisible="garden == 0" />
-                                    <field name="garden_orientation" string="Garden Orientation"
-                                        invisible="garden == 0" />
+                                    <field name="description" string="Description"/>
+                                    <field name="bedrooms" string="Bedrooms"/>
+                                    <field name="living_area" string="Living Area(sqm)"/>
+                                    <field name="facades" string="Facades"/>
+                                    <field name="garage" string="Garage"/>
+                                    <field name="garden" string="Garden"/>
+                                    <field name="garden_area" string="Garden Area(sqm)"/>
+                                    <field name="garden_orientation" string="Garden Orientation"/>
                                     <field name="total_area" string="Total Area(sqm)"
-                                        help="this compute fiel it define as the sum on Living Area and Granden Area" />
+                                           help="this compute field it define as the sum on Living Area and Garden Area"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offers_ids" string="All offers" />
+                                <field name="offers_ids" string="">
+                                    <form string="Property" create="True" duplicate="True">
+                                        <sheet>
+                                            <div class="oe_title">
+                                                <label for="price" string="Price"/>
+                                                <h1>
+                                                    <field class="text-break" name="price"
+                                                           options="{'line_breaks': False}" widget="text"
+                                                           placeholder="e.g. 1000 "/>
+                                                </h1>
+                                            </div>
+                                            <group>
+                                                <!--                        <field name="property_id" string="Property"/>-->
+                                                <field name="partner_id" string="Partner"/>
+                                                <field name="validity" string="Validity (days)"/>
+                                                <field name="date_deadline" string="Deadline"/>
+                                                <field name="status" string="Status"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                    <tree string="Properties" create="True" delete="True">
+                                        <field name="price" string="Price"/>
+                                        <field name="partner_id" string="Partner"/>
+                                        <field name="status" string="Status"/>
+                                        <field name="validity" string="Validity (days)"/>
+                                        <field name="date_deadline" string="Deadline"/>
+                                        <button name="action_accept_offer" string="accept" type="object"
+                                                icon="fa-check"/>
+                                        <button name="action_refuse_offer" string="refuse" type="object"
+                                                icon="fa-times"/>
+                                        <field name="property_type_id" string="Property Type"/>
+                                    </tree>
+                                </field>
                             </group>
                         </page>
-                        <page string="Othe Info">
+                        <page string="Others Info">
                             <group>
-                                <field name="buyer" string="Buyer" />
-                                <field name="salesperson" string="Salesperson" />
+                                <field name="buyer" string="Buyer"/>
+                                <field name="salesperson" string="Salesperson"/>
                             </group>
                         </page>
                     </notebook>
@@ -106,7 +136,6 @@
             </form>
         </field>
     </record>
-
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate_property</field>
