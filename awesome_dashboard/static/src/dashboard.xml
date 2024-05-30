@@ -27,6 +27,10 @@
                 Total amount of new orders this month
                 <span class="h1 text-success"><t t-esc="stats.total_amount" class="text-primary"/></span>
             </DashboardItem>
+            <DashboardItem>
+                Shirt orders by size
+                <PieChart data="stats['orders_by_size']" label="'Shirt orders by size'"/>
+            </DashboardItem>
         </Layout>
     </t>
 
