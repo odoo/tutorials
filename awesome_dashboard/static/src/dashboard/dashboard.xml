@@ -9,7 +9,7 @@
         <i class="fa fa-cog" />
         </button>
         <Layout className="'o_dashboard h-100'">
-            <div class="d-flex w-auto flex-wrap">
+            <div class="d-flex w-auto flex-wrap" t-if="myservice.isReady">
                 <t t-foreach="items" t-as="item" t-key="item.id">
                     <t t-set="itemProp" t-value="item.props"/>
                     <t t-if="!state.disabledItems.includes(item.id)" t-component="item.Component" t-props="itemProp"/>
