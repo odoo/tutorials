@@ -8,9 +8,15 @@ export class TodoList extends Component {
     static components = {TodoItem};
 
     setup(){
-        this.todo = useState([{ id: 3, description: "buy milk2", isComplete: false },
-        { id: 2, description: "buy milk2", isComplete: true },
-        { id: 1, description: "buy milk1", isComplete: false }]);
+        this.countIds = 0;
+        this.todo = useState([]);
+    }
+
+    addTodo(ev){
+        if (ev.keyCode === 13 && ev.target.value != ""){
+            this.todo.push({id: this.countIds++, description: ev.target.value, isComplete: false});
+            ev.target.value = "";
+        }
     }
 
 }
