@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button t-on-click="_openKanbanViewAllCustomers">Customers</button>
+                <button t-on-click="_openLeads">Leads</button>
+            </t>
+            <div t-if="statistics.data">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-component="item.Component" t-props="item.props(statistics.data)" />
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+</templates>

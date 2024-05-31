@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.StatCard">
+
+        <t t-esc="props.title"/>
+        <div t-att-style="'font-size: 2.5em; color: green; text-align: center;'">
+            <t t-esc="props.data"/>
+        </div>
+    </t>
+</templates>

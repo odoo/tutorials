@@ -1,11 +1,12 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { reactive } from "@odoo/owl";
+import { reactive, useState } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 
 const statisticsService = {
     dependencies: ["rpc"],
-    async start(env, { rpc }) {
+    start(env, { rpc }) {
         const statistics = reactive({ data: {} });
 
         const fetchStatistics = async () => {
@@ -13,7 +14,7 @@ const statisticsService = {
         };
 
         setInterval(fetchStatistics, 10*60*1000);
-        await fetchStatistics();
+        fetchStatistics().then();
 
         return statistics;
     }
