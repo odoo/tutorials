@@ -24,12 +24,14 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <tree string="Properties" create="True" delete="True"
-                decoration-success="state in ('offer_received', 'offer_accepted')" 
-                decoration-bf="state == 'offer_accepted'" 
-                decoration-muted = "estate == 'sold'">
+                decoration-bf="state in ('offer_received', 'offer_accepted')"
+                    decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-muted = "state == 'sold'">
                 <field name="name" string="Title"/>
                 <field name="postcode" string="postcode" optional="True"/>
                 <field name="state" string="State" optional="True"/>
+                <field name="tag_ids" widget="many2many_tags" string="Tags"
+                       options="{'color_field': 'color'}"/> 
                 <field name="property_type_id" string="Property Type" optional="True"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area(sqm)"/>
@@ -128,11 +130,11 @@
                                             </group>
                                         </sheet>
                                     </form>
-                                    <tree string="Properties" create="True" edit="true" delete="True"
+                                    <tree string="Properties" editable="top"
                                         decoration-success = "status == 'accepted'"
                                         decoration-danger = "status == 'refused'">
+                                        <field name="property_id" optional="True" string="Property"/>
                                         <field name="price" string="Price"/>
-                                        <field name="state" optional="True" invisible="1"/>
                                         <field name="partner_id" string="Partner"/>
                                         <field name="status" string="Status"/>
                                         <field name="validity" string="Validity (days)"/>
@@ -140,7 +142,7 @@
                                         <button name="action_accept_offer" string="accept" type="object"
                                                 column_invisible="parent.state in ('offer_received', 'offer_accepted')"
                                                 icon="fa-check"/>
-                                        <button name="action_refuse_offer" string="" type="object"
+                                        <button name="action_refuse_offer" string="refuse" type="object"
                                                 column_invisible="parent.state in ('offer_received', 'offer_accepted')"
                                                 icon="fa-times"/>
                                         <field name="property_type_id" string="Property Type"/>

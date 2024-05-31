@@ -14,7 +14,7 @@
         <field name="name">estate_property_offer.view.tree</field>
         <field name="model">estate_property_offer</field>
         <field name="arch" type="xml">
-            <tree string="Properties" edit="True" create="True" delete="True"
+            <tree string="Properties" editable="top" create="True" edit="True" delete="True"
                 decoration-success = "status == 'accepted'"
                 decoration-danger = "status == 'refused'">
                 <field name="property_id" string="Property"/>
@@ -52,6 +52,7 @@
             </form>
         </field>
     </record>
+
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Properties offers</field>
         <field name="res_model">estate_property_offer</field>

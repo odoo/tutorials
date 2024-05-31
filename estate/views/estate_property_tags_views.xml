@@ -13,7 +13,7 @@
         <field name="name">estate_property_tags.view.tree</field>
         <field name="model">estate_property_tags</field>
         <field name="arch" type="xml">
-            <tree string="Properties" create="True" edit="True" delete="True">
+            <tree string="Properties" create="True" edit="True" editable="top">
                 <field name="name" string="Title"/>
             </tree>
         </field>
