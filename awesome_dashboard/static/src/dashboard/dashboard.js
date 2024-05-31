@@ -4,9 +4,9 @@ import { Component, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
-import { DashboardItem } from "./dashboarditem/dashboarditem";
+import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { PieChart } from "./piechart/piechart";
-import { DialogItems } from "./dialog/dialogitems";
+import { ItemsDialog } from "./dialog/items_dialog";
 import { browser } from "@web/core/browser/browser";
 import { useStatistics } from "./statistics";
 import { useDashboardItems } from "./dashboard_items";
@@ -34,7 +34,7 @@ class AwesomeDashboard extends Component {
     }
 
     openDialog() {
-        this.dialog.add(DialogItems, {
+        this.dialog.add(ItemsDialog, {
             items: this.items,
             apply: () => {
                 this.updateVisibleItems();
@@ -57,6 +57,6 @@ class AwesomeDashboard extends Component {
 }
 
 AwesomeDashboard.template = "awesome_dashboard.AwesomeDashboard";
-AwesomeDashboard.components = { Layout, DashboardItem, PieChart, DialogItems };
+AwesomeDashboard.components = { Layout, DashboardItem, PieChart, DialogItems: ItemsDialog };
 
 registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);

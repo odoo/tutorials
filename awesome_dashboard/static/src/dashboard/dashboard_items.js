@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import { NumberCard } from "./dashboarditem/numbercard";
-import { PieChartCard } from "./dashboarditem/piechartcard";
+import { NumberCard } from "./dashboard_item/number_card";
+import { PieChartCard } from "./dashboard_item/piechart_card";
 import { registry } from "@web/core/registry";
 
 export const useDashboardItems = () => {

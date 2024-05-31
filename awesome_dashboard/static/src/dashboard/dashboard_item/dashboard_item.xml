@@ -2,13 +2,9 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.DashboardItem">
-        <div class="o_dashboard_item" t-att-style="'width: ' + (size * 18) + 'rem'">
+        <div class="o_dashboard_item" t-att-style="'--o-dashboard-item-size: ' + size + ';'">
             <t t-slot="default">
                 some content
-                <br/>
-                <br/>
-                <br/>
-                some content 2
             </t>
         </div>
     </t>

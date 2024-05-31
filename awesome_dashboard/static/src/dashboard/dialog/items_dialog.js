@@ -4,7 +4,7 @@ import { Dialog } from "@web/core/dialog/dialog";
 import { Component, useState } from "@odoo/owl";
 import { browser } from "@web/core/browser/browser";
 
-export class DialogItems extends Component {
+export class ItemsDialog extends Component {
     setup() {
         this.close = this.props.close;
 
@@ -28,11 +28,11 @@ export class DialogItems extends Component {
     }
 }
 
-DialogItems.template = "awesome_dashboard.DialogItems";
-DialogItems.components = {
+ItemsDialog.template = "awesome_dashboard.ItemsDialog";
+ItemsDialog.components = {
     Dialog,
 };
-DialogItems.props = {
+ItemsDialog.props = {
     items: {
         type: Object,
     },

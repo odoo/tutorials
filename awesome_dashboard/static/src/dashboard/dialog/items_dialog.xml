@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="awesome_dashboard.DialogItems">
+    <t t-name="awesome_dashboard.ItemsDialog">
         <Dialog size="'md'" title="'Dashboard items configuration'">
             <t t-foreach="itemsSelection" t-as="item" t-key="item.id">
                 <div class="d-flex align-items-center gap-2" t-on-click="() => toggleVisibility(item)">

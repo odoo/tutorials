@@ -1,18 +1,29 @@
 .o_dashboard {
-    background-color: #c9bebe;
-    padding: 10px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    margin: 15px;
-    display: flex;
-    align-items: start;
-    justify-content: start;
-    gap: 15px;
-    flex-wrap: wrap;
+  background-color: #c9bebe;
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  margin: 15px;
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
 .o_dashboard .o_dashboard_item {
-    background-color: #ffffff;
-    padding: 10px;
-    border-radius: 5px;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  --o-dashboard-item-size: 1;
+}
+
+@media (min-width: 768px) {
+  .o_dashboard .o_dashboard_item {
+    width: calc(var(--o-dashboard-item-size) * 18rem);
+  }
 }
