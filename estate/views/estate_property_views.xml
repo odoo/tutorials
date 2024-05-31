@@ -10,8 +10,8 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
-                <filter name="state" string="New properties" domain="[('state', '=', 'new')]"/>
-                <filter name="state" string="Offer Received" domain="[('state', '=', 'offer_received')]"/>
+                <filter name="stateNew" string="New properties" domain="[('state', '=', 'new')]"/>
+                <filter name="stateReceived" string="Offer Received" domain="[('state', '=', 'offer_received')]"/>
                 <group expand="1" string="group by">
                     <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
                 </group>
@@ -24,14 +24,14 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <tree string="Properties" create="True" delete="True"
-                decoration-bf="state in ('offer_received', 'offer_accepted')"
+                decoration-bf="state=='offer_accepted'"
                     decoration-success="state in ('offer_received', 'offer_accepted')"
-                decoration-muted = "state == 'sold'">
+                decoration-muted = "state=='sold'">
                 <field name="name" string="Title"/>
                 <field name="postcode" string="postcode" optional="True"/>
                 <field name="state" string="State" optional="True"/>
                 <field name="tag_ids" widget="many2many_tags" string="Tags"
-                       options="{'color_field': 'color'}"/> 
+                       options="{'color_field': 'color'}"/>
                 <field name="property_type_id" string="Property Type" optional="True"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area(sqm)"/>
@@ -166,5 +166,6 @@
         <field name="name">Properties</field>
         <field name="res_model">estate_property</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_stateNew': 1}</field>
     </record>
 </odoo>
