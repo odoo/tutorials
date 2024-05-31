@@ -28,6 +28,14 @@
         'awesome_dashboard.dashboard': [
             'awesome_dashboard/static/src/dashboard/**/*',
         ],
+        'awesome_dashboard.assets_qunit_tests': [
+            ('include', 'awesome_dashboard.dashboard'),
+
+            'web/static/tests/helpers/**/*.js',
+
+            # awesome dashboard unit tests
+            'awesome_dashboard/static/tests/**/*',
+        ],
     },
     'license': 'AGPL-3'
 }
