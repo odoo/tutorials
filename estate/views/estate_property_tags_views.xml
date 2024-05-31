@@ -9,11 +9,11 @@
         </field>
     </record>
 
-    <record id="estate.estate_property_type_tags_view" model="ir.ui.view">
+    <record id="estate.estate_property_tags_tree_view" model="ir.ui.view">
         <field name="name">estate_property_tags.view.tree</field>
         <field name="model">estate_property_tags</field>
         <field name="arch" type="xml">
-            <tree string="Properties" create="True" delete="True">
+            <tree string="Properties" create="True" edit="True" delete="True">
                 <field name="name" string="Title"/>
             </tree>
         </field>
