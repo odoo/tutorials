@@ -5,6 +5,7 @@ import { loadJS } from "@web/core/assets";
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
     static props = {
+        title: { type: String},
         data: { type: Object }
     };
 

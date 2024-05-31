@@ -8,13 +8,39 @@
                 <button t-on-click="_openKanbanViewAllCustomers">Customers</button>
                 <button t-on-click="_openLeads">Leads</button>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="_openConfig">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
             <div t-if="statistics.data">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size || 1">
-                        <t t-component="item.Component" t-props="item.props(statistics.data)" />
+                    <DashboardItem
+                            t-if="enabledItems[item.index]"
+                            size="item.size || 1">
+                        <t t-component="item.Component" t-props="item.props(statistics.data)"/>
                     </DashboardItem>
                 </t>
             </div>
         </Layout>
     </t>
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog>
+            <t t-foreach="configurables" t-as="configurable" t-key="configurable.item.id">
+                <div>
+                    <input
+                        type="checkbox"
+                        t-on-change="() => this._onCheck(configurable.item.index)"
+                        t-att-checked="configurable.enabled"
+                    />
+                    <t t-esc="'. ' + configurable.item.description"/>
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <button t-on-click="_onDone">Done</button>
+            </t>
+        </Dialog>
+    </t>
+
 </templates>

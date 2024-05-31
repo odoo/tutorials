@@ -45,6 +45,7 @@ const items = [
         description: "Shirt orders by size",
         Component: PieChart,
         props: (statistics) => ({
+            title: "Shirt orders by size",
             data: statistics.orders_by_size
         }),
     }
