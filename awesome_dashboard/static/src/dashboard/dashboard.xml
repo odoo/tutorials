@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{ controlPanel: { 'top-right' : false, 'bottom-right': false } }"
+                className="'o_dashboard h-100'">
+
+            <t t-set-slot="layout-buttons">
+                <button t-on-click="onClickOpenCustomers" class="btn btn-primary">Customers</button>
+                <button t-on-click="" class="btn btn-primary">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="onClickOpenConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"/>
+                </button>
+            </t>
+
+            <div class="d-flex flex-wrap" t-if="this.statistics.isReady">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                   <DashboardItem size="item.size || 1" t-if="!state.disabledItems.includes(item.id)">
+                       <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                       <t t-component="item.Component" t-props="itemProp"/>
+                   </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard Items Configuration'">
+            <h3>Which cards do you wish to see ?</h3>
+            <div class="d-flex flex-column">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <div class="d-flex gap-2">
+                        <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                            <t t-esc="item.description"/>
+                        </CheckBox>
+                    </div>
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">Done</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
