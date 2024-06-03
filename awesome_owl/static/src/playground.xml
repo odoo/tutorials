@@ -9,8 +9,10 @@
             <div> Sum : <t t-esc="sum.value"/></div>
         </div>
         <div>
-            <Card title="'card1'" content="'content1'"/>
-            <Card title="'card2'" content="str1"/>
+            <Card title="'card1'"> content1 </Card>
+            <Card title="'card2'">
+                <Counter />
+            </Card>
         </div>
         <div>
             <TodoList />
