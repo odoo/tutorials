@@ -7,9 +7,14 @@ export class TodoItem extends Component {
     static props = {
         todo: {type: Object, shape: {id: Number, description: String, isComplete: Boolean}},
         toggleState: Function,
+        removeTodo: Function,
     };
 
     onChange() {
         this.props.toggleState(this.props.todo.id);
+    }
+
+    onRemove() {
+        this.props.removeTodo(this.props.todo.id);
     }
 }
