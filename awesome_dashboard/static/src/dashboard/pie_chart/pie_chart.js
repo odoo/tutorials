@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { Component, onMounted, onWillPatch, onWillStart, onWillUnmount, useEffect, useRef } from "@odoo/owl";
+import { Component, onWillStart, useEffect, useRef } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {

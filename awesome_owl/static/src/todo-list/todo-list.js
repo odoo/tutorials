@@ -15,7 +15,7 @@ export class TodoList extends Component {
     }
 
     _createTodo(keyboardEvent) {
-        if (keyboardEvent.keyCode !== 13 || keyboardEvent.target.value == "") return;
+        if (keyboardEvent.keyCode !== 13 || keyboardEvent.target.value === "") return;
 
         this.todos.push({
             id: this.idSequence.next++,

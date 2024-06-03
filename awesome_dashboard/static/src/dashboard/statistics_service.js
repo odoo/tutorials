@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { reactive, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import { reactive } from "@odoo/owl";
 
 const statisticsService = {
     dependencies: ["rpc"],
