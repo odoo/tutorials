@@ -1,36 +1,26 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
-    _name = 'estate_property'
+    _name = 'estate_property'  # change _ to .
     _description = 'Real Estate Property'
     _order = 'id desc'
-
-    def _default_salesperson(self):
-        return self.env.user
 
     def _in_three_months(self):
         self.date_availability = fields.date.today()
         return fields.date.today() + fields.date_utils.relativedelta(months=3)
 
-    @api.depends('living_area', 'garden_area')
-    def _compute_total_area(self):
-        for rec in self:
-            rec.total_area = rec.living_area + rec.garden_area
-
-    @api.depends('offers_ids.price')
-    def _compute_best_price(self):
-        for rec in self:
-            rec.best_price = max(rec.offers_ids.mapped('price') or [0.0])
+    def _default_salesperson(self):
+        return self.env.user
 
     name = fields.Char(required=True)
-    description = fields.Text()
+    description = fields.Text(string="Description")
     postcode = fields.Char()
     date_availability = fields.Date(
         copy=False,
-        default=_in_three_months
+        default=_in_three_months,
     )
 
     expected_price = fields.Float(required=True)
@@ -48,6 +38,37 @@ class EstateProperty(models.Model):
         ('west', 'West'),
     ])
 
+    active = fields.Boolean(default=True)
+    state = fields.Selection([
+        ('new', 'New'),
+        ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('canceled', 'Canceled'),
+    ], default='new', copy=False, string="Status")
+
+    property_type_id = fields.Many2one(
+        'estate_property_type',
+        string='Property Type'
+    )
+    buyer = fields.Many2one('res.partner', copy=False)
+    salesperson = fields.Many2one('res.users', default=_default_salesperson)
+    offers_ids = fields.One2many('estate_property_offer', 'property_id')
+    tag_ids = fields.Many2many('estate_property_tags')
+
+    total_area = fields.Integer(compute='_compute_total_area')
+    best_price = fields.Float(compute='_compute_best_price')
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for rec in self:
+            rec.total_area = rec.living_area + rec.garden_area
+
+    @api.depends('offers_ids.price')
+    def _compute_best_price(self):
+        for rec in self:
+            rec.best_price = max(rec.offers_ids.mapped('price') or [0.0])
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -63,29 +84,8 @@ class EstateProperty(models.Model):
             return {"warning": {
                 "title": "Warning",
                 "message": "Available    date must be greater than current date",
-                }
             }
-
-    active = fields.Boolean(default=True)
-    state = fields.Selection([
-        ('new', 'New'),
-        ('offer_received', 'Offer Received'),
-        ('offer_accepted', 'Offer Accepted'),
-        ('sold', 'Sold'),
-        ('canceled', 'Canceled'),
-    ], default='new',  copy=False, string="Status")
-
-    property_type_id = fields.Many2one(
-        'estate_property_type',
-        string='Property Type'
-    )
-    buyer = fields.Many2one('res.partner', copy=False)
-    salesperson = fields.Many2one('res.users', default=_default_salesperson)
-    offers_ids = fields.One2many('estate_property_offer', 'property_id')
-    tag_ids = fields.Many2many('estate_property_tags')
-
-    total_area = fields.Integer(compute='_compute_total_area')
-    best_price = fields.Float(compute='_compute_best_price')
+            }
 
     def action_set_sold_property(self):
         if self.state == "canceled":
@@ -112,3 +112,15 @@ class EstateProperty(models.Model):
                 rec.selling_price = None
                 rec.buyer = None
                 raise ValidationError('The selling price cannot be lower than 90% of the expected price')
+
+    @api.ondelete(at_uninstall=False)
+    def unlink_check(self):
+        """
+        Prevent deletion of properties that are not in 'new' or 'canceled' state
+        """
+        if self.state != 'new' and self.state != 'canceled':
+            raise UserError(_('You cannot delete a property that is not new or canceled.'))
+
+        return super().unlink()
+
+

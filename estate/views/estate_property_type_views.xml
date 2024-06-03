@@ -14,7 +14,7 @@
         <field name="model">estate_property_type</field>
         <field name="arch" type="xml">
             <tree string="Properties" create="True" delete="True">
-                <field name="sequence" widget="handle" />
+                <field name="sequence" widget="handle"/>
                 <field name="name" string="Title"/>
             </tree>
         </field>
@@ -26,6 +26,15 @@
         <field name="arch" type="xml">
             <form string="Property" create="True" duplicate="True">
                 <sheet>
+                    <div class="oe_button_box"  name="button_box">
+                        <button type="object"
+                                name="action_open_offers"
+                                string="Offers"
+                                class="oe_stat_button"
+                                icon="fa-usd">
+                            <field name="offer_count" string="offers" />
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <label for="name" string="Name"/>
                         <h1>
