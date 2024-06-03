@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.client_action">
+        <div class="d-flex align-items-center gap-2 p-2">
+            <span>Clicks: <ClickerValue/></span>
+            <button class="d-print-none btn btn-primary" id="increment_click_button" t-on-click="onIncrement">
+                Increment
+            </button>
+        </div>
+        <div class="p-2">
+            <h2>Bots</h2>
+            <div class="d-flex gap-2">
+                <div class="card" t-if="clicker.clickBotAvailable()">
+                    <div class="card-header">
+                        <t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds) <span><i class="fa fa-android"/></span>
+                    </div>
+                    <div class="card-body p-2">
+                        <button class="d-print-none btn btn-primary" id="increment_click_button"
+                                t-on-click="onBuyClickBot" t-att-disabled="!clicker.clickBotAffordable()">
+                            Buy ClickBot (1000 clicks)
+                        </button>
+                    </div>
+                </div>
+                <div class="card" t-if="clicker.bigClickBotAvailable()">
+                    <div class="card-header">
+                        <t t-esc="clicker.bigClickBots"/>x BigClickBots (100 clicks/10 seconds) <span><i class="fa fa-android"/></span>
+                    </div>
+                    <div class="card-body p-2">
+                        <button class="d-print-none btn btn-primary" id="increment_click_button"
+                                t-on-click="onBuyBigClickBot" t-att-disabled="!clicker.bigClickBotAffordable()">
+                            Buy BigClickBot (5000 clicks)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-2" t-if="clicker.powerAvailable()">
+            <h2>Power</h2>
+            <div class="card">
+                <div class="card-header">
+                    <t t-esc="clicker.powerFactor"/>x Power (factor multiplied to bot gains) <span><i class="fa fa-flash"/></span>
+                </div>
+                <div class="card-body p-2">
+                    <button class="d-print-none btn btn-primary" id="increment_click_button"
+                            t-on-click="onBuyPower" t-att-disabled="!clicker.powerAffordable()">
+                        Buy +1 Power (50000 clicks)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

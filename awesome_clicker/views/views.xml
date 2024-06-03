@@ -1,0 +1,6 @@
+<odoo>
+    <record model="ir.actions.client" id="client_action">
+      <field name="name">Client Action</field>
+      <field name="tag">awesome_clicker.client_action</field>
+    </record>
+</odoo>
