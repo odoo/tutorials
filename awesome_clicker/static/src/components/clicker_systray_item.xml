@@ -4,7 +4,9 @@
     <t t-name="awesome_clicker.clicker_systray_item">
         <div class="o_nav_entry">
             <span class="p-1">Clicks: <t t-esc="state.counter"/></span>
-            <button class="btn btn-secondary" t-on-click="increment"><i class="fa fa-plus"/></button>
+            <button class="btn btn-secondary" t-on-click="onButtonClick" t-ref="awesome_clicker.counter_button">
+                <i class="fa fa-plus"/>
+            </button>
         </div>
     </t>
 
