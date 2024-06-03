@@ -1,26 +1,24 @@
 /** @odoo-module **/
 
-import { Component, useExternalListener, useRef, useState } from "@odoo/owl";
+import { Component, useExternalListener } from "@odoo/owl";
 import { registry } from "@web/core/registry";
+import { useClickerService } from "../../core/hooks";
 
 export class ClickerSystrayItem extends Component {
     static template = "awesome_clicker.clicker_systray_item";
 
     setup() {
-        this.state = useState({ counter: 0 });
-        this.counterButtonRef = useRef('awesome_clicker.counter_button');
+        this.clickerService = useClickerService();
 
         useExternalListener(document.body, 'click', this.onClick, { capture: true });
     }
 
     onClick(event) {
-        if (this.counterButtonRef.el.contains(event.target)) return;
+        for (const button of document.querySelectorAll(".btn-clicker")) {
+            if (button.contains(event.target)) return;
+        }
 
-        this.state.counter++;
-    }
-
-    onButtonClick() {
-        this.state.counter += 10;
+        this.clickerService.increment();
     }
 }
 

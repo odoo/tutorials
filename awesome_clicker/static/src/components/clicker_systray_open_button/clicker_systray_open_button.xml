@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.clicker_systray_open_button">
+        <div class="o_nav_entry">
+            <button class="btn btn-secondary" t-on-click="openClientAction">Open</button>
+        </div>
+    </t>
+
+</templates>

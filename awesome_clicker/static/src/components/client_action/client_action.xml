@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.client_action">
+        <div class="d-flex align-items-center gap-1 p-3">
+            <div class="flex-grow-1">Clicks in bank: <t t-esc="clickerService.counter"/></div>
+            <div>
+                <button class="btn btn-secondary btn-clicker"
+                        t-on-click="onButtonClick"
+                        t-ref="awesome_clicker.counter_button">
+                    <i class="fa fa-plus"/>
+                </button>
+            </div>
+        </div>
+    </t>
+
+</templates>
