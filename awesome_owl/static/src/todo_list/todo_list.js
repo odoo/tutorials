@@ -23,4 +23,10 @@ export class TodoList extends Component {
         }
     }
 
+    toggleTodo(Id){
+        const record = this.todo.find((record) => record.id === Id);
+        if (record){
+            record.isComplete = !record.isComplete;
+        }
+    }
 }

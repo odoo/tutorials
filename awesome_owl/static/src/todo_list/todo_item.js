@@ -5,6 +5,11 @@ import { Component } from "@odoo/owl";
 export class TodoItem extends Component {
     static template = "awesome_owl.TodoItem";
     static props = {
-        todo: {type: Object, shape: {id: Number, description: String, isComplete: Boolean}}
+        todo: {type: Object, shape: {id: Number, description: String, isComplete: Boolean}},
+        toggleState: Function,
     };
+
+    onChange() {
+        this.props.toggleState(this.props.todo.id);
+    }
 }
