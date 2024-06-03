@@ -3,7 +3,7 @@
 
     <t t-name="awesome_clicker.client_action">
         <div class="d-flex align-items-center gap-1 p-3">
-            <div class="flex-grow-1">Clicks in bank: <t t-esc="clickerService.counter"/></div>
+            <div class="flex-grow-1">Clicks in bank: <ClickValue value="clicker.counter"/></div>
             <div>
                 <button class="btn btn-secondary btn-clicker"
                         t-on-click="onButtonClick"

@@ -2,13 +2,15 @@
 
 import { Component, useExternalListener } from "@odoo/owl";
 import { registry } from "@web/core/registry";
-import { useClickerService } from "../../core/hooks";
+import { useClicker } from "../../core/hooks";
+import { ClickValue } from "../click_value/click_value";
 
 export class ClickerSystrayItem extends Component {
     static template = "awesome_clicker.clicker_systray_item";
+    static components = { ClickValue };
 
     setup() {
-        this.clickerService = useClickerService();
+        this.clicker = useClicker();
 
         useExternalListener(document.body, 'click', this.onClick, { capture: true });
     }
@@ -18,7 +20,7 @@ export class ClickerSystrayItem extends Component {
             if (button.contains(event.target)) return;
         }
 
-        this.clickerService.increment();
+        this.clicker.increment();
     }
 }
 

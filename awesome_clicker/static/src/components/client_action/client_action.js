@@ -1,17 +1,19 @@
 /** @odoo-module **/
 import { Component } from "@odoo/owl";
 import { registry } from "@web/core/registry";
-import { useClickerService } from "../../core/hooks";
+import { useClicker } from "../../core/hooks";
+import { ClickValue } from "../click_value/click_value";
 
 export class ClientAction extends Component {
     static template = "awesome_clicker.client_action";
+    static components = { ClickValue };
 
     setup() {
-        this.clickerService = useClickerService();
+        this.clicker = useClicker();
     }
 
     onButtonClick() {
-        this.clickerService.increment(10);
+        this.clicker.increment(10);
     }
 }
 
