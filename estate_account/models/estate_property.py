@@ -11,6 +11,8 @@ class EstateProperty(models.Model):
         Create an invoice when a property is sold.
         """
         res = super().action_sell()
+        self.check_access_rights('write')
+        self.check_access_rule('write')
         for record in self:
             invoice_lines = [
                 Command.create(line)

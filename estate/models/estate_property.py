@@ -18,6 +18,11 @@ class EstateProperty(models.Model):
         ('positive_selling_price', 'CHECK(selling_price >= 0)', "Selling Price must be positive."),
     ]
 
+    company_id = fields.Many2one(
+        'res.company',
+        required=True,
+        default=lambda self: self.env.company.id,
+    )
     name = fields.Char("Property Name", required=True)
     description = fields.Text("Description")
     active = fields.Boolean(default=True)
@@ -83,8 +88,8 @@ class EstateProperty(models.Model):
         for record in self:
             ratio = record.selling_price / record.expected_price
             if (
-                not float_is_zero(record.selling_price, precision_rounding=0.01)
-                and float_compare(ratio, 0.90, precision_rounding=0.01) < 0
+                    not float_is_zero(record.selling_price, precision_rounding=0.01)
+                    and float_compare(ratio, 0.90, precision_rounding=0.01) < 0
             ):
                 raise ValidationError(
                     _(

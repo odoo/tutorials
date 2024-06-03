@@ -5,7 +5,7 @@
     'version': "0.1",
     'depends': ['estate', 'account'],
     'author': "Odoo",
-    'category': "Tutorials/RealEstate",
+    'category': "Real Estate/Brokerage",
     'description': """
         Create invoices when selling Real Estate Properties
     """,
