@@ -7,7 +7,7 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <div class="d-flex flex warp">
+            <div class="d-flex flex warp"  t-if="statistics.isReady">
                 <DashboardItem>
                     number of new orders this month
                     <div class="fs-1 fw-bold text-success text-center">
@@ -32,12 +32,18 @@
                         <t t-esc="statistics.nb_cancelled_orders"/>
                     </div>
                 </DashboardItem>
-                <DashboardItem size="2">
-                    Average time for an order to go from 'new' to 'sent' or 'cancelled'
-                    <div class="fs-1 fw-bold text-success text-center">
-                        <t t-esc="statistics.average_time"/>
-                    </div>
-                </DashboardItem>
+                <div>
+                    <DashboardItem size="2">
+                        Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                        <div class="fs-1 fw-bold text-success text-center">
+                            <t t-esc="statistics.average_time"/>
+                        </div>
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        Shirt orders by size
+                        <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
+                    </DashboardItem>
+                </div>
             </div>
         </Layout>
     </t>
