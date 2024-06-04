@@ -3,7 +3,7 @@
 
     <t t-name="awesome_clicker.client_action">
         <div class="d-flex align-items-center gap-1 p-3">
-            <div class="flex-grow-1">Clicks in bank: <ClickValue value="clicker.counter"/></div>
+            <div class="flex-grow-1">Clicks in bank: <ClickValue value="clicker.clickBalance"/></div>
             <div>
                 <button class="btn btn-secondary btn-clicker"
                         t-on-click="onButtonClick"
@@ -11,6 +11,40 @@
                     <i class="fa fa-plus"/>
                 </button>
             </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-1 p-3">
+            <t t-foreach="Object.keys(clicker.autoclickers).filter(name => clicker.autoclickers[name].unlocked)"
+               t-as="autoclickerName"
+               t-key="autoclickerName">
+                <t t-set="autoclicker" t-value="clicker.autoclickers[autoclickerName]"/>
+                <div class="card">
+                    <div class="card-header"><t t-esc="autoclicker.string"/></div>
+                    <div class="card-body">
+                        <p>Owned: <t t-esc="autoclicker.amountPurchased"/></p>
+                        <p>
+                            <ClickValue value="autoclicker.totalCps" decimals="autoclicker.cps &lt; 1 ? 1 : 0"/>cps
+                            (<ClickValue value="autoclicker.cps" decimals="autoclicker.cps &lt; 1 ? 1 : 0"/>cps/unit)
+                        </p>
+                    </div>
+                    <div class="card-footer d-flex gap-1">
+                        <button class="btn btn-primary"
+                                t-on-click="() => clicker.purchaseAutoclicker(autoclickerName, 100)"
+                                t-if="clicker.canAfford(autoclickerName, 100)">
+                            +100 (<ClickValue value="autoclicker.price"/> Clicks)
+                        </button>
+                        <button class="btn btn-primary"
+                                t-on-click="() => clicker.purchaseAutoclicker(autoclickerName, 10)"
+                                t-if="clicker.canAfford(autoclickerName, 10)">
+                            +10 (<ClickValue value="autoclicker.price"/> Clicks)
+                        </button>
+                        <button class="btn btn-primary"
+                                t-on-click="() => clicker.purchaseAutoclicker(autoclickerName)">
+                            +1 (<ClickValue value="autoclicker.price"/> Clicks)
+                        </button>
+                    </div>
+                </div>
+            </t>
         </div>
     </t>
 

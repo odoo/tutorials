@@ -3,7 +3,7 @@
 
     <t t-name="awesome_clicker.clicker_systray_item">
         <div class="o_nav_entry">
-            <span class="p-1">Clicks: <ClickValue value="clicker.counter"/></span>
+            <span class="p-1">Clicks: <ClickValue value="clicker.clickBalance"/></span>
         </div>
     </t>
 
