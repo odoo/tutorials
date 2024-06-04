@@ -7,6 +7,15 @@ __pycache__/
 *.so
 .idea
 .idea/
+.eslintignore
+.eslintrc.json
+eslintignore
+eslintrc.json
+jsconfig.json
+package.json
+package-lock.json
+node_modules
+node_modules/
 # Distribution / packaging
 .Python
 build/

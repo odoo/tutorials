@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="6726c28a-ee73-41d1-8c6e-cf1701a8184f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/link/__manifest__.py" beforeDir="false" afterPath="$PROJECT_DIR$/link/__manifest__.py" afterDir="false" />
     </list>
+=======
+    <list default="true" id="6726c28a-ee73-41d1-8c6e-cf1701a8184f" name="Changes" comment="" />
+>>>>>>> Stashed changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,5 +70,8 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/tutorials$.coverage" NAME=" Coverage Results" MODIFIED="1717423886097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/estate/tests" />
   </component>
 </project>
