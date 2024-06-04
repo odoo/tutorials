@@ -18,6 +18,7 @@ class ClickerStore extends Reactive {
 
     setup() {
         this.clickBalance = 0;
+        this.totalCps = 0;
         this._updateTimeout = undefined;
         this._lastUpdateTimestamp = Date.now();
         this._eventBus = new EventBus();
@@ -29,6 +30,7 @@ class ClickerStore extends Reactive {
     setupData() {
         this.autoclickers = { ...autoclickers };
         this.achievements = [...achievements];
+        this.upgrades = [...upgrades];
     }
 
     setupEffects(env, { effect: effectService }) {
@@ -48,7 +50,7 @@ class ClickerStore extends Reactive {
 
     purchaseAutoclicker(autoclickerName, amount = 1) {
         const autoclicker = this.autoclickers[autoclickerName];
-        const price = autoclicker.price * amount;
+        const price = autoclicker.getPriceForNextAmount(amount);
         if (this.clickBalance >= price) {
             this.clickBalance -= price;
             autoclicker.amountPurchased += amount;
@@ -56,10 +58,31 @@ class ClickerStore extends Reactive {
         }
     }
 
+    purchaseUpgrade(upgradeName) {
+        const upgrade = this.upgrades.find(upgrade => upgrade.name === upgradeName);
+        if (!upgrade) {
+            throw new Error(`No such upgrade: ${upgradeName}`);
+        }
+        const price = upgrade.price;
+        if (this.clickBalance >= price) {
+            this.clickBalance -= price;
+            upgrade.buy(this);
+            this._update();
+        }
+    }
+
     canAfford(autoclickerName, amount) {
         const autoclicker = this.autoclickers[autoclickerName];
-        const price = autoclicker.price * amount;
+        const price = autoclicker.getPriceForNextAmount(amount);
         return this.clickBalance >= price;
+    }
+
+    canAffordUpgrade(upgradeName) {
+        const upgrade = this.upgrades.find(upgrade => upgrade.name === upgradeName);
+        if (!upgrade) {
+            throw new Error(`No such upgrade: ${upgradeName}`);
+        }
+        return this.clickBalance >= upgrade.price;
     }
 
     _getTotalCpms() {
@@ -86,7 +109,10 @@ class ClickerStore extends Reactive {
         this.clickBalance += clickDelta;
 
         this._unlockAutoclickers();
+        this._unlockUpgrades();
         this._unlockAchievements();
+
+        this.totalCps = this._getTotalCpms() * 1000;
 
         this._lastUpdateTimestamp = Date.now();
         this._scheduleNextUpdate();
@@ -97,6 +123,14 @@ class ClickerStore extends Reactive {
             const autoclicker = this.autoclickers[autoclickerName];
             if (this.clickBalance >= autoclicker.basePrice) {
                 autoclicker.unlocked = true;
+            }
+        }
+    }
+
+    _unlockUpgrades() {
+        for (const upgrade of this.upgrades) {
+            if (upgrade.shouldUnlock(this)) {
+                upgrade.unlock();
             }
         }
     }
@@ -122,26 +156,91 @@ class ClickerAutoClicker extends Reactive {
         this.baseIncomePerAutoClick = baseIncomePerAutoClick;
         this.unlocked = false;
         this.amountPurchased = 0;
+        this.cpsMultiplier = 1;
     }
 
-    get cps() {
-        return this.baseIncomePerAutoClick / this.autoClickInterval * 1000;
-    }
-
-    get cpms() {
+    get baseCpms() {
         return this.baseIncomePerAutoClick / this.autoClickInterval;
     }
 
-    get totalCps() {
-        return this.cps * this.amountPurchased;
+    get cpms() {
+        return this.baseCpms * this.cpsMultiplier;
     }
 
     get totalCpms() {
         return this.cpms * this.amountPurchased;
     }
 
-    get price() {
-        return this.basePrice;
+    get baseCps() {
+        return this.baseCpms * 1000;
+    }
+
+    get cps() {
+        return this.cpms * 1000;
+    }
+
+    get totalCps() {
+        return this.totalCpms * 1000;
+    }
+
+    get nextPrice() {
+        return this.getPriceForNextAmount(1);
+    }
+
+    getPriceForNextAmount(amount) {
+        const targetLevel = this.amountPurchased + amount;
+        let price = 0;
+        for (let level = this.amountPurchased + 1; level <= targetLevel; level++) {
+            price += this.getPriceForLevel(level);
+        }
+        return price;
+    }
+
+    getPriceForLevel(level) {
+        if (level <= 0) return 0;
+        return Math.floor(Math.pow(this.basePrice, (1 + 0.1 * (level - 1))));
+    }
+
+    /**
+     * @param type {'cps_multiplier'}
+     * @param modifier {Function}
+     */
+    addModifier(type, modifier) {
+        switch (type) {
+            case "cps_multiplier":
+                this.cpsMultiplier = modifier(this.cpsMultiplier);
+                break;
+            default:
+                throw new Error(`No such modifier type: ${type}`);
+        }
+    }
+}
+
+class ClickerUpgrade {
+    constructor(name, string, description, price, shouldUnlock, applyModifiers) {
+        this.name = name;
+        this.string = _lt(string);
+        this.description = _lt(description);
+        this.price = price;
+        this.unlocked = false;
+        this.isPurchased = false;
+        this._shouldUnlock = shouldUnlock;
+        this._applyModifiers = applyModifiers;
+    }
+
+    shouldUnlock(clickerStore) {
+        return this._shouldUnlock(clickerStore);
+    }
+
+    unlock() {
+        this.unlocked = true;
+    }
+
+    buy(clickerStore) {
+        if (this.unlocked && !this.isPurchased) {
+            this._applyModifiers(clickerStore);
+            this.isPurchased = true;
+        }
     }
 }
 
@@ -167,11 +266,47 @@ class ClickerAchievement {
 const autoclickers = {
     clickBot: new ClickerAutoClicker(
         "Click Bot",
-        100,
+        10,
         10 * 1000,
         1,
     ),
+    clickBotMax: new ClickerAutoClicker(
+        "Click Bot Max:tm:",
+        100,
+        30 * 1000,
+        10,
+    ),
 };
+
+const upgrades = [
+    new ClickerUpgrade(
+        "click_bot_1",
+        "Improved Click Bots",
+        "Click Bots are twice as efficient",
+        500,
+        clickerStore => {
+            return clickerStore.clickBalance >= 200;
+        },
+        clickerStore => {
+            clickerStore.autoclickers.clickBot.addModifier("cps_multiplier", (value) => value * 2);
+        },
+    ),
+];
+
+const achievements = [
+    new ClickerAchievement(
+        "click_bot_1",
+        "Handcrafted",
+        "Unlock click bots",
+        (clickerStore) => !!clickerStore.autoclickers.clickBot.unlocked,
+    ),
+    new ClickerAchievement(
+        "click_bot_max_1",
+        "Handcrafted",
+        "Unlock the Click Bot Max:tm:",
+        (clickerStore) => !!clickerStore.autoclickers.clickBot.unlocked,
+    ),
+];
 
 const effectTypes = {
     showRainbowperson: (effectService, achievement, payload) => {
@@ -181,15 +316,6 @@ const effectTypes = {
         });
     },
 };
-
-const achievements = [
-    new ClickerAchievement(
-        "click_bot_1",
-        "Handcrafted",
-        "Unlock click bots",
-        (clickerStore) => !!clickerStore.autoclickers.clickBot.unlocked,
-    ),
-];
 
 const effects = [
     {

@@ -14,37 +14,77 @@
         </div>
 
         <div class="d-flex align-items-center gap-1 p-3">
-            <t t-foreach="Object.keys(clicker.autoclickers).filter(name => clicker.autoclickers[name].unlocked)"
-               t-as="autoclickerName"
-               t-key="autoclickerName">
-                <t t-set="autoclicker" t-value="clicker.autoclickers[autoclickerName]"/>
-                <div class="card">
-                    <div class="card-header"><t t-esc="autoclicker.string"/></div>
-                    <div class="card-body">
-                        <p>Owned: <t t-esc="autoclicker.amountPurchased"/></p>
-                        <p>
-                            <ClickValue value="autoclicker.totalCps" decimals="autoclicker.cps &lt; 1 ? 1 : 0"/>cps
-                            (<ClickValue value="autoclicker.cps" decimals="autoclicker.cps &lt; 1 ? 1 : 0"/>cps/unit)
-                        </p>
+            <ClickValue value="clicker.totalCps" decimals="clicker.totalCps &lt; 100 ? 1 : 0"/>cps
+        </div>
+
+        <div class="p-3">
+            <h5>Autoclickers</h5>
+            <div class="d-flex align-items-center gap-1">
+                <t t-foreach="Object.keys(clicker.autoclickers).filter(name => clicker.autoclickers[name].unlocked)"
+                   t-as="autoclickerName"
+                   t-key="autoclickerName">
+                    <t t-set="autoclicker" t-value="clicker.autoclickers[autoclickerName]"/>
+                    <div class="card">
+                        <div class="card-header"><t t-esc="autoclicker.string"/></div>
+                        <div class="card-body">
+                            <p>Owned: <t t-esc="autoclicker.amountPurchased"/></p>
+                            <p t-if="autoclicker.cpsMultiplier &gt; 1">
+                                Base: <ClickValue value="autoclicker.baseCps"
+                                                  decimals="autoclicker.cps &lt; 1 ? 1 : 0"/>cps
+                            </p>
+                            <p t-if="autoclicker.cpsMultiplier &gt; 1">
+                                <t t-esc="autoclicker.cpsMultiplier"/>x multiplier
+                            </p>
+                            <p>
+                                <ClickValue value="autoclicker.totalCps" decimals="autoclicker.cps &lt; 1 ? 1 : 0"/>cps
+                                (<ClickValue value="autoclicker.cps" decimals="autoclicker.cps &lt; 1 ? 1 : 0"/>
+                                cps/unit)
+                            </p>
+                        </div>
+                        <div class="card-footer d-flex gap-1">
+                            <button class="btn btn-primary"
+                                    t-on-click="() => clicker.purchaseAutoclicker(autoclickerName)">
+                                +1 (<ClickValue value="autoclicker.getPriceForNextAmount(1)"/> Clicks)
+                            </button>
+                            <button class="btn btn-primary"
+                                    t-on-click="() => clicker.purchaseAutoclicker(autoclickerName, 10)"
+                                    t-if="clicker.canAfford(autoclickerName, 10)">
+                                +10 (<ClickValue value="autoclicker.getPriceForNextAmount(10)"/> Clicks)
+                            </button>
+                            <button class="btn btn-primary"
+                                    t-on-click="() => clicker.purchaseAutoclicker(autoclickerName, 100)"
+                                    t-if="clicker.canAfford(autoclickerName, 100)">
+                                +100 (<ClickValue value="autoclicker.getPriceForNextAmount(100)"/> Clicks)
+                            </button>
+                        </div>
                     </div>
-                    <div class="card-footer d-flex gap-1">
-                        <button class="btn btn-primary"
-                                t-on-click="() => clicker.purchaseAutoclicker(autoclickerName, 100)"
-                                t-if="clicker.canAfford(autoclickerName, 100)">
-                            +100 (<ClickValue value="autoclicker.price"/> Clicks)
-                        </button>
-                        <button class="btn btn-primary"
-                                t-on-click="() => clicker.purchaseAutoclicker(autoclickerName, 10)"
-                                t-if="clicker.canAfford(autoclickerName, 10)">
-                            +10 (<ClickValue value="autoclicker.price"/> Clicks)
-                        </button>
-                        <button class="btn btn-primary"
-                                t-on-click="() => clicker.purchaseAutoclicker(autoclickerName)">
-                            +1 (<ClickValue value="autoclicker.price"/> Clicks)
-                        </button>
+                </t>
+            </div>
+        </div>
+
+        <div class="p-3">
+            <h5>Upgrades</h5>
+            <div class="d-flex align-items-center gap-1">
+                <t t-foreach="clicker.upgrades.filter(upgrade => upgrade.unlocked)"
+                   t-as="upgrade"
+                   t-key="upgrade.name">
+                    <div class="card">
+                        <div class="card-header"><t t-esc="upgrade.string"/></div>
+                        <div class="card-body">
+                            <p><t t-esc="upgrade.description"/></p>
+                        </div>
+                        <div class="card-footer d-flex gap-1">
+                            <button class="btn btn-primary"
+                                    t-on-click="() => clicker.purchaseUpgrade(upgrade.name)"
+                                    t-if="!upgrade.isPurchased"
+                                    t-att-disabled="!clicker.canAffordUpgrade(upgrade.name)">
+                                Purchase (<t t-esc="upgrade.price"/> Clicks)
+                            </button>
+                            <t t-if="!!upgrade.isPurchased">Owned</t>
+                        </div>
                     </div>
-                </div>
-            </t>
+                </t>
+            </div>
         </div>
     </t>
 
