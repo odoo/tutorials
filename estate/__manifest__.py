@@ -1,10 +1,9 @@
 {
     'name': "estate",
-    'depends': ['mail','base'],
+    'depends': ['mail', 'base'],
     'author': "sndibwami@virunga.org",
     'license': "AGPL-3",
     'summary': "Real Estate Management",
-    'license': 'AGPL-3',
     'application': True,
     'installable': True,
     'demo': [

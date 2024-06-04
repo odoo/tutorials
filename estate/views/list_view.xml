@@ -1,9 +1,0 @@
-<tree string="properies">
-    <field name="name" string="title" />
-    <field name="postcode" string="Postcode" />
-    <field name="bedrooms" string="Bedrooms" />
-    <field name="living_area" string="living area(sqm)" /> 
-    <field name="expected_price" string="Expected price" />
-    <field name="selling_price" string="Selling price" />
-    <field name="date_availability" string="Available from" />
-</tree>

@@ -28,11 +28,11 @@
                   decoration-success="state in ('offer_received', 'offer_accepted')"
                   decoration-muted="state=='sold'">
                 <field name="name" string="Title"/>
-                <field name="postcode" string="postcode" optional="True"/>
-                <field name="state" string="State" optional="True"/>
+                <field name="postcode" string="postcode" optional="hide"/>
+                <field name="state" string="State" optional="hide"/>
                 <field name="tag_ids" widget="many2many_tags" string="Tags"
                        options="{'color_field': 'color'}"/>
-                <field name="property_type_id" string="Property Type" optional="True"/>
+                <field name="property_type_id" string="Property Type" optional="hide"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area(sqm)"/>
                 <field name="expected_price" string="Expected Price"/>
@@ -134,7 +134,7 @@
                                         <tree string="Properties" editable="top"
                                               decoration-success="status == 'accepted'"
                                               decoration-danger="status == 'refused'">
-                                            <field name="property_id" optional="True" string="Property"/>
+                                            <field name="property_id" optional="hide" string="Property"/>
                                             <field name="price" string="Price"/>
                                             <field name="partner_id" string="Partner"/>
                                             <field name="status" string="Status"/>
