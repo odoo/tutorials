@@ -86,6 +86,9 @@ class EstatePropertyOffer(models.Model):
         ):
             raise UserError(_('Can\'t create an offer with a lower amount than existing offer'))
 
+        if (state := estate_property.state) in ('sold', 'canceled'):
+            raise UserError(_('Can\'t accept offer on %s estate') % state)
+
         if estate_property.state == 'new':
             estate_property.state = 'offer_received'
 
