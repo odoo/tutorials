@@ -24,9 +24,9 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <tree string="Properties" create="True" delete="True"
-                decoration-bf="state=='offer_accepted'"
-                    decoration-success="state in ('offer_received', 'offer_accepted')"
-                decoration-muted = "state=='sold'">
+                  decoration-bf="state=='offer_accepted'"
+                  decoration-success="state in ('offer_received', 'offer_accepted')"
+                  decoration-muted="state=='sold'">
                 <field name="name" string="Title"/>
                 <field name="postcode" string="postcode" optional="True"/>
                 <field name="state" string="State" optional="True"/>
@@ -60,105 +60,114 @@
                            statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
-                        <label for="name" string="Name"/>
-                        <h1>
-                            <field class="text-break" name="name" options="{'line_breaks': False}"
-                                   widget="text"
-                                   placeholder="e.g. House 1 "/>
-                        </h1>
-                    </div>
                     <group>
+                        <div class="oe_title">
+                            <label for="name" string="Name"/>
+                            <h1>
+                                <field class="text-break" name="name" options="{'line_breaks': False}"
+                                       widget="text"
+                                       placeholder="e.g. House 1 "/>
+                            </h1>
+                        </div>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" string="Tags"
-                                   options="{'color_field': 'color'}"/>
+                            <group>
+                                <field name="tag_ids" widget="many2many_tags" string="Tags"
+                                       options="{'color_field': 'color'}"/>
+                            </group>
                         </group>
+                        <group>
+                            <group>
+                                <field name="property_type_id" string="Property Type" options="{'no_create':true}"/>
+                                <field name="postcode" string="Postcode"/>
+                                <field name="date_availability" string="Available From"/>
+                            </group>
+                            <group>
+                                <field name="expected_price" string="Expected Price"/>
+                                <field name="selling_price" string="Selling Price"/>
+                                <field name="best_price" string="Best Price"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <group>
+                                        <field name="description" string="Description"/>
+                                        <field name="bedrooms" string="Bedrooms"/>
+                                        <field name="living_area" string="Living Area(sqm)"/>
+                                        <field name="facades" string="Facades"/>
+                                        <field name="garage" string="Garage"/>
+                                    </group>
+                                    <group>
+                                        <field name="garden" string="Garden"/>
+                                        <field name="garden_area" invisible="not garden"
+                                               string="Garden Area(sqm)"/>
+                                        <field name="garden_orientation" invisible="not garden"
+                                               widget="radio"
+                                               string="Garden Orientation"/>
+                                        <field name="total_area" string="Total Area(sqm)"
+                                               help="this compute field it define as the sum on Living Area and Garden Area"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                <group>
+                                    <field name="offers_ids" string=""
+                                           readonly="state in ('offer_accepted', 'sold', 'canceled')">
+                                        <form string="Property" create="True" duplicate="True">
+                                            <sheet>
+                                                <div class="oe_title">
+                                                    <label for="price" string="Price"/>
+                                                    <h1>
+                                                        <field class="text-break" name="price"
+                                                               options="{'line_breaks': False}" widget="text"
+                                                               placeholder="e.g. 1000 "/>
+                                                    </h1>
+                                                </div>
+                                                <group>
+                                                    <field name="partner_id" string="Partner"/>
+                                                    <field name="validity" string="Validity (days)"/>
+                                                    <field name="date_deadline" string="Deadline"/>
+                                                    <field name="status" string="Status"/>
+                                                </group>
+                                            </sheet>
+                                        </form>
+                                        <tree string="Properties" editable="top"
+                                              decoration-success="status == 'accepted'"
+                                              decoration-danger="status == 'refused'">
+                                            <field name="property_id" optional="True" string="Property"/>
+                                            <field name="price" string="Price"/>
+                                            <field name="partner_id" string="Partner"/>
+                                            <field name="status" string="Status"/>
+                                            <field name="validity" string="Validity (days)"/>
+                                            <field name="date_deadline" string="Deadline"/>
+                                            <button name="action_accept_offer" string="accept" type="object"
+                                                    invisible="status in ('accepted', 'refused')"
+                                                    column_invisible="parent.state in ('sold', 'offer_accepted', 'canceled')"
+                                                    icon="fa-check"/>
+                                            <button name="action_refuse_offer" string="refuse" type="object"
+                                                    invisible="status in ('accepted', 'refused')"
+                                                    column_invisible="parent.state in ('sold', 'offer_accepted', 'canceled')"
+                                                    icon="fa-times"/>
+                                            <field name="property_type_id" string="Property Type"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Others Info">
+                                <group>
+                                    <field name="buyer" string="Buyer"/>
+                                    <field name="salesperson" string="Salesperson"/>
+                                </group>
+                            </page>
+                        </notebook>
                     </group>
                     <group>
-                        <group>
-                            <field name="property_type_id" string="Property Type" options="{'no_create':true}"/>
-                            <field name="postcode" string="Postcode"/>
-                            <field name="date_availability" string="Available From"/>
-                        </group>
-                        <group>
-                            <field name="expected_price" string="Expected Price"/>
-                            <field name="selling_price" string="Selling Price"/>
-                            <field name="best_price" string="Best Price"/>
-                        </group>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
                     </group>
-                    <notebook>
-                        <page string="Description">
-                            <group>
-                                <group>
-                                    <field name="description" string="Description"/>
-                                    <field name="bedrooms" string="Bedrooms"/>
-                                    <field name="living_area" string="Living Area(sqm)"/>
-                                    <field name="facades" string="Facades"/>
-                                    <field name="garage" string="Garage"/>
-                                </group>
-                                <group>
-                                    <field name="garden" string="Garden"/>
-                                    <field name="garden_area" invisible="not garden"
-                                           string="Garden Area(sqm)"/>
-                                    <field name="garden_orientation" invisible="not garden"
-                                           widget="radio"
-                                           string="Garden Orientation"/>
-                                    <field name="total_area" string="Total Area(sqm)"
-                                           help="this compute field it define as the sum on Living Area and Garden Area"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Offers">
-                            <group>
-                                <field name="offers_ids" string="" 
-                                    readonly="state in ('offer_accepted', 'sold', 'canceled')">
-                                    <form string="Property" create="True" duplicate="True">
-                                        <sheet>
-                                            <div class="oe_title">
-                                                <label for="price" string="Price"/>
-                                                <h1>
-                                                    <field class="text-break" name="price"
-                                                           options="{'line_breaks': False}" widget="text"
-                                                           placeholder="e.g. 1000 "/>
-                                                </h1>
-                                            </div>
-                                            <group>
-                                                <field name="partner_id" string="Partner"/>
-                                                <field name="validity" string="Validity (days)"/>
-                                                <field name="date_deadline" string="Deadline"/>
-                                                <field name="status" string="Status"/>
-                                            </group>
-                                        </sheet>
-                                    </form>
-                                    <tree string="Properties" editable="top"
-                                        decoration-success = "status == 'accepted'"
-                                        decoration-danger = "status == 'refused'">
-                                        <field name="property_id" optional="True" string="Property"/>
-                                        <field name="price" string="Price"/>
-                                        <field name="partner_id" string="Partner"/>
-                                        <field name="status" string="Status"/>
-                                        <field name="validity" string="Validity (days)"/>
-                                        <field name="date_deadline" string="Deadline"/>
-                                        <button name="action_accept_offer" string="accept" type="object"
-                                                invisible="status in ('accepted', 'refused')"
-                                                column_invisible="parent.state in ('sold', 'offer_accepted', 'canceled')"
-                                                icon="fa-check"/>
-                                        <button name="action_refuse_offer" string="refuse" type="object"
-                                                invisible="status in ('accepted', 'refused')"
-                                                column_invisible="parent.state in ('sold', 'offer_accepted', 'canceled')"
-                                                icon="fa-times"/>
-                                        <field name="property_type_id" string="Property Type"/>
-                                    </tree>
-                                </field>
-                            </group>
-                        </page>
-                        <page string="Others Info">
-                            <group>
-                                <field name="buyer" string="Buyer"/>
-                                <field name="salesperson" string="Salesperson"/>
-                            </group>
-                        </page>
-                    </notebook>
                 </sheet>
             </form>
         </field>

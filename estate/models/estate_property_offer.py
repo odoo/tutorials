@@ -59,12 +59,15 @@ class EstatePropertyOffer(models.Model):
         ("check_price", "CHECK(price > 0)", "Price must be positive."),
     ]
 
-    # @api.model
-    # def create(self, vals):
-    #     print(self.price, self, vals['price'])
-    #     self.env['estate_property'].browse(vals['property_id']).state = 'offer_received'
-    #     for rec in self:
-    #         print("rec", rec)
-    #         if self.price < rec.price:
-    #             raise UserError('The price must be higher than the previous offer.')
-    #     return super().create(vals)
+    @api.model
+    def create(self, vals):
+        if vals['price']:
+            self.env['estate_property'].browse(vals['property_id']).state = 'offer_received'
+            all_offers_for_property = self.env['estate_property_offer']. \
+                search([('property_id', '=', vals['property_id'])])
+            if all_offers_for_property:
+                if vals['price'] < max(all_offers_for_property.mapped('price')):
+                    raise UserError('The price must be higher than the previous offer.')
+
+        return super().create(vals)
+

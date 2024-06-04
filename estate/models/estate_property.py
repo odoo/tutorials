@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = 'estate_property'  # change _ to .
     _description = 'Real Estate Property'
     _order = 'id desc'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     def _in_three_months(self):
         self.date_availability = fields.date.today()
