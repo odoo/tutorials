@@ -4,7 +4,7 @@ from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
-    _name = 'estate_property'  # change _ to .
+    _name = 'estate_property'
     _description = 'Real Estate Property'
     _order = 'id desc'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -109,19 +109,18 @@ class EstateProperty(models.Model):
     def _check_selling_price(self):
         for rec in self:
             ninety_percent_expected_price = rec.expected_price * 0.9
-            if rec.selling_price < ninety_percent_expected_price and rec.selling_price != 0.0:
-                rec.selling_price = None
-                rec.buyer = None
-                raise ValidationError('The selling price cannot be lower than 90% of the expected price')
+            if rec.selling_price < ninety_percent_expected_price and rec.selling_price:
+                rec.selling_price = 0
+                rec.buyer = False
+                raise ValidationError(_(f"The selling price of {rec.name} cannot be lower than 90% of the expected price"))
 
     @api.ondelete(at_uninstall=False)
     def unlink_check(self):
         """
         Prevent deletion of properties that are not in 'new' or 'canceled' state
         """
-        if self.state != 'new' and self.state != 'canceled':
-            raise UserError(_('You cannot delete a property that is not new or canceled.'))
+        for rec in self:
+            if rec.state not in ('new', 'canceled'):
+                raise UserError(_('You cannot delete a property that is not new or canceled.'))
 
         return super().unlink()
-
-

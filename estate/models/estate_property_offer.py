@@ -43,31 +43,45 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(
                     'This property already has a buyer.'
                 )
-        self.status = 'accepted'
-        self.property_id.state = 'offer_accepted'
-        self.property_id.selling_price = self.price
-        self.property_id.buyer = self.partner_id.id
+            rec.status = 'accepted'
+            rec.property_id.state = 'offer_accepted'
+            rec.property_id.selling_price = rec.price
+            rec.property_id.buyer = rec.partner_id.id
 
     def action_refuse_offer(self):
-        if self.status == 'accepted':
-            self.property_id.selling_price = 0.0
-            self.property_id.buyer = None
-        self.status = 'refused'
-        self.property_id.state = 'offer_received'
+        for rec in self:
+            if rec.status == 'accepted':
+                rec.property_id.selling_price = 0
+                rec.property_id.buyer = False
+            rec.status = 'refused'
+            rec.property_id.state = 'offer_received'
 
     _sql_constraints = [
         ("check_price", "CHECK(price > 0)", "Price must be positive."),
     ]
 
-    @api.model
-    def create(self, vals):
-        if vals['price']:
-            self.env['estate_property'].browse(vals['property_id']).state = 'offer_received'
-            all_offers_for_property = self.env['estate_property_offer']. \
-                search([('property_id', '=', vals['property_id'])])
-            if all_offers_for_property:
-                if vals['price'] < max(all_offers_for_property.mapped('price')):
-                    raise UserError('The price must be higher than the previous offer.')
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals['price']:
+                self.env['estate_property'].browse(vals['property_id']).state = 'offer_received'
+                all_offers_for_property = self.env['estate_property_offer']. \
+                    search([('property_id', '=', vals['property_id'])])
 
-        return super().create(vals)
+                if all_offers_for_property:
+                    if vals['price'] < max(all_offers_for_property.mapped('price')):
+                        raise UserError('The price must be higher than the previous offer.')
 
+        return super().create(vals_list)
+
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     offers = super().create(vals_list)
+    #
+    #     for offer in offers:
+    #         offer.property_id.state = 'offer_received'
+    #         all_offers_for_property = offer.property_id.offers_ids - offer
+    #         if offer < max(all_offers_for_property.mapped('price')):
+    #             raise UserError('The price must be higher than the previous offer.')
+    #
+    #     return offers
