@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class EstatePropertyType(models.Model):
@@ -7,7 +7,7 @@ class EstatePropertyType(models.Model):
     _order = "sequence, name"
 
     _sql_constraints = [
-        ("name_unique", "UNIQUE(name)", "Property Type already exists.")
+        ("name_unique", "UNIQUE(name)", _("Property Type already exists."))
     ]
 
     name = fields.Char(required=True)

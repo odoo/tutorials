@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import date_utils
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
         (
             "check_expected_price",
             "CHECK(expected_price > 0)",
-            "The expected price must be positive.",
+            "The expected price must be strictly positive.",
         ),
         (
             "check_selling_price",
@@ -29,6 +29,21 @@ class EstateProperty(models.Model):
         readonly=False,
         default="New",
     )
+    active = fields.Boolean(default=True)
+    state = fields.Selection(
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        required=True,
+        copy=False,
+        default="new",
+        readonly=True,
+    )
+
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -52,26 +67,12 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ]
     )
-    active = fields.Boolean(default=True)
-    state = fields.Selection(
-        selection=[
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
-        ],
-        required=True,
-        copy=False,
-        default="new",
-        readonly=True,
-    )
     property_type_id = fields.Many2one("estate.property.type")
     buyer_id = fields.Many2one("res.partner", copy=False)
     seller_id = fields.Many2one(
         "res.users", "Salesperson", default=lambda self: self.env.user
     )
-    tag_ids = fields.Many2many("estate.property.tag")
+    estate_property_tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer("Total area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
@@ -114,7 +115,7 @@ class EstateProperty(models.Model):
                 == -1
             ):
                 raise ValidationError(
-                    "The selling price must be at least 90% of the expected price."
+                    _("The selling price must be at least 90% of the expected price.")
                 )
 
     @api.model_create_multi
@@ -131,16 +132,20 @@ class EstateProperty(models.Model):
             estate_property.state not in ["new", "cancelled"]
             for estate_property in self
         ):
-            raise UserError("Cannot delete a property unless it is New or Cancelled.")
+            raise UserError(
+                _("Cannot delete a property unless it is New or Cancelled.")
+            )
 
     def action_set_sold(self):
+        self.ensure_one()
         if self.state == "cancelled":
-            raise UserError("A cancelled property cannot be sold.")
+            raise UserError(_("A cancelled property cannot be sold."))
         self.state = "sold"
         return True
 
     def action_set_cancelled(self):
+        self.ensure_one()
         if self.state == "sold":
-            raise UserError("A sold property cannot be cancelled.")
+            raise UserError(_("A sold property cannot be cancelled."))
         self.state = "cancelled"
         return True

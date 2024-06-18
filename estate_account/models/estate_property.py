@@ -5,6 +5,7 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold(self):
+        self.ensure_one()
         invoice_values = {
             "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",

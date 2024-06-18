@@ -12,7 +12,7 @@
             >
                 <field name="name"/>
                 <field name="postcode"/>
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="estate_property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
@@ -30,7 +30,7 @@
             <search string="Property">
                 <field name="name"/>
                 <field name="postcode"/>
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="estate_property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
@@ -64,7 +64,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="estate_property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -128,7 +128,7 @@
                                 Accepted Price:
                                 <field name="selling_price"/>
                             </span>
-                            <field name="tag_ids" options="{'color_field': 'color'}"/>
+                            <field name="estate_property_tag_ids" options="{'color_field': 'color'}"/>
                         </div>
                     </t>
                 </templates>

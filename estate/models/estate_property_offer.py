@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools import date_utils
 
@@ -9,7 +9,11 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     _sql_constraints = [
-        ("check_price", "CHECK(price > 0)", "The offer price must be positive.")
+        (
+            "check_price",
+            "CHECK(price > 0)",
+            _("The offer price must be strictly positive."),
+        )
     ]
 
     price = fields.Float()
@@ -28,11 +32,8 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends("validity")
     def _compute_date_deadline(self):
-        for offer in self:
-            if offer.create_date:
-                offer.date_deadline = date_utils.add(
-                    offer.create_date, days=offer.validity
-                )
+        for offer in self.filtered("create_date"):
+            offer.date_deadline = date_utils.add(offer.create_date, days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:
@@ -51,7 +52,7 @@ class EstatePropertyOffer(models.Model):
                 offer_property.offer_ids.mapped("price")
             ):
                 raise UserError(
-                    "New offers must have a higher value than previous offers."
+                    _("New offers must have a higher value than previous offers.")
                 )
 
         return super().create(vals_list)

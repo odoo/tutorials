@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class EstateUser(models.Model):
+class ResUser(models.Model):
     _inherit = "res.users"
 
     property_ids = fields.One2many(
