@@ -1,5 +1,6 @@
 {
     'name': 'Estate',
+    'license': 'LGPL-3',
     'application': True,
     'summary': 'Real-estate module for tutorial',
     'depends': [
