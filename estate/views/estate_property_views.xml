@@ -15,6 +15,7 @@
                 default_group_by="property_type_id"
                 groups_draggable="false"
                 records_draggable="false"
+                quick_create="false"
             >
                 <field name="state" />
                 <templates>
