@@ -3,9 +3,11 @@
 
 
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
+
     _name = "estate.property"
     _description = "Real estate property overview"
 
@@ -65,3 +67,19 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'N' if self.garden else ''
+
+    def action_sold(self):
+        for estate_property in self:
+            if estate_property.state == "canceled":
+                raise UserError('A canceled property cannot be sold')
+            else:
+                estate_property.state = "sold"
+        return True
+
+    def action_cancel(self):
+        for estate_property in self:
+            if estate_property.state == "sold":
+                raise UserError('A sold property cannot be canceled')
+            else:
+                estate_property.state = "canceled"
+        return True

@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -36,3 +37,16 @@ class EstatePropertyOffer(models.Model):
 
     validity = fields.Integer(default=7, compute=_compute_validity, inverse=_inverse_validity)
     date_deadline = fields.Date(compute=_compute_deadline, inverse=_inverse_deadline)
+
+    def action_accept_offer(self):
+        if 'accepted' in self.property_id.offer_ids.mapped('status'):
+            raise UserError('This property already has an accepted offer')
+
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id.user_id
+        return True
+
+    def action_refuse_offer(self):
+        self.status = 'refused'
+        return True
