@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="estate_property_type_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="Channel">
+                <field name="sequence" widget="handle"/>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="estate_property_type_forms" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="?">
+                <div class="oe_button_box" name="button_box">
+                    <button name="%(estate.estate_property_offer_action)d" type="action"
+                        class="oe_stat_button" icon="fa-dollar">
+                        <div class="o_stat_info">
+                            <field name="offer_count" class="o_stat_value" string="Offers" widget="statinfo" />
+                        </div>
+                    </button>
+                </div>
+                
+                <h1 class="oe_title">
+                    <field name="name" default_focus="1" placeholder="e.g. House with garden" />
+                </h1>
+                <field name="property_ids">
+                    <tree string="Properties">
+                        <field name="name" />
+                        <field name="expected_price" />
+                        <field name="state" />
+                    </tree>
+                </field>
+            </form>
+        </field>
+    </record>
+</odoo>
