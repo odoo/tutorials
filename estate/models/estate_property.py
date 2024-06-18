@@ -16,7 +16,11 @@ class EstateProperty(models.Model):
          'The selling price must be positive.')
     ]
 
-    name = fields.Char("Title", required=True)
+    name = fields.Char(
+        string="Property Reference",
+        required=True, copy=False, readonly=False,
+        default='New'
+    )
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date("Available From", copy=False, default=date_utils.add(fields.Date.today(), months=3))
@@ -75,6 +79,14 @@ class EstateProperty(models.Model):
                 float_compare(estate_property.selling_price, 0.9 * estate_property.expected_price, precision_digits=3) == -1
             ):
                 raise ValidationError("The selling price must be at least 90% of the expected price.")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name', 'New') == 'New':
+                vals['name'] = self.env['ir.sequence'].next_by_code('estate.property')
+
+        return super().create(vals_list)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_is_valid(self):
