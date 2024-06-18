@@ -60,13 +60,15 @@ class EstateProperty(models.Model):
 
     @api.depends("living_area", "garden_area")
     def _compute_area(self) -> None:
-        for property in self:
-            property.total_area = property.living_area + property.garden_area
+        for estate_property in self:
+            estate_property.total_area = estate_property.living_area + estate_property.garden_area
 
     @api.depends("offer_ids")
     def _compute_best_price(self) -> None:
-        for property in self:
-            property.best_price = max(property.offer_ids.mapped("price")) if property.offer_ids else 0
+        for estate_property in self:
+            estate_property.best_price = (
+                max(estate_property.offer_ids.mapped("price")) if estate_property.offer_ids else 0
+            )
 
     @api.constrains("selling_price")
     def _check_selling_price(self) -> None:

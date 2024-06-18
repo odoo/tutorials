@@ -1,9 +1,5 @@
-import logging
-
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import UserError
-
-logger = logging.getLogger(__name__)
 
 
 class EstatePropertyOffer(models.Model):
@@ -40,10 +36,10 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        property = self.env["estate.property"].browse(vals["property_id"])
-        if tools.float_compare(vals["price"], property.best_price, 0) == -1:
+        estate_property = self.env["estate.property"].browse(vals["property_id"])
+        if tools.float_compare(vals["price"], estate_property.best_price, 0) == -1:
             raise UserError(_("Offer with lower amount than an existing offer!"))
-        property.state = "offer_received"
+        estate_property.state = "offer_received"
         return super().create(vals)
 
     def action_offer_accepted(self) -> bool:
