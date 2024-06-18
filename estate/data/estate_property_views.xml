@@ -13,6 +13,7 @@
                 <field name="expected_price"></field>
                 <field name="selling_price"></field>
                 <field name="date_availability" string="Available From"></field>
+                <field name="tags_ids" widget="many2many_tags" string="Tags"></field>
             </tree>
         </field>
     </record>
@@ -26,10 +27,11 @@
                     <h1>
                         <field name="name" class="o_stat_text"></field>
                     </h1>
+                    <field name="tags_ids" widget="many2many_tags" string="Tags"></field>
                     <separator/>
                     <group>
                         <group>
-                            <field name="property_type" clas="o_stat_text"/>
+                            <field name="property_type_id" clas="o_stat_text"/>
                             <field name="postcode" class="o_stat_value"></field>
                             <field name="date_availability" class="o_stat_value"></field>
                         </group>
@@ -55,8 +57,8 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesman" class="o_stat_value"></field>
-                                <field name="buyer" class="o_stat_value"></field>
+                                <field name="salesman_id" class="o_stat_value"></field>
+                                <field name="buyer_id" class="o_stat_value"></field>
                             </group>
                         </page>
                     </notebook>

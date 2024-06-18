@@ -9,6 +9,7 @@
 
         <menuitem id="settings_menu" name="Settings">
             <menuitem id="property_types_menu" action="property_types_action" name="Property Types"/>
+            <menuitem id="property_tags_menu" action="property_tags_action" name="Property Tags"/>
         </menuitem>
         
     </menuitem>
