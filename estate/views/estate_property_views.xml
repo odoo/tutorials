@@ -11,12 +11,12 @@
                   decoration-muted="state == 'sold'"
             >
                 <field name="name"/>
-                <field name="postcode" />
+                <field name="postcode"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="expected_price" />
-                <field name="selling_price" />
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
                 <field name="date_availability" optional="hide"/>
                 <field name="state" invisible="True"/>
             </tree>
@@ -29,12 +29,12 @@
         <field name="arch" type="xml">
             <search string="Property">
                 <field name="name"/>
-                <field name="postcode" />
+                <field name="postcode"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                <field name="expected_price" />
-                <field name="bedrooms" />
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
-                <field name="facades" />
+                <field name="facades"/>
                 <separator/>
                 <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <group expand="1" string="Group By">
@@ -50,8 +50,10 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_set_sold" type="object" string="Sold" invisible="state in ['cancelled', 'sold']"/>
-                    <button name="action_set_cancelled" type="object" string="Cancel" invisible="state in ['cancelled', 'sold']"/>
+                    <button name="action_set_sold" type="object" string="Sold"
+                            invisible="state in ['cancelled', 'sold']"/>
+                    <button name="action_set_cancelled" type="object" string="Cancel"
+                            invisible="state in ['cancelled', 'sold']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -65,12 +67,12 @@
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
-                            <field name="date_availability" />
+                            <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
-                            <field name="selling_price" />
-                            <field name="best_price" />
+                            <field name="selling_price"/>
+                            <field name="best_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -111,15 +113,20 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div class="d-flex flex-column">
-                            <b><field name="name"/></b>
+                            <b>
+                                <field name="name"/>
+                            </b>
                             <span class="text-muted">
-                                Expected Price: <field name="expected_price"/>
+                                Expected Price:
+                                <field name="expected_price"/>
                             </span>
                             <span class="text-muted" t-if="record.state.raw_value == 'offer_received'">
-                                Best Offer: <field name="best_price"/>
+                                Best Offer:
+                                <field name="best_price"/>
                             </span>
                             <span class="text-muted" t-if="record.state.raw_value == 'offer_accepted'">
-                                Accepted Price: <field name="selling_price"/>
+                                Accepted Price:
+                                <field name="selling_price"/>
                             </span>
                             <field name="tag_ids" options="{'color_field': 'color'}"/>
                         </div>
