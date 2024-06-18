@@ -72,10 +72,9 @@ class EstateProperty(models.Model):
 
     @api.constrains("selling_price")
     def _check_selling_price(self) -> None:
-        # Filter based on selling price because when we cancel a approved offer, the price is reset to 0
         filtered_property = self.filtered("selling_price")
         if any(tools.float_compare(p.selling_price, p.expected_price * 0.9, 0) == -1 for p in filtered_property):
-            raise ValidationError("Selling price to low (< 90% of expected price)")
+            raise ValidationError(_("Selling price to low (< 90% of expected price)"))
 
     @api.onchange("garden")
     def _onchange_garden(self) -> None:
@@ -89,24 +88,24 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def ondelete(self) -> None:
         if any(p.state not in ("new", "canceled") for p in self):
-            raise UserError("State must be new or canceled")
-
-    def action_sold(self) -> bool:
-        self.ensure_one()
-        if self.state == "canceled":
-            raise UserError("An property canceled can't be sold")
-        self.state = "sold"
-        return True
-
-    def action_cancel(self) -> bool:
-        self.ensure_one()
-        if self.state == "sold":
-            raise UserError("An property sold can't be canceled")
-        self.state = "canceled"
-        return True
+            raise UserError(_("Property status must be new or canceled"))
 
     @api.model
     def create(self, val):
         if val.get("name", _("New")) == _("New"):
             val["name"] = self.env["ir.sequence"].next_by_code("estate.property") or _("New")
         return super().create(val)
+
+    def action_sold(self) -> bool:
+        self.ensure_one()
+        if self.state == "canceled":
+            raise UserError(_("An property canceled can't be sold"))
+        self.state = "sold"
+        return True
+
+    def action_cancel(self) -> bool:
+        self.ensure_one()
+        if self.state == "sold":
+            raise UserError(_("An property sold can't be canceled"))
+        self.state = "canceled"
+        return True
