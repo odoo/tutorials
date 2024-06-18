@@ -11,7 +11,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Channel">
-                <field name="sequence" widget="handle"/>
+                <field name="sequence" widget="handle" />
                 <field name="name" />
             </tree>
         </field>
@@ -26,11 +26,12 @@
                     <button name="%(estate.estate_property_offer_action)d" type="action"
                         class="oe_stat_button" icon="fa-dollar">
                         <div class="o_stat_info">
-                            <field name="offer_count" class="o_stat_value" string="Offers" widget="statinfo" />
+                            <field name="offer_count" class="o_stat_value" string="Offers"
+                                widget="statinfo" />
                         </div>
                     </button>
                 </div>
-                
+
                 <h1 class="oe_title">
                     <field name="name" default_focus="1" placeholder="e.g. House with garden" />
                 </h1>

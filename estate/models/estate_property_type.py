@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -6,9 +6,9 @@ class EstatePropertyType(models.Model):
     _description = "Property Type"
     _order = "name"
     _sql_constraints = [
-        ('check_unique_name', 'unique (name)', 'All property type must be unique'),
+        ("check_unique_name", "unique (name)", _("All property type must be unique")),
     ]
-    
+
     name = fields.Char(required=True, string="Type")
     property_ids = fields.One2many("estate.property", "property_type_id", "Properties")
     sequence = fields.Integer("Sequence")
