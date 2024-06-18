@@ -31,16 +31,17 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.validity = date_utils.relativedelta(offer.date_deadline, offer.create_date).days
 
-    @api.model
-    def create(self, vals):
-        offer_property = self.env['estate.property'].browse(vals['property_id'])
-        if offer_property.state == 'new':
-            offer_property.state = 'offer_received'
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            offer_property = self.env['estate.property'].browse(vals['property_id'])
+            if offer_property.state == 'new':
+                offer_property.state = 'offer_received'
 
-        if offer_property.offer_ids and vals['price'] < max(offer_property.offer_ids.mapped('price')):
-            raise UserError("New offers must have a higher value than previous offers")
+            if offer_property.offer_ids and vals['price'] < max(offer_property.offer_ids.mapped('price')):
+                raise UserError("New offers must have a higher value than previous offers.")
 
-        return super().create(vals)
+        return super().create(vals_list)
 
     def action_accept(self):
         for offer in self:
