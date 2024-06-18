@@ -6,10 +6,7 @@ class EstatePropertyTag(models.Model):
     _description = "Real-estate property tag"
     _order = "name"
 
-    _sql_constraints = [
-        ('name_unique', 'UNIQUE(name)',
-         'Property Tag already exists.')
-    ]
+    _sql_constraints = [("name_unique", "UNIQUE(name)", "Property Tag already exists.")]
 
     name = fields.Char(required=True)
     color = fields.Integer()
