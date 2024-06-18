@@ -37,6 +37,7 @@
                         </group>
                         <group>
                             <field name="expected_price" class="o_stat_value"></field>
+                            <field name="best_price" class="o_stat_value"></field>
                             <field name="selling_price" class="o_stat_value"></field>
                         </group>
                     </group>
@@ -52,6 +53,7 @@
                                 <field name="garden" class="o_stat_value"></field>
                                 <field name="garden_area" string="Garden Area (sqm)" class="o_stat_value"></field>
                                 <field name="garden_orientation" string="Garden Orientation" class="o_stat_value"></field>
+                                <field name="total_area" string="Total Area (sqm)" class="o_stat_value"/>
                                 <!--field name="state" class="o_stat_value"></field-->
                             </group>
                         </page>

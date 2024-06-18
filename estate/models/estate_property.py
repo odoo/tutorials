@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class EstateProperty(models.Model):
@@ -44,3 +44,24 @@ class EstateProperty(models.Model):
 
     tags_ids = fields.Many2many("estate.property.tags", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for estate_property in self:
+            estate_property.total_area = estate_property.living_area + estate_property.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for estate_property in self:
+            try:
+                estate_property.best_price = max(estate_property.offer_ids.mapped('price'))
+            except:
+                estate_property.best_price = 0
+
+    total_area = fields.Integer(compute=_compute_total_area)
+    best_price = fields.Float(compute=_compute_best_price)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'N' if self.garden else ''
