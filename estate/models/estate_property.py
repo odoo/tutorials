@@ -3,7 +3,8 @@
 
 
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -46,6 +47,19 @@ class EstateProperty(models.Model):
 
     tags_ids = fields.Many2many("estate.property.tags", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    _sql_constraints = [
+        ('positive_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive'),
+        ('positive_expected_price', 'CHECK(expected_price >= 0)', 'The expected price must be positive')
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _90_percent_price(self):
+        print('90 percent rule')
+        for estate_property in self:
+            if float_compare(estate_property.selling_price, 0.9 * estate_property.expected_price, precision_digits=2) == -1 \
+                and not float_is_zero(estate_property.selling_price, precision_digits=2):
+                raise ValidationError(f'Selling price cannot be less than 90% of expected price')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
