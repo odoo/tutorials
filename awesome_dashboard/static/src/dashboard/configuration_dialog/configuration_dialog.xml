@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.configuration_dialog">
+        <Dialog title="'Dashboard items configuration'">
+            Select the cards you want to see
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(event) => this.onChange(event, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onDoneClicked">
+                    Done
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

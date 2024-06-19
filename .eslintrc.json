@@ -1,0 +1,18 @@
+{
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "globals": {
+    "Chart": "readonly"
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "plugins": ["@odoo/owl"],
+  "root": true,
+  "rules": {
+    "@odoo/owl/force-component-props-declaration": 2
+  }
+}

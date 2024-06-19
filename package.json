@@ -1,0 +1,19 @@
+{
+  "name": "owl-test",
+  "version": "0.0.1",
+  "description": "Learning OWL",
+  "scripts": {
+    "lint": "npx eslint --report-unused-disable-directives --max-warnings 0 **/*.js",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write ."
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "prettier": "^3.3.2",
+    "eslint-config-prettier": "^9.1.0",
+    "@odoo/eslint-plugin-owl": "1.1.0"
+  },
+  "dependencies": {
+    "@odoo/owl": "^2.2.11"
+  }
+}

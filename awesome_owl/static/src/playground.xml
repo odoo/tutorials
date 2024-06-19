@@ -3,8 +3,13 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            Hello world
         </div>
+        <p t-esc="state.sum"></p>
+        <Card title="'Title'">
+            <Counter onChange.bind="incrementSum" />
+        </Card>
+        <TodoList />
     </t>
 
 </templates>
