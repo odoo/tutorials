@@ -1,12 +1,12 @@
 /** @odoo-module **/
 
-import { Component, onWillStart } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
-import { DashboardItem } from "./dashboard_item";
-import { PieChart } from "./pie_chart";
+import { DashboardItem } from "./dashboard_item/dashboard_item";
+import { PieChart } from "./pie_chart/pie_chart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -14,14 +14,8 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        // this.rpc = useService("rpc");
-        this.statisticService = useService("statisticService");
-
-        onWillStart(async () => {
-            this.statistics = await this.statisticService.loadStatistics();
-            // this.statistics = await this.rpc("/awesome_dashboard/statistics");
-            console.log("🚀 ~ result:", this.statistics);
-        });
+        this.statisticService = useService("awesome_dashboard.statistics");
+        this.statistics = useState(useService("awesome_dashboard.statistics"));
     }
 
     openLeads() {

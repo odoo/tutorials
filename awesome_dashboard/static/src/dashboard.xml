@@ -8,31 +8,31 @@
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
 
-            <div class="d-flex gap-3 p-1 flex-wrap">
+            <div class="d-flex gap-3 p-1 flex-wrap" t-if="statistics.loaded">
                 <DashboardItem>
                     Number of new orders this month
-                    <t t-set-slot="statistic" t-esc="statistics.nb_new_orders" />
+                    <t t-set-slot="statistic" t-esc="statistics.statistics.nb_new_orders" />
                 </DashboardItem>
                 <DashboardItem size="1.75">
                     Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
-                    <t t-set-slot="statistic" t-esc="statistics.average_time" />
+                    <t t-set-slot="statistic" t-esc="statistics.statistics.average_time" />
                 </DashboardItem>
                 <DashboardItem>
                     Total amount of new orders this month
-                    <t t-set-slot="statistic" t-esc="statistics.total_amount" />
+                    <t t-set-slot="statistic" t-esc="statistics.statistics.total_amount" />
                 </DashboardItem>
                 <DashboardItem size="1.5">
                     Average amount of t-shirt by order this month
-                    <t t-set-slot="statistic" t-esc="statistics.average_quantity" />
+                    <t t-set-slot="statistic" t-esc="statistics.statistics.average_quantity" />
                 </DashboardItem>
                 <DashboardItem>
                     Number of cancelled orders this month
-                    <t t-set-slot="statistic" t-esc="statistics.nb_cancelled_orders" />
+                    <t t-set-slot="statistic" t-esc="statistics.statistics.nb_cancelled_orders" />
                 </DashboardItem>
                 <DashboardItem size="2">
                     Shirt orders by size
                     <t t-set-slot="statistic">
-                        <PieChart data="statistics" />
+                        <PieChart data="statistics.statistics" />
                     </t>
                 </DashboardItem>
             </div>

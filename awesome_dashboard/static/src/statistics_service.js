@@ -2,15 +2,22 @@
 
 import { registry } from "@web/core/registry";
 import { memoize } from "@web/core/utils/functions";
+import { reactive } from "@odoo/owl";
 
 export const httpService = {
     dependencies: ["rpc"],
     start(env, { rpc }) {
-        const loadStatisticsMemoized = memoize(async () => await rpc("/awesome_dashboard/statistics"));
-        return {
-            loadStatistics: loadStatisticsMemoized,
-        };
+        const statistics = reactive({
+            loaded: false,
+        });
+        async function loadStatistics() {
+            statistics.statistics = await rpc("/awesome_dashboard/statistics");
+            statistics.loaded = true;
+        }
+        setInterval(loadStatistics, 4 * 1000);
+        loadStatistics();
+        return statistics;
     },
 };
 
-registry.category("services").add("statisticService", httpService);
+registry.category("services").add("awesome_dashboard.statistics", httpService);
