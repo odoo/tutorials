@@ -12,7 +12,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real estate property overview"
 
-    name = fields.Char('Estate name', required=True)
+    name = fields.Char('Estate name', required=True, default='New')
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date('Aivailable from', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
@@ -104,3 +104,11 @@ class EstateProperty(models.Model):
         for estate_property in self:
             if estate_property.state not in ["new", "canceled"]:
                 raise UserError('Cannot delete a property that is not new or canceled.')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals['name'] == "New":
+                vals['name'] = self.env['ir.sequence'].next_by_code('estate.property')
+                print('Auto name', vals['name'])
+        return super().create(vals_list)

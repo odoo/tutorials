@@ -10,6 +10,7 @@
     'website': 'https://www.odoo.com/page/estate',
     # data files always loaded at installation
     'data': [
+        'data/ir_sequence_data.xml',
         'security/ir.model.access.csv',
         'data/estate_property_offer_views.xml',
         'data/estate_property_views.xml',
