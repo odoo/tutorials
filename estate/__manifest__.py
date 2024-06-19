@@ -15,6 +15,7 @@
         'data/estate_property_views.xml',
         'data/property_types_views.xml',
         'data/property_tags_views.xml',
+        'data/inherited_model_views.xml',
         'data/estate_menus.xml',
     ],
     # data files containing optionally loaded demonstration data

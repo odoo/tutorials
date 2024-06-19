@@ -97,3 +97,10 @@ class EstateProperty(models.Model):
             else:
                 estate_property.state = "canceled"
         return True
+
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_invalid_property_deletion(self):
+        for estate_property in self:
+            if estate_property.state not in ["new", "canceled"]:
+                raise UserError('Cannot delete a property that is not new or canceled.')
