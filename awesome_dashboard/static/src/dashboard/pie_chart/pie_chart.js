@@ -14,7 +14,9 @@ export class PieChart extends Component {
         this.canvasRef = useRef("canvas");
         onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
         useEffect(
-            () => this.renderChart(),
+            () => {
+                this.renderChart();
+            },
             () => [this.props.data]
         );
         onWillUnmount(() => this.chart.destroy());
@@ -25,8 +27,9 @@ export class PieChart extends Component {
             this.chart.destroy();
         }
 
-        const labels = Object.keys(this.props.data.orders_by_size);
-        const data = Object.values(this.props.data.orders_by_size);
+        console.log("🚀 ~ this.props.data:", this.props.data);
+        const labels = Object.keys(this.props.data);
+        const data = Object.values(this.props.data);
 
         this.chart = new Chart(this.canvasRef.el, {
             type: "pie",
