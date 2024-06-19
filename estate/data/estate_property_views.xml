@@ -100,11 +100,43 @@
         </field>
     </record>
 
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_state': True}</field>
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="False">
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <group>
+                                <field name="name"/>
+                                <div>
+                                    <a>Expected Price: </a>
+                                    <field name="expected_price"/>
+                                </div>  
+                                <div t-if="record.state.raw_value == 'offer_received'">
+                                    <a>Best offer: </a>
+                                    <field name="best_price"></field>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_accepted'">
+                                    <a>Selling Price: </a>
+                                    <field name="selling_price"></field>
+                                </div>
+                                <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"></field>
+                            </group>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
     </record>
+        
+        <record id="estate_property_action" model="ir.actions.act_window">
+            <field name="name">Properties</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="context">{'search_default_state': True}</field>
+        </record>
     
 </odoo>
