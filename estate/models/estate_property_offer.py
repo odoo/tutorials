@@ -5,11 +5,13 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer to buy a real estate property"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(copy=False, selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id")
 
     _sql_constraints = [
         ('positive_offer_price', 'CHECK(price >= 0)', 'The offer price price must be positive')

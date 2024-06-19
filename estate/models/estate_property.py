@@ -41,7 +41,7 @@ class EstateProperty(models.Model):
         required=True, copy=False, default='new'
     )
 
-    property_type_id = fields.Many2one("estate.property.type")
+    property_type_id = fields.Many2one("estate.property.type", create=False)
     salesman_id = fields.Many2one("res.partner", default=lambda self: self.env.user.partner_id)
     buyer_id = fields.Many2one("res.users")
 

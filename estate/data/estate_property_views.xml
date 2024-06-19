@@ -5,15 +5,17 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
+            <tree string="Channel" decoration-success="state in ['offer_received','offer_accepted']" 
+            decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name" string="Title"></field>
                 <field name="postcode"></field>
                 <field name="bedrooms"></field>
                 <field name="living_area" string="Living Area (sqm)"></field>
                 <field name="expected_price"></field>
                 <field name="selling_price"></field>
-                <field name="date_availability" string="Available From"></field>
-                <field name="tags_ids" widget="many2many_tags" string="Tags"></field>
+                <field name="date_availability" string="Available From" optional="True"></field>
+                <field name="tags_ids" widget="many2many_tags" string="Tags" options="{'color_field': 'color'}"></field>
+                <field name="state" column_invisible="True"></field>
             </tree>
         </field>
     </record>
@@ -26,12 +28,13 @@
                 <header>
                     <button name="action_sold" type="object" string="Sold"/>
                     <button name="action_cancel" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <h1>
                         <field name="name" class="o_stat_text"></field>
                     </h1>
-                    <field name="tags_ids" widget="many2many_tags" string="Tags"></field>
+                    <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}" string="Tags"></field>
                     <separator/>
                     <group>
                         <group>
@@ -56,16 +59,15 @@
                                 <field name="facades" class="o_stat_value"></field>
                                 <field name="garage" class="o_stat_value"></field>
                                 <field name="garden" class="o_stat_value"></field>
-                                <field name="garden_area" string="Garden Area (sqm)" class="o_stat_value"></field>
-                                <field name="garden_orientation" string="Garden Orientation" class="o_stat_value"></field>
+                                <field name="garden_area" string="Garden Area (sqm)" class="o_stat_value" invisible="not garden"></field>
+                                <field name="garden_orientation" string="Garden Orientation" class="o_stat_value" invisible="not garden"></field>
                                 <field name="total_area" string="Total Area (sqm)" class="o_stat_value"/>
-                                <!--field name="state" class="o_stat_value"></field-->
                             </group>
                         </page>
 
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" string="Offers" class="o_stat_value"/>
+                                <field name="offer_ids" string="Offers" class="o_stat_value" readonly="state != 'new' and state != 'offer_received'"/>
                             </group>
                         </page>
 
@@ -85,12 +87,12 @@
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search>
+            <search> 
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '&gt;', self)]"/>
                 <field name="facades"/>
                 <filter string="Available" name="state" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
@@ -102,6 +104,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_state': True}</field>
     </record>
     
 </odoo>
