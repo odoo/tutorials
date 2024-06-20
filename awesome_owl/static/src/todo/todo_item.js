@@ -13,7 +13,12 @@ export class TodoItem extends Component {
                 id: Number,
                 description: String,
                 isCompleted: Boolean
-            }
-        }
+            },
+        },
+        toggleState: Function
     };
+
+    onchangeCheckbox() {
+        this.props.toggleState(this.props.todo.id);
+    }
 }

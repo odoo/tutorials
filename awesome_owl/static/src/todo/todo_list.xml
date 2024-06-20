@@ -3,9 +3,9 @@
 
     <t t-name="awesome_owl.TodoList">
         <div>
-            <input id="addTodoInput" placeholder="Enter a new task" t-on-keyup="ev => this.addTodo(ev)"/>
+            <input t-ref="addTodoInput" placeholder="Enter a new task" t-on-keyup="ev => this.addTodo(ev)"/>
             <t t-foreach="todos" t-as="todo_item" t-key="todo_item.id">
-                <TodoItem todo="todo_item"></TodoItem>
+                <TodoItem todo="todo_item" toggleState.bind="toggleComplete"/>
             </t>
         </div>
     </t>

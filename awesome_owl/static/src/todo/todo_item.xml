@@ -3,6 +3,7 @@
 
     <t t-name="awesome_owl.TodoItem">
         <div t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''">
+            <input type="checkbox" t-on-change="onchangeCheckbox"/>
             <t t-esc="props.todo.id"/>
             <a>. </a>
             <t t-esc="props.todo.description"/>
