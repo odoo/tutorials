@@ -1,20 +1,20 @@
 /** @odoo-module **/
 
 import { Component, onWillStart } from "@odoo/owl";
-import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
+import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
 import { DashboardItem } from "./dashboard_item.js"
-
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
 
     setup() {
         this.action = useService("action");
-        this.rpc = useService("rpc");
-        onWillStart(async () => { this.statistics = await this.rpc("/awesome_dashboard/statistics"); })
+        this.statistics = useService("awesome_dashboard.statistics");
+
+        onWillStart(async () => { this.statistics = await this.statistics.loadStatistics(); })
     }
 
     viewCustomerKanban() {
