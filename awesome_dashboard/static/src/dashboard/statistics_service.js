@@ -5,7 +5,7 @@ import { reactive } from "@odoo/owl";
 
 export const httpService = {
     dependencies: ["rpc"],
-    start(env, { rpc }) {
+    start(_, { rpc }) {
         const statistics = reactive({
             loaded: false,
         });

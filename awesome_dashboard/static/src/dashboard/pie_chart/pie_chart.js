@@ -1,6 +1,8 @@
 /** @odoo-module **/
 
 import { Component, onWillStart, useRef, onWillUnmount, useEffect } from "@odoo/owl";
+import { _t } from "@web/core/l10n/translation";
+import { useService } from "@web/core/utils/hooks";
 import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {
@@ -11,6 +13,7 @@ export class PieChart extends Component {
 
     setup() {
         this.chart = null;
+        this.action = useService("action");
         this.canvasRef = useRef("canvas");
         onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
         useEffect(
@@ -43,7 +46,7 @@ export class PieChart extends Component {
             options: {
                 aspectRatio: 2,
                 onClick: (evt, el) => {
-                    let point = this.chart.getElementsAtEventForMode(
+                    const point = this.chart.getElementsAtEventForMode(
                         evt,
                         "point",
                         {
@@ -51,14 +54,22 @@ export class PieChart extends Component {
                         },
                         true
                     );
-                    const label = this.chart.data.labels[point[0].index];
-                    const quantity = this.chart.data.datasets[point[0].datasetIndex].data[point[0].index];
-                    alert(`Opening: ${label} (${quantity})`);
-                    console.log(
-                        "Mode point list: ",
-                        this.chart.data.labels[point[0].index], // Label
-                        this.chart.data.datasets[point[0].datasetIndex].data[point[0].index] // Value
-                    );
+
+                    // When we click outside of the chart
+                    if (point.length === 0) return;
+
+                    const size = this.chart.data.labels[point[0].index];
+
+                    this.action.doAction({
+                        type: "ir.actions.act_window",
+                        name: "Related Sales Order",
+                        res_model: "sale.order",
+                        views: [[false, "list"]],
+
+                        // Just use the name to simulate, no data for this use case on sale app (training)
+                        domain: [["name", "ilike", size]],
+                        target: "new",
+                    });
                 },
             },
         });

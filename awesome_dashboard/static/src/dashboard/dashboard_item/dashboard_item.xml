@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.DashboardItem">
-        <div t-attf-style="width: {{ 18*props.size }}rem;" class="bg-light p-3">
+        <div t-attf-style="width: {{ 18*props.size }}rem;" class="bg-light p-3 o_dashboard_item">
             <div class="text-center text-nowrap">
                 <t t-slot="default" />
             </div>

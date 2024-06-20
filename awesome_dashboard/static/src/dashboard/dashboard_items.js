@@ -65,22 +65,4 @@ const items = [
     },
 ];
 
-const HIDDEN_ITEM_IDS_STORAGE_KEY = "awesome_dashboard.hiddenItemIds";
-
-export function loadHiddenItemIds() {
-    return localStorage.getItem(HIDDEN_ITEM_IDS_STORAGE_KEY)?.split(",") || [];
-}
-
-export function setHiddenItemIds(disablesIds) {
-    localStorage.setItem(HIDDEN_ITEM_IDS_STORAGE_KEY, disablesIds.join(","));
-}
-
-function loadItems() {
-    const hiddenIds = loadHiddenItemIds();
-    items.forEach((i) => {
-        i.show = !hiddenIds.includes(i.id);
-        registry.category("dashboard_item_registry").add(i.id, i);
-    });
-}
-
-loadItems();
+items.forEach((item) => registry.category("dashboard_item_registry").add(item.id, item));

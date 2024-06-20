@@ -19,6 +19,10 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.dialog = useService("dialog");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
+        this.user = useService("user");
+        this.itemsState = useState({
+            disabledIds: this.user.settings.awesome_dashboard_items.split(","),
+        });
     }
 
     openLeads() {
@@ -38,7 +42,15 @@ class AwesomeDashboard extends Component {
     }
 
     openItemSelection() {
-        this.dialog.add(ItemSelectionDialog);
+        this.dialog.add(ItemSelectionDialog, {
+            items: this.items,
+            disabledIds: this.itemsState.disabledIds,
+            onSelectionChanged: this.onSelectionChanged.bind(this),
+        });
+    }
+
+    onSelectionChanged(newDisabledItems) {
+        this.itemsState.disabledIds = newDisabledItems;
     }
 }
 

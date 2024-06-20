@@ -5,10 +5,10 @@
             <string>
                 Which items do you want to see ?
             </string>
-            <t t-foreach="items" t-as="item" t-key="item.id">
+            <t t-foreach="itemsWithState" t-as="item" t-key="item.id">
                 <div>
                     <span>
-                        <input type="checkbox" t-model="item.show" />
+                        <input type="checkbox" t-model="item.enabled" />
                     </span>
                     <span>
                         <t t-esc="item.description" />

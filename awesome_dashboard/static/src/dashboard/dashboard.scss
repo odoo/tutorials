@@ -1,3 +1,9 @@
 .o_dashboard {
     background-color: gray;
 }
+
+@media only screen and (max-width: 650px) {
+    .o_dashboard .o_dashboard_item {
+        width: 100% !important;
+    }
+}
