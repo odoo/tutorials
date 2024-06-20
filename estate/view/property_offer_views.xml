@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="property_offer_action_display" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+
+    <record id="property_offer_action_display_all" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">property.offer</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="property_offer_view_tree" model="ir.ui.view">
+        <field name="name">property.offer.tree</field>
+        <field name="model">property.offer</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="status"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <field name="property_type_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="property_offer_view_form" model="ir.ui.view">
+        <field name="name">property.offer.form</field>
+        <field name="model">property.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="status"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
