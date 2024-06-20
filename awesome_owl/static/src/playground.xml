@@ -9,9 +9,9 @@
             <a>Sum =</a><t t-esc="state.sum"></t>
         </div>
         <br/>
-        <Card title="'Card 1'" content="'&lt;div&gt;some content&lt;/div&gt;'"></Card>
-        <Card title="'Card 2'" content="card_content"></Card>
-        <Card title="'Card 3'"></Card>
+        <Card title="'Card 1'"><Counter/></Card>
+        <Card title="'Card 2'"><span>Lorem ipsum</span></Card>
+        <Card title="'Card 3'"><TodoList/></Card>
         <br/>
         <TodoList/>
     </t>

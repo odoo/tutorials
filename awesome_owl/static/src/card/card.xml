@@ -5,9 +5,8 @@
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text">
-                    <t t-out="props.content"/>
-                </p>
+                <button t-on-click="toggleContent">Show content</button>
+                <t t-if="state.open" t-slot="default"/>
             </div>
         </div>
     </t>
