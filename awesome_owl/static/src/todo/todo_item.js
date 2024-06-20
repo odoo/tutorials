@@ -15,10 +15,15 @@ export class TodoItem extends Component {
                 isCompleted: Boolean
             },
         },
-        toggleState: Function
+        toggleState: Function,
+        removeTodo: Function
     };
 
     onchangeCheckbox() {
         this.props.toggleState(this.props.todo.id);
+    }
+
+    onClickRemove() {
+        this.props.removeTodo(this.props.todo.id);
     }
 }
