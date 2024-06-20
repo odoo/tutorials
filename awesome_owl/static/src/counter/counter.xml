@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="my_module.counter">
+    <t t-name="my_module.Counter">
         <p>Counter: <t t-esc="state.value"/></p>
         <button class="btn btn-primary" t-on-click="increment">Increment</button>
     </t>

@@ -3,6 +3,10 @@
 
     <t t-name="my_module.Playground">
         <Counter/><Counter/>
+        <br/>
+        <Card title="'Card 1'" content="'&lt;div&gt;some content&lt;/div&gt;'"></Card>
+        <Card title="'Card 2'" content="card_content"></Card>
+        <Card title="'Card 3'"></Card>
     </t>
 
 </templates>
