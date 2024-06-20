@@ -3,7 +3,6 @@
 import { Component, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 import { CheckBox } from "@web/core/checkbox/checkbox";
-import { browser } from "@web/core/browser/browser";
 
 export class ConfigurationDialog extends Component {
   static template = "awesome_dashboard.configuration_dialog";
@@ -39,11 +38,6 @@ export class ConfigurationDialog extends Component {
     const newDisabledItems = Object.values(this.items)
       .filter((item) => !item.enabled)
       .map((item) => item.id);
-
-    browser.localStorage.setItem(
-      "awesome_dashboard.disabled_dashboard_items",
-      newDisabledItems,
-    );
 
     this.props.onUpdateConfiguration(newDisabledItems);
   }

@@ -14,7 +14,7 @@
             </t>
             <div t-if="stats.isReady">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size ?? 1">
+                    <DashboardItem t-if="!settings.disabledItems.includes(item.id)" size="item.size ?? 1">
                        <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
                        <t t-component="item.Component" t-props="itemProp" />
                     </DashboardItem>

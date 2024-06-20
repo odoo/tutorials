@@ -7,7 +7,6 @@ import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { PieChart } from "./pie_chart/pie_chart";
 import { ConfigurationDialog } from "./configuration_dialog/configuration_dialog";
-import { browser } from "@web/core/browser/browser";
 
 class AwesomeDashboard extends Component {
   static template = "awesome_dashboard.AwesomeDashboard";
@@ -17,14 +16,10 @@ class AwesomeDashboard extends Component {
   setup() {
     this.actionService = useService("action");
     this.dialogService = useService("dialog");
+    this.settingsService = useService("awesome_dashboard.settings");
     this.stats = useState(useService("awesome_dashboard.statistics"));
     this.items = registry.category("awesome_dashboard").getAll();
-    this.state = useState({
-      disabledItems:
-        browser.localStorage
-          .getItem("awesome_dashboard.disabled_dashboard_items")
-          ?.split(",") || [],
-    });
+    this.settings = useState(this.settingsService.settings);
   }
 
   openCustomerView() {
@@ -46,13 +41,13 @@ class AwesomeDashboard extends Component {
   openConfiguration() {
     this.dialogService.add(ConfigurationDialog, {
       items: this.items,
-      disabledItems: this.state.disabledItems,
+      disabledItems: this.settings.disabledItems,
       onUpdateConfiguration: this.updateConfiguration.bind(this),
     });
   }
 
   updateConfiguration(newDisabledItems) {
-    this.state.disabledItems = newDisabledItems;
+    this.settingsService.setDisabledItems(newDisabledItems);
   }
 }
 
