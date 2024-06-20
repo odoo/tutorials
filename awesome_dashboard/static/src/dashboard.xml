@@ -5,8 +5,14 @@
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
             <button t-on-click="viewCustomerKanban">Customers</button>
             <button t-on-click="viewLeads">Leads</button>
-            <DashboardItem><div>This is a placeholder for dashboard item</div></DashboardItem>
-            <DashboardItem size="2"><div>This one has a size of 2</div></DashboardItem>
+
+            <t t-foreach="statistics" t-as="stat" t-key="stat">
+                <DashboardItem>
+                    <t t-esc="stat"/>
+                    <br/>
+                    <a class="big-and-green"><t t-esc="statistics[stat]"/></a>
+                </DashboardItem>
+            </t>
         </Layout>
     </t>
 

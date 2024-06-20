@@ -3,9 +3,7 @@
 
     <t t-name="awesome_dashboard.DashboardItem">
         <div class="dashboard-item" t-attf-style="width: {{18*props.size}}rem;">
-            <div>
-                <t t-slot="default"/>
-            </div>
+            <t t-slot="default"/>
         </div>
     </t>
 
