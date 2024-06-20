@@ -3,9 +3,9 @@
 import { Component } from "@odoo/owl";
 
 export class NumberCard extends Component {
-    static template = "awesome_dashboard.components.number_card";
+    static template = "awesome_dashboard.NumberCard";
     static props = {
-        title: { type: Number, optional: true, default: 1 },
+        title: { type: String, optional: true, default: 1 },
         value: Number,
     };
 }

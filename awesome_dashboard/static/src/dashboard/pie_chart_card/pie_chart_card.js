@@ -4,10 +4,10 @@ import { Component } from "@odoo/owl";
 import { PieChart } from "../pie_chart/pie_chart";
 
 export class PieChartCard extends Component {
-    static template = "awesome_dashboard.components.pie_chart_card";
+    static template = "awesome_dashboard.PieChartCard";
     static components = { PieChart };
     static props = {
         title: String,
-        values: Array,
+        values: Object,
     };
 }

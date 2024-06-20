@@ -27,7 +27,6 @@ export class PieChart extends Component {
             this.chart.destroy();
         }
 
-        console.log("🚀 ~ this.props.data:", this.props.data);
         const labels = Object.keys(this.props.data);
         const data = Object.values(this.props.data);
 
@@ -43,6 +42,24 @@ export class PieChart extends Component {
             },
             options: {
                 aspectRatio: 2,
+                onClick: (evt, el) => {
+                    let point = this.chart.getElementsAtEventForMode(
+                        evt,
+                        "point",
+                        {
+                            intersect: true,
+                        },
+                        true
+                    );
+                    const label = this.chart.data.labels[point[0].index];
+                    const quantity = this.chart.data.datasets[point[0].datasetIndex].data[point[0].index];
+                    alert(`Opening: ${label} (${quantity})`);
+                    console.log(
+                        "Mode point list: ",
+                        this.chart.data.labels[point[0].index], // Label
+                        this.chart.data.datasets[point[0].datasetIndex].data[point[0].index] // Value
+                    );
+                },
             },
         });
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="awesome_dashboard.components.number_card">
+    <t t-name="awesome_dashboard.NumberCard">
         <div class="text-center text-nowrap">
             <t t-esc="props.title" />
         </div>

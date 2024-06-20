@@ -7,16 +7,17 @@ import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { PieChart } from "./pie_chart/pie_chart";
-import { items } from "./dashboard_items";
+import { CogMenu } from "@web/search/cog_menu/cog_menu";
+import { ItemSelectionDialog } from "./item_selection_dialog/item_selection_dialog";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart };
+    static components = { Layout, DashboardItem, PieChart, CogMenu };
 
     setup() {
-        this.items = items;
+        this.items = registry.category("dashboard_item_registry").getAll();
         this.action = useService("action");
-        this.statisticService = useService("awesome_dashboard.statistics");
+        this.dialog = useService("dialog");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
     }
 
@@ -30,6 +31,14 @@ class AwesomeDashboard extends Component {
                 [false, "form"],
             ],
         });
+    }
+
+    openCustomers() {
+        this.action.doAction("base.action_partner_form");
+    }
+
+    openItemSelection() {
+        this.dialog.add(ItemSelectionDialog);
     }
 }
 

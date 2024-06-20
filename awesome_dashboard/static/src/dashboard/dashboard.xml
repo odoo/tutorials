@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+        <Layout display="{controlPanel: {'top-right': true} }" className="'o_dashboard h-100'">
             <t t-set-slot="layout-buttons">
-                <button class="btn btn-primary" t-on-click="() => action.doAction('base.action_partner_form')">Customers</button>
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openItemSelection" class="d-print-none btn p-0 ms-1 lh-sm border-0">
+                    <i class="fa fa-cog" data-hotkey="u" data-tooltip="Actions"/>
+                </button>
+            </t>
             <div class="d-flex gap-3 p-1 flex-wrap" t-if="statistics.loaded">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size || 1">
+                    <!-- <t t-esc="item.props"></t> -->
+                    <DashboardItem size="item.size || 1" t-if="item.show">
                         <t t-set="itemProp" t-value="item.props ? item.props(statistics.statistics) : {'data': statistics.statistics}"/>
                         <t t-component="item.Component" t-props="itemProp" />
                     </DashboardItem>
                 </t>
             </div>
-
-
         </Layout>
     </t>
 </templates>

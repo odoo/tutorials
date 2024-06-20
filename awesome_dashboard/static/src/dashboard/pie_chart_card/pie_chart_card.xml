@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="awesome_dashboard.components.pie_chart_card">
+    <t t-name="awesome_dashboard.PieChartCard">
         <div class="text-center text-nowrap">
             <t t-esc="props.title" />
         </div>

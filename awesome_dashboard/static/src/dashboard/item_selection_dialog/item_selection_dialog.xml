@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.ItemSelectionDialog">
+        <Dialog size="'md'" title="props.title" modalRef="modalRef">
+            <string>
+                Which items do you want to see ?
+            </string>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <div>
+                    <span>
+                        <input type="checkbox" t-model="item.show" />
+                    </span>
+                    <span>
+                        <t t-esc="item.description" />
+                    </span>
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="_confirm">Apply and Close</button>
+                <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
