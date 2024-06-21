@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, onWillStart, useRef, onMounted, onWillUnmount } from "@odoo/owl";
+import { Component, onWillStart, useRef, useEffect, onWillUnmount } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 
 import { DashboardItem } from "../dashboard_item/dashboard_item.js";
@@ -14,18 +14,18 @@ export class PieChart extends Component {
     setup() {
         this.chartItemCanvasRef = useRef("chartItemCanvas");
 
-        onWillStart(() => loadJS(["/web/static/lib/Chart/Chart.js"]));
+        onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
 
-        onMounted(() => {
-            this.renderChart();
-        });
+        useEffect(() => { this.renderChart(); }, () => [this.props.data]);
         onWillUnmount(() => {
             this.chart.destroy();
         });
     }
     
     renderChart() {
-        /*
+        if (this.chart)
+            this.chart.destroy();
+
         this.chart = new Chart(this.chartItemCanvasRef.el, {
             type: "pie",
             data: {
@@ -38,7 +38,6 @@ export class PieChart extends Component {
                 ],
             },
         });
-        */
     }
 
     static components = { DashboardItem };
