@@ -5,8 +5,8 @@ import { Layout } from "@web/search/layout";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
-import { DashboardItem } from "./dashboard_item/dashboard_item.js"
-import { PieChart } from "./pie_chart/pie_chart.js"
+import { DashboardItem } from "./dashboard_item/dashboard_item.js";
+import { items } from "./dashboard_items.js";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -14,6 +14,7 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
+        this.items = items;
     }
 
     viewCustomerKanban() {
@@ -29,7 +30,7 @@ class AwesomeDashboard extends Component {
         });
     }
 
-    static components = { Layout, DashboardItem, PieChart };
+    static components = { Layout, DashboardItem };
 }
 
 registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);

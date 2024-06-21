@@ -6,15 +6,13 @@
             <button t-on-click="viewCustomerKanban">Customers</button>
             <button t-on-click="viewLeads">Leads</button>
 
-            <t t-foreach="statistics" t-as="stat" t-key="stat">
-                <DashboardItem>
-                    <t t-esc="stat"/>
-                    <br/>
-                    <a class="big-and-green"><t t-esc="statistics[stat]"/></a>
-                </DashboardItem>
-            </t>
-            <div t-if="statistics.isReady">
-                <PieChart data="statistics['orders_by_size']"/>
+            <div>
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
             </div>
         </Layout>
     </t>
