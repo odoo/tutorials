@@ -1,11 +1,11 @@
 /** @odoo-module **/
 
-import { Component, onWillStart } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { Layout } from "@web/search/layout";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
-import { DashboardItem } from "./dashboard_item.js"
+import { DashboardItem } from "./dashboard_item/dashboard_item.js"
 import { PieChart } from "./pie_chart/pie_chart.js"
 
 class AwesomeDashboard extends Component {
@@ -13,9 +13,7 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        this.statistics = useService("awesome_dashboard.statistics");
-
-        onWillStart(async () => { this.statistics = await this.statistics.loadStatistics(); })
+        this.statistics = useState(useService("awesome_dashboard.statistics"));
     }
 
     viewCustomerKanban() {
@@ -34,4 +32,4 @@ class AwesomeDashboard extends Component {
     static components = { Layout, DashboardItem, PieChart };
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);
