@@ -44,7 +44,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_offer_accepted(self) -> bool:
         self.ensure_one()
-        if any(offer.status == "accepted" for offer in self.property_id.offer_ids):
+        if any(offer.status == "accepted" and offer.id != self.id for offer in self.property_id.offer_ids):
             raise UserError(_("Another property already accepted!"))
         self.status = "accepted"
         self.property_id.state = "offer_accepted"
