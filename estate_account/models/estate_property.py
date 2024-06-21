@@ -5,6 +5,9 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
+        self.check_access_rights("write")
+        self.check_access_rule("write")
+        
         invoice = {
             "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",

@@ -1,7 +1,9 @@
 {
     "version": "1.0",
     "depends": ["base"],
+    "category": "Real Estate/Brokerage",
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         'views/res_users_views.xml',
         "views/estate_property_sequence.xml",
