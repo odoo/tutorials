@@ -13,6 +13,7 @@
                     <a class="big-and-green"><t t-esc="statistics[stat]"/></a>
                 </DashboardItem>
             </t>
+            <PieChart data="statistics['orders_by_size']"/>
         </Layout>
     </t>
 

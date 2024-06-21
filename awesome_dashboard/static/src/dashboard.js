@@ -6,6 +6,7 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
 import { DashboardItem } from "./dashboard_item.js"
+import { PieChart } from "./pie_chart/pie_chart.js"
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -30,7 +31,7 @@ class AwesomeDashboard extends Component {
         });
     }
 
-    static components = { Layout, DashboardItem };
+    static components = { Layout, DashboardItem, PieChart };
 }
 
 registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
