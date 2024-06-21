@@ -6,7 +6,7 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
 import { DashboardItem } from "./dashboard_item/dashboard_item.js";
-import { items } from "./dashboard_items.js";
+
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -14,7 +14,7 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
-        this.items = items;
+        this.items = registry.category("awesome_dashboard").getAll();
     }
 
     viewCustomerKanban() {
