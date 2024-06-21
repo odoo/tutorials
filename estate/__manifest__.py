@@ -13,7 +13,9 @@
         'security/ir.model.access.csv',
 
         'data/ir_sequence_data.xml',
+        'demo/demo_property_types.xml',
         'demo/demo_properties.xml',
+        'demo/demo_property_offers.xml',
 
         'views/estate_property_offer_views.xml',
         'views/estate_property_views.xml',

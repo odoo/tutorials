@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="demo_cheap_villa_offer" model="estate.property.offer">
+        <field name="partner_id" ref="base.main_company"/>
+        <field name="property_id" ref="estate.demo_villa"/>
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+    </record>
+
+    <record id="demo_middle_villa_offer" model="estate.property.offer">
+        <field name="partner_id" ref="base.main_company"/>
+        <field name="property_id" ref="estate.demo_villa"/>
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+    </record>
+
+    <record id="demo_high_villa_offer" model="estate.property.offer">
+        <field name="partner_id" ref="base.main_company"/>
+        <field name="property_id" ref="estate.demo_villa"/>
+        <field name="price" eval="1500000 + 1"/>
+        <field name="validity">14</field>
+    </record>
+
+    <function model="estate.property.offer" name="action_refuse_offer">
+        <value eval="[ref('demo_middle_villa_offer'), ref('demo_cheap_villa_offer')]"/>
+    </function>
+
+    <!--function model="estate.property.offer" name="action_accept_offer">
+        <value eval="[ref('demo_high_villa_offer')]"/>
+    </function-->
+
+</odoo>

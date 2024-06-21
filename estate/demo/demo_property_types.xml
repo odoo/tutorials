@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="demo_residential_type" model="estate.property.type">
+        <field name="name">Residential</field>
+    </record>
+
+</odoo>
