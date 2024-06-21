@@ -38,7 +38,7 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         estate_property = self.env["estate.property"].browse(vals["property_id"])
         if tools.float_compare(vals["price"], estate_property.best_price, 0) == -1:
-            raise UserError(_(f"Offer with lower amount than an existing offer! {estate_property.best_price} vs {vals['price']}"))
+            raise UserError(_("Offer with lower amount than an existing offer!"))
         estate_property.state = "offer_received"
         return super().create(vals)
 

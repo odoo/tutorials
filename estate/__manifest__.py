@@ -17,8 +17,8 @@
         "views/estate_menus.xml",
     ],
     "demo": [
-        "demo/estate.property.type.csv",
-        "demo/estate.property.xml",
-        "demo/estate.property.offer.xml",
+        "demo/demo.estate.property.type.csv",
+        "demo/demo.estate.property.xml",
+        "demo/demo.estate.property.offer.xml",
     ],
 }
