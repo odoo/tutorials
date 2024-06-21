@@ -1,4 +1,12 @@
 <odoo>
+    <record id="azure_interior_id1" model="res.partner">
+        <field name="name">Azure Interior</field>
+    </record>
+
+    <record id="deco_addict_id1" model="res.partner">
+        <field name="name">Deco Addict</field>
+    </record>
+
     <record id="id1" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="state">new</field>
@@ -6,7 +14,7 @@
         <field name="postcode">12345</field>
         <field name="date_availability">2020-02-02</field>
         <field name="expected_price">1600000</field>
-        <field name="selling_price">1500000</field>
+        <field name="selling_price">1500001</field>
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
         <field name="facades">4</field>
@@ -24,7 +32,7 @@
         <field name="postcode">54321</field>
         <field name="date_availability">1970-01-01</field>
         <field name="expected_price">100000</field>
-        <field name="selling_price">0</field>
+        <field name="selling_price">1500001</field>
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
@@ -42,7 +50,7 @@
         <field name="postcode">54321</field>
         <field name="date_availability">1970-01-01</field>
         <field name="expected_price">100000</field>
-        <field name="selling_price">0</field>
+        <field name="selling_price">1500001</field>
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
@@ -54,12 +62,12 @@
         <field name="offer_ids" eval="[
             Command.create({
                 'property_id': 'id3',
-                'price': 100000000,
+                'price': 1500001,
                 'partner_id': ref('azure_interior_id1')
             }),
             Command.create({
                 'property_id': 'id3',
-                'price': 200000000,
+                'price': 1500001,
                 'partner_id': ref('azure_interior_id1')
             }),
             ]" />

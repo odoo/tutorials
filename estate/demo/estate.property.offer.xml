@@ -1,22 +1,15 @@
 <odoo>
-    <record id="azure_interior_id1" model="res.partner">
-        <field name="name">Azure Interior</field>
-    </record>
-
-    <record id="deco_addict_id1" model="res.partner">
-        <field name="name">Deco Addict</field>
-    </record>
-
     <record id="offer_id1" model="estate.property.offer">
         <field name="property_id" ref="estate.id1" />
         <field name="partner_id" ref="azure_interior_id1" />
-        <field name="price">10000</field>
+        <field name="price">1500001</field>
         <field name="date_deadline" eval="datetime.now()+timedelta(days=14)" />
     </record>
+
     <record id="offer_id2" model="estate.property.offer">
         <field name="property_id" ref="estate.id1" />
         <field name="partner_id" ref="azure_interior_id1" />
-        <field name="price">1500000</field>
+        <field name="price">1500001</field>
         <field name="date_deadline" eval="datetime.now()+timedelta(days=14)" />
     </record>
 
