@@ -55,7 +55,6 @@ class EstateProperty(models.Model):
 
     @api.constrains('selling_price', 'expected_price')
     def _90_percent_price(self):
-        print('90 percent rule')
         for estate_property in self:
             if float_compare(estate_property.selling_price, 0.9 * estate_property.expected_price, precision_digits=2) == -1 \
                 and not float_is_zero(estate_property.selling_price, precision_digits=2):

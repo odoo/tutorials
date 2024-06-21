@@ -10,14 +10,18 @@
     'website': 'https://www.odoo.com/page/estate',
     # data files always loaded at installation
     'data': [
-        'data/ir_sequence_data.xml',
         'security/ir.model.access.csv',
-        'data/estate_property_offer_views.xml',
-        'data/estate_property_views.xml',
-        'data/property_types_views.xml',
-        'data/property_tags_views.xml',
-        'data/inherited_model_views.xml',
-        'data/estate_menus.xml',
+
+        'data/ir_sequence_data.xml',
+        'demo/demo_properties.xml',
+
+        'views/estate_property_offer_views.xml',
+        'views/estate_property_views.xml',
+        'views/property_types_views.xml',
+        'views/property_tags_views.xml',
+        'views/inherited_model_views.xml',
+
+        'views/estate_menus.xml',
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
