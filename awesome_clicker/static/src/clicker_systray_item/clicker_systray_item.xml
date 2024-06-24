@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.ClickerSystrayItem">
+        <li>
+            Clicks:
+            <t t-esc="state.click_count"/><a>    </a>
+            <button t-on-click="incrementButtonAction">+</button>
+            <button t-on-click="openClickerGame">Open</button>
+        </li>
+    </t>
+
+</templates>
