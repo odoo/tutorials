@@ -5,42 +5,96 @@
 		<ClickValue />
 		Level
 		<t t-esc="clicker.level" />
-		<h1>
-			Bots
-		</h1>
-		<button t-on-click="() => clicker.increment(40000)" class="btn btn-primary">
-			<i class="fa fa-plus" aria-hidden="true">
-			</i>
-			Increment
-		</button>
-		<div t-if="clicker.level >= 1">
-			<t t-esc="clicker.clickBots" />
-			<button t-on-click="() => clicker.incrementClickBots(1)" class="btn btn-primary" t-att="{disabled: 1000 > clicker.clicks}">
-				<i class="fa fa-dollar" aria-hidden="true">
-				</i>
-				Buy Click Bot (1000 clicks) 10 clicks / 20s
-			</button>
-		</div>
-		<div t-if="clicker.level >= 2">
-			<t t-esc="clicker.bigClickBots" />
-			<button t-on-click="() => clicker.incrementBigClickBots(1)" class="btn btn-primary" t-att="{disabled: 5000 > clicker.clicks}">
-				<i class="fa fa-dollar" aria-hidden="true">
-				</i>
-				Buy Big Click Bot (5000 clicks) 100 clicks / 10s
-			</button>
-		</div>
-		<div t-if="clicker.level >= 3">
-			<h1>
-				Power Multiplier
-			</h1>
-			<div>
-				<t t-esc="clicker.multiplier" />
-				<button t-on-click="() => clicker.incrementMultiplier(1)" class="btn btn-primary" t-att="{disabled: 50000 > clicker.clicks}">
-					<i class="fa fa-dollar" aria-hidden="true">
+		<Notebook orientation="'horizontal'">
+			<t t-set-slot="page_1" title="'Clicks'" isVisible="true">
+				<h1>
+					My First Page
+				</h1>
+				<h1>
+					Bots
+				</h1>
+				<button t-on-click="() => clicker.increment(4000000)" class="btn btn-primary">
+					<i class="fa fa-plus" aria-hidden="true">
 					</i>
-					Buy Big Click Bot (5000 clicks) 100 clicks / 10s
+					Increment
 				</button>
-			</div>
-		</div>
+				<div t-if="clicker.level >= 1">
+					<t t-esc="clicker.clickBots" />
+					<button t-on-click="() => clicker.incrementClickBots()" class="btn btn-primary" t-att="{disabled: 1000 > clicker.clicks}">
+						<i class="fa fa-dollar" aria-hidden="true">
+						</i>
+						Buy Click Bot (1000 clicks) 10 clicks / 20s
+					</button>
+				</div>
+				<div t-if="clicker.level >= 2">
+					<t t-esc="clicker.bigClickBots" />
+					<button t-on-click="() => clicker.incrementBigClickBots()" class="btn btn-primary" t-att="{disabled: 5000 > clicker.clicks}">
+						<i class="fa fa-dollar" aria-hidden="true">
+						</i>
+						Buy Big Click Bot (5000 clicks) 100 clicks / 10s
+					</button>
+				</div>
+				<div t-if="clicker.level >= 3">
+					<h1>
+						Power Multiplier
+					</h1>
+					<div>
+						<t t-esc="clicker.multiplier" />
+						<button t-on-click="() => clicker.incrementMultiplier()" class="btn btn-primary" t-att="{disabled: 50000 > clicker.clicks}">
+							<i class="fa fa-dollar" aria-hidden="true">
+							</i>
+							Buy Big Click Bot (5000 clicks) 100 clicks / 10s
+						</button>
+					</div>
+				</div>
+			</t>
+			<t t-set-slot="page_2" title="'Tree and fruits'" isVisible="true" t-if="clicker.level >= 4">
+				<h1>
+					Trees
+				</h1>
+				<div>
+					<t t-esc="clicker.pearsTreeCount" />
+					(1 pear / 30 s)
+					<button t-on-click="() => clicker.incrementPearTree()" class="btn btn-primary" t-att="{disabled: 1000000 > clicker.clicks}">
+						<i class="fa fa-dollar" aria-hidden="true">
+						</i>
+						Buy pearTree (1 000 000 clicks)
+					</button>
+				</div>
+				<div>
+					<t t-esc="clicker.cherriesTreeCount" />
+					(1 pear / 30 s)
+					<button t-on-click="() => clicker.incrementCherryTree()" class="btn btn-primary" t-att="{disabled: 1000000 > clicker.clicks}">
+						<i class="fa fa-dollar" aria-hidden="true">
+						</i>
+						Buy cheryTree (1 000 000 clicks)
+					</button>
+				</div>
+				<div>
+					<t t-esc="clicker.peachTreeCount" />
+					(1 pear / 30 s)
+					<button t-on-click="() => clicker.incrementPeachTree()" class="btn btn-primary" t-att="{disabled: 1000000 > clicker.clicks}">
+						<i class="fa fa-dollar" aria-hidden="true">
+						</i>
+						Buy peachTree (1 000 000 clicks)
+					</button>
+				</div>
+				<h2>
+					Fruits
+				</h2>
+				<div>
+					<t t-esc="clicker.pearsFruitCount" />
+					Pears
+				</div>
+				<div>
+					<t t-esc="clicker.cherriesFruitCount" />
+					Cherries
+				</div>
+				<div>
+					<t t-esc="clicker.peachFruitCount" />
+					Cherries
+				</div>
+			</t>
+		</Notebook>
 	</t>
 </templates>

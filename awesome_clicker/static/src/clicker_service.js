@@ -1,14 +1,13 @@
 /** @odoo-module **/
+
 import { registry } from "@web/core/registry";
-import { reactive } from "@odoo/owl";
-import { ClickerModel } from "./clicker_model";
-import { EventBus } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import { clickerBus, ClickerModel } from "./clicker_model";
 import { patch } from "@web/core/utils/patch";
 import { FormController } from "@web/views/form/form_controller";
-import { randomInt } from "./utils";
+import { migrationUpdate, randomInt } from "./utils";
 import { _t } from "@web/core/l10n/translation";
-import { ClientAction } from "./client_action/client_action";
+import { browser } from "@web/core/browser/browser";
+import { migrations } from "./clicker_model_migrations";
 
 const commandProviderRegistry = registry.category("command_provider");
 
@@ -21,15 +20,27 @@ function openClientAction(action) {
     });
 }
 
+function handleNewVersion(clickerModel) {
+    const oldClickerModel = browser.localStorage.getItem("clickerState");
+    if (!oldClickerModel) return;
+    const parsedModel = JSON.parse(oldClickerModel);
+    const newVersion = clickerModel.versionNumber;
+    Object.assign(clickerModel, parsedModel);
+    clickerModel.versionNumber = newVersion;
+    migrationUpdate(migrations, clickerModel, parsedModel.versionNumber, clickerModel.versionNumber);
+}
+
 const clickerService = {
     dependencies: ["effect", "notification", "action"],
     start(_, { effect, notification, action }) {
         const clickerModel = new ClickerModel();
+        handleNewVersion(clickerModel);
 
-        clickerModel.bus.addEventListener("MILESTONE_1k", (event) => {
-            console.log("HELLO FROM SERVICE");
+        setInterval(() => browser.localStorage.setItem("clickerState", JSON.stringify(clickerModel)), 10 * 1000);
+
+        clickerBus.addEventListener("MILESTONE_1k", (_) => {
             effect.add({
-                type: "rainbow_man", // can be omitted, default type is already "rainbow_man"
+                type: "rainbow_man",
                 message: "Boom! You can now buy clickbots.",
             });
         });
@@ -38,13 +49,12 @@ const clickerService = {
             setup() {
                 super.setup(...arguments);
 
-                const percent = randomInt(100);
-
                 // Just to debug, normally === 50
-                if (percent < -1) return;
+                if (randomInt(100) < -1) return;
+
                 const reward = clickerModel.getReward();
-                console.log(reward);
                 if (!reward) return;
+
                 notification.add(_t(`Congrats you won a reward: "${reward.description}"`), {
                     type: "success",
                     buttons: [
@@ -61,26 +71,23 @@ const clickerService = {
         });
 
         commandProviderRegistry.add("awesome_clicker", {
-            provide: (env, options) => {
-                const result = [];
-                result.push({
-                    action() {
-                        openClientAction(action);
+            provide: () => {
+                return [
+                    {
+                        action() {
+                            openClientAction(action);
+                        },
+                        category: "debug",
+                        name: _t("Open Click Game"),
                     },
-
-                    category: "debug",
-                    name: _t("Open Click Game"),
-                });
-                result.push({
-                    action() {
-                        clickerModel.incrementClickBots(1);
+                    {
+                        action() {
+                            clickerModel.incrementClickBots();
+                        },
+                        category: "debug",
+                        name: _t("Buy 1 click bot"),
                     },
-
-                    category: "debug",
-                    name: _t("Buy 1 click bot"),
-                });
-
-                return result;
+                ];
             },
         });
 

@@ -6,15 +6,16 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { useClicker } from "../clicker_hook";
 import { ClickValue } from "../click_value/click_value";
+import { Dropdown } from "@web/core/dropdown/dropdown";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 
 class ClickerSystrayItem extends Component {
     static template = "awesome_clicker.ClickerSystrayItem";
-    static components = { ClickValue };
+    static components = { ClickValue, Dropdown, DropdownItem };
 
     setup() {
         this.action = useService("action");
         this.clicker = useClicker();
-        console.log("🚀 ~ this.clicker:", this.clicker);
         useExternalListener(
             document.body,
             "click",

@@ -1,14 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="awesome_clicker.ClickerSystrayItem">
-
-        <div>
-            Clicks: 
-            <ClickValue />
-            <button t-on-click="openClientAction" class="btn btn-secondary">
-                Open
-            </button>
-        </div>
-
-    </t>
+	<t t-name="awesome_clicker.ClickerSystrayItem">
+		<div>
+			<Dropdown>
+				<t t-set-slot="toggler">
+					<!-- "toggler" slot content is rendered inside a button -->
+					<ClickValue />
+					<i class="fa fa-mouse-pointer" aria-hidden="true">
+					</i>
+					,
+					<t t-esc="clicker.totalTreeCount()" />
+					<i class="fa fa-tree" aria-hidden="true">
+					</i>
+					,
+					<t t-esc="clicker.totalFruitCount()" />
+					<i class="fa fa-apple" aria-hidden="true">
+					</i>
+				</t>
+				<!-- "default" slot content is rendered inside a div -->
+				<DropdownItem onSelected="selectItem1">
+					<button class="btn btn-secondary" t-on-click="openClientAction">
+						Open the clicker game
+					</button>
+				</DropdownItem>
+				<DropdownItem onSelected="selectItem2">
+					<button class="btn btn-secondary" t-on-click="() => clicker.incrementClickBots()">
+						Buy a click bot
+					</button>
+				</DropdownItem>
+				<DropdownItem onSelected="selectItem2">
+					<t t-esc="clicker.pearsTreeCount" />
+					x pearTree
+				</DropdownItem>
+				<DropdownItem onSelected="selectItem2">
+					<t t-esc="clicker.cherriesTreeCount" />
+					x cherryTree
+				</DropdownItem>
+				<DropdownItem onSelected="selectItem2">
+					<t t-esc="clicker.pearsFruitCount" />
+					x pear
+				</DropdownItem>
+				<DropdownItem onSelected="selectItem2">
+					<t t-esc="clicker.cherriesFruitCount" />
+					x cherry
+				</DropdownItem>
+				<DropdownItem onSelected="selectItem2">
+					<t t-esc="clicker.peachFruitCount" />
+					x peach
+				</DropdownItem>
+			</Dropdown>
+		</div>
+	</t>
 </templates>
