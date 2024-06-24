@@ -1,19 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="awesome_clicker.ClientAction">
-        Clicks
-        <ClickValue />
-
-        <h1>Bots</h1>
-        <button t-on-click="() => clicker.increment(900)" class="btn btn-primary">
-            <i class="fa fa-plus" aria-hidden="true"></i> Increment
-        </button>
-        <button t-on-click="() => clicker.incrementClickBots(1)" class="btn btn-primary" t-att="{disabled: 1000 > clicker.state.clicks}">
-            <i class="fa fa-dollar" aria-hidden="true"></i> Buy Click Bot (1000 clicks)
-        </button>
-
-        <t t-if="clicker.state.level > 1">
-            <t t-esc="clicker.state.clickBots" />
-        </t>
-    </t>
+	<t t-name="awesome_clicker.ClientAction">
+		Clicks
+		<ClickValue />
+		Level
+		<t t-esc="clicker.level" />
+		<h1>
+			Bots
+		</h1>
+		<button t-on-click="() => clicker.increment(40000)" class="btn btn-primary">
+			<i class="fa fa-plus" aria-hidden="true">
+			</i>
+			Increment
+		</button>
+		<div t-if="clicker.level >= 1">
+			<t t-esc="clicker.clickBots" />
+			<button t-on-click="() => clicker.incrementClickBots(1)" class="btn btn-primary" t-att="{disabled: 1000 > clicker.clicks}">
+				<i class="fa fa-dollar" aria-hidden="true">
+				</i>
+				Buy Click Bot (1000 clicks) 10 clicks / 20s
+			</button>
+		</div>
+		<div t-if="clicker.level >= 2">
+			<t t-esc="clicker.bigClickBots" />
+			<button t-on-click="() => clicker.incrementBigClickBots(1)" class="btn btn-primary" t-att="{disabled: 5000 > clicker.clicks}">
+				<i class="fa fa-dollar" aria-hidden="true">
+				</i>
+				Buy Big Click Bot (5000 clicks) 100 clicks / 10s
+			</button>
+		</div>
+		<div t-if="clicker.level >= 3">
+			<h1>
+				Power Multiplier
+			</h1>
+			<div>
+				<t t-esc="clicker.power" />
+				<button t-on-click="() => clicker.incrementPower(1)" class="btn btn-primary" t-att="{disabled: 50000 > clicker.clicks}">
+					<i class="fa fa-dollar" aria-hidden="true">
+					</i>
+					Buy Big Click Bot (5000 clicks) 100 clicks / 10s
+				</button>
+			</div>
+		</div>
+	</t>
 </templates>
