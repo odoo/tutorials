@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -15,7 +15,7 @@ class EstateProperty(models.Model):
     name = fields.Char('Estate name', required=True, default='New')
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date('Aivailable from', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
+    date_availability = fields.Date('Available from', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
 
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -83,10 +83,14 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for estate_property in self:
+
+            if len(estate_property.offer_ids) == 0:
+                raise UserError(_("Cannot sell a property with no associated offers"))
             if estate_property.state == "canceled":
                 raise UserError('A canceled property cannot be sold')
             else:
                 estate_property.state = "sold"
+
         return True
 
     def action_cancel(self):
@@ -109,5 +113,4 @@ class EstateProperty(models.Model):
         for vals in vals_list:
             if vals['name'] == "New":
                 vals['name'] = self.env['ir.sequence'].next_by_code('estate.property')
-                print('Auto name', vals['name'])
         return super().create(vals_list)

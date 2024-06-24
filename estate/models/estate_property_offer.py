@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from odoo.exceptions import UserError
 
 
@@ -61,8 +61,13 @@ class EstatePropertyOffer(models.Model):
     def create(self, valses):
         for vals in valses:
             estate_property = self.env["estate.property"].browse(vals["property_id"])
+
+            if estate_property.state == 'sold':
+                raise UserError(_("Cannot create an offer for a sold property"))
+
             if estate_property.offer_ids and max(estate_property.offer_ids.mapped("price")) > vals["price"]:
                 raise UserError("Cannot offer less than the best offer.")
+
             else:
                 estate_property.state = "offer_received"
                 
