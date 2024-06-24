@@ -1,34 +1,29 @@
 <odoo>
-    <record id="offer_id1" model="estate.property.offer">
-        <field name="property_id" ref="estate.id1" />
-        <field name="partner_id" ref="azure_interior_id1" />
-        <field name="price">1500001</field>
-        <field name="date_deadline" eval="datetime.now()+timedelta(days=14)" />
-    </record>
-
-    <record id="offer_id2" model="estate.property.offer">
-        <field name="property_id" ref="estate.id1" />
-        <field name="partner_id" ref="azure_interior_id1" />
-        <field name="price">1500001</field>
-        <field name="date_deadline" eval="datetime.now()+timedelta(days=14)" />
-    </record>
-
-    <record id="offer_id3" model="estate.property.offer">
-        <field name="property_id" ref="estate.id2" />
-        <field name="partner_id" ref="deco_addict_id1" />
-        <field name="price">1500001</field>
-        <field name="date_deadline" eval="datetime.now()+timedelta(days=14)" />
-    </record>
-
-    <function model="estate.property.offer" name="action_offer_refused">
-        <value eval="[ref('offer_id1')]" />
-    </function>
-
-    <function model="estate.property.offer" name="action_offer_accepted">
-        <value eval="[ref('offer_id2')]" />
-    </function>
-
-    <function model="estate.property.offer" name="action_offer_refused">
-        <value eval="[ref('offer_id3')]" />
-    </function>
+	<record id="offer_id1" model="estate.property.offer">
+		<field name="property_id" ref="estate.id1" />
+		<field name="partner_id" ref="azure_interior_id1" />
+		<field name="price">1500001</field>
+		<field name="date_deadline" eval="datetime.now()+timedelta(days=14)" />
+	</record>
+	<record id="offer_id2" model="estate.property.offer">
+		<field name="property_id" ref="estate.id1" />
+		<field name="partner_id" ref="azure_interior_id1" />
+		<field name="price">1500001</field>
+		<field name="date_deadline" eval="datetime.now()+timedelta(days=14)" />
+	</record>
+	<record id="offer_id3" model="estate.property.offer">
+		<field name="property_id" ref="estate.id2" />
+		<field name="partner_id" ref="deco_addict_id1" />
+		<field name="price">1500001</field>
+		<field name="date_deadline" eval="datetime.now()+timedelta(days=14)" />
+	</record>
+	<function model="estate.property.offer" name="action_offer_refused">
+		<value eval="[ref('offer_id1')]" />
+	</function>
+	<function model="estate.property.offer" name="action_offer_accepted">
+		<value eval="[ref('offer_id2')]" />
+	</function>
+	<function model="estate.property.offer" name="action_offer_refused">
+		<value eval="[ref('offer_id3')]" />
+	</function>
 </odoo>

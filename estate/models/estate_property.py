@@ -75,6 +75,8 @@ class EstateProperty(models.Model):
         "res.company", required=True, default=lambda self: self.env.company
     )
 
+    a_new_field_two = fields.Char(required=True)
+    
     @api.depends("living_area", "garden_area")
     def _compute_area(self) -> None:
         for estate_property in self:

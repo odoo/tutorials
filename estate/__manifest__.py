@@ -1,6 +1,6 @@
 {
     "name": "Real Estate",
-    "version": "1.0",
+    "version": "3.0",
     "depends": ["base"],
     "category": "Real Estate/Brokerage",
     "license": "LGPL-3",
@@ -17,7 +17,7 @@
         "views/estate_menus.xml",
     ],
     "demo": [
-        "demo/demo.estate.property.type.csv",
+        "demo/estate.property.type.csv",
         "demo/demo.estate.property.xml",
         "demo/demo.estate.property.offer.xml",
     ],

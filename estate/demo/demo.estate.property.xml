@@ -1,16 +1,15 @@
 <odoo>
     <record id="azure_interior_id1" model="res.partner">
-        <field name="name">Azure Interior</field>
+        <field name="name">AzureInterior</field>
     </record>
-
     <record id="deco_addict_id1" model="res.partner">
-        <field name="name">Deco Addict</field>
+        <field name="name">DecoAddict</field>
     </record>
-
     <record id="id1" model="estate.property">
-        <field name="name">Big Villa</field>
+        <field name="name">BigVilla</field>
         <field name="state">new</field>
-        <field name="description">A nice and big villa</field>
+        <field name="a_new_field_two_two">CouCou</field>
+        <field name="description">niceandbigvilla</field>
         <field name="postcode">12345</field>
         <field name="date_availability">2020-02-02</field>
         <field name="expected_price">1600000</field>
@@ -22,14 +21,14 @@
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
-        <field name="property_type_id" ref="estate.1" />
+        <field name="property_type_id" ref="estate.1"/>
     </record>
-
     <record id="id2" model="estate.property">
-        <field name="name">Trailer home</field>
+        <field name="name">Trailerhome</field>
         <field name="state">canceled</field>
-        <field name="description">Home in a trailer park</field>
+        <field name="description">Homeinatrailerpark</field>
         <field name="postcode">54321</field>
+        <field name="a_new_field_two">CouCou</field>
         <field name="date_availability">1970-01-01</field>
         <field name="expected_price">100000</field>
         <field name="selling_price">1500001</field>
@@ -40,14 +39,14 @@
         <field name="garden">False</field>
         <field name="garden_area">0</field>
         <field name="garden_orientation"></field>
-        <field name="property_type_id" ref="estate.1" />
+        <field name="property_type_id" ref="estate.1"/>
     </record>
-
     <record id="id3" model="estate.property">
-        <field name="name">Sprimont Land</field>
+        <field name="name">SprimontLand</field>
         <field name="state">new</field>
-        <field name="description">Nice land</field>
+        <field name="description">Niceland</field>
         <field name="postcode">54321</field>
+        <field name="a_new_field_two">CouCou</field>
         <field name="date_availability">1970-01-01</field>
         <field name="expected_price">100000</field>
         <field name="selling_price">1500001</field>
@@ -58,18 +57,18 @@
         <field name="garden">False</field>
         <field name="garden_area">0</field>
         <field name="garden_orientation"></field>
-        <field name="property_type_id" ref="estate.4" />
+        <field name="property_type_id" ref="estate.4"/>
         <field name="offer_ids" eval="[
             Command.create({
-                'property_id': 'id3',
-                'price': 1500001,
-                'partner_id': ref('azure_interior_id1')
+                'property_id':'id3',
+                'price':1500001,
+                'partner_id':ref('azure_interior_id1')
             }),
             Command.create({
-                'property_id': 'id3',
-                'price': 1500001,
-                'partner_id': ref('azure_interior_id1')
+                'property_id':'id3',
+                'price':1500001,
+                'partner_id':ref('azure_interior_id1')
             }),
-            ]" />
+        ]"/>
     </record>
 </odoo>
