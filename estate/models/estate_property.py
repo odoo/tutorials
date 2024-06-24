@@ -10,10 +10,11 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
 
     _name = "estate.property"
+    _inherit = ['mail.thread']
     _description = "Real estate property overview"
 
     name = fields.Char('Estate name', required=True, default='New')
-    description = fields.Text()
+    description = fields.Text(required=True)
     postcode = fields.Char()
     date_availability = fields.Date('Available from', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
 
@@ -38,11 +39,11 @@ class EstateProperty(models.Model):
         string='Status',
         selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
         help='Availability status of the property',
-        required=True, copy=False, default='new'
+        required=True, copy=False, default='new', tracking=True
     )
 
     property_type_id = fields.Many2one("estate.property.type", create=False)
-    salesman_id = fields.Many2one("res.partner", default=lambda self: self.env.user.partner_id)
+    salesman_id = fields.Many2one("res.partner", default=lambda self: self.env.user.partner_id, tracking=True)
     buyer_id = fields.Many2one("res.users")
 
     tags_ids = fields.Many2many("estate.property.tags", string="Tags")
@@ -114,3 +115,9 @@ class EstateProperty(models.Model):
             if vals['name'] == "New":
                 vals['name'] = self.env['ir.sequence'].next_by_code('estate.property')
         return super().create(vals_list)
+
+    def _track_subtype(self, init_values):
+        self.ensure_one()
+        if 'state' in init_values and self.state == 'sold':
+            return self.env.ref('estate.property_state_change')
+        return super(EstateProperty, self)._track_subtype(init_values)

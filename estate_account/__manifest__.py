@@ -1,6 +1,6 @@
 {
     'name': "estate_account",
-    'version': '1.0',
+    'version': '1.1',
     'depends': ['base', 'estate', 'account'],
     'author': "Yoann Baron (bary)",
     'category': 'Tutorials',
@@ -15,6 +15,4 @@
     # data files containing optionally loaded demonstration data
     'demo': [
     ],
-    
-    'application': True,
 }

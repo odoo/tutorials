@@ -1,7 +1,7 @@
 {
     'name': "estate",
-    'version': '1.0',
-    'depends': ['base'],
+    'version': '1.2',
+    'depends': ['base', 'mail'],
     'author': "Yoann Baron (bary)",
     'category': 'Tutorials',
     'description': """
