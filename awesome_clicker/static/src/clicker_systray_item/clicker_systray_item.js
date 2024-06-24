@@ -1,8 +1,11 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { Component, useState, useExternalListener } from "@odoo/owl";
+import { Component, useExternalListener } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
+
+import { useClicker } from "../clicker_hook.js"
+import { ClickerValue } from "../clicker_value/clicker_value.js"
 
 
 class ClickerSystrayItem extends Component {
@@ -10,16 +13,13 @@ class ClickerSystrayItem extends Component {
     static props = {
         description: { type: String, optional: true }
     };
+    static components = { ClickerValue };
 
     setup() {
-        this.clickerService = useState(useService("awesome_clicker.clickCounter"));
+        this.clicker = useClicker();
 
-        useExternalListener(window, "click", this.incrementCounter, { capture: true });
+        useExternalListener(window, "click", () => this.clicker.increment(1), { capture: true });
         this.actionService = useService("action");
-    }
-
-    incrementCounter(){
-        this.clickerService.increment(1);
     }
 
     openClickerGame() {

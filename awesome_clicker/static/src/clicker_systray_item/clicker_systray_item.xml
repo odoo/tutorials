@@ -4,7 +4,7 @@
     <t t-name="awesome_clicker.ClickerSystrayItem">
         <li>
             Clicks:
-            <t t-esc="clickerService.state.clicks"/><a>    </a>
+            <ClickerValue/><a>    </a>
             <button t-on-click="openClickerGame">Open</button>
         </li>
     </t>

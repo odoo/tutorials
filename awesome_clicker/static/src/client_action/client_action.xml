@@ -3,7 +3,7 @@
 
     <t t-name="awesome_clicker.ActionButton">
         Clicks:
-        <t t-esc="clickerService.state.clicks"/><a>    </a>
+        <ClickerValue/><a>    </a>
         <button t-on-click="incrementButtonAction">Increment</button>
     </t>
 

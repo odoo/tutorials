@@ -1,8 +1,11 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { Component, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import { Component } from "@odoo/owl";
+
+import { useClicker } from "../clicker_hook.js"
+import { ClickerValue } from "../clicker_value/clicker_value.js";
+
 
 export class ClientAction extends Component {
     static template = "awesome_clicker.ActionButton";
@@ -11,13 +14,14 @@ export class ClientAction extends Component {
         action: Object,
         actionId: { type: Number, optional: true }
     };
+    static components = { ClickerValue };
 
     setup() {
-        this.clickerService = useState(useService("awesome_clicker.clickCounter"));
+        this.clicker = useClicker();
     }
 
     incrementButtonAction() {
-        this.clickerService.increment(9);
+        this.clicker.increment(9);
     }
 }
 
