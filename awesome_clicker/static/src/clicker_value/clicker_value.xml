@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.ClickerValue">
-        <t t-esc="displayValue"/>
+        <span t-att-data-tooltip="this.clicker.state.clicks"><t t-esc="displayValue"/></span>
     </t>
     
 </templates>

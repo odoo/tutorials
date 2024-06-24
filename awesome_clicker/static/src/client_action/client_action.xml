@@ -5,6 +5,13 @@
         Clicks:
         <ClickerValue/><a>    </a>
         <button t-on-click="incrementButtonAction">Increment</button>
+
+        <div t-if="this.clicker.state.level >= 1">
+            <a>Clickbots:</a>
+            <t t-esc="this.clicker.state.clickbots"/>
+
+            <button t-if="this.clicker.state.clicks >= 1000" t-on-click="this.clicker.buyClickbot">Buy Clickbot (1000 clicks)</button>
+        </div>
     </t>
 
 </templates>
