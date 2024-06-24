@@ -34,8 +34,8 @@
 				Power Multiplier
 			</h1>
 			<div>
-				<t t-esc="clicker.power" />
-				<button t-on-click="() => clicker.incrementPower(1)" class="btn btn-primary" t-att="{disabled: 50000 > clicker.clicks}">
+				<t t-esc="clicker.multiplier" />
+				<button t-on-click="() => clicker.incrementMultiplier(1)" class="btn btn-primary" t-att="{disabled: 50000 > clicker.clicks}">
 					<i class="fa fa-dollar" aria-hidden="true">
 					</i>
 					Buy Big Click Bot (5000 clicks) 100 clicks / 10s

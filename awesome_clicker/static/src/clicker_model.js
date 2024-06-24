@@ -2,6 +2,8 @@
 
 import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
+import { rewards } from "./click_rewards";
+import { choose, randomInt } from "./utils";
 
 export class ClickerModel extends Reactive {
     constructor() {
@@ -12,16 +14,20 @@ export class ClickerModel extends Reactive {
         this.clickBots = 0;
         this.bigClickBots = 0;
         this.level = 0;
-        this.power = 1;
+        this.multiplier = 1;
 
-        setInterval(() => this.increment(this.clickBots * 10 * this.power), 1000 * 20);
-        setInterval(() => this.increment(this.bigClickBots * 100 * this.power), 1000 * 10);
+        setInterval(() => this.increment(this.clickBots * 10 * this.multiplier), 1000 * 20);
+        setInterval(() => this.increment(this.bigClickBots * 100 * this.multiplier), 1000 * 10);
     }
 
     increment(inc) {
         this.clicks += inc;
-        console.log(this.clicks);
-        if (this.clicks > 1000 && !this._first1KMilestoneTriggered) {
+        this.checkForNewLevel();
+    }
+
+    checkForNewLevel() {
+        const initialLevel = this.level;
+        if (this.level === 0 && this.clicks > 1_000) {
             this.level = 1;
             this._first1KMilestoneTriggered = true;
             console.log("TRIGGERING");
@@ -29,9 +35,25 @@ export class ClickerModel extends Reactive {
         }
         if (this.level === 1 && this.clicks > 5_000) {
             this.level++;
-        } else if (this.level === 2 && this.clicks > 100_000) {
+        }
+        if (this.level === 2 && this.clicks > 100_000) {
             this.level++;
         }
+
+        if (initialLevel !== this.level) {
+            const reward = this.getReward();
+            console.log(reward);
+            if (reward) reward.apply(this);
+        }
+    }
+
+    getReward() {
+        return choose(
+            rewards.filter(
+                (reward) =>
+                    this.level >= (reward.minLevel ?? 0) && this.level <= (reward.maxLevel ?? Number.MAX_SAFE_INTEGER)
+            )
+        );
     }
 
     incrementClickBots(inc) {
@@ -43,8 +65,8 @@ export class ClickerModel extends Reactive {
         this.increment(-inc * 5000);
     }
 
-    incrementPower(inc) {
-        this.power++;
+    incrementMultiplier(inc) {
+        this.multiplier++;
         this.increment(inc * -50_000);
     }
 }

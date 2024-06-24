@@ -7,7 +7,7 @@ import { useService } from "@web/core/utils/hooks";
 import { useClicker } from "../clicker_hook";
 import { ClickValue } from "../click_value/click_value";
 
-class ClientAction extends Component {
+export class ClientAction extends Component {
     static template = "awesome_clicker.ClientAction";
     static components = { ClickValue };
 
