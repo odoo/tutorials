@@ -76,7 +76,7 @@ class EstateProperty(models.Model):
     )
 
     a_new_field_two = fields.Char(required=True)
-    
+
     @api.depends("living_area", "garden_area")
     def _compute_area(self) -> None:
         for estate_property in self:
@@ -128,10 +128,10 @@ class EstateProperty(models.Model):
         self.ensure_one()
         if self.state == "canceled":
             raise UserError(_("An property canceled can't be sold"))
-        
+
         if len(self.offer_ids.filtered(lambda offer: offer.status == "accepted")) == 0:
             raise ValidationError(_("No offer accepted for this property!"))
-        
+
         self.state = "sold"
         return True
 
