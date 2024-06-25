@@ -6,35 +6,44 @@
         <ClickerValue/><a>    </a>
         <button t-on-click="incrementButtonAction">Increment</button>
 
-        <div t-if="this.clicker.level >= 1">
-            <a>ClickBots:</a>
-            <t t-esc="this.clicker.clickBots"/>
+        <Notebook orientation="'vertical'">
 
-            <button t-if="this.clicker.clicks >= 1000" t-on-click="() => this.clicker.buyClickBot()">Buy ClickBot (1000 clicks)</button>
-        </div>
-
-        <div t-if="this.clicker.level >= 2">
-            <a>BigBots:</a>
-            <t t-esc="this.clicker.bigBots"/>
-
-            <button t-if="this.clicker.clicks >= 5000" t-on-click="() => this.clicker.buyBigBot()">Buy BigBot (5000 clicks)</button>
-        </div>
-
-        <div t-if="this.clicker.level >= 3">
-            <a>Power:</a>
-            <t t-esc="this.clicker.power"/>
-
-            <button t-if="this.clicker.clicks >= 100000" t-on-click="() => { this.clicker.power++; this.clicker.clicks -= 100000 }">Buy Power (100000 clicks)</button>
-        </div>
-
-        <div t-if="this.clicker.level >= 4">
-            <t t-foreach="this.clicker.trees" t-as="treeType" t-key="treeType.fruit">
-                <t t-esc="treeType_value.fruit"/> trees:<t t-esc="treeType_value.nb_trees"/>
-                <button t-if="this.clicker.clicks >= 1000000" t-on-click="() => this.clicker.buyTree(treeType)">Buy tree (1000000 clicks)</button>
-                <t t-esc="treeType_value.fruit"/>: <t t-esc="treeType_value.nb_fruits"/>
-                <br/>
+            <t t-set-slot="page_1" title="'Clickers'" isVisible="true">
+                <div t-if="this.clicker.level >= 1">
+                    <a>ClickBots:</a>
+                    <t t-esc="this.clicker.clickBots"/>
+        
+                    <button t-att-disabled="this.clicker.clicks lt 1000" t-on-click="() => this.clicker.buyClickBot()">Buy ClickBot (1000 clicks)</button>
+                </div>
+        
+                <div t-if="this.clicker.level >= 2">
+                    <a>BigBots:</a>
+                    <t t-esc="this.clicker.bigBots"/>
+        
+                    <button t-att-disabled="this.clicker.clicks lt 5000" t-on-click="() => this.clicker.buyBigBot()">Buy BigBot (5000 clicks)</button>
+                </div>
+        
+                <div t-if="this.clicker.level >= 3">
+                    <a>Power:</a>
+                    <t t-esc="this.clicker.power"/>
+        
+                    <button t-att-disabled="this.clicker.clicks lt 100000" t-on-click="() => { this.clicker.power++; this.clicker.clicks -= 100000 }">Buy Power (100000 clicks)</button>
+                </div>
             </t>
-        </div>
+
+            <t t-set-slot="page_2" title="'Trees and Fruits'" isVisible="true">
+                <div t-if="this.clicker.level >= 4">
+                    <t t-foreach="this.clicker.trees" t-as="treeType" t-key="treeType.fruit">
+                        <t t-esc="treeType_value.fruit"/> trees:<t t-esc="treeType_value.nb_trees"/>
+                        <button t-att-disabled="this.clicker.clicks lt 1000000" t-on-click="() => this.clicker.buyTree(treeType)">Buy tree (1000000 clicks)</button>
+                        <br/>
+                        <t t-esc="treeType_value.fruit"/>: <t t-esc="treeType_value.nb_fruits"/>
+                        <br/>
+                    </t>
+                </div>
+            </t>
+
+          </Notebook>
     </t>
 
 </templates>

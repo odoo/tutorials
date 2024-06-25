@@ -2,6 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { Component } from "@odoo/owl";
+import { Notebook } from "@web/core/notebook/notebook";
 
 import { useClicker } from "../clicker_hook.js"
 import { ClickerValue } from "../clicker_value/clicker_value.js";
@@ -14,7 +15,7 @@ export class ClientAction extends Component {
         action: Object,
         actionId: { type: Number, optional: true }
     };
-    static components = { ClickerValue };
+    static components = { ClickerValue, Notebook };
 
     setup() {
         this.clicker = useClicker();
