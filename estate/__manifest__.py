@@ -1,7 +1,7 @@
 {
     "name": "Real Estate",
     "version": "3.0",
-    "depends": ["base"],
+    "depends": ["base", "web"],
     "category": "Real Estate/Brokerage",
     "license": "LGPL-3",
     "installable": True,

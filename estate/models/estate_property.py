@@ -128,6 +128,10 @@ class EstateProperty(models.Model):
         self.ensure_one()
         if self.state == "canceled":
             raise UserError(_("An property canceled can't be sold"))
+        
+        if len(self.offer_ids.filtered(lambda offer: offer.status == "accepted")) == 0:
+            raise ValidationError(_("No offer accepted for this property!"))
+        
         self.state = "sold"
         return True
 
