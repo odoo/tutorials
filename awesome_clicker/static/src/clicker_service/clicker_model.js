@@ -4,6 +4,8 @@ import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
 import { rewards } from "../click_rewards.js";
 
+import { CURRENT_VERSION } from "./clicker_migrations.js";
+
 
 export class ClickerModel extends Reactive {
 
@@ -26,6 +28,11 @@ export class ClickerModel extends Reactive {
                 nb_trees: 0,
                 fruit: "Cherry",
                 nb_fruits: 0
+            },
+            peachTree: {
+                nb_trees: 0,
+                fruit: "Peach",
+                nb_fruits: 0
             }
         }
 
@@ -33,9 +40,11 @@ export class ClickerModel extends Reactive {
         this.maxLevel = 4;
         this.bus = new EventBus();
 
+        this.version = CURRENT_VERSION;
+
         setInterval(() => this.clicks += this.power * (10 * this.clickBots + 100 * this.bigBots), 10*1000);
         for (const treeType of Object.keys(this.trees))
-            setInterval(() => this.trees[treeType].nb_fruits += this.trees[treeType].nb_trees, 30*1000)
+            setInterval(() => this.trees[treeType].nb_fruits += this.trees[treeType].nb_trees, 30*1000);
     }
 
     toJSON() {
