@@ -26,6 +26,15 @@
 
             <button t-if="this.clicker.clicks >= 100000" t-on-click="() => { this.clicker.power++; this.clicker.clicks -= 100000 }">Buy Power (100000 clicks)</button>
         </div>
+
+        <div t-if="this.clicker.level >= 4">
+            <t t-foreach="this.clicker.trees" t-as="treeType" t-key="treeType.fruit">
+                <t t-esc="treeType_value.fruit"/> trees:<t t-esc="treeType_value.nb_trees"/>
+                <button t-if="this.clicker.clicks >= 1000000" t-on-click="() => this.clicker.buyTree(treeType)">Buy tree (1000000 clicks)</button>
+                <t t-esc="treeType_value.fruit"/>: <t t-esc="treeType_value.nb_fruits"/>
+                <br/>
+            </t>
+        </div>
     </t>
 
 </templates>
