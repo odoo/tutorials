@@ -13,5 +13,5 @@ export class ClickerValue extends Component {
         this.clicker = useClicker();
     }
 
-    get displayValue() { return humanNumber(this.clicker.state.clicks); }
+    get displayValue() { return humanNumber(this.clicker.clicks); }
 }

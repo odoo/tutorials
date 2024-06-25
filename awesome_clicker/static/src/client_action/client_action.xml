@@ -6,11 +6,25 @@
         <ClickerValue/><a>    </a>
         <button t-on-click="incrementButtonAction">Increment</button>
 
-        <div t-if="this.clicker.state.level >= 1">
-            <a>Clickbots:</a>
-            <t t-esc="this.clicker.state.clickbots"/>
+        <div t-if="this.clicker.level >= 1">
+            <a>ClickBots:</a>
+            <t t-esc="this.clicker.clickBots"/>
 
-            <button t-if="this.clicker.state.clicks >= 1000" t-on-click="this.clicker.buyClickbot">Buy Clickbot (1000 clicks)</button>
+            <button t-if="this.clicker.clicks >= 1000" t-on-click="() => this.clicker.buyClickBot()">Buy ClickBot (1000 clicks)</button>
+        </div>
+
+        <div t-if="this.clicker.level >= 2">
+            <a>BigBots:</a>
+            <t t-esc="this.clicker.bigBots"/>
+
+            <button t-if="this.clicker.clicks >= 5000" t-on-click="() => this.clicker.buyBigBot()">Buy BigBot (5000 clicks)</button>
+        </div>
+
+        <div t-if="this.clicker.level >= 3">
+            <a>Power:</a>
+            <t t-esc="this.clicker.power"/>
+
+            <button t-if="this.clicker.clicks >= 100000" t-on-click="() => { this.clicker.power++; this.clicker.clicks -= 100000 }">Buy Power (100000 clicks)</button>
         </div>
     </t>
 
