@@ -2,11 +2,21 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.ClickerSystrayItem">
-        <li>
-            Clicks:
-            <ClickerValue/><a>    </a>
-            <button t-on-click="openClickerGame">Open</button>
-        </li>
+        <Dropdown>
+            <t t-set-slot="toggler">
+                <t t-set="totals" t-value="this.clicker.totalTreesAndFruits()"/>
+                <ClickerValue/><i class="fa fa-mouse-pointer fa-fw"/>,
+                <t t-esc="totals.treeTotal"/><i class="fa fa-tree fa-fw"/>,
+                <t t-esc="totals.fruitsTotal"/><i class="fa fa-apple fa-fw"/>
+            </t>
+            <!-- "default" slot content is rendered inside a div -->
+            <DropdownItem onSelected="selectItem1"><button t-on-click="openClickerGame">Open Clicker Game</button></DropdownItem>
+            <DropdownItem onSelected="selectItem2"><button t-on-click="() => this.clicker.buyClickBot()">Buy 1 ClickBot</button></DropdownItem>
+            <t t-foreach="this.clicker.trees" t-as="treeType" t-key="treeType">
+                <DropdownItem><t t-esc="treeType_value.fruit"/>\x20trees:\x20<t t-esc="treeType_value.nb_trees"/></DropdownItem>
+                <DropdownItem><t t-esc="treeType_value.fruit"/>:\x20<t t-esc="treeType_value.nb_fruits"/></DropdownItem>
+            </t>
+          </Dropdown>
     </t>
 
 </templates>

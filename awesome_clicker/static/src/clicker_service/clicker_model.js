@@ -69,6 +69,14 @@ export class ClickerModel extends Reactive {
     }
 
     totalTreesAndFruits() {
-        return this.trees.reduce((sum, treeType) => sum += treeType.nb_fruits + treeType.nb_trees);
+        var treeTotal = 0;
+        var fruitsTotal = 0;
+
+        for (const treeType of Object.keys(this.trees)) {
+            treeTotal += this.trees[treeType].nb_trees;
+            fruitsTotal += this.trees[treeType].nb_fruits;
+        }
+
+        return { 'treeTotal': treeTotal, 'fruitsTotal': fruitsTotal };
     }
 }

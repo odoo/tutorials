@@ -4,6 +4,9 @@ import { registry } from "@web/core/registry";
 import { Component, useExternalListener } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 
+import { Dropdown } from "@web/core/dropdown/dropdown";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+
 import { useClicker } from "../clicker_hook.js"
 import { ClickerValue } from "../clicker_value/clicker_value.js"
 
@@ -13,7 +16,7 @@ class ClickerSystrayItem extends Component {
     static props = {
         description: { type: String, optional: true }
     };
-    static components = { ClickerValue };
+    static components = { ClickerValue, Dropdown, DropdownItem };
 
     setup() {
         this.clicker = useClicker();
