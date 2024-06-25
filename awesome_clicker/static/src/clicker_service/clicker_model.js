@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-// Currently unused
-
 import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
+import { rewards } from "../click_rewards.js"
+
 
 export class ClickerModel extends Reactive {
 
@@ -39,5 +39,12 @@ export class ClickerModel extends Reactive {
         this.bigBots++;
         this.clicks -= 5000;
         setInterval(() => this.clicks += 100 * this.power, 10*1000);
+    }
+
+    getReward() {
+        const eligible_rewards = rewards.filter((reward) => (!reward.minLevel || reward.minLevel <= this.level)
+             && (!reward.maxLevel || reward.maxLevel >= this.level));
+        const reward = eligible_rewards[Math.floor(Math.random() * eligible_rewards.length)];
+        this.bus.trigger("REWARD_RECEIVED", reward);
     }
 }
