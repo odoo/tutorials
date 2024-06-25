@@ -2,13 +2,20 @@
 
 import { registry } from "@web/core/registry";
 import { ClickerModel } from "./clicker_model";
+import { browser } from "@web/core/browser/browser";
 
 
 const clickerService = {
     dependencies: ['effect', 'notification', 'action'],
     start(env, services) {
 
-        const clicker_model = new ClickerModel();
+        const localState = JSON.parse(browser.localStorage.getItem("clickerState"));
+        const clicker_model = localState ? ClickerModel.fromJSON(localState) : new ClickerModel();
+
+        setInterval(() => {
+            browser.localStorage.setItem("clickerState", JSON.stringify(clicker_model))
+        }, 10000);
+
         clicker_model.bus.addEventListener("MILESTONE_REACHED", (event) => {
             services.effect.add({message: `You have reached level ${event.detail}!`}
         )});

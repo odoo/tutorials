@@ -2,7 +2,7 @@
 
 import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
-import { rewards } from "../click_rewards.js"
+import { rewards } from "../click_rewards.js";
 
 
 export class ClickerModel extends Reactive {
@@ -32,6 +32,23 @@ export class ClickerModel extends Reactive {
         this.milestones = [1000, 5000, 100000, 1000000];
         this.maxLevel = 4;
         this.bus = new EventBus();
+
+        setInterval(() => this.clicks += this.power * (10 * this.clickBots + 100 * this.bigBots), 10*1000);
+        for (const treeType of Object.keys(this.trees))
+            setInterval(() => this.trees[treeType].nb_fruits += this.trees[treeType].nb_trees, 30*1000)
+    }
+
+    toJSON() {
+        const json = Object.assign({}, this);
+        delete json["bus"];
+        return json;
+
+    }
+
+    static fromJSON(json) {
+        const clicker = new ClickerModel();
+        const clickerInstance = Object.assign(clicker, json);
+        return clickerInstance;
     }
 
     increment(inc) {
@@ -46,19 +63,16 @@ export class ClickerModel extends Reactive {
     buyClickBot() {
         this.clickBots++;
         this.clicks -= 1000;
-        setInterval(() => this.clicks += 10 * this.power, 10*1000);
     }
 
     buyBigBot() {
         this.bigBots++;
         this.clicks -= 5000;
-        setInterval(() => this.clicks += 100 * this.power, 10*1000);
     }
 
     buyTree(treeType) {
         this.trees[treeType].nb_trees++;
         this.clicks -= 1000000;
-        setInterval(() => this.trees[treeType].nb_fruits++, 30*1000);
     }
 
     getReward() {
