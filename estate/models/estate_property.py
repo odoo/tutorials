@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 from odoo.tools.populate import compute
 
 
@@ -23,6 +23,10 @@ class Property(models.Model):
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string='Living area (sqm)')
     facades = fields.Integer()
+   
+    # 
+    # On Change
+    # 
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
@@ -30,14 +34,44 @@ class Property(models.Model):
         string = 'Garden Orientation',
         selection = [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
     )
+    
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        for record in self:    
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = 'north'
+            else:
+                record.garden_area = 0
+                record.garden_orientation = ''
+    
+    # 
+    # Actions
+    # 
     state = fields.Selection(
         string = 'Status',
         selection = [('new', 'New'), ('offerreceived', 'Offer Received'), ('offeraccepted', 'Offer Accepted'), ('sold', 'Sold'),('canceled', 'Canceled')],
         default='new',
         copy=False,
     )
-    active = fields.Boolean(default=True)
+    def property_action_cancel(self):
+        for property in self:
+            if (property.state == 'sold' or property.state == 'canceled'):  
+                raise exceptions.UserError("Property can't be sold if it's already sold or canceled")
+            else:
+                property.state = 'canceled'
+
+
+    def property_action_sold(self):
+        for property in self:
+            if (property.state == 'sold' or property.state == 'canceled'):
+                raise exceptions.UserError("Property can't be sold if it's already sold or canceled")
+            else:
+                property.state = 'sold'
     
+
+    
+    active = fields.Boolean(default=True)
     # Property Types
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     
@@ -50,7 +84,13 @@ class Property(models.Model):
     
     # Offer
     offer_ids = fields.One2many("estate.property.offer", "property_id")
-    
+    @api.onchange('offer_ids')
+    def _property_action_offer_received(self):
+        for property in self:
+            if(len(property.offer_ids) > 0):
+                property.state = 'offerreceived'
+            else:
+                property.state = 'new'
     # 
     # Calculations
     # 
@@ -69,16 +109,3 @@ class Property(models.Model):
             else:
                 property.best_price = 0
             
-    # 
-    # On Change
-    # 
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        for record in self:    
-            if record.garden:
-                record.garden_area = 10
-                record.garden_orientation = 'north'
-            else:
-                record.garden_area = 0
-                record.garden_orientation = ''
-        
