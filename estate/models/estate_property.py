@@ -1,4 +1,5 @@
 from odoo import fields, models, api, exceptions
+from odoo.tools.float_utils import float_compare
 from odoo.tools.populate import compute
 
 
@@ -10,6 +11,15 @@ class Property(models.Model):
     # Model Properties
     _name = "estate.property"
     _description = "Estate properties" 
+    
+    # 
+    # SQL Constraints
+    # 
+    _sql_constraints=[
+        ('expected_price', 'CHECK(expected_price > 0)', 'expected price must be positive'),
+        ('selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive'),
+        ('name', 'unique(name)', 'The name must be unique'),
+    ]
     
     #
     # Fields
@@ -109,3 +119,11 @@ class Property(models.Model):
             else:
                 property.best_price = 0
             
+    # 
+    #  Api constraints
+    # 
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for property in self:
+            if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) < 0 and property.selling_price > 0:
+                raise exceptions.ValidationError("Selling price must be higher than 90% of expected price")
