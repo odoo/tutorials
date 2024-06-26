@@ -5,9 +5,7 @@
         <div class="d-flex p-2 flex-wrap">
 
             <t t-foreach="props.state.images" t-as="image" t-key="image.id">
-                <div class="ratio ratio-1x1 m-2" style="width: 150px;">  
-                    <img  t-att="{src: getImageUrl(image.id)}" />
-                </div>
+                <GalleryImage state="props.state" image="image" />
             </t>
         </div>
    

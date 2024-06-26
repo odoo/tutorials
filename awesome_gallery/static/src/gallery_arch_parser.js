@@ -6,6 +6,7 @@ export class GalleryXmlArchParser extends GraphArchParser {
     parse(xmlDoc) {
         return {
             image_field: xmlDoc.getAttribute("image_field"),
+            tooltip_field: xmlDoc.getAttribute("tooltip_field"),
         };
     }
 }

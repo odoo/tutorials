@@ -9,6 +9,11 @@ export class GalleryModel {
         this.resModel = resModel;
         this.keepLast = new KeepLast();
         this.images = [];
+        this.recordsLength = 0;
+        this.pagerState = {
+            offset: 0,
+            limit: 10,
+        };
     }
 
     async loadNewImages(domain) {
@@ -16,14 +21,24 @@ export class GalleryModel {
     }
 
     async _loadImages(domain) {
-        const { _, records } = await this.orm.webSearchRead(this.resModel, domain, {
-            specification: {
-                [this.archInfo.image_field]: {},
-            },
+        let specs = {
+            [this.archInfo.image_field]: {},
+        };
+
+        if (this.archInfo.tooltip_field) {
+            specs[this.archInfo.tooltip_field] = {};
+        }
+
+        const { length, records } = await this.orm.webSearchRead(this.resModel, domain, {
+            specification: specs,
+            offset: this.pagerState.offset,
+            limit: this.pagerState.limit,
             context: {
                 bin_size: true,
             },
         });
+
+        this.recordsLength = length;
         return records;
     }
 }
