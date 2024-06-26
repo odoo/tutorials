@@ -20,8 +20,7 @@ class PropertyOffer(models.Model):
         for offer in self:
             offer.date_deadline = fields.Date.add(offer.create_date, days=offer.validity)
     
-    @api.depends("date_deadline")
-    def _calc_inverse_date_deadline(self):
-        for offer in self:
-
-            offer.validity = 
+    # @api.depends("date_deadline")
+    # def _calc_inverse_date_deadline(self):
+        # for offer in self:
+            # offer.validity = 
