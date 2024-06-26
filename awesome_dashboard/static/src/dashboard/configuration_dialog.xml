@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.configuration_dialog">
+        <Dialog title="'Dashboard customiser'">
+            Items to display :
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.is_displayed" onChange="(ev) => this.toggleState(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">Apply</button>
+                <button class="btn" t-att-class="'btn-primary'" t-on-click="closeAndApply">Close</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

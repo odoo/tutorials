@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
+            <t t-set-slot="control-panel-create-button">
+                <div class="d-flex gap-1">
+                    <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                    <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                    <div class="fa fa-gear" style="color: #116611" t-on-click="openControlPanel"/>
+                </div>
+            </t>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                    <t t-set="itemProp" t-value="item.props ? item.props(result) : {'data': result}"/>
+                    <t t-component="item.Component" t-props="itemProp" />
+                </DashboardItem>
+            </t>
+        </Layout>
+    </t>
+</templates>

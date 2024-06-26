@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
+        <field name="name">PropertiesAUAUAUAUUAUUAUUAUUA</field>
         <field name="res_model">property</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="context">{'search_default_available': True}</field> 
