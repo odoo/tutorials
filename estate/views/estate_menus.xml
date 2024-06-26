@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Lvl 1 -> 3, only 1 root level needed -->
+    <menuitem id="estate_menu_root" name="Real Estate">
+        <menuitem id="estate_advertisement_menu" name="Advertisement">
+            <menuitem id="estate_property_view" action="estate_property_action"/>
+        </menuitem>
+        <menuitem id="estate_settings_menu" name='Settings'>
+            <menuitem id="estate_property_type_view" action="estate_property_type_action"/>
+            <menuitem id="estate_property_tag_view" action="estate_property_tag_action"/>
+        </menuitem>
+    </menuitem>    
+</odoo>
