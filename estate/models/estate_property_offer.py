@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import models, fields, tools, api
+from odoo import exceptions, models, fields, tools, api
 
 class PropertyOffer(models.Model):    
     # Model properties
@@ -8,7 +8,24 @@ class PropertyOffer(models.Model):
     
     # Model fields
     price = fields.Float()
+    
     status = fields.Selection(selection=[('accepted', "Accepted"), ('refused', "Refused")], copy=False)
+    # Button Object
+    def offer_object_button_accepted(self):
+        for offer in self:
+            if offer.property_id.state == 'offerreceived' or offer.property_id.state == 'new':
+                offer.property_id.selling_price = offer.price
+                offer.property_id.state = 'offeraccepted'
+                offer.property_id.buyer_id = offer.partner_id
+                offer.status = 'accepted'
+            else:
+                raise exceptions.UserError("Cannot accept more than one offer per property")
+    
+    def offer_object_button_refused(self):
+        for offer in self:
+            offer.status = 'refused'
+    
+    
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
     
