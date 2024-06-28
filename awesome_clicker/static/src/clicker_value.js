@@ -10,7 +10,7 @@ export class ClickerValue extends Component {
     static props = {};
 
     setup() {
-        this.clickerHook = useClicker();
+        this.clickerObject = useClicker();
     }
 
     humanize(number) {

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_clicker.clicker_value">
-        <span style="font-size: 1.5em; font-weight: bold;" t-att-data-tooltip="this.clickerHook.count">
-            Clicks:
-            <t t-esc="humanize(this.clickerHook.count)"/>
+        <span style="font-size: 1.7em; font-weight: bold;" t-att-data-tooltip="this.clickerObject.count">
+            <t t-esc="humanize(this.clickerObject.count)"/><i class="fa fa-mouse-pointer fa-fw"/>
         </span>
     </t>
 </templates>

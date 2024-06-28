@@ -4,59 +4,59 @@
     <t t-name="awesome_clicker.client_action">
         <div name="main_clicker" class="p-2">
             <ClickerValue/>
-            <button class="btn btn-primary m-2" t-on-click="clickerHook.button_increment.bind(clickerHook)">
+            <button class="btn btn-primary m-2" t-on-click="clickerObject.button_increment.bind(clickerObject)">
                 Increment
             </button>
         </div>
-        <div name="bot_shop" class="p-2" t-if="clickerHook.level >= 1">
+        <div name="bot_shop" class="p-2" t-if="clickerObject.level >= 1">
             <div style="font-size: 2em; font-weight: bold;">
                 Bots
             </div>
             <div class="m-2 p-2 border d-inline-block">
                 You have 
-                <span style="font-size: 1.3em; font-weight: bold;"> <t t-esc="clickerHook.clickBots"/> </span>
+                <span style="font-size: 1.3em; font-weight: bold;"> <t t-esc="clickerObject.clickBots"/> </span>
                 ClickBots (1 click/second)
                 <i class="fa fa-lg fa-gear"/>
                 <div>
                     Cost : 1000 Clicks
                 </div>
                 <div>
-                    <button t-att-class="clickerHook.count >= 1000 ? 'btn btn-primary m-2' : 'btn btn-secondary m-2'"
-                            t-on-click="(() => clickerHook.buy('clickBots', 1000)).bind(clickerHook)">
+                    <button t-att-class="clickerObject.count >= 1000 ? 'btn btn-primary m-2' : 'btn btn-secondary m-2'"
+                            t-on-click="(() => clickerObject.buy('clickBots', 1000)).bind(clickerObject)">
                         Buy new ClickBot
                     </button>
                 </div>
             </div>
-            <div class="m-2 p-2 border d-inline-block" t-if="clickerHook.level >= 2">
+            <div class="m-2 p-2 border d-inline-block" t-if="clickerObject.level >= 2">
                 You have 
-                <span style="font-size: 1.3em; font-weight: bold;"> <t t-esc="clickerHook.bigBots"/> </span>
+                <span style="font-size: 1.3em; font-weight: bold;"> <t t-esc="clickerObject.bigBots"/> </span>
                 BigBots (10 click/second)
                 <i class="fa fa-lg fa-android"/>
                 <div>
                     Cost : 5000 Clicks
                 </div>
                 <div>
-                    <button t-att-class="clickerHook.count >= 5000 ? 'btn btn-primary m-2' : 'btn btn-secondary m-2'"
-                            t-on-click="(() => clickerHook.buy('bigBots', 5000)).bind(clickerHook)">
+                    <button t-att-class="clickerObject.count >= 5000 ? 'btn btn-primary m-2' : 'btn btn-secondary m-2'"
+                            t-on-click="(() => clickerObject.buy('bigBots', 5000)).bind(clickerObject)">
                         Buy new BigBot
                     </button>
                 </div>
             </div>
         </div>
-        <div name="power_shop" class="p-2" t-if="clickerHook.level >= 3">
+        <div name="power_shop" class="p-2" t-if="clickerObject.level >= 3">
             <div style="font-size: 2em; font-weight: bold;">
                 Power multiplier
             </div>
             <div class="m-2 p-2 border d-inline-block">
                 Your multiplier is currently at x 
-                <span style="font-size: 1.3em; font-weight: bold;"> <t t-esc="clickerHook.power"/> </span>
+                <span style="font-size: 1.3em; font-weight: bold;"> <t t-esc="clickerObject.power"/> </span>
                 <i class="fa fa-lg fa-superpowers"/>
                 <div>
                     Cost : 30K Clicks to add 1
                 </div>
                 <div>
-                    <button t-att-class="clickerHook.count >= 30000 ? 'btn btn-primary m-2' : 'btn btn-secondary m-2'"
-                            t-on-click="(() => clickerHook.buy('power', 30000)).bind(clickerHook)">
+                    <button t-att-class="clickerObject.count >= 30000 ? 'btn btn-primary m-2' : 'btn btn-secondary m-2'"
+                            t-on-click="(() => clickerObject.buy('power', 30000)).bind(clickerObject)">
                         Buy more power
                     </button>
                 </div>

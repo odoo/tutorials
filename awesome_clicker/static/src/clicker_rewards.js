@@ -6,6 +6,7 @@ export const rewards = [
       apply(clicker) {
          clicker.buy("clickBots");
       },
+      minLevel: 1,
       maxLevel: 3,
    },
    {

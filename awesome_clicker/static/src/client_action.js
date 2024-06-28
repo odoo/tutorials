@@ -11,7 +11,8 @@ export class ClientAction extends Component {
     static components = { ClickerValue };
 
     setup() {
-        this.clickerHook = useClicker();
+        this.clickerObject = useClicker();
+
     }
 }
 

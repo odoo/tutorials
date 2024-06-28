@@ -4,24 +4,35 @@ import { Reactive } from "@web/core/utils/reactive";
 import { EventBus } from "@odoo/owl";
 import { choose } from "./utils";
 import { rewards } from "./clicker_rewards";
+import { browser } from "@web/core/browser/browser";
 
 export class ClickerModel extends Reactive {
     static template = "awesome_clicker.clicker_model";
     static props = {};
 
-    constructor() {
+    constructor(savedState = [999000,0,0,0,1]) {
         super();
 
-        this.count = 0;
-        this.level = 0;
-        this.clickBots = 0;
-        this.bigBots = 0;
-        this.power = 1;
+        this.count = savedState[0];
+        this.level = savedState[1];
+        this.clickBots = savedState[2];
+        this.bigBots = savedState[3];
+        this.power = savedState[4];
 
         setInterval(async () => {
             this.increment(this.clickBots * 1);
             this.increment(this.bigBots * 10);
         }, 1000);
+
+        setInterval(async () => {
+            browser.localStorage.setItem("savedClickerModel", [
+                this.count,
+                this.level,
+                this.clickBots,
+                this.bigBots,
+                this.power],
+            );
+        }, 5000);
 
         document.addEventListener("click", this.page_increment.bind(this), true);
 
@@ -57,7 +68,7 @@ export class ClickerModel extends Reactive {
     }
 
     page_increment() {
-        if (Math.random() < 1/3) {
+        if (Math.random() < 1/1000) {
             this.get_reward();
         }
         this.increment(1);
@@ -79,7 +90,6 @@ export class ClickerModel extends Reactive {
         }
         if (possible_rewards.length == 0) return;
         const reward = choose(possible_rewards);
-        console.log("Récompense : ", reward.description)
-        reward.apply(this);
+        this.bus.trigger("reward_obtained", reward);
     }
 }

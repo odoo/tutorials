@@ -2,13 +2,30 @@
 <templates xml:space="preserve">
     <t t-name="awesome_clicker.clicker_systray">
         <div class="o_nav_entry">
-            <ClickerValue/>
-            <button class="btn btn-secondary" t-on-click="clickerHook.button_increment.bind(clickerHook)">
-                <i class="fa fa-lg fa-plus"/>
-            </button>
-            <button class="btn btn-secondary" t-on-click="open_client_action">
-                Open
-            </button>
-        </div>
+            <Dropdown> 
+                <t t-set-slot="toggler">
+                    <ClickerValue/>
+                    <div style="font-size: 1.7em; font-weight: bold;" t-if="clickerObject.level >= 1">
+                        <t t-esc="clickerObject.clickBots"/><i class="fa fa-gear fa-fw"/>
+                    </div>
+                    <div style="font-size: 1.7em; font-weight: bold;" t-if="clickerObject.level >= 2">
+                        <t t-esc="clickerObject.bigBots"/><i class="fa fa-android fa-fw"/>
+                    </div>
+                    <div style="font-size: 1.7em; font-weight: bold;" t-if="clickerObject.level >= 3">
+                        <t t-esc="clickerObject.power"/><i class="fa fa-superpowers fa-fw"/>
+                    </div>
+                </t>
+                <DropdownItem>
+                    <button class="btn btn-primary" t-on-click="open_client_action">
+                        Open the clicker Game
+                    </button>
+                </DropdownItem>
+                <DropdownItem>
+                    <button class="btn btn-secondary" t-on-click="(() => clickerObject.buy('clickBots', 1000)).bind(clickerObject)">
+                        Buy a ClickBot
+                    </button>
+                </DropdownItem>
+            </Dropdown>
+        </div>        
     </t>
 </templates>
