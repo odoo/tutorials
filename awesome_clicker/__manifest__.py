@@ -14,7 +14,7 @@
     'website': "https://www.odoo.com/",
     'category': 'Tutorials/AwesomeClicker',
     'version': '0.1',
-    'application': True,
+    'application': False,
     'installable': True,
     'depends': ['base', 'web'],
 
@@ -23,7 +23,6 @@
         'web.assets_backend': [
             'awesome_clicker/static/src/**/*',
         ],
-
     },
     'license': 'AGPL-3'
 }

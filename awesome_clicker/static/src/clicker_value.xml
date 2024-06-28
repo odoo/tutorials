@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.clicker_value">
+        <span style="font-size: 1.5em; font-weight: bold;" t-att-data-tooltip="this.clickerHook.count">
+            Clicks:
+            <t t-esc="humanize(this.clickerHook.count)"/>
+        </span>
+    </t>
+</templates>
