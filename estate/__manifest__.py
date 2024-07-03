@@ -9,7 +9,9 @@
     'description': """
     Module for the practice and getting knowledge in the technicality
     """,
-    'data': [],
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'demo': [],
     'license': 'AGPL-3',
 }
