@@ -12,7 +12,9 @@
     'installable': True,
     'depends': ["base"],
 
-    'data': [],
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'demo': [],
 
     'license': 'AGPL-3'
