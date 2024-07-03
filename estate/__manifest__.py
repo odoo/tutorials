@@ -11,8 +11,9 @@
         Description text
     """,
     # data files always loaded at installation
-    # 'data': [
-    # ],
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     # # data files containing optionally loaded demonstration data
     # 'demo': [
     # ],
