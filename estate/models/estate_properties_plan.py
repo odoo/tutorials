@@ -12,7 +12,7 @@ class propertiesPlan(models.Model):
     date_availability = fields.Date(copy=False, default=fields.Datetime.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
-    bedrooms = fields.Integer(default=2)
+    bedrooms = fields.Integer("Bedroom", default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -21,7 +21,8 @@ class propertiesPlan(models.Model):
     garden_orientation = fields.Selection(
         string='Garden Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
-        help="Select the direction to filter the options")
+        help="Select the direction to filter the options",
+        default='north')
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string='State',
