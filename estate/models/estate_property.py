@@ -6,8 +6,8 @@ class Estate(models.Model):
     _name = "estate.property"
     _description = "Estate Property Plans"
 
-    name = fields.Char("Property Name", required=True)
-    description = fields.Text("Property Description")
+    name = fields.Char(required=True)
+    description = fields.Text("Description")
     postcode = fields.Char("Postcode")
     date_availability = fields.Date(
         "Date Availibility",
@@ -15,9 +15,7 @@ class Estate(models.Model):
         copy=False,
     )
     expected_price = fields.Float("Expected Price", required=True)
-    sellig_price = fields.Float(
-        "Selling Price", readonly=True, copy=False
-    )
+    sellig_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living Area")
     facades = fields.Integer("Facades")
@@ -38,8 +36,8 @@ class Estate(models.Model):
         string="State",
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
         ],
