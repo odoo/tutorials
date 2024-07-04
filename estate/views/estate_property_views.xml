@@ -5,4 +5,81 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+    <record id="estate_model_view_tree" model="ir.ui.view">
+        <field name="name">estate.model.tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Estates">
+                <field string="Title" name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field string="Living Area (sqm)" name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field string="Available From" name="date_availability"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="estate_model_view_form" model="ir.ui.view">
+        <field name="name">estate.model.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate">
+                <sheet>
+                    <header>
+                        <h1><field string="Name of Property" name="name"/></h1>
+                    </header>
+                    <separator/>
+                    <group>
+                        <group>
+                            <field name="postcode"/>
+                            <field string="Available From" name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field string="Living Area (sqm)" name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field string="Garden Area (sqm)" name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="state"/>
+                                <field name="active"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_model_view_search" model="ir.ui.view">
+        <field name="name">estate.model.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Estates Search">
+                <field string="Title" name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field string="Living Area (sqm)" name="living_area"/>
+                <field name="facades"/>
+                <separator/>
+                <filter string="Available" name="available" domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>
