@@ -24,7 +24,7 @@ class Testing(models.Model):
     )
     state = fields.Selection(
         string='state',
-        selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
         required=True,
         default='new',
         copy=False
