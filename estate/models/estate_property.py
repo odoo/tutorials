@@ -1,8 +1,8 @@
 from datetime import timedelta
 from odoo import fields, models
 
-today = fields.Date.today()
-three_months_later = today + timedelta(days=90).strftime("%Y-%m-%d")
+today = fields.date.today()
+three_months_later = (today + timedelta(days=90)).strftime("%Y-%m-%d")
 
 
 class EstateProperty(models.Model):
