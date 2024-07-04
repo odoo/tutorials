@@ -2,7 +2,7 @@
 <odoo>
 
     <menuitem id="test_menu_root" name="Estate">
-        <menuitem id="test_first_level_menu" name="First Level">
+        <menuitem id="test_first_level_menu" name="Actions">
             <menuitem id="estate_property_menu_action" action="estate_property_action"/>
         </menuitem>
     </menuitem>

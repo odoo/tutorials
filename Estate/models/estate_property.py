@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
 
-    name = fields.Char()
+    name = fields.Char(default="New Estate")
     description = fields.Char()
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=fields.Datetime.now() + relativedelta(months=3))
@@ -18,12 +18,12 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     garden_orientation = fields.Selection(
         string='garden',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
     )
     state = fields.Selection(
         string='state',
-        selection=[('new', 'New'), ('offer accepted', 'Offer accepted'), ('sold', 'Sold'), ('offer recieved', 'Offer recieved'), ('canceled', 'Canceled')], copy=False, default='new'
+        selection=[('new', 'New'), ('offer_accepted', 'Offer accepted'), ('sold', 'Sold'), ('offer_recieved', 'Offer recieved'), ('canceled', 'Canceled')], copy=False, default='new'
     )
