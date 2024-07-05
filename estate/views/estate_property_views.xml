@@ -12,6 +12,8 @@
         <field name="arch" type="xml">
             <tree string="Estates">
                 <field string="Title" name="name"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+                <field string="Property Type" name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field string="Living Area (sqm)" name="living_area"/>
@@ -31,9 +33,13 @@
                     <header>
                         <h1><field string="Name of Property" name="name"/></h1>
                     </header>
+                    <group>
+                        <field string="Tags" name="tag_ids" widget="many2many_tags"/>
+                    </group>
                     <separator/>
                     <group>
                         <group>
+                            <field string="Property Type" name="property_type_id"/>
                             <field name="postcode"/>
                             <field string="Available From" name="date_availability"/>
                         </group>
@@ -57,6 +63,15 @@
                                 <field name="active"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field string="Salesman" name="sales_person"/>
+                                <field name="buyer"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -74,6 +89,7 @@
                 <field name="bedrooms"/>
                 <field string="Living Area (sqm)" name="living_area"/>
                 <field name="facades"/>
+                <field string="Property Type" name="property_type_id"/>
                 <separator/>
                 <filter string="Available" name="available" domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]"/>
                 <group expand="1" string="Group By">
