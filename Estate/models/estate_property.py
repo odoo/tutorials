@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
 
-    name = fields.Char(default="New Estate")
+    name = fields.Char(required=True)
     description = fields.Char()
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=fields.Datetime.now() + relativedelta(months=3))
@@ -27,3 +27,16 @@ class EstateProperty(models.Model):
         string='state',
         selection=[('new', 'New'), ('offer_accepted', 'Offer accepted'), ('sold', 'Sold'), ('offer_recieved', 'Offer recieved'), ('canceled', 'Canceled')], copy=False, default='new'
     )
+    property_type_id = fields.Many2one(
+        comodel_name="estate.property.type",
+        inverse_name="property_id",
+        string="Property Type"
+    )
+    offer_id = fields.One2many(
+        comodel_name="estate.property.offer",
+        inverse_name="property_id",
+        string="Property offer"
+    )
+    user_id = fields.Many2one('res.users', string='buyer')
+    seller_id = fields.Many2one('res.partner', string='seller')
+    tag_id = fields.Many2many("estate.property.tag", string="Tags")

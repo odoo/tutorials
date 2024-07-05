@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Test Action</field>
+        <field name="name">property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -12,6 +12,7 @@
         <field name="arch" type="xml">
             <tree string="Channel" >
                 <field name="name"/>
+                <field name="tag_id" widget="many2many_tags"/>
                 <field name="postcode"/>
                 <field name="date_availability"/>
                 <field name="expected_price"/>
@@ -23,7 +24,9 @@
                 <field name="garden_area"/>
                 <field name="garden_orientation"/>
                 <field name="state"/>
-                <!-- <field name="bedroom"/> -->
+                <field name="property_type_id"/>
+                <field name="seller_id"/>
+                <field name="user_id"/>
             </tree>
         </field>
     </record>
@@ -41,11 +44,13 @@
                             <seperator/>
                             <group>
                                 <group>
+                                    <field name="tag_id" widget="many2many_tags"/>
                                     <field name="postcode"/>
                                     <field name="date_availability"/>
                                 </group>
                                 <group>
                                     <field name="expected_price"/>
+                                    <field name="property_type_id"/>
                                     <field name="selling_price"/>
                                 </group>
                             </group>
@@ -63,8 +68,17 @@
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
                                     <field name="active"/>
-                                    <field name="state"/>
                                 </group>
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <field name="state"/>
+                                    <field name="user_id"/>
+                                    <field name="seller_id"/>
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                    <field name="offer_id"/>
                             </page>
                         </notebook>
                     </sheet>
@@ -89,6 +103,8 @@
                 <field name="garden_area"/>
                 <field name="garden_orientation"/>
                 <field name="state"/>
+                <field name="seller_id"/>
+                <field name="user_id"/>
                 <filter string="appl fltr" name="applied filter" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
                 <group>
                     <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>
