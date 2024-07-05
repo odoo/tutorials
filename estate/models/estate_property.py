@@ -39,5 +39,15 @@ class EstateProperty(models.Model):
         ],
         required=True,
         copy=False,
-        default='new'
-    )
+        default='new')
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    user_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.uid)
+    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
+
+    # Offers
+    offer_ids = fields.One2many(
+        comodel_name='estate.property.offer',
+        inverse_name='property_id',
+        string='Offers')

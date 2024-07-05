@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <tree string="Property">
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -26,8 +27,10 @@
                         <field name="name"/>
                     </h1>
                     <separator />
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="expected_price"/>
                         </group>
@@ -51,6 +54,17 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <group>
+                                    <field name="user_id"/>
+                                    <field name="partner_id"/>
+                                </group>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -68,9 +82,15 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
+                <field name="user_id"/>
+                <field name="partner_id"/>
                 <filter string="Available" name="state" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="Property Types" name="property_type_id" context="{'group_by':'property_type_id'}"/>
+                    <filter string="Salesman" name="user_id" context="{'group_by':'user_id'}"/>
+                    <filter string="Buyer" name="partner_id" context="{'group_by':'partner_id'}"/>
                 </group>
             </search>
         </field>
