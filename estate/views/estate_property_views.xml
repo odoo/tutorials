@@ -17,6 +17,8 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="property_type_id"/>
+                <field name="tag_ids"/>
             </tree>
         </field>
     </record>
@@ -28,10 +30,11 @@
                 <sheet>
                     <group>
                         <group>
-                            <h1 style="width:500px"><field name="name" string="Title"/></h1>
+                            <h1 style="width:500px"><field name="name" string="Title" default="New Property"/></h1>
                         </group>
                         <separator/>
                         <group>
+                            <field name="tag_ids" string="Property Tags" widget="many2many_tags"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -44,7 +47,7 @@
                     <notebook>
                         <page string="Description">
                             <group style="width:300px">
-                                <field name="description" string="De10/04/2024scription" style="width:500px"/>
+                                <field name="description" string="Description" style="width:500px"/>
                                 <field name="bedrooms" string="Bedrooms"/>
                                 <field name="living_area" string="Living Area"/>
                                 <field name="facades" string="Facades"/>
@@ -52,7 +55,17 @@
                                 <field name="garden" string="Garden"/>
                                 <field name="garden_area" string="Garden Area"/>
                                 <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="property_type_id" string="Property Type"/>
                             </group>
+                        </page>
+                        <page string="Other Info">
+                            <group style="width:300px">
+                                <field name="buyer" string="Buyer"/>
+                                <field name="sales_person" string="Sales Person"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                                <field name="offer_ids"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -70,9 +83,12 @@
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area"/>
                 <field name="facades" string="Facades"/>
+                <field name="property_type_id" string="Property Type"/>
+                <field name="tag_ids" string="Property Tags"/>
                 <filter name="Bedrooms less than 3" domain="[('bedrooms', '&lt;', 3)]"/>
                 <group>
                     <filter string="Postcode" name="postcode_category" context="{'group_by': 'postcode'}"/>
+                    <filter string="Property Type" name="property_type_id" context="{'group_by': 'property_type_id'}"/>
                 </group>
             </search>
         </field>
