@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <odoo>
-  <record id="estate_property_action" model="ir.actions.act_window">
+  <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Estate Action</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-<record id="estate_property_tree" model="ir.ui.view">
+    <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -18,6 +18,9 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="property_type_id"/>
+                <field name="user_id"/>
+                <field name="partner_id"/>
             </tree>
         </field>
     </record>
@@ -31,14 +34,17 @@
                 <h1>
                 <field name="name"/>
                 </h1>
+                 <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -51,10 +57,18 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/> 
                                 <field name="garden_orientation"/>
-                                <field name="state"/>     
-                            
-                            
+                                <field name="state"/>
+                                <field name="total_area"/>
                             </group>
+                        </page>
+                        <page string = "Offers">
+                             <field name="offer_ids"/>
+                        </page>
+                        <page string = "Other Info">
+                           <group>
+                             <field name="user_id"/>
+                             <field name="partner_id"/>
+                           </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -73,7 +87,11 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
+                <field name="user_id"/>
+                <field name="partner_id"/>
                 <filter string="Available" name="available" domain="['|',('state', '=', 'new'), ('state', '=', ' offer received')]"/>
+                <filter string="Archive" name="archieve" domain="[('active', '=', False)]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
@@ -81,4 +99,3 @@
         </field>
     </record>
 </odoo>
-  
