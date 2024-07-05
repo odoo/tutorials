@@ -30,3 +30,13 @@ class Testing(models.Model):
         copy=False
     )
     active = fields.Boolean(default=True)
+    property_type_id = fields.Many2one(
+        comodel_name="estate.property.type",
+        inverse_name="property_id",
+        string="property name"
+    )
+    salesperson_id = fields.Many2one("res.users", string="Sales person", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    tag_ids = fields.Many2many("estate.property.tags", string="Tags")
+
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="property offer")
