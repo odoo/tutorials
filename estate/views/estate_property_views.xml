@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_model_action" model="ir.actions.act_window">
+    <record id="action_open_estate_properties" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
@@ -95,5 +95,5 @@
                     </group>
                 </search>
             </field>
-        </record>
+    </record>
 </odoo>

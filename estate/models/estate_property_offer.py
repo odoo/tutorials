@@ -6,12 +6,12 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer Model"
 
-    price = fields.Float()
-    status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
-    partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
-    validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+    price = fields.Float(string='Price')
+    status = fields.Selection(string='Status', selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
+    partner_id = fields.Many2one("res.partner", string='Partner', required=True)
+    property_id = fields.Many2one("estate.property", string='Property', required=True)
+    validity = fields.Integer(string='Validity', default=7)
+    date_deadline = fields.Date(string='Date deadline', compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
 
     @api.depends('validity')
     def _compute_date_deadline(self):
@@ -21,7 +21,7 @@ class EstatePropertyOffer(models.Model):
                 expiration_date = current_date + timedelta(days=record.validity)
                 record.date_deadline = expiration_date
             else:
-                record.date_deadline = False
+                record.date_deadline = fields.Date.today()
 
     def _inverse_date_deadline(self):
         for record in self:
