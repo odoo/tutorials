@@ -37,6 +37,7 @@
                         <group>
                             <field name="date_availability"/>
                             <field name="selling_price"/>
+                            <field name="best_offer_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -51,6 +52,7 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                 </group>
                             </group>
                         </page>
@@ -96,7 +98,7 @@
         </field>
     </record>
 
-    <record id="estate_property_action" model="ir.actions.act_window">
+    <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>

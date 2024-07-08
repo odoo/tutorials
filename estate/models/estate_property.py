@@ -1,6 +1,5 @@
 from dateutil.relativedelta import relativedelta
-
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -14,11 +13,11 @@ class EstateProperty(models.Model):
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
-    living_area = fields.Integer('Leaving Area')
+    living_area = fields.Integer('Leaving Area (sqm)')
     facades = fields.Integer('Facade')
     garage = fields.Boolean('Garage')
     garden = fields.Boolean('Garden')
-    garden_area = fields.Integer('Garden Area')
+    garden_area = fields.Integer('Garden Area (sqm)')
     garden_orientation = fields.Selection(
         string='Garden Orientation',
         selection=[
@@ -51,3 +50,25 @@ class EstateProperty(models.Model):
         comodel_name='estate.property.offer',
         inverse_name='property_id',
         string='Offers')
+
+    total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')
+    best_offer_price = fields.Integer(string='Best Offer', default=0, compute='_compute_best_offer_price')
+
+    @api.depends('garden_area', 'living_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_offer_price(self):
+        for record in self:
+            record.best_offer_price = max(record.offer_ids.mapped('price'))
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
