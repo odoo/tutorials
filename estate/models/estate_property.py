@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -19,14 +20,14 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area")
     garden_orientation = fields.Selection(string="Garden Orientation", selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    state = fields.Selection(string="State", selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold and canceled', 'Sold and Canceled')], required=True, copy=False, default='new')
+    state = fields.Selection(string="Status", selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], required=True, copy=False, default='new', readonly=True)
     active = fields.Boolean(string="Active", default=True)
 
     # Relationships
     # Many2One
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     sales_person = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
-    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer = fields.Many2one("res.partner", string="Buyer", readonly=True, copy=False)
 
     # Many2Many
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
@@ -57,3 +58,21 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def action_estate_property_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancel Properties can't be Sold")
+                return False
+            else:
+                record.state = 'sold'
+                return True
+
+    def action_estate_property_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold Properties can't be cancel")
+                return False
+            else:
+                record.state = 'cancelled'
+                return True
