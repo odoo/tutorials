@@ -23,6 +23,17 @@
         <field name="arch" type="xml">
             <form string="Estate property type">
                 <sheet>
+                 <div class="oe_button_box" name="button_box">
+                            <!-- <button class="oe_stat_button" name="_compute_related_property"
+                                    type="object" icon="fa-star">
+                                <div class="o_stat_info">
+                                <span class="o_stat_text">
+                                        view properties
+                                        <field name="count_prop"/>
+                                    </span>
+                                </div>
+                            </button> -->
+                        </div>
                         <group>
                             <group>
                                <h1 style="width:200px"> <field name="name"/> </h1>

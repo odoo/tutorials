@@ -7,7 +7,7 @@
         </menuitem>
         <menuitem id="test_second_level_menu" name="Setting">
             <menuitem id="estate_property_type_menu_action" action="estate_property_type_action"/>
-            <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"/>
+            <menuitem id="estate_property_tag_menu_action" action="action_estate_property_tag"/>
         </menuitem>
     </menuitem>
 </odoo>

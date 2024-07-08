@@ -5,7 +5,6 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
     </record>
-
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
@@ -37,6 +36,7 @@
         <field name="arch" type="xml">
             <form string="Estate property">
                 <sheet>
+                   
                         <group>
                             <group>
                                <h1 style="width:200px"> <field name="name"/> </h1>
@@ -52,6 +52,7 @@
                                     <field name="expected_price"/>
                                     <field name="property_type_id"/>
                                     <field name="selling_price"/>
+                                    <field name="count"/>
                                 </group>
                             </group>
                         </group>
@@ -68,6 +69,7 @@
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
                                     <field name="active"/>
+                                    <field name="total"/>
                                 </group>
                             </page>
                             <page string="Other Info">

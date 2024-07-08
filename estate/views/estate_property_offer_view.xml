@@ -8,6 +8,8 @@
                 <field name="partner_id"/>
                 <field name="status"/>
                 <field name="price"/>
+                <field name="validity"/>
+                <field name="deadline"/>
             </tree>
         </field>
     </record>
@@ -27,6 +29,8 @@
                                 <field name="partner_id"/>
                                 <field name="status"/>
                                 <field name="price"/>
+                                <field name="validity"/>
+                                <field name="deadline"/>
                             </group>
                         </group>
                     </sheet>
