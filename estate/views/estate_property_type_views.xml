@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_type_action" model="ir.actions.act_window">
+    <record id="action_estate_property_type" model="ir.actions.act_window">
         <field name="name">Property Type</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
@@ -27,20 +27,4 @@
             </form>
         </field>
     </record>
-    <!-- <record id="view_estate_property_type_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <search string="Search Properties">
-                <field name="name" string="Property Name"/>
-                <field name="postcode" string="Postcode"/>
-                <separator/>
-                <filter string="Available Properties" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
-                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
-                <group expand="1" string="Group By">
-                    <filter string="Postcode" name="provider" context="{'group_by':'postcode', 'residual_visible':True}"/>
-                </group>
-            </search>
-        </field>
-    </record> -->
 </odoo>
