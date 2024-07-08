@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="estate_model_type_action" model="ir.actions.act_window">
+    <record id="action_estate_properties_type" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
@@ -22,10 +22,18 @@
         <field name="arch" type="xml">
             <form string="Estate">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_open_properties" type="object" string="Properties" icon="fa-building" invisible="property_count == 0">
+                                <field name="property_count" widget="statinfo" string="Properties"/>
+                        </button>
+                    </div>
                     <header>
-                        <h1><field name="name"/></h1>
+                        <h1>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                        </h1>
                     </header>
-                    <separator/>
                 </sheet>
             </form>
         </field>

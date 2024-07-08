@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="estate_model_tag_action" model="ir.actions.act_window">
+    <record id="action_estate_properties_tag" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">tree,form</field>
@@ -23,7 +23,7 @@
             <form string="Estate">
                 <sheet>
                     <header>
-                        <h1><field name="name"/></h1>
+                        <h2><group><field string="Name" name="name"/></group></h2>
                     </header>
                     <separator/>
                 </sheet>
