@@ -1,5 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -42,7 +43,7 @@ class EstateProperty(models.Model):
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     user_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
-    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
 
     # Offers
@@ -59,10 +60,10 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    @api.depends('offer_ids.price')
+    @api.depends('offer_ids')
     def _compute_best_offer_price(self):
         for record in self:
-            record.best_offer_price = max(record.offer_ids.mapped('price'))
+            record.best_offer_price = max(record.offer_ids.mapped('price'), default=0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -72,3 +73,13 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def action_set_sold_property(self):
+        if self.state == 'canceled':
+            raise UserError('Canceled property cannot be sold')
+        self.state = 'sold'
+
+    def action_set_cancel_property(self):
+        if self.state == 'sold':
+            raise UserError('sold property cannot be Canceled')
+        self.state = 'canceled'
