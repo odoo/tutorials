@@ -13,6 +13,8 @@ class propertyType(models.Model):
         string="Property Name"
     )
 
+    _sql_constraints = [('name_uniq', "unique(name)", "Name of Property Type must be Unique")]
+
     def _related_property_count(self):
         for record in self:
             count = self.env['estate.property'].search_count([('property_type_id', '=', record.id)])

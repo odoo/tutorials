@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class propertyTag(models.Model):
@@ -18,6 +18,8 @@ class propertyTag(models.Model):
     validity = fields.Integer("Validity (Days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_deadline_date_count", inverse="_inverse_deadline", store=True)
 
+    _sql_constraints = [('check_price', 'CHECK(price > 0)', 'Offer Price must be Positive')]
+
     @api.depends('validity')
     def _deadline_date_count(self):
         current_date = fields.Date.today()
@@ -31,6 +33,8 @@ class propertyTag(models.Model):
 
     def action_accepted(self):
         if not self.property_id.buyer:
+            if self.price < self.property_id.expected_price * 0.9:
+                raise ValidationError("Selling Price is too Low")
             self.status = 'accepted'
             self.property_id.selling_price = self.price
             self.property_id.buyer = self.partner_id.name
@@ -41,5 +45,6 @@ class propertyTag(models.Model):
     def action_refused(self):
         if self.property_id.buyer == self.partner_id.name:
             self.property_id.buyer = ''
+            self.property_id.selling_price = 0
         self.status = 'refused'
         return True

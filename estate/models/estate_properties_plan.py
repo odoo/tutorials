@@ -1,6 +1,7 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 
 class propertiesPlan(models.Model):
@@ -53,6 +54,17 @@ class propertiesPlan(models.Model):
         inverse_name="property_id",
         string=""
     )
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected Price must be Positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling Price must be Positive')
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1 and not float_is_zero(record.selling_price, 2):
+                raise ValidationError("Selling Price is too Low")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
