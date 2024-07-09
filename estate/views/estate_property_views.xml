@@ -30,6 +30,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
            <form string="property">
+            <header>
+                <button name="action_set_sold" string="Sold" type="object" class="oe_highlight_button"/>
+                <button name="action_set_cancelled" string="Cancel" type="object" class="oe_highlight_button"/>
+            </header>
                 <sheet>
                 <h1>
                 <field name="name"/>
@@ -37,6 +41,7 @@
                  <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
