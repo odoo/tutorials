@@ -25,7 +25,7 @@
                 <field name="state"/>
                 <field name="property_type_id"/>
                 <field name="seller_id"/>
-                <field name="user_id"/>
+                <field name="users"/>
             </tree>
         </field>
     </record>
@@ -35,8 +35,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate property">
+                <header>
+                    <button name="action_sold_property" type="object" string="sell"/>
+                    <button name="action_cancel_property" type="object" string="cancel"/>
+                </header>
                 <sheet>
-                   
                         <group>
                             <group>
                                <h1 style="width:200px"> <field name="name"/> </h1>
@@ -47,6 +50,7 @@
                                     <field name="tag_id" widget="many2many_tags"/>
                                     <field name="postcode"/>
                                     <field name="date_availability"/>
+                                    <field name="state"/>
                                 </group>
                                 <group>
                                     <field name="expected_price"/>
@@ -75,7 +79,7 @@
                             <page string="Other Info">
                                 <group>
                                     <field name="state"/>
-                                    <field name="user_id"/>
+                                    <field name="users"/>
                                     <field name="seller_id"/>
                                 </group>
                             </page>
@@ -106,7 +110,7 @@
                 <field name="garden_orientation"/>
                 <field name="state"/>
                 <field name="seller_id"/>
-                <field name="user_id"/>
+                <field name="users"/>
                 <filter string="appl fltr" name="applied filter" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
                 <group>
                     <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>

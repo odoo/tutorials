@@ -24,15 +24,17 @@
             <form string="Estate property type">
                 <sheet>
                  <div class="oe_button_box" name="button_box">
-                            <!-- <button class="oe_stat_button" name="_compute_related_property"
+                             <button class="oe_stat_button" name="compute_related_properties"
                                     type="object" icon="fa-star">
-                                <div class="o_stat_info">
-                                <span class="o_stat_text">
-                                        view properties
-                                        <field name="count_prop"/>
-                                    </span>
-                                </div>
-                            </button> -->
+                                    <div class="o_stat_info">
+                                        <span>
+                                            <field name="related_properties"/>
+                                        </span>
+                                        <span class="o_stat_text">
+                                                view properties
+                                        </span>
+                                    </div>
+                            </button>
                         </div>
                         <group>
                             <group>
