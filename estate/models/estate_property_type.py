@@ -8,6 +8,10 @@ class PropertyType(models.Model):
     name = fields.Char('Name', required=True)
     related_properties = fields.Integer(compute='_compute_related_properties')
 
+    _sql_constraints = [
+        ('check_type_name', 'UNIQUE(name)', 'Type Name must be unique.'),
+    ]
+
     def _compute_related_properties(self):
         for recored in self:
             recored.related_properties = self.env['estate.property'].search_count([

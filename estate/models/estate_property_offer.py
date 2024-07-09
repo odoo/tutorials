@@ -17,6 +17,10 @@ class PropertyOffer(models.Model):
     validity = fields.Integer('Validity', default=7)
     date_deadline = fields.Date('Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
 
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)', 'price must be positive'),
+    ]
+
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -41,3 +45,9 @@ class PropertyOffer(models.Model):
             self.property_id.selling_price = 0
             self.property_id.partner_id = ''
         self.status = 'refused'
+
+    def unlink(self):
+        for record in self:
+            record.property_id.selling_price = 0
+            record.property_id.partner_id = ''
+        return super().unlink()
