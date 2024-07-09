@@ -20,6 +20,16 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name='action_view_properties' icon="fa-university" invisible="related_property_count == 0">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="related_property_count"/>
+                                </span>
+                                <span class="o_stat_text">Properties</span>
+                            </div>
+                        </button>
+                    </div>
                     <group>
                         <field name="name"/>
                     </group>
