@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, models, fields
 from datetime import date, timedelta
 
 
@@ -6,18 +6,18 @@ class Testing(models.Model):
     _name = "estate.property"
     _description = "This is Real Estate"
 
-    name = fields.Char('property_Name', required=True)
+    name = fields.Char('property Name', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Date_avail', copy=False, default=lambda self: date.today() + timedelta(days=90))
-    expected_price = fields.Float('exp_price', required=True)
-    selling_price = fields.Float('sell_price', readonly=True, copy=False)
+    date_availability = fields.Date('Date availability', copy=False, default=lambda self: date.today() + timedelta(days=90))
+    expected_price = fields.Float('expected price', required=True)
+    selling_price = fields.Float('sell price', readonly=True, copy=False)
     bedrooms = fields.Integer('bedrooms', default=2)
-    living_area = fields.Integer('live_area')
+    living_area = fields.Integer('live area')
     facades = fields.Integer('facades')
     garage = fields.Boolean('garage')
     garden = fields.Boolean('garden')
-    garden_area = fields.Integer('garden_area')
+    garden_area = fields.Integer('garden area')
     garden_orientation = fields.Selection(
         string='Garden direction',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
@@ -40,3 +40,29 @@ class Testing(models.Model):
     tag_ids = fields.Many2many("estate.property.tags", string="Tags")
 
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="property offer")
+
+    total_area = fields.Float(compute="_compute_total_area")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price")
+
+    @api.depends('offer_ids')
+    def _compute_best_price(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_price = 0.0
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
