@@ -40,7 +40,18 @@ class EstatePropertyOffer(models.Model):
             self.property_id.buyer = self.partner_id
         else:
             raise UserError("Offer is already accepted")
+        return True
 
     def action_refuse(self):
-        self.property_id.buyer = ''
+        if self.property_id.buyer == self.partner_id:
+            self.property_id.buyer = ''
+            self.property_id.selling_price = 0
         self.status = "refused"
+        return True
+
+    def unlink(self):
+        for offer in self:
+            if offer.status == 'accepted':
+                offer.property_id.buyer = ''
+                offer.property_id.selling_price = 0.00
+        return super().unlink()

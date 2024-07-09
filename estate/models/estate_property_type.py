@@ -6,7 +6,7 @@ class EstatePropertyType(models.Model):
     _description = "Estate Property Type Model"
 
     name = fields.Char(string="Name", required=True)
-    property_count = fields.Integer(string='Property count', compute="_compute_property_home_count")
+    property_count = fields.Integer(string='Property count', compute="_compute_property_count")
 
     @api.depends('name')
     def _compute_property_count(self):
