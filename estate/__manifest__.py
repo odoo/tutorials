@@ -1,0 +1,4 @@
+{
+    'name':'Estate',
+    'depends':'base'
+}
