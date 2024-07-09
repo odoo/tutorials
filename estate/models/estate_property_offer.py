@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import timedelta
 
 
@@ -13,6 +13,11 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string='Property', required=True)
     validity = fields.Integer(string='Validity', default=7)
     date_deadline = fields.Date(string='Date deadline', compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)',
+         'Prices must be strictly positive'),
+    ]
 
     @api.depends('validity')
     def _compute_date_deadline(self):
@@ -35,6 +40,8 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         if not self.property_id.buyer:
+            if (self.price < self.property_id.expected_price * .9):
+                raise ValidationError("The selling price must be least 90% of the expected price! You must reduce the expected price if you want to accept this offer")
             self.status = "accepted"
             self.property_id.selling_price = self.price
             self.property_id.buyer = self.partner_id
@@ -53,5 +60,5 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             if offer.status == 'accepted':
                 offer.property_id.buyer = ''
-                offer.property_id.selling_price = 0.00
+                offer.property_id.selling_price = 0
         return super().unlink()

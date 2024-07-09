@@ -8,6 +8,10 @@ class EstatePropertyType(models.Model):
     name = fields.Char(string="Name", required=True)
     property_count = fields.Integer(string='Property count', compute="_compute_property_count")
 
+    _sql_constraints = [
+        ('unique_property_name', 'UNIQUE(name)', 'Property type name must be unique.')
+    ]
+
     @api.depends('name')
     def _compute_property_count(self):
         for record in self:

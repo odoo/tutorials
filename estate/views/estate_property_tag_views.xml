@@ -23,7 +23,7 @@
             <form string="Estate Property Form">
                 <sheet>
                     <group>
-                        <filter name="name"/>
+                        <field name="name"/>
                     </group>
                 </sheet>
             </form>
