@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -14,7 +15,7 @@ class EstateProperty(models.Model):
     bedrooms = fields.Integer('Bedrooms', default=2)
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        string='State',
+        string='Status',
         selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
         required=True,
         copy=False,
@@ -60,3 +61,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError('Canceled properties cannot be sold.')
+            else:
+                self.state = 'sold'
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError('Sold properties cannot be canceled.')
+            else:
+                self.state = 'canceled'

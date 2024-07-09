@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -16,7 +17,7 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer('Validity', default=7)
     date_deadline = fields.Date('Deadline', compute='_compute_date_deadline', inverse="_inverse_date_deadline")
 
-    @api.depends("create_date", "validity", 'date_deadline')
+    @api.depends("validity", 'date_deadline')
     def _compute_date_deadline(self):
         for record in self:
             current_date = fields.Date.today()
@@ -26,3 +27,17 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             current_date = fields.Date.today()
             record.validity = relativedelta(record.date_deadline, current_date).days
+
+    def action_confirm(self):
+        if self.property_id.buyer_id:
+            raise UserError('Accepetd properties cannot be Accepetd.')
+        else:
+            self.status = 'accepted'
+            self.property_id.selling_price = self.price
+            self.property_id.buyer_id = self.partner_id
+
+    def action_cancel(self):
+        if self.status == 'accepted':
+            self.property_id.selling_price = 0
+            self.property_id.buyer_id = ''
+        self.status = 'refused'
