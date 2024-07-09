@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class propertyTag(models.Model):
@@ -27,3 +28,18 @@ class propertyTag(models.Model):
         current_date = fields.Date.today()
         for record in self:
             record.validity = relativedelta(record.date_deadline, current_date).days
+
+    def action_accepted(self):
+        if not self.property_id.buyer:
+            self.status = 'accepted'
+            self.property_id.selling_price = self.price
+            self.property_id.buyer = self.partner_id.name
+        else:
+            raise UserError("Offer has been already Accepted")
+        return True
+
+    def action_refused(self):
+        if self.property_id.buyer == self.partner_id.name:
+            self.property_id.buyer = ''
+        self.status = 'refused'
+        return True
