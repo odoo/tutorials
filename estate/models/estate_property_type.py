@@ -8,6 +8,9 @@ class EstatePropertyType(models.Model):
     name = fields.Char(string="Name", required=True)
     property_count = fields.Integer(compute="_compute_property_count", string="Property Count")
 
+    # sql constraints
+    _sql_constraints = [('name_unique', 'unique(name)', "Type Name should be unique")]
+
     def _compute_property_count(self):
         for record in self:
             record.property_count = self.env['estate.property'].search_count([('property_type_id', '=', record.id)])

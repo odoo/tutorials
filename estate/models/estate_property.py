@@ -1,6 +1,7 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -12,7 +13,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Available From", copy=False, default=fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    selling_price = fields.Float(string="Selling Price", copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Facades")
@@ -38,6 +39,9 @@ class EstateProperty(models.Model):
     # compute functions fields and functions
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area")
     best_price = fields.Integer(compute="_compute_max_price", string="Best Price")
+
+    # sql constraints
+    _sql_constraints = [('expected_price_positive', 'CHECK(expected_price > 0)', "The Expected Price cannot be negative"), ('selling_price_positive', 'CHECK(selling_price >= 0)', "The Selling Price cannot be negative")]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -76,3 +80,10 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'cancelled'
                 return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def check_selling_price(self):
+        decimal_precision = self.env['decimal.precision'].precision_get('Percentage Analytic')
+        for record in self:
+            if float_compare(record.selling_price, record.expected_price * 90.0 / 100.0, precision_digits=decimal_precision) < 0 and not float_is_zero(record.selling_price, precision_digits=decimal_precision):
+                raise ValidationError("Selling price should be greater than 90 percent of the expected price")
