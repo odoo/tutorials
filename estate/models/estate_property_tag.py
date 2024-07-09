@@ -7,3 +7,7 @@ class EstatePropertyTag(models.Model):
 
     name = fields.Char(required=True)
     tag_id = fields.Many2many(comodel_name="estate.property")
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)',
+        'A tag with the same name and applicability already exists.')
+    ]

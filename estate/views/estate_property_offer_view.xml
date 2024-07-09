@@ -6,9 +6,9 @@
         <field name="arch" type="xml">
             <tree string="Channel" >
                 <field name="partner_id"/>
-                <field name="status"/>
                 <field name="price"/>
                 <field name="validity"/>
+                <field name="status"/>
                 <field name="deadline"/>
                 <button name="action_accept" type="object" string="accept" icon="fa-check"/>
                 <button name="action_refuse" type="object" string="refuse" icon="fa-times"/>
@@ -24,17 +24,14 @@
                 <sheet>
                         <group>
                             <group>
-                               <h1 style="width:200px"> <field name="partner_id" /> </h1>
+                               <h1 style="width:200px"> <field name="price"/> </h1>
                             </group>
                             <seperator/>
                             <group>
                                 <field name="partner_id"/>
                                 <field name="status"/>
-                                <field name="price"/>
                                 <field name="validity"/>
                                 <field name="deadline"/>
-                                <button name="action_accept" type="object" string="accept" icon="fa-check"/>
-                                <button name="action_refuse" type="object" string="refuse" icon="fa-times"/>
                             </group>
                         </group>
                     </sheet>

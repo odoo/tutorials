@@ -1,6 +1,7 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -42,6 +43,17 @@ class EstateProperty(models.Model):
     tag_id = fields.Many2many("estate.property.tag", string="Tags")
     total = fields.Float(compute="_compute_total", string="total")
     count = fields.Float(compute="_compute_best_price", default=0)
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'The expected price of a property can not be negative or zero.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price of a property can not be negative.')
+    ]
+
+    @api.constrains('expected_price', 'selling_price')
+    def check_price(self):
+        if float_compare(self.selling_price, 0.9 * self.expected_price, 2) == -1 and not float_is_zero(self.selling_price, 2):
+            raise ValidationError('seeling price must greater than 90% of expected price')
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
@@ -51,7 +63,10 @@ class EstateProperty(models.Model):
     @api.depends("offer_id.price")
     def _compute_best_price(self):
         for record in self:
-            record.count = max(record.offer_id.mapped('price'))
+            if record.offer_id:
+                record.count = max(record.offer_id.mapped('price'))
+            else:
+                record.count = 0
 
     @api.onchange("garden")
     def _onchange_garden(self):

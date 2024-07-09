@@ -19,6 +19,10 @@ class EstatePropertyOffer(models.Model):
     )
     validity = fields.Float(default=7)
     deadline = fields.Date(compute="_compute_validity", inverse="_inverse_deadline", default=fields.Datetime.now() + relativedelta(days=7))
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0',
+         'The price of a property can not be negative.')
+    ]
 
     @api.depends("validity")
     def _compute_validity(self):
@@ -41,5 +45,6 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         if self.property_id.users == self.partner_id.name:
             self.property_id.users = ''
+            self.property_id.selling_price = 0
         self.status = 'refused'
         return True
