@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="action_open_estate_properties" model="ir.actions.act_window">
+    <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
@@ -29,6 +29,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header> 
+                    <button name="action_sold_property" type="object" string="Sold"/>
+                    <button name="action_cancel_property" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1><field name="name"/></h1>
                     <group>

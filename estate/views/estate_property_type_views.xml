@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="action_open_estate_properties_type" model="ir.actions.act_window">
+    <record id="estate_type_model_action" model="ir.actions.act_window">
         <field name="name">Properties Type</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
