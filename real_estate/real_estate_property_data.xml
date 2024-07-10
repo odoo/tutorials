@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="real_estate.country_house" model="real.estate.property">
+        <field name="name">Country house</field>
+        <field name="description">In the charming village of Grand-Rosière-Hottomont, 5 minutes from all facilities (shops, schools, public transport, ...), we offer this superb newly renovated country house!</field>
+        <field name="image" type="base64" file="real_estate/country_house.png"/>
+        <field name="type">house</field>
+        <field name="selling_price">745000</field>
+        <field name="availability_date">2024-08-01</field>
+        <field name="floor_area">416</field>
+        <field name="bedrooms">5</field>
+        <field name="has_garage">True</field>
+        <field name="has_garden">True</field>
+        <field name="garden_area">2100</field>
+    </record>
+
+    <record id="real_estate.loft" model="real.estate.property">
+        <field name="name">Loft</field>
+        <field name="description">Located on the 1st floor of a small, fully renovated building, magnificent 195 m² three-bedroom apartment with parking space.</field>
+        <field name="image" type="base64" file="real_estate/loft.png"/>
+        <field name="type">apartment</field>
+        <field name="selling_price">339000</field>
+        <field name="availability_date">2025-01-01</field>
+        <field name="floor_area">195</field>
+        <field name="bedrooms">3</field>
+        <field name="has_garage">True</field>
+        <field name="has_garden">False</field>
+    </record>
+
+    <record id="real_estate.mixed_use_commercial" model="real.estate.property">
+        <field name="name">Mixed use commercial building</field>
+        <field name="description">The property is a former bank agency which consists of a retail ground floor, a basement and 2 extra office floors.</field>
+        <field name="image" type="base64" file="real_estate/mixed_use_commercial.png"/>
+        <field name="type">retail</field>
+        <field name="selling_price">335000</field>
+        <field name="availability_date">2024-10-02</field>
+        <field name="floor_area">370</field>
+        <field name="bedrooms">0</field>
+        <field name="has_garage">False</field>
+        <field name="has_garden">False</field>
+    </record>
+
+</odoo>
