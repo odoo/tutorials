@@ -1,5 +1,12 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="action_estate_property" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_state': True}</field>
+    </record>
+
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
@@ -28,7 +35,7 @@
                 <header>
                     <button name="action_set_sold_property" string="Sold" type="object" class="oe_highlight" invisible="state in ['sold','canceled']"/>
                     <button name="action_set_cancel_property" string="Cancel" type="object" class="" invisible="state in ['sold','canceled']"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <h1>
@@ -90,7 +97,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <field name="user_id"/>
@@ -104,11 +111,5 @@
                 </group>
             </search>
         </field>
-    </record>
-
-    <record id="action_estate_property" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
     </record>
 </odoo>
