@@ -1,5 +1,7 @@
 from odoo import models, fields, api, exceptions
 from datetime import date, timedelta
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Estate(models.Model):
@@ -48,18 +50,19 @@ class Estate(models.Model):
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type",
         inverse_name="property_id",
-        string="Property Type"
+        string="Property Type",
     )
-    salesperson_id = fields.Many2one("res.users", string="Sales Person", default=lambda self: self.env.user)
+    salesperson_id = fields.Many2one(
+        "res.users", string="Sales Person", default=lambda self: self.env.user
+    )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many(
-        comodel_name="estate.property.tags",
-        string="Property Tag"
+        comodel_name="estate.property.tags", string="Property Tag"
     )
     offer_ids = fields.One2many(
         comodel_name="estate.property.offer",
         inverse_name="property_id",
-        string="Property Offer"
+        string="Property Offer",
     )
     total_area = fields.Integer(compute="_compute_totalarea")
     best_price = fields.Integer("Best Offer", compute="_compute_bestprice")
@@ -78,19 +81,45 @@ class Estate(models.Model):
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = 'north'
+            self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = ''
+            self.garden_orientation = ""
 
     def action_cancel(self):
         for record in self:
-            if record.state == 'sold':
-                raise exceptions.UserError("Cannot cancel a property that is already sold!")
-            record.state = 'cancelled'
+            if record.state == "sold":
+                raise exceptions.UserError(
+                    "Cannot cancel a property that is already sold!"
+                )
+            record.state = "cancelled"
 
     def action_sold(self):
         for record in self:
-            if record.state == 'cancelled':
-                raise exceptions.UserError("Cannot sell a property that is already cancelled!")
-            record.state = 'sold'
+            if record.state == "cancelled":
+                raise exceptions.UserError(
+                    "Cannot sell a property that is already cancelled!"
+                )
+            record.state = "sold"
+
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected Price must be strictly positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price > 0)",
+            "Selling Price must be positive",
+        ),
+    ]
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_price(self):
+        if float_compare(
+            self.selling_price, 0.9 * self.expected_price, 2
+        ) == -1 and not float_is_zero(self.selling_price, 2):
+            raise ValidationError(
+                "selling price must greater than 90% of expected price"
+            )
