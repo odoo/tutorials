@@ -1,6 +1,8 @@
 from odoo import api, models, fields
 from datetime import date, timedelta
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Testing(models.Model):
@@ -34,7 +36,7 @@ class Testing(models.Model):
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type",
         inverse_name="property_id",
-        string="property name"
+        string="property type"
     )
     salesperson_id = fields.Many2one("res.users", string="Sales person", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -79,3 +81,15 @@ class Testing(models.Model):
             if record.state != 'canceled':
                 record.state = 'sold'
             raise UserError("A sold property cannot be canceled.")
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'expected price must be strictly positive'),
+         ('cheselling_price', 'CHECK(selling_price > 0)',
+         'selling price must be positive')
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def check_price(self):
+        if float_compare(self.selling_price, 0.9 * self.expected_price, 2) == -1 and not float_is_zero(self.selling_price, 2):
+            raise ValidationError('selling price must greater than 90% of expected price')

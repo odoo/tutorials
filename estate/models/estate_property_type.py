@@ -5,7 +5,7 @@ class Testing_type(models.Model):
     _name = "estate.property.type"
     _description = "This is Real Estate property type"
 
-    name = fields.Char(required=True)
+    name = fields.Char("Pro", required=True)
     property_id = fields.One2many(
         comodel_name="estate.property",
         inverse_name="property_type_id",
@@ -29,3 +29,5 @@ class Testing_type(models.Model):
             'domain': [('id', 'in', related_property_ids)],
             'views': [[False, 'list'], [False, 'form']]
         }
+
+    _sql_constraints = [('check_property_type', 'unique(name)', 'The property type must be unique.')]
