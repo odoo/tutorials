@@ -1,5 +1,6 @@
 from odoo import api, models, fields
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class estate_offer(models.Model):
@@ -30,3 +31,17 @@ class estate_offer(models.Model):
                 record.validity = relativedelta(record.date_deadline, current_date).days
             else:
                 record.validity = 0
+
+    def action_accept(self):
+        if self.property_id.buyer_id:
+            raise UserError("only one offer accepted")
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+
+    def action_refuse(self):
+        for record in self:
+            if record.status == "accepted":
+                record.property_id.buyer_id = ""
+                record.property_id.selling_price = 0.0
+            record.status = "refused"
