@@ -26,3 +26,8 @@ class EstateProperty(models.Model):
             'views': [[False, 'list'], [False, 'form']],
             'domain': [('id', 'in', related_property_ids)],
         }
+
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)',
+        'A tag with the same name and applicability already exists.')
+    ]

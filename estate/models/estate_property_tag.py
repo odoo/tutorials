@@ -6,3 +6,8 @@ class EstateProperty(models.Model):
     _description = "Real_Estate property model"
 
     name = fields.Char('Name', required=True)
+
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)',
+        'Already exist.')
+     ]
