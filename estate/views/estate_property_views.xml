@@ -32,6 +32,7 @@
                 <header> 
                     <button name="action_sold_property" type="object" string="Sold"/>
                     <button name="action_cancel_property" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <h1><field name="name"/></h1>

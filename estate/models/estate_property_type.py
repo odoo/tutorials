@@ -4,9 +4,11 @@ from odoo import api, fields, models
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Type Model"
+    _order = "name"
 
     name = fields.Char(string="Name", required=True)
     property_count = fields.Integer(string='Property count', compute="_compute_property_count")
+    property_ids = fields.One2many('estate.property', 'property_type_id', string="properties")
 
     _sql_constraints = [
         ('unique_property_name', 'UNIQUE(name)', 'Property type name must be unique.')
@@ -23,6 +25,6 @@ class EstatePropertyType(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Properties',
             'res_model': 'estate.property',
-            'view_mode': 'tree,form',
+            'views': [[False, 'list'], [False, 'tree']],
             'domain': [('property_type_id', '=', self.id)],
         }
