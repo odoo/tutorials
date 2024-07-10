@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="name", required=True)
     description = fields.Char()
@@ -27,7 +28,7 @@ class EstateProperty(models.Model):
     )
     state = fields.Selection(
         string='state',
-        selection=[('new', 'New'), ('offer_accepted', 'Offer accepted'), ('sold', 'Sold'), ('offer_recieved', 'Offer recieved'), ('canceled', 'Canceled')], copy=False, default='new'
+        selection=[('new', 'New'), ('offer_recieved', 'Offer recieved'), ('offer_accepted', 'Offer accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')], copy=False, default='new'
     )
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type",
@@ -64,6 +65,8 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             if record.offer_id:
+                if record.state == "new":
+                    record.state = "offer_recieved"
                 record.count = max(record.offer_id.mapped('price'))
             else:
                 record.count = 0

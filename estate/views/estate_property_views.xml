@@ -3,17 +3,18 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">property</field>
         <field name="res_model">estate.property</field>
+        <field name="context">{'search_default_available': True}</field>
         <field name="view_mode">tree,form</field>
     </record>
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel" >
+            <tree string="Channel" decoration-success="state in ['offer_accepted', 'offer_recieved']" decoration-bf="state in ['offer_accepted']" decoration-muted="state in ['sold']">
                 <field name="name"/>
                 <field name="tag_id" widget="many2many_tags"/>
                 <field name="postcode"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="bedroom"/>
@@ -36,8 +37,9 @@
         <field name="arch" type="xml">
             <form string="Estate property">
                 <header>
-                    <button name="action_sold_property" type="object" string="sell"/>
-                    <button name="action_cancel_property" type="object" string="cancel"/>
+                    <button name="action_sold_property" type="object" string="sell" invisible="state in ['sold','canceled']"/>
+                    <button name="action_cancel_property" type="object" string="cancel" invisible="state in ['sold','canceled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_recieved, offer_accepted, sold" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
                         <group>
@@ -47,14 +49,13 @@
                             <seperator/>
                             <group>
                                 <group>
-                                    <field name="tag_id" widget="many2many_tags"/>
+                                    <field name="tag_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                     <field name="postcode"/>
-                                    <field name="date_availability"/>
-                                    <field name="state"/>
+                                    <field name="date_availability" />
                                 </group>
                                 <group>
                                     <field name="expected_price"/>
-                                    <field name="property_type_id"/>
+                                    <field name="property_type_id" options="{'no_create':true,'no_create_edit':true }"/>
                                     <field name="selling_price"/>
                                     <field name="count"/>
                                 </group>
@@ -70,8 +71,8 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                     <field name="active"/>
                                     <field name="total"/>
                                 </group>
@@ -84,7 +85,7 @@
                                 </group>
                             </page>
                             <page string="Offers">
-                                    <field name="offer_id"/>
+                                    <field name="offer_id" readonly="state in ['offer_accepted', 'sold', 'offer_refused']"/>
                             </page>
                         </notebook>
                     </sheet>
@@ -103,7 +104,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="bedroom"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <field name="garage"/>
                 <field name="garden_area"/>
@@ -111,6 +112,7 @@
                 <field name="state"/>
                 <field name="seller_id"/>
                 <field name="users"/>
+                <filter name="available" string="Available" domain="[('state', '!=', 'sold'), ('state', '!=', 'canceled')]"/>
                 <filter string="appl fltr" name="applied filter" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
                 <group>
                     <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>

@@ -5,18 +5,20 @@ from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-    _description = "Estate Property Offerf"
+    _description = "Estate Property Offer"
+    _order = "price desc"
 
-    partner_id = fields.Many2one('res.partner', string='buyer')
+    partner_id = fields.Many2one('res.partner', string='buyer', required=True)
     status = fields.Selection(
         string='status',
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False
     )
-    price = fields.Char(required=True)
+    price = fields.Float(required=True)
     property_id = fields.Many2one(
         comodel_name="estate.property",
         string="property"
     )
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
     validity = fields.Float(default=7)
     deadline = fields.Date(compute="_compute_validity", inverse="_inverse_deadline", default=fields.Datetime.now() + relativedelta(days=7))
     _sql_constraints = [
@@ -38,6 +40,7 @@ class EstatePropertyOffer(models.Model):
             self.status = 'accepted'
             self.property_id.selling_price = self.price
             self.property_id.users = self.partner_id.name
+            self.property_id.state = "offer_accepted"
         else:
             raise UserError("Offer has been already Accepted")
         return True

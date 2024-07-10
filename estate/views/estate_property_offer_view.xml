@@ -4,14 +4,14 @@
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree string="Channel" >
+            <tree string="Channel" editable="bottom" decoration-success="status in ['accepted']" decoration-danger="status in ['refused']">
                 <field name="partner_id"/>
                 <field name="price"/>
                 <field name="validity"/>
-                <field name="status"/>
+                <field name="status" column_invisible='true'/>
                 <field name="deadline"/>
-                <button name="action_accept" type="object" string="accept" icon="fa-check"/>
-                <button name="action_refuse" type="object" string="refuse" icon="fa-times"/>
+                <button name="action_accept" type="object" string="accept" icon="fa-check"  invisible="status in ['accepted', 'refused']"/>
+                <button name="action_refuse" type="object" string="refuse" icon="fa-times"  invisible="status in ['accepted', 'refused']"/>
             </tree>
         </field>
     </record>
@@ -29,7 +29,6 @@
                             <seperator/>
                             <group>
                                 <field name="partner_id"/>
-                                <field name="status"/>
                                 <field name="validity"/>
                                 <field name="deadline"/>
                             </group>

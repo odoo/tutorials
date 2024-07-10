@@ -11,6 +11,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Channel" >
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="description"/>
             </tree>
@@ -24,8 +25,8 @@
             <form string="Estate property type">
                 <sheet>
                  <div class="oe_button_box" name="button_box">
-                             <button class="oe_stat_button" name="compute_related_properties"
-                                    type="object" icon="fa-star">
+                             <button class="oe_stat_button" name="action_open_related_properties"
+                                    type="object" icon="fa-star" invisible="related_properties in [0]">
                                     <div class="o_stat_info">
                                         <span>
                                             <field name="related_properties"/>
@@ -35,16 +36,33 @@
                                         </span>
                                     </div>
                             </button>
+                            <button class="oe_stat_button" name="action_open_related_offers"
+                                    type="object" icon="fa-money" invisible="related_properties in [0]">
+                                    <div class="o_stat_info">
+                                        <span>
+                                            <field name="offer_count"/>
+                                        </span>
+                                        <span class="o_stat_text">
+                                                Offers
+                                        </span>
+                                    </div>
+                            </button>
                         </div>
-                        <group>
-                            <group>
-                               <h1 style="width:200px"> <field name="name"/> </h1>
-                            </group>
-                            <seperator/>
-                            <group>
-                                    <field name="description"/>
-                            </group>
-                        </group>
+                        <header>
+                             <h1> <field name="name"/> </h1>
+                        </header>
+                        <notebook>
+                            <page string="Properties">
+                                <field name="property_id" context="{'default_category_id': active_id}">
+                                    <tree string="Tags" editable="bottom">
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="state" string="status"/>
+                                        <!-- <field name="offer_count"/> -->
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
             </form>
         </field>
