@@ -10,6 +10,8 @@
                 <field name="status"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
+                <button name="action_accept" title="Accept" type="object" icon="fa-check"/>
+                <button name="action_refuse" title="Refuse" type="object" icon="fa-close"/>
             </tree>
         </field>
     </record>

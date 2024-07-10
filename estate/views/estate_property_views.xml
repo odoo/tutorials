@@ -16,7 +16,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
-                <field name="sellig_price"/>
+                <field name="selling_price"/>
                 <field name="date_availability"/>
             </tree>
         </field>
@@ -28,11 +28,14 @@
             <form string="Estate Property">
                 <sheet>
                     <header>
-                        <h1>
-                            <field name="name"/>
-                        </h1>
+                        <button name="action_cancel" string="Cancel" type="object" class="oe_highlight"/>
+                        <button name="action_sold" string="Sold" type="object" class="oe_highlight"/>
                     </header>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
                     <group>
+                        <field name="state"/>
                         <field name="tag_ids" widget="many2many_tags"/>
                     </group>
                     <group>
@@ -43,7 +46,7 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="best_price"/>
-                            <field name="sellig_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>

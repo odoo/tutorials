@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import date, timedelta
 
 
@@ -15,7 +15,7 @@ class Estate(models.Model):
         copy=False,
     )
     expected_price = fields.Float("Expected Price", required=True)
-    sellig_price = fields.Float("Selling Price", readonly=True, copy=False)
+    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living Area")
     facades = fields.Integer("Facades")
@@ -33,13 +33,13 @@ class Estate(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        string="State",
+        string="Status",
         selection=[
             ("new", "New"),
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("canceled", "Canceled"),
+            ("cancelled", "Cancelled"),
         ],
         required=True,
         copy=False,
@@ -82,3 +82,15 @@ class Estate(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError("Cannot cancel a property that is already sold!")
+            record.state = 'cancelled'
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError("Cannot sell a property that is already cancelled!")
+            record.state = 'sold'
