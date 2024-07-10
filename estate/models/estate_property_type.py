@@ -7,6 +7,11 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char('Property Type', required=True)
     related_property_count = fields.Integer(compute='_compute_related_property_count')
+    property_ids = fields.One2many("estate.property", "property_type_id", string="Properties")
+
+    _sql_constraints = [
+            ('uniq_property_type', 'unique(name)', 'A Property type name must be unique.'),
+        ]
 
     def _compute_related_property_count(self):
         for record in self:
