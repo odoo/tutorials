@@ -7,11 +7,12 @@ from odoo.tools.float_utils import float_is_zero, float_compare
 class propertiesPlan(models.Model):
     _name = "estate.property"
     _description = "Real Estate Properties Plan"
+    _order = "id desc"
 
     name = fields.Char("Name", required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
-    date_availability = fields.Date("Available Date", copy=False, default=fields.Datetime.today() + relativedelta(months=3))
+    date_availability = fields.Date("Available Date", copy=False, default=fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Bedrooms", default=2)
@@ -30,30 +31,27 @@ class propertiesPlan(models.Model):
     )
     garden_orientation = fields.Selection(
         string='Garden Orientation',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
-        help="Select the direction to filter the options",
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ], help="Select the direction to filter the options",
     )
     active = fields.Boolean("Active", default=True)
     state = fields.Selection(
         string='State',
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
-        help="Select the state of your property.",
-        default='new'
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled')
+        ], help="State of your property.", default='new'
     )
-    property_type_id = fields.Many2one(
-        comodel_name="estate.property.type",
-        inverse_name="property_id",
-        string="Property Type"
-    )
-    tag_ids = fields.Many2many(
-        comodel_name="estate.property.tag",
-        string="Property Tags"
-    )
-    offer_ids = fields.One2many(
-        comodel_name="estate.property.offer",
-        inverse_name="property_id",
-        string=""
-    )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected Price must be Positive'),
@@ -75,6 +73,8 @@ class propertiesPlan(models.Model):
     def _compute_best_price(self):
         for record in self:
             if record.offer_ids:
+                if record.state == 'new':
+                    record.state = 'offer_received'
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
                 record.best_price = 0

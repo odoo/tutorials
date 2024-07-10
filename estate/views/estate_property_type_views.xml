@@ -10,6 +10,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Channel">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
         </field>
@@ -31,10 +32,31 @@
                                 </span>
                             </div>
                         </button>
+                        <button class="oe_stat_button" type="action" name="%(estate.action_estate_property_offers)d" icon="fa-money">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_count"/>
+                                </span>
+                                <span class="o_stat_text">
+                                    Offers
+                                </span>
+                            </div>
+                        </button>
                     </div>
                     <group>
                         <h1 style="width:500px"><field name="name" default="New Property Type"/></h1>
                     </group>
+                    <notebook>
+                        <page string="Properties">
+                                <field name="property_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

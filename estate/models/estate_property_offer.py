@@ -6,6 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 class propertyTag(models.Model):
     _name = "estate.property.offer"
     _description = "Offers for the Real Estate Property"
+    _order = "price desc"
 
     price = fields.Float("Price")
     status = fields.Selection(
@@ -17,6 +18,7 @@ class propertyTag(models.Model):
     property_id = fields.Many2one('estate.property', string="Property")
     validity = fields.Integer("Validity (Days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_deadline_date_count", inverse="_inverse_deadline", store=True)
+    property_type_id = fields.Many2one("estate.property.type", string="Property Offer Id", related="property_id.property_type_id", store=True)
 
     _sql_constraints = [('check_price', 'CHECK(price > 0)', 'Offer Price must be Positive')]
 
@@ -38,13 +40,19 @@ class propertyTag(models.Model):
             self.status = 'accepted'
             self.property_id.selling_price = self.price
             self.property_id.buyer = self.partner_id.name
+            self.property_id.state = 'offer_accepted'
         else:
             raise UserError("Offer has been already Accepted")
-        return True
 
     def action_refused(self):
         if self.property_id.buyer == self.partner_id.name:
             self.property_id.buyer = ''
             self.property_id.selling_price = 0
         self.status = 'refused'
-        return True
+
+    def unlink(self):
+        for record in self:
+            if record.status == 'accepted':
+                record.property_id.buyer = ''
+                record.property_id.selling_price = 0
+        return super().unlink()
