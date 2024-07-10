@@ -8,6 +8,9 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate properties defined"
 
+    # order
+    _order = "id desc"
+
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -21,7 +24,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area")
     garden_orientation = fields.Selection(string="Garden Orientation", selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    state = fields.Selection(string="Status", selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], required=True, copy=False, default='new', readonly=True)
+    state = fields.Selection(string="Status", selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], required=True, copy=False, default='new')
     active = fields.Boolean(string="Active", default=True)
 
     # Relationships
@@ -53,6 +56,8 @@ class EstateProperty(models.Model):
         for record in self:
             best_price = max(record.offer_ids.mapped("price"), default=0.0)
             record.best_price = best_price
+            if record.state == 'new' and record.offer_ids:
+                record.state = 'offer received'
 
     @api.onchange("garden")
     def _onchange_garden(self):

@@ -4,20 +4,24 @@
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
     <record id="estate_model_offer_view_tree" model="ir.ui.view">
         <field name="name">estate.model.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree string="Estates">
+            <tree editable="bottom"
+                decoration-success="status=='accepted'"
+                decoration-danger="status=='refused'"
+                string="Estates">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field string="Validity(days)" name="validity"/>
                 <field string="Deadline" name="date_deadline"/>
-                <button name="action_accept_offer" type="object" icon="fa-check" title="Accept Offer"/>
-                <button name="action_refuse_offer" type="object" icon="fa-close" title="Refuse Offer"/>
-                <field name="status"/>
+                <button name="action_accept_offer" type="object" icon="fa-check" title="Accept Offer" invisible='status'/>
+                <button name="action_refuse_offer" type="object" icon="fa-close" title="Refuse Offer" invisible='status'/>
+                <field name="status" column_invisible="True"/>
             </tree>
         </field>
     </record>
@@ -33,7 +37,7 @@
                         <field name="partner_id"/>
                         <field string="Validity(days)" name="validity"/>
                         <field string="Deadline" name="date_deadline"/>
-                        <field name="status"/>
+                        <field name="status" column_invisible="True"/>
                     </group>
                 </sheet>
             </form>
