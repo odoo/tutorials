@@ -4,9 +4,15 @@ from odoo import fields, models
 class PropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Type Model"
+    _order = 'name'
 
     name = fields.Char('Name', required=True)
     related_properties = fields.Integer(compute='_compute_related_properties')
+    property_ids = fields.One2many(
+        comodel_name='estate.property',
+        inverse_name='property_type_id',
+        string='Properties')
+    sequence = fields.Integer('Sequence', default=1)
 
     _sql_constraints = [
         ('check_type_name', 'UNIQUE(name)', 'Type Name must be unique.'),

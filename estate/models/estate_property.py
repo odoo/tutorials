@@ -1,12 +1,13 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Model"
+    _order = "id desc"
 
     name = fields.Char('Name', required=True)
     description = fields.Text('Description')
@@ -70,6 +71,8 @@ class EstateProperty(models.Model):
     def _compute_best_offer_price(self):
         for record in self:
             record.best_offer_price = max(record.offer_ids.mapped('price'), default=0)
+            if record.state == 'new' and record.offer_ids:
+                record.state = 'offer_received'
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -90,8 +93,8 @@ class EstateProperty(models.Model):
             raise UserError('sold property cannot be Canceled')
         self.state = 'canceled'
 
-    @api.constrains('selling_price')
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if float_compare(record.selling_price, 0, 0.01) != 0 and float_compare(record.selling_price, record.expected_price * 0.9, 0.01) < 0:
+            if not float_is_zero(record.selling_price, 2) and float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1:
                 raise ValidationError("selling price cannot be lower than 90% of the expected price")
