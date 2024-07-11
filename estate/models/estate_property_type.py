@@ -1,12 +1,14 @@
-from odoo import models, fields
+from odoo import api, models, fields
 
 
 class Testing_type(models.Model):
     _name = "estate.property.type"
     _description = "This is Real Estate property type"
+    _order = "sequence, name"
 
     name = fields.Char("Pro", required=True)
-    property_id = fields.One2many(
+    sequence = fields.Integer("sequence", default=1)
+    property_ids = fields.One2many(
         comodel_name="estate.property",
         inverse_name="property_type_id",
         string="property type"
@@ -31,3 +33,12 @@ class Testing_type(models.Model):
         }
 
     _sql_constraints = [('check_property_type', 'unique(name)', 'The property type must be unique.')]
+
+    offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="offer")
+
+    offer_count = fields.Integer("offer count", compute="_compute_offer_count")
+
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)

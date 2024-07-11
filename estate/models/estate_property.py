@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class Testing(models.Model):
     _name = "estate.property"
     _description = "This is Real Estate"
+    _order = "id desc"
 
     name = fields.Char('property Name', required=True)
     description = fields.Text('Description')
@@ -35,7 +36,7 @@ class Testing(models.Model):
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type",
-        inverse_name="property_id",
+        inverse_name="property_ids",
         string="property type"
     )
     salesperson_id = fields.Many2one("res.users", string="Sales person", default=lambda self: self.env.user)
@@ -72,15 +73,17 @@ class Testing(models.Model):
 
     def action_cancel(self):
         for record in self:
-            if record.state != 'sold':
+            if record.state == 'sold':
+                raise UserError("A sold property cannot be set as canceled")
+            else:
                 record.state = 'canceled'
-            raise UserError("A canceled property cannot be set as sold")
 
     def action_sold(self):
         for record in self:
-            if record.state != 'canceled':
+            if record.state == 'canceled':
+                raise UserError("A canceled property cannot be sold.")
+            else:
                 record.state = 'sold'
-            raise UserError("A sold property cannot be canceled.")
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',

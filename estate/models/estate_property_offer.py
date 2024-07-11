@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 class estate_offer(models.Model):
     _name = "estate.property.offer"
     _description = "This is Real Estate property offer"
+    _order = "price desc"
 
     price = fields.Float("Price")
     status = fields.Selection(
@@ -50,3 +51,5 @@ class estate_offer(models.Model):
         ('offer_price', 'CHECK(price > 0)',
          'offer price must be strictly positive')
     ]
+
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", string="Offers", stored=True)
