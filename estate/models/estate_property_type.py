@@ -1,17 +1,33 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class Estatepropertytype(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Types"
+    _order = "sequence, name"
 
     name = fields.Char(required=True)
-    property_id = fields.One2many(
+    property_ids = fields.One2many(
         comodel_name="estate.property",
         inverse_name="property_type_id",
         string="Property Type",
     )
     related_property_count = fields.Integer(compute="_compute_property_count")
+    sequence = fields.Integer("Sequence", default=1)
+    offer_ids = fields.One2many(
+        comodel_name="estate.property.offer",
+        inverse_name="property_type_id",
+        string="Offer",
+    )
+    related_offer_count = fields.Integer(compute="_compute_offer_count")
+
+    def _compute_offer_count(self):
+        for record in self:
+            record.related_offer_count = self.env["estate.property.offer"].search_count(
+                [
+                    ("property_type_id", "=", record.id),
+                ]
+            )
 
     def _compute_property_count(self):
         for record in self:

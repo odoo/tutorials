@@ -1,10 +1,11 @@
-from odoo import models, fields, api, exceptions
+from odoo import api, exceptions, fields, models
 from datetime import timedelta
 
 
 class Estatepropertyoffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -20,6 +21,12 @@ class Estatepropertyoffer(models.Model):
     validity = fields.Integer("Validity(7 Days)", default=7)
     date_deadline = fields.Date(
         "Deadline", compute="_compute_Validitydate", inverse="_inverse_datedeadline"
+    )
+    property_type_id = fields.Many2one(
+        comodel_name="estate.property.type",
+        related="property_id.property_type_id",
+        string="Offers",
+        store="True",
     )
 
     @api.depends("validity")
@@ -39,6 +46,7 @@ class Estatepropertyoffer(models.Model):
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
         self.status = "accepted"
+        self.property_id.state = "offer_accepted"
 
     def action_refuse(self):
         if self.status == "accepted":

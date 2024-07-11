@@ -1,4 +1,4 @@
-from odoo import models, fields, api, exceptions
+from odoo import api, exceptions, fields, models
 from datetime import date, timedelta
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class Estate(models.Model):
     _name = "estate.property"
     _description = "Estate Property Plans"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text("Description")
@@ -49,7 +50,6 @@ class Estate(models.Model):
     )
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type",
-        inverse_name="property_id",
         string="Property Type",
     )
     salesperson_id = fields.Many2one(
@@ -65,17 +65,22 @@ class Estate(models.Model):
         string="Property Offer",
     )
     total_area = fields.Integer(compute="_compute_totalarea")
-    best_price = fields.Integer("Best Offer", compute="_compute_bestprice")
+    best_price = fields.Integer("Best Offer", compute="_compute_best_price")
 
     @api.depends("living_area", "garden_area")
     def _compute_totalarea(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends("offer_ids")
-    def _compute_bestprice(self):
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"), default=0)
+            if record.offer_ids:
+                if record.state == "new":
+                    record.state = "offer_received"
+                record.best_price = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_price = 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -110,12 +115,12 @@ class Estate(models.Model):
         ),
         (
             "check_selling_price",
-            "CHECK(selling_price > 0)",
+            "CHECK(selling_price >= 0)",
             "Selling Price must be positive",
         ),
     ]
 
-    @api.constrains("selling_price", "expected_price")
+    @api.constraints("selling_price", "expected_price")
     def _check_price(self):
         if float_compare(
             self.selling_price, 0.9 * self.expected_price, 2

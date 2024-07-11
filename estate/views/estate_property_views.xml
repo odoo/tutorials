@@ -3,21 +3,24 @@
     <record id="action_estate_property_model" model="ir.actions.act_window">
         <field name="name">Estate Property Action</field>
         <field name="res_model">estate.property</field>
+        <field name="context">{'search_default_state': True}</field>
         <field name="view_mode">tree,form</field>
     </record>
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
-                <field name="name"/>
+            <tree string="Channel" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state in ['offer_accepted']" decoration-muted="state in ['sold']">
+                <field name="name" string="Title"/>
+                <field name="property_type_id" string="Property Type"/>
                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -26,17 +29,19 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_cancel" string="Cancel" type="object" class="oe_highlight" invisible="state in ['sold','cancelled']"/>
+                    <button name="action_sold" string="Sold" type="object" class="oe_highlight" invisible="state in ['sold','cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+                </header>
                 <sheet>
-                    <header>
-                        <button name="action_cancel" string="Cancel" type="object" class="oe_highlight"/>
-                        <button name="action_sold" string="Sold" type="object" class="oe_highlight"/>
-                    </header>
                     <h1>
                         <field name="name"/>
                     </h1>
                     <group>
                         <field name="state"/>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="property_type_id" options="{'no_create': true, 'no_create_edit': true}"/>
                     </group>
                     <group>
                         <group>
@@ -57,15 +62,14 @@
                                 <field name="living_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
-                                <field name="property_type_id"/>
+                                <field name="garden" />
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page string="Other Information">
                             <group>
@@ -87,7 +91,8 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="facades"/>
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <separator/>

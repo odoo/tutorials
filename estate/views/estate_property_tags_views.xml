@@ -4,7 +4,7 @@
         <field name="name">estate.property.tags.tree</field>
         <field name="model">estate.property.tags</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
+            <tree string="Channel" editable="bottom">
                 <field name="name"/>
             </tree>
         </field>
