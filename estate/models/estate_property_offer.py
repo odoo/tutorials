@@ -2,6 +2,7 @@ from odoo import api, fields, models
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -14,7 +15,7 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float(string="Price")
     status = fields.Selection(string="Status", selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one("res.partner", string="Partner Id", required=True)
-    property_id = fields.Many2one("estate.property", string="Property Id", required=True)
+    property_id = fields.Many2one("estate.property", string="Property Id", required=True, ondelete='cascade')
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline", store=True)
 
@@ -58,3 +59,13 @@ class EstatePropertyOffer(models.Model):
                 offer.property_id.buyer = ''
                 offer.property_id.selling_price = 0.00
         return super().unlink()
+
+    @api.model
+    def create(self, vals):
+        props = self.env["estate.property"].browse(vals["property_id"])
+        if props.offer_ids:
+            max_val = max(props.mapped("offer_ids.price"))
+            if float_compare(vals["price"], max_val, precision_rounding=0.01) <= 0:
+                raise UserError("The offer must be higher than %.2f" % max_val)
+        props.state = 'offer received'
+        return super().create(vals)

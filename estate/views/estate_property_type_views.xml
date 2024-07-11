@@ -28,7 +28,7 @@
                                 <field name="property_count" widget="statinfo" string="Properties"/>
                         </button>
 
-                        <button class="oe_stat_button" name="%(estate.action_estate_properties_offer)d" type="action" string="Offers" icon="fa-gift" invisible="offer_count == 0">
+                        <button class="oe_stat_button" name="%(estate.action_estate_properties_offer)d" type="action" string="Offers" icon="fa-money" invisible="offer_count == 0">
                                 <field name="offer_count" widget="statinfo" string="Offers"/>
                         </button>
                     </div>
