@@ -34,8 +34,7 @@ class PropertyOffer(models.Model):
     @api.depends('property_id')
     def _compute_property_type_id(self):
         for record in self:
-            if record.property_id and record.property_id.property_type_id:
-                record.property_type_id = record.property_id.property_type_id
+            record.property_type_id = record.property_id.property_type_id
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -62,3 +61,11 @@ class PropertyOffer(models.Model):
                 record.property_id.partner_id = ''
                 record.property_id.state = 'new'
         return super().unlink()
+
+    @api.model
+    def create(self, vals):
+        estate_property = self.env['estate.property'].browse(vals['property_id'])
+        if min(estate_property.offer_ids.mapped('price'), default=0) > vals['price']:
+            raise UserError('Offer price cannot lower than existing offers')
+        estate_property.state = 'offer_received'
+        return super().create(vals)

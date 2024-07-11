@@ -71,8 +71,6 @@ class EstateProperty(models.Model):
     def _compute_best_offer_price(self):
         for record in self:
             record.best_offer_price = max(record.offer_ids.mapped('price'), default=0)
-            if record.state == 'new' and record.offer_ids:
-                record.state = 'offer_received'
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -98,3 +96,8 @@ class EstateProperty(models.Model):
         for record in self:
             if not float_is_zero(record.selling_price, 2) and float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1:
                 raise ValidationError("selling price cannot be lower than 90% of the expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_offered_property(self):
+        if any(record.state not in ['new', 'canceled'] for record in self):
+            raise UserError('You can not delete a property in an offered state')
