@@ -14,6 +14,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string='Property', required=True)
     validity = fields.Integer(string='Validity', default=7)
     date_deadline = fields.Date(string='Date deadline', compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+    property_type_id = fields.Many2one('estate.property.type', related="property_id.property_type_id", string="Property Type", store=True)
 
     _sql_constraints = [
         ('check_price', 'CHECK(price > 0)',
@@ -46,6 +47,7 @@ class EstatePropertyOffer(models.Model):
             self.status = "accepted"
             self.property_id.selling_price = self.price
             self.property_id.buyer = self.partner_id
+            self.property_id.state = self.status
         else:
             raise UserError("Offer is already accepted")
         return True

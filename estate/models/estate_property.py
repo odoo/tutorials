@@ -12,7 +12,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
-    date_availability = fields.Date(string='Avaliable From', default=fields.Date.today() + relativedelta(months=3), copy=False)
+    date_availability = fields.Date(string='Available From', default=fields.Date.today() + relativedelta(months=3), copy=False)
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer(string='Bedrooms', default='2')
@@ -22,13 +22,13 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string='Garden')
     garden_area = fields.Integer(string='Garden Area (sqm)')
     garden_orientation = fields.Selection(string='Garden Orientation', selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    state = fields.Selection(string='Status', selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')], copy=False, default='new', required=True, readonly=True)
+    state = fields.Selection(string='Status', selection=[('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')], copy=False, default='new', required=True, readonly=True)
     active = fields.Boolean(string='Active', default=True)
-    property_type_id = fields.Many2one("estate.property.type", string="Property")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user or False)
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_id = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers list")
     total_area = fields.Float(string="Total area", compute="_compute_total_area")
     best_offer = fields.Float(string="Best offer", compute="_compute_best_offer")
 
@@ -53,6 +53,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.offer_ids:
                 record.best_offer = max(offer_id.price for offer_id in record.offer_ids)
+                if not record.state in ['accepted', 'sold', 'canceled']:
+                    record.state = 'received'
             else:
                 record.best_offer = 0
 

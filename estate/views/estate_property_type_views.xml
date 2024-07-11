@@ -11,6 +11,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Estate Property Type">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
         </field>
@@ -23,8 +24,11 @@
             <form string="Estate Property Form">
                 <sheet>
                     <div name="button_box" class="oe_button_box">
-                        <button class="oe_start_button" name="action_smart_button" string="Homes" type="object" invisible="property_count == 0"> 
+                        <button class="oe_start_button" name="action_smart_button" string="Homes" type="object" invisible="property_count in [0]"> 
                             <field name="property_count" widget="statinfo" string="Properties"/>
+                        </button>
+                        <button name="%(estate.action_open_estate_properties_offer)d" type="action" string="View Offers" class="oe_stat_button" icon="fa-money">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
                         </button>
                     </div>
                     <header>
@@ -34,7 +38,7 @@
                     </header>
                     <notebook>
                         <page string="Properties">
-                            <field name="property_ids" editable="false">
+                            <field name="property_ids">
                                 <tree>
                                     <field name="property_type_id"/>
                                     <field name="expected_price"/>
