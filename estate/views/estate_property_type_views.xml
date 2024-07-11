@@ -10,6 +10,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Property Type">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
         </field>
@@ -27,6 +28,14 @@
                                     <field name="related_property_count"/>
                                 </span>
                                 <span class="o_stat_text">Properties</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" type="action" name='estate.action_estate_property_offer' icon="fa-university" invisible="offer_count == 0">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_count"/>
+                                </span>
+                                <span class="o_stat_text">Offers</span>
                             </div>
                         </button>
                     </div>

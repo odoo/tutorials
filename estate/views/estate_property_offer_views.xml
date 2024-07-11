@@ -1,17 +1,24 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="action_estate_property_offer" model="ir.actions.act_window">
+        <field name="name">Property Offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
     <record id="estate_property_offer_view_tree" model="ir.ui.view">
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree string="Property Offer">
+            <tree string="Property Offer" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="property_type_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <button name="action_confirm" title="Confirm" type="object" icon="fa-check"/>
-                <button name="action_cancel" title="Cancel" type="object" icon="fa-times"/>
-                <field name="status"/>
+                <button name="action_confirm" title="Confirm" type="object" icon="fa-check" invisible="status in ['accepted', 'refused']"/>
+                <button name="action_cancel" title="Cancel" type="object" icon="fa-times" invisible="status in ['accepted', 'refused']"/>
+                <field name="status" column_invisible='True'/>
             </tree>
         </field>
     </record>
@@ -25,6 +32,7 @@
                         <field name="price"/>
                         <field name="status"/>
                         <field name="partner_id"/>
+                        <field name="property_type_id"/>
                         <field name="validity"/>
                         <field name="date_deadline"/>
                     </group>

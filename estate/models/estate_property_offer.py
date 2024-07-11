@@ -6,23 +6,30 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
-    price = fields.Float('Price')
+    price = fields.Float("Price")
     status = fields.Selection(
-        string='Status',
-        selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
+        string="Status",
+        selection=[("accepted", "Accepted"), ("refused", "Refused")],
     )
-    partner_id = fields.Many2one('res.partner', string="Partner", required=True, copy=False)
-    property_id = fields.Many2one('estate.property', required=True)
-    validity = fields.Integer('Validity', default=7)
-    date_deadline = fields.Date('Deadline', compute='_compute_date_deadline', inverse="_inverse_date_deadline")
+    partner_id = fields.Many2one(
+        "res.partner", string="Partner", required=True, copy=False
+    )
+    property_id = fields.Many2one("estate.property", required=True)
+    validity = fields.Integer("Validity", default=7)
+    date_deadline = fields.Date(
+        "Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline"
+    )
+    property_type_id = fields.Many2one(
+        "estate.property.type", related="property_id.property_type_id", store=True
+    )
 
     _sql_constraints = [
-            ('check_offer_price', 'CHECK(price > 0)',
-            'The offer price must be positive'),
-        ]
+        ("check_offer_price", "CHECK(price > 0)", "The offer price must be positive"),
+    ]
 
-    @api.depends("validity", 'date_deadline')
+    @api.depends("validity", "date_deadline")
     def _compute_date_deadline(self):
         for record in self:
             current_date = fields.Date.today()
@@ -35,14 +42,14 @@ class EstatePropertyOffer(models.Model):
 
     def action_confirm(self):
         if self.property_id.buyer_id:
-            raise UserError('Accepetd properties cannot be Accepetd.')
+            raise UserError("Accepetd properties cannot be Accepetd.")
         else:
-            self.status = 'accepted'
+            self.status = "accepted"
             self.property_id.selling_price = self.price
             self.property_id.buyer_id = self.partner_id
 
     def action_cancel(self):
-        if self.status == 'accepted':
+        if self.status == "accepted":
             self.property_id.selling_price = 0.0
-            self.property_id.buyer_id = ''
-        self.status = 'refused'
+            self.property_id.buyer_id = ""
+        self.status = "refused"
