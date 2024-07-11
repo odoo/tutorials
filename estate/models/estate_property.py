@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _order = "id desc"
     _description = "Real_Estate property model"
 
     name = fields.Char('Name', required=True)
@@ -26,8 +27,8 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        string='state',
-        selection=[('new', 'New'), (' offer received', ' Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'),
+        string='State',
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'),
                    ('cancelled', ' Cancelled')],
                    default='new',
                 required=True,
