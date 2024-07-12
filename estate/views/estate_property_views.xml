@@ -28,14 +28,14 @@
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.tree</field>
+        <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
                     <button name="action_set_sold_property" string="Sold" type="object" class="oe_highlight" invisible="state in ['sold','canceled']"/>
                     <button name="action_set_cancel_property" string="Cancel" type="object" class="" invisible="state in ['sold','canceled']"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
                     <h1>
@@ -74,7 +74,7 @@
                         <page string="Offers">
                             <field name="offer_ids" readonly="state in ['offer_accepted','sold','canceled']"/>
                         </page>
-                        <page string="Other Info">
+                        <page name="Other Info">
                             <group>
                                 <group>
                                     <field name="user_id"/>
