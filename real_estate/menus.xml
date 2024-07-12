@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <record id="real_estate.root_menu" model="ir.ui.menu">
-        <field name="name">Real Estate</field>
-        <field name="web_icon">real_estate,static/description/icon.png</field>
-    </record>
-
-    <record id="real_estate.properties_menu" model="ir.ui.menu">
-        <field name="name">Properties</field>
-        <field name="sequence">10</field>
-        <field name="parent_id" ref="real_estate.root_menu"/>
-        <field name="action" ref="base.open_module_tree"/>
-    </record>
-
-    <record id="real_estate.settings_menu" model="ir.ui.menu">
-        <field name="name">Settings</field>
-        <field name="sequence">20</field>
-        <field name="parent_id" ref="real_estate.root_menu"/>
-        <field name="action" ref="base.action_client_base_menu"/>
-    </record>
+    <menuitem
+        id="real_estate.root_menu"
+        name="Real Estate"
+        web_icon="real_estate,static/description/icon.png"
+    >
+        <menuitem
+            id="real_estate.properties_menu"
+            name="Properties"
+            sequence="10"
+            action="base.open_module_tree"
+        />
+        <menuitem
+            id="real_estate.settings_menu"
+            name="Settings"
+            sequence="20"
+            action="base.action_client_base_menu"
+        />
+    </menuitem>
 
 </odoo>
