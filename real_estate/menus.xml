@@ -10,7 +10,7 @@
             id="real_estate.properties_menu"
             name="Properties"
             sequence="10"
-            action="base.open_module_tree"
+            action="real_estate.view_properties_action"
         />
         <menuitem
             id="real_estate.settings_menu"
