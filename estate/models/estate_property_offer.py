@@ -16,7 +16,7 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one(
         "res.partner", string="Partner", required=True, copy=False
     )
-    property_id = fields.Many2one("estate.property", required=True)
+    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
     validity = fields.Integer("Validity", default=7)
     date_deadline = fields.Date(
         "Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline"
@@ -53,3 +53,11 @@ class EstatePropertyOffer(models.Model):
             self.property_id.selling_price = 0.0
             self.property_id.buyer_id = ""
         self.status = "refused"
+
+    @api.model
+    def create(self, vals):
+        estate_property = self.env["estate.property"].browse(vals["property_id"])
+        if max(estate_property.offer_ids.mapped("price"), default=0) >= vals["price"]:
+            raise UserError("offer with a lower amount than an existing offer")
+        estate_property.state = "offer_received"
+        return super().create(vals)
