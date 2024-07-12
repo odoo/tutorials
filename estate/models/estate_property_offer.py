@@ -53,3 +53,21 @@ class estate_offer(models.Model):
     ]
 
     property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", string="Offers", stored=True)
+
+    @api.model
+    def create(self, vals):
+        property_id = vals.get('property_id')
+        offer_price = vals.get('price')
+
+        property_record = self.env['estate.property'].browse(property_id)
+
+        existing_offers = self.search([
+            ('property_id', '=', property_id),
+            ('price', '>=', offer_price)
+        ])
+        if existing_offers:
+            raise UserError('You cannot create an offer with a lower or equal amount than an existing offer.')
+
+        property_record.state = 'offer_received'
+
+        return super().create(vals)

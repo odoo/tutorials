@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
-class Testing(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is Real Estate"
     _order = "id desc"
@@ -96,3 +96,10 @@ class Testing(models.Model):
     def check_price(self):
         if float_compare(self.selling_price, 0.9 * self.expected_price, 2) == -1 and not float_is_zero(self.selling_price, 2):
             raise ValidationError('selling price must greater than 90% of expected price')
+
+    @api.model
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_delete(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError('You cannot delete a property that is not in "New" or "Canceled" state.')
