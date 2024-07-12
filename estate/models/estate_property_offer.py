@@ -26,6 +26,11 @@ class EstatePropertyOffer(models.Model):
          'The price of a property can not be negative.')
     ]
 
+    @api.depends("price")
+    def _compute_max_price(self):
+        for record in self:
+            self.max_price = max(record.price, self.max_price)
+
     @api.depends("validity")
     def _compute_validity(self):
         for record in self:
@@ -51,3 +56,12 @@ class EstatePropertyOffer(models.Model):
             self.property_id.selling_price = 0
         self.status = 'refused'
         return True
+
+    @api.model
+    def create(self, vals):
+        property_record = self.env['estate.property'].browse(vals['property_id'])
+        if property_record.offer_id:
+            max_price = max(property_record.offer_id.mapped('price'))
+            if vals['price'] < max_price:
+                raise UserError(f"offer price should be more than {max_price}")
+        return super().create(vals)
