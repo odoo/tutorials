@@ -38,7 +38,7 @@ class EstateProperty(models.Model):
     user_id = fields.Many2one("res.users", string="salesperson")
     partner_id = fields.Many2one("res.partner", string="Buyer")
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="offers")
+    offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id", string="offers")
 
     total_area = fields.Float(compute="_compute_total")
     best_price = fields.Integer(compute="_compute_highest")
@@ -76,7 +76,7 @@ class EstateProperty(models.Model):
             record.state = "cancelled"
 
     _sql_constraints = [
-        ('Check_expected_price', 'CHECK(expected_price >=0 )',
+        ('Check_expected_price', 'CHECK(expected_price > 0 )',
          'The expected price must be positive'),
         ('check_selling_price', 'CHECK(selling_price >= 0)',
          'The selling price can not be negative.')
@@ -86,3 +86,9 @@ class EstateProperty(models.Model):
     def check_price(self):
         if float_compare(self.selling_price, 0.9 * self.expected_price, 2) == -1 and not float_is_zero(self.selling_price, 2):
             raise ValidationError('seeling price cannot be lower than 90% of expected price')
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_user_inactive(self):
+        for record in self:
+            if record.state in ['offer_accepted', 'offer_received', 'sold']:
+                raise UserError("Can't delete an offered property")

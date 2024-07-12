@@ -49,3 +49,11 @@ class EstateProperty(models.Model):
         ('check_price', 'CHECK(price >= 0)',
         'The offers price should be positive')
     ]
+
+    @api.model
+    def create(self, vals):
+        Existing_property = self.env['estate.property'].browse(vals['property_id'])
+        if vals['price'] < min(Existing_property.offer_ids.mapped('price'), default=0):
+            raise UserError("offer amount is lower than the existing offer ammount")
+        Existing_property.state = "offer_received"
+        return super().create(vals)
