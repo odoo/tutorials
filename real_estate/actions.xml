@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="real_estate.view_properties_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">real.estate.property</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <!-- Turns out I didn't feel like being creative with the help text ¯\_(ツ)_/¯ -->
+            <p class="o_view_nocontent_smiling_face">
+                Create a new property.
+            </p>
+        </field>
+    </record>
+
+</odoo>
