@@ -88,6 +88,14 @@ class propertiesPlan(models.Model):
             self.garden_area = 0
             self.garden_orientation = ''
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            domain = ['&', ('state', '!=', 'new'), ('state', '!=', 'canceled')]
+            properties = self.env['estate.property'].search(domain)
+            if record in properties:
+                raise ValidationError("Only New and Canceled Properties can be Deleted.")
+
     def action_mark_sold(self):
         if self.state == 'canceled':
             raise UserError("Canceled Properties cannot be Sold")

@@ -1,4 +1,4 @@
-<?xml version='1.0'?>
+<?xml version="1.0"?>
 <odoo>
     <record id="action_estate_property_offers" model="ir.actions.act_window">
         <field name="name">Property Offers</field>

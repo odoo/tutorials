@@ -3,7 +3,7 @@ from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 
 
-class propertyTag(models.Model):
+class propertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offers for the Real Estate Property"
     _order = "price desc"
@@ -27,6 +27,15 @@ class propertyTag(models.Model):
         current_date = fields.Date.today()
         for record in self:
             record.date_deadline = current_date + relativedelta(days=record.validity)
+
+    @api.model
+    def create(self, vals):
+        property_record = self.env['estate.property'].browse(vals['property_id'])
+        if property_record.offer_ids:
+            max_price = max(property_record.offer_ids.mapped('price'))
+            if vals['price'] < max_price:
+                raise UserError(f"offer price should be more than {max_price}")
+        return super().create(vals)
 
     def _inverse_deadline(self):
         current_date = fields.Date.today()
