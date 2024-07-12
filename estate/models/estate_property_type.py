@@ -34,6 +34,6 @@ class EstatePropertyType(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Properties',
             'res_model': 'estate.property',
-            'views': [[False, 'list'], [False, 'tree']],
+            'views': [[False, 'list'], [False, 'form']],
             'domain': [('property_type_id', '=', self.id)],
         }

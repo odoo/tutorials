@@ -65,3 +65,12 @@ class EstatePropertyOffer(models.Model):
                 offer.property_id.buyer = ''
                 offer.property_id.selling_price = 0
         return super().unlink()
+
+    @api.model
+    def create(self, vals):
+        property_record = self.env['estate.property'].browse(vals['property_id'])
+        if property_record.offer_ids:
+            max_price = max(property_record.offer_ids.mapped('price'))
+            if vals['price'] < max_price:
+                raise UserError(f"offer price should be more than {max_price}")
+        return super().create(vals)
