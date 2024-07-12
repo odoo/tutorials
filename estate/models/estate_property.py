@@ -1,10 +1,10 @@
 from odoo import api, exceptions, fields, models
 from datetime import date, timedelta
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
-class Estate(models.Model):
+class estate(models.Model):
     _name = "estate.property"
     _description = "Estate Property Plans"
     _order = "id desc"
@@ -120,7 +120,7 @@ class Estate(models.Model):
         ),
     ]
 
-    @api.constraints("selling_price", "expected_price")
+    @api.constrains("selling_price", "expected_price")
     def _check_price(self):
         if float_compare(
             self.selling_price, 0.9 * self.expected_price, 2
@@ -128,3 +128,9 @@ class Estate(models.Model):
             raise ValidationError(
                 "selling price must greater than 90% of expected price"
             )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_estateproperty(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError("Can't delete property!")
