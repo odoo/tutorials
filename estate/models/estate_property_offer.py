@@ -41,18 +41,20 @@ class PropertyOffer(models.Model):
             record.validity = (record.date_deadline - record.create_date.date()).days
 
     def action_accept_offer(self):
-        if self.property_id.partner_id:
-            raise UserError('Only one offer can be accepted')
-        self.status = 'accepted'
-        self.property_id.selling_price = self.price
-        self.property_id.partner_id = self.partner_id
-        self.property_id.state = 'offer_accepted'
+        for record in self:
+            if record.property_id.partner_id:
+                raise UserError('Only one offer can be accepted')
+            record.status = 'accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.partner_id = record.partner_id
+            record.property_id.state = 'offer_accepted'
 
     def action_reject_offer(self):
-        if self.status == 'accepted':
-            self.property_id.selling_price = 0
-            self.property_id.partner_id = ''
-        self.status = 'refused'
+        for record in self:
+            if record.status == 'accepted':
+                record.property_id.selling_price = 0
+                record.property_id.partner_id = ''
+            record.status = 'refused'
 
     def unlink(self):
         for record in self:

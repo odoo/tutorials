@@ -60,7 +60,7 @@ class EstateProperty(models.Model):
         string='Offers')
 
     total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')
-    best_offer_price = fields.Integer(string='Best Offer', default=0, compute='_compute_best_offer_price')
+    best_offer_price = fields.Float(string='Best Offer', default=0, compute='_compute_best_offer_price')
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
@@ -82,14 +82,16 @@ class EstateProperty(models.Model):
             self.garden_orientation = ''
 
     def action_set_sold_property(self):
-        if self.state == 'canceled':
-            raise UserError('Canceled property cannot be sold')
-        self.state = 'sold'
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError('Canceled property cannot be sold')
+            record.state = 'sold'
 
     def action_set_cancel_property(self):
-        if self.state == 'sold':
-            raise UserError('sold property cannot be Canceled')
-        self.state = 'canceled'
+        for record in self:
+            if record.state == 'sold':
+                raise UserError('sold property cannot be Canceled')
+            record.state = 'canceled'
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
