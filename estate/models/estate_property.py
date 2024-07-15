@@ -21,7 +21,7 @@ class propertiesPlan(models.Model):
     garage = fields.Boolean("Garage")
     garden = fields.Boolean("Garden")
     garden_area = fields.Integer("Garden Area (sqm)")
-    buyer = fields.Char("Buyer", copy=False)
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False, readonly=True)
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float("Best Price", compute="_compute_best_price")
     sales_person = fields.Many2one(

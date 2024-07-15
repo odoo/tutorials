@@ -43,25 +43,25 @@ class propertyOffer(models.Model):
             record.validity = relativedelta(record.date_deadline, current_date).days
 
     def action_accepted(self):
-        if not self.property_id.buyer:
+        if not self.property_id.buyer_id:
             if self.price < self.property_id.expected_price * 0.9:
                 raise ValidationError("Selling Price is too Low")
             self.status = 'accepted'
             self.property_id.selling_price = self.price
-            self.property_id.buyer = self.partner_id.name
+            self.property_id.buyer_id = self.partner_id
             self.property_id.state = 'offer_accepted'
         else:
             raise UserError("Offer has been already Accepted")
 
     def action_refused(self):
-        if self.property_id.buyer == self.partner_id.name:
-            self.property_id.buyer = ''
+        if self.property_id.buyer_id == self.partner_id:
+            self.property_id.buyer_id = ''
             self.property_id.selling_price = 0
         self.status = 'refused'
 
     def unlink(self):
         for record in self:
             if record.status == 'accepted':
-                record.property_id.buyer = ''
+                record.property_id.buyer_id = ''
                 record.property_id.selling_price = 0
         return super().unlink()

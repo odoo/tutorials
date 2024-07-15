@@ -72,7 +72,7 @@
                         </page>
                         <page string="Other Info">
                             <group style="width:300px">
-                                <field name="buyer"/>
+                                <field name="buyer_id"/>
                                 <field name="sales_person"/>
                             </group>
                         </page>
