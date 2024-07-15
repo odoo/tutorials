@@ -39,8 +39,8 @@ class EstateProperty(models.Model):
         inverse_name="property_id",
         string="Property offer"
     )
-    users = fields.Char(string='buyer')
-    seller_id = fields.Many2one('res.partner', string='seller')
+    seller_id = fields.Many2one('res.users', string="Sales person")
+    buyer_id = fields.Many2one('res.partner', string='buyer')
     tag_id = fields.Many2many("estate.property.tag", string="Tags")
     total = fields.Float(compute="_compute_total", string="total")
     count = fields.Float(compute="_compute_best_price", default=0)

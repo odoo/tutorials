@@ -41,18 +41,18 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.deadline - fields.datetime.now().date()).days
 
     def action_accept(self):
-        if not self.property_id.users:
+        if not self.property_id.buyer_id:
             self.status = 'accepted'
             self.property_id.selling_price = self.price
-            self.property_id.users = self.partner_id.name
+            self.property_id.buyer_id = self.partner_id
             self.property_id.state = "offer_accepted"
         else:
             raise UserError("Offer has been already Accepted")
         return True
 
     def action_refuse(self):
-        if self.property_id.users == self.partner_id.name:
-            self.property_id.users = ''
+        if self.property_id.buyer_id == self.partner_id:
+            self.property_id.buyer_id = ''
             self.property_id.selling_price = 0
         self.status = 'refused'
         return True

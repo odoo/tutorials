@@ -26,7 +26,7 @@
                 <field name="state"/>
                 <field name="property_type_id"/>
                 <field name="seller_id"/>
-                <field name="users"/>
+                <field name="buyer_id"/>
             </tree>
         </field>
     </record>
@@ -80,7 +80,7 @@
                             <page string="Other Info">
                                 <group>
                                     <field name="state"/>
-                                    <field name="users"/>
+                                    <field name="buyer_id"/>
                                     <field name="seller_id"/>
                                 </group>
                             </page>
@@ -111,7 +111,7 @@
                 <field name="garden_orientation"/>
                 <field name="state"/>
                 <field name="seller_id"/>
-                <field name="users"/>
+                <field name="buyer_id"/>
                 <filter name="available" string="Available" domain="[('state', '!=', 'sold'), ('state', '!=', 'canceled')]"/>
                 <filter string="appl fltr" name="applied filter" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
                 <group>
