@@ -9,7 +9,10 @@
                 <page name="estate_properties" string="Properties">
                     <field name="property_ids"/>
                 </page>
+                <page name="estate_properties" string="abc">
+                </page>
             </notebook>
+
         </field>
     </record>
 </odoo>
