@@ -3,7 +3,7 @@
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
     <record id="estate_property_view_tree" model="ir.ui.view">
@@ -12,7 +12,6 @@
         <field name="arch" type="xml">
             <tree string="Properties" decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
-                <field name="description"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
@@ -21,7 +20,7 @@
                 <field name="date_availability" optional="hide"/>
                 <field name="state"/>
                 <field name="property_type_id"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="total" />
                 <field name="best_price"/>
             </tree>
@@ -103,6 +102,46 @@
                     <filter string="Postcode" name="provider" context="{'group_by':'postcode', 'residual_visible':True}"/>
                 </group>
             </search>
+        </field>
+    </record>
+
+    <record id="badge_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+
+            <kanban default_group_by = 'property_type_id' groups_draggable='False' >
+                <field name="state"/>
+                <field name="property_type_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click">
+                            <div class="row">
+                                <div >
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
+                                </div>
+                                <div >
+                                    <label for="expected_price">Expected Price : </label>
+                                    <field name="expected_price"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_received'">
+                                    <label for="best_price">Best Offer : </label>
+                                    <field name="best_price" />
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_accepted'">
+                                    <label for="selling_price">Selling Price : </label>
+                                    <field name="selling_price" />
+                                </div>
+                                <div>
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>
