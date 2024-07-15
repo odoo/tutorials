@@ -73,7 +73,6 @@
                         </page>
                     </notebook>
                 </sheet>
-                            <div t-if="record.state.raw_value == 'accepted'">
             </form>
         </field>
     </record>
@@ -132,8 +131,7 @@
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,kanban,form</field>
-        <field name="view_id" ref="view_estate_property_kanban"/>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_available':True}</field>
     </record>
 </odoo>
