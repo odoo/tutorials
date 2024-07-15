@@ -102,7 +102,7 @@ class estate(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise exceptions.UserError(
+                raise UserError(
                     "Cannot sell a property that is already cancelled!"
                 )
             record.state = "sold"
