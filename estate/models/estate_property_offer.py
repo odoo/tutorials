@@ -47,6 +47,7 @@ class EstatePropertyOffer(models.Model):
             self.status = "accepted"
             self.property_id.selling_price = self.price
             self.property_id.buyer_id = self.partner_id
+            self.property_id.state = "offer_accepted"
 
     def action_cancel(self):
         if self.status == "accepted":
