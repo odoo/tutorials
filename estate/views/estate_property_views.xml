@@ -3,7 +3,7 @@
     <record id="action_estate_properties" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_available': 1}</field>
     </record>
 
@@ -50,6 +50,7 @@
                     <separator/>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field string="Property Type" name="property_type_id" options="{'no_create': True, 'no_create_edit': True}"/>
                             <field name="postcode"/>
                             <field string="Available From" name="date_availability"/>
@@ -108,6 +109,33 @@
                     <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
+        </field>
+    </record>
+
+    <record id="estate_model_view_kanban" model="ir.ui.view">
+        <field name="name">estate.model.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" groups_draggable="False" records_draggable="False">
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <h2><field name="name"/></h2>
+                            <div>
+                                <span> Expected price: </span><field string="Expected price" name="expected_price"/>
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer received'">
+                                <span> Best Offer: </span><field name="best_price"/>
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer accepted'">
+                                <span> Selling price: </span><field name="selling_price"/>
+                            </div>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>
