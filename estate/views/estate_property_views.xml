@@ -3,7 +3,7 @@
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">estate property</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
     <record id="estate_property_view_tree" model="ir.ui.view">
@@ -99,6 +99,39 @@
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
+        </field>
+    </record>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanabn</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+        <kanban default_group_by="property_type_id" groups_draggable="False" records_draggable="False">
+            <field name="state"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                       <div>
+                                <strong><field name="name"/></strong>
+                        </div>
+                        <div>
+                            <span>expected price : </span>
+                            <field name="expected_price"/>
+                        </div>
+                        <div t-if="record.state.raw_value == 'offer_received'">
+                            <span>Best price : </span>
+                            <field name="best_price" string="Best Price"/>
+                        </div>
+                        <div t-if="record.state.raw_value == 'sold'">
+                            <span>Selling Price : </span>
+                            <field name="selling_price" string="Selling Price"/>
+                        </div>
+                        <div>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
         </field>
     </record>
 </odoo>

@@ -12,7 +12,6 @@
                 <page name="estate_properties" string="abc">
                 </page>
             </notebook>
-
         </field>
     </record>
 </odoo>
