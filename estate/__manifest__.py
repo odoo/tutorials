@@ -16,10 +16,12 @@
         'views/estate_property_type_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
+        'views/res_config_settings_views.xml'
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
     ],
+    "images": ["static/description/new.png"],
     'application': True,
     'license': 'AGPL-3',
 }

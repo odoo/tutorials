@@ -67,8 +67,8 @@
         <field name="arch" type="xml">
            <form string="property">
             <header>
-                <button name="action_set_sold" string="Sold" type="object" class="oe_highlight_button" invisible="state in ['sold','cancelled']"/>
-                <button name="action_set_cancelled" string="Cancel" type="object" class="oe_highlight_button" invisible="state in ['sold','cancelled']" />
+                <button name="action_set_sold" string="Sold" type="object" class="oe_highlight_button" invisible="state in ['sold','cancelled'] or not can_be_sold" />
+                <button name="action_set_cancelled" string="Cancel" type="object" class="oe_highlight_button" invisible="state in ['sold','cancelled']"/>
                 <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
             </header>
                 <sheet>
@@ -79,7 +79,8 @@
                     <group>
                         <group>
                             <field name="state"/>
-                            <field name="property_type_id"/>
+                            <field name="can_be_sold"/>
+                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>

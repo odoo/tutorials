@@ -42,6 +42,15 @@ class EstateProperty(models.Model):
 
     total_area = fields.Float(compute="_compute_total")
     best_price = fields.Integer(compute="_compute_highest")
+    can_be_sold = fields.Boolean(compute="_compute_can_be_sold", string="can be sold    ")
+
+    @api.depends("state")
+    def _compute_can_be_sold(self):
+        for record in self:
+            record.can_be_sold = (
+                self.env["ir.config_parameter"].get_param("eatate.sold")
+                == "True"
+            )
 
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):
