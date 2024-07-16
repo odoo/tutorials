@@ -64,7 +64,7 @@
             <form string="Estate Property">
                 <header>
                     <button name="action_cancel" string="Cancel" type="object" class="oe_highlight" invisible="state in ['sold','cancelled']"/>
-                    <button name="action_sold" string="Sold" type="object" class="oe_highlight" invisible="state in ['sold','cancelled']"/>
+                    <button name="action_sold" string="Sold" type="object" class="oe_highlight" invisible="state in ['sold','cancelled'] or not can_be_sold"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
                 <sheet>
@@ -73,6 +73,7 @@
                     </h1>
                     <group>
                         <field name="state"/>
+                        <field name="can_be_sold"/>
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <field name="property_type_id" options="{'no_create': true, 'no_create_edit': true}"/>
                     </group>

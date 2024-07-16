@@ -66,6 +66,15 @@ class estate(models.Model):
     )
     total_area = fields.Integer(compute="_compute_totalarea")
     best_price = fields.Integer("Best Offer", compute="_compute_best_price")
+    can_be_sold = fields.Boolean("Can be Sold", compute="_compute_can_be_sold")
+
+    @api.depends("state")
+    def _compute_can_be_sold(self):
+        for record in self:
+            record.can_be_sold = (
+                self.env["ir.config_parameter"].get_param("estate.property_sold")
+                == "True"
+            )
 
     @api.depends("living_area", "garden_area")
     def _compute_totalarea(self):
@@ -102,9 +111,7 @@ class estate(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError(
-                    "Cannot sell a property that is already cancelled!"
-                )
+                raise UserError("Cannot sell a property that is already cancelled!")
             record.state = "sold"
 
     _sql_constraints = [
