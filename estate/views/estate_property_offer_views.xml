@@ -9,6 +9,8 @@
                 <field name="status"/>
                 <field name="partner_id"/>
                 <field name="property_id"/>
+                <field name="create_date"/>
+
             </tree>
         </field>
     </record>

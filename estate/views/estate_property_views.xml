@@ -39,6 +39,7 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -56,6 +57,7 @@
                                 <field name="property_type_id"/>
                                 <field name="buyer_id"/>
                                 <field name="salesperson_id"/>
+                                <field name="total_area"/>
                             </group>
 
                         </page>
