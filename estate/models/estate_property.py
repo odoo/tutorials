@@ -103,3 +103,11 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'canceled']:
                 raise UserError('You cannot delete a property that is not in "New" or "Canceled" state.')
+
+    configsold = fields.Boolean(string="Sold Config", compute='_compute_action_sold')
+
+    @api.depends('state')
+    def _compute_action_sold(self):
+        canbesold = self.env['ir.config_parameter'].sudo().get_param('estate.sold')
+        for record in self:
+            record.configsold = canbesold == 'True'

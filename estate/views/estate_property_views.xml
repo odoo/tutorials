@@ -28,8 +28,8 @@
         <field name="arch" type="xml">
             <form string="properties">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" invisible="state == 'sold'"/>
-                    <button name="action_cancel" type="object" string="Cancel" invisible="state == 'sold'"/>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight" invisible="state in ['sold', 'cancel'] or not configsold"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold', 'cancel']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <sheet>
@@ -40,6 +40,7 @@
                     <group>
                         <group>
                             <group>
+                                <field name="configsold" invisible="True"/>
                                 <field name="property_type_id" options="{'no_create': true, 'no_open': true}"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
