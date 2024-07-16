@@ -52,6 +52,7 @@ class propertiesPlan(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
+    canBeSold = fields.Boolean(compute="_compute_sold", string="CanBeSold")
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected Price must be Positive'),
@@ -95,6 +96,12 @@ class propertiesPlan(models.Model):
             properties = self.env['estate.property'].search(domain)
             if record in properties:
                 raise ValidationError("Only New and Canceled Properties can be Deleted.")
+
+    @api.depends('state')
+    def _compute_sold(self):
+        sold_para = self.env['ir.config_parameter'].sudo().get_param('estate.be_sold')
+        for record in self:
+            record.canBeSold = sold_para == 'True'
 
     def action_mark_sold(self):
         if self.state == 'canceled':

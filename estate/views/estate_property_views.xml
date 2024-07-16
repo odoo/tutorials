@@ -30,7 +30,7 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="action_mark_sold" type="object" string="SOLD" invisible="state in ['sold', 'canceled']"/>
+                    <button name="action_mark_sold" type="object" string="SOLD" invisible="state in ['sold', 'canceled'] or not canBeSold"/>
                     <button name="action_mark_canceled" type="object" string="CANCEL" invisible="state in ['sold', 'canceled']"/>
                     <field name="state" widget="statusbar"/>
                 </header>
@@ -44,6 +44,7 @@
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="canBeSold" invisible="true"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
