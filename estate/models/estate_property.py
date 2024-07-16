@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstateModel(models.Model):
@@ -57,3 +58,22 @@ class EstateModel(models.Model):
         else:
             self.garden_area = False
             self.garden_orientation = False
+
+    def action_cancel(self):
+        for record in self:
+            if not record.state == 'sold':
+                record.state = 'canceled'
+            else:
+                raise UserError("You can't cancel a sold house")
+
+        return True
+
+
+    def action_sold(self):
+        for record in self:
+            if not record.state == 'canceled':
+                record.state = 'sold'
+            else:
+                raise UserError("You can't sell a canceled house")
+
+        return True

@@ -10,7 +10,8 @@
                 <field name="partner_id"/>
                 <field name="property_id"/>
                 <field name="create_date"/>
-
+                <button name="action_accept_offer" type="object" icon="fa-check" string="Accept"/>
+                <button name="action_refuse_offer" type="object" icon="fa-times" string="Refuse"/>
             </tree>
         </field>
     </record>
