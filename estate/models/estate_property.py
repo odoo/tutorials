@@ -44,12 +44,26 @@ class EstateProperty(models.Model):
     tag_id = fields.Many2many("estate.property.tag", string="Tags")
     total = fields.Float(compute="_compute_total", string="total")
     count = fields.Float(compute="_compute_best_price", default=0)
+    sell_sell = fields.Boolean(compute="_compute_sell_sell")
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
          'The expected price of a property can not be negative or zero.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)',
          'The selling price of a property can not be negative.')
     ]
+
+    @api.depends("state")
+    def _compute_sell_sell(self):
+        mode_sell = self.env['ir.config_parameter'].sudo().get_param('estate.sell_setting')
+        for record in self:
+            record.sell_sell = mode_sell == 'True'
+
+    def check_sell_button(self):
+        if self.state == "canceled":
+            raise UserError("Please check the required condition")
+        else:
+            self.state = "sold"
+        return True
 
     @api.constrains('expected_price', 'selling_price')
     def check_price(self):

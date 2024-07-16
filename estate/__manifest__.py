@@ -14,6 +14,7 @@
 
     'data': [
         'security/ir.model.access.csv',
+        'views/res_config_settings_view.xml',
         'views/estate_property_tag_view.xml',
         'views/estate_property_offer_view.xml',
         'views/res_users_view.xml',
@@ -21,6 +22,7 @@
         'views/estate_property_type_views.xml',
         'views/estate_menus.xml',
     ],
+    "images": ["static/description/icon.png"],
     'demo': [],
 
     'license': 'AGPL-3'
