@@ -25,7 +25,7 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header> 
-                    <button name="action_sold_property" type="object" string="Sold" invisible="state in ['sold', 'canceled']"/>
+                    <button name="action_sold_property" type="object" string="Sold" invisible="state in ['sold', 'canceled'] or not configSold"/>
                     <button name="action_cancel_property" type="object" string="Cancel" invisible="state in ['sold', 'canceled']"/>
                     <field name="state" widget="statusbar"/>
                 </header>
@@ -37,6 +37,7 @@
                     <separator/>
                     <group>
                         <group>
+                            <field name="configSold" invisible="True"/>
                             <field name="state"/>
                             <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode"/>
@@ -57,8 +58,8 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area" invisible="garden in ['False']"/>
-                                <field name="garden_orientation" invisible="garden in ['False']"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>

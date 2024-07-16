@@ -31,11 +31,18 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers list")
     total_area = fields.Float(string="Total area", compute="_compute_total_area")
     best_offer = fields.Float(string="Best offer", compute="_compute_best_offer")
+    configSold = fields.Boolean(string='Sold Config', compute='_compute_config_sold')
 
     _sql_constraints = [
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive.'),
         ('strictly_positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly postive.'),
     ]
+
+    @api.depends('state')
+    def _compute_config_sold(self):
+        sold_setting = self.env['ir.config_parameter'].sudo().get_param('estate.sold')
+        for record in self:
+            record.configSold = sold_setting == 'True'
 
     @api.constrains('expected_price', 'selling_price')
     def check_quantity(self):

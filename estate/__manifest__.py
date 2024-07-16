@@ -15,11 +15,13 @@
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
-        'views/estate_menus.xml'
+        'views/estate_menus.xml',
+        'views/res_config_settings_views.xml'
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
     ],
+    "image": ["static/descriptions/selfie.png"],
     'installable': True,
     'application': True,
     'license': 'AGPL-3'
