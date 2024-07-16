@@ -1,3 +1,4 @@
+# noinspection PyStatementEffect
 {
     'name': "Estate",
     'version': '1.0',
