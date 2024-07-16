@@ -29,6 +29,8 @@
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
+
                     <group>
                         <group>
                             <field name="postcode"/>
@@ -51,6 +53,15 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="state"/>
+                                <field name="property_type_id"/>
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
+                            </group>
+
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids"/>
                             </group>
 
                         </page>
