@@ -36,7 +36,7 @@
         <field name="arch" type="xml">
             <form string="Estate">
                 <header>
-                    <button name="action_estate_property_sold" type="object" string="Sold" class="oe_highlight" invisible="state in ['sold','cancelled']"/>
+                    <button name="action_estate_property_sold" type="object" string="Sold" class="oe_highlight" invisible="state in ['sold','cancelled'] or not canBeSold"/>
                     <button name="action_estate_property_cancel" type="object" string="Cancel" class="" invisible="state in ['sold','cancelled']"/>
                     <field name="state" widget="statusbar"/>
                 </header>
@@ -50,7 +50,8 @@
                     <separator/>
                     <group>
                         <group>
-                            <field name="state"/>
+                            <field name="state" invisible="1"/>
+                            <field name="canBeSold" invisible="1"/>
                             <field string="Property Type" name="property_type_id" options="{'no_create': True, 'no_create_edit': True}"/>
                             <field name="postcode"/>
                             <field string="Available From" name="date_availability"/>

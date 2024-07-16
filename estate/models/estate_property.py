@@ -43,6 +43,9 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area")
     best_price = fields.Integer(compute="_compute_max_price", string="Best Price")
 
+    # Using for invisiblity of sold button
+    canBeSold = fields.Boolean(compute="_compute_sold_value", string="canbesold")
+
     # sql constraints
     _sql_constraints = [('expected_price_positive', 'CHECK(expected_price > 0)', "The Expected Price cannot be negative"), ('selling_price_positive', 'CHECK(selling_price >= 0)', "The Selling Price cannot be negative")]
 
@@ -99,3 +102,10 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'offer accepted' or record.state == 'offer received' or record.state == 'sold':
                 raise UserError("You can't delete the property in this state")
+
+    # Setting file for sold
+    @api.depends('state')
+    def _compute_sold_value(self):
+        sold_value = self.env['ir.config_parameter'].sudo().get_param('estate.sold')
+        for record in self:
+            record.canBeSold = sold_value == 'True'
