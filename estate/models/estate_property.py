@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateModel(models.Model):
@@ -39,6 +39,11 @@ class EstateModel(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
     total_area = fields.Float(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price')
+
+    _sql_constraints = [
+        ('expected_price_positive', 'CHECK (expected_price > 0)', 'Expected price must be positive'),
+        ('selling_price_positive', 'CHECK (selling_price >= 0)', 'Selling price must be positive'),
+    ]
 
     @api.depends('garden_area')
     @api.depends('living_area')
@@ -80,3 +85,10 @@ class EstateModel(models.Model):
                 raise UserError("You can't sell a canceled house")
 
         return True
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price < 0.9*record.expected_price:
+                raise ValidationError('The selling price cannot be lower than 90% of the expected price')
+
