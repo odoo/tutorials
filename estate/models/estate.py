@@ -1,0 +1,84 @@
+from odoo import api, fields, models
+from odoo.exceptions import ValidationError
+
+class PartnerModel(models.Model):
+    _inherit = "res.partner"
+    property_ids = fields.One2many('estate.property', 'buyer')
+
+class UserModel(models.Model):
+    _inherit = "res.users"
+    property_ids = fields.One2many('estate.property', 'seller')
+
+
+class EstateModel(models.Model):
+    _name = "estate.property"
+    _description = "Real estate properties"
+
+    name = fields.Char(required=True)
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    property_type = fields.Many2one('estate.property.type', string='Property Type')
+
+    seller = fields.Many2one('res.users',
+                             string='Salesman')
+    buyer = fields.Many2one('res.partner',
+                            string='Buyer')
+
+    description = fields.Text()
+    postcode = fields.Char()
+    date_availability = fields.Datetime(default=fields.Date.add(fields.Date.today(), months=3),
+                                        copy=False)
+    expected_price = fields.Float(required=True)
+    best_price = fields.Integer(readonly=True, copy=False, compute='_compute_best_price')
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer(string='Living Area (sqm)')
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer(string='Garden Area (sqm)')
+    garden_orientation = fields.Selection(string='Garden Orientation',
+                                          selection=[('north', 'North'),
+                                                     ('east', 'East'),
+                                                     ('west', 'West'),
+                                                     ('south', 'South')])
+    state = fields.Selection(selection=[('new', 'New'),
+                                        ('received', 'Offer Received'),
+                                        ('accepted', 'Offer Accepted'),
+                                        ('sold', 'Sold'),
+                                        ('canceled', 'Canceled')],
+                             default='new')
+    total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')
+    active = fields.Boolean(default=True)
+
+    _sql_constraints = [('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive.'),
+                        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.')]
+
+    @api.depends('garden_area', 'living_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends('offer_ids')
+    def _compute_best_price(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_price = 0
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = 'north'
+            else:
+                record.garden_area = 0
+                record.garden_orientation = ''
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price <= (0.9 * record.expected_price):
+                raise ValidationError('The selling price cannot be lower than 90% of the expected price.')

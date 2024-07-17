@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="estate_property_form_view" model="ir.ui.view">
+    <field name="name">estate.property.form</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+      <form>
+	<sheet>
+	  <h1><field name="name"/></h1>
+	  <field name="tag_ids" widget="many2many_tags"/>
+	  <group>
+	    <group>
+	      <field name="property_type"/>
+	      <field name="postcode"/>
+	      <field name="date_availability"/>
+	    </group>
+	    <group>
+	      <field name="expected_price"/>
+	      <field name="best_price"/>
+	      <field name="selling_price"/>
+	    </group>
+	  </group>
+	  <notebook>
+	    <page string="Description">
+	      <group>
+		<field name="description"/>
+		<field name="bedrooms"/>
+		<field name="living_area"/>
+		<field name="facades"/>
+		<field name="garage"/>
+		<field name="garden"/>
+		<field name="garden_area"/>
+		<field name="garden_orientation"/>
+		<field name="total_area"/>
+	      </group>
+	    </page>
+	    <page string="Offers">
+	      <field name="offer_ids"/>
+	    </page>
+	    <page string="Other Info">
+	      <group>
+		<field name="buyer"/>
+		<field name="seller"/>
+	      </group>
+	    </page>
+	  </notebook>
+	</sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="estate_property_offer_tree" model="ir.ui.view">
+    <field name="name">estate.property.offer.tree</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+      <tree string="Offers">
+	<field name="price"/>
+	<field name="partner_id"/>
+	<field name="validity"/>
+	<field name="date_deadline"/>
+	<button name="action_accept"
+		type="object"
+		icon="fa-check"/>
+	<button name="action_refuse"
+		type="object"
+		icon="fa-times"/>
+	<field name="status"/>
+      </tree>
+    </field>
+  </record>
+
+
+  <record id="estate_advertisements_action" model="ir.actions.act_window">
+    <field name="name">Real Estate Advertisements</field>
+    <field name="res_model">estate.property</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+</odoo>
