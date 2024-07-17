@@ -17,6 +17,9 @@ class EstateModel(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Properties"
     _order = 'id desc'
+    _sql_constraints = [('check_expected_price', 'CHECK(expected_price > 0)', "The expected price must be positive."),
+                        ('check_selling_price', 'CHECK(selling_price >= 0)', "The selling price must be positive."),
+                        ]
 
     name = fields.Char(required=True)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
@@ -57,9 +60,11 @@ class EstateModel(models.Model):
     total_area = fields.Integer(string="Total Area (sqm)", compute='_compute_total_area')
     active = fields.Boolean(default=True)
 
-    _sql_constraints = [('check_expected_price', 'CHECK(expected_price > 0)', "The expected price must be positive."),
-                        ('check_selling_price', 'CHECK(selling_price >= 0)', "The selling price must be positive."),
-                        ]
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_offered(self):
+        for record in self:
+            if record.status in ['new', 'canceled']:
+                raise UserError("Cannot delete new or canceled property.")
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):

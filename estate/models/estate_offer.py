@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 class EstateOfferModel(models.Model):
     _name = 'estate.property.offer'
@@ -17,6 +18,15 @@ class EstateOfferModel(models.Model):
                                        related='property_id.property_type_id')
     validity = fields.Integer(default=7, string="Validity (days)")
     date_deadline = fields.Date(compute='_compute_deadline', inverse='_inverse_deadline')
+
+    @api.model
+    def create(self, vals):
+        current_property = self.env['estate.property'].browse(vals['property_id'])
+        if current_property.offer_ids and vals['price'] < max(current_property.offer_ids.mapped('price')):
+            raise UserError("The new offer cannot have a price lower than an existing offer.")
+        else:
+            current_property.status = 'received'
+        return super().create(vals)
 
     @api.depends('validity')
     def _compute_deadline(self):
