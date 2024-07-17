@@ -23,6 +23,8 @@
     ],
     # # data files containing optionally loaded demonstration data
     'demo': [
+        'data/template/estate.property.type.csv',
+        'demo/estate.property.xml',
     ],
     'license': 'AGPL-3',
     'application': True
