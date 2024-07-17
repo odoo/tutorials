@@ -3,7 +3,7 @@
   <menuitem id="estate_menu_root" name="Real Estate">
     <menuitem id="estate_advertisements_menu"
 	      name="Advertisements"
-	      action="estate_advertisements_action"/>
+	      action="estate_action"/>
     <menuitem id="estate_settings_menu" name="Settings">
       <menuitem id="estate_types_menu_action"
 		name="Property Types"

@@ -13,6 +13,8 @@ class EstateOfferModel(models.Model):
                                          ],
                               copy=False)
     property_id = fields.Many2one('estate.property')
+    property_type_id = fields.Many2one('estate.property.type',
+                                       related='property_id.property_type_id')
     validity = fields.Integer(default=7, string="Validity (days)")
     date_deadline = fields.Date(compute='_compute_deadline', inverse='_inverse_deadline')
 
@@ -30,6 +32,7 @@ class EstateOfferModel(models.Model):
     def action_accept(self):
         for record in self:
             record.status = 'accepted'
+            record.property_id.status = 'sold'
             record.property_id.buyer = record.partner_id
             record.property_id.seller = self.env.user
             record.property_id.selling_price = record.price

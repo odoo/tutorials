@@ -5,6 +5,14 @@
     <field name="model">estate.property.type</field>
     <field name="arch" type="xml">
       <form>
+	<header>
+	  <button name="%(estate_property_offer_action)d"
+		  type="action"
+		  title='Offers'>
+	    <field name="offer_count"/>
+	    <p>Offer(s)</p>
+	  </button>
+	</header>
 	<sheet>
 	  <h1><field name="name"/></h1>
 	  <notebook>
@@ -14,6 +22,28 @@
 	  </notebook>
 	</sheet>
       </form>
+    </field>
+  </record>
+
+  <record id="estate_property_type_tree" model="ir.ui.view">
+    <field name="name">estate.property.type.tree</field>
+    <field name="model">estate.property.type</field>
+    <field name="arch" type="xml">
+      <tree string="Property Types">
+        <field name="sequence" widget="handle"/>
+        <field name="name"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="estate_property_tag_tree" model="ir.ui.view">
+    <field name="name">estate.property.tag.tree</field>
+    <field name="model">estate.property.tag</field>
+    <field name="arch" type="xml">
+      <tree string="Property Tags" editable="bottom">
+        <field name="name"/>
+        <field name="color"/>
+      </tree>
     </field>
   </record>
 

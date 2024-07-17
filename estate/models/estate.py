@@ -15,14 +15,13 @@ class UserModel(models.Model):
 
 class EstateModel(models.Model):
     _name = 'estate.property'
-    _description = "Real estate properties"
+    _description = "Real Estate Properties"
     _order = 'id desc'
 
     name = fields.Char(required=True)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
-    property_type = fields.Many2one('estate.property.type', string="Property Type")
-
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     seller = fields.Many2one('res.users',
                              string="Salesman")
     buyer = fields.Many2one('res.partner',
@@ -59,7 +58,7 @@ class EstateModel(models.Model):
     active = fields.Boolean(default=True)
 
     _sql_constraints = [('check_expected_price', 'CHECK(expected_price > 0)', "The expected price must be positive."),
-                        ('check_selling_price', 'CHECK(selling_price > 0)', "The selling price must be positive."),
+                        ('check_selling_price', 'CHECK(selling_price >= 0)', "The selling price must be positive."),
                         ]
 
     @api.depends('garden_area', 'living_area')
@@ -88,7 +87,7 @@ class EstateModel(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
-            if record.selling_price <= (0.9 * record.expected_price):
+            if record.buyer and record.selling_price <= (0.9 * record.expected_price):
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
     def action_sell_property(self):
