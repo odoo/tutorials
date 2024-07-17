@@ -8,6 +8,7 @@
         'ir.model.access.csv',
         'menus.xml',  # Depends on `actions.xml`
         'real_estate_property_data.xml',
+        'real_estate_property_views.xml',
     ],
     'application': True,
 }
