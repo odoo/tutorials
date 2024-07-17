@@ -67,7 +67,7 @@ class EstateModel(models.Model):
 
     def action_cancel(self):
         for record in self:
-            if not record.state == 'sold':
+            if record.state != 'sold':
                 record.state = 'canceled'
             else:
                 raise UserError(_("You can't cancel a sold house"))
