@@ -13,6 +13,10 @@
         "views/estate_property_tag_views.xml",
         "views/res_config_settings_views.xml",
         "views/estate_menus.xml",
+        "data/estate.property.type.csv",
+    ],
+    "demo": [
+        "demo/demo_data.xml",
     ],
     "images": ["static/description/deal.png"],
     "installable": True,
