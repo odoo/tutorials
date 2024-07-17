@@ -73,6 +73,11 @@ class EstateModel(models.Model):
             if record.selling_price < expected_minimum_price:
                 raise exceptions.ValidationError("This selling price is too low")
 
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_property(self):
+        if any(record.state == 'new' or record.state == 'canceled' for record in self):
+            raise exceptions.UserError("Cannot delete a new or canceled property")
+
     def cancel(self):
         if self.state == 'sold':
             raise exceptions.UserError("Cannot cancel a sold property")

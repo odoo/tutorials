@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 
 class EstateOfferModel(models.Model):
@@ -30,6 +30,14 @@ class EstateOfferModel(models.Model):
             record.date_deadline = fields.Date.add(
                 record.create_date.date() if record.create_date else fields.Date.today(),
                 days=record.validity)
+
+    @api.model
+    def create(self, vals):
+        record = self.env['estate.property'].browse(vals['property_id'])
+        if vals['price'] < record.best_price:
+            raise exceptions.ValidationError("There is a better offer")
+        record.state = 'offer_received'
+        return super().create(vals)
 
     def _inverse_deadline(self):
         for record in self:
