@@ -4,6 +4,8 @@ from odoo import models, fields, api, exceptions
 class EstateModel(models.Model):
     _name = 'estate.property'
     _description = "Real estate model"
+    _order = 'id desc'
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()

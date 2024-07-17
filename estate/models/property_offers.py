@@ -4,6 +4,7 @@ from odoo import models, fields, api
 class EstateOfferModel(models.Model):
     _name = 'estate.property.offer'
     _description = "Real estate offers"
+    _order = 'price desc'
 
     price = fields.Float()
     partner_ids = fields.Many2one('res.partner', string="Partners")
@@ -16,6 +17,7 @@ class EstateOfferModel(models.Model):
     )
     validity = fields.Integer(default=5)
     date_deadline = fields.Date(compute='_date_deadline_computed', inverse="_inverse_deadline")
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
 
     _sql_constraints = [
         ('positive_price', 'CHECK(price >= 0)',
