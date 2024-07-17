@@ -63,3 +63,13 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             record.status = 'rejected'
         return True
+
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            self.env['estate.property'].browse(val['property_id']).state = 'offer_received'
+            offers = self.env['estate.property'].browse(val['property_id']).offer_ids.mapped('price')
+            max_price = max(offers) if offers else 0
+            if val['price'] <= max_price:
+                raise UserError("Price is too low")
+        return super().create(vals)

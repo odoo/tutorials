@@ -7,6 +7,7 @@
     'application': True,
     'license': 'LGPL-3',
     'data': [
+        'views/inherited_user_view.xml',
         'views/estate_property_type.xml',
         'views/estate_property_tag.xml',
         'views/estate_property_offer_views.xml',
