@@ -3,7 +3,7 @@
     <record id="estate_action" model="ir.actions.act_window">
         <field name="name">Estate</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_availability': True}</field>
     </record>
     <record id="estate_view" model="ir.ui.view">
@@ -22,6 +22,36 @@
                 <field name="state"/>
                 <field name="date_availability" optional="hide"/>
             </tree>
+        </field>
+    </record>
+    <record id="estate_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" groups_draggable="False" records_draggable="False">
+                <field name="expected_price"/>
+                <field name="best_price"/>
+                <field name="selling_price"/>
+                <field name="tag_ids"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <field name="name"/>
+                            <hr/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+
+                            Expected Price: <field name="expected_price"/>
+                            <div t-if="record.state.raw_value != 'new'">
+                                Best Price: <field name="best_price"/>
+                            </div>
+                            <div t-if="record.selling_price.raw_value">
+                                Selling Price: <field name="selling_price"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
     <record id="estate_form" model="ir.ui.view">
