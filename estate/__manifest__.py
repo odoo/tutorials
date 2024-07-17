@@ -13,6 +13,7 @@
     'depends': ["base"],
 
     'data': [
+        'data/estate.property.type.csv',
         'security/ir.model.access.csv',
         'views/res_config_settings_view.xml',
         'views/estate_property_tag_view.xml',
@@ -23,7 +24,9 @@
         'views/estate_menus.xml',
     ],
     "images": ["static/description/icon.png"],
-    'demo': [],
+    'demo': [
+        'demo/demo_data.xml',
+    ],
 
     'license': 'AGPL-3'
 }
