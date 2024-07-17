@@ -11,6 +11,7 @@
     """,
     'images': ['static/description/thumbnail.png'],
     'data': [
+        'data/templates/estate.property.type.csv',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
@@ -20,6 +21,8 @@
         'views/res_config_settings_views.xml',
         'views/estate_menus.xml',
     ],
-    'demo': [],
+    'demo': [
+        'demo/demo_data.xml',
+    ],
     'license': 'AGPL-3',
 }
