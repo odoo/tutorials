@@ -1,7 +1,7 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
