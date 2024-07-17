@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_estate_property_type_model" model="ir.actions.act_window">
+        <field name="name">Estate Property Type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="property_type_residential" model="estate.property.type">
+        <field name="name">Residential</field>
+        <field name="sequence">1</field>
+    </record>
+    <record id="property_type_commercial" model="estate.property.type">
+        <field name="name">Commercial</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="property_type_industrial" model="estate.property.type">
+        <field name="name">Industrial</field>
+        <field name="sequence">3</field>
+    </record>
+    <record id="property_type_land" model="estate.property.type">
+        <field name="name">Land</field>
+        <field name="sequence">4</field>
+    </record>
+</odoo>
