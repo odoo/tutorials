@@ -17,10 +17,12 @@
         'views/res_users_views.xml',
         'views/res_config_settings_views.xml',
         'views/estate_menus.xml',
+        'data/estate.property.type.csv'
 
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
+        'demo/estate_property_demo.xml',
     ],
     'images': ["static/description/realstate.png"],
     'installable': True,
