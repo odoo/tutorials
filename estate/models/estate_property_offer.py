@@ -20,15 +20,8 @@ class estatepropertyoffer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer("Validity(7 Days)", default=7)
-    date_deadline = fields.Date(
-        "Deadline", compute="_compute_Validitydate", inverse="_inverse_datedeadline"
-    )
-    property_type_id = fields.Many2one(
-        comodel_name="estate.property.type",
-        related="property_id.property_type_id",
-        string="Offers",
-        store="True",
-    )
+    date_deadline = fields.Date("Deadline", compute="_compute_Validitydate", inverse="_inverse_datedeadline")
+    property_type_id = fields.Many2one(related="property_id.property_type_id",string="Offers",store="True")
 
     @api.depends("validity")
     def _compute_Validitydate(self):
@@ -56,11 +49,7 @@ class estatepropertyoffer(models.Model):
         self.status = "refused"
 
     _sql_constraints = [
-        (
-            "check_offer_price",
-            "CHECK(price > 0)",
-            "Offer Price must be positive",
-        ),
+        ("check_offer_price","CHECK(price > 0)","Offer Price must be positive"),
     ]
 
     @api.model
@@ -69,8 +58,6 @@ class estatepropertyoffer(models.Model):
         if property_record.offer_ids:
             max_price = max(property_record.offer_ids.mapped("price"))
             if vals["price"] < max_price:
-                raise UserError(
-                    "An offer with a lower amount than an existing offer is not allowed."
-                )
+                raise UserError("An offer with a lower amount than an existing offer is not allowed.")
         property_record.state = "offer_received"
         return super().create(vals)

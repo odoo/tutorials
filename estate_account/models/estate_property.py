@@ -8,9 +8,7 @@ class estateproperty(models.Model):
     def action_sold(self):
         for record in self:
             if not record.buyer_id:
-                raise UserError(
-                    "The property must have a buyer before creating an invoice."
-                )
+                raise UserError("The property must have a buyer before creating an invoice.")
             self.env["account.move"].create(
                 {
                     "move_type": "out_invoice",

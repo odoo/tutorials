@@ -43,7 +43,10 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state in ['offer_accepted']" decoration-muted="state in ['sold']">
+            <tree string="Channel" 
+                decoration-success="state in ['offer_received', 'offer_accepted']" 
+                decoration-bf="state in ['offer_accepted']" 
+                decoration-muted="state in ['sold']">
                 <field name="name" string="Title"/>
                 <field name="property_type_id" string="Property Type" options="{'color_field': 'color'}"/>
                 <field name="tag_ids" widget="many2many_tags"/>
