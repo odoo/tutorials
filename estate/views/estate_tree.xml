@@ -5,11 +5,17 @@
     <field name="model">estate.property</field>
     <field name="arch" type="xml">
       <form>
+	<header>
+	  <button name="action_sell_property" type="object" string="SOLD"/>
+	  <button name="action_cancel_property" type="object" string="CANCEL"/>
+	  <field name="status" widget="statusbar" statusbar_visible="new,received,accepted,sold"/>
+	</header>
 	<sheet>
 	  <h1><field name="name"/></h1>
 	  <field name="tag_ids" widget="many2many_tags"/>
 	  <group>
 	    <group>
+	      <field name="status"/>
 	      <field name="property_type"/>
 	      <field name="postcode"/>
 	      <field name="date_availability"/>
@@ -75,4 +81,17 @@
     <field name="res_model">estate.property</field>
     <field name="view_mode">tree,form</field>
   </record>
+
+  <record id="estate_advertisements_tree" model="ir.ui.view">
+    <field name="name">estate.property.tree</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+      <tree string="Properties">
+	<field name="name"/>
+	<field name="expected_price"/>
+	<field name="status"/>
+      </tree>
+    </field>
+  </record>
+
 </odoo>

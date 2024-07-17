@@ -14,8 +14,8 @@
 	<filter name="property_availability"
 		string="Available"
 		domain="['|',
-			('state', '=', 'new'),
-			('state', '=', 'received')]"/>
+			('status', '=', 'new'),
+			('status', '=', 'received')]"/>
 	<filter name="property_postcode"
 		string="Postcode"
 		domain="[]"

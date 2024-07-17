@@ -1,19 +1,20 @@
 from odoo import api, fields, models
 
 class EstateOfferModel(models.Model):
-    _name = "estate.property.offer"
+    _name = 'estate.property.offer'
     _description = "Real estate property offers"
+    _order = 'price desc'
+    _sql_constraints = [('check_price', 'CHECK(price > 0)', "The offer price must be positive.")]
 
     price = fields.Float()
     partner_id = fields.Many2one('res.partner', required=True)
-    status = fields.Selection(selection=[('accepted', 'Accepted'),
-                                         ('refused', 'Refused')],
+    status = fields.Selection(selection=[('accepted', "Accepted"),
+                                         ('refused', "Refused"),
+                                         ],
                               copy=False)
     property_id = fields.Many2one('estate.property')
-    validity = fields.Integer(default=7, string='Validity (days)')
+    validity = fields.Integer(default=7, string="Validity (days)")
     date_deadline = fields.Date(compute='_compute_deadline', inverse='_inverse_deadline')
-
-    _sql_constraints = [('check_price', 'CHECK(price > 0)', 'The offer price must be positive.')]
 
     @api.depends('validity')
     def _compute_deadline(self):
