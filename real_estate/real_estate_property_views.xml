@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="real_estate.property_list" model="ir.ui.view">
+        <field name="name">Property List</field>
+        <field name="model">real.estate.property</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="state"/>
+                <field name="type"/>
+                <field name="selling_price"/>
+                <field name="availability_date"/>
+                <field name="floor_area" optional="show"/>
+                <field name="bedrooms" optional="hide"/>
+                <field name="has_garage" optional="hide"/>
+                <field name="has_garden" optional="hide"/>
+                <field name="garden_area" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+</odoo>
