@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from datetime import timedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -9,12 +10,15 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Float(string='Price')
-    status = fields.Selection(string='Status', selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
+    status = fields.Selection(string='Status', selection=[
+        ('accepted', 'Accepted'),
+        ('refused', 'Refused')
+        ], copy=False)
     partner_id = fields.Many2one("res.partner", string='Partner', required=True)
     property_id = fields.Many2one("estate.property", string='Property', required=True)
     validity = fields.Integer(string='Validity', default=7)
     date_deadline = fields.Date(string='Date deadline', compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
-    property_type_id = fields.Many2one('estate.property.type', related="property_id.property_type_id", string="Property Type", store=True)
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type", related="property_id.property_type_id", store=True)
 
     _sql_constraints = [
         ('check_price', 'CHECK(price > 0)',

@@ -1,7 +1,8 @@
-from odoo import api, fields, models
-from odoo.tools.float_utils import float_is_zero
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -21,13 +22,28 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string='Garage')
     garden = fields.Boolean(string='Garden')
     garden_area = fields.Integer(string='Garden Area (sqm)')
-    garden_orientation = fields.Selection(string='Garden Orientation', selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    state = fields.Selection(string='Status', selection=[('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')], copy=False, default='new', required=True, readonly=True)
+    garden_orientation = fields.Selection(
+        string='Garden Orientation',
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ])
+    state = fields.Selection(
+        string='Status',
+        selection=[
+            ('new', 'New'),
+            ('received', 'Offer Received'),
+            ('accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled')
+            ], copy=False, default='new', required=True, readonly=True)
     active = fields.Boolean(string='Active', default=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user or False)
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
-    tag_id = fields.Many2many("estate.property.tag", string="Tags")
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers list")
     total_area = fields.Float(string="Total area", compute="_compute_total_area")
     best_offer = fields.Float(string="Best offer", compute="_compute_best_offer")
@@ -45,7 +61,7 @@ class EstateProperty(models.Model):
             record.configSold = sold_setting == 'True'
 
     @api.constrains('expected_price', 'selling_price')
-    def check_quantity(self):
+    def _check_quantity(self):
         for record in self:
             if record.selling_price < record.expected_price * 0.9 and not float_is_zero(record.selling_price, 2):
                 raise ValidationError("The selling price must be least 90% of the expected price! You must reduce the expected price if you want to accept this offer")

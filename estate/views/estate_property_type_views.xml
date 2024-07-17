@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="action_estate_property_type_view" model="ir.actions.act_window">
+    <record id="action_estate_property_type" model="ir.actions.act_window">
         <field name="name">Properties Type</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
@@ -23,11 +23,11 @@
             <form string="Estate Property Form">
                 <sheet>
                     <div name="button_box" class="oe_button_box">
-                        <button class="oe_stat_button" name="action_smart_button" string="Homes" type="object" invisible="property_count == 0"> 
-                            <field name="property_count" widget="statinfo" string="Properties"/>
+                        <button class="oe_stat_button" name="action_smart_button" type="object" icon="fa-home" invisible="property_count == 0"> 
+                            <field name="property_count" string="Properties" widget="statinfo"/>
                         </button>
-                        <button name="%(estate.action_open_estate_properties_offer)d" type="action" string="View Offers" class="oe_stat_button" icon="fa-money">
-                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        <button class="oe_stat_button" name="%(estate.action_open_estate_properties_offer)d" type="action" icon="fa-money">
+                            <field name="offer_count" string="Offers" widget="statinfo"/>
                         </button>
                     </div>
                     <header>

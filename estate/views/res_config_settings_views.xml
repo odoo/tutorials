@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="base.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//form" position="inside">
-                    <app data-string="ESTATE" string="Estate" name="estate" logo="/estate/static/descriptions/selfie.png">
+                    <app data-string="estate" string="Estate" name="estate" logo="/estate/static/descriptions/selfie.png">
                         <block title="Estate">
                             <setting>
                                 <field name="sold"/>
