@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_config_setting_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.estate</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Estate" string="Estate" name="estate" >
+                    <block title="Property" id="property">
+                        <setting id="property" help="Enable to sell properties">
+                            <field name="sell_property"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_general_configuration" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'estate', 'bin_size': False}</field>
+    </record>
+
+    <menuitem
+        id="menu_config"
+        name="Settings"
+        parent="estate.estate_configuration_menu"
+        sequence="0"
+        action="action_general_configuration"
+        groups="base.group_system"/>
+</odoo>

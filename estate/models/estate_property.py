@@ -61,6 +61,12 @@ class EstateProperty(models.Model):
 
     total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')
     best_offer_price = fields.Float(string='Best Offer', default=0, compute='_compute_best_offer_price')
+    can_be_sold = fields.Boolean(compute='_compute_can_be_sold')
+
+    @api.depends('state')
+    def _compute_can_be_sold(self):
+        for record in self:
+            record.can_be_sold = self.env['ir.config_parameter'].sudo().get_param('estate.sold')
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
