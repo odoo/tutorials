@@ -11,13 +11,17 @@ class estate_offer(models.Model):
     price = fields.Float("Price")
     status = fields.Selection(
         string="status",
-        selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
+        selection=[("accepted", "Accepted"), ("refused", "Refused")],
     )
-    partner_id = fields.Many2one('res.partner', required=True)
-    property_id = fields.Many2one('estate.property', required=True)
+    partner_id = fields.Many2one("res.partner", required=True)
+    property_id = fields.Many2one("estate.property", required=True)
 
     validity = fields.Integer("Validity", default=7)
-    date_deadline = fields.Date("Date Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+    date_deadline = fields.Date(
+        "Date Deadline",
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+    )
 
     @api.depends("validity")
     def _compute_date_deadline(self):
@@ -41,33 +45,32 @@ class estate_offer(models.Model):
         self.property_id.buyer_id = self.partner_id
 
     def action_refuse(self):
-        for record in self:
-            if record.status == "accepted":
-                record.property_id.buyer_id = ""
-                record.property_id.selling_price = 0.0
-            record.status = "refused"
+        if self.property_id.buyer_id == self.partner_id:
+            self.property_id.buyer_id = ""
+            self.property_id.selling_price = 0.0
+        self.status = "refused"
 
     _sql_constraints = [
-        ('offer_price', 'CHECK(price > 0)',
-         'offer price must be strictly positive')
+        ("offer_price", "CHECK(price > 0)", "offer price must be strictly positive")
     ]
 
-    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", string="Offers", stored=True)
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", string="Offers", store=True)
 
     @api.model
     def create(self, vals):
-        property_id = vals.get('property_id')
-        offer_price = vals.get('price')
+        property_id = vals.get("property_id")
+        offer_price = vals.get("price")
 
-        property_record = self.env['estate.property'].browse(property_id)
+        property_record = self.env["estate.property"].browse(property_id)
 
-        existing_offers = self.search([
-            ('property_id', '=', property_id),
-            ('price', '>=', offer_price)
-        ])
+        existing_offers = self.search(
+            [("property_id", "=", property_id), ("price", ">=", offer_price)]
+        )
         if existing_offers:
-            raise UserError('You cannot create an offer with a lower or equal amount than an existing offer.')
+            raise UserError(
+                "You cannot create an offer with a lower or equal amount than an existing offer."
+            )
 
-        property_record.state = 'offer_received'
+        property_record.state = "offer_received"
 
         return super().create(vals)

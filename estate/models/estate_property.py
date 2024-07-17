@@ -24,11 +24,19 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer('garden area')
     garden_orientation = fields.Selection(
         string='Garden direction',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[('north', 'North'),
+                ('south', 'South'),
+                ('east', 'East'),
+                ('west', 'West')
+            ]
     )
     state = fields.Selection(
         string='state',
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
+        selection=[('new', 'New'),
+                ('offer_received', 'Offer Received'),
+                ('offer_accepted', 'Offer Accepted'),
+                ('sold', 'Sold'),
+                ('canceled', 'Canceled')],
         required=True,
         default='new',
         copy=False
@@ -36,7 +44,6 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type",
-        inverse_name="property_ids",
         string="property type"
     )
     salesperson_id = fields.Many2one("res.users", string="Sales person", default=lambda self: self.env.user)
@@ -86,10 +93,8 @@ class EstateProperty(models.Model):
                 record.state = 'sold'
 
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)',
-         'expected price must be strictly positive'),
-         ('cheselling_price', 'CHECK(selling_price > 0)',
-         'selling price must be positive')
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'expected price must be strictly positive'),
+         ('cheselling_price', 'CHECK(selling_price >= 0)', 'selling price must be positive')
     ]
 
     @api.constrains('selling_price', 'expected_price')

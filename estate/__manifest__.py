@@ -13,7 +13,11 @@
         'views/estate_property_tags_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_setting_views.xml',
-        'views/estate_menus.xml'
+        'views/estate_menus.xml',
+        "data/estate.property.type.csv",
+    ],
+    "demo": [
+        "demo/demo_estate_property.xml",
     ],
     'images': ['static/description/estate.png'],
     'application': True,
