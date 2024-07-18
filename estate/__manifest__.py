@@ -3,14 +3,15 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "Ashutosh Yadav",
-    'category': 'Real Estate',
+    'category': 'Real Estate/Brokerage',
     'description': """
     Description text
     """,
     # data files always loaded at installation
     'data': [
-        'security/ir.model.access.csv',
         'data/template/estate.property.type.csv',
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'views/res_users_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
