@@ -41,15 +41,24 @@ class EstateOfferModel(models.Model):
 
     def action_accept(self):
         for record in self:
-            record.status = 'accepted'
-            record.property_id.status = 'sold'
-            record.property_id.buyer = record.partner_id
-            record.property_id.seller = self.env.user
-            record.property_id.selling_price = record.price
+            if record.property_id.status in ['accepted', 'sold']:
+                raise UserError("An offer was already accepted.")
+            else:
+                record.status = 'accepted'
+                record.property_id.status = 'accepted'
+                record.property_id.buyer = record.partner_id
+                record.property_id.seller = self.env.user
+                record.property_id.selling_price = record.price
+            return True
 
     def action_refuse(self):
         for record in self:
+            if record.property_id.status == 'sold':
+                raise UserError("This property was already sold.")
+            if record.status == 'accepted':
+                record.property_id.buyer = None
+                record.property_id.seller = None
+                record.property_id.selling_price = 0
+                record.property_id.status = 'new'
             record.status = 'refused'
-            record.property_id.buyer = None
-            record.property_id.seller = None
-            record.property_id.selling_price = 0
+            return True

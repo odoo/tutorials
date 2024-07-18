@@ -6,8 +6,8 @@ class EstateAccountPropertyModel(models.Model):
     def action_sell_property(self):
         for record in self:
             price = super().selling_price
-            self.env['account.move'].create({'partner_id': record.buyer,
-                                             'move_type': 'customer_invoice',
+            self.env['account.move'].create({'partner_id': record.buyer.id,
+                                             'move_type': 'out_invoice',
                                              'invoice_line_ids': [Command.create({'name': super().name + ' commission',
                                                                                   'quantity': 1,
                                                                                   'price_unit': price * 0.06}),
