@@ -38,8 +38,7 @@ class EstateProperty(models.Model):
         }
 
     _sql_constraints = [
-        ('name_uniq', 'unique(name)',
-        'A tag with the same name and applicability already exists.')
+        ('name_uniq', 'unique(name)', 'A tag with the same name and applicability already exists.')
     ]
 
     property_ids = fields.One2many("estate.property", "property_type_id", string="Property")

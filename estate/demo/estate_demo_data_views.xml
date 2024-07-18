@@ -74,7 +74,7 @@
     <field name="facades">5</field>
     <field name="garage">False</field>
     <field name="offer_ids" eval="[
-        Command.create({
+      Command.create({
             'partner_id': ref('base.res_partner_2'),
             'price': 150
             })

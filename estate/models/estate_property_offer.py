@@ -14,13 +14,7 @@ class EstateProperty(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
-    property_type_id = fields.Many2one('estate.property.type', compute='_compute_property_type_id', store='True')
-
-    @api.depends('property_id')
-    def _compute_property_type_id(self):
-        for record in self:
-            if record.property_id and record.property_id.property_type_id:
-                record.property_type_id = record.property_id.property_type_id
+    property_type_id = fields.Many2one('estate.property.type', related="property_id.property_type_id", store='True')
 
     @api.depends('validity')
     def _compute_date_deadline(self):
@@ -46,14 +40,13 @@ class EstateProperty(models.Model):
             record.status = "refused"
 
     _sql_constraints = [
-        ('check_price', 'CHECK(price >= 0)',
-        'The offers price should be positive')
+        ('check_price', 'CHECK(price >= 0)', 'The offers price should be positive')
     ]
 
     @api.model
     def create(self, vals):
-        Existing_property = self.env['estate.property'].browse(vals['property_id'])
-        if vals['price'] < min(Existing_property.offer_ids.mapped('price'), default=0):
+        existing_property = self.env['estate.property'].browse(vals['property_id'])
+        if vals['price'] < min(existing_property.offer_ids.mapped('price'), default=0):
             raise UserError("offer amount is lower than the existing offer ammount")
-        Existing_property.state = "offer_received"
+        existing_property.state = "offer_received"
         return super().create(vals)

@@ -10,6 +10,5 @@ class EstateProperty(models.Model):
     color = fields.Integer('Color')
 
     _sql_constraints = [
-        ('name_uniq', 'unique(name)',
-        'Already exist.')
+        ('name_uniq', 'unique(name)', 'Already exist.')
      ]
