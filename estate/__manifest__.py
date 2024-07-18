@@ -1,10 +1,11 @@
 {
     "name": "Real Estate",
     "version": "1.0",
-    "category": "Real Estate",
+    "category": "Real Estate/Brokerage",
     "summary": "Module for managing real estate listings and offers",
     "depends": ["base"],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/res_users_views.xml",
         "views/estate_property_views.xml",

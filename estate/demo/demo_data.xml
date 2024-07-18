@@ -17,9 +17,10 @@
         <field name="property_type_id" ref="estate.a"/>
     </record>
     <record id="property_demo_2" model="estate.property">
-        <field name="name">Trailer home</field>
+        <field name="seller_id" ref="base.user_demo"/>
+        <field name="name">Antila</field>
         <field name="state">canceled</field>
-        <field name="description">Home in a trailer park</field>
+        <field name="description">Antila tower</field>
         <field name="postcode">54321</field>
         <field name="date_availability">1970-01-01</field>
         <field name="expected_price">100000</field>

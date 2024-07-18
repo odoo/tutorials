@@ -28,11 +28,7 @@ class EstateProperty(models.Model):
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
-        ],
-        required=True,
-        copy=False,
-        default="new",
-    )
+        ], required=True, copy=False, default="new")
     expected_price = fields.Float("Expected Price", required=True)
     living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer("Facades")
@@ -47,9 +43,7 @@ class EstateProperty(models.Model):
             ("east", "East"),
             ("west", "West"),
             ("select", "Select"),
-        ],
-        default="select",
-    )
+        ], default="select")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     seller_id = fields.Many2one(
@@ -60,26 +54,19 @@ class EstateProperty(models.Model):
     total = fields.Float("Total Area (sqm)", compute="_compute_total")
     best_price = fields.Float("Best Offer", compute="_compute_offer")
     can_be_sold = fields.Boolean("Can be sold", compute="_compute_can_be_sold")
+    company_id = fields.Many2one('res.company', string='Company', required=True,
+        default=lambda self: self.env.company)
 
     _sql_constraints = [
-        (
-            "check_expected_price",
-            "CHECK(expected_price > 0)",
-            "The expected price must be positive",
-        ),
-        (
-            "check_selling_price",
-            "CHECK(selling_price >= 0)",
-            "The selling price must be positive",
-        ),
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be positive"),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive"),
     ]
 
     @api.depends("state")
     def _compute_can_be_sold(self):
         for record in self:
             record.can_be_sold = (
-                self.env["ir.config_parameter"].sudo().get_param("estate.property_sold")
-                == "True"
+                self.env["ir.config_parameter"].sudo().get_param("estate.property_sold") == "True"
             )
 
     @api.depends("living_area", "garden_area")
@@ -106,6 +93,8 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            if not record.buyer_id:
+                raise UserError("cannot sell property without the customer")
             if record.state == "canceled":
                 raise UserError("Canceled properties cannot be sold.")
             else:
