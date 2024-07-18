@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_estate_property_filter" model="ir.ui.view">
+        <field name="name">Estate Property Filter</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_estate_property_type" name="Property Types" parent="estate.menu_estate_config" sequence="10"/>
+    <menuitem id="menu_estate_property_type_list" name="Property Types" parent="menu_estate_property_type" action="action_estate_property_type_list" sequence="10"/>
+
+    <record id="action_estate_property_type_list" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
+
+

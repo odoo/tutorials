@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_action_view" model="ir.actions.act_windows">
+        <field name="name">Estate Property</field>
+        <field name = "res_model">estate.property</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('state', '=', 'new')]</field>
+        <field name="context">{'search_default_state_new': True}</field>
+        <field name="view_id" ref="view_kanban_property"/>   
+    </record>
+</odoo>
+
+

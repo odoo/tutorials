@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <filter name="available" string="Disponíveis" domain="[('state','in',['new','offer_received'])]"/>
+                <separator/>
+                <group string="Group By">
+                    <filter name="group_by_zip" string="Código Postal" context="{'group_by': 'zip'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+</odoo>

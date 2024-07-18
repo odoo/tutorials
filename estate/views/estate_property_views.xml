@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <group>
+                    <field name="price" readonly="1"/> 
+                    <field name="selling_price" attrs="{'readonly': [('type', '=', 'sell')]}"/> 
+                    <field name="availability_date" attrs="{'readonly': True, 'copy': False}"/> 
+                    <field name="selling_price_date" attrs="{'readonly': True, 'copy': False}"/>       
+                </group>
+                <group>
+                    <field name="property_type_id"/>
+                </group>
+                <xpath expr="//sheet" position="inside">
+                    <group>
+                        <field name="offer_ids" widget="one2many_list"/>
+                    </group>
+                </xpath>
+                <group>
+                    <field name="living_area"/>
+                    <field name="garden_area"/>
+                    <field name="total_area" readonly="1"/>
+                    <field name="best_price" readonly="1"/>
+            </group>
+            <footer>
+                <button name="cancel_property" string="Cancel" type="object" class="oe_highlight"/>
+                <button name="set_sold" string="Sold" type="object" class="oe_highlight"/>
+            </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
+

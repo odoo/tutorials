@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="my_module.my_view" model="ir.ui.view">
+        <field name="name">My View</field>
+        <field name="model">my.model</field>
+        <field name="arch" type="xml">
+            <form string="My Form">
+                <field name="name"/>
+                <field name="description"/>
+            </form>
+        </field>
+    </record>
+</odoo>

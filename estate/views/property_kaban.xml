@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_kanban_property" model="ir.ui.view">
+        <field name="name">Property Kanban</field>
+        <field name="model">property.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type" group_create="false" group_edit="false" group_delete="false">
+                <field name="name"/>
+                <field name="expected_price"/>
+                <field name="best_price" attrs="{'invisible': [('offer_ids', '=', False)]}"/>
+                <field name="selling_price" attrs="{'invisible': [('offer_ids.offer_type', '!=', 'accepted')]}" />
+                <field name="tag_ids" widget="many2many_tags"/>
+            </kanban>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property Form">
+                <header>
+                    <button name="action_save" type="object" string="Save"/>
+                </header>
+
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+
+                <header>
+                    <button name="action_sold" string="Sold" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'new')]}" />
+                    <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible': [('state', '!=', 'new')]}" />
+                    <button name="action_draft" string="Draft" type="object" attrs="{'invisible': [('state', '=', 'new')]}" />
+                </header>
+
+                <button name="%(action_estate_property_offer)d" type="action" string="Offers" class="oe_stat_button"/>
+
+                <group string="Garden">
+                    <field name="garden" />
+                    <field name="garden_area" attrs="{'invisible': [('garden', '=', False)]}" />
+                    <field name="garden_orientation" attrs="{'invisible': [('garden', '=', False)]}" />
+                </group>
+                
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                    <group>
+                        <field name="bedrooms"/>
+                        <field name="bathrooms"/>
+                    </group>
+                    <notebook>
+                        <page string="Additional Info">
+                            <group>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <field name="offer_ids" attrs="{'readonly': [('state', 'in', ['offer_accepted', 'sold', 'canceled'])]}" />
+            </form>
+        </field>
+    </record>
+</odoo>

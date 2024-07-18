@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_estate_property_offer_form" model="ir.ui.view">
+        <field name="name">Estate Property Offer Form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property Offer">
+                <header>
+                    <button name="action_accept" string="Accept" type="object" attrs="{'invisible': [('state', '!=', 'sent')]}" />
+                    <button name="action_refuse" string="Refuse" type="object" attrs="{'invisible': [('state', '!=', 'sent')]}" />
+                </header>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_form_view" model="ir.ui.view">
+            <field name="name">estate.property.offer.form.view</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <form string="Property Offer">
+                    <group>
+                        <field name="price"/>
+                        <field name="status"/>
+                        <field name="partner_id"/>
+                    </group>
+                    <group>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
+                    </group>
+                    <footer>
+                        <button name="accept_offer" string="Accept" type="object" icon="fa-check"/>
+                        <button name="refuse_offer" string="Refuse" type="object" icon="fa-times"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+</odoo>
+
