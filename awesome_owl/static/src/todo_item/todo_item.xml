@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.TodoItem">
+        <div t-on-click="toggleTodo" style="padding: 20px; border: 1px solid grey" t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''" >
+            <t t-esc="props.todo.id" /> - <t t-esc="props.todo.description" /> <span t-on-click="removeTodo" class="fa fa-remove"/>
+        </div>
+    </t>
+</templates>
