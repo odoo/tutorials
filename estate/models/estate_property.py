@@ -24,11 +24,22 @@ class EstateProperty(models.Model):
     active = fields.Boolean(string="active on window", default=True)
     garden_orientation = fields.Selection(
         string='garden',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[
+                    ('north', 'North'),
+                   ('south', 'South'),
+                   ('east', 'East'),
+                   ('west', 'West')
+                  ]
     )
     state = fields.Selection(
         string='state',
-        selection=[('new', 'New'), ('offer_recieved', 'Offer recieved'), ('offer_accepted', 'Offer accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')], copy=False, default='new'
+        selection=[
+                   ('new', 'New'),
+                   ('offer_recieved', 'Offer recieved'),
+                   ('offer_accepted', 'Offer accepted'),
+                   ('sold', 'Sold'),
+                   ('canceled', 'Canceled')
+                  ], copy=False, default='new'
     )
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type",
@@ -45,6 +56,7 @@ class EstateProperty(models.Model):
     total = fields.Float(compute="_compute_total", string="total")
     count = fields.Float(compute="_compute_best_price", default=0)
     sell_sell = fields.Boolean(compute="_compute_sell_sell")
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company, string="companies")
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
          'The expected price of a property can not be negative or zero.'),
@@ -96,7 +108,10 @@ class EstateProperty(models.Model):
 
     def action_sold_property(self):
         if self.state != "canceled":
-            self.state = "sold"
+            if self.state == 'offer_accepted':
+                self.state = "sold"
+            else:
+                raise UserError("This property can't be sold as there are no offers")
         elif self.state == "canceled":
             raise UserError("This property can't be sold as it is canceled already")
         return True

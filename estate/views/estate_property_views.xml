@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
+    <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">property</field>
         <field name="res_model">estate.property</field>
         <field name="context">{'search_default_available': True}</field>
@@ -10,7 +10,10 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel" decoration-success="state in ['offer_accepted', 'offer_recieved']" decoration-bf="state in ['offer_accepted']" decoration-muted="state in ['sold']">
+            <tree string="Channel" 
+            decoration-success="state in ['offer_accepted', 'offer_recieved']"
+            decoration-bf="state in ['offer_accepted']"
+            decoration-muted="state in ['sold']">
                 <field name="name"/>
                 <field name="tag_id" widget="many2many_tags"/>
                 <field name="postcode"/>
@@ -50,13 +53,14 @@
                             <seperator/>
                             <group>
                                 <group>
-                                    <field name="tag_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                    <field name="tag_id" widget="many2many_tags" options="{'color_field': 'color'}" groups="estate.estate_group_user"/>
                                     <field name="postcode"/>
                                     <field name="date_availability" />
+                                    <field name="company_id"/>
                                 </group>
                                 <group>
                                     <field name="expected_price"/>
-                                    <field name="property_type_id" options="{'no_create':true,'no_create_edit':true }"/>
+                                    <field name="property_type_id" options="{'no_create':true,'no_create_edit':true }" groups="estate.estate_group_user"/>
                                     <field name="selling_price"/>
                                     <field name="count"/>
                                 </group>

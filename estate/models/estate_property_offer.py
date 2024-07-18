@@ -14,16 +14,12 @@ class EstatePropertyOffer(models.Model):
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False
     )
     price = fields.Float(required=True)
-    property_id = fields.Many2one(
-        comodel_name="estate.property",
-        string="property"
-    )
+    property_id = fields.Many2one("estate.property", string="property")
     property_type_id = fields.Many2one(related="property_id.property_type_id")
     validity = fields.Float(default=7)
     deadline = fields.Date(compute="_compute_validity", inverse="_inverse_deadline", default=fields.Datetime.now() + relativedelta(days=7))
     _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0',
-         'The price of a property can not be negative.')
+        ('check_offer_price', 'CHECK(price > 0', 'The price of a property can not be negative.')
     ]
 
     @api.depends("price")

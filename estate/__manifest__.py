@@ -6,13 +6,14 @@
     """,
 
     'author': "Sourabh",
-    'category': 'Tutorials/estate',
+    'category': 'Real Estate/Brokerage',
     'version': '0.1',
     'application': True,
     'installable': True,
     'depends': ["base"],
 
     'data': [
+        'security/estate_security.xml',
         'data/estate.property.type.csv',
         'security/ir.model.access.csv',
         'views/res_config_settings_view.xml',

@@ -50,6 +50,7 @@
                 'price': 190000000,
                 'validity': 14
             }),
+
         ]"/>
     </record>
 
@@ -82,9 +83,6 @@
         <field name="property_type_id" ref="estate.type_id_1"/>
     </record>
 
-    <!-- <record id="demo_estate_offer_1" model="estate.property.offer">
-        <field name="date_availability" eval="datetime.now()+1"/>
-    </record> -->
     <function model="estate.property.offer" name="action_accept">
     <value eval="[ref('demo_estate_offer_3')]"/>
     </function>
