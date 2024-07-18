@@ -3,9 +3,10 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "Vansh",
-    'category': 'estate',
+    'category': 'Real Estate/Brokerage',
     'description': """Find Your property Here""",
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_user_views.xml',
         'views/estate_property_offer_views.xml',

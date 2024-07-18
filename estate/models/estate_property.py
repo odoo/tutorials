@@ -87,6 +87,8 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            if not record.buyer_id:
+                raise UserError('You cannot sell a property without assigning a customer.')
             if record.state == 'canceled':
                 raise UserError("A canceled property cannot be sold.")
             else:
@@ -116,3 +118,5 @@ class EstateProperty(models.Model):
         canbesold = self.env['ir.config_parameter'].sudo().get_param('estate.sold')
         for record in self:
             record.configsold = canbesold == 'True'
+
+    company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)

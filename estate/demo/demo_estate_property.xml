@@ -44,14 +44,14 @@
   <record id="demo_estate_offer_2" model="estate.property.offer">
     <field name="partner_id" ref="base.res_partner_12"/>
     <field name="property_id" ref="demo1_estate_property"/>
-    <field name="price">1500000</field>
+    <field name="price">150001</field>
     <field name="validity">14</field>
   </record>
 
   <record id="demo_estate_offer_3" model="estate.property.offer">
     <field name="partner_id" ref="base.res_partner_2"/>
     <field name="property_id" ref="demo1_estate_property"/>
-    <field name="price">1500001</field>
+    <field name="price">1900000</field>
     <field name="validity">14</field>
   </record>
 
@@ -81,12 +81,12 @@
     <value eval="[ref('demo_estate_offer_2')]"/>
   </function>
 
-  <!-- <function model="estate.property.offer" name="action_refuse">
+  <function model="estate.property.offer" name="action_refuse">
     <value eval="[ref('demo_estate_offer_3'), ref('demo_estate_offer_1')]"/>
-  </function> -->
+  </function>
 
   <record id="demo5_estate_property" model="estate.property">
-    <field name="name">Karan villa</field>
+    <field name="name">Vansh villa</field>
     <field name="state">canceled</field>
     <field name="description">Home in a trailer park</field>
     <field name="postcode">54321</field>
