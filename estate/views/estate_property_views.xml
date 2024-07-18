@@ -33,7 +33,7 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_set_sold_property" string="Sold" type="object" class="oe_highlight" invisible="not can_be_sold or state in ['sold','canceled']"/>
+                    <button name="action_set_sold_property" string="Sold" type="object" class="oe_highlight" invisible="state in ['sold','canceled'] or not can_be_sold"/>
                     <button name="action_set_cancel_property" string="Cancel" type="object" class="" invisible="state in ['sold','canceled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
                 </header>
@@ -80,6 +80,9 @@
                                 <group>
                                     <field name="user_id"/>
                                     <field name="partner_id"/>
+                                </group>
+                                <group>
+                                    <field name="company_id"/>
                                 </group>
                             </group>
                         </page>

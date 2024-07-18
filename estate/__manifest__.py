@@ -3,7 +3,7 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "Odoo",
-    'category': 'Category',
+    'category': 'Real Estate/Brokerage',
     'summary': """
         Real Estate Summary
     """,
@@ -12,6 +12,7 @@
     """,
     # data files always loaded at installation
     'data': [
+        "security/security.xml",
         'security/ir.model.access.csv',
         'views/estate_property_offer_views.xml',
         'views/estate_property_tag_views.xml',

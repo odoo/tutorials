@@ -62,6 +62,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')
     best_offer_price = fields.Float(string='Best Offer', default=0, compute='_compute_best_offer_price')
     can_be_sold = fields.Boolean(compute='_compute_can_be_sold')
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
     @api.depends('state')
     def _compute_can_be_sold(self):
@@ -91,6 +92,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'canceled':
                 raise UserError('Canceled property cannot be sold')
+            if not record.partner_id:
+                raise UserError('cannot sold property without accepting offer')
             record.state = 'sold'
 
     def action_set_cancel_property(self):
