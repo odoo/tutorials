@@ -21,9 +21,7 @@ class propertyType(models.Model):
             record.related_property = count
 
     def action_property_list(self):
-        related_property_ids = self.env['estate.property'].search([
-            ('property_type_id', '=', self.id),
-        ]).ids
+        related_property_ids = self.env['estate.property'].search([('property_type_id', '=', self.id)]).ids
         return {
             'type': 'ir.actions.act_window',
             'name': ('Property'),

@@ -11,7 +11,9 @@ class propertyOffer(models.Model):
     price = fields.Float("Price")
     status = fields.Selection(
         string="Status",
-        selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
+        selection=[
+            ('accepted', 'Accepted'),
+            ('refused', 'Refused')],
         copy=False
     )
     partner_id = fields.Many2one('res.partner', required=True, string="Partner")

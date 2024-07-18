@@ -26,7 +26,6 @@ class propertiesPlan(models.Model):
     best_price = fields.Float("Best Price", compute="_compute_best_price")
     sales_person = fields.Many2one(
         'res.users',
-        default=lambda self: self.env.user or False,
         string="Sales Person"
     )
     garden_orientation = fields.Selection(
@@ -53,6 +52,7 @@ class propertiesPlan(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     canBeSold = fields.Boolean(compute="_compute_sold", string="CanBeSold")
+    company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected Price must be Positive'),
@@ -106,6 +106,10 @@ class propertiesPlan(models.Model):
     def action_mark_sold(self):
         if self.state == 'canceled':
             raise UserError("Canceled Properties cannot be Sold")
+        elif self.state == 'new':
+            raise UserError("No existing offer")
+        elif self.state == 'offer_received':
+            raise UserError("Accept offer first")
         else:
             self.state = 'sold'
         return True

@@ -3,7 +3,7 @@
     'version': "1.0",
     'depends': ["base"],
     'author': "Dhruv",
-    'category': "Tutorials/estate",
+    'category': "Real Estate/Brokerage",
     'application': True,
     'installable': True,
     'description': """
@@ -12,6 +12,7 @@
     'images': ['static/description/thumbnail.png'],
     'data': [
         'data/templates/estate.property.type.csv',
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
