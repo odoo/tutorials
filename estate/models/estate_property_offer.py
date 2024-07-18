@@ -21,7 +21,7 @@ class estatepropertyoffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer("Validity(7 Days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_Validitydate", inverse="_inverse_datedeadline")
-    property_type_id = fields.Many2one(related="property_id.property_type_id",string="Offers",store="True")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", string="Offers", store="True")
 
     @api.depends("validity")
     def _compute_Validitydate(self):
@@ -49,7 +49,7 @@ class estatepropertyoffer(models.Model):
         self.status = "refused"
 
     _sql_constraints = [
-        ("check_offer_price","CHECK(price > 0)","Offer Price must be positive"),
+        ("check_offer_price", "CHECK(price > 0)", "Offer Price must be positive"),
     ]
 
     @api.model

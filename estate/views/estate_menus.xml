@@ -4,7 +4,7 @@
         <menuitem id="estate_property_first_level_menu" name="Advertisement">
             <menuitem id="action_estate_property_model_menu" name="Properties" action="action_estate_property_model"/>
         </menuitem>
-        <menuitem id="estate_property_type_first_level_menu" name="Settings">
+        <menuitem id="estate_property_type_first_level_menu" name="Settings" groups="estate.estate_group_manager">
             <menuitem id="action_estate_property_type_model_menu" name="Property Types" action="action_estate_property_type_model"/>
             <menuitem id="action_estate_property_tags_model_menu" name="Property Tags" action="action_estate_property_tags_model"/>
         </menuitem>

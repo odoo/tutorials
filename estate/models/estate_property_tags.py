@@ -10,5 +10,5 @@ class estatepropertytags(models.Model):
     color = fields.Integer("Tag Colour")
 
     _sql_constraints = [
-        ("check_property_tagname","UNIQUE(name)","Property Tag name must be unique")
+        ("check_property_tagname", "UNIQUE(name)", "Property Tag name must be unique")
     ]

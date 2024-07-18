@@ -3,11 +3,12 @@
     "version": "1.0",
     "depends": ["base"],
     "author": "NIAD",
-    "category": "Category",
+    "category": "Real Estate/Brokerage",
     "description": "",
     "application": True,
     "license": "AGPL-3",
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "data/estate.property.type.csv",
         "data/master_data.xml",

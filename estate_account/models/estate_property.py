@@ -1,5 +1,4 @@
 from odoo import Command, models
-from odoo.exceptions import UserError
 
 
 class estateproperty(models.Model):
@@ -7,9 +6,9 @@ class estateproperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            if not record.buyer_id:
-                raise UserError("The property must have a buyer before creating an invoice.")
-            self.env["account.move"].create(
+            record.check_access_rights('write')
+            record.check_access_rule('write')
+            self.env["account.move"].sudo().create(
                 {
                     "move_type": "out_invoice",
                     "partner_id": record.buyer_id.id,

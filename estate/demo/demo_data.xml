@@ -17,6 +17,7 @@
         <field name="property_type_id" ref="property_type_residential"/>
     </record>
     <record id="property_demo_2" model="estate.property">
+        <field name="salesperson_id" ref="base.user_demo"/>
         <field name="name">Trailer home</field>
         <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>

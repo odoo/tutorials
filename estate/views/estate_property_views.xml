@@ -43,10 +43,7 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel" 
-                decoration-success="state in ['offer_received', 'offer_accepted']" 
-                decoration-bf="state in ['offer_accepted']" 
-                decoration-muted="state in ['sold']">
+            <tree string="Channel" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state in ['offer_accepted']" decoration-muted="state in ['sold']">
                 <field name="name" string="Title"/>
                 <field name="property_type_id" string="Property Type" options="{'color_field': 'color'}"/>
                 <field name="tag_ids" widget="many2many_tags"/>
@@ -76,9 +73,10 @@
                     </h1>
                     <group>
                         <field name="state"/>
+                        <field name="company_id"/>
                         <field name="can_be_sold"/>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                        <field name="property_type_id" options="{'no_create': true, 'no_create_edit': true}"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="estate.estate_group_user"/>
+                        <field name="property_type_id" options="{'no_create': true, 'no_create_edit': true}" groups="estate.estate_group_user"/>
                     </group>
                     <group>
                         <group>

@@ -12,7 +12,7 @@ class estate(models.Model):
     name = fields.Char(required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
-    date_availability = fields.Date("Date Availibility",default=lambda self: date.today() + timedelta(days=90),copy=False)
+    date_availability = fields.Date("Date Availibility", default=lambda self: date.today() + timedelta(days=90), copy=False)
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Bedrooms", default=2)
@@ -40,21 +40,22 @@ class estate(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        required=True,copy=False,default="new",
+        required=True, copy=False, default="new",
     )
-    property_type_id = fields.Many2one(comodel_name="estate.property.type",string="Property Type")
+    property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one("res.users", string="Sales Person", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many(comodel_name="estate.property.tags", string="Property Tag")
-    offer_ids = fields.One2many(comodel_name="estate.property.offer",inverse_name="property_id",string="Property Offer")
+    offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string="Property Offer")
     total_area = fields.Integer(compute="_compute_totalarea")
     best_price = fields.Integer("Best Offer", compute="_compute_best_price")
     can_be_sold = fields.Boolean("Can be Sold", compute="_compute_can_be_sold")
+    company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
 
     @api.depends("state")
     def _compute_can_be_sold(self):
         for record in self:
-            record.can_be_sold = (self.env["ir.config_parameter"].get_param("estate.property_sold")== "True")
+            record.can_be_sold = (self.env["ir.config_parameter"].sudo().get_param("estate.property_sold") == "True")
 
     @api.depends("living_area", "garden_area")
     def _compute_totalarea(self):
@@ -90,11 +91,17 @@ class estate(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cannot sell a property that is already cancelled!")
-            record.state = "sold"
+                return False
+            elif not record.buyer_id:
+                raise UserError("The property must have a buyer before creating an invoice.")
+                return False
+            else:
+                record.state = "sold"
+                return True
 
     _sql_constraints = [
-        ("check_expected_price","CHECK(expected_price > 0)","Expected Price must be strictly positive"),
-        ("check_selling_price","CHECK(selling_price >= 0)","Selling Price must be positive"),
+        ("check_expected_price", "CHECK(expected_price > 0)", "Expected Price must be strictly positive"),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "Selling Price must be positive"),
     ]
 
     @api.constrains("selling_price", "expected_price")
