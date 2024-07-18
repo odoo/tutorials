@@ -3,12 +3,13 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "KSKU",
-    'category': 'Category',
+    'category': 'Real Estate/Brokerage',
     'description': """
     First odoo app
     """,
     # data files always loaded at installation
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
@@ -18,7 +19,6 @@
         'views/res_config_settings_views.xml',
         'views/estate_menus.xml',
         'data/estate.property.type.csv'
-
     ],
     # data files containing optionally loaded demonstration data
     'demo': [

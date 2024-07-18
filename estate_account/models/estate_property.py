@@ -1,11 +1,16 @@
 from odoo import models
 
 
-class estateProperty(models.Model):
+class EstatePropertyAccount(models.Model):
     _inherit = "estate.property"
 
     def action_estate_property_sold(self):
-        journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
+
+        # checking access rights
+        self.check_access_rights('write')
+        self.check_access_rule('write')
+
+        journal = self.env['account.journal'].sudo().search([('type', '=', 'sale')], limit=1)
         if journal:
             journal_id = journal.id
         else:
@@ -15,7 +20,7 @@ class estateProperty(models.Model):
             'move_type': 'out_invoice',
             'journal_id': journal_id,
         }
-        new_invoice = self.env['account.move'].with_context(default_move_type='out_invoice').create(invoice_vals)
+        new_invoice = self.env['account.move'].sudo().with_context(default_move_type='out_invoice').create(invoice_vals)
         invoice_vals_lines = []
 
         for prop in self:
@@ -33,5 +38,5 @@ class estateProperty(models.Model):
             }
             invoice_vals_lines.append((0, 0, line2_vals))
 
-        new_invoice.write({'invoice_line_ids': invoice_vals_lines})
+        new_invoice.sudo().write({'invoice_line_ids': invoice_vals_lines})
         return super().action_estate_property_sold()

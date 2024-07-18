@@ -15,6 +15,7 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
+            <field name="sales_person" ref="base.user_admin"/>
         </record>
 
         <record id="demo2_estate_property" model="estate.property">
@@ -29,6 +30,7 @@
             <field name="living_area">10</field>
             <field name="facades">4</field>
             <field name="garage">False</field>
+            <field name="sales_person" ref="base.user_demo"/>
         </record>
 
         <record id="demo_offer_estate_property" model="estate.property.offer">

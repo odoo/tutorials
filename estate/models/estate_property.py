@@ -23,8 +23,23 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area")
-    garden_orientation = fields.Selection(string="Garden Orientation", selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    state = fields.Selection(string="Status", selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], required=True, copy=False, default='new')
+    garden_orientation = fields.Selection(
+        string="Garden Orientation",
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ])
+    state = fields.Selection(
+        string="Status",
+        selection=[
+            ('new', 'New'),
+            ('offer received', 'Offer Received'),
+            ('offer accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ], required=True, copy=False, default='new')
     active = fields.Boolean(string="Active", default=True)
 
     # Relationships
@@ -45,6 +60,9 @@ class EstateProperty(models.Model):
 
     # Using for invisiblity of sold button
     canBeSold = fields.Boolean(compute="_compute_sold_value", string="canbesold")
+
+    # For company testing
+    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=False, default=lambda self: self.env.company)
 
     # sql constraints
     _sql_constraints = [('expected_price_positive', 'CHECK(expected_price > 0)', "The Expected Price cannot be negative"), ('selling_price_positive', 'CHECK(selling_price >= 0)', "The Selling Price cannot be negative")]

@@ -45,14 +45,15 @@
                         <h1><field string="Name of Property" name="name"/></h1>
                     </header>
                     <group>
-                        <field string="Tags" name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field string="Tags" name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="estate.estate_group_user"/>
                     </group>
                     <separator/>
                     <group>
                         <group>
                             <field name="state" invisible="1"/>
                             <field name="canBeSold" invisible="1"/>
-                            <field string="Property Type" name="property_type_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="company_id"/>
+                            <field string="Property Type" name="property_type_id" options="{'no_create': True, 'no_create_edit': True}" groups="estate.estate_group_user"/>
                             <field name="postcode"/>
                             <field string="Available From" name="date_availability"/>
                         </group>
