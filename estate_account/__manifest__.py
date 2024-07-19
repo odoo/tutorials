@@ -12,7 +12,7 @@
     'installable': True,
     'depends': ["base", "estate", "account"],
 
-    'data': [],
+    'data': ['report/estate_property_report_inherit.xml'],
     'demo': [],
 
     'license': 'AGPL-3'

@@ -13,6 +13,8 @@
     'depends': ["base"],
 
     'data': [
+        'reports/estate_property_report.xml',
+        'reports/estate_property_template.xml',
         'security/estate_security.xml',
         'data/estate.property.type.csv',
         'security/ir.model.access.csv',
