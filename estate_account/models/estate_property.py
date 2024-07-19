@@ -1,8 +1,10 @@
-from odoo import models
+from odoo import fields, models
 
 
 class EstatePropertyAccount(models.Model):
     _inherit = "estate.property"
+
+    invoice_id = fields.Many2one('account.move', string="Invoice")
 
     def action_estate_property_sold(self):
 

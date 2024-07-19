@@ -65,7 +65,10 @@ class EstateProperty(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=False, default=lambda self: self.env.company)
 
     # sql constraints
-    _sql_constraints = [('expected_price_positive', 'CHECK(expected_price > 0)', "The Expected Price cannot be negative"), ('selling_price_positive', 'CHECK(selling_price >= 0)', "The Selling Price cannot be negative")]
+    _sql_constraints = [
+        ('expected_price_positive', 'CHECK(expected_price > 0)', "The Expected Price cannot be negative"),
+        ('selling_price_positive', 'CHECK(selling_price >= 0)', "The Selling Price cannot be negative")
+    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
