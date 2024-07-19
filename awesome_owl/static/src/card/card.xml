@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="p-3">
+            <div class="card d-inline-block m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <span>
+                        <h5 class="card-title"><t t-out="props.title"/></h5>
+                        <button t-on-click="toggleShowContent">Toggle</button>
+                    </span>
+                    <div t-if="showContent.value">
+                        <t t-slot="default"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
