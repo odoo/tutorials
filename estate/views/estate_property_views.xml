@@ -35,6 +35,12 @@
                     <button name="action_sold" string="Sold" type="object" class="oe_highlight" data-hotkey="q" invisible="state in ['sold', 'canceled'] or not can_be_sold" />
                     <button name="action_cancel" string="Cancel" type="object" data-hotkey="x" invisible="state in ['sold', 'canceled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
+                    <xpath expr="//header" position="inside">
+                        <button name="%(estate.property_offers_report)d"
+                                type="action"
+                                class="oe_highlight"
+                                string="Print Offers"/>
+                    </xpath>
                 </header>
                 <sheet>
                     <h1>
