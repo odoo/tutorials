@@ -12,6 +12,7 @@
     """,
     # data files always loaded at installation
     'data': [
+        "report/account_estate_reports.xml",
     ],
     # # data files containing optionally loaded demonstration data
     'demo': [

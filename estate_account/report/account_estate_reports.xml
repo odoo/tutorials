@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_estate_property" inherit_id="estate.report_estate_property">
+        <xpath expr="//div[@class='status']" position="after">
+            <div>
+                <span>!!!Invoice has been already created!!!</span>
+            </div>
+        </xpath>
+    </template>
+</odoo>
