@@ -67,7 +67,7 @@
         </function>
 
         <function model="estate.property.offer" name="action_refused">
-            <value eval="[ref('demo_offer_1','demo_offer_3')]"/>
+            <value eval="[ref('demo_offer_1'), ref('demo_offer_3')]"/>
         </function>
 
         <record id="demo_data_3" model="estate.property">

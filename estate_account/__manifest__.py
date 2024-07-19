@@ -9,7 +9,9 @@
     'description': """
     Module for the practice and getting knowledge in the technicality
     """,
-    'data': [],
+    'data': [
+        'report/inherit_report.xml',
+    ],
     'demo': [],
     'license': 'AGPL-3',
 }
