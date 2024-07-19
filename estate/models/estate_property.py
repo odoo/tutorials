@@ -29,7 +29,7 @@ class EstateProperty(models.Model):
             ('south', 'South'),
             ('east', 'East'),
             ('west', 'West')
-        ])
+    ])
     state = fields.Selection(
         string='Status',
         selection=[
@@ -38,7 +38,10 @@ class EstateProperty(models.Model):
             ('accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('canceled', 'Canceled')
-            ], copy=False, default='new', required=True, readonly=True)
+            ],
+            copy=False, default='new',
+            required=True, readonly=True
+    )
     active = fields.Boolean(string='Active', default=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user or False)
@@ -48,6 +51,8 @@ class EstateProperty(models.Model):
     total_area = fields.Float(string="Total area", compute="_compute_total_area")
     best_offer = fields.Float(string="Best offer", compute="_compute_best_offer")
     configSold = fields.Boolean(string='Sold Config', compute='_compute_config_sold')
+    company_id = fields.Many2one('res.company', string='Company', required=True,
+        default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive.'),

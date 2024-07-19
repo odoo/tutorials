@@ -5,9 +5,10 @@ class InheritedModel(models.Model):
     _inherit = "estate.property"
 
     def action_sold_property(self):
-        res = super().action_sold_property()
+        self.env['account.move'].check_access_rights('read')
+        self.check_access_rule('read')
         invoice_lines = []
-        invoice = self.env['account.move'].create({
+        invoice = self.env['account.move'].sudo().create({
             'partner_id': self.buyer.id,
             'move_type': 'out_invoice',
         })
@@ -28,4 +29,4 @@ class InheritedModel(models.Model):
         invoice.write({
             'invoice_line_ids': invoice_lines,
         })
-        return res
+        return super().action_sold_property()
