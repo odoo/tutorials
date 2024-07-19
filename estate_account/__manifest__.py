@@ -7,5 +7,7 @@
     "description": "Integration between Estate and Account modules.",
     "application": True,
     "license": "AGPL-3",
-    "data": [],
+    "data": [
+        'report/estate_property_report_inherit.xml',
+    ],
 }
