@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_property_offers_inherit" inherit_id="estate.report_property_offers">
+        <xpath expr="//div[@class='page']/div[hasclass('invoice_offer')]" position="before">
+            <t t-if="property.state == 'sold'">
+                <div>
+                    <strong>
+                        <p>!!!Invoice has already been created!!!</p>
+                    </strong>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
