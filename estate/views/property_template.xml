@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="property_page" name="Properties Page">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>Available Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4">
+                            <div class="card">
+                            <a t-att-href="'/property/' + str(property.id)" title="View Property">
+                                <img src="/estate/static/description/icon.png" class="card-img-top" alt="property image"/>
+                            </a>
+                                <div class="card-body">
+                                    <h5 class="card-title"><t t-esc="property.name"/></h5>
+                                    <p class="card-text"><t t-esc="property.expected_price"/></p>
+                                    <p class="card-text"><strong>Price:</strong> <t t-esc="property.selling_price"/> USD</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+    <!-- <template id="property_detail_page" name="Property Detail Page">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="property-title"><t t-esc="property.name"/></h1>
+                        <div class="property-image">
+                            <img src='/estate/static/description/icon.png' alt="property" class="img-fluid"/>
+                        </div>
+                        <div class="property-details">
+                            <p><strong>Expected Price:</strong> <t t-esc="property.expected_price"/> USD</p>
+                            <p><strong>Selling Price:</strong> <t t-esc="property.selling_price"/> USD</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template> -->
+        <template id="property_detail_page" name="Property Detail Page">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-body">
+                            <a href="/properties" ><i class="fa fa-arrow-left fa-2x " aria-hidden="true"/></a>
+                                <h1 class="property-title text-center text-primary"><t t-esc="property.name"/></h1>
+                                <div class="property-image text-center mb-4">
+                                    <img src='/estate/static/description/icon.png' alt="property name" class="img-fluid rounded"/>
+                                </div>
+                                <div class="property-details">
+                                    <p class="lead"><strong>Expected Price:</strong> <span class="text-success"><t t-esc="property.expected_price"/></span> USD</p>
+                                    <p class="lead"><strong>Selling Price:</strong> <span class="text-danger"><t t-esc="property.selling_price"/></span> USD</p>
+                                    <hr/>
+                                    <p><strong>Description:</strong> <t t-esc="property.description"/></p>
+                                    <p><strong>Date availability:</strong> <t t-esc="property.date_availability"/></p>
+                                    <p><strong>bedroom:</strong> <t t-esc="property.bedroom"/></p>
+                                    <p><strong>living area:</strong> <t t-esc="property.living_area"/></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

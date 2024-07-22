@@ -94,4 +94,6 @@
     <function model="estate.property.offer" name="action_refuse">
     <value eval="[ref('demo_estate_offer_2')]"/>
     </function>
+
+    
 </odoo>

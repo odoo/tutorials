@@ -10,7 +10,7 @@
     'version': '0.1',
     'application': True,
     'installable': True,
-    'depends': ["base"],
+    'depends': ["base", "website"],
 
     'data': [
         'reports/estate_property_report.xml',
@@ -18,6 +18,8 @@
         'security/estate_security.xml',
         'data/estate.property.type.csv',
         'security/ir.model.access.csv',
+        'data/data.xml',
+        'views/property_template.xml',
         'views/res_config_settings_view.xml',
         'views/estate_property_tag_view.xml',
         'views/estate_property_offer_view.xml',
