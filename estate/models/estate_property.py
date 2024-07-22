@@ -51,6 +51,7 @@ class estate(models.Model):
     best_price = fields.Integer("Best Offer", compute="_compute_best_price")
     can_be_sold = fields.Boolean("Can be Sold", compute="_compute_can_be_sold")
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
+    image = fields.Binary("Image", attachment=True)
 
     @api.depends("state")
     def _compute_can_be_sold(self):
