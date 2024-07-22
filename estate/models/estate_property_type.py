@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 
 class PropertyType(models.Model):
@@ -8,10 +8,7 @@ class PropertyType(models.Model):
 
     name = fields.Char('Name', required=True)
     related_properties = fields.Integer(compute='_compute_related_properties')
-    property_ids = fields.One2many(
-        comodel_name='estate.property',
-        inverse_name='property_type_id',
-        string='Properties')
+    property_ids = fields.One2many('estate.property', 'property_type_id', string='Properties')
     sequence = fields.Integer('Sequence', default=1)
     offer_ids = fields.One2many('estate.property.offer', 'property_type_id', string='Offers')
     offer_count = fields.Integer(compute='_compute_offer_count')

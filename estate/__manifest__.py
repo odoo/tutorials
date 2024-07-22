@@ -1,7 +1,7 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base', 'website'],
     'author': "Odoo",
     'category': 'Real Estate/Brokerage',
     'summary': """
@@ -20,8 +20,10 @@
         'views/estate_property_tag_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_views.xml',
+        'views/estate_portal_templates.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
+        'data/data.xml',
         'views/res_config_settings_views.xml',
     ],
     # # data files containing optionally loaded demonstration data

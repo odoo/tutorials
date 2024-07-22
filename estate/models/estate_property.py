@@ -39,30 +39,26 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('canceled', 'Canceled')
         ],
-        required=True,
-        copy=False,
-        default='new')
+        required=True, copy=False, default='new')
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     user_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     partner_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
 
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be positive'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive'),
-    ]
-
-    # Offers
-    offer_ids = fields.One2many(
-        comodel_name='estate.property.offer',
-        inverse_name='property_id',
-        string='Offers')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
 
     total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')
     best_offer_price = fields.Float(string='Best Offer', default=0, compute='_compute_best_offer_price')
     can_be_sold = fields.Boolean(compute='_compute_can_be_sold')
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
+
+    image = fields.Image("Image")
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive'),
+    ]
 
     @api.depends('state')
     def _compute_can_be_sold(self):
