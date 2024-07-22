@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="available_properties" name="Properties Page">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>Available Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-4">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <img src="/estate/static/descriptions/selfie.png"
+                                        t-att-style="'max-width: 100%; max-height: 200px;'" 
+                                    />
+                                    <h5 class="card-title"><t t-esc="property.name"/></h5>
+                                    <p class="card-text"><t t-esc="property.expected_price"/></p>
+                                    <p class="card-text"><strong>Price:</strong> <t t-esc="property.selling_price"/>USD</p>
+                                    <div>
+                                        <a t-attf-href="/property/{{property.id}}" class="btn btn-primary">Info</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="col-12">
+                    <t t-call="website.pager">
+                        <t set="pager-url" t-value="'/properties'"/>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_template">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="/estate/static/descriptions/selfie.png" t-att-style="'max-width: 100%; max-height: 200px;'"/>
+                        <h1><t t-esc="property.name"/></h1>
+                        <p><t t-esc="property.description"/></p>
+                        <p>Price: <t t-esc="property.expected_price"/></p>
+                        <p>Best Offer: <t t-esc="property.best_offer"/></p>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
+    
