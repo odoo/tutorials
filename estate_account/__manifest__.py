@@ -1,7 +1,7 @@
 {
     'name': "Estate Account",
     'version': '1.0',
-    'depends': ['base', 'estate', 'account'],
+    'depends': ['base', 'estate', 'account', 'website'],
     'author': "GAJA",
     'category': 'Category',
     'description': """

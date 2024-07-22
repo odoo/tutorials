@@ -73,8 +73,7 @@
             </header>
                 <sheet>
                 <div class="oe_button_box" name="button_box">
-                    <button class="oe_stat_button" name="%(estate.report_estate_property_offers)d"
-                                    type="action" icon="fa-print" invisible="not state in ['sold']">
+                    <button class="oe_stat_button" name="%(estate.report_estate_property_offers)d" type="action" icon="fa-print">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">
                                         Print
