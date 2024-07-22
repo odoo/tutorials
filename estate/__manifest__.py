@@ -1,7 +1,7 @@
 {
     'name': "Real Estate App",
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base', 'website'],
     'author': "KSKU",
     'category': 'Real Estate/Brokerage',
     'description': """
@@ -22,13 +22,19 @@
         'views/res_users_views.xml',
         'views/res_config_settings_views.xml',
         'views/estate_menus.xml',
+        'views/property_detail_template.xml',
+        'views/property_list_template.xml',
+        'views/website_menus.xml',
         'data/estate.property.type.csv'
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
         'demo/estate_property_demo.xml',
     ],
-    'images': ["static/description/realstate.png"],
+    'images': [
+        "static/description/realstate.png",
+        "static/description/abcd.png",
+        "static/description/dcba.jpeg"],
     'installable': True,
     'application': True,
     'license': 'AGPL-3',
