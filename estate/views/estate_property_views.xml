@@ -47,6 +47,7 @@
                         <field name="name"/>
                     </h1>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
                             <field name="company_id"/>

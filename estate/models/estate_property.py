@@ -56,6 +56,7 @@ class EstateProperty(models.Model):
     can_be_sold = fields.Boolean("Can be sold", compute="_compute_can_be_sold")
     company_id = fields.Many2one('res.company', string='Company', required=True,
         default=lambda self: self.env.company)
+    image = fields.Image("Image")
 
     _sql_constraints = [
         ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be positive"),

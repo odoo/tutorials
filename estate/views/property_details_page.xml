@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="property_detail_page">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-lg-8 col-md-12">
+                        <div class="mb-4">
+                            <img
+                                t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                                style="width: auto; height: 500px;"
+                                class="img-fluid rounded"
+                                alt="Property Image" />
+                        </div>
+
+                        <h1 class="mb-4">
+                            <t t-esc="property.name" />
+                        </h1>
+
+                        <div class="mb-4">
+                            <p class="lead">
+                                <t t-esc="property.description" />
+                            </p>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">Property Details</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Postcode:</strong>
+                                        <p class="mb-0">
+                                            <t t-esc="property.postcode" />
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Available From:</strong>
+                                        <p class="mb-0">
+                                            <t t-esc="property.date_availability" />
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Selling Price:</strong>
+                                        <p class="mb-0">€<t t-esc="property.selling_price" /></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Expected Price:</strong>
+                                        <p class="mb-0">€<t t-esc="property.expected_price" /></p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Bedrooms:</strong>
+                                        <p class="mb-0">
+                                            <t t-esc="property.bedrooms" />
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Living Area:</strong>
+                                        <p class="mb-0"><t t-esc="property.living_area" /> sqm</p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Facades:</strong>
+                                        <p class="mb-0">
+                                            <t t-esc="property.facades" />
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Garage:</strong>
+                                        <p class="mb-0">
+                                            <t t-esc="property.garage and 'Yes' or 'No'" />
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Garden:</strong>
+                                        <p class="mb-0">
+                                            <t t-esc="property.garden and 'Yes' or 'No'" />
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Garden Area:</strong>
+                                        <p class="mb-0"><t t-esc="property.garden_area" /> sqm</p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Garden Orientation:</strong>
+                                        <p class="mb-0">
+                                            <t t-esc="property.garden_orientation" />
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <strong>Property Type:</strong>
+                                        <p class="mb-0">
+                                            <t t-esc="property.property_type_id.name" />
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-lg-4 col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Contact Details</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>
+                                    <strong>Seller:</strong>
+                                    <t t-esc="property.seller_id.name" />
+                                </p>
+                                <p>
+                                    <strong>Buyer:</strong>
+                                    <t t-esc="property.buyer_id.name or 'N/A'" />
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="m-4">
+                    <a href="/properties" class="btn btn-primary">Back to Listings</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

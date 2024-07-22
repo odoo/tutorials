@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="properties_page" name="Properties Page">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container">
+                    <div class="row">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-lg-3 col-md-6 col-sm-12 m-4">
+                                <div class="card">
+                                    <img
+                                        t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                                        style="width: auto; height: 250px;"
+                                        class="card-img-top" alt="Property Image" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <t t-esc="property.name" />
+                                        </h5>
+                                        <p class="card-text">Price: <t
+                                                t-esc="property.expected_price" /> Rs</p>
+                                        <a t-att-href="'/property/%d' % property.id"
+                                            class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-auto p-2">
+                            <t t-call="website.pager">
+                                <t t-set="pager_url" t-value="'/properties'" />
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
