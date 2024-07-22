@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app data-string="estate" string="Estate" name="estate" logo="/estate/static/description/thumbnail.png">
+                <app data-string="estate" string="Estate" name="estate" logo="/estate/static/description/property.png">
                     <block title="Can Be Sold" name="can_be_sold_setting_container">
                             <div class="content-group" style="display: flex">
                                 <field name="can_be_sold" style="margin-top: 17px"/>

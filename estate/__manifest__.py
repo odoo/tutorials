@@ -1,7 +1,7 @@
 {
     'name': "real-estate",
     'version': "1.0",
-    'depends': ["base"],
+    'depends': ["base", "website"],
     'author': "Dhruv",
     'category': "Real Estate/Brokerage",
     'application': True,
@@ -9,9 +9,10 @@
     'description': """
     Module for the practice and getting knowledge in the technicality
     """,
-    'images': ['static/description/thumbnail.png'],
+    'images': ['static/description/property.png'],
     'data': [
         'data/templates/estate.property.type.csv',
+        'views/estate_website_menu_view.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
         'report/estate_property_templates.xml',
@@ -23,6 +24,7 @@
         'views/res_users_views.xml',
         'views/res_config_settings_views.xml',
         'views/estate_menus.xml',
+        'views/website_menus.xml',
     ],
     'demo': [
         'demo/demo_data.xml',
