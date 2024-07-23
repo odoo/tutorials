@@ -17,8 +17,8 @@
                                     <p class="card-text">Price: <t t-esc="property.expected_price"/>
                                     </p>
                                     <p class="card-text">Description: <t t-esc="property.description"/>
-                                        <div></div>
-                                        <a t-att-href="/property/{{property.id}}" class="btn btn-primary">View Property</a>
+                                    <div></div>
+                                    <a t-attf-href="/property/{{property.id}}" class="btn btn-primary">View Property</a>
                                     </p>
                                 </div>
                             </div>

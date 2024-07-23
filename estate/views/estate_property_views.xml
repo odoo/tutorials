@@ -10,7 +10,10 @@
         <field name="name">estate tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="properties" decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <tree string="properties" decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <header>
+                    <button name="%(estate.action_open_add_offer_wizard)d" type="action" string="Add Offer" class="oe_highlight"/>
+                </header>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
