@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="add_offer_wizard_view" model="ir.ui.view">
+            <field name="name">Add Offers</field>
+            <field name="model">estate.add.offer.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Add Offers">
+                    <sheet>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="price"/>
+                            <field name="date_deadline"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Add" name="action_on_add_offer" type="object" default_focus="1" class="btn-primary" data-hotkey="q"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="action_estate_add_offer" model="ir.actions.act_window">
+            <field name="name">Add Offer</field>
+            <field name="res_model">estate.add.offer.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="add_offer_wizard_view"/>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="estate.model_estate_property" />
+            <field name="binding_view_types">list</field>
+        </record>
+    </data>
+</odoo>

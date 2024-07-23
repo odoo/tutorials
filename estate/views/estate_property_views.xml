@@ -13,6 +13,9 @@
         <field name="arch" type="xml">
             <tree string="Property" decoration-success="state in ['offer_received', 'offer_accepted']" 
             decoration-bf="state == 'offer_accepted'" decoration-muted="state =='sold'">
+                <header>
+                    <button name="estate.action_estate_add_offer" string="Add Offers" class="oe_highlight" type="action"/>
+                </header>
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
