@@ -46,6 +46,9 @@
         <field name="arch" type="xml">
             <tree string="Property" decoration-success="state in ['offer_accepted', 'offer_received']"
             decoration-bf="state == 'offer_accepted'">
+                <header>
+                    <button name="%(estate.action_property_add_offer)d" string="Add Offer" type="action" class="btn-primary"/>
+                </header>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
