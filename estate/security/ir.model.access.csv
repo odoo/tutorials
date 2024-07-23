@@ -18,3 +18,5 @@ estate.access_estate_property_public,access_estate_property,estate.model_estate_
 estate.access_estate_property_type_public,access_estate_property_type,estate.model_estate_property_type,base.group_public,1,0,0,0
 estate.access_estate_property_tag_public,access_estate_property_tag,estate.model_estate_property_tag,base.group_public,1,0,0,0
 estate.access_estate_property_offer_public,access_estate_property_offer,estate.model_estate_property_offer,base.group_public,1,0,0,0
+
+access_estate_add_offer_wizard,access_estate_add_offer_wizard,model_estate_add_offer_wizard,,1,1,1,1

@@ -16,6 +16,9 @@
                 decoration-bf="state in ['accepted']" 
                 decoration-muted="state in ['sold']"
             >
+                <header>
+                    <button name="%(action_estate_add_offer_wizard)d" string="Add Offer" type="action" class="oe_highlight"/>
+                </header>
                 <field name="name"/>
                 <field name="tag_ids" string="Tags" widget="many2many_tags"/>
                 <field name="property_type_id"/>
