@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_estate_property_offer_wizard_form" model="ir.ui.view">
+        <field name="name">Add offer</field>
+        <field name="model">estate.property.offer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Offer to Properties">
+                <group>
+                    <field name="price" />
+                    <field name="date_deadline" />
+                    <field name="partner_id" />
+                </group>
+                <footer>
+                    <button string="Make an Offer" type="object" name="make_offer"
+                        class="oe_highlight" />
+                    <button string="Cancel" special="cancel" class="oe_link" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_estate_property_offer_wizard" model="ir.actions.act_window">
+        <field name="name">Add Offer</field>
+        <field name="res_model">estate.property.offer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_estate_property_offer_wizard_form" />
+        <field name="binding_model_id" ref="estate.model_estate_property" />
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>
