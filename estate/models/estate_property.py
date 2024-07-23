@@ -26,7 +26,8 @@ class propertiesPlan(models.Model):
     best_price = fields.Float("Best Price", compute="_compute_best_price")
     sales_person = fields.Many2one(
         'res.users',
-        string="Sales Person"
+        string="Sales Person",
+        default=lambda self: self.env.user
     )
     garden_orientation = fields.Selection(
         string='Garden Orientation',
