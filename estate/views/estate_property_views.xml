@@ -15,6 +15,9 @@
                 decoration-bf="state in ['offer_accepted']"
                 decoration-muted="state in ['sold']"
             >
+                <header>
+                    <button name="%(action_wizard_offer_views)d" string="Add Offer" type="action" class="oe_highlight"/>
+                </header>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>

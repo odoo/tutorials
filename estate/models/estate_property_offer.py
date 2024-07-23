@@ -29,6 +29,11 @@ class propertyOffer(models.Model):
         for record in self:
             record.date_deadline = current_date + relativedelta(days=record.validity)
 
+    def _inverse_deadline(self):
+        current_date = fields.Date.today()
+        for record in self:
+            record.validity = relativedelta(record.date_deadline, current_date).days
+
     @api.model
     def create(self, vals):
         property_record = self.env['estate.property'].browse(vals['property_id'])
@@ -37,11 +42,6 @@ class propertyOffer(models.Model):
             if vals['price'] < max_price:
                 raise UserError(f"offer price should be more than {max_price}")
         return super().create(vals)
-
-    def _inverse_deadline(self):
-        current_date = fields.Date.today()
-        for record in self:
-            record.validity = relativedelta(record.date_deadline, current_date).days
 
     def action_accepted(self):
         if not self.property_id.buyer_id:

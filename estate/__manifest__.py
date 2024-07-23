@@ -15,6 +15,7 @@
         'views/estate_website_menu_view.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
+        'views/wizard_offer_views.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
         'views/estate_property_views.xml',
