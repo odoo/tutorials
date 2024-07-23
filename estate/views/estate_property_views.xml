@@ -54,6 +54,9 @@
                 <field name="selling_price"/>
                 <field name="date_availability" optional="hide"/>
                 <field name="state"/>
+                <header>
+                    <button name="%(action_estate_property_offer_wizard)d" string="Add Offer" type="action" class="btn-primary"/>
+                </header>
             </tree>
         </field>
     </record>
