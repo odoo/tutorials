@@ -16,6 +16,9 @@
                 decoration-bf="state=='offer accepted'"
                 decoration-muted="state=='sold'"
                 string="Estates">
+                <header>
+                    <button name="%(estate.action_estate_properties_offer_wizard)d" type="action" string="Add Offer" class="oe_highlight"/>
+                </header>
                 <field string="Title" name="name"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field string="Property Type" name="property_type_id"/>
