@@ -7,8 +7,13 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
              <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size || 1">
+                    <DashboardItem size="item.size || 1" t-if="!item.disabled">
                         <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
                         <t t-component="item.Component" t-props="itemProp" />
                     </DashboardItem>
