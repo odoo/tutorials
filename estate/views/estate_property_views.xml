@@ -14,6 +14,10 @@
             decoration-success="state in ['offer_accepted', 'offer_recieved']"
             decoration-bf="state in ['offer_accepted']"
             decoration-muted="state in ['sold']">
+                <header>
+                    <button name="%(action_estate_property_offer_wizard)d"
+                    string="Add Offer" type="action" class="btn-primary"/>
+                </header>
                 <field name="name"/>
                 <field name="tag_id" widget="many2many_tags"/>
                 <field name="postcode"/>

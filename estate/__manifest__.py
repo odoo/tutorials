@@ -13,6 +13,8 @@
     'depends': ["base", "website"],
 
     'data': [
+        'views/estate_property_offer_wizard_view.xml',
+        'views/estate_property_views.xml',
         'reports/estate_property_report.xml',
         'reports/estate_property_template.xml',
         'security/estate_security.xml',
