@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display='{controlPanel: {} }' className="'o_dashboard h-100'">
+            current time: <t t-esc="statistics.currentTime"/>
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="openCustomers" type="button" class="btn btn-primary" title="Customers">Customers</button>
+                <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Leads">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions" class="center">
+                <span t-on-click="openSettings" class="fa fa-cog pe-2 ps-3 pt-1"/>
+            </t>
+            <div class="list-container">
+                <t t-foreach="statistics.values" t-as="dashboard" t-key="dashboard.id" t-if="!dashboard.isHidden">
+                    <t t-set="itemProp" t-value="dashboard.props"/>
+                    <t t-component="dashboard.Component" t-props="itemProp" />
+                </t>
+            </div>
+        </Layout>
+    </t>
+
+</templates>

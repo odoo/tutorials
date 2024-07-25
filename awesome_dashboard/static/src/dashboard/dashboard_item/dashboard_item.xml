@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div t-attf-style="width: {{18 * props.size }}rem" class="dashboard_item" >
+            <t t-slot="default" />
+        </div>
+    </t>
+
+</templates>

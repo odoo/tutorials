@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.DialogFilter">
+        <Dialog title="'Dashboard Items'" size="'md'">
+            
+            <t t-foreach="items" t-as="item" t-key="item.id" >
+                <div>
+                    <input
+                        t-on-click="() => onCheck.bind(this)(item.id)"
+                        type="checkbox"
+                        value=""
+                        t-att-checked="isActive(item.id)"/>
+                    <t t-esc="item.name"/>
+                </div>
+            </t>
+
+            <t t-set-slot="footer">
+                <button t-on-click="onApply" class="btn btn-primary">
+                    Apply
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
