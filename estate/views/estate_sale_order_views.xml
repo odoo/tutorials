@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_quotation_tree_inherited" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherited</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <!-- Remove all fields first -->
+            <xpath expr="//tree" position="replace">
+                <tree class="o_sale_order"
+                      string="Sales Orders"
+                      decoration-muted="state == 'cancel'">
+                    <field name="name" string="Number"/>
+                    <field name="state"
+                           decoration-success="state == 'sale'"
+                           decoration-info="state == 'draft'"
+                           decoration-primary="state == 'sent'"
+                           widget="badge"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_quotation_form_inherited" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_confirm']" position="attributes">
+                <attribute name="invisible">(state!='sale')</attribute>
+            </xpath>
+            <xpath expr="//header/field[@name='state']" position="replace">
+                <field name="state" widget="statusbar" statusbar_visible="draft,sent,sale"/>
+            </xpath>
+            <xpath expr="//sheet/notebook/page[@name='optional_products']" position="replace">
+            </xpath>
+            <xpath expr="//sheet/notebook/page[@name='other_information']" position="inside">
+                <group>
+                    <field name="state"/>
+                    <field name="proposal_number" readonly="1"/>
+                    <field name="sale_order_id" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sequence_sale_order_proposal" model="ir.sequence">
+        <field name="name">Sale Order Proposal Sequence</field>
+        <field name="code">sale.order</field>
+        <field name="prefix">Proposal/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="action_estate_properties_sales" model="ir.actions.act_window">
+        <field name="name">Sales proposal</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_quotation_tree_inherited')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_quotation_form_inherited')})]"/>
+    </record>
+</odoo>

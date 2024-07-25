@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- <record id="sale.sale_menu_root" model="ir.ui.menu">
+        <field name="active" eval="True"/>
+    </record> -->
+
+    <menuitem id="estate_sales_menu_first_order"
+        name="Sale Proposal"
+        parent="sale.sale_order_menu"
+        action="action_estate_properties_sales"
+        sequence="19"/>
+
+</odoo>
