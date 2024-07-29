@@ -63,4 +63,40 @@
         </field>
     </record>
 
+    <record id="real_estate.property_search" model="ir.ui.view">
+        <field name="name">Property Search</field>
+        <field name="model">real.estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- Fields -->
+                <field name="name"/>
+                <field
+                    name="description"
+                    filter_domain="['|', ('name', 'ilike', self), ('description', 'ilike', self)]"
+                />
+                <field name="selling_price" string="Maximum Price" operator="&lt;="/>
+                <field name="floor_area" string="Minimum Floor Area" operator="&gt;="/>
+                <field name="bedrooms" string="Minimum Bedrooms" operator="&gt;="/>
+
+                <!-- Filters -->
+                <filter
+                    name="filter_for_sale"
+                    string="For Sale"
+                    domain="[('state', 'in', ['new', 'offer_received'])]"
+                />
+                <separator/>
+                <filter name="filter_availability" date="availability_date"/>
+                <separator/>
+                <filter name="filter_garage" string="Garage" domain="[('has_garage', '=', True)]"/>
+                <filter name="filter_garden" string="Garden" domain="[('has_garden', '=', True)]"/>
+                <separator/>
+                <filter name="filter_inactive" string="Archived" domain="[('active', '=', False)]"/>
+
+                <!-- Group by -->
+                <filter name="group_by_state" context="{'group_by': 'state'}"/>
+                <filter name="group_by_type" context="{'group_by': 'type'}"/>
+            </search>
+        </field>
+    </record>
+
 </odoo>
