@@ -14,7 +14,7 @@
                         </block>
                     </app>
                 </xpath>
-            </field>      
+            </field>
         </record>
         <record id="project_config_settings_action" model="ir.actions.act_window">
             <field name="name">Settings</field>

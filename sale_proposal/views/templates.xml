@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="portal_sale_proposal_template">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>Sale Proposal: <t t-esc="proposal.name"/>
+                </h1>
+                <p>
+                    <strong>Status:</strong>
+                    <t t-esc="proposal.state"/>
+                </p>
+                <p>
+                    <strong>Validity Date:</strong>
+                    <t t-esc="proposal.validity_date"/>
+                </p>
+                <p>
+                    <strong>Payment Terms:</strong>
+                    <t t-esc="proposal.payment_term_id.name if proposal.payment_term_id else 'N/A'"/>
+                </p>
+
+                <div>
+                    <h3>Customer Details</h3>
+                    <p>
+                        <strong>Customer:</strong>
+                        <t t-esc="proposal.partner_id.name"/>
+                    </p>
+                    <p>
+                        <strong>Invoice Address:</strong>
+                        <t t-esc="proposal.partner_invoice_id.name if proposal.partner_invoice_id else 'N/A'"/>
+                    </p>
+                    <p>
+                        <strong>Shipping Address:</strong>
+                        <t t-esc="proposal.partner_shipping_id.name if proposal.partner_shipping_id else 'N/A'"/>
+                    </p>
+                </div>
+
+                <div>
+                    <h3>Order Lines</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="proposal.order_line" t-as="line">
+                                <tr>
+                                    <td>
+                                        <t t-esc="line.product_id.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.product_uom_qty"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.price_unit"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.price_subtotal"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt19 mb-4 text-center">
+                    <t t-if="proposal.state != 'confirm'">
+                        <a type="button" class="btn btn-primary mx-2" t-attf-href="/my/sale_proposal/accept/#{proposal.id}">Accept</a>
+                    </t>
+                    <t t-if="proposal.state != 'confirm'">
+                        <a type="button" class="btn btn-danger" t-attf-href="/my/sale_proposal/reject/#{proposal.id}">Reject</a>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
