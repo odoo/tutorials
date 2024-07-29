@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="portal_proposal_view" name="Sale Proposal View">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5>Order Proposal</h5>
+                            </div>
+                            <div class="card-body">
+                                <h4><t t-esc="proposal.order_line.price_subtotal" /> €</h4>
+                                <h6>Proposal: <span t-esc="proposal.name" /></h6>
+                                <h6>Salesperson: <span t-esc="proposal.user_id.name" /></h6>
+                                <div class="col-md-12">
+                                    <a class="btn btn-primary" href="#">Download</a>
+                                    <a class="btn btn-secondary" href="#">Print</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><span t-esc="proposal.name" /></h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="/my/proposal/update" method="post">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5>Order Date: <span t-esc="proposal.validity_date" /></h5>
+                                            <h5>Invoicing and Shipping Address: <span t-esc="proposal.partner_id.name" /></h5>
+                                            <h5>Status: <span t-esc="proposal.proposal_status" /></h5>
+                                            <h5 class="mb-2">
+                                                <strong>Sale Order ID:</strong>
+                                                <span t-esc="proposal.sale_order_id.name or 'N/A'" />
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h5>Pricing</h5>
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Products</th>
+                                                        <th>Quantity</th>
+                                                        <th>Unit Price</th>
+                                                        <th>Taxes</th>
+                                                        <th>Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr t-foreach="proposal.order_line" t-as="line">
+                                                        <td t-esc="line.product_id.name" />
+                                                        <td>
+                                                            <input type="number" name="quantity_#{line.id}" t-att-value="line.product_uom_qty" class="form-control" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" name="price_#{line.id}" t-att-value="line.price_unit" class="form-control" />
+                                                        </td>
+                                                        <td>
+                                                            <ul class="list-unstyled">
+                                                                <t t-foreach="line.tax_id" t-as="tax">
+                                                                    <li t-esc="tax.name" />
+                                                                </t>
+                                                            </ul>
+                                                        </td>
+                                                        <td t-esc="line.price_subtotal" />
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            <a class="btn btn-primary" t-attf-href="/my/proposal/accept/#{proposal.id}">Accept</a>
+                                            <a class="btn btn-secondary" t-attf-href="/my/proposal/reject/#{proposal.id}">Reject</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_proposal_list" name="Proposal List">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h1>Proposals</h1>
+                <table class="o_list_table position-relative table table-sm o_list_table_ungrouped table-striped o_portal_my_doc_table mb-0">
+                    <thead>
+                        <tr class="active">
+                            <th>Number</th>
+                            <th class="text-end">Proposal Date</th>
+                            <th class="text-end">Valid Until</th>
+                            <th class="text-end">Total</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="proposals" t-as="proposal">
+                            <td>
+                                <a t-attf-href="/my/proposal/#{proposal.id}">
+                                    <t t-esc="proposal.name" />
+                                </a>
+                            </td>
+                            <td class="text-end">
+                                <span t-esc="proposal.create_date.strftime('%m/%d/%Y %H:%M:%S')" />
+                            </td>
+                            <td class="text-end">
+                                <span t-esc="proposal.validity_date" />
+                            </td>
+                            <td class="text-end">
+                                <span>
+                                    <span class="oe_currency_value" t-esc="proposal.amount_total" /> €
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <a t-attf-href="/my/proposal/#{proposal.id}" class="btn btn-primary btn-sm">View</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>

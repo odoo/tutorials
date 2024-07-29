@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_sale_proposal" model="ir.sequence">
+        <field name="name">Sale Proposal</field>
+        <field name="code">sale.proposal</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_sale_proposal_tree" model="ir.ui.view">
+        <field name="name">sale.proposal.tree</field>
+        <field name="model">sale.proposal</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Proposals">
+                <field name="name" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_sale_proposal_form" model="ir.ui.view">
+        <field name="name">sale.proposal.form</field>
+        <field name="model">sale.proposal</field>
+        <field name="arch" type="xml">
+            <form string="Sale Proposal">
+                <header>
+                    <button name="action_preview_sale_proposal" string="Preview" type="object"/>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-success" invisible="state in ['draft', 'sent']"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                    <group>
+                        <group name="partner_details">
+                            <field name="partner_id"
+                                widget="res_partner_many2one"
+                                placeholder="Type to find a customer..."
+                            />
+                            <field name="partner_invoice_id"
+                            />
+                            <field name="partner_shipping_id"
+                            />
+                        </group>
+                        <group>
+                            <field name="state" />
+                            <field name="validity_date" />
+                            <field name="payment_term_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines" name="order_lines">
+                            <field
+                                name="order_line"
+                                widget="section_and_note_one2many"
+                                mode="tree"
+                                readonly="state == 'cancel'">
+                                <tree editable="bottom">
+                                    <field name="product_id" />
+                                    <field name="product_uom_qty" />
+                                    <field name="price_unit" />
+                                    <field name="tax_id"/>
+                                    <field name="price_subtotal" />
+                                </tree>
+                                <form>
+                                    <field name="product_id" />
+                                    <field name="product_uom_qty" />
+                                    <field name="price_unit" />
+                                    <field name="tax_id" widget="many2many_tags" />
+                                    <field name="price_subtotal" />
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Other Info" name="other_information">
+                            <group>
+                                <field name="company_id" />
+                                <field name="user_id" widget="many2one_avatar_user" />
+                                <field name="team_id"
+                                    context="{'kanban_view_ref': 'sales_team.crm_team_view_kanban'}"
+                                    options="{'no_create': True}" />
+                                <field name="proposal_status" readonly="1" />
+                                <field name="sale_order_id" readonly="1" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Define the action -->
+    <record id="action_sale_proposal" model="ir.actions.act_window">
+        <field name="name">Sale Proposals</field>
+        <field name="res_model">sale.proposal</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
