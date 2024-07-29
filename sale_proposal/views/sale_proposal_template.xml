@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sale_proposal_order_portal" name="portal_proposal">
+        <t t-call="website.layout">
+            <div class="side_bar p-3" style="flex: 1; max-width: 300px; border-right: 1px solid #ddd;">
+                <h2 t-esc="proposal.order_ids.subtotal"/>
+                <h5 t-esc="proposal.name" class="my-3"/>
+                <h6 class="text-muted mb-3">Your contact</h6>
+                <div t-if="proposal.customer" style="display: flex; align-items: center;">
+                    <img class="o_avatar o_portal_contact_img rounded" t-att-src="image_data_uri(proposal.customer.avatar_128)" alt="Contact" style="width: 50px; height: 50px;"/>
+                    <h6 t-esc="proposal.customer.name"/>
+                </div>
+            </div>
+            <div class="container p-4 my-4">
+                <div id="introduction">
+                    <div class="row" id="intro_row">
+                        <h2 class="mb-4 col-12 col-lg flex-grow-1">
+                            Proposal -
+                            <span t-esc="proposal.name"/>
+                        </h2>
+                        <p>
+                            <strong>Customer:</strong>
+                            <span t-esc="proposal.customer.name"/>
+                        </p>
+                        <p>
+                            <strong>Quotation date:</strong>
+                            <span t-esc="proposal.quotation_date"/>
+                        </p>
+                        <p>
+                            <strong>Validity date:</strong>
+                            <span t-esc="proposal.expiration_date"/>
+                        </p>
+                        <p>
+                            <strong>Proposal Status:</strong>
+                            <span t-esc="proposal.state"/>
+                        </p>
+                    </div>
+                </div>
+                <div id="sale_info" class="col-12 col-lg-6 mb-4">
+                    <tr>
+                        <t t-foreach="proposal" t-as="pro">
+                            <div>
+                                <h3>Order Lines</h3>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Unit Price</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="proposal.order_ids" t-as="line">
+                                            <tr>
+                                                <td>
+                                                    <t t-esc="line.product.name"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.quantity"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.unit_price"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line.subtotal"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                        <td colspan="3" class="text-end">Subtotal</td>
+                                            <td>
+                                                <t t-esc="pro.sub_total"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-end">Total</td>
+                                            <td>
+                                                <t t-esc="pro.total"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </tr>
+                </div>
+               <div class="mt-4">
+                    <t t-if="proposal.proposal_status == 'not_reviewed'">
+                        <a type="button" class="btn btn-primary" t-attf-href="/my/sale_proposal/accept/#{proposal.id}">Accept</a>
+                        <a type="button" class="btn btn-danger" t-attf-href="/my/sale_proposal/reject/#{proposal.id}">Reject</a>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="action_sale_proposal_menu"
+     name="Sale Proposal"
+     action="action_sale_proposal"
+     parent="sale.sale_order_menu"
+     sequence="60"/>
+</odoo>

@@ -10,7 +10,7 @@
                             <div class="card text-center">
                                 <div class="card-body">
                                     <img src="/estate/static/descriptions/selfie.png"
-                                        t-att-style="'max-width: 100%; max-height: 200px;'" 
+                                        t-att-style="'max-width: 100%; max-height: 200px;'"
                                     />
                                     <h5 class="card-title"><t t-esc="property.name"/></h5>
                                     <p class="card-text"><t t-esc="property.expected_price"/></p>
@@ -48,4 +48,3 @@
         </t>
     </template>
 </odoo>
-    
