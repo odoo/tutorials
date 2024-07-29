@@ -1,0 +1,12 @@
+<odoo>
+    <record id="portal_sale_proposal_rule" model="ir.rule">
+        <field name="name">Sale Proposal: portal access</field>
+        <field name="model_id" ref="model_sale_proposal" />
+        <field name="domain_force">[('partner_id', 'child_of', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+</odoo>
