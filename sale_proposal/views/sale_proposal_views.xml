@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_sale_proposal_tree" model="ir.ui.view">
+        <field name="name">sale.proposal.tree</field>
+        <field name="model">sale.proposal</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Proposals">
+                <field name="name"/>
+                <field name="state" widget="badge" decoration-success="state in ['confirm']"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_sale_proposal_form" model="ir.ui.view">
+        <field name="name">sale.proposal.form</field>
+        <field name="model">sale.proposal</field>
+        <field name="arch" type="xml">
+            <form string="Sale Proposal">
+                <header> 
+                    <button name="action_quotation_send" string="Send by Email" type="object" class="btn-primary" data-hotkey="g"/>
+                    <button name="action_confirm" id="action_confirm" data-hotkey="q" string="Confirm" class="btn-primary" type="object" invisible="state not in ['confirm']"/>
+                    <button name="action_preview_sale_proposal" string="Preview" type="object" class="btn-secondary" invisible="state in ['draft']"/>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <h1>
+                     <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="customer" string="Customer"/>
+                            <field name="quotation_template" string="Quotation Template"/>
+                        </group>
+                        <group>
+                            <field name="expiration_date"/>
+                            <field name="quotation_date"/>
+                            <field name="payment_terms"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines">
+                            <field name="order_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="proposal_status"/>
+                                <field name="sales_order" widget="url"/>
+                            </group>    
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sale_proposal" model="ir.actions.act_window">
+        <field name="name">Proposal</field>
+        <field name="res_model">sale.proposal</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="seq_sale_proposal" model="ir.sequence">
+            <field name="name">Sale Proposal</field>
+            <field name="code">sale.proposal</field>
+            <field name="padding">4</field>
+            <field name="number_increment">1</field>
+     </record>
+</odoo>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="portal_sale_proposal_template">
+        <t t-call="website.layout">
+            <div class="d-flex flex-row container p-4 my-4">
+                <!-- Sidebar -->
+                <div class="side_bar p-3" style="flex: 1; max-width: 300px; border-right: 1px solid #ddd;">
+                    <h2 t-esc="proposal.order_ids.sub_total"/>
+                    <h5 t-esc="proposal.name" class="my-3"/>
+                    <h6 class="text-muted mb-3">Your contact</h6>
+                    <div t-if="proposal.customer" style="display: flex; align-items: center;">
+                        <img class="o_avatar o_portal_contact_img rounded" t-att-src="image_data_uri(proposal.customer.avatar_128)" alt="Contact" style="width: 50px; height: 50px;"/>
+                        <h6 t-esc="proposal.customer.name"/>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="main_content p-3" style="flex: 3;">
+                    <h1>Sale Proposal: <t t-esc="proposal.name"/></h1>
+                    <p><strong>Status:</strong> <t t-esc="proposal.state"/></p>
+                    <p><strong>Validity Date:</strong> <t t-esc="proposal.expiration_date"/></p>
+                    <p><strong>Payment Terms:</strong> <t t-esc="proposal.payment_terms if proposal.payment_terms else 'N/A'"/></p>
+
+                    <div>
+                        <h3>Customer Details</h3>
+                        <p><strong>Customer:</strong> <t t-esc="proposal.customer.name"/></p>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3>Order Lines</h3>
+                        <table class="table p-4 my-5">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="proposal.order_ids" t-as="line">
+                                    <tr>
+                                        <td><t t-esc="line.product.name"/></td>
+                                        <td><t t-esc="line.quantity"/></td>
+                                        <td><t t-esc="line.unit_price"/></td>
+                                        <td><t t-esc="line.sub_total"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                      <t t-if="proposal.proposal_status == 'not_reviewed'">
+                        <a type="button" class="btn btn-primary" t-attf-href="/my/sale_proposal/accept/#{proposal.id}">Accept</a>
+                        <a type="button" class="btn btn-danger" t-attf-href="/my/sale_proposal/reject/#{proposal.id}">Reject</a>
+                    </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

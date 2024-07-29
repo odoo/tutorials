@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="actionopen" model="ir.actions.act_window">
+        <field name="name">Sale Proposal</field>
+        <field name="res_model">sale.proposal.order</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_sale_proposal_order_tree" model="ir.ui.view">
+        <field name="name">sale.proposal.order.tree</field>
+        <field name="model">sale.proposal.order</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Proposal Order Tree View" editable="bottom">
+                <field name="product"/>
+                <field name="description"/>
+                <field name="quantity"/>
+                <field name="product_uom"/>
+                <field name="unit_price"/>
+                <field name="tax_id" widget="badge" optional="show"/>
+                <field name="sub_total"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
