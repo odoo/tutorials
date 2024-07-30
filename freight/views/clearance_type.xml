@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_clearance_type" model="ir.actions.act_window">
+        <field name="name">clearance type</field>
+        <field name="res_model">clearance.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="view_clearance_type_tree" model="ir.ui.view">
+        <field name="name">clearance.type.tree</field>
+        <field name="model">clearance.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status" widget='boolean_toggle'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_clearance_type_form" model="ir.ui.view">
+        <field name="name">clearance.type.form</field>
+        <field name="model">clearance.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="status" widget='boolean_toggle'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

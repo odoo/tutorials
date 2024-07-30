@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   
+    <menuitem id="menu_freight_data_root" name="Freight MD" sequence="1" groups="freight_group_user,freight_group_manager,freight_group_administration">
+        <menuitem id="menu_freight_data" name="location">
+            <menuitem id="menu_port_cities" name="port and cities" action="action_port_cities"/>
+            <menuitem id="menu_countries" name="Countries" action="action_countries"/>
+            <menuitem id="menu_county_group" name="County Groups" action="action_county_group"/>
+        </menuitem>
+        <menuitem id="menu_freight_setting" name="Freight Setting">
+            <menuitem id="menu_freight_type" name="Freight Type" action="action_freight_type"/>
+            <menuitem id="menu_freight_package_type" name="Package Type" action="action_freight_package_type"/>
+            <menuitem id="menu_freight_container_type" name="Container Type" action="action_freight_container_type"/>
+            <menuitem id="menu_freight_containers" name="Containers" action="action_freight_container"/>
+            <menuitem id="menu_freight_bill_lading_type" name="Bill Lading Type" action="action_freight_bill_lading_type"/>
+            <menuitem id="menu_freight_ocean_shipment_scope" name="Ocean shipments scope" action="action_freight_ocean_shipment_scope"/>
+            <menuitem id="menu_freight_vessels" name="Vessels" action="action_freight_vessels"/>
+            <menuitem id="menu_freight_flights" name="flights" action="action_freight_flights"/>
+        </menuitem>
+        <menuitem id="menu_freight_service_setting" name="Service Setting">
+            <menuitem id="menu_service_scope" name="Service Scope" action="action_service_scope"/>
+            <menuitem id="menu_clearance_type" name="Clearance Type" action="action_clearance_type"/>
+            <menuitem id="menu_tracking_stage" name="Tracking Stage" action="action_tracking_stage"/>
+            <menuitem id="menu_activity_type" name="Activity Type" action="action_activity_type"/>
+            <menuitem id="menu_incoterms" name="Incoterms" action="action_freight_incoterms"/>
+        </menuitem>
+        <menuitem id="menu_freight_configuration" name="Configuration">
+            <menuitem id="menu_commodity_group" name="Commodity Group" action="action_commodity_group"/>
+            <menuitem id="menu_Commodities" name="Commodities" action="action_configuration_commodities"/>
+            <menuitem id="menu_documents_type" name="Documents Type" action="action_documents_type"/>
+            <menuitem id="menu_freight_tags" name="Freight Tags" action="action_freight_tags"/>
+        </menuitem>
+    </menuitem>
+</odoo>

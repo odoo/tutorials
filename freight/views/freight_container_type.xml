@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_freight_container_type" model="ir.actions.act_window">
+        <field name="name">freight container type</field>
+        <field name="res_model">freight.container.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="view_freight_container_type_tree" model="ir.ui.view">
+        <field name="name">freight.container.type.tree</field>
+        <field name="model">freight.container.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="size"/>
+                <field name="volume"/>
+                <field name="status" widget='boolean_toggle'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_freight_container_type_form" model="ir.ui.view">
+        <field name="name">freight.container.type.form</field>
+        <field name="model">freight.container.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="size"/>
+                        <field name="volume"/>
+                        <field name="is_option"/>
+                        <field name="status" widget='boolean_toggle'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_freight_container_type_search" model="ir.ui.view">
+        <field name="name">freight.container.type.search</field>
+        <field name="model">freight.container.type</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Active" name="active" domain="[('status', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('status', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

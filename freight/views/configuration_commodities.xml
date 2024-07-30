@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_configuration_commodities" model="ir.actions.act_window">
+        <field name="name">commodity data</field>
+        <field name="res_model">configuration.commodities</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="view_configuration_commodities_tree" model="ir.ui.view">
+        <field name="name">configuration.commodities.tree</field>
+        <field name="model">configuration.commodities</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="hs_code" placeholder="84 02 38 00 00"/>
+                <field name="name"/>
+                <field name="commodity_group_id"/>
+                <field name="commodity_req"/>
+                <field name="status" widget='boolean_toggle'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_configuration_commodities_form" model="ir.ui.view">
+        <field name="name">configuration.commodities.form</field>
+        <field name="model">configuration.commodities</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="hs_code" placeholder="84 02 38 00 00"/>
+                        <field name="import_tax_number"/>
+                        <field name="vat"/>
+                        <field name="tag_id"/>
+                        <field name="commodity_group_id"/>
+                        <field name="commodity_req"/>
+                    </group>
+                    <notebook>
+                        <page string="Approvals">
+                            <group>
+                                <group string="Import" rowspan="2">
+                                    <field name="import_approval_description_ids">
+                                        <tree editable="bottom">
+                                            <field name="description"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group string="Export" rowspan="2">
+                                    <field name="export_approval_description_ids">
+                                        <tree editable="bottom">
+                                            <field name="description"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Customs Req.">
+                            <group>
+                                <group string="Import" rowspan="2">
+                                    <field name="import_customs_description_ids">
+                                        <tree editable="bottom">
+                                            <field name="description"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group string="Export" rowspan="2">
+                                    <field name="export_customs_description_ids">
+                                        <tree editable="bottom">
+                                            <field name="description"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Tracking">
+                            <group>
+                                <group string="Details" colspan="2">
+                                    <field name="create_uid" readonly="1"/>
+                                    <field name="create_date" readonly="1"/>
+                                    <field name="write_uid" readonly="1"/>
+                                    <field name="write_date" readonly="1"/>
+                                    <field name="industry_id"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_configuration_commodities_search" model="ir.ui.view">
+        <field name="name">configuration.commodities.search</field>
+        <field name="model">configuration.commodities</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Active" name="active" domain="[('status', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('status', '=', False)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Commodity Group" name="commodity_group" context="{'group_by': 'commodity_group_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

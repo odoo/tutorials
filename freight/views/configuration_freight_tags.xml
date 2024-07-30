@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_freight_tags" model="ir.actions.act_window">
+        <field name="name">freight tags</field>
+        <field name="res_model">configuration.freight.tags</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="view_configuration_freight_tags_tree" model="ir.ui.view">
+        <field name="name">configuration.freight.tags.tree</field>
+        <field name="model">configuration.freight.tags</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_configuration_freight_tags_form" model="ir.ui.view">
+        <field name="name">configuration.freight.tags.form</field>
+        <field name="model">configuration.freight.tags</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="status" widget='boolean_toggle'/>        
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

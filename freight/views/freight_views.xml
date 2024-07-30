@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_freight_data" model="ir.actions.act_window">
+        <field name="name">freight data</field>
+        <field name="res_model">freight.data</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_port_city_tree" model="ir.ui.view">
+        <field name="name">freight.data.tree</field>
+        <field name="model">freight.data</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <!-- <field name="country_id"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_port_city_form" model="ir.ui.view">
+        <field name="name">freight.data.form</field>
+        <field name="model">freight.data</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <!-- <field name="country_id"/> -->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

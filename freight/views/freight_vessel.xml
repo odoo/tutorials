@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_freight_vessels" model="ir.actions.act_window">
+        <field name="name">freight vessel</field>
+        <field name="res_model">freight.vessel</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_freight_vessel_tree" model="ir.ui.view">
+        <field name="name">freight.vessel.tree</field>
+        <field name="model">freight.vessel</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="vessel_owner_id"/>
+                <field name="status" widget='boolean_toggle'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_freight_vessel_form" model="ir.ui.view">
+        <field name="name">freight.vessel.form</field>
+        <field name="model">freight.vessel</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="vessel_owner_id"/>
+                        <field name="status" widget='boolean_toggle'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_freight_vessel_search" model="ir.ui.view">
+        <field name="name">freight.vessel.search</field>
+        <field name="model">freight.vessel</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Active" name="active" domain="[('status', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('status', '=', False)]"/>
+                <group string="Group By">
+                    <filter string="Vessel Owner" name="vessel_owner_id" context="{'group_by': 'vessel_owner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

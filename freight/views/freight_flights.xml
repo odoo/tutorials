@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_freight_flights" model="ir.actions.act_window">
+        <field name="name">freight flights</field>
+        <field name="res_model">freight.flight</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="view_freight_flights_tree" model="ir.ui.view">
+        <field name="name">freight.flights.tree</field>
+        <field name="model">freight.flight</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="airline_id"/>
+                <field name="status" widget='boolean_toggle'/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_freight_flights_form" model="ir.ui.view">
+        <field name="name">freight.flights.form</field>
+        <field name="model">freight.flight</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="airline_id"/>
+                        <field name="status" widget='boolean_toggle'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_freight_flights_search" model="ir.ui.view">
+        <field name="name">freight.flights.search</field>
+        <field name="model">freight.flight</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Active" name="active" domain="[('status', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('status', '=', False)]"/>
+                <group string="Group By">
+                    <filter string="Airline" name="airline_id" context="{'group_by': 'airline_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
