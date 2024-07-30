@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="selection_air" model="freight.selection">
+        <field name="name">Air</field>
+    </record>
+    <record id="selection_sea" model="freight.selection">
+        <field name="name">Sea</field>
+    </record>
+    <record id="selection_inland" model="freight.selection">
+        <field name="name">Inland</field>
+    </record>
+</odoo>

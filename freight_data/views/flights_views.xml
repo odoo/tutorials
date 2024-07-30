@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_flights_tree" model="ir.ui.view">
+        <field name="name">flights.tree</field>
+        <field name="model">flights</field>
+        <field name="arch" type="xml">
+            <tree string="Flights Tree">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="airline"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_flights_form" model="ir.ui.view">
+        <field name="name">flights.form</field>
+        <field name="model">flights</field>
+        <field name="arch" type="xml">
+            <form string="Flights Form">
+                <sheet>
+                    <group>
+                        <field name="code" required="1"/>
+                        <field name="name"/>
+                        <field name="airline"/>
+                        <field name="status" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_flights_search" model="ir.ui.view">
+            <field name="name">flights.search</field>
+            <field name="model">flights</field>
+            <field name="arch" type="xml">
+                <search string="Vessels">
+                    <filter name="status" string="Active" domain="[('status', '=', True)]"/>
+                    <filter name="status" string="Inactive" domain="[('status', '=', False)]"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter name="airline" string="Airline" context="{'group_by':'airline'}"/>
+                    </group>
+                </search>
+            </field>
+    </record>
+
+    <record id="action_flights" model="ir.actions.act_window">
+        <field name="name">Flights</field>
+        <field name="res_model">flights</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

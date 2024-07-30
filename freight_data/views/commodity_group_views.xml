@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_commodity_group_tree" model="ir.ui.view">
+        <field name="name">commodity.group.tree</field>
+        <field name="model">commodity.group</field>
+        <field name="arch" type="xml">
+            <tree string="Commodity Group Tree">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+     <record id="view_commodity_group_form" model="ir.ui.view">
+        <field name="name">commodity.group.form</field>
+        <field name="model">commodity.group</field>
+        <field name="arch" type="xml">
+            <form string="Commodity Group Form">
+                <sheet>
+                    <group>
+                        <field name="code" required="1"/>
+                        <field name="name"/>
+                        <field name="status" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_commodity_group" model="ir.actions.act_window">
+        <field name="name">Commodity Group</field>
+        <field name="res_model">commodity.group</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_package_type_tree" model="ir.ui.view">
+        <field name="name">package.type.tree</field>
+        <field name="model">package.type</field>
+        <field name="arch" type="xml">
+            <tree string="Package Type Tree">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_package_type_form" model="ir.ui.view">
+        <field name="name">package.type.form</field>
+        <field name="model">package.type</field>
+        <field name="arch" type="xml">
+            <form string="Package Type Form">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="transport_modes"/>
+                        <field name="status" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_package_type_search" model="ir.ui.view">
+        <field name="name">package.type.search</field>
+        <field name="model">package.type</field>
+        <field name="arch" type="xml">
+            <search string="Package Type">
+                <filter name="lcl" string="LCL" domain="[('transport_modes', '=', 'lcl')]"/>
+                <filter name="air" string="AIR" domain="[('transport_modes', '=', 'air')]"/>
+                <filter name="status" string="Active" domain="[('status', '=', True)]"/>
+                <filter name="status" string="Inactive" domain="[('status', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_package_type" model="ir.actions.act_window">
+        <field name="name">Package Type</field>
+        <field name="res_model">package.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
