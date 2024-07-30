@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_freight_data_tree" model="ir.ui.view">
+        <field name="name">freight.data.tree</field>
+        <field name="model">freight.data</field>
+        <field name="arch" type="xml">
+            <tree string="Freight Data">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="country_id"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_freight_data_form" model="ir.ui.view">
+        <field name="name">freight.data.form</field>
+        <field name="model">freight.data</field>
+        <field name="arch" type="xml">
+            <form string="Freight Data">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="country_id"/>
+                        <field name="display_name" readonly="1"/>
+                        <field name="is_selection_ids" widget='many2many_checkboxes'/>
+                        <field name="status" statusbar_visible='true' widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_freight_data_search" model="ir.ui.view">
+        <field name="name">freight.data.search</field>
+        <field name="model">freight.data</field>
+        <field name="arch" type="xml">
+            <search string="Search Freight Data">
+                <filter string="Active" name="active" domain="[('status', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('status', '=', False)]"/>
+                <separator/>
+                <filter string="Sea" name="sea" domain="[('is_selection_ids.name', 'in', ['Sea'])]"/>
+                <filter string="Air" name="air" domain="[('is_selection_ids.name', 'in', ['Air'])]"/>
+                <filter string="Inland" name="inland" domain="[('is_selection_ids.name', 'in', ['Inland'])]"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter string="Country" name="country" context="{'group_by': 'country_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_freight_data" model="ir.actions.act_window">
+        <field name="name">Ports &amp; Cities</field>
+        <field name="res_model">freight.data</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_freight_data_tree"/>
+        <field name="search_view_id" ref="view_freight_data_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new entry for Ports and Cities.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="selection_DRY" model="commodity.request">
+        <field name="name">DRY</field>
+    </record>
+    <record id="selection_Reefer" model="commodity.request">
+        <field name="name">Reefer</field>
+    </record>
+    <record id="selection_IMO" model="commodity.request">
+        <field name="name">IMO</field>
+    </record>
+</odoo>

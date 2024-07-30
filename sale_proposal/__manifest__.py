@@ -13,4 +13,5 @@
         'views/portal_sale_proposal_template.xml',
     ],
     'application': True,
+    'license': 'AGPL-3',
 }

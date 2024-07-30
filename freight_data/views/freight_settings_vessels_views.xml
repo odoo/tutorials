@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_vessels_tree" model="ir.ui.view">
+        <field name="name">vessels.tree</field>
+        <field name="model">vessels</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="vessel_owner_id"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_vessels_form" model="ir.ui.view">
+        <field name="name">vessels.form</field>
+        <field name="model">vessels</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="vessel_owner_id"/>
+                        <field name="status" statusbar_visible='true' widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_vessels_search" model="ir.ui.view">
+        <field name="name">vessels.search</field>
+        <field name="model">vessels</field>
+        <field name="arch" type="xml">
+            <search string="Search Vessels">
+                <filter string="Active" name="active" domain="[('status', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('status', '=', False)]"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter string="Vessel Owner" name="vessel_owner" context="{'group_by': 'vessel_owner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_vessels" model="ir.actions.act_window">
+        <field name="name">Vessels</field>
+        <field name="res_model">vessels</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_vessels_search"/>
+    </record>
+</odoo>

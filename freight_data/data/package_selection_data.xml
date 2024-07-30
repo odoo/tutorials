@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="selection_LCL" model="package.selection">
+        <field name="name">LCL</field>
+    </record>
+    <record id="selection_AIR" model="package.selection">
+        <field name="name">AIR</field>
+    </record>
+</odoo>

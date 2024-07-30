@@ -1,0 +1,33 @@
+<odoo>
+    <record id="view_bill_of_lading_type_tree" model="ir.ui.view">
+        <field name="name">bill.of.lading.type.tree</field>
+        <field name="model">bill.of.lading.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_bill_of_lading_type_form" model="ir.ui.view">
+        <field name="name">bill.of.lading.type.form</field>
+        <field name="model">bill.of.lading.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="status" statusbar_visible='true' widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_bill_of_lading_type" model="ir.actions.act_window">
+        <field name="name">Bill Of Lading Type</field>
+        <field name="res_model">bill.of.lading.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

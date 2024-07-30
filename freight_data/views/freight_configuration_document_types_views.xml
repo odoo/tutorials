@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_document_types_tree" model="ir.ui.view">
+        <field name="name">document.types.tree</field>
+        <field name="model">document.types</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="doc_type"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_document_types_form" model="ir.ui.view">
+        <field name="name">document.types.form</field>
+        <field name="model">document.types</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="doc_type" widget='radio'/>
+                        <field name="status" statusbar_visible='true' widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_document_types" model="ir.actions.act_window">
+        <field name="name">Document Types</field>
+        <field name="res_model">document.types</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

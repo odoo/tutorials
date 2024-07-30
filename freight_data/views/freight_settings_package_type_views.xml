@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_package_type_tree" model="ir.ui.view">
+        <field name="name">package.type.tree</field>
+        <field name="model">package.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_package_type_form" model="ir.ui.view">
+        <field name="name">package.type.form</field>
+        <field name="model">package.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="is_selection_ids" widget='many2many_checkboxes'/>
+                        <field name="status" statusbar_visible='true' widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_package_type_search" model="ir.ui.view">
+        <field name="name">package.type.search</field>
+        <field name="model">package.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Package Types">
+                <filter string="Active" name="active" domain="[('status', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('status', '=', False)]"/>
+                <separator/>
+                <filter string="LCL" name="lcl" domain="[('is_selection_ids.name', 'in', ['LCL'])]"/>
+                <filter string="AIR" name="air" domain="[('is_selection_ids.name', 'in', ['AIR'])]"/>
+                <separator/>
+            </search>
+        </field>
+    </record>
+    <record id="action_package_type" model="ir.actions.act_window">
+        <field name="name">Package Type</field>
+        <field name="res_model">package.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_package_type_search"/>
+    </record>
+</odoo>
