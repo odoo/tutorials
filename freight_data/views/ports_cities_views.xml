@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_port_city_tree" model="ir.ui.view">
+        <field name="name">freight.data.tree</field>
+        <field name="model">freight.data</field>
+        <field name="arch" type="xml">
+            <tree string="Ports &amp; Cities">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="country_id"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_port_city_form" model="ir.ui.view">
+        <field name="name">freight.data.form</field>
+        <field name="model">freight.data</field>
+        <field name="arch" type="xml">
+            <form string="Ports &amp; Cities">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="country_id" options="{'no_open': True, 'no_create': True, 'no_create_edit': True}"/>
+                        </group>
+                        <group>
+                            <field name="display_name" readonly="1"/>
+                            <field name="transport_modes"/>
+                            <field name="status" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ports_cities_search" model="ir.ui.view">
+            <field name="name">freight.data.search</field>
+            <field name="model">freight.data</field>
+            <field name="arch" type="xml">
+                <search string="Port City">
+                    <field name="status"/>
+                    <field name="transport_modes"/>
+                    <filter name="sea" string="Sea" domain="[('transport_modes', '=', 'sea')]"/>
+                    <filter name="air" string="Air" domain="[('transport_modes', '=', 'air')]"/>
+                    <filter name="inland" string="Inland" domain="[('transport_modes', '=', 'inland')]"/>
+                    <filter name="status" string="Active" domain="[('status', '=', '1')]"/>
+                    <filter name="status" string="Inactive" domain="[('status', '=', '0')]"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter name="transport_modes" string="Country" context="{'group_by':'country_id'}"/>
+                    </group>
+                </search>
+            </field>
+    </record>
+
+    <record id="action_port_cities" model="ir.actions.act_window">
+        <field name="name">Ports Cities</field>
+        <field name="res_model">freight.data</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

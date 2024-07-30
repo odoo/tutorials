@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_freight_data_root" name="Freight Data" sequence="10"/>
+
+    <menuitem id="menu_freight_data_locations" name="Locations" parent="menu_freight_data_root" sequence="1">
+        <menuitem id="freight_data_ports_cities_menu" name="Ports &amp; Cities" action="action_port_cities" sequence="1"/>
+        <menuitem id="freight_data_countries_menu" name="Countries" action="action_freight_res_country_form" sequence="2"/>
+        <menuitem id="freight_data_country_group_menu" name="Country Group" action="action_freight_res_country_group" sequence="3"/>
+    </menuitem> 
+
+    <menuitem id="freight_data_freight_setting_menu" name="Freight Setting" parent="menu_freight_data_root" sequence="2">
+        <menuitem id="freight_data_freight_type_menu" name="Freight Type" action="action_freight_type" sequence="1"/>
+        <menuitem id="freight_data_package_type_menu" name="Package Type" action="action_package_type" sequence="2"/>
+        <menuitem id="freight_data_container_type_menu" name="Container Type" action="action_container_type" sequence="3"/>
+        <menuitem id="freight_data_containers_menu" name="Containers" action="action_freight_container" sequence="4"/>
+        <menuitem id="freight_lading_type_menu" name="Lading Type" action="action_lading_type" sequence="5"/>
+        <menuitem id="freight_data_ocean_shipments_scope_menu" name="Ocean Shipments Scope" action="action_ocean_shipments_scope" sequence="6"/>
+        <menuitem id="freight_data_vessels_menu" name="Vessels" action="action_freight_vessels" sequence="7"/>
+        <menuitem id="freight_data_flights_menu" name="Flights" action="action_flights" sequence="8"/>
+    </menuitem>
+
+    <menuitem id="freight_data_service_setting_menu" name="Service Setting" parent="menu_freight_data_root" sequence="3">
+        <menuitem id="freight_data_service_scope_menu" name="Service Scope" action="action_service_scope" sequence="1"/>
+        <menuitem id="freight_data_clearance_type_menu" name="Clearance Type" action="action_clearance_type" sequence="2"/>
+        <menuitem id="freight_data_incoterms_menu" name="Incoterms" action="action_freight_incoterms" sequence="3"/>
+        <menuitem id="freight_data_traking_stages_menu" name="Traking Stages" action="action_traking_stages" sequence="3"/>
+        <menuitem id="freight_data_activity_type_menu" name="Activity Type" action="action_activity_type" sequence="3"/>
+    </menuitem>
+
+    <menuitem id="freight_data_configuration_menu" name="Configuration" parent="menu_freight_data_root" sequence="4">
+        <menuitem id="freight_data_commodity_group_menu" name="Commodity Group" action="action_commodity_group" sequence="1"/>
+        <menuitem id="freight_data_commodity_data_menu" name="Commodity Data" action="action_commodity_data" sequence="2"/>
+        <menuitem id="freight_data_partner_type_menu" name="Partner Type" action="action_partner_type" sequence="3"/>
+        <menuitem id="freight_data_partner_types_menu" name="Documents Types" action="action_document_type" sequence="4"/>
+        <menuitem id="freight_data_freight_tag_menu" name="Freight Tag" action="action_freight_tags" sequence="5"/>
+    </menuitem>
+</odoo>

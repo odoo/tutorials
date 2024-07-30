@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_freight_vessels_tree" model="ir.ui.view">
+        <field name="name">freight.vessels.tree</field>
+        <field name="model">freight.vessels</field>
+        <field name="arch" type="xml">
+            <tree string="Vessels Tree">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="vessel_owner"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_freight_vessels_form" model="ir.ui.view">
+        <field name="name">freight.vessels.form</field>
+        <field name="model">freight.vessels</field>
+        <field name="arch" type="xml">
+            <form string="Vessels Form">
+                <sheet>
+                    <group>
+                        <field name="code" required="1"/>
+                        <field name="name"/>
+                        <field name="vessel_owner"/>
+                        <field name="status" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_freight_vessels_search" model="ir.ui.view">
+            <field name="name">freight.vessels.search</field>
+            <field name="model">freight.vessels</field>
+            <field name="arch" type="xml">
+                <search string="Vessels">
+                    <filter name="status" string="Active" domain="[('status', '=', '1')]"/>
+                    <filter name="status" string="Inactive" domain="[('status', '=', '0')]"/>
+                    <group expand="1" string="Group By">
+                        <filter name="vessel_owner" string="Vessel Owner" context="{'group_by':'vessel_owner'}"/>
+                    </group>
+                </search>
+            </field>
+    </record>
+
+    <record id="action_freight_vessels" model="ir.actions.act_window">
+        <field name="name">vessels</field>
+        <field name="res_model">freight.vessels</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
