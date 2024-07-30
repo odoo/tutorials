@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_flight_form" model="ir.ui.view">
+        <field name="name">flight.form</field>
+        <field name="model">flight</field>
+        <field name="arch" type="xml">
+            <form string="Flight">
+                <sheet>
+                    <group>
+                        <field name="code" />
+                        <field name="name" />
+                        <field name="airline_id" />
+                        <field name="status" widget='boolean_toggle' />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_flight_tree" model="ir.ui.view">
+        <field name="name">flight.tree</field>
+        <field name="model">flight</field>
+        <field name="arch" type="xml">
+            <tree string="Flight">
+                <field name="code" />
+                <field name="name" />
+                <field name="airline_id" />
+                <field name="status" widget='boolean_toggle' />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_flight_search" model="ir.ui.view">
+        <field name="name">Flight Search</field>
+        <field name="model">flight</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Active" name="filter_active" domain="[('status', '=', True)]" />
+                <filter string="Inactive" name="filter_inactive" domain="[('status', '=', False)]" />
+                <group expand="0" string="Group by">
+                    <filter name="group_by_airline_id" string="Airline"
+                        context="{'group_by': 'airline_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_flight" model="ir.actions.act_window">
+        <field name="name">Flights</field>
+        <field name="res_model">flight</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_flight_tree" />
+        <field name="search_view_id" ref="view_flight_search" />
+    </record>
+</odoo>

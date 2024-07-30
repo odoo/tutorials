@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_service_scope_form" model="ir.ui.view">
+        <field name="name">service.scope.form</field>
+        <field name="model">service.scope</field>
+        <field name="arch" type="xml">
+            <form string="Service Scope">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <field name="status" widget="boolean_toggle" options="{'terminology': 'Service Scope'}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_service_scope_tree" model="ir.ui.view">
+        <field name="name">service.scope.tree</field>
+        <field name="model">service.scope</field>
+        <field name="arch" type="xml">
+            <tree string="Service Scopes">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_service_scope_search" model="ir.ui.view">
+        <field name="name">service.scope.search</field>
+        <field name="model">service.scope</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Active" name="filter_active" domain="[('status', '=', True)]"/>
+                <filter string="Inactive" name="filter_inactive" domain="[('status', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_service_scope" model="ir.actions.act_window">
+        <field name="name">Service Scope</field>
+        <field name="res_model">service.scope</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_service_scope_tree"/>
+        <field name="search_view_id" ref="view_service_scope_search"/>
+    </record>
+</odoo>

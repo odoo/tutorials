@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_package_type_form" model="ir.ui.view">
+        <field name="name">Package Type Form</field>
+        <field name="model">package.type</field>
+        <field name="arch" type="xml">
+            <form string="Package Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code" />
+                            <field name="name" />
+                            <field name="status" widget='boolean_toggle' />
+                        </group>
+                        <group>
+                            <field name="is_lcl" />
+                            <field name="is_air" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_package_type_tree" model="ir.ui.view">
+        <field name="name">Package Type Tree</field>
+        <field name="model">package.type</field>
+        <field name="arch" type="xml">
+            <tree string="Package Type">
+                <field name="code" />
+                <field name="name" />
+                <field name="status" widget='boolean_toggle' />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_package_type" model="ir.actions.act_window">
+        <field name="name">Package Types</field>
+        <field name="res_model">package.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_package_type_tree" />
+        <field name="context">{'search_default_active': True}</field>
+    </record>
+
+    <record id="view_package_type_search" model="ir.ui.view">
+        <field name="name">Package Type Search</field>
+        <field name="model">package.type</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="LCL" name="filter_lcl" domain="[('is_lcl', '=', True)]" />
+                <filter string="AIR" name="filter_air" domain="[('is_air', '=', True)]" />
+                <filter string="Active" name="filter_active" domain="[('status', '=', 'True')]" />
+                <filter string="Inactive" name="filter_inactive"
+                    domain="[('status', '=', 'False')]" />
+
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_commodity_form" model="ir.ui.view">
+        <field name="name">commodity.form</field>
+        <field name="model">commodity</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="hs_code" placeholder="84 02 39 00 00" />
+                        <field name="import_tax_number" />
+                        <field name="vat" />
+                        <field name="tag" />
+                        <field name="commodity_group" />
+                        <field name="commodity_req" widget='many2many_checkboxes' />
+                        <field name="status" widget='boolean_toggle' />
+                    </group>
+                    <notebook>
+                        <page string="Approvals">
+                            <group>
+                                <group>
+                                    <field name="import_approvals_ids" colspan="2">
+                                        <tree editable="bottom">
+                                            <field name="description" />
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group>
+                                    <field name="export_approvals_ids" colspan="2">
+                                        <tree editable="bottom">
+                                            <field name="description" />
+                                        </tree>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Customs Req.">
+                            <group>
+                                <group>
+                                    <field name="import_customs_req_ids" colspan="2">
+                                        <tree editable="bottom">
+                                            <field name="description" />
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group>
+                                    <field name="export_customs_req_ids" colspan="2">
+                                        <tree editable="bottom">
+                                            <field name="description" />
+                                        </tree>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Tracking">
+                            <group>
+                                <field name="created_by" />
+                                <field name="created_on" />
+                                <field name="last_updated_by" />
+                                <field name="last_updated_on" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_commodity_tree" model="ir.ui.view">
+        <field name="name">commodity.tree</field>
+        <field name="model">commodity</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="hs_code" />
+                <field name="name" />
+                <field name="commodity_group" />
+                <field name="commodity_req" />
+                <field name="status" widget='boolean_toggle' />
+            </tree>
+        </field>
+    </record>
+    <record id="action_commodity" model="ir.actions.act_window">
+        <field name="name">Commodities</field>
+        <field name="res_model">commodity</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_container" model="ir.actions.act_window">
+        <field name="name">Containers</field>
+        <field name="res_model">container</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_container_form" model="ir.ui.view">
+        <field name="name">Container Form</field>
+        <field name="model">container</field>
+        <field name="arch" type="xml">
+            <form string="Container">
+                <sheet>
+                    <group>
+                        <field name="container_number" />
+                        <field name="container_type_id" />
+                        <field name="is_type" />
+                        <field name="container_owner_id" />
+                        <field name="tare_weight" />
+                        <field name="max_load" />
+                        <field name="status" widget='boolean_toggle' />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_container_tree" model="ir.ui.view">
+        <field name="name">Container Tree</field>
+        <field name="model">container</field>
+        <field name="arch" type="xml">
+            <tree string="Containers">
+                <field name="container_number" />
+                <field name="container_type_id" />
+                <field name="container_owner_id" />
+                <field name="tare_weight" />
+                <field name="status" widget='boolean_toggle' />
+            </tree>
+        </field>
+    </record>
+    <record id="view_container_search" model="ir.ui.view">
+        <field name="name">Container Search</field>
+        <field name="model">container</field>
+        <field name="arch" type="xml">
+            <search string="Search Containers">
+                <filter name="filter_active" string="Active" domain="[('status', '=', True)]" />
+                <filter name="filter_inactive" string="Inactive" domain="[('status', '=', False)]" />
+                <group expand="0" string="Group by">
+                    <filter name="group_by_container_owner" string="Container Owner" domain="[]"
+                        context="{'group_by': 'container_owner_id'}" />
+                    <filter name="group_by_container_type" string="Container Type" domain="[]"
+                        context="{'group_by': 'container_type_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

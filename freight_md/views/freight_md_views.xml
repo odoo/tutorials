@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_freight_md" model="ir.actions.act_window">
+        <field name="name">Freight MD</field>
+        <field name="res_model">freight.md</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
+
+    <record id="view_freight_md_tree" model="ir.ui.view">
+        <field name="name">freight.md.tree</field>
+        <field name="model">freight.md</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="display_name" readonly="1" />
+                <field name="code" />
+                <field name="name" />
+                <field name="country_id" options="{'no_create': True, 'no_open': True}" />
+                <field name="status" widget='boolean_toggle' />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_freight_md_form" model="ir.ui.view">
+        <field name="name">freight.md.form</field>
+        <field name="model">freight.md</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code" />
+                            <field name="name" />
+                            <field name="country_id" options="{'no_create': True, 'no_open': True}" />
+                            <field name="display_name" readonly="1" />
+                        </group>
+                        <group>
+                            <field name="is_air" />
+                            <field name="is_sea" />
+                            <field name="is_inland" />
+                            <field name="status" widget='boolean_toggle' />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_freight_md_search" model="ir.ui.view">
+        <field name="name">freight.md.search</field>
+        <field name="model">freight.md</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Sea" name="filter_sea" domain="[('is_sea', '=', True)]" />
+                <filter string="Air" name="filter_air" domain="[('is_air', '=', True)]" />
+                <filter string="Inland" name="filter_inland" domain="[('is_inland', '=', True)]" />
+                <filter string="Active" name="active" domain="[('status', '=', True)]" />
+                <filter string="Inactive" name="inactive" domain="[('status', '=', False)]" />
+                <group expand="1" string="Group By">
+                    <filter string="Group by Country" name="group_by_country"
+                        context="{'group_by': 'country_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="freight_country_action" model="ir.actions.act_window">
+        <field name="name">Countries</field>
+        <field name="res_model">res.country</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="freight_country_group_action" model="ir.actions.act_window">
+        <field name="name">Country Groups</field>
+        <field name="res_model">res.country.group</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
