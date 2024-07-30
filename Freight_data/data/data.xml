@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="port_multiple1" model="freight.is.port">
+            <field name="name">Air</field>
+        </record>
+        <record id="port_multiple2" model="freight.is.port">
+            <field name="name">Sea</field>
+        </record>
+        <record id="port_multiple3" model="freight.is.port">
+            <field name="name">Inland</field>
+        </record>
+
+        <record id="package_multiple1" model="freight.is.package">
+            <field name="name">LCL</field>
+        </record>
+        <record id="package_multiple2" model="freight.is.package">
+            <field name="name">Air</field>
+        </record>
+    </data>
+</odoo>

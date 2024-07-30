@@ -1,0 +1,22 @@
+<odoo>
+    <data noupdate="1">
+        <record id="freight_group_user" model="res.groups">
+            <field name="name">Agent</field>
+            <field name="category_id" ref="base.module_category_services_freight_data"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="freight_group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="base.module_category_services_freight_data"/>
+            <field name="implied_ids" eval="[(4, ref('freight_group_user'))]"/>
+        </record>
+
+        <record id="freight_group_admin" model="res.groups">
+            <field name="name">Admin</field>
+            <field name="category_id" ref="base.module_category_services_freight_data"/>
+            <field name="implied_ids" eval="[(4, ref('freight_group_manager'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+    </data>
+</odoo>

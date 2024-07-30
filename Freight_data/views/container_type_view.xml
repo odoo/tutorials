@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_container_types" model="ir.actions.act_window">
+        <field name="name">Container Types</field>
+        <field name="res_model">container.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_container_type_form" model="ir.ui.view">
+        <field name="name">container.type.form</field>
+        <field name="model">container.type</field>
+        <field name="arch" type="xml">
+            <form string="Container Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="container_type"/>
+                            <field name="size"/>
+                            <field name="volume"/>
+                            <field name="status" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_container_type_tree" model="ir.ui.view">
+        <field name="name">container.type.tree</field>
+        <field name="model">container.type</field>
+        <field name="arch" type="xml">
+            <tree string="Container Type">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="size"/>
+                <field name="volume"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="package_type_view_search" model="ir.ui.view">
+        <field name="name">container.type.search</field>
+        <field name="model">container.type</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+                <filter name="active" string="Active" domain="[('status', '=', '1')]"/>
+                <filter name="inactive" string="Inactive" domain="[('status', '=', '0')]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

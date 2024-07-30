@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_ocean_shipments_scope" model="ir.actions.act_window">
+        <field name="name">ocean shipments scope</field>
+        <field name="res_model">ocean.shipments.scope</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record id="view_package_type_form" model="ir.ui.view">
+        <field name="name">ocean.shipments.scope.form</field>
+        <field name="model">ocean.shipments.scope</field>
+        <field name="arch" type="xml">
+            <form string="ocean shipment">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_package_type_tree" model="ir.ui.view">
+        <field name="name">ocean.shipments.scope.tree</field>
+        <field name="model">ocean.shipments.scope</field>
+        <field name="arch" type="xml">
+            <tree string="channel">
+                <field name="sequence" widget="handle"/>
+                <!-- req to edit -->
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

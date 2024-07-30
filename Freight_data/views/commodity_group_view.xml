@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_commodity_group" model="ir.actions.act_window">
+        <field name="name">Commodity Groups</field>
+        <field name="res_model">commodity.group</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_commodity_group_form" model="ir.ui.view">
+        <field name="name">commodity.group.form</field>
+        <field name="model">commodity.group</field>
+        <field name="arch" type="xml">
+            <form string="Commodity Group">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="status" widget="boolean_toggle" options='{"terminology": "Status"}'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_commodity_group_tree" model="ir.ui.view">
+        <field name="name">commodity.group.tree</field>
+        <field name="model">commodity.group</field>
+        <field name="arch" type="xml">
+            <tree string="Commodity Group">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_commodity_group_search" model="ir.ui.view">
+        <field name="name">commodity.group.search</field>
+        <field name="model">commodity.group</field>
+        <field name="arch" type="xml">
+            <search string="Search Commodity Groups">
+                <field name="status"/>
+                <filter name="active" string="Active" domain="[('status', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('status', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

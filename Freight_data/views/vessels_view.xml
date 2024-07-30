@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_vessels" model="ir.actions.act_window">
+        <field name="name">Vessels</field>
+        <field name="res_model">vessels</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_vessel_form" model="ir.ui.view">
+        <field name="name">vessels.form</field>
+        <field name="model">vessels</field>
+        <field name="arch" type="xml">
+            <form string="Vessel">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="vessel_owner_id"/>
+                        <field name="status" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vessel_tree" model="ir.ui.view">
+        <field name="name">vessels.tree</field>
+        <field name="model">vessels</field>
+        <field name="arch" type="xml">
+            <tree string="Vessel">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="vessel_owner_id"/>
+                <field name="status" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="vessels_view_search" model="ir.ui.view">
+        <field name="name">vessels.search</field>
+        <field name="model">vessels</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="status"/>
+                <filter name="active" string="Active" domain="[('status', '=', '1')]" />
+                <filter name="inactive" string="Inactive" domain="[('status', '=', '0')]"/>
+                <group>
+                    <filter string="Vessel Owner" name="vessel_owner_category" context="{'group_by': 'vessel_owner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

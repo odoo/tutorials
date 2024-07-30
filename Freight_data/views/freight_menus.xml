@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="menu_port_root" name="Port Management">
+        <menuitem id="menu_locations" name="locations" sequence="1">
+            <menuitem id="menu_port" name="Ports" action="action_port"/>
+            <menuitem id="menu_freight_countries" name="Countries" action="freight_country_action" />
+            <menuitem id="menu_freight_country_groups" name="Country Groups" action="freight_country_group_action" />
+        </menuitem>
+
+        <menuitem id="freight_setting" name="Freight Settings" >
+            <menuitem id="menu_transport_type" name="Transport Types" action="action_transport_type"/>
+            <menuitem id="menu_package_type" name="Package Types" action="action_package_types"/>
+            <menuitem id="menu_container_type" name="Container Types" action="action_container_types"/>
+            <menuitem id="menu_containers" name="Containers" action="action_containers"/>
+            <menuitem id="menu_ocean_shipments_scope" name="ocean shipments scope" action="action_ocean_shipments_scope"/>
+            <menuitem id="menu_vessels" name="vessels" action="action_vessels"/>
+            <menuitem id="menu_flights" name="Flights" action="action_flights"/>
+        </menuitem>
+
+        <menuitem id="service_setting" name="service Settings" >
+            <menuitem id="menu_service_scope" name="Service Scope" action="action_service_scope"/>
+            <menuitem id="menu_clearance_types" name="Clearance Types" action="action_clearance_types"/>
+            <menuitem id="menu_tracking_stages" name="Tracking Stages" action="action_tracking_stages"/>
+            <menuitem id="menu_activity_type" name="Activity Types" action="action_activity_type"/>
+            <menuitem id="menu_incoterms" name="Incoterms" action="freight_incoterms_action"/>
+        </menuitem>
+
+        <menuitem id="configuration_setting" name="configuration" >
+            <menuitem id="menu_commodity_group" name="Commodity Groups" action="action_commodity_group"/>
+            <menuitem id="menu_commodity" name="Commodities" action="action_commodity"/>
+            <menuitem id="menu_partner_type" name="Partner Types" action="action_partner_type"/>
+            <menuitem id="menu_document_type" name="Document Types" action="action_document_type"/>
+            <menuitem id="menu_freight_tags" name="Freight Tags" action="action_freight_tags"/>
+        </menuitem>
+
+    </menuitem>
+</odoo>

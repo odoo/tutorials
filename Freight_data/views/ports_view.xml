@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_port" model="ir.actions.act_window">
+        <field name="name">Ports</field>
+        <field name="res_model">ports</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <record id="view_port_form" model="ir.ui.view">
+        <field name="name">ports.form</field>
+        <field name="model">ports</field>
+        <field name="arch" type="xml">
+            <form string="Port">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="country" options="{'no_create':true,'no_create_edit':true }"/>
+                        </group>
+                        <group>
+                            <field name="freight_is_port_id" widget="many2many_checkboxes"/>
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="display_name"/>
+                            <field name="full_name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_port_tree" model="ir.ui.view">
+        <field name="name">ports.tree</field>
+        <field name="model">ports</field>
+        <field name="arch" type="xml">
+            <tree string="Port">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="country"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_port_filter" model="ir.ui.view">
+        <field name="name">ports.filter</field>
+        <field name="model">ports</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Sea" name="filter_sea" domain="[('freight_is_port_id.name', 'in', ['Sea'])]"/>
+                <filter string="Air" name="filter_air" domain="[('freight_is_port_id.name', 'in', ['Air'])]"/>
+                <filter string="Inland" name="filter_inland" domain="[('freight_is_port_id.name', 'in', ['Inland'])]"/>
+                <filter string="Active" name="filter_active" domain="[('active', '=', True)]"/>
+                <filter string="Inactive" name="filter_inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="freight_country_action" model="ir.actions.act_window">
+        <field name="name">Countries</field>
+        <field name="res_model">res.country</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="freight_country_group_action" model="ir.actions.act_window">
+        <field name="name">Country Groups</field>
+        <field name="res_model">res.country.group</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="freight_incoterms_action" model="ir.actions.act_window">
+        <field name="name">Incoterms</field>
+        <field name="res_model">account.incoterms</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

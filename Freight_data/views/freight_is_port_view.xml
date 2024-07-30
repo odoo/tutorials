@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_freight_is_port" model="ir.actions.act_window">
+        <field name="name">freight is port</field>
+        <field name="res_model">freight.is.port</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

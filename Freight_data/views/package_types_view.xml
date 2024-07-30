@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_package_types" model="ir.actions.act_window">
+        <field name="name">Package Types</field>
+        <field name="res_model">package.types</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_package_type_form" model="ir.ui.view">
+        <field name="name">package.types.form</field>
+        <field name="model">package.types</field>
+        <field name="arch" type="xml">
+            <form string="Package Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="freight_is_package_id" widget="many2many_checkboxes"/>
+                            <field name="status" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_package_type_tree" model="ir.ui.view">
+        <field name="name">package.types.tree</field>
+        <field name="model">package.types</field>
+        <field name="arch" type="xml">
+            <tree string="Package Type">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="package_type_view_search" model="ir.ui.view">
+        <field name="name">package.types.search</field>
+        <field name="model">package.types</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+                <filter name="lcl" string="LCL" domain="[('freight_is_package_id.name', 'in', ['LCL'])]"/>
+                <filter name="air" string="AIR" domain="[('freight_is_package_id.name', 'in', ['Air'])]"/>
+                <filter name="active" string="Active" domain="[('status', '=', '1')]"/>
+                <filter name="inactive" string="Inactive" domain="[('status', '=', '0')]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

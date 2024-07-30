@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_transport_type" model="ir.actions.act_window">
+        <field name="name">Transport Types</field>
+        <field name="res_model">transport.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_transport_type_tree" model="ir.ui.view">
+        <field name="name">transport.type.tree</field>
+        <field name="model">transport.type</field>
+        <field name="arch" type="xml">
+            <tree string="Transport Types">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_transport_type_form" model="ir.ui.view">
+        <field name="name">transport.type.form</field>
+        <field name="model">transport.type</field>
+        <field name="arch" type="xml">
+            <form string="Transport Type">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="active" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

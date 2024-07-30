@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_commodity" model="ir.actions.act_window">
+        <field name="name">Commodities</field>
+        <field name="res_model">commodity</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_commodity_form" model="ir.ui.view">
+        <field name="name">commodity.form</field>
+        <field name="model">commodity</field>
+        <field name="arch" type="xml">
+            <form string="Commodity">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="hscode" placeholder="84 02 39 00 00"/>
+                        <field name="import_tax"/>
+                        <field name="vat"/>
+                        <field name="tag_id" widget="many2many_tags"/>
+                        <field name="commodity_group_id"/>
+                        <field name="commodity_req"/>
+                    </group>
+                    <notebook>
+                        <page string="Approvals">
+                            <group>
+                                <group>
+                                    <label for="import_approval" string="Import"/>
+                                    <div>
+                                        <span class="o_field_description">Description</span>
+                                        <br/>
+                                        <field name="import_approval"/>
+                                    </div>
+                                </group>
+                                <group>
+                                    <label for="export_approval" string="Export"/>
+                                    <div>
+                                        <span class="o_field_description">Description</span>
+                                        <br/>
+                                        <field name="export_approval"/>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Customs Req.">
+                            <group>
+                                <group>
+                                    <label for="import_customs_req" string="Import"/>
+                                    <div>
+                                        <span class="o_field_description">Description</span>
+                                        <br/>
+                                        <field name="import_customs_req"/>
+                                    </div>
+                                </group>
+                                <group>
+                                    <label for="export_customs_req" string="Export"/>
+                                    <div>
+                                        <span class="o_field_description">Description</span>
+                                        <br/>
+                                        <field name="export_customs_req"/>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Tracking">
+                            <group>
+                                <group>
+                                    <field name="created_by"/>
+                                    <field name="created_on"/>
+                                    <field name="industry"/>
+                                </group>
+                                <group>
+                                    <field name="last_updated_by"/>
+                                    <field name="last_updated_on"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_commodity_tree" model="ir.ui.view">
+        <field name="name">commodity.tree</field>
+        <field name="model">commodity</field>
+        <field name="arch" type="xml">
+            <tree string="Commodity">
+                <field name="hscode"/>
+                <field name="name"/>
+                <field name="commodity_group_id"/>
+                <field name="commodity_req"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>
