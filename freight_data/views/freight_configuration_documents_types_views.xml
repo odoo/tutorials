@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_documents_types_views" model="ir.actions.act_window">
+        <field name="name">Documents Types</field>
+        <field name="res_model">freight.document.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="document_type_view_tree" model="ir.ui.view">
+        <field name="name">document.type.tree</field>
+        <field name="model">freight.document.type</field>
+        <field name="arch" type="xml">
+            <tree string="Document Type">
+                <field name="name"/>
+                <field name="docs_choice"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="document_type_view_form" model="ir.ui.view">
+        <field name="name">document.type.form</field>
+        <field name="model">freight.document.type</field>
+        <field name="arch" type="xml">
+            <form string="Document Type">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="docs_choice"/>
+                    </group>
+                    <group>
+                        <field name="status" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

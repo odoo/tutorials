@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_containers_views" model="ir.actions.act_window">
+        <field name="name">Containers</field>
+        <field name="res_model">freight.containers</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="containers_view_tree" model="ir.ui.view">
+        <field name="name">containers.tree</field>
+        <field name="model">freight.containers</field>
+        <field name="arch" type="xml">
+            <tree string="Freight Containers">
+                <field name="container_number"/>
+                <field name="container_type_id"/>
+                <field name="container_owner_id"/>
+                <field name="tare_weight"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="containers_view_form" model="ir.ui.view">
+        <field name="name">containers.form</field>
+        <field name="model">freight.containers</field>
+        <field name="arch" type="xml">
+            <form string="Containers">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="container_number"/>
+                            <field name="container_type_id"/>
+                            <field name="container_owner_id"/>
+                            <field name="status" widget="boolean_toggle"/>
+                        </group>
+                        <group>
+                            <field name="tare_weight"/>
+                            <field name="max_load"/>
+                            <field name="is_options"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="containers_view_search" model="ir.ui.view">
+        <field name="name">containers.search</field>
+        <field name="model">freight.containers</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="status"/>
+                <field name="container_type_id"/>
+                <filter name="active" string="Active" domain="[('status', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('status', '=', False)]"/>
+                <filter name="container_type_name" string="Container Name" domain="[('container_type_id.name', 'ilike', self)]"/>
+                <filter name="container_type_size" string="Container Size" domain="[('container_type_id.size', 'ilike', self)]"/>
+                <group>
+                    <filter string="Container Type" name="container_type_category" context="{'group_by': 'container_type_id'}"/>
+                    <filter string="Container Owner" name="container_owner_category" context="{'group_by': 'container_owner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

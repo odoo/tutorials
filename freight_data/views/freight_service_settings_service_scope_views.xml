@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_service_scope_views" model="ir.actions.act_window">
+        <field name="name">Service Scope</field>
+        <field name="res_model">freight.service.scope</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="service_scope_view_tree" model="ir.ui.view">
+        <field name="name">service.scope.tree</field>
+        <field name="model">freight.service.scope</field>
+        <field name="arch" type="xml">
+            <tree string="Service Scope">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="service_scope_view_form" model="ir.ui.view">
+        <field name="name">service.scope.form</field>
+        <field name="model">freight.service.scope</field>
+        <field name="arch" type="xml">
+            <form string="Service Scope">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="status" widget="boolean_toggle"/>
+                            <field name="description"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

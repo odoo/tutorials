@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_commodity_data_views" model="ir.actions.act_window">
+        <field name="name">Commodity Data</field>
+        <field name="res_model">freight.commodity.data</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="commodity_data_view_tree" model="ir.ui.view">
+        <field name="name">commodity.data.tree</field>
+        <field name="model">freight.commodity.data</field>
+        <field name="arch" type="xml">
+            <tree string="Commodity Data">
+                <field name="hs_code"/>
+                <field name="name"/>
+                <field name="commodity_group"/>
+                <field name="commodity_req" widget="many2many_tags"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="commodity_data_view_form" model="ir.ui.view">
+        <field name="name">commodity.data.form</field>
+        <field name="model">freight.commodity.data</field>
+        <field name="arch" type="xml">
+            <form string="Commodity Data">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="hs_code" placeholder="84 02 39 00 00"/>
+                            <field name="import_tax"/>
+                            <field name="vat"/>
+                        </group>
+                        <group>
+                            <field name="status" widget="boolean_toggle"/>
+                            <field name="commodity_group"/>
+                            <field name="commodity_req" widget="many2many_checkboxes"/>
+                            <field name="tag" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Approvals">
+                            <group>
+                                <group>
+                                    <field name="import_approval">
+                                        <tree editable="bottom">
+                                            <field name="description_import_approval"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group>
+                                    <field name="export_approval">
+                                        <tree editable="bottom">
+                                            <field name="description_export_approval"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Customs Req.">
+                            <group>
+                                <group>
+                                    <field name="import_customs_req">
+                                        <tree editable="bottom">
+                                            <field name="description_import_customs_req"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group>
+                                    <field name="export_customs_req">
+                                        <tree editable="bottom">
+                                            <field name="description_export_customs_req"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Tracking">
+                            <group>
+                                <group>
+                                    <field name="created_by"/>
+                                    <field name="created_on"/>
+                                    <field name="industry"/>
+                                </group>
+                                <group>
+                                    <field name="last_updated_by"/>
+                                    <field name="last_updated_on"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="commodity_data_view_search" model="ir.ui.view">
+        <field name="name">commodity.data.search</field>
+        <field name="model">freight.commodity.data</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="status"/>
+                <field name="commodity_req"/>
+                <filter name="dry" string="DRY" domain="[('commodity_req', '=', 'dry')]"/>
+                <filter name="reefer" string="Reefer" domain="[('commodity_req', '=', 'reefer')]"/>
+                <filter name="imo" string="IMO" domain="[('commodity_req', '=', 'imo')]"/>
+                <filter name="active" string="Active" domain="[('status', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('status', '=', False)]"/>
+                <group>
+                    <filter string="Commodity Group" name="commodity_group_category" context="{'group_by': 'commodity_group'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

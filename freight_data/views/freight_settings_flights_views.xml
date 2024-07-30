@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_flights_views" model="ir.actions.act_window">
+        <field name="name">Flights</field>
+        <field name="res_model">freight.flights</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="flights_view_tree" model="ir.ui.view">
+        <field name="name">flights.tree</field>
+        <field name="model">freight.flights</field>
+        <field name="arch" type="xml">
+            <tree string="Freight Flights">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="airline_id"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="flights_view_form" model="ir.ui.view">
+        <field name="name">flights.form</field>
+        <field name="model">freight.flights</field>
+        <field name="arch" type="xml">
+            <form string="Flights">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="airline_id"/>
+                            <field name="status" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="flights_view_search" model="ir.ui.view">
+        <field name="name">flights.search</field>
+        <field name="model">freight.flights</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="status"/>
+                <filter name="active" string="Active" domain="[('status', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('status', '=', False)]"/>
+                <group>
+                    <filter string="Airline" name="airline_category" context="{'group_by': 'airline_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

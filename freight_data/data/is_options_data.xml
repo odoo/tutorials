@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="selection_air" model="freight.is.options">
+        <field name="name">Air</field>
+    </record>
+    <record id="selection_sea" model="freight.is.options">
+        <field name="name">Sea</field>
+    </record>
+    <record id="selection_inland" model="freight.is.options">
+        <field name="name">Inland</field>
+    </record>
+
+    <record id="selection_lcl" model="package.type.options">
+        <field name="name">LCL</field>
+    </record>
+    <record id="selection_air_type" model="package.type.options">
+        <field name="name">AIR</field>
+    </record>
+
+    <record id="selection_dry_com" model="commodities.options">
+        <field name="name">DRY</field>
+    </record>
+    <record id="selection_reefer_com" model="commodities.options">
+        <field name="name">Reefer</field>
+    </record>
+    <record id="selection_imo_com" model="commodities.options">
+        <field name="name">IMO</field>
+    </record>
+</odoo>

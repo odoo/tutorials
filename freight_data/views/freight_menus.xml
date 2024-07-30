@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="freight_root_menu" name="Freight" sequence="135">
+        <menuitem id="freight_location_menu" name="Locations">
+            <menuitem id="freight_locations_ports_cities_menu_views" action="action_ports_cities_views"/>
+            <menuitem id="freight_locations_countries_menu_views" action="action_countries_views"/>
+            <menuitem id="freight_locations_country_group_menu_views" action="action_country_group_views"/>
+        </menuitem>
+        <menuitem id="freight_settings_menu" name="Freight Settings">
+            <menuitem id="freight_settings_freight_type_menu_views" action="action_freight_type_views"/>
+            <menuitem id="freight_settings_package_type_menu_views" action="action_package_type_views"/>
+            <menuitem id="freight_settings_container_type_menu_views" action="action_container_type_views"/>
+            <menuitem id="freight_settings_containers_menu_views" action="action_containers_views"/>
+            <menuitem id="freight_settings_bill_of_lading_type_menu_views" action="action_bill_of_lading_type_views"/>
+            <menuitem id="freight_settings_ocean_shipments_scope_menu_views" action="action_ocean_shipments_scope_views"/>
+            <menuitem id="freight_settings_vessels_menu_views" action="action_vessels_views"/>
+            <menuitem id="freight_settings_flights_menu_views" action="action_flights_views"/>
+        </menuitem>
+        <menuitem id="freight_service_settings_menu" name="Service Setting">
+            <menuitem id="freight_service_settings_service_scope_menu_views" action="action_service_scope_views"/>
+            <menuitem id="freight_service_settings_clearance_type_menu_views" action="action_clearance_type_views"/>
+            <menuitem id="freight_service_settings_tracking_stages_menu_views" action="action_tracking_stages_views"/>
+            <menuitem id="freight_service_settings_activity_type_menu_views" action="action_activity_types_views"/>
+            <menuitem id="freight_service_settings_incoterms_menu_views" action="action_incoterms_views"/>
+        </menuitem>
+        <menuitem id="freight_configuration_menu" name="Configuration">
+            <menuitem id="freight_configuration_commodity_group_menu_views" action="action_commodity_group_views"/>
+            <menuitem id="freight_configuration_commodity_data_menu_views" action="action_commodity_data_views"/>
+            <menuitem id="freight_configuration_partner_type_menu_views" action="action_partner_type_views"/>
+            <menuitem id="freight_configuration_documents_types_menu_views" action="action_documents_types_views"/>
+            <menuitem id="freight_configuration_freight_tags_menu_views" action="action_freight_tags_views"/>
+        </menuitem>
+    </menuitem>
+</odoo>

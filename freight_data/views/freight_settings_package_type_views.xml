@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_package_type_views" model="ir.actions.act_window">
+        <field name="name">Package Type</field>
+        <field name="res_model">freight.package.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="package_type_view_tree" model="ir.ui.view">
+        <field name="name">package.type.tree</field>
+        <field name="model">freight.package.type</field>
+        <field name="arch" type="xml">
+            <tree string="Freight Package Types">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="package_type_view_form" model="ir.ui.view">
+        <field name="name">package.type.form</field>
+        <field name="model">freight.package.type</field>
+        <field name="arch" type="xml">
+            <form string="Package Types">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="status" widget="boolean_toggle"/>
+                            <field name="is_options" widget="many2many_checkboxes"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="package_type_view_search" model="ir.ui.view">
+        <field name="name">package.type.search</field>
+        <field name="model">freight.package.type</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="status"/>
+                <filter name="lcl" string="LCL" domain="[('is_options.name', 'in', ['LCL'])]"/>
+                <filter name="air" string="AIR" domain="[('is_options.name', 'in', ['AIR'])]"/>
+                <filter name="active" string="Active" domain="[('status', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('status', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
