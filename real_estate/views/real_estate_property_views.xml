@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="real_estate.view_properties_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">real.estate.property</field>
+        <field name="context">{'search_default_filter_for_sale': True}</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <!-- Turns out I didn't feel like being creative with the help text ¯\_(ツ)_/¯ -->
+            <p class="o_view_nocontent_smiling_face">
+                Create a new property.
+            </p>
+        </field>
+    </record>
+
     <record id="real_estate.property_list" model="ir.ui.view">
         <field name="name">Property List</field>
         <field name="model">real.estate.property</field>
