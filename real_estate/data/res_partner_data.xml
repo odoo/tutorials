@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="real_estate.country_house_address" model="res.partner">
+        <field name="name">Country House</field>
+        <field name="street">Chaussée de Namur 40</field>
+        <field name="city">Grand-Rosière-Hottomont</field>
+        <field name="zip">1367</field>
+        <field name="country_id" ref="base.be"/>
+    </record>
+
+    <record id="real_estate.loft_address" model="res.partner">
+        <field name="name">Loft</field>
+        <field name="street">Rue des Bourlottes 9</field>
+        <field name="city">Grand-Rosière-Hottomont</field>
+        <field name="zip">1367</field>
+        <field name="country_id" ref="base.be"/>
+    </record>
+
+    <record id="real_estate.mixed_use_commercial_address" model="res.partner">
+        <field name="name">Mixed use commercial building</field>
+        <field name="street">Rue de Ramillies 1</field>
+        <field name="city">Grand-Rosière-Hottomont</field>
+        <field name="zip">1367</field>
+        <field name="country_id" ref="base.be"/>
+    </record>
+
+    <record id="real_estate.bafien_carpink" model="res.partner">
+        <field name="name">Bafien Carpink</field>
+    </record>
+
+    <record id="real_estate.antony_petisuix" model="res.partner">
+        <field name="name">Antony Petisuix</field>
+    </record>
+
+    <record id="real_estate.amyfromthevideos" model="res.partner">
+        <field name="name">AmyFromTheVideos</field>
+    </record>
+
+</odoo>

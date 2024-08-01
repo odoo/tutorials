@@ -21,7 +21,7 @@
             <list>
                 <field name="name"/>
                 <field name="state"/>
-                <field name="type"/>
+                <field name="type_id"/>
                 <field name="selling_price"/>
                 <field name="availability_date"/>
                 <field name="floor_area" optional="show"/>
@@ -51,7 +51,7 @@
                     </div>
                     <group>
                         <group string="Listing Information">
-                            <field name="type"/>
+                            <field name="type_id"/>
                             <field name="selling_price"/>
                             <field name="availability_date"/>
                             <field name="active"/>
@@ -64,13 +64,23 @@
                             <field name="garden_area"/>
                         </group>
                     </group>
-                    <separator string="Description"/>
-                    <field
-                        name="description"
-                        nolabel="1"
-                        colspan="2"
-                        placeholder="Write a description about this property."
-                    />
+                    <notebook>
+                        <page string="Description">
+                            <field
+                                name="description"
+                                placeholder="Write a description about this property."
+                            />
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <group>
+                                    <field name="address_id"/>
+                                    <field name="seller_id"/>
+                                    <field name="salesperson_id"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -107,7 +117,7 @@
 
                 <!-- Group by -->
                 <filter name="group_by_state" context="{'group_by': 'state'}"/>
-                <filter name="group_by_type" context="{'group_by': 'type'}"/>
+                <filter name="group_by_type" context="{'group_by': 'type_id'}"/>
             </search>
         </field>
     </record>
