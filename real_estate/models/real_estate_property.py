@@ -20,17 +20,8 @@ class RealEstateProperty(models.Model):
         required=True,
         default='new',
     )
-    type = fields.Selection(
-        string="Type",
-        selection=[
-            ('house', "House"),
-            ('apartment', "Apartment"),
-            ('office', "Office Building"),
-            ('retail', "Retail Space"),
-            ('warehouse', "Warehouse"),
-        ],
-        required=True,
-        default='house',
+    type_id = fields.Many2one(
+        string="Type", comodel_name='real.estate.property.type', ondelete='restrict', required=True
     )
     selling_price = fields.Float(
         string="Selling Price", help="The selling price excluding taxes.", required=True
@@ -45,3 +36,6 @@ class RealEstateProperty(models.Model):
     garden_area = fields.Integer(
         string="Garden Area", help="The garden area excluding the building."
     )
+    address_id = fields.Many2one(string="Address", comodel_name='res.partner', required=True)
+    seller_id = fields.Many2one(string="Seller", comodel_name='res.partner', required=True)
+    salesperson_id = fields.Many2one(string="Salesperson", comodel_name='res.users')

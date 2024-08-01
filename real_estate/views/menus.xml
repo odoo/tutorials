@@ -12,12 +12,13 @@
             sequence="10"
             action="real_estate.view_properties_action"
         />
-        <menuitem
-            id="real_estate.settings_menu"
-            name="Settings"
-            sequence="20"
-            action="base.action_client_base_menu"
-        />
+        <menuitem id="real_estate.configuration_menu" name="Configuration" sequence="20">
+            <menuitem
+                id="real_estate.property_types_menu"
+                name="Property Types"
+                action="real_estate.view_property_types_action"
+            />
+        </menuitem>
     </menuitem>
 
 </odoo>
