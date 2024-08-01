@@ -1,21 +1,20 @@
 {
     'name': 'Esate By Akpu',
 
-    'Description':"Starting module for Estate",
-    'license':'LGPL-3',
+    'Description': "Starting module for Estate",
+    'license': 'LGPL-3',
 
-    'summary':"Starting module for Real Estate Business model",
+    'summary': "Starting module for Real Estate Business model",
 
-    'author':'Akpu_odoo',
+    'author': 'Akpu_odoo',
 
-    'version':'0.1',
+    'version': '0.1',
 
-    'application':True,
+    'application': True,
 
-    'installable':True,
+    'installable': True,
     
-    'depends':['base'],
-
+    'depends': ['base'],
 
     'data': [
         'security/ir.model.access.csv',
@@ -23,5 +22,4 @@
         'views/estate_menus.xml',
         'views/list_model_view.xml',
     ],
-
 }
