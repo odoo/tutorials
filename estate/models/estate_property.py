@@ -26,5 +26,5 @@ class EstateProperty(models.Model):
     state = fields.Selection([
         ('new', 'New'),
         ('used', 'Used'),
-    ], string='Status', default='draft')
+    ], string='Status', default='new')
     active = fields.Boolean(string='Active', default=True)
