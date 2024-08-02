@@ -7,7 +7,7 @@
     'description': "",
     'installable': True,
     'application': True,
-    'depends': [  'base_setup',],
+    'depends': ['base_setup'],
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
