@@ -1,0 +1,45 @@
+version: "3"
+services:
+  web:
+    build:
+      context: ./_
+      dockerfile: Dockerfile
+    command: "--db_host=db --dev='all' --smtp=mailhog --smtp-port=1025 --addons-path=/mnt/odoo-enterprise,/mnt/custom-addons"
+    # Add paths needed to the addons-path parameter
+    # /mnt/custom-addons,/mnt/3rd-party-addons,/mnt/multioss-addons
+    depends_on:
+      - db
+      - mailhog
+    ports:
+      - "8069:8069/tcp"
+    volumes:
+      - web-data:/var/lib/odoo
+      - ./custom-addons:/mnt/custom-addons
+      - ./3rd-party-addons:/mnt/3rd-party-addons
+      - ./multioss-addons:/mnt/multioss-addons
+      - ./../odoo-enterprise-17:/mnt/odoo-enterprise
+      - ./requirements.txt:/mnt/requirements.txt
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+  db:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    volumes:
+        - database-data:/var/lib/postgresql/data
+    environment:
+        POSTGRES_USER: odoo
+        POSTGRES_PASSWORD: odoo
+        POSTGRES_DB: postgres
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+volumes:
+    web-data:
+        driver: local
+    database-data:
+        driver: local
