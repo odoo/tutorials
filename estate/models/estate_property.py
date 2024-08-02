@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class MyModel(models.Model):
     _name = 'estate_property'
     _description = 'Real Estate'
@@ -17,6 +18,19 @@ class MyModel(models.Model):
     garden = fields.Boolean(string='Garden')
     garden_area = fields.Integer(string='Garden Area (sqm)')
     garden_orientation = fields.Selection(
-        [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
-        string='Garden Orientation'
+
+        selection = [
+            ('north','North'), 
+            ('south','South'), 
+            ('east','East'), 
+            ('west','West')],
+    )
+    active = fields.Boolean(default=True)
+    state = fields.Selection(string='Status',
+        selection=[('new','New'), 
+            ('offer received','Offer Received'), 
+            ('offer accepted','Offer Accepted'), 
+            ('sold','Sold'), 
+            ('canceled','Canceled')],
+        default='new'
     )
