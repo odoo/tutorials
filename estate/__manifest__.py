@@ -6,5 +6,6 @@
     'data': ['security/ir.model.access.csv'],
     'installable': True,
     'application': True,
-    'sequence': -1
+    'sequence': -1,
+    'license': 'LGPL-3'
 }
