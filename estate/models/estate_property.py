@@ -1,27 +1,23 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from odoo import  models, fields
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "test"
-    
+    _description = "test"   
 
-
-    name = fields.Char(required = True)
-    postcode = fields.Char()
-    date_availability = fields.Date()
-    expected_price = fields.Float(required = True)
-    selling_price = fields.Float()
-    bedrooms = fields.Integer()
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
+    name = fields.Char('Name',required = True)
+    postcode = fields.Char('Postcode')
+    date_availability = fields.Date('Date available')
+    expected_price = fields.Float('Expected Price',required = True)
+    selling_price = fields.Float('Selling Price')
+    bedrooms = fields.Integer('Bedroom')
+    living_area = fields.Integer('Living Area')
+    facades = fields.Integer('Facade')
+    garage = fields.Boolean('Garage')
+    garden = fields.Boolean('Garden')
+    garden_area = fields.Integer('Garden Area')
     garden_orientation = fields.Selection(
         string='Orientation',
-        selection=[('north', 'North'), ('south', 'South'),('east','East'),('west','West')],
+        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Direction of the garden")
+
