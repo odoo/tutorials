@@ -5,14 +5,8 @@
     'description': 'A detailed description of my module',
     'category': 'Sales',
     'author': 'pkgu',
-    'depends': [
-        'base'
-    ],
-
-    'data': [
-        'security/ir.model.access.csv', 
-    ],
-
+    'depends': ['base'],
+    'data': ['security/ir.model.access.csv'],
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
