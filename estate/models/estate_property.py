@@ -3,12 +3,12 @@ from odoo import  models, fields
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "test"   
+    _description = "test"
 
-    name = fields.Char('Name',required = True)
+    name = fields.Char('Name', required=True)
     postcode = fields.Char('Postcode')
     date_availability = fields.Date('Date available')
-    expected_price = fields.Float('Expected Price',required = True)
+    expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price')
     bedrooms = fields.Integer('Bedroom')
     living_area = fields.Integer('Living Area')
@@ -20,4 +20,3 @@ class EstateProperty(models.Model):
         string='Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Direction of the garden")
-
