@@ -25,8 +25,10 @@
                               <field name="date_availability"/>
                         </group>
                         <group>
+                              <field name="state"/>
                               <field name="expected_price"/>
                               <field name="selling_price"/>
+                              <field name="active"/>
                         </group>
                      </group>
                      <notebook>
@@ -46,10 +48,32 @@
                   </sheet>
                </form>
           </field>
-      </record>
+   </record>
+   <record id="view_estate_property_search" model="ir.ui.view">
+      <field name="name">estate.property.search</field>
+      <field name="model">estate.property</field>
+      <field name="arch" type="xml">
+          <search string="Estate Property">
+              <field name="name" string="Name" />
+              <field name="postcode" string="Postcode" />
+              <field name="selling_price" string="Selling price" />
+              <filter string="Available properties" name="available_properties" domain="[('state', 'in',['new','offer received'])]"/>
+          </search>
+      </field>
+  </record>
    <record id="estate_property_action" model="ir.actions.act_window">
       <field name="name">Estate Action</field>
       <field name="res_model">estate.property</field>
       <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">
+             Create a property
+         </p>
+     </field>
   </record>
 </odoo>
+
+
+<!-- <group expand="1" string="Group By">
+                  <filter string="Provider" name="provider" context="{'group_by':'delivery_type', 'residual_visible':True}"/>
+              </group>  -->
