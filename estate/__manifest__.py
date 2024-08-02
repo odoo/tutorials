@@ -3,8 +3,8 @@
     'version': '1.0',
     'depends': ['base'],
     'description': """ Estate module """,
-    'data':['security/ir.model.access.csv',],
-    'installable':True,
-    'application':True,
-    'sequence':-1
+    'data': ['security/ir.model.access.csv'],
+    'installable': True,
+    'application': True,
+    'sequence': -1
 }
