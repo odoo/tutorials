@@ -1,4 +1,4 @@
-from odoo import  models, fields
+from odoo import models, fields
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -45,7 +45,6 @@ class EstateProperty(models.Model):
         'res.users',
         string='Seller',
         default=lambda self: self.env.user,
-        
         help='Seller of the property'
     )
     tag_ids = fields.Many2many(
