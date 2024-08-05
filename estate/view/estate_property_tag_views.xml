@@ -1,0 +1,7 @@
+<odoo>
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Tag</field>
+        <field name="res_model">estate_property_tag</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
