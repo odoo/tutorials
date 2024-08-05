@@ -1,5 +1,5 @@
 from odoo import  models, fields
-from datetime import date, timedelta
+from datetime import date
 from dateutil.relativedelta import relativedelta
 
 
@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
 
     name = fields.Char(string='Name', required=True)
     postcode = fields.Char(string='Postcode')
-    date_availability = fields.Date(string='Date available', copy=False, default=(date.today()+relativedelta(months=3)))
+    date_availability = fields.Date(string='Date available', copy=False, default=(date.today() + relativedelta(months=3)))
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer(string='Bedroom', default=2)
@@ -30,3 +30,31 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default='new')
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        string='Property Type',
+        help='Type of the property'
+    )
+    buyer_id = fields.Many2one(
+        'res.partner',
+        string='Buyer',
+        copy=False,
+        help='Buyer of the property'
+    )
+    seller_id = fields.Many2one(
+        'res.users',
+        string='Seller',
+        default=lambda self: self.env.user,
+        
+        help='Seller of the property'
+    )
+    tag_ids = fields.Many2many(
+        'estate.property.tag',
+        string='Tags',
+        help='Tags associated with the property'
+    )
+    offer_ids = fields.One2many(
+        'estate.property.offer',
+        'property_id',
+        string='Offers',
+    )
