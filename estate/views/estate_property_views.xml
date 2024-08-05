@@ -35,8 +35,10 @@
                     <h1>
                         <field name="name" />
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags" />
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -75,6 +77,13 @@
                                 <field name="state" />
                             </group>
                             <!-- #only for testing state one-->
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
+                        <page string="Other Info">
+                            <group> <field name="salesman_id" /> </group>
+                            <group> <field name="buyer_id" /> </group>
                         </page>
                     </notebook>
                 </sheet>
