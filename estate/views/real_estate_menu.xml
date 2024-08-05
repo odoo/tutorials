@@ -4,6 +4,10 @@
         <menuitem id="test_first_level_menu" name="Advertisement">
             <menuitem id="test_model_menu_action" action="real_estate_action"/>
         </menuitem>
+        <menuitem id="test_property_type_menu" name="Settings">
+            <menuitem id="property_type_action" action="estate_property_type_action" name='Property Type'/>
+            <menuitem id="property_tag_action" action="real_estate_property_tag_action" name='Property Tag'/>
+        </menuitem>
     </menuitem>
 
 </odoo>

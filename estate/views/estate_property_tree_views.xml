@@ -21,14 +21,6 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <tree string="Estate Properties" sample ="1">
-            <!-- <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Create a module
-                </p>
-                <p>
-                    Leads are the qualification step before the creation of an opportunity.
-                </p>
-            </field> -->
 
                 <field name="name"/>
                 <field name="postcode"/>
@@ -52,38 +44,78 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Properties">
-                <header>
-                    <h1>
-                        <field name="name"/>
-                    </h1>
-                </header>
-                    <group>
+                <sheet>
+                    <header>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </header>
                         <group>
-                            <field name="postcode"/>
-                            <field name="date_availability"/>
-                        </group>
-                        <group>
+                        <field name="tag_ids"  widget="many2many_tags"/>
+                            <group>
+                                <field name="postcode"/>
+                                <field name="date_availability"/>
+                            </group>
+                            <group>
 
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                            </group>
                         </group>
-                    </group>
-                <notebook>
-                    <page string="Description">
-                        <group>
-                            <field name="description"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
-                            <field name="state"/>
-                        </group>
-                    </page>
-                </notebook>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="state"/>
+                            </group>
+                        </page>
+                        <page string="Offer">
+                            <!-- <group> -->
+                                <field name="offer_ids"/>
+                            <!-- </group> -->
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
+        </field>
+    </record>
+
+     <!-- <record id="view_estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                    <field name="status"/>
+                </group>
+            </form>
+        </field>
+    </record> -->
+
+    <record id="view_estate_property_offer_tree" model="ir.ui.view">
+        <field name="name">estate.property.offer.tree</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="status"/>
+            </tree>
         </field>
     </record>
 
