@@ -35,6 +35,7 @@
                      <field name="state" />
                      <field name="expected_price" />
                      <field name="selling_price" />
+                     <field name="best_price"/>
                      <field name="active" />
                   </group>
                </group>
@@ -49,6 +50,7 @@
                         <field name="garden" />
                         <field name="garden_area" />
                         <field name="garden_orientation" />
+                        <field name="total_area"/>
                      </group>
                   </page>
                   <page string="Other info">
@@ -63,6 +65,8 @@
                            <field name="price" />
                            <field name="status" />
                            <field name="partner_id" />
+                           <field name="validity"/>
+                           <field name="date_deadline"/>
                         </tree>
                      </field>
                   </page>
