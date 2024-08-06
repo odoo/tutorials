@@ -1,11 +1,11 @@
 {
-    'name':'estate',
-    'depends' : ['base_setup'],
-    'description' : "Technical Training",
-    'installable':True,
-    'application':True,
+    'name': 'estate',
+    'depends': ['base_setup'],
+    'description': "Technical Training",
+    'installable': True,
+    'application': True,
 
-    'data':[
+    'data': [
         'security/ir.model.access.csv',
         'view/estate_property_views.xml',
         'view/estate_property_type_views.xml',

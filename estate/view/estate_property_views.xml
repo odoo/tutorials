@@ -4,6 +4,16 @@
        <field name="name">Property</field>
        <field name="res_model">estate_property</field>
        <field name="view_mode">tree,form</field>
+
+
+       <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            No data found!
+        </p>
+        <p>
+            Use this menu to have an overview of your Pipeline.
+        </p>
+    </field>
   </record>
 
 
@@ -50,6 +60,7 @@
                             <field name="property_type"/>
                             <field name="postcode" class="o_stat_value"/>
                             <field name="expected_price"/>
+                            <field name="best_offer"/>
                         </group>
                         <group>
                             <field name="date_availability" string="Available From"/>
@@ -73,6 +84,8 @@
                                 <field name = "garden_area" string = "Garden Area(sqm)"/>
 
                                 <field name = "garden_orientation"/>
+
+                                <field name = "total_area" />
                                
                             </group>
 

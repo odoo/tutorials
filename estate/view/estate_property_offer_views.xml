@@ -6,6 +6,8 @@
             <tree sample="1">
                 <field name='price' />
                 <field name='partner_id' />
+                <field name="validity"/>
+                <field name="date_deadline"/>
 
                 <field name='status' />
             </tree>
@@ -22,6 +24,8 @@
                     <group>
                         <field name='price' />
                         <field name='partner_id' />
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
 
                         <field name='status' />
 
