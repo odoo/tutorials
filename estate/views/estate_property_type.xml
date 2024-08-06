@@ -10,6 +10,7 @@
             </p>
         </field>
     </record>
+    
     <record id='estate_property_form_view' model='ir.ui.view'>
 
         <field name='name'> estate_property_type</field>

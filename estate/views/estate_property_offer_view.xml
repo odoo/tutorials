@@ -1,0 +1,39 @@
+<odoo>
+
+    <record id='estate_property_offer_tree' model='ir.ui.view'>
+        <field name="name">estate_property_offer</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree sample="1">
+                <field name='price'/>
+                <field name='partner_id'/>
+
+                <field name='validity' string='Validity (days)'/>
+                <field name='deadline'/>
+                <button name="action_status_accept" type="object" icon="fa-check" />
+                <button name="aciton_status_refused" type="object"  icon="fa-times"/>
+                <field name='status'/>
+            </tree>
+        </field>
+
+    </record>
+
+
+    <record id='estate_property_offer_form' model='ir.ui.view'>
+        <field name="name">estate_property_offer_form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form >
+                <sheet>
+                    <group>
+                        <field name='price'/>
+                        <field name='partner_id'/>
+                        <field name="validity"/>
+                        <field name="deadline"/>
+                        <field name='status'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

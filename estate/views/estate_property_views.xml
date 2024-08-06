@@ -34,15 +34,21 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="description">
+                <header>
+                    <button name="status_action_sold_button" type="object" string="Sold"/>
+                    <button name="status_action_canceled_button" type='object' string='Canceled'/>
+                </header>
                 <sheet>
                     <div>
                         <h1>
                             <field name="name"/>
                         </h1>
                         <field name="tag_ids" widget="many2many_tags"/>
+
                     </div>
                     <group>
                         <group >
+                            <field name='state' string='status'/>
                             <field name="property_type_id"/>
                             <field name="postcode" class="o_stat_value"/>
                             <field name="expected_price"/>
@@ -51,6 +57,7 @@
                             <field name="date_availability" string="Available From"/>
 
                             <field name="selling_price"/>
+                            <field name ='best_offer'/>
                         </group>
                     </group>
                     <notebook>
@@ -70,6 +77,7 @@
 
                                 <field name = "garden_orientation"/>
                                 <field name="state"/>
+                                <field name="total" string="Total Area(sqm)"/>
 
                                 <field name="active"/>
                             </group>
@@ -106,26 +114,12 @@
                 <!-- <filter string="Active" name="active" domain="[('active', '=', True)]"/> -->
                 <filter string="Available" name="state" domain="['|',('state', '=', 'new'),('state', '=', 'offer_recived')]"/>
                 <group expand="1" string="Group By">
-             
+
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
     </record>
-
-    <record id='estate_property_offer' model='ir.ui.view'>
-        <field name="name">estate_property_offer</field>
-        <field name="model">estate.property.offer</field>
-        <field name="arch" type="xml">
-            <tree sample="1">
-                <field name='price'/>
-                <field name='partner_id'/>
-                <field name='status'/>
-            </tree>
-        </field>
-
-    </record>
-
 
 </odoo>
 
