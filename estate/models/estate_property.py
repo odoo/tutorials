@@ -62,10 +62,10 @@ class EstateProperty(models.Model):
         compute='_compute_total_area',
     )
 
-    @api.depends("living_area","garden_area")
+    @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
-            record.total_area = record.living_area +record.garden_area
+            record.total_area = record.living_area + record.garden_area
 
     best_price = fields.Float(
         string='Best Price',
@@ -83,8 +83,8 @@ class EstateProperty(models.Model):
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
-            self.garden_area=10
-            self.garden_orientation='north'
+            self.garden_area = 10
+            self.garden_orientation = 'north'
         else:
-            self.garden_area=0
-            self.garden_orientation=''
+            self.garden_area = 0
+            self.garden_orientation = ''

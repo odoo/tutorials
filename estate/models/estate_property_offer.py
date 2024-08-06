@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from datetime import date
 from dateutil.relativedelta import relativedelta
 
 
@@ -31,20 +30,20 @@ class EstatePropertyTag(models.Model):
         inverese='_inverse_deadline'
     )
 
-    @api.depends("create_date","validity")
+    @api.depends("create_date", "validity")
     def _compute_deadline(self):
         for record in self:
             if record.create_date and record.validity:
-                record.date_deadline=((record.create_date)+relativedelta(days=record.validity)).date()
+                record.date_deadline = ((record.create_date) + relativedelta(days=record.validity)).date()
             elif record.validity:
-                record.date_deadline=(fields.Datetime.now()+relativedelta(days=record.validity)).date()
+                record.date_deadline = (fields.Datetime.now() + relativedelta(days=record.validity)).date()
             else:
                 record.date_deadline = False
 
-    @api.depends("create_date","date_deadline")
+    @api.depends("create_date", "date_deadline")
     def _inverese_deadline(self):
         for record in self:
             if record.create_date and record.date_deadline:
-                record.validity = (record.date_deadline-record.create_date).days
+                record.validity = (record.date_deadline - record.create_date).days
             else:
                 record.validity = 0
