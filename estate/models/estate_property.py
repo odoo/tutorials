@@ -1,6 +1,7 @@
-from odoo import api, models, fields
+from odoo import api, models, fields, _
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -40,6 +41,18 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_offer')
 
+    _sql_constraints = [
+        ('positive_expected_price', 'CHECK(expected_price > 0.0)', 'A property expected price must be strictly positive'),
+        ('positive_selling_price', 'CHECK(selling_price >= 0.0)', 'A property selling price must be positive')
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price > 0:
+                if record.selling_price < 0.9 * record.expected_price:
+                    raise ValidationError('Selling price cannot be lower than 90% of the expected price')
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for line in self:
@@ -52,7 +65,7 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
                 record.best_price = 0
-    
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -61,21 +74,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
-    
 
     def action_cancel_property(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError('Sold property can not be canceled.')
+                raise UserError(_('Sold property can not be canceled.'))
             else:
-                 self.write({'state': 'canceled'})
+                self.write({'state': 'canceled'})
         return True
-
 
     def action_sold_property(self):
         for record in self:
             if record.state == 'canceled':
-                raise UserError('Canceled property can not be sold.')
+                raise UserError(_('Canceled property can not be sold.'))
             else:
                 self.write({'state': 'sold'})
         return True

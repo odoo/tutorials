@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from datetime import timedelta
+from datetime import timedelta, date
 
 
 class EstatePropertyOffer(models.Model):
@@ -16,12 +16,17 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
 
+    _sql_constraints = [
+        ('positive_offer_price', 'CHECK(price > 0)', 'Offer Price Must be Positive')
+    ]
+
     @api.depends('property_id.create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
-            if record.property_id.create_date:
+            if record.create_date:
                 record.date_deadline = record.property_id.create_date + timedelta(days=record.validity)
-    
+            else:
+                record.date_deadline = date.today() + timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -31,13 +36,11 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.validity = 7
 
-
     def action_accept_offer(self):
         self.write({'status': 'accepted'})
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
         return True
-    
 
     def action_refuse_offer(self):
         self.write({'status': 'refused'})
