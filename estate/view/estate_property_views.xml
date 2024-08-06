@@ -1,9 +1,16 @@
 <?xml version="1.0"?>
 <odoo>
+    <!-- Action  -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Estate Property Plan
+            </p>
+        </field>
     </record>
 
     <record id="estate_property_tree" model="ir.ui.view">
@@ -11,13 +18,15 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Channel">
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="selling_price"/>
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="selling_price" />
             </tree>
         </field>
+
+
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
@@ -31,10 +40,13 @@
                             <field name="name" />
                             <field name="postcode" />
                             <field name="date_availability" />
+                            <field name="property_type_id" />
                         </group>
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
+                            <field name="tag_ids" widget="many2many_tags" />
+                            <field name="best_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -48,12 +60,47 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                                <field name="active" />
+                                <field name="total_area"/>
                             </group>
-                            
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <tree>
+                                    <field name="price" />
+                                    <field name="status" />
+                                    <field name="partner_id" />
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="buyer" />
+                                <field name="salesperson" />
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Estate Properties">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <filter string="Available Properties" name="available_properties"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer Received')]" />
+                <group string="Postcode Group by">
+                    <filter string="postcode" name="postcode" context="{'group_by': 'postcode'}" />
+                </group>
+            </search>
         </field>
     </record>
 </odoo>
