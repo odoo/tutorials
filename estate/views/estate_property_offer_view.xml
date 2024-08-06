@@ -10,6 +10,8 @@
                     <field name="partner_id"/>
                     <field name="price"/>
                     <field name="status"/>
+                    <field name="validity" />
+                    <field name="date_deadline" />
                 </group>
             </sheet>
         </form>
