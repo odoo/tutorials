@@ -31,6 +31,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties Form">
+                <header>
+                    <button name="action_sold_property" type="object" string="Sold" />
+                    <button name="action_cancel_property" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" />
@@ -44,6 +48,7 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -75,6 +80,9 @@
                             </group>
                             <group>
                                 <field name="state" />
+                            </group>
+                            <group>
+                                <field name="total_area" />
                             </group>
                             <!-- #only for testing state one-->
                         </page>
