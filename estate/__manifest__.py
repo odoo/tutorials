@@ -1,5 +1,7 @@
 {
     'name': 'estate',
+    'version': '0.1',
+    'license': 'LGPL-3',
     'depends': ['base_setup'],
     'description': "Technical Training",
     'installable': True,
@@ -13,4 +15,5 @@
         'view/estate_property_offer_views.xml',
         'view/estate_menus.xml',
         ],
+   
 }
