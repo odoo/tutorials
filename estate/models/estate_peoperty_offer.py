@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from datetime import timedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -20,7 +21,6 @@ class EstatePropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             if record.create_date:
-                # This line will convert "String of date" into date format
                 create_date = fields.Date.from_string(record.create_date)
                 record.date_deadline = create_date + timedelta(days=record.validity)
             else:
@@ -36,3 +36,28 @@ class EstatePropertyOffer(models.Model):
                     offer.validity = 7
             else:
                 offer.validity = 7
+
+    def action_accept(self):
+        for offer in self:
+            if offer.property_id.state in ['sold', 'canceled']:
+                raise UserError("Cannot accept an offer for a sold or canceled property.")
+            existing_accepted_offer = self.env['estate.property.offer'].search([
+                ('property_id', '=', offer.property_id.id),
+                ('status', '=', 'accepted')
+            ], limit=1)
+            if existing_accepted_offer:
+                raise UserError("An offer has already been accepted for this property.")
+            offer.status = 'accepted'
+            offer.property_id.state = 'offer_accepted'
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            other_offers = self.env['estate.property.offer'].search([
+                ('property_id', '=', offer.property_id.id),
+                ('id', '!=', offer.id)
+            ])
+            other_offers.write({'status': 'refused'})
+
+    def action_refuse(self):
+        for offer in self:
+            offer.status = 'refused'
+        return True
