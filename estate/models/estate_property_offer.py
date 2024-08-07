@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
-from datetime import date
 
 
 class EstatePropertyOffer(models.Model):
@@ -51,12 +50,11 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_button(self):
         self.status = 'accepted'
-        self.property_id.selling_price=self.price
-        self.property_id.buyer_id=self.partner_id
-        self.property_id.state='offer accepted'
-    
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = 'offer accepted'
+
     def action_refuse_button(self):
         self.status = 'refused'
-        self.property_id.selling_price=0
-        self.property_id.buyer_id=''
-
+        self.property_id.selling_price = 0
+        self.property_id.buyer_id = ''
