@@ -1,3 +1,4 @@
+from datetime import timedelta
 from odoo import api, models, fields
 
 
@@ -24,8 +25,26 @@ class EstatePropertyOffer(models.Model):
     @api.depends('create_date', 'validity')
     def _computed_date_deadline(self):
         for record in self:
-            record.date_deadline = record.create_date + record.validity
+            if record.create_date:
+                record.date_deadline = record.create_date + \
+                    timedelta(days=record.validity)
+            else:
+                record.date_deadline = fields.datetime.now() + timedelta(days=record.validity)
 
-    @api.depends('date_deadline', 'validity')
+    @api.depends('create_date', 'date_deadline')
     def _inverse_computed_date_deadline(self):
-        return
+        for record in self:
+            if record.create_date:
+                record.validity = (record.date_deadline -
+                                   record.create_date.date()).days
+            else:
+                record.validity = (record.date_deadline -
+                                   fields.date.today()).days
+
+    def action_accept(self):
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.buyer = self.partner_id
+
+    def action_refused(self):
+        self.status = 'refused'

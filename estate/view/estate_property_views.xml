@@ -25,8 +25,6 @@
                 <field name="selling_price" />
             </tree>
         </field>
-
-
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
@@ -34,6 +32,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" />
+                    <button name="action_cancel" type="object" string="Cancel" />
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -41,12 +43,14 @@
                             <field name="postcode" />
                             <field name="date_availability" />
                             <field name="property_type_id" />
+                            <field name="state" />
                         </group>
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
                             <field name="tag_ids" widget="many2many_tags" />
-                            <field name="best_price"/>
+                            <field name="best_price" />
+                            <field name="active" />
                         </group>
                     </group>
                     <notebook>
@@ -61,17 +65,21 @@
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
                                 <field name="active" />
-                                <field name="total_area"/>
+                                <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
                             <field name="offer_ids">
-                                <tree>
+                                <tree editable='top'>
                                     <field name="price" />
-                                    <field name="status" />
                                     <field name="partner_id" />
-                                    <field name="validity"/>
-                                    <field name="date_deadline"/>
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
+                                    <button name="action_accept" string="Accept" states="draft"
+                                        type="object" icon="fa-check" />
+                                    <button name="action_refused" string="Refused" states="draft"
+                                        type="object" icon="fa-check" />
+                                    <field name="status" />
                                 </tree>
                             </field>
                         </page>
