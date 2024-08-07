@@ -1,5 +1,6 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from datetime import date
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 
@@ -37,7 +38,7 @@ class EstateProperty(models.Model):
                                  ('offer accepted', 'Offer Accepted'),
                                  ('sold', 'Sold'),
                                  ('cancelled', 'Cancelled')
-                             ]
+                             ], copy=False, default='new'
                              )
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type", string="Property Type")
@@ -70,3 +71,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    def action_sold(self):
+        if self.state == 'cancelled':
+            raise UserError(_("You cannot sold the cancelled property"))
+        else:
+            self.state = 'sold'
+
+    def action_cancel_property(self):
+        if self.state == 'sold':
+            raise UserError(_("You cannot cancel the sold property"))
+        else:
+            self.state = 'cancelled'

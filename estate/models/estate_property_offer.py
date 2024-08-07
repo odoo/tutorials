@@ -25,7 +25,8 @@ class EstatePropertyOffer(models.Model):
     def _compute_deadline(self):
         for record in self:
             if record.create_date:
-                record.date_deadline = record.create_date + timedelta(days=record.validity)
+                record.date_deadline = record.create_date + \
+                    timedelta(days=record.validity)
             else:
                 record.date_deadline = fields.datetime.now() + timedelta(days=record.validity)
 
@@ -33,6 +34,16 @@ class EstatePropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             if record.create_date:
-                record.validity = (record.date_deadline - record.create_date.date()).days
+                record.validity = (record.date_deadline -
+                                   record.create_date.date()).days
             else:
-                record.validity = (record.date_deadline - fields.date.today()).days
+                record.validity = (record.date_deadline -
+                                   fields.date.today()).days
+
+    def action_accept(self):
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.partner_id = self.partner_id
+
+    def action_refuse(self):
+        self.status = 'refused'
