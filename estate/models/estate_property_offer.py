@@ -1,8 +1,9 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
+from datetime import date
 
 
-class EstatePropertyTag(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
 
@@ -15,19 +16,19 @@ class EstatePropertyTag(models.Model):
     partner_id = fields.Many2one(
         'res.partner',
         string='Partner',
-        required="True",
+        required=True,
         help='Person making the offer'
     )
     property_id = fields.Many2one(
         'estate.property',
         string='Property ID',
-        required="True"
+        required=True
     )
     validity = fields.Integer(string='Validity', default=7)
     date_deadline = fields.Date(
         string='Deadline',
         compute='_compute_deadline',
-        inverese='_inverse_deadline'
+        inverse='_inverse_deadline'
     )
 
     @api.depends("create_date", "validity")
@@ -47,3 +48,15 @@ class EstatePropertyTag(models.Model):
                 record.validity = (record.date_deadline - record.create_date).days
             else:
                 record.validity = 0
+
+    def action_accept_button(self):
+        self.status = 'accepted'
+        self.property_id.selling_price=self.price
+        self.property_id.buyer_id=self.partner_id
+        self.property_id.state='offer accepted'
+    
+    def action_refuse_button(self):
+        self.status = 'refused'
+        self.property_id.selling_price=0
+        self.property_id.buyer_id=''
+
