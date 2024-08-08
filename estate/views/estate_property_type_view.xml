@@ -5,11 +5,22 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Types of Property">
-                <sheet>
-                    <h1>
-                        <field name="name"/>
-                    </h1>
-                </sheet>
+                    <!-- <field name="name"/> -->
+                    <!-- <field name="offer_ids" widget="one2many_list" context="{'default_property_type_id': active_id}"/> -->
+                        <button name="action_open_offers" type="object" string="Offers" class="oe_stat_button" icon="fa-th-list">
+                            <field name="offer_count" widget="statinfo" class="oe_inline"/>
+                        </button>
+                <notebook>
+                    <page string="Properties">
+                        <field name="property_ids">
+                            <tree string='Property'>
+                                <field name='name'/>
+                                <field name='expected_price'/>
+                                <field name='state'/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>
@@ -19,6 +30,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Types of Property">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
         </field>
