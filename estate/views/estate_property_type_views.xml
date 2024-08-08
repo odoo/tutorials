@@ -15,13 +15,22 @@
         <field name="arch" type="xml">
             <form string="Estate property type">
                 <sheet>
-                    <group>
-                        <div class="oe_title">
-                            <h1>
-                                <field name="name" />
-                            </h1>
-                        </div>
-                    </group>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

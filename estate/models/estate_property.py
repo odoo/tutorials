@@ -1,6 +1,7 @@
 from odoo import models, fields, api, _
 from datetime import date
-from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
+from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
 
 
@@ -52,6 +53,22 @@ class EstateProperty(models.Model):
         "estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(string="Total area", compute="_compute_values")
     best_price = fields.Float(string="Best offer", compute="_compute_values")
+
+    # sql constraints
+    _sql_constraints = [
+        ('check_price', 'CHECK(expected_price >= 0)',
+         'The Expected price must be positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price must be positve')
+    ]
+
+    # python constrains
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
+                raise ValidationError(
+                    _("Selling price must be greater than 90% of expected price"))
 
     @api.depends("garden_area", "living_area", "offer_ids.price")
     def _compute_values(self):

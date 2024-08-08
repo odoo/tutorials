@@ -36,7 +36,7 @@
                      <field name="date_availability" />
                   </group>
                   <group>
-                     <field name="state" />
+                     <field name="state" widget="statusbar"/>
                      <field name="expected_price" />
                      <field name="selling_price" />
                      <field name="best_price" />
