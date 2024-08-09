@@ -20,6 +20,7 @@
                 <field name="date_availability" />
                 <field name="buyer_id" />
                 <field name="seller_id" />
+                <field name="state"/>
                 <field name="property_type_id" />
                 <field name="tag_ids" widget="many2many_tags" />
             </tree>

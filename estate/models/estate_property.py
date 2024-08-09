@@ -1,6 +1,7 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from datetime import timedelta
-from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -72,14 +73,14 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == 'canceled':
-                raise UserError("Canceled properties cannot be set as sold.")
+                raise ValidationError("Canceled properties cannot be set as sold.")
             record.state = 'sold'
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold properties cannot be canceled.")
+                raise ValidationError("Sold properties cannot be canceled.")
             record.state = 'canceled'
         return True
 
@@ -87,5 +88,17 @@ class EstateProperty(models.Model):
         for record in self:
             related_offers = self.env['estate.property.offer'].search([('property_id', '=', record.id)])
             if related_offers:
-                raise UserError("You cannot delete a property with existing offers.")
+                related_offers.unlink()
         return super().unlink()
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.expected_price > 0:
+                if record.selling_price and float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=0.01) < 0:
+                    raise ValidationError("The selling price must be at least 90% of the expected price.")
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+    ]

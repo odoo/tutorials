@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 from datetime import timedelta
 
 
@@ -36,12 +36,12 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for offer in self:
             if offer.status == 'accepted':
-                raise UserError("This offer is already accepted.")
+                raise ValidationError("This offer is already accepted.")
             if offer.status == 'refused':
-                raise UserError("This offer is refused and cannot be accepted.")
+                raise ValidationError("This offer is refused and cannot be accepted.")
             other_offers = self.search([('property_id', '=', offer.property_id.id), ('status', '=', 'accepted')])
             if other_offers:
-                raise UserError("An offer for this property has already been accepted.")
+                raise ValidationError("An offer for this property has already been accepted.")
             offer.status = 'accepted'
             offer.property_id.state = 'offer_accepted'
             offer.property_id.selling_price = offer.price
@@ -51,9 +51,12 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for offer in self:
             if offer.status == 'refused':
-                raise UserError("This offer is already refused.")
+                raise ValidationError("This offer is already refused.")
             if offer.status == 'accepted':
-                raise UserError("An accepted offer cannot be refused.")
-
+                raise ValidationError("An accepted offer cannot be refused.")
             offer.status = 'refused'
         return True
+
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.')
+    ]
