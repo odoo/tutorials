@@ -1,20 +1,33 @@
-
 <odoo>
-   
-    <record id="real_estate_action" model="ir.actions.act_window">
-        <field name="name">Property</field>
-        <field name="res_model">estate_property</field>
-        <field name="view_mode">tree,form</field> 
-        <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Create a module
-                </p>
-                <p>
-                    Leads are the qualification step before the creation of an opportunity.
-                </p>
-        </field>
-
-    </record>
-    
-    
+	<record id="real_estate_action" model="ir.actions.act_window">
+		<field name="name">Property</field>
+		<field name="res_model">estate_property</field>
+		<field name="view_mode">tree,form</field>
+		<field name="context">{'search_default_state': True, 'search_default_current': True}</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a module
+			</p>
+			<p>
+				Leads are the qualification step before the creation of an opportunity.
+			</p>
+		</field>
+	</record>
+	<record id="estate_property_view_search" model="ir.ui.view">
+		<field name="name">estate.property.view.search</field>
+		<field name="model">estate_property</field>
+		<field name="arch" type="xml">
+			<search string="Property Search">
+				<field name="name" />
+				<field name="postcode" />
+				<field name="expected_price" />
+				<field name="bedrooms" />
+				<field name="living_area" string="Living Area (Sqm)" filter_domain="[('living_area', '>=', self)]" />
+				<filter string="Available" name="state" domain="['|',('state', '=', 'offer received'),('state', '=', 'offer accepted')]" />
+				<group expand="1" string="Postcode">
+					<filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
+				</group>
+			</search>
+		</field>
+	</record>
 </odoo>

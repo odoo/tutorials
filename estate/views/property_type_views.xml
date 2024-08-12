@@ -1,19 +1,60 @@
 <odoo>
-   
-    <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Property_type</field>
-        <field name="res_model">real.estate.property.type</field>
-        <field name="view_mode">tree,form</field> 
-        <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Create a module
-                </p>
-                <p>
-                    Leads are the qualification step before the creation of an opportunity.
-                </p>
-            </field>
-
-    </record>
-    
-    
+	<record id="estate_property_type_action" model="ir.actions.act_window">
+		<field name="name">Property Type</field>
+		<field name="res_model">real.estate.property.type</field>
+		<field name="view_mode">tree,form</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a module
+			</p>
+			<p>
+				Leads are the qualification step before the creation of an opportunity.
+			</p>
+		</field>
+	</record>
+	<record id="view_estate_property_type_tree" model="ir.ui.view">
+		<field name="name">real.estate.property.type.tree</field>
+		<field name="model">real.estate.property.type</field>
+		<field name="arch" type="xml">
+			<tree string="Estate Properties Type" sample="1">
+				<field name="sequence" widget="handle" />
+				<field name="name" />
+				<field name="description" />
+			</tree>
+		</field>
+	</record>
+	<record id="view_property_type_form" model="ir.ui.view">
+		<field name="name">property.type.form</field>
+		<field name="model">real.estate.property.type</field>
+		<field name="arch" type="xml">
+			<form string="Estate Properties Type">
+				<!--
+				<header>
+				</header>
+				-->
+				<sheet>
+					<button type="action" name="%(estate.estate_property_offer_action)d" string="Offers" class="oe_stat_button" icon="fa-ticket">
+						<div class="o_stat_info">
+							<field name="offer_count" widget="statinfo" string="" />
+							<span class="o_stat_text">Offer</span>
+						</div>
+					</button>
+					<h1>
+						<field name="name" />
+					</h1>
+					<notebook>
+						<page string="Property">
+							<field name="property_ids">
+								<tree>
+									<field name="name" />
+									<field name="expected_price" />
+									<field name="state" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
 </odoo>

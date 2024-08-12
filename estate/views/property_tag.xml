@@ -1,16 +1,15 @@
 <odoo>
-    <record id="real_estate_property_tag_action" model="ir.actions.act_window">
-            <field name="name">Property tag</field>
-            <field name="res_model">real.estate.property.tag</field>
-            <field name="view_mode">tree,form</field> 
-            <field name="help" type="html">
-                    <p class="o_view_nocontent_smiling_face">
-                        Create a module
-                    </p>
-                    <p>
-                        Leads are the qualification step before the creation of an opportunity.
-                    </p>
-            </field>
-
-        </record>
+	<record id="real_estate_property_tag_action" model="ir.actions.act_window">
+		<field name="name">Property tag</field>
+		<field name="res_model">real.estate.property.tag</field>
+		<field name="view_mode">tree,form</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create a module
+			</p>
+			<p>
+				Leads are the qualification step before the creation of an opportunity.
+			</p>
+		</field>
+	</record>
 </odoo>

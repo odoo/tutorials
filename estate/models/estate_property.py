@@ -5,13 +5,15 @@ from odoo.exceptions import UserError, ValidationError
 class MyModel(models.Model):
     _name = "estate_property"
     _description = "Real Estate"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Available From")
     expected_price = fields.Float(string="Expected Price")
-    selling_price = fields.Float(string="Selling Price", default="0.00")
+    selling_price = fields.Float(string="Selling Price")
     bedrooms = fields.Integer(string="Bedrooms")
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer(string="Facades")
@@ -34,8 +36,9 @@ class MyModel(models.Model):
             ("offer received", "Offer Received"),
             ("offer accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("canceled", "Canceled"),
+            ("cancelled", "Cancelled"),
         ],
+        tracking=True,
         default="new",
     )
 
@@ -100,9 +103,10 @@ class MyModel(models.Model):
                 record.best_offer = 0.0
 
     _sql_constraints = [
+        ("property_name", "unique(name)", "The property name must be unique!"),
         (
             "selling_price",
-            "CHECK(selling_price >= 0)",
+            "check(selling_price >= 0)",
             "A property selling price must be strictly positive.",
         ),
         (
@@ -113,7 +117,7 @@ class MyModel(models.Model):
     ]
 
     @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
+    def _check_selling(self):
         for record in self:
             if record.selling_price > 0:
                 price_per = (record.expected_price * 90) / 100
