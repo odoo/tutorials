@@ -6,6 +6,8 @@ from odoo.tools.float_utils import float_is_zero, float_compare
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
+    _order = 'id desc'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     title = fields.Char(required=True)
     description = fields.Text()
@@ -29,14 +31,16 @@ class EstateProperty(models.Model):
     ])
     state = fields.Selection([
         ('new', 'New'),
+        ('offer_received', 'Offer_received'),
         ('offer_accepted', 'Offer_accepted'),
         ('sold', 'Sold'),
-        ('canceled', 'Canceled')
-    ], string='Status', default='new')
+        ('canceled', 'Canceled'),
+        ('refused', 'Refused')
+    ], string='Status', default='new', tracking=True)
     active = fields.Boolean(string='Active', default=True)
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer")
-    seller_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
+    seller_id = fields.Many2one('res.users', string="Salesperson", ondelete='set null')
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
@@ -63,16 +67,21 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError("Sold properties cannot be canceled.")
-            record.state = 'canceled'
+        if self.state != "sold":
+            self.state = "canceled"
+        elif self.state == "sold":
+            raise UserError("This property can't be canceled as it is sold already")
+        return True
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'canceled':
-                raise UserError("Canceled properties cannot be sold.")
-            record.state = 'sold'
+        if self.state != "canceled":
+            if self.state == 'offer_accepted':
+                self.state = "sold"
+            else:
+                raise UserError("This property can't be sold as there are no offers")
+        elif self.state == "canceled":
+            raise UserError("This property can't be sold as it is canceled already")
+        return True
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
@@ -85,3 +94,14 @@ class EstateProperty(models.Model):
             if not float_is_zero(record.selling_price, precision_rounding=0.01):
                 if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=0.01) == -1:
                     raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
+    def action_offer_received(self):
+        self.state = 'offer_received'
+
+    @api.ondelete(at_uninstall=False)
+    def _delete_property(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError(
+                    "You cannot delete a property unless it is in the 'New' or 'Canceled' state."
+                )

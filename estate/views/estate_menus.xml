@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
    <menuitem id="estate_menu_root" name="Real Estate">
-    <menuitem id="Advertisements" name="Advertisements">
-        <menuitem id="Properties" action="action_estate_property"/>
-    </menuitem>
-    <menuitem id="Settings" name="Settings">
+        <menuitem id="Advertisements" name="Advertisements">
+            <menuitem id="Properties" action="action_estate_property"/>
+        </menuitem>
+     <menuitem id="Settings" name="Settings">
         <menuitem id="Properties_Types" name="Property Types" action="action_estate_property_type"/>
         <menuitem id="Properties_Tags" name="Property Tags" action="action_estate_property_tag"/>
-        
-    </menuitem>
-</menuitem>
+        <menuitem id="Users_and_companies" name="Users and Companies" action="action_res_users"/>
+     </menuitem>
+  </menuitem>
 </odoo>

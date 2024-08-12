@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_res_users" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_users_form_inherit_property_ids" model="ir.ui.view">
+    <field name="name">res.users.form.inherit.property_ids</field>
+    <field name="model">res.users</field>
+    <field name="inherit_id" ref="base.view_users_form"/>
+    <field name="arch" type="xml">
+        <!-- <xpath expr="//notebook" position="inside"> -->
+            <page>
+                <field name="property_ids">
+                    <tree string="Properties">
+                        <field name="title"/>
+                        <field name="state"/>
+                        <field name="selling_price"/>
+                        <field name="expected_price"/>
+                    </tree>
+                </field>
+            </page>
+        <!-- </xpath> -->
+    </field>
+</record>
+
+
+</odoo>
