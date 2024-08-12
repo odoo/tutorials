@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
 
     _name = "estate.property"
     _description = "Estate property"
+    _order = 'id desc'
 
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')

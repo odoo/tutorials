@@ -4,7 +4,7 @@
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree editable="top">
                 <field name="price" />
                 <field name="status" />
                 <field name="partner_id" />
@@ -30,5 +30,11 @@
                 </sheet>
             </form>
         </field>
+    </record>
+    <record id="action_estate_property_offer" model="ir.actions.act_window">
+        <field name="res_model">estate.property.offer</field>
+        <field name="name">offers</field>
+        <field name="view_mode">tree</field>
+        <!-- <field name="domain">[('property_type_id', '=', active_id)]</field> -->
     </record>
 </odoo>

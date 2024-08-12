@@ -6,6 +6,7 @@ class EstatePropertyOffer(models.Model):
 
     _name = "estate.property.offer"
     _description = "Estate property offer"
+    _order = 'price desc'
 
     price = fields.Float(string='Price', required=True)
     status = fields.Selection(string='Status',
@@ -20,6 +21,12 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         string="Deadline date", compute="_compute_deadline", inverse="_inverse_deadline")
+    property_type_id = fields.Many2one(
+        comodel_name='estate.property.type',
+        string='Property Type',
+        store=True,
+        related='property_id.property_type_id',
+    )
 
     _sql_constraints = [
         ('check_price', 'CHECK(price >= 0)',
@@ -49,6 +56,7 @@ class EstatePropertyOffer(models.Model):
         self.status = 'accepted'
         self.property_id.selling_price = self.price
         self.property_id.partner_id = self.partner_id
+        self.property_id.state = 'offer accepted'
 
     def action_refuse(self):
         self.status = 'refused'

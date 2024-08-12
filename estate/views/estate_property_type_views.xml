@@ -5,16 +5,24 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget='handle' />
                 <field name="name" />
             </tree>
         </field>
     </record>
+
     <record id="view_estate_property_type_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Estate property type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" name="%(action_estate_property_offer)d"
+                            class="oe_stat_button" icon="oi-view-list">
+                            <field name="offer_count" widget="statinfo" string="Offers" />
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name" />
@@ -30,13 +38,22 @@
                                 </tree>
                             </field>
                         </page>
+                        <page string="offers">
+                            <field name="offer_ids">
+                                <tree>
+                                    <field name="price" />
+                                    <field name="validity" />
+                                    <field name="status" />
+                                </tree>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
     <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Estate property Type Action</field>
+        <field name="name">Estate property Type </field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
