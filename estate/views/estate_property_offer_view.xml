@@ -4,15 +4,15 @@
         <field name="name">estate_property_offer</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree sample="1">
+            <tree editable="bottom" sample="1" decoration-danger="status in ('refused', 'Refused')" decoration-success="status in ('accepted', 'Accepted')">
                 <field name='price'/>
                 <field name='partner_id'/>
 
                 <field name='validity' string='Validity (days)'/>
                 <field name='deadline'/>
-                <button name="action_status_accept" type="object" icon="fa-check" />
-                <button name="aciton_status_refused" type="object"  icon="fa-times"/>
-                <field name='status'/>
+                <button name="action_status_accept" invisible="status in ('accepted', 'refused')" title="accept" type="object" icon="fa-check" />
+                <button name="aciton_status_refused" invisible="status in ('accepted', 'refused')" title="refused" type="object" icon="fa-times"/>
+                <field name='status' column_invisible='1' />
             </tree>
         </field>
 
@@ -25,15 +25,27 @@
         <field name="arch" type="xml">
             <form >
                 <sheet>
-                    <group>
+                    <group >
                         <field name='price'/>
                         <field name='partner_id'/>
                         <field name="validity"/>
                         <field name="deadline"/>
-                        <field name='status'/>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
+    <record id="action_estate_property_offer" model="ir.actions.act_window">
+        <field name="name">Estate Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+    <record id="action_estate_property_offer_y" model="ir.actions.act_window">
+        <field name="name">Estate Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+
 </odoo>
