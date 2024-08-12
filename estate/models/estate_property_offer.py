@@ -1,13 +1,13 @@
-from odoo import fields, models ,api
-from datetime import datetime, timedelta 
-from odoo.exceptions import UserError,ValidationError
+from odoo import fields, models, api
+from datetime import datetime, timedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offers"
     _order = "price desc"
-    
+
     price = fields.Float()
     state = fields.Selection(
         selection=[
@@ -23,37 +23,36 @@ class EstatePropertyOffer(models.Model):
     created_date = fields.Date(default=lambda self: datetime.today())
     accepted = fields.Boolean(default=False)
     property_type_id = fields.Many2one(related='property_id.property_type_id', store=True, ondelete="cascade")
-
-    _sql_constraints = [ 
-        ('check_offer_price','CHECK(price > 0)','Offer price can not be less than or equal to zero')
-    ] 
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)', 'Offer price can not be less than or equal to zero')
+    ]
 
     @api.depends()
     def _compute_validity(self):
         for record in self:
             if record.created_date:
-                record.deadline_date = record.created_date + timedelta(days = record.validity)
+                record.deadline_date = record.created_date+timedelta(days=record.validity)
             else:
                 record.deadline_date = False
-        
+
     def _inverse_validity(self):
         for record in self:
             if record.deadline_date and record.created_date:
-                record.validity = (record.deadline_date - record.created_date).days
+                record.validity = (record.deadline_date-record.created_date).days
             else:
                 record.validity = 0
-    
+
     @api.model
     def create(self, vals):
         record = super().create(vals)
-        if(record.property_id):
+        if (record.property_id):
             record.property_id.state = "offer_received"
         return record
 
     def action_accept(self):
         for record in self:
             if record.property_id.buyer:
-               raise UserError("You can not accept offer it is already accepted ")
+               raise UserError("You can not accept offer it is already accepted")
             else:
                 record.property_id.buyer = record.partner_id
                 record.property_id.selling_price = record.price
