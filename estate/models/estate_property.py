@@ -7,11 +7,16 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
+    _order = 'id desc'
 
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
-    date_availability = fields.Date(string='Availability Date', copy=False, default=fields.Datetime.today() + timedelta(days=90))
+    date_availability = fields.Date(
+        string='Availability Date',
+        copy=False,
+        default=fields.Datetime.today() + timedelta(days=90)
+    )
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
@@ -48,12 +53,12 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute='_compute_total_area', store=True)
     best_price = fields.Float(compute='_compute_best_price', store=True)
 
-    @api.depends("living_area", "garden_area")
+    @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends("offer_ids.price")
+    @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
             if record.offer_ids:
@@ -86,6 +91,8 @@ class EstateProperty(models.Model):
 
     def unlink(self):
         for record in self:
+            if record.state in ['sold', 'canceled']:
+                raise ValidationError("You cannot delete a property that is sold or canceled.")
             related_offers = self.env['estate.property.offer'].search([('property_id', '=', record.id)])
             if related_offers:
                 related_offers.unlink()

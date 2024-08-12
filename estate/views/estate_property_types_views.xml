@@ -13,6 +13,13 @@
                     <group>
                         <field name="name"/>
                     </group>
+                        <field name="property_ids">                            
+                            <tree>
+                                <field name="name"/>
+                                <field name="expected_price"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
                 </sheet>
             </form>
         </field>
@@ -22,6 +29,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Property Types">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
         </field>

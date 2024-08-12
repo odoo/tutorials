@@ -6,17 +6,23 @@ from datetime import timedelta
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
+    _order = 'price desc'
 
-    price = fields.Float('Price')
+    price = fields.Float(string='Price', required=True)
     status = fields.Selection([
         ('accepted', 'Accepted'),
         ('refused', 'Refused'),
         ('draft', 'Draft')
     ], default='draft', copy=False)
-    partner_id = fields.Many2one('res.partner', required=True)
-    property_id = fields.Many2one('estate.property', required=True, ondelete='cascade')
-    validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+    state = fields.Selection([
+        ('accepted', 'Accepted'),
+        ('refused', 'Refused'),
+        ('draft', 'Draft')
+    ], default='draft', copy=False)
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True)
+    property_id = fields.Many2one('estate.property', string='Property', required=True, ondelete='cascade')
+    validity = fields.Integer(string='Validity (days)', default=7)
+    date_deadline = fields.Date(string='Deadline', compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -26,6 +32,7 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
 
+    @api.depends("date_deadline")
     def _inverse_date_deadline(self):
         for record in self:
             if record.create_date:

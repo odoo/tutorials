@@ -10,7 +10,9 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Estate Property List">
+            <tree string="Estate Property List"
+            decoration-success="state == 'offer_accepted'"
+            decoration-muted="state == 'sold'">
                 <field name="name" />
                 <field name="bedrooms" />
                 <field name="postcode" />
@@ -32,18 +34,21 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property Form">
+                
                 <header>
-                    <button name="action_sold" type="object" string="Set as Sold" />
-                    <button name="action_cancel" type="object" string="Cancel" />
+                    <button name="action_sold" type="object" string="Set as Sold" invisible="state in ['sold', 'canceled']"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold', 'canceled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_accepted,sold,canceled"/>
                 </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="name" />
-                            <field name="tag_ids" widget="many2many_tags" />
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            
                         </group>
                         <group>
-                            <field name="property_type_id" />
+                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
