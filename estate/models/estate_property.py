@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
 
     _name = "estate.property"
     _description = "estate property description"
+    _order = "id desc"
 
     name = fields.Char('Name', required=True)
     description = fields.Text('Description')
@@ -33,11 +34,11 @@ class EstateProperty(models.Model):
                                               ('west', 'West'),
                                           ])
     active = fields.Boolean(default=True)
-    state = fields.Selection(string='State', required=True, copy=False, default='new',
+    state = fields.Selection(string='Status', required=True, copy=False, default='new',
                              selection=[
                                  ('new', 'New'),
                                  ('offer Received', 'Offer Received'),
-                                 ('offer Accepted', 'Offer Received'),
+                                 ('offer Accepted', 'Offer Accepted'),
                                  ('sold', 'Sold'),
                                  ('canceled', 'Canceled')
                              ]

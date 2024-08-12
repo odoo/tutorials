@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="estate_menu_root" name="Estate" >
+    <menuitem id="estate_menu_root" name="Estate">
         <menuitem id="estate_first_menu" name="Advertisments">
             <menuitem id="estate_model_menu_action" name="Properties"
                 action="estate_property_action" />

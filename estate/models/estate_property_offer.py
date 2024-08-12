@@ -6,6 +6,7 @@ class EstatePropertyOffer(models.Model):
 
     _name = "estate.property.offer"
     _description = "estate property offer"
+    _order = "price desc"
 
     price = fields.Float(string='Price')
     validity = fields.Integer(string='Validity', default=7)
@@ -21,6 +22,8 @@ class EstatePropertyOffer(models.Model):
                               )
     property_id = fields.Many2one(
         'estate.property', string='Property', required=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type", store=True, related='property_id.property_type_id')
 
     @api.depends('create_date', 'validity')
     def _computed_date_deadline(self):
