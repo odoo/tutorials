@@ -30,6 +30,7 @@ class EstatePropertyOffer(models.Model):
         compute='_compute_deadline',
         inverse='_inverse_deadline'
     )
+    property_type_id = fields.Many2one(related="property_id.property_type_id", string="Property Type")
 
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
@@ -57,7 +58,6 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_button(self):
         self.status = 'refused'
-        self.property_id.selling_price = 0.1
         self.property_id.buyer_id = ''
 
     _sql_constraints = [

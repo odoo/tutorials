@@ -88,9 +88,6 @@ class EstateProperty(models.Model):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = ''
 
     def action_sold_button(self):
         if self.state == 'cancelled':

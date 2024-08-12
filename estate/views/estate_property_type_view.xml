@@ -28,6 +28,11 @@
     <field name="arch" type="xml">
         <form string="Estate Property Type">
             <sheet>
+                <div name="button_box">
+                  <button name="%(estate_property_offer_action)d" type="action" string="Offers" class="oe_stat_button" icon="oi-view-list" invisible="offer_count == 0">
+                    <field string=" Offers" name="offer_count" widget="statinfo"/>
+                  </button>
+              </div>
               <group>
                 <field name="name"/>
               </group>
