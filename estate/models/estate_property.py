@@ -29,7 +29,7 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         string='State',
         selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
-        help='state of the proerty right now',
+        help='state of the property right now',
         required=True,
         copy=False,
         default='new')
@@ -114,14 +114,9 @@ class EstateProperty(models.Model):
             result = float_compare(record.selling_price, (record.expected_price * 0.9), precision_digits=2)
             if result == -1:
                 raise ValidationError("Selling price cannot be lower than 90% of the expected price")
-    
+
     @api.ondelete(at_uninstall=False)
     def _unlink_except_new_cancelled(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError("Cannot delete properties that are not in new or cancelled state")
-        # return super().unlink()
-
-    # @api.models
-    # def create(self, vals):
-

@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -64,3 +65,15 @@ class EstatePropertyOffer(models.Model):
         ('check_offer_price', 'CHECK(price > 0)',
         'The offer price should be more than 0 and striclty positive')
     ]
+
+    @api.model
+    def create(self, vals):
+        offer = vals.get('property_id')
+        self.property_id.browse(offer).state = 'offer received'
+        search_price = vals.get('price')
+        record = self.search([('property_id', '=', offer)])
+        if record:
+            best = max(record.mapped('price'))
+            if search_price < best:
+                raise UserError("New offer price cannot be less than previous offers")
+        return super().create(vals)
