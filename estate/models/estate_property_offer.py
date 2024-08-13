@@ -56,3 +56,16 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
         return True
+
+    @api.model
+    def create(self, values):
+        property_id = values.get('property_id')
+        if property_id:
+            property_name = self.env['estate.property'].browse(property_id)
+            new_offer_price = values.get('price', 0)
+            highest_offer_price = max(property_name.offer_ids.mapped('price'), default=0)
+            if new_offer_price < highest_offer_price:
+                raise UserError("Cannot create an offer lower than the existing highest offer.")
+            if property_name.state != 'offer_received':
+                property_name.state = 'offer_received'
+        return super().create(values)

@@ -78,7 +78,6 @@
                                         <button name='action_accepted' type='object' string='Accepted' icon="fa-check" invisible="status in ['accepted', 'refused']"/>
                                         <button name='action_refused' type='object' string='Refused' icon='fa-close' invisible="status in ['accepted', 'refused']"/>
                                         <field name="status" column_invisible="1"/>
-                                        <!-- <field name="property_type_id"/> -->
                                     </tree>
                                 </field>
                         </page>
@@ -110,7 +109,7 @@
                 <field name="seller_id" />
                 <field name="tag_ids" widget="many2many_tags" />
                 <filter string="Available Properties" name="available_properties"
-                    domain="[('state', 'in', ['New', 'Offer Received'])]"/>
+                domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
                 <group string="Group By">
                     <filter string="Postcode" name="group_by_postcode"
                         context="{'group_by':'postcode'}" />
