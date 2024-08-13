@@ -25,7 +25,7 @@ class MyModel(models.Model):
             ("north", "North"),
             ("south", "South"),
             ("east", "East"),
-            ("west", "West"),
+            ("offer receivedwest", "West"),
         ],
     )
     active = fields.Boolean(default=True)
@@ -125,3 +125,11 @@ class MyModel(models.Model):
                     raise ValidationError(
                         "selling price cannot be lower than 90% of the expected price."
                     )
+
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_delete(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(
+                    "You cannot delete a property that is not in 'New' or 'Canceled' state."
+                )

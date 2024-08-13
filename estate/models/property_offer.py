@@ -1,5 +1,6 @@
 from odoo import api, models, fields
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -15,7 +16,9 @@ class EstatePropertyOffer(models.Model):
     )
 
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-    property_id = fields.Many2one("estate_property", string="Property", required=True)
+    property_id = fields.Many2one(
+        "estate_property", string="Property", ondelete="cascade"
+    )
     validity = fields.Integer(string="Validity (days)", default=7)
     deadline_date = fields.Date(
         string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
@@ -56,11 +59,13 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
 
-    _sql_constraints = [
-        ("price", "CHECK(price >= 0)", "A price must be strictly positive.")
-    ]
-    # @api.constrains('property_id.bedrooms')
-    # def _check_bedrooms(self):
-    #     for record in self:
-    #         if record.property_id.bedrooms < 0:
-    #             raise ValidationError("You have to set bedrooms")
+    @api.model
+    def create(self, vals):
+        property_id = vals.get("property_id")
+        property_users = self.env["estate_property"].browse(property_id)
+        property_users.state = "offer received"
+        if property_users.offer_ids.filtered(lambda o: o.price >= vals.get("price")):
+            raise UserError(
+                "You cannot create an offer with a lower amount than an existing offer."
+            )
+        return super().create(vals)
