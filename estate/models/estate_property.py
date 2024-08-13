@@ -1,5 +1,5 @@
-from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
+from odoo import api, fields, models
 
 
 class MyModel(models.Model):
@@ -41,7 +41,6 @@ class MyModel(models.Model):
         tracking=True,
         default="new",
     )
-
     salesman_id = fields.Many2one(
         "res.users",  # The model this field relates to
         string="Salesman",  # Label for the field
@@ -59,6 +58,30 @@ class MyModel(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
+
+    _sql_constraints = [
+        ("property_name", "unique(name)", "The property name must be unique!"),
+        (
+            "selling_price",
+            "check(selling_price >= 0)",
+            "A property selling price must be strictly positive.",
+        ),
+        (
+            "expected_price",
+            "CHECK(expected_price >= 0)",
+            "A property expected price must be strictly positive.",
+        ),
+    ]
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling(self):
+        for record in self:
+            if record.selling_price > 0:
+                price_per = (record.expected_price * 90) / 100
+                if record.selling_price < price_per:
+                    raise ValidationError(
+                        "selling price cannot be lower than 90% of the expected price."
+                    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -101,30 +124,6 @@ class MyModel(models.Model):
                 record.best_offer = max(record.offer_ids.mapped("price"))
             else:
                 record.best_offer = 0.0
-
-    _sql_constraints = [
-        ("property_name", "unique(name)", "The property name must be unique!"),
-        (
-            "selling_price",
-            "check(selling_price >= 0)",
-            "A property selling price must be strictly positive.",
-        ),
-        (
-            "expected_price",
-            "CHECK(expected_price >= 0)",
-            "A property expected price must be strictly positive.",
-        ),
-    ]
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling(self):
-        for record in self:
-            if record.selling_price > 0:
-                price_per = (record.expected_price * 90) / 100
-                if record.selling_price < price_per:
-                    raise ValidationError(
-                        "selling price cannot be lower than 90% of the expected price."
-                    )
 
     @api.ondelete(at_uninstall=False)
     def _check_state_before_delete(self):

@@ -1,6 +1,6 @@
-from odoo import api, models, fields
-from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+from dateutil.relativedelta import relativedelta
+from odoo import api, models, fields
 
 
 class EstatePropertyOffer(models.Model):
@@ -14,7 +14,6 @@ class EstatePropertyOffer(models.Model):
         string="Status",
         copy=False,
     )
-
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one(
         "estate_property", string="Property", ondelete="cascade"
@@ -40,12 +39,10 @@ class EstatePropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             if record.property_id.create_date and record.deadline_date:
-                flag = fields.Date.from_string(record.deadline_date)
-                flag1 = fields.Date.from_string(record.property_id.create_date)
-                if flag and flag1:
-                    record.validity = (flag - flag1).days
-                else:
-                    record.validity = 7
+
+                record.validity = (
+                    record.deadline_date - record.property_id.create_date.date()
+                ).days
             else:
                 record.validity = 7
 
@@ -61,8 +58,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        property_id = vals.get("property_id")
-        property_users = self.env["estate_property"].browse(property_id)
+        property_users = self.env["estate_property"].browse(vals.get("property_id"))
         property_users.state = "offer received"
         if property_users.offer_ids.filtered(lambda o: o.price >= vals.get("price")):
             raise UserError(

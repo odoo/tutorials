@@ -1,4 +1,4 @@
-from odoo import api, models, fields
+from odoo import api, fields, models
 
 
 class PropertyType(models.Model):
@@ -12,7 +12,6 @@ class PropertyType(models.Model):
     property_ids = fields.One2many(
         "estate_property", "property_type_id", string="Offers"
     )
-    # nickname = fields.Char(related='property_ids.partner_id.name', store=True)
     offer_ids = fields.One2many("estate.property.offer", "property_type_id", store=True)
     sequence = fields.Integer("Sequence")
     offer_count = fields.Integer(compute="_compute_offer_count")

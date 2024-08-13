@@ -13,6 +13,7 @@
 			</p>
 		</field>
 	</record>
+
 	<record id="estate_property_view_search" model="ir.ui.view">
 		<field name="name">estate.property.view.search</field>
 		<field name="model">estate_property</field>
@@ -29,5 +30,5 @@
 				</group>
 			</search>
 		</field>
-	</record>
+	</record>   
 </odoo>

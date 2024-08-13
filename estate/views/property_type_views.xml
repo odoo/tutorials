@@ -12,6 +12,7 @@
 			</p>
 		</field>
 	</record>
+
 	<record id="view_estate_property_type_tree" model="ir.ui.view">
 		<field name="name">real.estate.property.type.tree</field>
 		<field name="model">real.estate.property.type</field>
@@ -23,15 +24,12 @@
 			</tree>
 		</field>
 	</record>
+
 	<record id="view_property_type_form" model="ir.ui.view">
 		<field name="name">property.type.form</field>
 		<field name="model">real.estate.property.type</field>
 		<field name="arch" type="xml">
 			<form string="Estate Properties Type">
-				<!--
-				<header>
-				</header>
-				-->
 				<sheet>
 					<button type="action" name="%(estate.estate_property_offer_action)d" string="Offers" class="oe_stat_button" icon="fa-ticket">
 						<div class="o_stat_info">
