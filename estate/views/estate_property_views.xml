@@ -118,8 +118,6 @@
                     filter_domain="[('living_area', '>=', self)]"/>
                     <filter name="available" string="Available"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
-            
-                    
                 <group expand="1" string="Group By">
                     <filter name="group_by_postcode" string="Postcode"
                         context="{'group_by':'postcode'}" />
@@ -129,11 +127,10 @@
     </record>
 
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Estate Properties</field>
+        <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('state', '=', 'available')]</field>
-        <field name="context">{}</field>
-    </record>
-    
+        <field name="context">{'search_default_available': 1}</field>
+    </record>      
 </odoo>

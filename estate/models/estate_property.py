@@ -37,7 +37,8 @@ class EstateProperty(models.Model):
         ('offer_received', 'Offer Received'),
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
-        ('canceled', 'Canceled')
+        ('canceled', 'Canceled'),
+        ('available', 'Available')
     ], required=True, default='new', copy=False)
     property_type_id = fields.Many2one(
         'estate.property.type', string="Property Type")
@@ -97,3 +98,11 @@ class EstateProperty(models.Model):
             if record.expected_price > 0:
                 if record.selling_price and float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=0.01) < 0:
                     raise ValidationError("The selling price must be at least 90% of the expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_delete(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError(
+                    "You cannot delete a property unless its state is 'New' or 'Canceled'."
+                )
