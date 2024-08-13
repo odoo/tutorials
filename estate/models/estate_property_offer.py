@@ -1,5 +1,6 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from datetime import timedelta, date
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -18,7 +19,9 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
 
-    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
     _sql_constraints = [
         ("positive_offer_price", "CHECK(price > 0)", "Offer Price Must be Positive")
     ]
@@ -52,3 +55,11 @@ class EstatePropertyOffer(models.Model):
     def action_refuse_offer(self):
         self.write({"status": "refused"})
         return True
+
+    @api.model
+    def create(self, vals):
+        property_id = self.env["estate.property"].browse(vals["property_id"])
+        property_id.state = "offer received"
+        if any(offer.price > vals.get("price", 0) for offer in property_id.offer_ids):
+            raise UserError(_("You cannot create an offer with a lower price than an existing offer."))
+        return super().create(vals)

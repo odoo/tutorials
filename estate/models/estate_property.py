@@ -123,3 +123,9 @@ class EstateProperty(models.Model):
             else:
                 self.write({"state": "sold"})
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_certain_state(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError(_('Only new or canceled property can be deleted.'))
