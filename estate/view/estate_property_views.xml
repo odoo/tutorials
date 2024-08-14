@@ -83,7 +83,7 @@
                         <page string="Offers">
                             <field name="offer_ids"
                                 readonly="state in ['offer Accepted','sold','canceled']">
-                                <tree editable='top' decoration-danger="status in ['refused']"
+                                <tree editable='bottom' decoration-danger="status in ['refused']"
                                     decoration-success="status in ['accepted']">
                                     <field name="price" />
                                     <field name="partner_id" />

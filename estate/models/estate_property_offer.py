@@ -1,5 +1,6 @@
-from datetime import timedelta
 from odoo import api, models, fields
+from odoo.exceptions import UserError
+from datetime import timedelta
 
 
 class EstatePropertyOffer(models.Model):
@@ -56,3 +57,18 @@ class EstatePropertyOffer(models.Model):
         ('check_price', 'CHECK(price >=0)',
          'offer price must be positive')
     ]
+
+    @api.model
+    def create(self, vals):
+        property_id = vals.get('property_id')
+        price = vals.get('price')
+        current_property = self.property_id.browse(property_id)
+        current_property.state = 'offer Received'
+
+        existing_offers = current_property.offer_ids
+        if existing_offers:
+            max_amount = max(existing_offers.mapped('price'))
+            if price < max_amount:
+                raise UserError(
+                    "The offer amount cannot be lower than an existing offer.")
+        return super().create(vals)
