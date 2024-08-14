@@ -29,7 +29,11 @@
                         </h1>
                         <div class="row">
                             <div class="col-6">
+                                <h4>
+                                    <field name="tag_ids" widget="many2many_tags" />
+                                </h4>
                                 <group>
+                                    <field name="property_type_id" class="oe_inline oe_left" />
                                     <field name="postcode" class="oe_inline oe_left" />
                                     <field name="date_availability" class="oe_inline oe_left" />
                                 </group>
@@ -58,6 +62,17 @@
                                     </group>
                                 </div>
                             </page>
+                            <page string="Offers">
+                                <field name="offer_ids" />
+                            </page>
+                            <page string="Other Info">
+                                <div class="col-6">
+                                    <group>
+                                        <field name="sales_person_id" class="oe_inline oe_left" />
+                                        <field name="buyer_id" class="oe_inline oe-left" />
+                                    </group>
+                                </div>
+                            </page>
                         </notebook>
                     </div>
                 </sheet>
@@ -77,6 +92,7 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
+                <field name="property_type_id" />
                 <separator />
                 <filter name="filter_active_available_properties"
                     string="Active Available Properties"
@@ -86,6 +102,40 @@
                         context="{'group_by':'postcode'}" />
                 </group>
             </search>
+        </field>
+    </record>
+
+    <record id="view_estate_offer_model_tree_custom" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree string="Estate Model List">
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="status" />
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_estate_property_offer_form_custom" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Estate Model Offer Form">
+                <sheet>
+                    <div>
+                        <div class="col-6">
+                            <group>
+                                <field name="price" class="oe_inline oe_left" />
+                                <field name="partner_id" class="oe_inline oe_left" />
+                                <field name="status" class="oe_inline oe_left" />
+                            </group>
+                        </div>
+                    </div>
+                </sheet>
+
+            </form>
         </field>
     </record>
 </odoo>
