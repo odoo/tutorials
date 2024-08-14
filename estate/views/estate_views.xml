@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Define the custom list view -->
+    <record id="view_estate_model_tree_custom" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Estate Model List">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_estate_property_form_custom" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate Model Form">
+                <sheet>
+                    <div>
+                        <h1 class = 'mb16'>
+                            <field name="name"/>
+                        </h1>
+                        <div class="row">
+                            <div class="col-6">
+                                <group>
+                                    <field name="postcode" class="oe_inline oe_left"/> 
+                                    <field name="date_availability" class="oe_inline oe_left"/>
+                                </group>
+                            </div>
+                            <div class="col-6">
+                                <group>
+                                    <field name="expected_price" class="oe_inline oe_right"/> 
+                                    <field name="selling_price" class="oe_inline right"/>
+                                </group>
+                            </div>
+                        </div>
+                            <notebook>
+                                <page string="Description">
+                                    <div class="col-6">
+                                        <group>
+                                            <field name="description" class="oe_inline oe_left"/> 
+                                            <field name="bedrooms" class="oe_inline oe-left"/>
+                                            <field name="living_area" class="oe_inline oe-left"/>
+                                            <field name="facades" class="oe_inline oe-left"/>
+                                            <field name="garage" class="oe_inline oe-left"/>
+                                            <field name="garden" class="oe_inline oe-left"/>
+                                            <field name="garden_area" class="oe_inline oe-left"/>
+                                            <field name="garden_orientation" class="oe_inline oe-left"/>
+                                        </group>
+                                    </div>
+                                </page>
+                        </notebook>
+                    </div>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+</odoo>
