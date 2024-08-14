@@ -27,7 +27,7 @@
                   invisible="state in ['sold','cancelled']" />
                <button name="action_cancel_property" type="object" string="Cancel"
                   invisible="state in ['sold','cancelled']" />
-               <field name="state" widget="statusbar" />
+               <field name="state" widget="statusbar" options="{'clickable': '1'}" />
             </header>
             <sheet>
                <div class="oe_title">
