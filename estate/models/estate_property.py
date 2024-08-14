@@ -1,6 +1,6 @@
-from odoo import api, models, fields, _
+from odoo import _, api, fields, models
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 

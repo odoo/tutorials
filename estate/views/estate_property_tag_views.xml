@@ -4,7 +4,6 @@
         <field name="name">Property Tag</field>
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">tree,form</field>
-
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face"> Create a property type</p>
         </field>
@@ -33,6 +32,4 @@
             </form>
         </field>
     </record>
-
-
 </odoo>

@@ -26,7 +26,6 @@
         <field name="arch" type="xml">
             <form string="Properties Form">
                 <sheet>
-
                     <div style="text-align: right;">
                         <button name="%(estate.estate_property_offer_actions)d" type="action" string="Offers" icon="fa-money fa-2x" class="oe_stat_button">
                             <div class="o_stat_info">
@@ -39,11 +38,9 @@
                             </div>
                         </button>
                     </div>
-
                     <h1>
                         <field name="name" />
                     </h1>
-
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
@@ -59,6 +56,4 @@
             </form>
         </field>
     </record>
-
-
 </odoo>
