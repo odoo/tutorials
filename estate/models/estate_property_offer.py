@@ -1,5 +1,6 @@
+from datetime import date
+from dateutil.relativedelta import relativedelta
 from odoo import _, api, fields, models
-from datetime import date, timedelta
 from odoo.exceptions import UserError
 
 
@@ -18,7 +19,6 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
-
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )
@@ -30,19 +30,20 @@ class EstatePropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             if record.create_date:
-                record.date_deadline = record.property_id.create_date + timedelta(
+                record.date_deadline = record.property_id.create_date + relativedelta(
                     days=record.validity
                 )
             else:
-                record.date_deadline = date.today() + timedelta(days=record.validity)
+                record.date_deadline = date.today() + relativedelta(
+                    days=record.validity
+                )
 
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline and record.property_id.create_date:
-                delta = record.date_deadline - fields.Date.to_date(
-                    record.property_id.create_date
-                )
-                record.validity = delta.days
+                record.validity = (
+                    record.date_deadline - record.property_id.create_date.date()
+                ).days
             else:
                 record.validity = 7
 
@@ -61,5 +62,9 @@ class EstatePropertyOffer(models.Model):
         property_id = self.env["estate.property"].browse(vals["property_id"])
         property_id.state = "offer received"
         if any(offer.price > vals.get("price", 0) for offer in property_id.offer_ids):
-            raise UserError(_("You cannot create an offer with a lower price than an existing offer."))
+            raise UserError(
+                _(
+                    "You cannot create an offer with a lower price than an existing offer."
+                )
+            )
         return super().create(vals)

@@ -1,5 +1,5 @@
-from odoo import _, api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError, UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -113,7 +113,7 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 raise UserError(_("Sold property can not be canceled."))
             else:
-                self.write({"state": "canceled"})
+                record.state = "canceled"
         return True
 
     def action_sold_property(self):
@@ -121,11 +121,11 @@ class EstateProperty(models.Model):
             if record.state == "canceled":
                 raise UserError(_("Canceled property can not be sold."))
             else:
-                self.write({"state": "sold"})
+                record.state = "sold"
         return True
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_certain_state(self):
         for record in self:
-            if record.state not in ['new', 'canceled']:
-                raise UserError(_('Only new or canceled property can be deleted.'))
+            if record.state not in ["new", "canceled"]:
+                raise UserError(_("Only new or canceled property can be deleted."))
