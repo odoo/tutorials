@@ -7,7 +7,6 @@
             <tree editable="bottom" sample="1" decoration-danger="status in ('refused', 'Refused')" decoration-success="status in ('accepted', 'Accepted')">
                 <field name='price'/>
                 <field name='partner_id'/>
-
                 <field name='validity' string='Validity (days)'/>
                 <field name='deadline'/>
                 <button name="action_status_accept" invisible="status in ('accepted', 'refused')" title="accept" type="object" icon="fa-check" />
@@ -15,10 +14,7 @@
                 <field name='status' column_invisible='1' />
             </tree>
         </field>
-
     </record>
-
-
     <record id='estate_property_offer_form' model='ir.ui.view'>
         <field name="name">estate_property_offer_form</field>
         <field name="model">estate.property.offer</field>

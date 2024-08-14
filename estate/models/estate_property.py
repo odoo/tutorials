@@ -46,22 +46,20 @@ class EstateProperty(models.Model):
     )
     _order = "id desc"
     salesman_id = fields.Many2one(
-        "res.users",  # The model this field relates to
-        string="Salesman",  # Label for the field
-        default=lambda self: self.env.user,  # Set default to the current user's partner
+        "res.users",
+        string="Salesman",
+        default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one(
-        "res.partner",  # The model this field relates to
-        string="Buyer",  # Label for the field
-        copy=False,  # Prevent the field value from being copied when duplicating the record
+        "res.partner",
+        string="Buyer",
+        copy=False,
     )
-
     tag_ids = fields.Many2many("estate.property.tag", string="Tags", ondelete="cascade")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total = fields.Integer(compute="total_area")
     best_offer = fields.Float(compute="best_offer_selete", store=True)
     property_type_id = fields.Many2one("estate.property.type")
-
     sql_constraints = [
         (
             "check_expected_price",
@@ -117,3 +115,11 @@ class EstateProperty(models.Model):
                 price_percent = (record.selling_price / record.expected_price) * 100
                 if price_percent < 90:
                     raise ValidationError("Selling Price must be at least 90%")
+
+    @api.ondelete(at_uninstall=False)
+    def _check_property_state(self):
+        for recod in self:
+            if recod.state == "new" or recod.state == "canceled":
+                continue
+            else:
+                raise ValidationError("New or Canceled property can be delete only.")

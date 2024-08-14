@@ -1,6 +1,6 @@
-from odoo import models, fields, api
-from datetime import timedelta, date
-from odoo.exceptions import ValidationError
+from odoo import api, fields, models
+from datetime import date, timedelta
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -21,7 +21,6 @@ class EstatePropertyOffer(models.Model):
     def _check_offer(self):
         for record in self:
             if record.status == "accepted":
-                # raise ValidationError("Accepted offer have benn deleted")
                 record.property_id.selling_price = 0
                 record.property_id.buyer_id = None
             else:
@@ -43,13 +42,11 @@ class EstatePropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             if record.deadline:
-                # Convert create_date to a date object
                 today = fields.Date.to_date(record.create_date)
-                # Convert deadline to a date object
                 deadline_date = fields.Date.from_string(record.deadline)
                 record.validity = (deadline_date - today).days
             else:
-                record.validity = 7  # Default to 7 if deadline is not set
+                record.validity = 7
 
     def action_status_accept(self):
         self.status = "accepted"
@@ -73,3 +70,21 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ("check_price", "CHECK(price >= 0)", "The Price of Offer should be positive"),
     ]
+
+    @api.model
+    def create(self, vals):
+        property_id = vals.get('property_id')
+        price = vals.get('price', 0)
+        if not property_id:
+            raise ValidationError("Property ID is required.")
+        property_record = self.env['estate.property'].browse(property_id)
+        existing_offers = self.search([('property_id', '=', property_id)])
+        max_price = max(existing_offers.mapped('price'), default=0)
+        if price < max_price:
+            raise UserError("The offer price must be higher than the existing offers.")
+        record = super().create(vals)
+        if property_record:
+            property_record.state = 'offer_recived'
+        else:
+            raise ValidationError("Property record could not be found.")
+        return record
