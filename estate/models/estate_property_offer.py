@@ -64,7 +64,6 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-
         property_id = vals.get('property_id')
         price = vals.get('price')
         current_property = self.property_id.browse(property_id)

@@ -73,7 +73,7 @@
                   <page string="Offer">
                      <field name="offer_ids"
                         readonly="state in ['sold','cancelled','offer accepted']">
-                        <tree editable="top" decoration-success="status == 'accepted'"
+                        <tree editable="bottom" decoration-success="status == 'accepted'"
                            decoration-danger="status == 'refused'">
                            <field name="price" />
                            <button name="action_accept" string="Accept" type="object"
