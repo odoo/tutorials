@@ -3,7 +3,7 @@ from odoo import api, fields, models
 
 
 class MyModel(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "Real Estate"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "id desc"
@@ -42,14 +42,14 @@ class MyModel(models.Model):
         default="new",
     )
     salesman_id = fields.Many2one(
-        "res.users",  # The model this field relates to
-        string="Salesman",  # Label for the field
-        default=lambda self: self.env.user.partner_id,  # Set default to the current user
+        "res.users",
+        string="Salesman",
+        default=lambda self: self.env.user.partner_id,
     )
     buyer_id = fields.Many2one(
-        "res.partner",  # The model this field relates to
-        string="Buyer",  # Label for the field
-        copy=False,  # Prevent the field value from being copied when duplicating the record
+        "res.partner",
+        string="Buyer",
+        copy=False,
     )
     property_type_id = fields.Many2one(
         "real.estate.property.type", string="Property Type"

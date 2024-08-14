@@ -10,7 +10,7 @@ class PropertyType(models.Model):
     description = fields.Text(string="Description")
 
     property_ids = fields.One2many(
-        "estate_property", "property_type_id", string="Offers"
+        "estate.property", "property_type_id", string="Offers"
     )
     offer_ids = fields.One2many("estate.property.offer", "property_type_id", store=True)
     sequence = fields.Integer("Sequence")

@@ -16,7 +16,7 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one(
-        "estate_property", string="Property", ondelete="cascade"
+        "estate.property", string="Property", ondelete="cascade"
     )
     validity = fields.Integer(string="Validity (days)", default=7)
     deadline_date = fields.Date(
@@ -39,7 +39,6 @@ class EstatePropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             if record.property_id.create_date and record.deadline_date:
-
                 record.validity = (
                     record.deadline_date - record.property_id.create_date.date()
                 ).days
@@ -58,7 +57,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        property_users = self.env["estate_property"].browse(vals.get("property_id"))
+        property_users = self.env["estate.property"].browse(vals.get("property_id"))
         property_users.state = "offer received"
         if property_users.offer_ids.filtered(lambda o: o.price >= vals.get("price")):
             raise UserError(
