@@ -6,13 +6,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Estate Model List">
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
             </tree>
         </field>
     </record>
@@ -24,43 +24,68 @@
             <form string="Estate Model Form">
                 <sheet>
                     <div>
-                        <h1 class = 'mb16'>
-                            <field name="name"/>
+                        <h1 class='mb16'>
+                            <field name="name" />
                         </h1>
                         <div class="row">
                             <div class="col-6">
                                 <group>
-                                    <field name="postcode" class="oe_inline oe_left"/> 
-                                    <field name="date_availability" class="oe_inline oe_left"/>
+                                    <field name="postcode" class="oe_inline oe_left" />
+                                    <field name="date_availability" class="oe_inline oe_left" />
                                 </group>
                             </div>
                             <div class="col-6">
                                 <group>
-                                    <field name="expected_price" class="oe_inline oe_right"/> 
-                                    <field name="selling_price" class="oe_inline right"/>
+                                    <field name="expected_price" class="oe_inline oe_right" />
+                                    <field name="selling_price" class="oe_inline right" />
                                 </group>
                             </div>
                         </div>
-                            <notebook>
-                                <page string="Description">
-                                    <div class="col-6">
-                                        <group>
-                                            <field name="description" class="oe_inline oe_left"/> 
-                                            <field name="bedrooms" class="oe_inline oe-left"/>
-                                            <field name="living_area" class="oe_inline oe-left"/>
-                                            <field name="facades" class="oe_inline oe-left"/>
-                                            <field name="garage" class="oe_inline oe-left"/>
-                                            <field name="garden" class="oe_inline oe-left"/>
-                                            <field name="garden_area" class="oe_inline oe-left"/>
-                                            <field name="garden_orientation" class="oe_inline oe-left"/>
-                                        </group>
-                                    </div>
-                                </page>
+                        <notebook>
+                            <page string="Description">
+                                <div class="col-6">
+                                    <group>
+                                        <field name="description" class="oe_inline oe_left" />
+                                        <field name="bedrooms" class="oe_inline oe-left" />
+                                        <field name="living_area" class="oe_inline oe-left" />
+                                        <field name="facades" class="oe_inline oe-left" />
+                                        <field name="garage" class="oe_inline oe-left" />
+                                        <field name="garden" class="oe_inline oe-left" />
+                                        <field name="garden_area" class="oe_inline oe-left" />
+                                        <field name="garden_orientation" class="oe_inline oe-left" />
+                                        <field name="active" class="oe_inline oe-left" />
+                                        <field name="state" class="oe_inline oe-left" />
+                                    </group>
+                                </div>
+                            </page>
                         </notebook>
                     </div>
                 </sheet>
-                
+
             </form>
+        </field>
+    </record>
+
+    <record id="view_estate_property_search_form" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Estate Search Form">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
+                <separator />
+                <filter name="filter_active_available_properties"
+                    string="Active Available Properties"
+                    domain="[('active', '=', True), ('state', 'in', ['new', 'offer received'])]" />
+                <group expand="1" string="Group By">
+                    <filter string="Group by Postcode" name="postcode"
+                        context="{'group_by':'postcode'}" />
+                </group>
+            </search>
         </field>
     </record>
 </odoo>

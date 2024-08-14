@@ -4,6 +4,6 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_estate_model_tree_custom"/>
+        <field name="view_id" ref="view_estate_model_tree_custom" />
     </record>
 </odoo>
