@@ -1,22 +1,20 @@
 <odoo>
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name">Property Tag</field>
-        <field name="res_model">estate_property_tag</field>
+        <field name="res_model">estate.property.tag</field>
         <field name="view_mode">tree,form</field>
     </record>
 
 
     <record id = "estate_property_tag_list_action" model = "ir.ui.view">
-        <field name = "name">estate_property_tag_list</field>
-        <field name = "model">estate_property_tag</field>
+        <field name = "name">estate.property.tag_list</field>
+        <field name = "model">estate.property.tag</field>
         <field name="arch" type="xml">
             <tree editable="bottom">
                 <field name = "sequence" widget = "handle" />
                 <field name = "name"/>
               
             </tree>
-
         </field>
-
     </record>
 </odoo>

@@ -2,13 +2,13 @@
 
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Type</field>
-        <field name="res_model">estate_property_type</field>
+        <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <record id="estate_property_type_list_action" model="ir.ui.view">
-        <field name="name">estate_property_type_form</field>
-        <field name="model">estate_property_type</field>
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree>
                 <field name='sequence' widget='handle' />
@@ -20,8 +20,8 @@
     </record>
 
     <record id="estate_property_list_action" model="ir.ui.view">
-        <field name="name">estate_property_type_form</field>
-        <field name="model">estate_property_type</field>
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
 
             <form>
