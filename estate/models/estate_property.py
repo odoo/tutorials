@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 import datetime
 
 class EstateProperty(models.Model):
@@ -27,12 +27,15 @@ class EstateProperty(models.Model):
         help="Property State")
     
     property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property type")
-    buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer")
+    buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", readonly= True)
     sales_person_id = fields.Many2one(comodel_name="res.users", string="Sales Person", default=lambda self: self.env.user)
     tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+    property_status = fields.Selection(string='Status',
+        selection=[('sold', 'Sold'), ('cancel', 'Cancelled'), ('new', 'New')], readonly= True, default= 'new')
+    
     
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
@@ -43,9 +46,11 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'))
-            
-    
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_price = 0
+        
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -55,3 +60,15 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ""
         
+    def sold_action(self):
+        if self.property_status == 'cancel':
+            raise exceptions.UserError("Cancelled properties cannot be sold")
+        
+        self.property_status = 'sold'
+        
+    
+    def cancel_action(self):
+        if self.property_status == 'sold':
+            raise exceptions.UserError("Sold properties cannot be cancelled")
+        
+        self.property_status = 'cancel'

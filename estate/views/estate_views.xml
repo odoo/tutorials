@@ -22,6 +22,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Model Form">
+                <header>
+                    <button name="sold_action" class="btn btn-success mr8" type="object" string="Sold"/>
+                    <button name="cancel_action" class= "btn btn-danger" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <div>
                         <h1 class='mb16'>
@@ -33,6 +37,7 @@
                                     <field name="tag_ids" widget="many2many_tags" />
                                 </h4>
                                 <group>
+                                    <field name="property_status" class="oe_inline oe_left" />
                                     <field name="property_type_id" class="oe_inline oe_left" />
                                     <field name="postcode" class="oe_inline oe_left" />
                                     <field name="date_availability" class="oe_inline oe_left" />
@@ -114,6 +119,8 @@
             <tree string="Estate Model List">
                 <field name="price" />
                 <field name="partner_id" />
+                <button name="offer_confirm" title= 'Confirm' type="object" icon="fa-check"/>
+                <button name="offer_cancel" title= 'Refuse' type="object" icon="fa-times"/>
                 <field name="status" />
             </tree>
         </field>
