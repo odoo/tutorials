@@ -46,11 +46,19 @@ class EstateProperty(models.Model):
     
     @api.constrains('selling_price','expected_price')
     def selling_price_constraints(self):
-        for record in self:
-            x = float_compare(100 * record.selling_price , 90 * record.expected_price, precision_digits=5)
-            if x == -1:
-                raise exceptions.ValidationError("Selling price cannot be this low, please respect")
-    
+        offer = None
+        if self.offer_ids:
+            for ofr in self.offer_ids:
+                if offer.status == 'accepted':
+                    offer = ofr
+                    
+            if offer:        
+                for record in self:
+                    x = float_compare(100 * record.selling_price , 90 * record.expected_price, precision_digits=5)
+                    if x == -1:
+                        offer.status = 'refused'
+                        raise exceptions.ValidationError("Selling price cannot be this low maaan, please respect")
+            
     
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
