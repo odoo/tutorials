@@ -41,6 +41,7 @@
                             <div class="col-6">
                                 <group>
                                     <field name="expected_price" class="oe_inline oe_right" />
+                                    <field name="best_price" class="oe_inline oe_right" />
                                     <field name="selling_price" class="oe_inline right" />
                                 </group>
                             </div>
@@ -59,6 +60,7 @@
                                         <field name="garden_orientation" class="oe_inline oe-left" />
                                         <field name="active" class="oe_inline oe-left" />
                                         <field name="state" class="oe_inline oe-left" />
+                                        <field name="total_area" class="oe_inline oe-left" />
                                     </group>
                                 </div>
                             </page>
@@ -128,6 +130,8 @@
                         <div class="col-6">
                             <group>
                                 <field name="price" class="oe_inline oe_left" />
+                                <field name="validity" class="oe_inline oe_left" />
+                                <field name="date_deadline" class="oe_inline oe_left" />
                                 <field name="partner_id" class="oe_inline oe_left" />
                                 <field name="status" class="oe_inline oe_left" />
                             </group>
