@@ -72,3 +72,4 @@ class EstateProperty(models.Model):
             raise exceptions.UserError("Sold properties cannot be cancelled")
         
         self.property_status = 'cancel'
+        
