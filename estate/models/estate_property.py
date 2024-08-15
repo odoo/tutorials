@@ -51,6 +51,7 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0
         
+        
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -59,6 +60,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+        
         
     def sold_action(self):
         if self.property_status == 'cancel':
@@ -72,4 +74,3 @@ class EstateProperty(models.Model):
             raise exceptions.UserError("Sold properties cannot be cancelled")
         
         self.property_status = 'cancel'
-        
