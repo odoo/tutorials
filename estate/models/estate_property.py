@@ -1,4 +1,6 @@
 from odoo import fields, models, api, exceptions
+from odoo.tools.float_utils import float_compare
+
 import datetime
 
 class EstateProperty(models.Model):
@@ -35,6 +37,19 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price")
     property_status = fields.Selection(string='Status',
         selection=[('sold', 'Sold'), ('cancel', 'Cancelled'), ('new', 'New')], readonly= True, default= 'new')
+    
+    _sql_constraints = [
+        ('expected_price_pos', 'CHECK(expected_price > 0)', 'Expected price should be positive'),
+        ('selling_price_pos', 'CHECK(selling_price > 0)', 'Selling price should be positive'),
+    ]
+    
+    
+    @api.constrains('selling_price','expected_price')
+    def selling_price_constraints(self):
+        for record in self:
+            x = float_compare(100 * record.selling_price , 90 * record.expected_price, precision_digits=5)
+            if x == -1:
+                raise exceptions.ValidationError("Selling price cannot be this low, please respect")
     
     
     @api.depends("garden_area", "living_area")
