@@ -97,7 +97,7 @@
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="living_area" />
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades" />
                 <field name="property_type_id" />
                 <separator />
@@ -125,7 +125,6 @@
             </tree>
         </field>
     </record>
-
 
     <record id="view_estate_property_offer_form_custom" model="ir.ui.view">
         <field name="name">estate.property.offer.form</field>
