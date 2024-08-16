@@ -39,9 +39,10 @@ class EstatePropertyOffer(models.Model):
     
     
     def offer_confirm(self):
-        if self.property_id.selling_price:
+        if self.property_id.state == 'offer accepted':
             raise exceptions.UserError("One offer already accepted")
         
+        self.property_id.state = 'offer accepted'
         self.status = 'accepted'
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
@@ -49,7 +50,6 @@ class EstatePropertyOffer(models.Model):
     
     def offer_cancel(self):
         if self.status == 'accepted': 
-            self.property_id.buyer_id = None
-            self.property_id.selling_price = None
+            raise exceptions.UserError("Cannot refuse an acepted offer")
         
         self.status = 'refused'

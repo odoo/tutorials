@@ -37,7 +37,7 @@
                                     <field name="tag_ids" widget="many2many_tags" />
                                 </h4>
                                 <group>
-                                    <field name="property_status" class="oe_inline oe_left" />
+                                    <field name="state" class="oe_inline oe_left" />
                                     <field name="property_type_id" class="oe_inline oe_left" />
                                     <field name="postcode" class="oe_inline oe_left" />
                                     <field name="date_availability" class="oe_inline oe_left" />
@@ -64,7 +64,6 @@
                                         <field name="garden_area" invisible="garden == False" class="oe_inline oe-left" />
                                         <field name="garden_orientation" invisible="garden == False" class="oe_inline oe-left" />
                                         <field name="active" class="oe_inline oe-left" />
-                                        <field name="state" class="oe_inline oe-left" />
                                         <field name="total_area" class="oe_inline oe-left" />
                                     </group>
                                 </div>
