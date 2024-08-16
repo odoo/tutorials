@@ -5,14 +5,15 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Estate Model List">
+            <tree string="Estate Model List" decoration-success='state in ["offer received", "offer accepted"]' decoration-bf='state == "offer accepted"' decoration-muted='state == "sold"'>
                 <field name="name" />
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="date_availability" optional="hide" />
+                <field name="state" column_invisible="True"/>
             </tree>
         </field>
     </record>
@@ -23,8 +24,8 @@
         <field name="arch" type="xml">
             <form string="Estate Model Form">
                 <header>
-                    <button name="sold_action" class="btn btn-success mr8" type="object" string="Sold"/>
-                    <button name="cancel_action" class= "btn btn-danger" type="object" string="Cancel"/>
+                    <button name="sold_action" invisible="state in ['sold', 'cancelled']" class="btn btn-success mr8" type="object" string="Sold"/>
+                    <button name="cancel_action" invisible="state in ['sold', 'cancelled']" class= "btn btn-danger" type="object" string="Cancel"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
                 </header>
                 <sheet>
@@ -35,7 +36,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <h4>
-                                    <field name="tag_ids" widget="many2many_tags" />
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 </h4>
                                 <group>
                                     <field name="property_type_id" class="oe_inline oe_left" />
@@ -69,7 +70,7 @@
                                 </div>
                             </page>
                             <page string="Offers">
-                                <field name="offer_ids" />
+                                <field name="offer_ids" readonly= "state in ['offer accepted', 'sold', 'cancelled']" />
                             </page>
                             <page string="Other Info">
                                 <div class="col-6">
@@ -115,12 +116,12 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree string="Estate Model List">
+            <tree string="Estate Model List" editable="bottom" decoration-danger= "status == 'refused'" decoration-success= "status == 'accepted'">
                 <field name="price" />
                 <field name="partner_id" />
-                <button name="offer_confirm" title= 'Confirm' type="object" icon="fa-check"/>
-                <button name="offer_cancel" title= 'Refuse' type="object" icon="fa-times"/>
-                <field name="status" />
+                <button name="offer_confirm" invisible="status in ['accepted', 'refused']" title= 'Confirm' type="object" icon="fa-check"/>
+                <button name="offer_cancel" invisible="status in ['accepted', 'refused']" title= 'Refuse' type="object" icon="fa-times"/>
+                <field name="status" column_invisible="True"/>
             </tree>
         </field>
     </record>

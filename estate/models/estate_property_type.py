@@ -6,7 +6,7 @@ class EstatePropertyType(models.Model):
     name = fields.Char('Title', required = True)
     property_ids = fields.One2many(comodel_name="estate.property", inverse_name="property_type_id")
     _order = "name"
-    
+    sequence = fields.Integer('Sequence', default = 1 )
     _sql_constraints = [
         ('name_uniq', 'unique (name)', "Type already exists!"),
     ]

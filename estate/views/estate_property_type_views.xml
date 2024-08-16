@@ -1,10 +1,22 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="view_estate_property_type_model_tree_custom" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="Estate Type Model List">
+                <field name="sequence" widget="handle"/>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
     <!-- Estate property type action -->
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_estate_property_type_model_tree_custom" />
     </record>
 
     <!-- Estate property custom form view -->
@@ -27,7 +39,6 @@
                                 </tree>
                             </field>
                         </page>
-
                     </notebook>
                 </sheet>
             </form>
