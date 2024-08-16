@@ -35,6 +35,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+    _order = "id desc"
     
     _sql_constraints = [
         ('expected_price_pos', 'CHECK(expected_price > 0)', 'Expected price should be positive'),
