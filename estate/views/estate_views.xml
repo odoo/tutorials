@@ -25,6 +25,7 @@
                 <header>
                     <button name="sold_action" class="btn btn-success mr8" type="object" string="Sold"/>
                     <button name="cancel_action" class= "btn btn-danger" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
                 </header>
                 <sheet>
                     <div>
@@ -37,7 +38,6 @@
                                     <field name="tag_ids" widget="many2many_tags" />
                                 </h4>
                                 <group>
-                                    <field name="state" class="oe_inline oe_left" />
                                     <field name="property_type_id" class="oe_inline oe_left" />
                                     <field name="postcode" class="oe_inline oe_left" />
                                     <field name="date_availability" class="oe_inline oe_left" />
