@@ -64,15 +64,12 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        property_id = vals.get('property_id')
-        price = vals.get('price')
-        current_property = self.property_id.browse(property_id)
+        current_property = self.property_id.browse(vals.get('property_id'))  # to find current property_id
         current_property.state = 'offer received'
 
-        existing_offers = current_property.offer_ids
-        if existing_offers:
-            max_amount = max(existing_offers.mapped('price'))
-            if price < max_amount:
-                raise UserError(
-                    "The offer amount cannot be lower than an existing offer.")
+        # finding the offers of current property_id with higher price
+        if current_property.offer_ids.filtered(lambda offer: offer.price >= vals.get("price")):
+            raise UserError(
+                "The offer amount cannot be lower than an existing offer.")
+
         return super().create(vals)
