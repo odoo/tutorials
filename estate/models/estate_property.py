@@ -55,7 +55,6 @@ class EstateProperty(models.Model):
     
     @api.depends('offer_ids')
     def _compute_offer_received(self):
-        print("curr state")
         for record in self:
             if record.state == 'new' and record.offer_ids and len(record.offer_ids) > 0: 
                 record.state = 'offer received'

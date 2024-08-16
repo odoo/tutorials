@@ -6,4 +6,33 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+    <!-- Estate property custom form view -->
+    <record id="view_estate_property_type_form_custom" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Estate Type Model Form">
+                <sheet>
+                    <h1>
+                        <field name="name"></field>
+                    </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </tree>
+                            </field>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
 </odoo>
