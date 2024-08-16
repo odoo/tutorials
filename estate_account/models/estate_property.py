@@ -23,3 +23,10 @@ class EstateProperty(models.Model):
             ]
         }
         self.env['account.move'].create(move_vals)
+
+        # self.env['account.move.line'].create({
+        #         "move_id": invoice.id,
+        #         "name": "6% selling price",
+        #         "quantity": 1,
+        #         "price_unit": self.selling_price * 0.6
+        #     })
