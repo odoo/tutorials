@@ -43,6 +43,13 @@ class EstateProperty(models.Model):
     ]
     
     
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_active_properties(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise exceptions.UserError("Can't delete an active property!")
+    
+    
     @api.constrains('selling_price','expected_price')
     def selling_price_constraints(self):
         if self.state == 'new' or self.state == 'offer received' or not self.selling_price:

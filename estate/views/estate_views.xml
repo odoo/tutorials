@@ -112,6 +112,13 @@
         </field>
     </record>
 
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">estate_offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+
     <record id="view_estate_offer_model_tree_custom" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
@@ -122,6 +129,7 @@
                 <button name="offer_confirm" invisible="status in ['accepted', 'refused']" title= 'Confirm' type="object" icon="fa-check"/>
                 <button name="offer_cancel" invisible="status in ['accepted', 'refused']" title= 'Refuse' type="object" icon="fa-times"/>
                 <field name="status" column_invisible="True"/>
+                <field name="property_type_id" />
             </tree>
         </field>
     </record>
