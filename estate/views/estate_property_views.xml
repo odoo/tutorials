@@ -34,7 +34,6 @@
             </tree>
         </field>
     </record>
-
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -102,7 +101,6 @@
             </form>
         </field>
     </record>
-
     <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>

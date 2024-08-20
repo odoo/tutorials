@@ -39,7 +39,7 @@ class EstateProperty(models.Model):
         ('sold', 'Sold'),
         ('canceled', 'Canceled'),
         ('available', 'Available')
-    ], required=True, default='new', copy=False)
+    ], required=True, default='new', readonly=True, copy=False)
     property_type_id = fields.Many2one(
         'estate.property.type', string="Property Type")
     buyer_id = fields.Many2one(
