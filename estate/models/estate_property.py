@@ -1,6 +1,8 @@
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
+from dateutil.relativedelta import relativedelta
+from datetime import date
 
 
 class EstateProperty(models.Model):
@@ -12,7 +14,8 @@ class EstateProperty(models.Model):
     name = fields.Char('Name', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Date Availability', copy=False)
+    date_availability = fields.Date('Date Availability', copy=False, default=(
+        date.today() + relativedelta(months=3)))
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
