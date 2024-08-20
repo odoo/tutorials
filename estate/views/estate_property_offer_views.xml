@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_offer_action_view_tree" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+    <record id="estate_property_offer_view_tree" model="ir.ui.view">
+        <field name="name">Offers</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" decoration-success="status=='accepted'" decoration-warning="status=='refused'">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <button name="estate_property_offer_button_accept" type="object" icon="fa-check" invisible="status in ('accepted', 'refused')"/>
+                <button name="estate_property_offer_button_refuse" type="object" icon="fa-times" invisible="status in ('accepted', 'refused')"/>
+                <field name="status" invisible="True" readonly="True"/>
+            </tree>
+        </field>
+    </record>
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">Offers</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="status"/>
+                        <field name="partner_id"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
