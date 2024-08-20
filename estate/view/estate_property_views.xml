@@ -18,7 +18,7 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id">
+            <kanban default_group_by="property_type_id" records_draggable="False">
                 <field name="property_type_id" />
                 <field name="state" />
                 <field name="best_price" />
@@ -26,7 +26,8 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_global_click">
-                            <div class="oe_kanban_details"> Name :<field name="name" />
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">Name :<field name="name" /></strong>
                             </div>
                             <div> Expected Price :<field name="expected_price" />
                             </div>
