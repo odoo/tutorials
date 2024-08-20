@@ -21,7 +21,7 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <tree string="Property Offers" decoration-danger="state == 'refused'"
-                  decoration-success="state == 'accepted'">
+                  decoration-success="state == 'accepted'" editable="bottom">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="status"/>
@@ -32,4 +32,5 @@
             </tree>
         </field>
     </record>
+    
 </odoo>

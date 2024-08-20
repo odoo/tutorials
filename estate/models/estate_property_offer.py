@@ -46,13 +46,27 @@ class EstatePropertyOffer(models.Model):
                 raise ValidationError("This offer is already accepted.")
             if offer.status == 'refused':
                 raise ValidationError("This offer is refused and cannot be accepted.")
-            other_offers = self.search([('property_id', '=', offer.property_id.id), ('status', '=', 'accepted')])
-            if other_offers:
+
+            # Check for any other accepted offers for the same property
+            other_accepted_offers = self.search([
+                ('property_id', '=', offer.property_id.id),
+                ('status', '=', 'accepted')
+         ])
+            if other_accepted_offers:
                 raise ValidationError("An offer for this property has already been accepted.")
+
+            # Accept the current offer
             offer.status = 'accepted'
             offer.property_id.state = 'offer_accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
+
+            # Refuse all other offers for the same property
+            other_offers = self.search([
+                ('property_id', '=', offer.property_id.id),
+                ('id', '!=', offer.id)
+            ])
+            other_offers.write({'status': 'refused'})
         return True
 
     def action_refuse(self):
@@ -63,6 +77,19 @@ class EstatePropertyOffer(models.Model):
                 raise ValidationError("An accepted offer cannot be refused.")
             offer.status = 'refused'
         return True
+
+    @api.model
+    def create(self, vals):
+        offer = super().create(vals)
+        if offer.property_id:
+            offer.property_id.write({'state': 'offer_received'})
+        return offer
+
+    def action_confirm_offer(self):
+        for offer in self:
+            if offer.property_id:
+                offer.property_id.write({'state': 'offer_received'})
+        self.write({'status': 'accepted'})
 
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.')
