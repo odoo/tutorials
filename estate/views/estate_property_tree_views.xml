@@ -92,33 +92,6 @@
 		<field name="name">estate.property.kanban</field>
 		<field name="model">estate.property</field>
 		<field name="arch" type="xml">
-			<!-- <kanban class="o_kanban_mobile" sample="1">
-                <field name="name"/>
-                <templates>
-                    <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_global_click">
-                            <div class="row">
-                                <div class="col-12">
-                                    <strong>
-                                        <field name="name"/>
-                                    </strong>
-                                </div>
-                            </div>
-                        </div>
-                    </t>
-                </templates>
-            </kanban> -->
-
-			<!-- <kanban>
-				<templates>
-					<t t-name="kanban-box">
-						<div class="oe_kanban_global_click">
-							<field name="name"/>
-						</div>
-					</t>
-				</templates>
-			</kanban> -->
-
 			<kanban default_group_by="property_type_id" records_draggable="false">
 				<field name="state"/>
 				<field name="expected_price"/>

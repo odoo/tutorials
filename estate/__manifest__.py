@@ -14,6 +14,10 @@
         "views/property_tag.xml",
         "views/res_users_view.xml",
         "views/real_estate_menu.xml",
+        "data/real.estate.property.type.csv",
+    ],
+    "demo": [
+        "demo/estate_demo.xml",
     ],
     "installable": True,
     "application": True,
