@@ -1,0 +1,34 @@
+<odoo>
+    <template id="report_property_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price"/>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                                <tr t-foreach="offers" t-as="offer">
+                                    <td>
+                                        <span t-field="offer.price"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

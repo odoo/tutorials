@@ -1,5 +1,5 @@
-from odoo import api, fields, models
 from datetime import date, timedelta
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -15,7 +15,9 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
-    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
 
     @api.ondelete(at_uninstall=False)
     def _check_offer(self):
@@ -29,22 +31,17 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
-            today = record.create_date
-            if today:
-                today = record.create_date
-            else:
-                today = date.today()
-            if record.validity:
-                record.deadline = today + timedelta(days=record.validity)
-            else:
-                record.deadline = today
+            created_date = record.create_date or date.today()
+            record.deadline = (
+                created_date + timedelta(days=record.validity) if record.validity else created_date
+            )
 
     def _inverse_deadline(self):
         for record in self:
             if record.deadline:
-                today = fields.Date.to_date(record.create_date)
-                deadline_date = fields.Date.from_string(record.deadline)
-                record.validity = (deadline_date - today).days
+                record.validity = (
+                    record.deadline - record.property_id.create_date.date()
+                ).days
             else:
                 record.validity = 7
 
@@ -56,6 +53,19 @@ class EstatePropertyOffer(models.Model):
         if price_percent > 90:
             self.property_id.selling_price = self.price
             self.property_id.buyer_id = self.partner_id
+            self.property_id.state = "offer_accepted"
+            property_id = self.property_id
+            try:
+                existing_offer = self.search([('property_id', '=', int(property_id))])
+                for record in existing_offer:
+                    if record.id == self.id:
+                        print("Found the matching recode offer for this")
+                        continue
+                    else:
+                        print(record.status)
+                        record.status = "refused"
+            except Exception:
+                pass
         else:
             raise ValidationError("The selling price must be at least 90%")
 
@@ -73,18 +83,18 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        property_id = vals.get('property_id')
-        price = vals.get('price', 0)
+        property_id = vals.get("property_id")
+        price = vals.get("price", 0)
         if not property_id:
             raise ValidationError("Property ID is required.")
-        property_record = self.env['estate.property'].browse(property_id)
-        existing_offers = self.search([('property_id', '=', property_id)])
-        max_price = max(existing_offers.mapped('price'), default=0)
+        property_record = self.env["estate.property"].browse(property_id)
+        existing_offers = self.search([("property_id", "=", property_id)])
+        max_price = max(existing_offers.mapped("price"), default=0)
         if price < max_price:
             raise UserError("The offer price must be higher than the existing offers.")
         record = super().create(vals)
         if property_record:
-            property_record.state = 'offer_recived'
+            property_record.state = "offer_recived"
         else:
             raise ValidationError("Property record could not be found.")
         return record

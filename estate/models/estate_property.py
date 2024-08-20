@@ -1,6 +1,6 @@
-from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
 from datetime import date
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -108,7 +108,7 @@ class EstateProperty(models.Model):
         else:
             self.state = "canceled"
 
-    @api.constrains("selling_price", "expexted_price")
+    @api.constrains("selling_price", "expected_price")
     def _check_date_end(self):
         for record in self:
             if record.selling_price > 0:
