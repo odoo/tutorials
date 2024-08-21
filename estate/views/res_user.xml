@@ -8,16 +8,6 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Properties">
                     <field name="property_ids">
-                        <tree>
-                            <field name="name" string="Title"/>
-                            <field name="property_type_id" string="Property Type"/>
-                            <field name="postcode" string="Postcode"/>
-                            <field name="tag_ids" string="Tags"/>
-                            <field name="bedrooms" string="Bedrooms"/>
-                            <field name="living_area" string="Living Area (sqm)"/>
-                            <field name="expected_price" string="Expected Price"/>
-                            <field name="selling_price" string="Selling Price"/>
-                        </tree>
                     </field>
                 </page>
             </xpath>
