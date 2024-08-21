@@ -86,9 +86,14 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
+        # Prevent creating an offer lower than an existing one
+        property_id = self.env['estate.property'].browse(vals['property_id'])
+        if property_id.best_price and vals['price'] <= property_id.best_price:
+            raise ValidationError("The offer price must be higher than any existing offer.")
+
+        # Create the offer and set the property state to 'Offer Received'
         offer = super().create(vals)
-        if offer.property_id:
-            offer.property_id.write({'state': 'offer_received'})
+        offer.property_id.state = 'offer_received'
         return offer
 
     def action_confirm_offer(self):
