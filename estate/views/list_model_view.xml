@@ -4,7 +4,7 @@
         <field name="name">estate.property.view.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Channel" sample="1" decoration-success ="state in ('offer_received','offer_accepted')" decoration-muted ="state == 'sold'" decoration-bf="state == 'offer_accepted'" >
+            <tree string="Channel" sample="1" decoration-success ="state in ('offer_accepted')" decoration-muted ="state == 'sold'" decoration-bf="state == 'offer_accepted'" >
                 <field name="name" />
                 <field name="state" optional="hide"/>
                 <field name="postcode" />
@@ -104,6 +104,49 @@
                      <field name="activity_ids" />
                  </div>
             </form>
+        </field>
+    </record>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by = "property_type_id" records_draggable = "false">
+                <field name="state">
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <strong>
+                                    <field name="name" />
+                                </strong>
+                                <div>
+                                    <span>Expected Price: </span>
+                                    <field name="expected_price" />
+                                </div>
+                                <div>
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
+                                </div>
+                                <div>
+                                    <t t-if="record.state.raw_value == 'offer_received'">
+    
+                                        <strong>Best Price: </strong>
+                                        <field name="best_offer" />
+                                    </t>
+                                </div>
+                                <div>
+                                    <t t-if="record.state.raw_value == 'offer_accepted'">
+    
+                                        <strong>Selling Price: </strong>
+                                        <field name="selling_price" />
+                                    </t>
+                                </div>
+    
+                            </div>
+    
+                        </t>
+                    </templates>
+                </field>
+            </kanban>
         </field>
     </record>
 
