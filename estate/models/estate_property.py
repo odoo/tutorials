@@ -94,7 +94,7 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=True)
     def unable_delete_on_state(self):
-        if any(user.state == ("new" or "canceled") for user in self):
+        if any(user.state in ("new", "canceled") for user in self):
             raise UserError("Can't delete an active user!")
 
     @api.constrains("selling_price", "expected_price")
