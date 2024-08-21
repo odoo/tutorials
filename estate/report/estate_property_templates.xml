@@ -1,5 +1,5 @@
 <odoo>
-    <template id="report_property_offers">
+    <template id="report_property_template">
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
@@ -7,25 +7,93 @@
                         <h2>
                             <span t-field="property.name"/>
                         </h2>
-                        <div>
+                        <div class="x">
+                            <strong>Salesman: </strong>
+                            <span t-field="property.salesman_id"/>
+                            <br />
                             <strong>Expected Price: </strong>
                             <span t-field="property.expected_price"/>
+                            <br/>
+                            <strong>State: </strong>
+                            <span t-field="property.state"/>
                         </div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
-                                <tr t-foreach="offers" t-as="offer">
-                                    <td>
-                                        <span t-field="offer.price"/>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <t t-if="property.offer_ids">
+                            <t t-call="estate.estate_property_offer_template"/>
+                        </t>
+                        <t t-else="">
+                            <div>
+                                <strong>No offer has been accepted</strong>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate_property_offer_template">
+        <table class="table">
+            <thead class="display: table-row-group">
+                <tr>
+                    <th>Price</th>
+                    <th>Partner</th>
+                    <th>Validity(days)</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                <tr t-foreach="offers" t-as="offer">
+                    <td>
+                        <span t-field="offer.price"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.partner_id"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.validity"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.deadline"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.status"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <template id="report_salesmen_property_template">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <strong>Salesman: </strong>
+                            <span t-field="user.name"/>
+                        </h2>
+                        <tr t-foreach="user.property_ids" t-as="property">
+                            <div>
+                                <h3 style="margin: 10px 0px 0px 0px;">
+                                    <span t-field="property.name"/>
+                                </h3>
+                                <strong>Expected Price: </strong>
+                                <span t-field="property.expected_price"/>
+                                <br/>
+                                <strong>State: </strong>
+                                <span t-field="property.state"/>
+                            </div>
+                            <t t-if="property.offer_ids">
+                                <t t-call="estate.estate_property_offer_template"/>
+                            </t>
+                            <t t-else="">
+                                <div>
+                                    <strong>No offer has been accepted</strong>
+                                </div>
+                            </t>
+                        </tr>
                     </div>
                 </t>
             </t>

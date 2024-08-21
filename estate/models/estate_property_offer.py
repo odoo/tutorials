@@ -1,3 +1,4 @@
+import logging
 from datetime import date, timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -33,7 +34,9 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             created_date = record.create_date or date.today()
             record.deadline = (
-                created_date + timedelta(days=record.validity) if record.validity else created_date
+                created_date + timedelta(days=record.validity)
+                if record.validity
+                else created_date
             )
 
     def _inverse_deadline(self):
@@ -56,16 +59,14 @@ class EstatePropertyOffer(models.Model):
             self.property_id.state = "offer_accepted"
             property_id = self.property_id
             try:
-                existing_offer = self.search([('property_id', '=', int(property_id))])
+                existing_offer = self.search([("property_id", "=", int(property_id))])
                 for record in existing_offer:
                     if record.id == self.id:
-                        print("Found the matching recode offer for this")
                         continue
                     else:
-                        print(record.status)
                         record.status = "refused"
-            except Exception:
-                pass
+            except (UserError, ValidationError):
+                logging.exception("Error while updating offer status accepted")
         else:
             raise ValidationError("The selling price must be at least 90%")
 

@@ -39,28 +39,29 @@
             <field name="description">Home in a Ocean park</field>
             <field name="postcode">0001</field>
             <field name="date_availability">2030-01-01</field>
-            <field name="expected_price">80</field>
+            <field name="expected_price">50.0</field>
             <field name="selling_price">0.0</field>
             <field name="bedrooms">1</field>
             <field name="living_area">10</field>
             <field name="facades">4</field>
-            <field name="garage">False</field>
-            <field name="property_type_id" ref="1"></field>
+            <field name="garage">false</field>
+            <field name="property_type_id" ref="1"/>
             <field name="offer_ids" eval="[
-            Command.create({
-            'price': 100,
-            'status': 'accepted',
-            'partner_id':ref('base.res_partner_2'),
-            })  ]"/>
+                Command.create({
+                    'price': 10000900.0,
+                    'status': 'accepted',
+                    'partner_id': ref('base.res_partner_2'),
+            })]"/>
         </record>
 
-        <record id="id3" model="estate.property">
+
+        <record id="id4" model="estate.property">
             <field name="name">Small Villa</field>
             <field name="state">new</field>
             <field name="description">A nice and big villa</field>
             <field name="postcode">12345</field>
             <field name="date_availability">2020-02-02</field>
-            <field name="expected_price">1600000</field>
+            <field name="expected_price">1600</field>
             <field name="selling_price">0.0</field>
             <field name="bedrooms">6</field>
             <field name="living_area">100</field>
@@ -79,13 +80,13 @@
             <field name="property_id" ref="id2"/>
         </record>
         <record id="offer2" model="estate.property.offer">
-            <field name="price">1500000</field>
+            <field name="price">150000000</field>
             <field name="validity">14</field>
             <field name="partner_id" ref="base.res_partner_12"/>
             <field name="property_id" ref="id2"/>
         </record>
         <record id="offer3" model="estate.property.offer">
-            <field name="price">1500001</field>
+            <field name="price">10001000.0</field>
             <field name="validity">14</field>
             <field name="partner_id" ref="base.res_partner_2"/>
             <field name="property_id" ref="id3"/>
