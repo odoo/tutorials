@@ -56,6 +56,8 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_offer")
+    property_image = fields.Binary("Property Image")
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [
         (
@@ -129,3 +131,6 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ["new", "canceled"]:
                 raise UserError(_("Only new or canceled property can be deleted."))
+
+    def property_offer_wizard_action(self):
+        print("Button clicked...")

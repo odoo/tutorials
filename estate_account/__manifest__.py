@@ -9,4 +9,7 @@
     "installable": True,
     "application": True,
     "depends": ["estate", "account"],
+     "data": [
+        "report/estate_property_report_invoice.xml",
+     ]
 }

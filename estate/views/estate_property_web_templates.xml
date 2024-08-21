@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<template id="estate_properties_website">
+    <t t-call="website.layout">
+        <div class="container">
+            <h1>Available Properties</h1>
+            <div t-if="properties">
+                <div class="row">
+                    <div class="col-md-4 mb-4" t-foreach="properties" t-as="property">
+                        <div class="card" style="height: 100%;">
+                            <a t-attf-href="/property/#{property.id}">
+                                <img t-if="property.property_image" t-att-src="image_data_uri(property.property_image)"
+                                     class="card-img-top" style="height: 200px; object-fit: cover;"/>
+                                <div class="card-body d-flex flex-column justify-content-center">
+                                    <h5 class="card-title text-center mb-0">
+                                        <t t-esc="property.name"/>
+                                    </h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div t-else="">
+                <p>No properties are available at the moment.</p>
+            </div>
+        </div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item" t-att-class="page == 1 and 'disabled'">
+                    <a t-att-href="'/properties?page=%d' % max(page - 1, 1)" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">◄</span>
+                    </a>
+                </li>
+
+                <t t-foreach="range(1, total_page + 1)" t-as="p">
+                    <li class="page-item" t-att-class="p == page and 'active'">
+                        <a t-att-href="'/properties?page=%d' % p" class="page-link">
+                            <t t-esc="p"/>
+                        </a>
+                    </li>
+                </t>
+
+                <li class="page-item" t-att-class="page == total_page and 'disabled'">
+                    <a t-att-href="'/properties?page=%d' % min(page + 1, total_page)" class="page-link" aria-label="Next">
+                        <span aria-hidden="true">►</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </t>
+</template>
+
+    <template id="template_property_details" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <t t-if="property.property_image">
+                            <img t-att-src="image_data_uri(property.property_image)"/>
+                        </t>
+                        <t t-else="">
+                            <img src="/web/static/src/img/placeholder.png" class="img-fluid rounded" alt="No Image Available" style="width: 100%; height: auto;"/>
+                        </t>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <h2>
+                            <t t-esc="property.name"/>
+                        </h2>
+
+                        <p class="lead">Price: <strong>INR                            <t t-esc="property.expected_price"/>
+                        </strong>
+                    </p>
+                    <p>Bedrooms: <t t-esc="property.bedrooms"/>
+                    </p>
+                    <p>Garden Area: <t t-esc="property.garden_area"/>
+                    </p>
+                    <p>Living Area: <t t-esc="property.living_area"/>
+                        sq ft</p>
+                    <p class="mt-4">
+                        <t t-esc="property.description"/>
+                    </p>
+                    <a href="/contactus" class="btn btn-lg btn-primary mt-4">Contact Us for More Information</a>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
+</odoo>
