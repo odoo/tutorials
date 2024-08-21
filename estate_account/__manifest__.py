@@ -5,7 +5,9 @@
     "category": "Estate Account",
     "summary": "Manage Accounts",
     "depends": ["estate", "account"],
-    "data": [],
+    "data": [
+        "report/estate_account_invoice_templates.xml",
+    ],
     "installable": True,
     "application": True,
     "auto_install": False,

@@ -6,6 +6,9 @@
     "summary": "Manage properties",
     "depends": ["base_setup", "mail"],
     "data": [
+        "report/estate_property_reports.xml",
+        "report/estate_property_templates.xml",
+        "report/estate_property_sub_templates.xml",
         "security/ir.model.access.csv",
         "views/real_estate_property.xml",
         "views/estate_property_tree_views.xml",
