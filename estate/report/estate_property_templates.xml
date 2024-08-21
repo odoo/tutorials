@@ -1,0 +1,66 @@
+<odoo>
+    <template id="report_property_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name" />
+                        </h2>
+                        <div>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.salesperson_id" />
+                        </div>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price" />
+                        </div>
+                        <div class="status1">
+                            <strong>Status: </strong>
+                            <span t-field="property.state" />
+                        </div>
+                        <t t-call="estate.report_property_offer_tabel"></t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate_sale_person_property">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <h1>
+                        <strong>Saleman: </strong>
+                        <span t-field="user.name" />
+
+                    </h1>
+
+                    <t t-foreach="user.property_ids" t-as="property">
+
+                        <div class="page">
+                            <h2>
+                                <span t-field="property.name" />
+                            </h2>
+                            <div>
+                                <strong>Expected Price: </strong>
+                                <span t-field="property.expected_price" />
+                            </div>
+                            <div>
+                                <strong>Status: </strong>
+                                <span t-field="property.state" />
+                            </div>
+                        </div>
+                        <t t-call="estate.report_property_offer_tabel"></t>
+
+                    </t>
+
+                </t>
+
+            </t>
+
+        </t>
+
+
+    </template>
+</odoo>

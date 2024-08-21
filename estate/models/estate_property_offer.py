@@ -53,16 +53,17 @@ class estate_property_offer(models.Model):
                 record.property_id.selling_price = 0
 
     def action_confirm(self):
-        if self.property_id.buyer_id:
-            raise UserError("Validation Error!, It is already accepted")
-        else:
-            self.property_id.selling_price = self.price
-            self.property_id.buyer_id = self.partner_id
-            self.status = "accepted"
-            self.property_id.state = "offer_accepted"
+        for record in self:
+            if record.property_id.buyer_id:
+                raise UserError("Validation Error!, It is already accepted")
+            else:
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id = record.partner_id
+                record.status = "accepted"
+                record.property_id.state = "offer_accepted"
 
     def action_refused(self):
-        if self.status == "accepted" and self.property_id.buyer_id == self.partner_id:
+        if self.status == "accepted":
             self.status = "refused"
             self.property_id.buyer_id = None
             self.property_id.selling_price = 0

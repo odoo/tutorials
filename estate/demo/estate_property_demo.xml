@@ -1,0 +1,92 @@
+<odoo>
+    <data>
+        <record id="demo1_estate_property" model="estate.property">
+            <field name="name">Big Villa</field>
+            <field name="state">new</field>
+            <field name="description">A nice and big villa</field>
+            <field name="postcode">12345</field>
+            <field name="date_availability">2020-02-02</field>
+            <field name="expected_price">160000.0</field>
+            <field name="bedrooms">6</field>
+            <field name="livingArea">100</field>
+            <field name="facades">4</field>
+            <field name="garden">true</field>
+            <field name="garden_area">100000</field>
+            <field name="garden_orientation">south</field>
+            <field name="property_type" ref="estate.id1"/>
+        </record>
+
+        <record id="demo2_estate_property" model="estate.property">
+            <field name="name">Trailer Home</field>
+            <field name="state">canceled</field>
+            <field name="description">Home in a trailer park</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability">1970-01-01</field>
+            <field name="expected_price">100000.0</field>
+            <field name="selling_price">120000.0</field>
+            <field name="bedrooms">1</field>
+            <field name="livingArea">10</field>
+            <field name="facades">4</field>
+            <field name="property_type" ref="estate.id1"/>
+        </record>
+
+        <record id="offer1" model="estate.property.offer">
+            <field name="price">999990.0</field>
+            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="property_id" ref="demo1_estate_property"/>
+            <field name="date_deadline" eval="datetime.now() + relativedelta(days=14)"/>
+
+        </record>
+
+        <record id="offer2" model="estate.property.offer">
+            <field name="price">1500000.0</field>
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="property_id" ref="demo1_estate_property"/>
+            <field name="date_deadline" eval="datetime.now() + relativedelta(days=10)"/>
+
+        </record>
+
+        <record id="offer3" model="estate.property.offer">
+            <field name="price">15000002.0</field>
+            <field name="partner_id" ref="base.res_partner_4"/>
+            <field name="property_id" ref="demo1_estate_property"/>
+            <field name="date_deadline" eval="datetime.now() + relativedelta(days=10)"/>
+
+        </record>
+
+        <function model="estate.property.offer" name="action_confirm">
+            <value eval="[ref('offer2')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="action_refused">
+            <value eval="[ref('offer1')]"/>
+        </function>
+    
+        <function model="estate.property.offer" name="action_refused">
+            <value eval="[ref('offer3')]"/>
+        </function>
+
+        <record id="demo3_estate_property" model="estate.property">
+            <field name="name">demo_property</field>
+            <field name="state">new</field>
+            <field name="description">DEMO</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability">1970-01-01</field>
+            <field name="expected_price">9999.0</field>
+            <field name="selling_price">120000.0</field>
+            <field name="bedrooms">1</field>
+            <field name="livingArea">10</field>
+            <field name="facades">4</field>
+            <field name="property_type" ref="estate.id2"/>
+            <field name="offer_ids" eval="[
+                   
+                   Command.create({
+                     'partner_id' : ref('base.res_partner_2'),
+                     'validity': 10,
+                     'price': 100000.0
+             }),
+            
+            ]"/>
+        </record>  
+    </data>
+</odoo>
