@@ -9,17 +9,27 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
+                <header>
+                    <button name="action_open_offers" type="object" string=" Open Offers"
+                        class="oe_stat_button" icon="fa-list-alt">
+                        <field name="offer_count" widget="statinfo" class="oe_inline" />
+                    </button>
+                </header>
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name='name' />
                     </group>
-                        <field name="property_ids">                            
-                            <tree>
-                                <field name="name"/>
-                                <field name="expected_price"/>
-                                <field name="state"/>
-                            </tree>
-                        </field>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <tree string='Property'>
+                                    <field name='name' />
+                                    <field name='expected_price' />
+                                    <field name='state' />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -29,8 +39,9 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Property Types">
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="offer_count" />
             </tree>
         </field>
     </record>
