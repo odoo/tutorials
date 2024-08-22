@@ -1,6 +1,7 @@
 {
-    'name': 'Real Estate',
+    'name': 'Estate',
     'depends': ['base'],
-    # 'version': '1.0',
     'application': True,
+    'author': 'Soukaina Tyes',
+    'installable': True,
 }
