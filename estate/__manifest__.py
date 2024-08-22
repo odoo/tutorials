@@ -9,6 +9,7 @@
         "security/ir.model.access.csv",
         "data/estate.property.type.csv",
         "report/estate_property_templates.xml",
+        "report/estate_propert_web_template.xml",
         "report/estate_property_report.xml",
         "views/res_user_views.xml",
         "views/estate_property_views.xml",

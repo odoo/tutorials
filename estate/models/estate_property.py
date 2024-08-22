@@ -23,6 +23,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     active = fields.Boolean(default=True)
+    property_image = fields.Image("Property Image")
     state = fields.Selection(
         required=True,
         copy=False,

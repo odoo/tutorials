@@ -1,0 +1,121 @@
+<odoo>
+    <template id="estate_properties_web" name="Estate Properties">
+        <t t-call="website.layout">
+            <div id="wrap" class="h-100 d-flex flex-column align-item-center justify-content-between">
+                <div class="container mt-4">
+                    <h1 class="text-center mb-4">Estate Properties</h1>
+                    <div class="row">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-md-4 mb-4">
+                                <a t-att-href="'/properties/' + str(property.id)" class="o_action" style="text-decoration:none;">
+                                    <div class="card d-f flex-column align-items-center">
+                                        <img t-if="property.property_image" class="" style="height: 300px; width: 410px; " t-att-src="image_data_uri(property.property_image)"/>
+                                        <div class="container p-1" style="width:90%;">
+                                            <div class="grid">
+                                                <t t-foreach="property.tag_ids" t-as="tag">
+                                                    <span t-attf-class="badge rounded-pill text-bg-primary ">
+                                                        <t t-out="tag.name"/>
+                                                    </span>
+                                                </t>
+                                            </div>
+                                        </div>
+                                        <div style="width:90%" class="p-2">
+                                            <h6 class="card-title">
+                                                <t t-esc="property.name"/>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+                <div class="d-flex flex-row align-items-center justify-content-center" style="width: 100%; height: 30px;">
+                    <t t-foreach="pager['total_page']" t-as="page">
+                        <div class="m-1 rounded-circle"  style="width: 20px; height: 20px; background-color: #f2f2f2; text-align: center;">
+                            <a t-att-href="'/properties/page/'+str(page+1)">
+                                <t t-esc="page+1"/>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="estate_property_web" name="Estate Properties">
+        <t t-call="website.layout">
+            <div class="container">
+                <!-- <h1 class="text-center mb-4"> <t t-esc="property.name"/></h1> -->
+                <div class="row m-5 ">
+                    <div class="card mb-3" style="max-width:90%">
+                        <div class="row g-0 ">
+                            <t t-if="property.property_image">
+                                <div class="col-md-6 d-flex align-items-center justify-content-center p-2">
+                                    <img t-if="property.property_image" class="img-fluid rounded-start " style="min-height: 400px; min-width: 400px; object-fit: cover;" t-att-src="image_data_uri(property.property_image)" />
+                                </div>
+                            </t>
+                            <div class="col-md-5">
+                                <div class="card-body">
+                                    <h4 class="card-title">
+                                        <t t-esc="property.name"/>
+                                    </h4>
+                                    <p class="card-text"> State: 
+                                        <t t-esc="property.state"/>
+                                        <br/>
+                                        Expected Price: 
+                                        <t t-esc="property.expected_price"/>
+                                    </p>
+                                    <p class="card-text">
+                                        <small class="text-body-secondary">
+                                        Selling Price: 
+                                            <t t-esc="property.selling_price"/>
+                                        </small>
+                                        <br/>
+                                        <small class="text-body-secondary">
+                                        Available Date: 
+                                            <t t-esc="property.date_availability"/>
+                                        </small>
+                                        <br/>
+                                        <small class="text-body-secondary">
+                                       Bedrooms: 
+                                            <t t-esc="property.bedrooms"/>
+                                        </small>
+                                        <br/>
+                                        <small class="text-body-secondary">
+                                        Living Area: 
+                                            <t t-esc="property.living_area"/>
+                                            m2
+                                        </small>
+                                        <br/>
+                                        <small class="text-body-secondary">
+                                        Grage: 
+                                            <t t-esc="property.garage"/>
+                                        </small>
+                                        <br/>
+                                        <small class="text-body-secondary">
+                                        Salesman: 
+                                            <t t-esc="property.salesman_id.name"/>
+                                        </small>
+                                        <br/>
+                                        <t t-if="property.property_type_id">
+                                            <small class="text-body-secondary">
+                                        Property Type: 
+                                                <t t-esc="property.property_type_id.name"/>
+                                            </small>
+                                        </t>
+                                        <br/>
+                                        <small class="text-body-secondary">
+                                        Description: 
+                                            <t t-esc="property.description"/>
+                                        </small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
