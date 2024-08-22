@@ -28,7 +28,7 @@
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <field name="property_id"/>
-                <field name="state"/> <!-- Add the 'state' field here -->
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -38,5 +38,4 @@
         <field name="view_mode">tree,form</field>
         <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
-    
 </odoo>

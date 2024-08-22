@@ -52,22 +52,16 @@ class EstatePropertyOffer(models.Model):
                 raise ValidationError("This offer is already accepted.")
             if offer.status == 'refused':
                 raise ValidationError("This offer is refused and cannot be accepted.")
-
-            # Check for any other accepted offers for the same property
             other_accepted_offers = self.search([
                 ('property_id', '=', offer.property_id.id),
                 ('status', '=', 'accepted')
          ])
             if other_accepted_offers:
                 raise ValidationError("An offer for this property has already been accepted.")
-
-            # Accept the current offer
             offer.status = 'accepted'
             offer.property_id.state = 'offer_accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
-
-            # Refuse all other offers for the same property
             other_offers = self.search([
                 ('property_id', '=', offer.property_id.id),
                 ('id', '!=', offer.id)
@@ -86,12 +80,10 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        # Prevent creating an offer lower than an existing one
+
         property_id = self.env['estate.property'].browse(vals['property_id'])
         if property_id.best_price and vals['price'] <= property_id.best_price:
             raise ValidationError("The offer price must be higher than any existing offer.")
-
-        # Create the offer and set the property state to 'Offer Received'
         offer = super().create(vals)
         offer.property_id.state = 'offer_received'
         return offer

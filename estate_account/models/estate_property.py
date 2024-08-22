@@ -1,28 +1,29 @@
-from odoo import models, api, Command
+from odoo import models, Command
 
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
-    @api.model
     def action_sold(self):
-        # Create an invoice with two lines
-        self.env['account.move'].create({
-            'partner_id': self.buyer_id.id,  # Assuming 'buyer_id' is the field holding the customer
-            'move_type': 'out_invoice',      # 'Customer Invoice'
-            'invoice_line_ids': [
-                Command.create({
-                    'name': 'Property Sale Commission',
-                    'quantity': 1,
-                    'price_unit': self.selling_price * 0.06,  # 6% of the selling price
-                }),
-                Command.create({
-                    'name': 'Administrative Fees',
-                    'quantity': 1,
-                    'price_unit': 100.00,  # Fixed administrative fee
-                })
-            ],
-        })
+        super().action_sold()
 
-        # Call the original action_sold method
-        return super().action_sold()
+        for record in self:
+            selling_price = record.selling_price or 0.0
+            commission_amount = selling_price * 0.06
+            self.env['account.move'].create({
+                'partner_id': record.buyer_id.id,
+                'move_type': 'out_invoice',
+                'invoice_line_ids': [
+                    Command.create({
+                        'name': ('Commission for selling property %s') % record.name,
+                        'quantity': 1,
+                        'price_unit': commission_amount
+                    }),
+                    Command.create({
+                        'name': ('Administrative Fees'),
+                        'quantity': 1,
+                        'price_unit': 100.0
+                    })
+                ],
+            })
+        return True
