@@ -1,5 +1,6 @@
 from odoo import models, api, Command
 
+
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
