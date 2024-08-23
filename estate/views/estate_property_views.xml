@@ -56,6 +56,10 @@
                             <!-- <field name=""/> -->
                             </group>
                         </page>
+                        <page string = "offers">
+                        
+                            <field name="offer_ids"/>
+                        </page>
                         <page string="Other Info">
                             <group>
                                 <field name="sales_man"/>

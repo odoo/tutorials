@@ -20,6 +20,7 @@ class EstateProperty(models.Model):
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
     type = fields.Many2one("estate.property.type", string="Type")
     tag = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "")
     date_availability = fields.Date(
         'Availability Date',
         copy=False,

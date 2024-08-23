@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 estate_properry_model,access_model,model_estate_property,base.group_user,1,1,1,1
 estate_properry_type_model,access_model,model_estate_property_type,base.group_user,1,1,1,1
 estate_properry_tag_model,access_model,model_estate_property_tag,base.group_user,1,1,1,1
+estate_properry_offer_model,access_model,model_estate_property_offer,base.group_user,1,1,1,1
