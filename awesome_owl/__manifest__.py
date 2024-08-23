@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 {
     'name': "Awesome Owl",
 
@@ -36,7 +36,7 @@
 
             # required for fa icons
             'web/static/src/libs/fontawesome/css/font-awesome.css',
-            
+
             # include base files from framework
             ('include', 'web._assets_core'),
 
