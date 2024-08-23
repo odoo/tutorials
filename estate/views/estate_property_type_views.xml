@@ -6,7 +6,7 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-<!-- 
+
     <record id="view_estate_property_type_tree" model="ir.ui.view">
         <field name="name">estate.property.type.tree</field>
         <field name="model">estate.property.type</field>
@@ -15,12 +15,12 @@
                 <field name="name"/>
             </tree>
         </field>
-    </record> -->
+    </record>
 
-    <!-- <record id="estate_type_form" model="ir.ui.view">
-        <fied name="name">estate_type.form</fied>
-        <fied name="model">estate.property.type</fied>
-        <fied name="arch" type="xml">
+    <record id="estate_type_form" model="ir.ui.view">
+        <field name="name">estate_type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
                     <group>
@@ -28,7 +28,17 @@
                     </group>
                 </sheet>
             </form>
-        </fied>
-    </record> -->
+        </field>
+    </record>
+
+    <record id="estate.propertytype_search" model="ir.ui.view">
+        <field name="name">estate.property.type.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name" string="Name"/>
+            </search>
+        </field>
+    </record>
 
 </odoo>

@@ -16,7 +16,9 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer('area', default=0)
     expected_price = fields.Float('Expected Price', required=True)
     active = fields.Boolean(default=True)
-
+    sales_man = fields.Many2one("res.users", string="Salesmam", default=lambda self: self._uid)
+    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
+    type= fields.Many2one("estate.property.type", string="Type")
     date_availability = fields.Date(
         'Availability Date',
         copy=False,
