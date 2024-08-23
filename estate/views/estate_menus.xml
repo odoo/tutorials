@@ -4,7 +4,8 @@
             <menuitem id="modle_menu_action" action="action_estate_property"/>
         </menuitem>
         <menuitem id="property_type_menu" name="Seting">
-            <menuitem id="modle_property_type_action" action="estate_type_action"/>
+            <menuitem id="estate_property_tag_nenu" action="estate_property_tag_action"/>
+            <menuitem id="estate_property_type_menu" action="estate_type_action"/>
         </menuitem>
     </menuitem>
 </odoo>

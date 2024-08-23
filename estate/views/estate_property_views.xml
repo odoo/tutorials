@@ -33,6 +33,7 @@
                         <group>
                             <field name="name"/>
                             <field name="type"/>
+                            <field name="tag"/>
                             <field name="date_availability"/>
 
                         </group>

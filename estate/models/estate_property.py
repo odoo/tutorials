@@ -18,7 +18,8 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     sales_man = fields.Many2one("res.users", string="Salesmam", default=lambda self: self._uid)
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
-    type= fields.Many2one("estate.property.type", string="Type")
+    type = fields.Many2one("estate.property.type", string="Type")
+    tag = fields.Many2many("estate.property.tag", string="Tags")
     date_availability = fields.Date(
         'Availability Date',
         copy=False,
