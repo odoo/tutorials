@@ -1,10 +1,12 @@
-from odoo import models, fields
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo import models, fields
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate model"
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -21,12 +23,13 @@ class EstateProperty(models.Model):
         ('north', 'North'),
         ('south', 'South'),
         ('east', 'East'),
-        ('west', 'West')])
+        ('west', 'West')
+    ])
     active = fields.Boolean(default=True)
     state = fields.Selection([
         ('new', 'New'),
         ('offer_received', 'Offer Received'),
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
-        ('canceled', 'Canceled')
+        ('canceled', 'Canceled'),
     ], default='new', copy=False, string='Status')
