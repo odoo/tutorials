@@ -11,7 +11,7 @@ class estatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         string="Deadline (days)",
         compute="_compute_date_deadline",
-        inverse="_inverse_date_deadline"
+        inverse="_inverse_date_deadline",
     )
     property_id = fields.Many2one('estate.property', required=True)
     status = fields.Selection(
