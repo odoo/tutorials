@@ -1,13 +1,13 @@
 <odoo>
 
-    <record id="estate_type_action" model="ir.actions.act_window">
-        <field name="name">Property type</field>
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
     </record>
 
 
-    <record id="view_estate_property_type_tree" model="ir.ui.view">
+    <record id="estate_property_type_tree" model="ir.ui.view">
         <field name="name">estate.property.type.tree</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
@@ -17,8 +17,8 @@
         </field>
     </record>
 
-    <record id="estate_type_form" model="ir.ui.view">
-        <field name="name">estate_type.form</field>
+    <record id="estate_property_type_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
@@ -31,7 +31,7 @@
         </field>
     </record>
 
-    <record id="estate.propertytype_search" model="ir.ui.view">
+    <record id="estate_property_type_search" model="ir.ui.view">
         <field name="name">estate.property.type.search</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">

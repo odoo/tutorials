@@ -1,7 +1,0 @@
-<odoo>
-    <menuitem id="root_menu_estate" name="Real Estate">
-        <menuitem id="estate_seting_menu" name="Seting">
-            <menuitem id="modle_property_type_action" action="estate_type_action"/>
-        </menuitem>
-    </menuitem>
-</odoo>

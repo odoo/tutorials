@@ -1,17 +1,17 @@
 <odoo>
 
-    <record id="action_estate_property" model="ir.actions.act_window">
+    <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
     </record>
 
 
-    <record id="estate_view_tree" model="ir.ui.view">
-        <field name="name">estate_property.tree</field>
+    <record id="estate_property_tree" model="ir.ui.view">
+        <field name="name">estate_property_tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="OOlalaa">
+            <tree string="estate_fields">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -23,23 +23,28 @@
         </field>
     </record>
 
-    <record id="testttt" model="ir.ui.view">
+    <record id="estate_property_form" model="ir.ui.view">
         <field name="name">test.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form string="New Property">
+                <!-- <header>
+                    <botton name="action_sold_property" type="object" string="Sold"/>
+                    <botton name="aciton_cancel_property" type="object" string="Cancel"/>
+                </header> -->
                 <sheet>
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="type"/>
-                            <field name="tag"/>
+                            <field name="type_id"/>
+                            <field name="tag_ids"/>
                             <field name="date_availability"/>
 
                         </group>
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -53,17 +58,19 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
                             <!-- <field name=""/> -->
                             </group>
                         </page>
                         <page string = "offers">
-                        
-                            <field name="offer_ids"/>
+                            <group>
+                                <field name="offer_ids"/>
+                            </group>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="sales_man"/>
-                                <field name="buyer"/>
+                                <field name="sales_man_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -72,11 +79,11 @@
         </field>
     </record>
 
-    <record id="estate.property_search" model="ir.ui.view">
+    <record id="estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="olala">
+            <search string="Search">
                 <field name="name" string="name"/>
                 <field name="postcode" string="postcode"/>
                 <field name="expected_price" string="expected_price"/>
@@ -85,9 +92,7 @@
                 <field name="facades" string="facades"/>
                 <separator/>
                 <filter string="Available" name="available" domain="['|', ('state', '=', 'New'), ('state', '=', 'Offer Received')]"/>
-                <group expand="1" string="Group By">
-                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
-                </group>
+                <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
     </record>
