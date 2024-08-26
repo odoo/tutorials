@@ -7,8 +7,8 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate model"
 
-    name = fields.Char(required=True)
-    description = fields.Text()
+    name = fields.Char(required=True, default="My new house")
+    description = fields.Text(default="when duplicated status and date are not copied")
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=lambda self: datetime.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
