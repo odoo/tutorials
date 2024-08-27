@@ -21,14 +21,14 @@ class AddOfferProperty(models.Model):
         if not active_ids:
             raise UserError("No properties selected.")
         properties = self.env["estate.property"].browse(active_ids)
-        for property in properties:
+        for props in properties:
             offer = self.env["estate.property.offer"].create(
                 {
                     "price": self.price,
                     "partner_id": self.buyer_id.id,
-                    "property_id": property.id,
+                    "property_id": props.id,
                 }
             )
-            property.write({"offer_ids": [(4, offer.id)]})
+            props.write({"offer_ids": [(4, offer.id)]})
 
         return True

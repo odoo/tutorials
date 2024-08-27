@@ -41,7 +41,6 @@ class EstatePropertyController(http.Controller):
         props = request.env["estate.property"].sudo().browse(record_id)
 
         if not props.exists():
-            print("record does not found")
             return request.not_found()
         return request.render(
             "estate.template_property_details",
