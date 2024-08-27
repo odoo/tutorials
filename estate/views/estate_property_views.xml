@@ -17,6 +17,9 @@
     <field name="model">estate.property</field>
     <field name="arch" type="xml">
        <tree string="Properties" decoration-success="state == 'offer received' or state == 'offer accepted'" decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
+        <header>
+          <button name="%(estate_property_offer_wizard_button)d" type="action" string="Add Offer" />
+        </header>
         <field name="name" />
         <field name="postcode" />
         <field name="property_type_id" />
@@ -113,6 +116,7 @@
     <field name="arch" type="xml">
       <kanban default_group_by="property_type_id" groups_draggable="False" records_draggable="False">
         <field name="name" />
+        <field name="tag_ids" />
         <field name="best_price" />
         <field name="selling_price"/>
         <field name="state" />
@@ -120,6 +124,7 @@
           <t t-name="kanban-box">
             <div class="oe_kanban_global_click">
               <div><strong><field name="name" /></strong></div>
+              <div><field name="tag_ids" /></div>
               <div>Expected Price: <field name="expected_price" /></div>
               <div t-if="record.state.raw_value == 'offer received'">
                 Best Offer:
