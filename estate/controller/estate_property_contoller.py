@@ -38,16 +38,14 @@ class EstatePropertyController(http.Controller):
 
     @http.route("/property/<int:record_id>", type="http", auth="public", website=True)
     def get_record(self, record_id, **kwargs):
-        print("record id found")
-        property = request.env["estate.property"].sudo().browse(record_id)
+        props = request.env["estate.property"].sudo().browse(record_id)
 
-        if not property.exists():
+        if not props.exists():
             print("record does not found")
             return request.not_found()
-        print("record found")
         return request.render(
             "estate.template_property_details",
             {
-                "property": property,
+                "property": props,
             },
         )
