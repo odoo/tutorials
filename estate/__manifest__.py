@@ -9,6 +9,7 @@
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
+        'wizard/add_offer_wizard_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_types_views.xml',
         'views/estate_property_tags_views.xml',

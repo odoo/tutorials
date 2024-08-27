@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_available_properties': 1}</field>
     </record>
     <record id="estate_property_list" model="ir.ui.view">
@@ -11,6 +11,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Estate Property List" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state in ['offer_accepted']" decoration-muted="state in ['sold']">
+                <header>
+                    <button name="%(add_offer_wizard_action)d" type="action" string="Add Offer" class = "btn btn-primary"/>
+                </header>
                 <field name="name" />
                 <field name="bedrooms" />
                 <field name="postcode" />
@@ -43,7 +46,7 @@
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                         <group>
-                            <field name="state" readonly="1"/>
+                            <field name="state"/>
                             <field name="property_type_id" options="{'no_create': true}" />
                             <field name="postcode" />
                             <field name="date_availability" />
