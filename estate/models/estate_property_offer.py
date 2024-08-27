@@ -49,9 +49,11 @@ class EstatePropertyOffer(models.Model):
         self.status = 'accepted'
         self.property_id.selling_price = self.price
         self.property_id.buyer = self.partner_id
+        self.property_id.state = 'offer Accepted'
 
     def action_refused(self):
         self.status = 'refused'
+        self.property_id.state = 'canceled'
 
     _sql_constraints = [
         ('check_price', 'CHECK(price >=0)',

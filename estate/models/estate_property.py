@@ -55,8 +55,8 @@ class EstateProperty(models.Model):
         compute="_compute_best_price", string="Best offer")
 
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >=0)',
-         'The expected price must be strictly positive '),
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'The expected price must be strictly positive and greater than zero'),
         ('check_selling_price', 'CHECK(selling_price >=0)',
          'The selling price should not be negative')
     ]
