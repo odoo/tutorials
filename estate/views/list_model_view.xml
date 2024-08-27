@@ -5,6 +5,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Channel" sample="1" decoration-success ="state in ('offer_accepted')" decoration-muted ="state == 'sold'" decoration-bf="state == 'offer_accepted'" >
+                <header>
+                    <button string="Add offer" name="%(estate.action_add_offer_properties)d" type="action" class="oe_highlight"/>
+                </header>
                 <field name="name" />
                 <field name="state" optional="hide"/>
                 <field name="postcode" />
@@ -18,6 +21,7 @@
             </tree>
         </field>
     </record>
+    
     <record id="estate_property_form_view" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -34,6 +38,7 @@
                 <sheet>
                     <h1>
                         <field name="name" placeholder="E.g Akhil Pundir"></field>
+                        <field name="property_image" widget="image" class="oe_avatar"/>
                     </h1>
                     
                     <group>
@@ -106,6 +111,7 @@
             </form>
         </field>
     </record>
+
     <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
@@ -171,6 +177,7 @@
             </search>
         </field>
     </record>
+
     <record id="estate_property_type_view" model="ir.ui.view">
         <field name="name">estate.property.type.view</field>
         <field name="model">estate.property.type</field>
@@ -234,6 +241,24 @@
                 <field name="validity"/>  
                 <field name="deadline_date"/>
             </tree>
+        </field>
+    </record>
+
+    <record id="add_offer_form_view" model="ir.ui.view">
+        <field name="name">add.offer.form.view</field>
+        <field name="model">add.offer</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="price"></field>
+                        <field name="validity"></field>
+                        <field name="buyer_id"></field>
+                    </group>
+                    <button name="add_offer_properties" type="object" class="oe_stat_button" string="Add offer">
+                    </button>
+                </sheet>
+            </form>
         </field>
     </record>
 </odoo>

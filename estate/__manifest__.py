@@ -7,7 +7,7 @@
     "version": "0.1",
     "application": True,
     "installable": True,
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "website"],
     "data": [
         "security/ir.model.access.csv",
         "report/estate_property_offer_reports.xml",
@@ -17,6 +17,7 @@
         "views/estate_menus.xml",
         "views/list_model_view.xml",
         "views/res_users_view.xml",
+        "views/estate_property_controller_template.xml",
         "data/estate.property.type.csv",
     ],
     "demo": [

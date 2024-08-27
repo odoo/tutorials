@@ -10,6 +10,7 @@ class EstateProperty(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True)
+    property_image = fields.Image("Property Image")
     property_type_id = fields.Many2one(
         "estate.property.type", string="Property Type", ondelete="cascade"
     )
