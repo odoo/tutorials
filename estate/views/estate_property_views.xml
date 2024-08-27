@@ -28,6 +28,9 @@
                 <field name="property_type_id" />
                 <field name="date_availability" optional="hidden"/>
                 <field name="buyer_id" />
+                <header>
+                    <button name="%(action_estate_add_offer_wizard)d" type="action" string="Add Offer" class="btn-primary"/>
+                </header>
                 <field name="sell_person_id" />
                 <field name='state' column_invisible="1"/>
 
