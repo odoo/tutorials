@@ -108,3 +108,14 @@ class EstateProperty(models.Model):
             if record.state not in ['new', 'cancelled']:
                 raise UserError(
                     "You cannot delete a property unless its state is 'New' or 'Cancelled'.")
+
+    def action_add_offer(self):
+        properties = self.browse(self.env.context.get("active_ids"))
+        unavail_properties = properties.filtered_domain([('state', 'not in', ['new', 'offer received'])])
+
+        if unavail_properties:
+            raise UserError(
+                "Some properties are not available ! please select available properties only..")
+
+        else:
+            return self.env['ir.actions.act_window']._for_xml_id('estate.action_add_offer_wizard')

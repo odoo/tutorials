@@ -47,11 +47,9 @@ class EstatePropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             if record.create_date:
-                record.validity = (record.date_deadline -
-                                   record.create_date.date()).days
+                record.validity = (record.date_deadline - record.create_date.date()).days
             else:
-                record.validity = (record.date_deadline -
-                                   fields.date.today()).days
+                record.validity = (record.date_deadline - fields.date.today()).days
 
     def action_accept(self):
         self.status = 'accepted'
@@ -64,7 +62,8 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        current_property = self.property_id.browse(vals.get('property_id'))  # to find current property_id
+        current_property = self.property_id.browse(
+            vals.get('property_id'))  # to find current property_id
         current_property.state = 'offer received'
 
         # finding the offers of current property_id with higher price

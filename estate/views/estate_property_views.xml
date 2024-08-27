@@ -6,6 +6,9 @@
       <field name="arch" type="xml">
          <tree decoration-success="state in ['offer accepted','offer received']"
             decoration-muted="state == 'sold'" decoration-bf="state == 'offer accepted'">
+            <header>
+               <button type="object" name="action_add_offer" class="oe_highlight" string="Add Offer"/>                  
+            </header>
             <field name="name" />
             <field name="state" column_invisible="1" />
             <field name="postcode" />
@@ -79,7 +82,7 @@
                            <button name="action_accept" string="Accept" type="object"
                               icon="fa-check" invisible="status in ['accepted','refused']" />
                            <button name="action_refuse" string="Refuse" type="object"
-                              icon="fa-level-down" invisible="status in ['accepted','refused']" />
+                              icon="oi-close" invisible="status in ['accepted','refused']" />
                            <field name="status" optional="status in ['accepted','refused']" />
                            <field name="partner_id" />
                            <field name="validity" />
