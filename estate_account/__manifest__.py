@@ -7,7 +7,4 @@
         'account',
     ],
     'application': False,
-    'data': [
-
-    ]
 }

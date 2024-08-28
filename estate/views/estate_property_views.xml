@@ -35,13 +35,13 @@
             <form string="Estate Form View">
                 <header>
                     <button name="sold_property" type="object" string="SOLD"
-                            invisible="state in ('offer_accepted','sold','canceled')"/>
+                            invisible="state in ('offer_accepted', 'sold', 'canceled')"/>
                     <button name="sold_property" type="object" string="SOLD" invisible="state!='offer_accepted'"
                             class="btn-primary"/>
                     <button name="cancel_property" type="object" string="CANCEL"
-                            invisible="state in ('sold','canceled')"/>
-                    <field name="state" widget="statusbar" options="{'clickable':1}"
-                           statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                            invisible="state in ('sold', 'canceled')"/>
+                    <field name="state" widget="statusbar" options="{'clickable': 1}"
+                           statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <sheet>
                     <h1 class="display-5 m-0">

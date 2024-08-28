@@ -43,12 +43,13 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         string="State",
         readonly=False,
-        selection=[("new", "New"),
-                   ("offer_received", "Offer Received"),
-                   ("offer_accepted", "Offer Accepted"),
-                   ("sold", "Sold"),
-                   ("canceled", "Canceled"),
-                   ],
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Canceled"),
+        ],
         default="new",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -56,9 +57,6 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-
-    # computed fields
-
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
     best_price = fields.Float(compute="_compute_best_price", string="Best Price")
 

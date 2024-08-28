@@ -52,7 +52,7 @@ class EstatePropertyType(models.Model):
     @api.model
     def create(self, vals):
         property_id = self.env['estate.property'].browse(vals['property_id'])
-        if vals['price'] < min(property_id.offer_ids.mapped('price')):
+        if len(property_id.offer_ids) > 0 and vals['price'] < min(property_id.offer_ids.mapped('price')):
             raise UserError(_("The price should be higher than the others."))
         property_id.state = "offer_received"
         return super().create(vals)

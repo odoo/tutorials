@@ -5,8 +5,9 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def sold_property(self):
+        values = []
         for estate in self:
-            self.env['account.move'].create(
+            values.append(
                 {
                     'partner_id': estate.buyer_id.id,
                     'move_type': 'out_invoice',
@@ -24,4 +25,5 @@ class EstateProperty(models.Model):
                     ]
                 }
             )
+        self.env['account.move'].create(values)
         return super().sold_property()

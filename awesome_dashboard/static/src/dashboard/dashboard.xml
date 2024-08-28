@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" t-if="this.statistics.value">
+            <header class="d-flex align-items-center py-2 o_dashboard_header">
+                <button t-on-click="customersAction" class="btn btn-primary mx-2">Customers</button>
+                <button t-on-click="openLeads" class="btn btn-primary mx-2">Leads</button>
+                <span class="h2 mx-2 mb-0">Dashboard</span>
+            </header>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+               <DashboardItem>
+                    <t t-set="itemProp"
+                     t-value="item.props ? item.props(this.statistics.value) : {'data': this.statistics.value}"/>
+                   <t t-component="item.Component" t-props="itemProp"/>
+               </DashboardItem>
+            </t>
+        </Layout>
+    </t>
+
+</templates>
