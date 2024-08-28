@@ -10,7 +10,7 @@ class EstateAddOfferWizard(models.TransientModel):
     offer_status = fields.Selection(string='Offer Status',
                                     selection=[
                                         ('accepted', 'Accepted'),
-                                        ('rejected', 'Rejected')
+                                        ('refused', 'Refused')
                                     ])
     buyer = fields.Many2one('res.partner', string='Buyer')
 

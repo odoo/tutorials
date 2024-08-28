@@ -72,5 +72,5 @@ class EstatePropertyOffer(models.Model):
             max_amount = max(existing_offers.mapped('price'))
             if price < max_amount:
                 raise UserError(
-                    "The offer amount cannot be lower than an existing offer.")
+                    f"The offer amount cannot be lower than an existing offer {max_amount}")
         return super().create(vals)
