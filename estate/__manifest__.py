@@ -8,6 +8,8 @@
     'data': [
         'security/ir.model.access.csv',
 
+        'data/estate_property_type_data.xml',
+
         'wizard/estate_property_offer_wizard_view.xml',
 
         'views/estate_property_views.xml',
@@ -20,6 +22,8 @@
         'views/res_users_view.xml'
     ],
     'demo': [
+        'data/estate_property_demo.xml',
+        'data/estate_property_offers_demo.xml'
     ],
     'installable': True,
     'application': True,

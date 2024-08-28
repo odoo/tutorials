@@ -155,6 +155,8 @@
         <separator />
         <filter string="Available" name="available_filter"
           domain="[('state', 'in', ('new', 'offer received'))]" />
+        <filter string="Accepted" name="accepted_filter"
+          domain="[('state', '=', ('offer accepted'))]" />
         <group expand="0" string="Group By">
           <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}" />
           <filter string="Bedrooms" name="group_by_bedrooms" context="{'group_by': 'bedrooms'}" />

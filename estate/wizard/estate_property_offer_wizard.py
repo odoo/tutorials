@@ -1,5 +1,5 @@
 from odoo import models, fields
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOfferWizard(models.TransientModel):
@@ -22,13 +22,15 @@ class EstatePropertyOfferWizard(models.TransientModel):
 
         for property_id in estate:
             if property_id.state in ['offer accepted', 'sold', 'cancelled']:
-                raise UserError("Cannot make an offer on this property")
+                raise ValidationError("Cannot make an offer on property")
             else:
-                self.env['estate.property.offer'].create({
-                'property_id': property_id.id,
-                'price': self.price,
-                'status': self.offer_status,
-                'partner_id': self.buyer_id.id
-                })
+                offer = self.env['estate.property.offer'].create({
+                        'property_id': property_id.id,
+                        'price': self.price,
+                        'status': self.offer_status,
+                        'partner_id': self.buyer_id.id
+                        })
                 if self.offer_status == 'accepted':
-                    property_id.write({'state': 'offer accepted'})
+                    offer.action_accept_button()
+                else:
+                    offer.action_refuse_button()
