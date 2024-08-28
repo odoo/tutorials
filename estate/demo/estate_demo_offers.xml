@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Demo offers for Big Villa -->
+    
+    <!-- Offer 1 by Azure Interior -->
+    <record id="offer_1" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/> <!-- Azure Interior -->
+        <field name="property_id" ref="property_big_villa"/> <!-- Big Villa property -->
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+        <field name="date_deadline" eval="DateTime.now() + relativedelta(days=14)"/>
+    </record>
+
+    <!-- Offer 2 by Azure Interior -->
+    <record id="offer_2" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="property_big_villa"/>
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+        <field name="date_deadline" eval="DateTime.now() + relativedelta(days=14)"/>
+    </record>
+
+    <!-- Offer 3 by Deco Addict -->
+    <record id="offer_3" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/> <!-- Deco Addict -->
+        <field name="property_id" ref="property_big_villa"/>
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+        <field name="date_deadline" eval="DateTime.now() + relativedelta(days=14)"/>
+    </record>
+
+    <function model="estate.property.offer" name="action_accept">
+        <value eval="[ref('offer_3')]"/>
+    </function>
+</odoo>

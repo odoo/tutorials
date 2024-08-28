@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Demo data for Big Villa -->
+    <record id="property_big_villa" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name='property_type_id' ref='property_type_residential'/>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">1600000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+    </record>
+
+    <!-- Demo data for Trailer home -->
+    <record id="property_trailer_home" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name='property_type_id' ref='property_type_residential'/>
+        <field name="state">canceled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="selling_price">100000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+    </record>
+
+    <!-- Demo data for Luxury Apartment -->
+    <record id="property_luxury_apartment" model="estate.property">
+        <field name="name">Luxury Apartment</field>
+        <field name='property_type_id' ref='property_type_residential'/>
+        <field name="state">new</field>
+        <field name="description">A luxury apartment in the city center</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability">2024-12-01</field>
+        <field name="expected_price">2000000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">150</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="offer_ids" eval="[
+        Command.create({
+            'partner_id': ref('base.res_partner_2'),
+            'price': 1900000,
+            'validity': 10,
+            'date_deadline': '2024-09-08'
+        }),
+        Command.create({
+            'partner_id': ref('base.res_partner_12'),
+            'price': 1950000,
+            'validity': 10,
+            'date_deadline': '2024-09-08'
+        }),
+    ]"/>
+    </record>
+</odoo>
