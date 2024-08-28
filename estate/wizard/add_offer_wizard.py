@@ -24,10 +24,11 @@ class AddOfferWizard(models.TransientModel):
                 'price': self.price,
                 'partner_id': self.buyer_id.id
             })
-            if self.status == 'accepted':
-                curr.action_accepted()
-            elif self.status == 'refused':
-                curr.action_refused()
+                if curr:
+                    if self.status == 'accepted':
+                        curr.action_accepted()
+                    elif self.status == 'refused':
+                        curr.action_refused()
             else:
                 raise UserError('Property must be in new or offer received state')
 
