@@ -44,7 +44,7 @@ class MyModel(models.Model):
     salesman_id = fields.Many2one(
         "res.users",
         string="Salesman",
-        default=lambda self: self.env.user.partner_id,
+        default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one(
         "res.partner",
@@ -58,6 +58,13 @@ class MyModel(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
+    property_image = fields.Image("property image")
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company,
+    )
 
     _sql_constraints = [
         ("property_name", "unique(name)", "The property name must be unique!"),

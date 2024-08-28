@@ -5,6 +5,9 @@
 		<field name="model">estate.property</field>
 		<field name="arch" type="xml">
 			<tree string="Estate Properties" sample="1" decoration-bf="state=='offer accepted'" decoration-success="state=='offer received' or state=='offer accepted'" decoration-muted="state=='sold'">
+				<header>
+					<button name="%(estate.action_add_offer_wizard)d" type="action" string="Add Offer" class="oe_highlight"/>
+				</header>
 				<field name="name" />
 				<field name="postcode" />
 				<field name="date_availability" optional="hidden" />
@@ -41,7 +44,8 @@
 					<group>
 						<field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
 						<group>
-							<!-- <field name="state"/> -->
+							<field name="company_id"/>
+							<field name="property_image" widget="image"/>
 							<field name="property_type_id" options="{'no_create': true}" />
 							<field name="postcode" />
 							<field name="date_availability" />

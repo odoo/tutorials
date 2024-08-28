@@ -1,0 +1,137 @@
+<odoo>
+    <template id="property_template" name="Property List">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <h1 class="text-center mb-4">Available Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
+                            <div class="card shadow-sm h-100">
+                                <img t-if="property.property_image" t-att-src="image_data_uri(property.property_image)" class="card-img-top" alt="Property Image" style="height: 300px; width: 400px; object-fit: cover;"/>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">
+                                        <t t-esc="property.name"/>
+                                    </h5>
+                                    <div class="mt-auto">
+                                        <a t-att-href="'/properties/%s' % property.id" class="btn btn-primary btn-block">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" t-att-class="page == 1 and 'disabled'">
+                            <a t-att-href="'/properties?page=%d' % (page - 1)" class="page-link" aria-label="Previous">
+                                <span aria-hidden="true">«</span>
+                            </a>
+                        </li>
+                        <t t-foreach="range(1, total_pages + 1)" t-as="p">
+                            <li class="page-item" t-att-class="p == page and 'active'">
+                                <a t-att-href="'/properties?page=%d' % p" class="page-link">
+                                    <t t-esc="p"/>
+                                </a>
+                            </li>
+                        </t>
+                        <li class="page-item" t-att-class="page == total_pages and 'disabled'">
+                            <a t-att-href="'/properties?page=%d' % (page + 1)" class="page-link" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </t>
+    </template>
+
+
+
+
+    <template id="property_view_details" name="View Property">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="card shadow-lg">
+                            <div class="row g-0">
+                                <div class="col-md-7">
+                                    <img t-if="record.property_image" t-att-src="image_data_uri(record.property_image)" class="img-fluid h-100 w-100 rounded-start" alt="Property image"/>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="card-body">
+                                        <h3 class="card-title">
+                                            <t t-esc="record.name"/>
+                                        </h3>
+                                        <hr/>
+                                        <p class="card-text">
+                                            <strong>State:</strong>
+                                            <t t-esc="record.state"/>
+                                        </p>
+                                        <p class="card-text">
+                                            <strong>Expected Price:</strong>
+                                            <t t-esc="record.expected_price" />
+                                        </p>
+                                        <p class="card-text">
+                                            <strong>Selling Price:</strong>
+                                            <t t-esc="record.selling_price" />
+                                        </p>
+                                        <hr/>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                <div>
+                                                    <strong>Type:</strong>
+                                                    <t t-esc="record.property_type_id.name"/>
+                                                </div>
+                                                <div>
+                                                    <strong>Salesman:</strong>
+                                                    <t t-esc="record.salesman_id.name"/>
+                                                </div>
+                                                <div>
+                                                    <strong>Postcode:</strong>
+                                                    <t t-esc="record.postcode"/>
+                                                </div>
+                                                <div>
+                                                    <strong>Available From:</strong>
+                                                    <t t-esc="record.date_availability"/>
+                                                </div>
+                                                <div>
+                                                    <strong>Bedrooms:</strong>
+                                                    <t t-esc="record.bedrooms"/>
+                                                </div>
+                                                <div>
+                                                    <strong>Living Area (sqm):</strong>
+                                                    <t t-esc="record.living_area"/>
+                                                </div>
+                                                <div>
+                                                    <strong>Facades:</strong>
+                                                    <t t-esc="record.facades"/>
+                                                </div>
+                                                <div>
+                                                    <strong>Garage:</strong>
+                                                    <t t-esc="record.garage" t-if="record.garage"/>
+                                                    <t t-if="not record.garage">No</t>
+                                                </div>
+                                                <div>
+                                                    <strong>Garden:</strong>
+                                                    <t t-esc="record.garden" t-if="record.garden"/>
+                                                    <t t-if="not record.garden">No</t>
+                                                </div>
+                                                <div>
+                                                    <strong>Description:</strong>
+                                                    <t t-esc="record.description" t-if="record.garden"/>
+                                                </div>
+                                            </small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+</odoo>
