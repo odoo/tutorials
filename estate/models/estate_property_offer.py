@@ -73,3 +73,26 @@ class estatePropertyOffer(models.Model):
         for record in self:
             if record.price < (0.9 * record.property_id.expected_price):
                 raise ValidationError("The selling price must be at least 90%% of the expected price")
+
+
+pick 5308379 [ADD] Discover the JavaScript framework
+s 6203e77 creation of estate dir
+s 9921695 creation of estate mainfest
+s 3a13e67 mv mainfes to manifest
+s 259ab1c converting estate to app
+s a87fadd [ADD] estate: createing the tabe and it fields
+s 49c29d6 [IMP] fixing all style errors in estate directory
+s 141850c [IMP] fixing all style errors in TUTORIALS directory
+s 8b520ea [IMP] fixing all style errors in TUTORIALS directory
+s 1c380c9 [IMP] fixing all style errors in TUTORIALS directory
+s dea91f2 [ADD] I added access rights to estate_property_type model
+s ee83294 [ADD] I added license to estate manifest
+s 0f66e44 [ADD] I Buyer and salesman atributes to estate_property model
+s 8e14921 [ADD] I added the Property tag view and link it to estate property
+s 0804a8b [ADD] saving ..
+s 6712a8a [IMP] Made revisions based on reviewer feedback
+s 692ceb6 [IMP] Made revisions based on reviewer feedback
+s d3ffafa [IMP] estate: Made revisions based on reviewer feedback
+s 5ab3982 [ADD] estate: I add What was asked in chapters 'till 11
+s b6ad338 [ADD] estate: I add chapter up to 11
+s c6fa411 [IMP] estate: style improving to match runbot requirements
