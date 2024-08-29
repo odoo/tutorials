@@ -1,9 +1,19 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'The Real Estate Advertisement module'
+    _order = "id desc"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'A property expected price must be strictly positive'
+        ),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'A property selling price must be positive'
+        ),
+    ]
 
     name = fields.Char('Name', required=True)
     description = fields.Text('Description')
@@ -47,14 +57,15 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         [
             ("new", "New"),
-            ("offer_Received", "Offer Received"),
-            ("offer_Accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
         ],
-        default="New",
+        default="new",
         required=True,
         copy=False,
+        string="Status",
     )
 
     @api.depends("living_area", "garden_area")
@@ -77,4 +88,17 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold_property(self):
-        pass
+        if "canceled" in self.mapped("state"):
+            raise UserError("Canceled properties cannot be sold.")
+        return self.write({"state" : "sold", "active":False})
+
+    def action_cancel_property(self):
+        if "sold" in self.mapped("state"):
+            raise UserError("Sold properties cannot be canceled.")
+        return self.write({"state": "canceled", "active":False})
+
+    def unlink(self):
+        for record in self:
+            if not (record.state in ('new', 'canceled')):
+                raise UserError("It's not possible to delete a property which is not new or canceled!")
+        return super().unlink()
