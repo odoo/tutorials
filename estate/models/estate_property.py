@@ -114,7 +114,6 @@ class EstateProperty(models.Model):
                 )
 
     def action_set_sold(self):
-        print("sold is clicked")
         for record in self:
             if record.state == "canceled":
                 raise UserError("You can not change status to sold if it is canceled")
