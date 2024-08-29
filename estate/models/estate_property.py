@@ -8,11 +8,9 @@ class EstateProperty(models.Model):
     _order = "id desc"
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
-         'A property expected price must be strictly positive'
-        ),
+         'A property expected price must be strictly positive'),
         ('check_selling_price', 'CHECK(selling_price >= 0)',
-         'A property selling price must be positive'
-        ),
+         'A property selling price must be positive'),
     ]
 
     name = fields.Char('Name', required=True)
@@ -90,12 +88,12 @@ class EstateProperty(models.Model):
     def action_sold_property(self):
         if "canceled" in self.mapped("state"):
             raise UserError("Canceled properties cannot be sold.")
-        return self.write({"state" : "sold", "active":False})
+        return self.write({"state": "sold", "active": False})
 
     def action_cancel_property(self):
         if "sold" in self.mapped("state"):
             raise UserError("Sold properties cannot be canceled.")
-        return self.write({"state": "canceled", "active":False})
+        return self.write({"state": "canceled", "active": False})
 
     def unlink(self):
         for record in self:
