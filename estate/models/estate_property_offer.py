@@ -73,4 +73,3 @@ class estatePropertyOffer(models.Model):
         for record in self:
             if record.price < (0.9 * record.property_id.expected_price):
                 raise ValidationError("The selling price must be at least 90%% of the expected price")
-
