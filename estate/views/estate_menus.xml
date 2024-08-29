@@ -3,7 +3,7 @@
         <menuitem id="estate_property_first_level_menu" name="Advertisment">
             <menuitem id="estate_property_model_menu_action" action="estate_property_action"/>
         </menuitem>
-        <menuitem id="estate_property_type_level_menu" name="Setting">
+        <menuitem id="estate_property_type_level_menu" name="Setting" groups="estate.estate_group_manager">
             <menuitem id="estate_property_type_menu_action" action="estate_property_type_action"/>
             <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"/>
         </menuitem>

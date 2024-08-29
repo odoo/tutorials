@@ -9,6 +9,13 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property Data"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     name = fields.Char(required=True)
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        readonly=False,
+        default=lambda self: self.env.company,
+    )
     description = fields.Char()
     postcode = fields.Char()
     date_availability = fields.Date(

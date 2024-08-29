@@ -14,9 +14,12 @@
     <record id="action_account_estate_property_tree" model="ir.ui.view">
         <field name="name">estate_property_tree</field>
         <field name="model">estate.property</field>
-        
+
         <field name="arch" type="xml">
             <tree decoration-success="state in ('offer_accepted', 'Offer Accepted') or state in ('offer_recived', 'Offer Recieved')" decoration-bf="state in ('offer_accepted', 'Offer Accepted')" decoration-muted="state == 'sold'">
+                <header>
+                    <button name="%(estate.estate_properties_add_offer)d" type="action" string="Add Offer" class="btn-secondary"/>
+                </header>
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -51,10 +54,13 @@
                             <field name="property_image" widget="image" class="oe_avatar" />
 
                         </h1>
+
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+
                     </div>
                     <group>
                         <group >
+                            <field name="company_id"/>
                             <field name='state' string='status'/>
                             <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode" class="o_stat_value"/>

@@ -8,10 +8,12 @@ class EstateProperty(models.Model):
 
     def status_action_sold_button(self):
         logging.info("Request to create the invoices of property")
+        self.check_access_rights('write')
+        self.check_access_rule('write')
         for record in self:
             if record.buyer_id:
                 partner_id = record.buyer_id.id
-                self.env["account.move"].create(
+                self.env["account.move"].sudo().create(
                     {
                         "partner_id": partner_id,
                         "move_type": "out_invoice",
@@ -38,4 +40,5 @@ class EstateProperty(models.Model):
                         ],
                     }
                 )
+        logging.info("Successfully created")
         return super().status_action_sold_button()
