@@ -1,5 +1,6 @@
 {
     "name": "Esate By Akpu",
+    "category": "Real Estate/Brokerage",
     "Description": "Starting module for Estate",
     "license": "LGPL-3",
     "summary": "Starting module for Real Estate Business model",
@@ -9,6 +10,7 @@
     "installable": True,
     "depends": ["base", "mail", "website"],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "report/estate_property_offer_reports.xml",
         "report/estate_property_offer_Template.xml",

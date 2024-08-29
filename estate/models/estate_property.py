@@ -10,6 +10,13 @@ class EstateProperty(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True)
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        readonly=False,
+        default=lambda self: self.env.company,
+    )
     property_image = fields.Image("Property Image")
     property_type_id = fields.Many2one(
         "estate.property.type", string="Property Type", ondelete="cascade"
@@ -107,12 +114,12 @@ class EstateProperty(models.Model):
                 )
 
     def action_set_sold(self):
+        print("sold is clicked")
         for record in self:
             if record.state == "canceled":
                 raise UserError("You can not change status to sold if it is canceled")
             else:
                 record.state = "sold"
-        return True
 
     def action_set_cancel(self):
         for record in self:

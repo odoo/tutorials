@@ -1,3 +1,4 @@
+import logging
 from odoo import models, Command
 
 
@@ -5,6 +6,9 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold(self):
+        logging.info("Request to create the invoices of property")
+        self.check_access_rights("write")
+        self.check_access_rule("write")
         for record in self:
             values_property = {
                 "partner_id": record.buyer.id,
@@ -26,5 +30,5 @@ class EstateProperty(models.Model):
                     ),
                 ],
             }
-        self.env["account.move"].create(values_property)
+        self.env["account.move"].sudo().create(values_property)
         return super().action_set_sold()
