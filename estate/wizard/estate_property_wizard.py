@@ -14,10 +14,10 @@ class OfferWizard(models.TransientModel):
         context = self.env.context
         active_ids = context.get('active_ids', [])
         for property_id in active_ids:
-            property = self.env['estate.property'].browse(property_id)
+            each_property = self.env['estate.property'].browse(property_id)
             self.env['estate.property.offer'].create({
                 'price': self.price,
                 'validity': self.validity,
                 'partner_id': self.partner_id.id,
-                'property_id': property.id,
+                'property_id': each_property.id,
             })

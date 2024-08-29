@@ -24,7 +24,6 @@
         "views/estate_property_web_templates.xml",
         "report/estate_property_templates.xml",
         "report/estate_property_reports.xml",
-        
     ],
     "demo": [
         "demo/demo_data.xml",

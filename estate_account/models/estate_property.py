@@ -5,7 +5,6 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold_property(self):
-        print(" reached ".center(100, '='))
         self.check_access_rights('write')
         self.check_access_rule('write')
         self.env["account.move"].sudo().create(

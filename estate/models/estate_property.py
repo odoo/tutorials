@@ -131,6 +131,3 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ["new", "canceled"]:
                 raise UserError(_("Only new or canceled property can be deleted."))
-
-    def property_offer_wizard_action(self):
-        print("Button clicked...")

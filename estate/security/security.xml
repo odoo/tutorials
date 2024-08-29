@@ -34,6 +34,6 @@
             <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
             <field name="global" eval="True" />
         </record>
-
+   
     </data>
 </odoo>
