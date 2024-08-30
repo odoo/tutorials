@@ -3,11 +3,12 @@
     'version': '1.0',
     'summary': 'An real state management application',
     'description': 'A detailed description of my module',
-    'category': 'Sales',
+    'category': 'Real Estate/Brokerage',
     'author': 'prgo',
     'depends': ['base'],
     'license': 'LGPL-3',
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/estate.property.type.csv',
         'wizard/add_offer_wizard_views.xml',
