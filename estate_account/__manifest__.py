@@ -3,8 +3,11 @@
     'version': '1.0',
     'category': 'Real Estate',
     'depends': ['estate', 'account'],
-    'data': [],
     'license': 'LGPL-3',
+    'data': [
+        'report/estate_account_report.xml',
+    ],
     'installable': True,
-    'application': True
+    'application': True,
+
 }

@@ -54,7 +54,8 @@
             <tree string="Channel" decoration-success="state in ['offer Accepted','offer Received']"
                 decoration-bf="state in ['offer Accepted']" decoration-muted="state=='sold'">
                 <header>
-                    <button name="%(estate_add_offer_wizard_action)d" type="action" string="Add Offer" />
+                    <button name="%(estate_add_offer_wizard_action)d" type="action"
+                        string="Add Offer" />
                 </header>
                 <field name="name" />
                 <field name="postcode" />

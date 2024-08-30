@@ -1,39 +1,38 @@
 <odoo>
     <record id="azure_interior_big_villa_1" model="estate.property.offer">
-      <field name="partner_id" ref="base.res_partner_12"/> 
-      <field name="property_id" ref="demo_big_villa"/>
-      <field name="price">10000</field>
-      <field name="validity">14</field>
-      <field name="date_deadline" eval="DateTime.now() + relativedelta(days=14)"/>
+        <field name="partner_id" ref="base.res_partner_12" />
+        <field name="property_id" ref="demo_big_villa" />
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+        <field name="date_deadline" eval="DateTime.now() + relativedelta(days=14)" />
     </record>
-  
+
     <record id="azure_interior_big_villa_2" model="estate.property.offer">
-      <field name="partner_id" ref="base.res_partner_12"/>
-      <field name="property_id" ref="demo_big_villa"/> 
-      <field name="price">1500000</field>
-      <field name="validity">14</field>
-      <field name="date_deadline" eval="DateTime.now() + relativedelta(days=14)"/>
+        <field name="partner_id" ref="base.res_partner_12" />
+        <field name="property_id" ref="demo_big_villa" />
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+        <field name="date_deadline" eval="DateTime.now() + relativedelta(days=14)" />
     </record>
-  
+
     <record id="decco_addict_big_villa_3" model="estate.property.offer">
-      <field name="partner_id" ref="base.res_partner_2"/> 
-      <field name="property_id" ref="demo_big_villa"/>
-      <field name="price">1500001</field>
-      <field name="validity">14</field>
-      <field name="date_deadline" eval="DateTime.now() + relativedelta(days=14)"/>
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="property_id" ref="demo_big_villa" />
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+        <field name="date_deadline" eval="DateTime.now() + relativedelta(days=14)" />
     </record>
 
     <function model="estate.property.offer" name="action_accept">
-        <value eval="[ref('azure_interior_big_villa_1')]"/>
+        <value eval="[ref('azure_interior_big_villa_1')]" />
     </function>
 
     <function model="estate.property.offer" name="action_refused">
-        <value eval="[ref('azure_interior_big_villa_2')]"/>
+        <value eval="[ref('azure_interior_big_villa_2')]" />
     </function>
 
     <function model="estate.property.offer" name="action_refused">
-        <value eval="[ref('decco_addict_big_villa_3')]"/>
+        <value eval="[ref('decco_addict_big_villa_3')]" />
     </function>
 
-  </odoo>
-  
+</odoo>
