@@ -19,7 +19,6 @@ class EstatePropertyOffer(models.Model):
     #     ('refused', 'Refused'),
     #     ('draft', 'Draft')
     # ], default='draft', copy=False)
-
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True, ondelete='cascade')
     property_type_id = fields.Many2one(
@@ -55,7 +54,7 @@ class EstatePropertyOffer(models.Model):
             other_accepted_offers = self.search([
                 ('property_id', '=', offer.property_id.id),
                 ('status', '=', 'accepted')
-         ])
+            ])
             if other_accepted_offers:
                 raise ValidationError("An offer for this property has already been accepted.")
             offer.status = 'accepted'

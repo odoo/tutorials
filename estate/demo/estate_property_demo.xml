@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Create partners if not present
-    <record id="partner_azure_interior" model="res.partner">
-        <field name="name">Azure Interior</field>
-        <field name="email">contact@azureinterior.com</field>
-    </record>
-
-    <record id="partner_deco_addict" model="res.partner">
-        <field name="name">Deco Addict</field>
-        <field name="email">contact@decoaddict.com</field>
-    </record> -->
-
-    <!-- Property records -->
     <record id="property_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="property_type_id" ref="estate.property_type_residential"/>
@@ -48,28 +36,60 @@
         <field name="garden_orientation">north</field>
     </record>
 
-    <!-- Property offers -->
+    <record id="property_modern_apartment" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="property_type_id" ref="estate.property_type_residential"/>
+        <field name="state">new</field>
+        <field name="description">A modern apartment in the city center</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability">2024-01-01</field>
+        <field name="expected_price">500000</field>
+        <field name="selling_price">480000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">80</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">north</field>
+        <field name="offer_ids" eval="[
+            Command.create({
+                'price': 450000,
+                'partner_id': ref('base.res_partner_12'),
+                'create_date': datetime.now() + timedelta(days=30)
+            }),
+            Command.create({
+                'price': 460000,
+                'partner_id': ref('base.res_partner_12'),
+                'create_date': datetime.now() + timedelta(days=30)
+            })
+        ]"/>
+    </record>
+
+    <!-- Offer records -->
     <record id="offer_azure_1" model="estate.property.offer">
         <field name="price">10000</field>
         <field name="property_id" ref="property_big_villa"/>
         <field name="partner_id" ref="base.res_partner_12"/>
-        <field name="validity">14</field>
-        <field name="create_date">2023-08-19</field>
+        <field name="create_date" eval="datetime.now() + timedelta(days=14)"/>
     </record>
 
     <record id="offer_azure_2" model="estate.property.offer">
         <field name="price">1500000</field>
         <field name="property_id" ref="property_big_villa"/>
         <field name="partner_id" ref="base.res_partner_12"/>
-        <field name="validity">14</field>
-        <field name="create_date">2023-08-24</field>
+        <field name="create_date" eval="datetime.now() + timedelta(days=14)"/>
     </record>
 
     <record id="offer_deco_addict" model="estate.property.offer">
         <field name="price">1500001</field>
         <field name="property_id" ref="property_big_villa"/>
         <field name="partner_id" ref="base.res_partner_12"/>
-        <field name="validity">14</field>
-        <field name="create_date">2023-08-29</field>
+        <field name="create_date" eval="datetime.now() + timedelta(days=14)"/>
     </record>
+
+    <!-- Function calls to update offers -->
+    <function model="estate.property.offer" name="action_accept">
+        <value eval="[ref('offer_deco_addict')]"/>
+    </function>
 </odoo>
