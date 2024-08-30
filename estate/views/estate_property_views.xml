@@ -13,26 +13,33 @@
             <kanban
                 default_group_by="property_type_id"
                 records_draggable='False'>
-                <field name="property_type_id"/>
-                <field name="state"/>
-                <field name="best_price"/>
-                <field name="selling_price"/>
-                <field name="expected_price"/>
+                <field name="property_type_id" />
+                <field name="state" />
+                <field name="best_price" />
+                <field name="selling_price" />
+                <field name="expected_price" />
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click oe_kanban_card">
                             <div class="oe_kanban_title">
-                                <strong><field name="name" /></strong>
+                                <strong>
+                                    <field name="name" />
+                                </strong>
                             </div>
                             <div class="oe_kanban_prices">
-                                <div t-if="record.state.raw_value == 'offer_received'" class="oe_kanban_best_price">
-                                    <strong>Best Price:</strong> <field name="best_price" />
+                                <div t-if="record.state.raw_value == 'offer_received'"
+                                    class="oe_kanban_best_price">
+                                    <strong>Best Price:</strong>
+                                    <field name="best_price" />
                                 </div>
-                                <div t-if="record.state.raw_value == 'offer_accepted'" class="oe_kanban_selling_price">
-                                    <strong>Selling Price:</strong> <field name="selling_price" />
+                                <div t-if="record.state.raw_value == 'offer_accepted'"
+                                    class="oe_kanban_selling_price">
+                                    <strong>Selling Price:</strong>
+                                    <field name="selling_price" />
                                 </div>
                                 <div class="oe_kanban_expected_price">
-                                    <strong>Expected Price:</strong> <field name="expected_price" />
+                                    <strong>Expected Price:</strong>
+                                    <field name="expected_price" />
                                 </div>
                             </div>
                             <div class="oe_kanban_tags">
@@ -43,7 +50,7 @@
                 </templates>
             </kanban>
         </field>
-    </record>    
+    </record>
     <record id="estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -61,12 +68,18 @@
                 <field name="date_availability" optional="hidden" />
                 <field name="buyer_id" />
                 <field name="seller_id" />
-                <field name="state" column_invisible="1" />
+                <field name="state" invisible="1" />
                 <field name="property_type_id" />
                 <field name="tag_ids" widget="many2many_tags" />
+                <header>
+                    <button name="%(estate.action_estate_property_offer_wizard)d" string="Add Offer"
+                        type="action" class="oe_highlight" />
+                </header>
+
             </tree>
         </field>
     </record>
+
     <record id="estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -167,6 +180,8 @@
                 <field name="tag_ids" widget="many2many_tags" />
                 <filter string="Available Properties" name="available_properties"
                     domain="[('state', 'in', ['new', 'offer_received'])]" />
+                <filter string="Offer Accepted" name="offer_accepted"
+                    domain="[('state', '=', 'offer_accepted')]" />
                 <group string="Group By">
                     <filter string="Postcode" name="group_by_postcode"
                         context="{'group_by':'postcode'}" />
@@ -174,4 +189,5 @@
             </search>
         </field>
     </record>
+
 </odoo>

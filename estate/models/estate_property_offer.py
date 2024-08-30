@@ -14,11 +14,11 @@ class EstatePropertyOffer(models.Model):
         ('refused', 'Refused'),
         ('draft', 'Draft')
     ], default='draft', copy=False)
-    state = fields.Selection([
-        ('accepted', 'Accepted'),
-        ('refused', 'Refused'),
-        ('draft', 'Draft')
-    ], default='draft', copy=False)
+    # state = fields.Selection([
+    #     ('accepted', 'Accepted'),
+    #     ('refused', 'Refused'),
+    #     ('draft', 'Draft')
+    # ], default='draft', copy=False)
 
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True, ondelete='cascade')
