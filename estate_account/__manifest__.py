@@ -3,7 +3,7 @@
     'version': '1.0',
     'depends': ['estate', 'account'],
     'description': """ Estate account module """,
-    'data': [],
+    'data': ['report/estate_propery_invoice_report.xml'],
     'installable': True,
     'application': True,
     'sequence': -1,

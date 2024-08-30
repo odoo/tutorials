@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_property_offers_invoice" inherit_id="estate.report_property_offers">
+        <xpath expr="//div[@class='state']" position='after'>
+            <t t-if="property.state == 'sold' ">
+                <div>
+                    <strong>Inovice has been already created!! </strong>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
