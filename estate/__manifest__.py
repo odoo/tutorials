@@ -3,10 +3,11 @@
     'version': '1.0',
     'summary': 'This is E-state module about the property',
     'description': 'A detailed description of my module',
-    'category': 'Sales',
+    'category': 'Real Estate/Brokerage',
     'author': 'pkgu',
     'depends': ['base'],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'wizard/estate_add_offer_wizard_views.xml',
         'data/property_types_data.xml',

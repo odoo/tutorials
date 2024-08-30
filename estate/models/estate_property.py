@@ -52,6 +52,7 @@ class EstateProperty(models.Model):
         'estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Float(string="Total Area", compute='_compute_total_area')
     best_price = fields.Float(string='Best Offer Price', compute='_compute_best_price')
+    company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.user.company_id)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
