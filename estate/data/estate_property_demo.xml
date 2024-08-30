@@ -3,7 +3,7 @@
     <record model="estate.property" id="property_big_villa">
         <field name="name">Big Villa</field>
         <field name="state">new</field>
-        <field name='property_type_id' ref='property_type1'/>
+        <field name='property_type_id' ref='property_type1' />
         <field name="postcode">12345</field>
         <field name="date_availability">2020-02-02</field>
         <field name="expected_price">1600000</field>
@@ -17,7 +17,7 @@
     </record>
     <record model="estate.property" id="property_Trailer_park">
         <field name="name">Trailer</field>
-        <field name='property_type_id' ref='property_type1'/>
+        <field name='property_type_id' ref='property_type1' />
         <field name="state">cancelled</field>
         <field name="postcode">54321</field>
         <field name="date_availability">1970-01-01</field>
@@ -28,10 +28,10 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
     </record>
-    <record model="estate.property" id="property_mansion">
-        <field name="name">Big Villa</field>
+    <record model="estate.property" id="property_Mansion">
+        <field name="name">Mansion</field>
         <field name="state">new</field>
-        <field name='property_type_id' ref='property_type1'/>
+        <field name='property_type_id' ref='property_type1' />
         <field name="postcode">12345</field>
         <field name="date_availability">2020-02-02</field>
         <field name="expected_price">1600</field>
@@ -42,7 +42,8 @@
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
-        <field name="offer_ids" eval="[
+        <field name="offer_ids"
+            eval="[
         Command.create({
         'price': 1650,
         'partner_id':ref('base.res_partner_2'),
@@ -53,6 +54,37 @@
         'partner_id':ref('base.res_partner_12'),
         'validity':20
         })
-        ]"/>
+        ]" />
+    </record>
+    <record model="estate.property" id="property_Appartment">
+        <field name="name">Appartment</field>
+        <field name='property_type_id' ref='property_type_flat' />
+        <field name="state">offer received</field>
+        <field name="postcode">123432</field>
+        <field name="date_availability">2024-12-12</field>
+        <field name="expected_price">100000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">1000</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="offer_ids"
+            eval="[
+        Command.create({
+        'price': 101000,
+        'partner_id':ref('base.res_partner_2'),
+        'validity':20
+        }),
+        Command.create({
+        'price': 101500,
+        'partner_id':ref('base.res_partner_12'),
+        'validity':20
+        }),
+        Command.create({
+        'price': 101500,
+        'partner_id':ref('base.res_partner_10'),
+        'validity':20
+        })
+        ]" />
     </record>
 </odoo>

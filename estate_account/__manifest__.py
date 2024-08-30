@@ -8,7 +8,7 @@
         'account'
     ],
     'data': [
-
+        'report/property_offer_report.xml'
     ],
     'demo': [
 

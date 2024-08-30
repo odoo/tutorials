@@ -13,6 +13,7 @@ class EstatePropertyOffer(models.Model):
         string='Status',
         selection=[('received', 'Received'), ('accepted', 'Accepted'), ('refused', 'Refused')],
         copy="False",
+        default='received',
         help="Status of the Offer")
     partner_id = fields.Many2one(
         'res.partner',
