@@ -1,12 +1,13 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'category': 'Real Estate',
+    'category': 'Real Estate/Brokerage',
     'summary': 'Module for managing real estate properties.',
     'author': 'Your Name',
     'depends': ['base'],
     'license': 'LGPL-3',
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'wizard/estate_add_offer_wizard_view.xml',
         'view/estate_property_offer_view.xml',

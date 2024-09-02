@@ -92,6 +92,7 @@
                             <field name="property_type_id"
                                 options="{'no_create': True, 'no_open': True}" />
                             <field name="state" />
+                            <field name="company_id"/>
                         </group>
                         <group>
                             <field name="expected_price" />
