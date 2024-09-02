@@ -48,12 +48,11 @@ class EstateProperty(models.Model):
         comodel_name="res.partner", string="Buyer", copy=False)
     user_id = fields.Many2one(
         comodel_name="res.users", string="Salesperson", default=lambda self: self.env.user)
-    tag_ids = fields.Many2many(
-        comodel_name="estate.property.tag", string="Tages")
-    offer_ids = fields.One2many(
-        "estate.property.offer", "property_id", string="Offers")
+    tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tages")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(string="Total area", compute="_compute_values")
     best_price = fields.Float(string="Best offer", compute="_compute_values")
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
     # sql constraints
     _sql_constraints = [
@@ -111,7 +110,8 @@ class EstateProperty(models.Model):
 
     def action_add_offer(self):
         properties = self.browse(self.env.context.get("active_ids"))
-        unavail_properties = properties.filtered_domain([('state', 'not in', ['new', 'offer received'])])
+        unavail_properties = properties.filtered_domain(
+            [('state', 'not in', ['new', 'offer received'])])
 
         if unavail_properties:
             raise UserError(

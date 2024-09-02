@@ -47,6 +47,7 @@
                      <field name="date_availability" />
                   </group>
                   <group>
+                     <field name="company_id"/>
                      <field name="expected_price" />
                      <field name="selling_price" />
                      <field name="best_price" />
