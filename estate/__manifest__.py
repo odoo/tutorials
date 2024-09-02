@@ -4,7 +4,7 @@
     'category': 'Real Estate/Brokerage',
     'summary': 'Module for managing real estate properties.',
     'author': 'Your Name',
-    'depends': ['base'],
+    'depends': ['base', 'website'],
     'license': 'LGPL-3',
     'data': [
         'security/security.xml',
@@ -17,6 +17,8 @@
         'view/res_users_view.xml',
         'view/estate_menus.xml',
         'data/property_type.xml',
+        'data/data.xml',
+        'view/estate_property_controller_view.xml',
         'report/estate_property_template.xml',
         'report/estate_property_report.xml',
         'report/estate_property_subtemplate.xml'
