@@ -22,7 +22,9 @@ class EstateProperty(models.Model):
                 })
             ]
         }
-        self.env['account.move'].create(move_vals)
+        self.env['account.move'].check_access_rights('create')
+        self.env['account.move'].check_access_rule('create')
+        self.env['account.move'].sudo().create(move_vals)
 
         # self.env['account.move.line'].create({
         #         "move_id": invoice.id,

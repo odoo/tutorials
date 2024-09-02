@@ -7,7 +7,7 @@
 
     <menuitem id="estate_menu_action_first_level" name="Estate Properties" parent="estate_first_menu" action="estate_property_action"/>
 
-    <menuitem id="estate_second_menu" name="Second Level" parent="estate_menu_root" sequence="20"/>
+    <menuitem id="estate_second_menu" name="Second Level" parent="estate_menu_root" sequence="20" groups="estate.group_estate_manager"/>
     
     <menuitem id="estate_menu_action_second_level" name="Estate Properties" parent="estate_second_menu" action="estate_property_action"/>
 </odoo>

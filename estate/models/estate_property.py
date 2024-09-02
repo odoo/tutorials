@@ -64,6 +64,12 @@ class EstateProperty(models.Model):
         string='Total Area',
         compute='_compute_total_area',
     )
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+        required=True,
+        default=lambda self: self.env.company.id
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

@@ -1,11 +1,13 @@
 {
     'name': 'ESTATE',
     'version': '1.2',
+    'category': 'Real Estate/Brokerage',
     'description': "",
     'depends': [
         'base_setup',
     ],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
 
         'data/estate_property_type_data.xml',
