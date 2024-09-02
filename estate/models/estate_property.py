@@ -70,6 +70,7 @@ class EstateProperty(models.Model):
         required=True,
         default=lambda self: self.env.company.id
     )
+    image = fields.Image("Image")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

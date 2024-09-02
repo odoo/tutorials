@@ -4,13 +4,14 @@
     'category': 'Real Estate/Brokerage',
     'description': "",
     'depends': [
-        'base_setup',
+        'base_setup', 'website'
     ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
 
         'data/estate_property_type_data.xml',
+        'data/data.xml',
 
         'wizard/estate_property_offer_wizard_view.xml',
 
@@ -23,6 +24,7 @@
         'views/estate_property_type_menu.xml',
         'views/estate_property_tag_view.xml',
         'views/estate_property_tag_menu.xml',
+        'views/estate_portal_templates.xml',
         'views/res_users_view.xml'
     ],
     'demo': [
