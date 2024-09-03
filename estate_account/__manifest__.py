@@ -7,7 +7,9 @@
     'author': 'yasp',
     'depends': ['estate', 'account'],
     'license': 'LGPL-3',
-    'data': [],
+    'data': [
+        'report/estate_property_report.xml',
+    ],
     'installable': True,
     'application': False,
 }

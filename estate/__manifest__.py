@@ -11,6 +11,9 @@
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
+        'report/estate_property_offer_template.xml',
+        'report/estate_property_template.xml',
+        'report/estate_property_report.xml',
         'wizard/estate_add_offer_wizard_views.xml',
         'data/estate_property_type_data.xml',
         'views/estate_property_views.xml',
