@@ -1,0 +1,42 @@
+<odoo>
+    <record id='estate_meeting_form' model='ir.ui.view'>
+        <field name="name">estate_meeting_form</field>
+        <field name="model">estate.meetings</field>
+        <field name="arch" type="xml">
+            <form >
+                <group>
+                    <field name='name'/>
+                    <field name='start'/>
+                    <field name='stop'/>
+                    <field name='duration'/>
+                    <field name='description'/>
+                    <field name='attendee_ids'/>
+                </group>
+                <footer>
+                    <button name="action_create_meeting" type="object" id="action_create_meeting" string="Create Meeting" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_meeting_view" model="ir.actions.act_window">
+        <field name="name">Estate Meeting</field>
+        <field name="res_model">estate.meetings</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="estate_meeting_form" />
+        <field name="target">new</field>
+    </record>
+
+    <record id="estate_property_form_view_inherit" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.action_estate_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(estate_meeting.estate_meeting_view)d" type="action" string="Meeting" class="btn-secondary"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

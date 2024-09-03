@@ -1,9 +1,4 @@
 <odoo>
-    <record id="estate_properties_add_offer" model="ir.actions.act_window">
-        <field name="name">Add Offer</field>
-        <field name="res_model">add.offer</field>
-        <field name="view_mode">form</field>
-    </record>
 
     <record id='estate_properties_add_offer_form' model='ir.ui.view'>
         <field name="name">estate_property_offer_form</field>
@@ -16,10 +11,19 @@
                     <field name='validity'/>
                 </group>
                 <footer>
-                    <button name="add_offer" type="object" id="create_invoice_open" string="Make an offer" class="btn-primary" data-hotkey="q"/>
+                    <button name="add_offer" type="object" id="create_estate_invoice" string="Make an offer" class="btn-primary" data-hotkey="q"/>
                     <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>
+    </record>
+    
+    <record id="estate_properties_add_offer" model="ir.actions.act_window">
+        <field name="name">Add Offer</field>
+        <field name="res_model">add.offer</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="estate_properties_add_offer_form" />
+        <field name="target">new</field>
+
     </record>
 </odoo>

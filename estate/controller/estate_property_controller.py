@@ -29,7 +29,7 @@ class PropertyController(Controller):
             pager = {
                 "url": "/properties/page/" + str(page),
                 "total": total_property,
-                "page": page,
+                "current_page": page,
                 "total_page": total_pages,
                 "step": per_page,
             }
