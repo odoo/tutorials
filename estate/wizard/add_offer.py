@@ -22,7 +22,7 @@ class AddOfferProperty(models.TransientModel):
             raise UserError("No properties selected.")
         properties = self.env["estate.property"].browse(active_ids)
         for props in properties:
-            offer = self.env["estate.property.offer"].create(
+            self.env["estate.property.offer"].create(
                 {
                     "price": self.price,
                     "partner_id": self.buyer_id.id,

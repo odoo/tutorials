@@ -1,10 +1,16 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
 
 
 class AddOfferProperty(models.Model):
     _name = "make.appointment"
     _description = "Make appointment"
+
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        props = self.env["estate.property"].browse(self.env.context["active_id"])
+        res["attendes_id"] = props.salesperson
+        return res
 
     agenda = fields.Char(required=True)
     date_from = fields.Date(
@@ -24,13 +30,6 @@ class AddOfferProperty(models.Model):
         readonly=True,
     )
     attendes_id = fields.Many2one("res.users", string="Attendes Id", required=True)
-
-    @api.model
-    def default_get(self, fields_list):
-        res = super().deault_get(fields_list)
-        property = self.env["estate.property"].browse(self.env.context["active_id"])
-        res["attendes_id"] = property.salesperson
-        return res
 
     def confirm_make_appointment(self):
         vals = {
