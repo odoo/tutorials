@@ -7,11 +7,12 @@
     'author': 'YASP',
     'website': 'https://www.yaspestate.com',
     'sequence': 1,
-    'depends': ['base'],
+    'depends': ['base', 'website'],
     'license': 'LGPL-3',
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/data.xml',
         'report/estate_property_offer_template.xml',
         'report/estate_property_template.xml',
         'report/estate_property_report.xml',
@@ -21,6 +22,7 @@
         'views/estate_property_offers_views.xml',
         'views/estate_property_types_views.xml',
         'views/estate_property_tags_views.xml',
+        'views/estate_property_website_templates_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml'
     ],

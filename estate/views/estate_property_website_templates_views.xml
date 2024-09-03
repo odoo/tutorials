@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="available_properties" name="Properties Page">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1><center>Available Properties</center></h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img src="/estate/static/description/icon.png"/>
+                                    <h5 class="card-title"><t t-esc="property.name"/></h5>
+                                    <p class="card-text"><t t-esc="property.expected_price"/></p>
+                                    <p class="card-text"><strong>Price:</strong> <t t-esc="property.selling_price"/> USD</p>
+                                    <a t-att-href="'/property/%s' % property.id" class="btn btn-primary">View Property</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <br/>
+                <div class="col-12">
+                    <t t-call="website.pager">
+                        <t set="pager-url" t-value="'/properties'"/>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_template">
+        <t t-call="website.layout">
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="text-center  mb-4">
+                            <t t-esc="property.name"/>
+                        </h1>
+                        <div class="row">
+                            <div class="col-md-6">
+                                    <img src="/estate/static/description/icon.png" alt="Property Image"/>
+                            </div>
+                            <div class="col-md-6">
+                                <p>
+                                    <strong>Description:</strong>
+                                    <t t-esc="property.description"/>
+                                </p>
+                                <p>
+                                    <strong>Price:</strong>
+                                    <t t-esc="property.expected_price"/>
+                                </p>
+                                <p>
+                                    <strong>Bedrooms:</strong>
+                                    <t t-esc="property.bedrooms"/>
+                                </p>
+                                <p>
+                                    <strong>Living Area:</strong>
+                                    <t t-esc="property.living_area"/>sqm</p>
+                                <t t-if="property.garden">
+                                    <p>
+                                        <strong>Garden Area:</strong>
+                                        <t t-esc="property.garden_area"/> sqm</p>
+                                    <p>
+                                        <strong>Garden Orientation:</strong>
+                                        <t t-esc="property.garden_orientation"/>
+                                    </p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
