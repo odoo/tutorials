@@ -1,0 +1,48 @@
+<odoo>
+    <record id="make_appointment_form_view" model="ir.ui.view">
+        <field name="name">make.appointment.form.view</field>
+        <field name="model">make.appointment</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"></field>
+                        <field name="start_date"></field>
+                        <field name="end_date"></field>
+                        <field name="orgniser"></field>
+                        <field name="attendes_id"></field>
+                        <field name="description"></field>
+                    </group>
+                    <footer>
+                        <button name="make_appointment" type="object" id="calender_estate"
+                            string="make meeting" class="btn-primary" data-hotkey="q" />
+                        <button string="Cancel" class="btn-secondary" special="cancel"
+                            data-hotkey="x" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="make_meeting_action" model="ir.actions.act_window">
+        <field name="name">Make Appointmrnt</field>
+        <field name="res_model">make.appointment</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="calender_estate.make_appointment_form_view" />
+        <field name="target">new</field>
+    </record>
+
+    <record id="calender_estate_make_appointment" model="ir.ui.view">
+        <field name="name">make.appointment</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.action_estate_property_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+
+                <button name="%(calender_estate.make_meeting_action)d" string="Make meeting"
+                    type="action" />
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

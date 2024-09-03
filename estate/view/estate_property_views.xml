@@ -24,6 +24,9 @@
         <field name="arch" type="xml">
             <tree sample="1" decoration-success="state in ('offer_received','offer_accepted')"
                 decoration-bf="state in ('offer_accepted')" decoration-muted="state in ('sold')">
+                <header>
+                    <button string="Add offer" name="%(estate.add_offer_action)d" type="action" />
+                </header>
                 <field name='sequence' widget='handle' />
                 <field name="name" string="Title" />
                 <field name="state" invisible="1" />
@@ -54,7 +57,6 @@
                         invisible="state in ('canceled', 'sold')" />
                     <button name="button_action_cancled" type="object" string="Cancle"
                         invisible="state in ('canceled', 'sold')" />
-
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
@@ -66,6 +68,7 @@
 
                         <field name="tag_ids" widget="many2many_tags"
                             options="{'color_field':'color'}" />
+                        <field name="image" widget="image" class="oe_avatar" />
 
                     </div>
                     <group>
@@ -73,6 +76,7 @@
                             <field name="state" string="Status" />
                             <field name="property_type" options="{'no_create': true}" />
                             <field name="postcode" class="o_stat_value" />
+                            <field name="company_id" string="Your Company" />
                             <field name="expected_price" />
                             <field name="best_offer" />
                         </group>
@@ -177,7 +181,8 @@
                                 <field name="expected_price" />
                             </div>
                             <div>
-                                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
+                                <field name="tag_ids" widget="many2many_tags"
+                                    options="{'color_field':'color'}" />
                             </div>
                             <div>
                                 <t t-if="record.state.raw_value == 'offer_received'">

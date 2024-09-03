@@ -3,17 +3,20 @@
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree sample="1" editable="bottom"  decoration-success="status in ('accepted')" decoration-danger="status in ('refused')"            >
-                
-                <field name = 'sequence' widget = 'handle'/>
+            <tree sample="1" editable="bottom" decoration-success="status in ('accepted')"
+                decoration-danger="status in ('refused')">
+
+                <field name='sequence' widget='handle' />
                 <field name='price' />
                 <field name='partner_id' />
-                <field name="validity"/>
-                <field name="date_deadline"/>
-                <button name="action_confirm" type="object"  title="confirm" icon="fa-check" invisible="status in ('accepted', 'refused')"/>
-                <button name="action_refused" type="object" title="refused" icon="fa-times" invisible="status in ('accepted', 'refused')"/>
+                <field name="validity" />
+                <field name="date_deadline" />
+                <button name="action_confirm" type="object" title="confirm" icon="fa-check"
+                    invisible="status in ('accepted', 'refused')" />
+                <button name="action_refused" type="object" title="refused" icon="fa-times"
+                    invisible="status in ('accepted', 'refused')" />
 
-                <field name='status' invisible="status in ('accepted', 'refused')"/>
+                <field name='status' invisible="status in ('accepted', 'refused')" />
             </tree>
         </field>
     </record>
@@ -23,13 +26,13 @@
         <field name="name">estate.property.offer_form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form  > 
+            <form>
                 <sheet>
-                    <group >
+                    <group>
                         <field name='price' />
                         <field name='partner_id' />
-                        <field name="validity"/>
-                        <field name="date_deadline"/>
+                        <field name="validity" />
+                        <field name="date_deadline" />
                         <field name='status' />
 
                     </group>

@@ -13,7 +13,7 @@
             <field name="garden">true</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
-            <field name="property_type" ref="estate.id1"/>
+            <field name="property_type" ref="estate.id1" />
         </record>
 
         <record id="demo2_estate_property" model="estate.property">
@@ -27,43 +27,39 @@
             <field name="bedrooms">1</field>
             <field name="livingArea">10</field>
             <field name="facades">4</field>
-            <field name="property_type" ref="estate.id1"/>
+            <field name="property_type" ref="estate.id1" />
         </record>
 
         <record id="offer1" model="estate.property.offer">
             <field name="price">999990.0</field>
-            <field name="partner_id" ref="base.res_partner_2"/>
-            <field name="property_id" ref="demo1_estate_property"/>
-            <field name="date_deadline" eval="datetime.now() + relativedelta(days=14)"/>
+            <field name="partner_id" ref="base.res_partner_2" />
+            <field name="property_id" ref="demo1_estate_property" />
+            <field name="date_deadline" eval="datetime.now() + relativedelta(days=14)" />
 
         </record>
 
         <record id="offer2" model="estate.property.offer">
             <field name="price">1500000.0</field>
-            <field name="partner_id" ref="base.res_partner_12"/>
-            <field name="property_id" ref="demo1_estate_property"/>
-            <field name="date_deadline" eval="datetime.now() + relativedelta(days=10)"/>
+            <field name="partner_id" ref="base.res_partner_12" />
+            <field name="property_id" ref="demo1_estate_property" />
+            <field name="date_deadline" eval="datetime.now() + relativedelta(days=10)" />
 
         </record>
 
         <record id="offer3" model="estate.property.offer">
             <field name="price">15000002.0</field>
-            <field name="partner_id" ref="base.res_partner_4"/>
-            <field name="property_id" ref="demo1_estate_property"/>
-            <field name="date_deadline" eval="datetime.now() + relativedelta(days=10)"/>
+            <field name="partner_id" ref="base.res_partner_4" />
+            <field name="property_id" ref="demo1_estate_property" />
+            <field name="date_deadline" eval="datetime.now() + relativedelta(days=10)" />
 
         </record>
 
-        <function model="estate.property.offer" name="action_confirm">
-            <value eval="[ref('offer2')]"/>
+        <function model="estate.property.offer" name="action_refused">
+            <value eval="[ref('offer1')]" />
         </function>
 
         <function model="estate.property.offer" name="action_refused">
-            <value eval="[ref('offer1')]"/>
-        </function>
-    
-        <function model="estate.property.offer" name="action_refused">
-            <value eval="[ref('offer3')]"/>
+            <value eval="[ref('offer3')]" />
         </function>
 
         <record id="demo3_estate_property" model="estate.property">
@@ -77,8 +73,9 @@
             <field name="bedrooms">1</field>
             <field name="livingArea">10</field>
             <field name="facades">4</field>
-            <field name="property_type" ref="estate.id2"/>
-            <field name="offer_ids" eval="[
+            <field name="property_type" ref="estate.id2" />
+            <field name="offer_ids"
+                eval="[
                    
                    Command.create({
                      'partner_id' : ref('base.res_partner_2'),
@@ -86,7 +83,7 @@
                      'price': 100000.0
              }),
             
-            ]"/>
-        </record>  
+            ]" />
+        </record>
     </data>
 </odoo>

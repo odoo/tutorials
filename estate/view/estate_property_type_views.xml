@@ -25,17 +25,15 @@
         <field name="arch" type="xml">
 
             <form>
-
-                <button type="action" name="%(estate.estate_property_offer_check)d" string="offers" class="oe_stat_button"
+                <button type="action" name="%(estate.estate_property_offer_check)d" string="offers"
+                    class="oe_stat_button"
                     icon="fa-ticket">
 
                     <div class="o_stat_info">
                         <field name="offer_count" widget="statinfo" string="" />
                         <span class="o_stat_text"> Offer</span>
                     </div>
-
                 </button>
-
 
                 <header>
                     <h1>

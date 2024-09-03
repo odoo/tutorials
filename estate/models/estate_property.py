@@ -45,7 +45,7 @@ class estate_property(models.Model):
     )
     property_type = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
-        "res.users", string="Selesperson", default=lambda self: self.env.user.partner_id
+        "res.users", string="Selesperson", default=lambda self: self.env.user
     )
     buyer_id = fields.Many2one(
         "res.partner", string="Buyer", copy=False, ondelete="cascade"
@@ -54,6 +54,13 @@ class estate_property(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total")
     best_offer = fields.Float(compute="_best_offer")
+    company_id = fields.Many2one(
+        "res.company",
+        required=True,
+        string="Company",
+        default=lambda self: self.env.company,
+    )
+    image = fields.Image("Image")
     _sql_constraints = [
         (
             "check_Expected_price",

@@ -1,0 +1,31 @@
+<odoo>
+    <template id="property_detail_page" name="Property details Page">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-4">
+
+                <div class="row d-flex justify-content-around border p-4 border-5">
+                    <div class="col">
+                        <img
+                            t-if="property.image" t-att-src="image_data_uri(property.image)"
+                            style="width: auto; height: 250px;"
+                            class="card-img-top" alt="Property Image" />
+                    </div>
+                    <div class="col">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <t t-esc="property.name" />
+                            </h4>
+                            <p class="card-text"> State: <t t-esc="property.state" /> 
+                                 <br />
+                                 <strong>Expected
+                                Price:</strong> 
+                                 <t t-esc="property.expected_price" />
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
