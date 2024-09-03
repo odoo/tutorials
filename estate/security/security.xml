@@ -1,0 +1,33 @@
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+            <field name="name">Agent</field>
+            <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+    
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+    </record>
+
+    <record id="estate_property_agent_rule" model="ir.rule">
+        <field name="name">Estate Property: Agent Rule</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
+        <field name="domain_force">
+            ['|', ('seller_id', '=', user.id), ('seller_id', '=', False)]
+        </field>
+    </record>
+
+    <record id="estate_property_manager_rule" model="ir.rule">
+        <field name="name">Estate Property: Manager Rule</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_manager'))]"/>
+    </record>
+
+    <record id="estate_property_multi_company_rule" model="ir.rule">
+        <field name="name">Estate Property Multi-Company</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>
