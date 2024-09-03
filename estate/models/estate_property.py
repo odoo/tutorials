@@ -43,6 +43,13 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one('res.users', string="Salesperson", ondelete='set null')
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+    property_image = fields.Binary(string="Property Image")
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+    ]
 
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):
@@ -74,6 +81,7 @@ class EstateProperty(models.Model):
         return True
 
     def action_sold(self):
+        print("Old method called ############")
         if self.state != "canceled":
             if self.state == 'offer_accepted':
                 self.state = "sold"
@@ -82,11 +90,6 @@ class EstateProperty(models.Model):
         elif self.state == "canceled":
             raise UserError("This property can't be sold as it is canceled already")
         return True
-
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
-    ]
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
