@@ -2,7 +2,7 @@ from odoo import fields, models
 from odoo.exceptions import UserError
 
 
-class AddOfferProperty(models.Model):
+class AddOfferProperty(models.TransientModel):
     _name = "add.offer"
     _description = "Add Offer to Properties"
 
@@ -29,6 +29,4 @@ class AddOfferProperty(models.Model):
                     "property_id": props.id,
                 }
             )
-            props.write({"offer_ids": [(4, offer.id)]})
-
         return True

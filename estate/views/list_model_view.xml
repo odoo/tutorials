@@ -29,10 +29,9 @@
             <form string="Form View" sample="1">
                 <header>
                     <group invisible="state in ('sold', 'canceled')" >
-                        <button name="action_set_sold" type="object" string="SOLD"/>
+                        <button name="action_set_sold" type="object" string="SOLD" />
                         <button name="action_set_cancel" type="object" string="CANCEL"/>
                     </group>
-
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -242,24 +241,6 @@
                 <field name="validity"/>  
                 <field name="deadline_date"/>
             </tree>
-        </field>
-    </record>
-
-    <record id="add_offer_form_view" model="ir.ui.view">
-        <field name="name">add.offer.form.view</field>
-        <field name="model">add.offer</field>
-        <field name="arch" type="xml">
-            <form string="">
-                <sheet>
-                    <group>
-                        <field name="price"></field>
-                        <field name="validity"></field>
-                        <field name="buyer_id"></field>
-                    </group>
-                    <button name="add_offer_properties" type="object" class="oe_stat_button" string="Add offer">
-                    </button>
-                </sheet>
-            </form>
         </field>
     </record>
 </odoo>

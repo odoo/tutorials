@@ -15,6 +15,7 @@
         "report/estate_property_offer_reports.xml",
         "report/estate_property_offer_Template.xml",
         "report/estate_property_offer_subTemplate.xml",
+        "wizard/wizard_action_view.xml",
         "views/estate_property_views.xml",
         "views/estate_menus.xml",
         "views/list_model_view.xml",

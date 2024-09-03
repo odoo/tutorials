@@ -17,7 +17,7 @@
             <field name="garden_orientation">south</field>
             <field name="property_type_id" ref="estate.id1"></field>
         </record>
-    
+
         <record id="demo_data_2" model="estate.property">
             <field name="name">BTrailer home</field>
             <field name="state">canceled</field>
@@ -32,7 +32,7 @@
             <field name="property_type_id" ref="estate.id1"></field>
         </record>
 
-    <record id="demo_data_3" model="estate.property">
+        <record id="demo_data_3" model="estate.property">
             <field name="name">Luxury villa</field>
             <field name="state">new</field>
             <field name="description">A very nice villa</field>
@@ -46,39 +46,40 @@
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
             <field name="facades">4</field>
-            <field name="offer_ids" eval="[
+            <field name="offer_ids"
+                eval="[
                 Command.create({
                     'partner_id': ref('base.res_partner_2'),
                     'price': 190000000,
                     'validity': 14
                 }),
     
-            ]"/>
+            ]" />
             <field name="property_type_id" ref="estate.id1"></field>
         </record>
-    
+
         <record id="demo_estate_offer_1" model="estate.property.offer">
-            <field name="partner_id" ref="base.res_partner_1"/>
-            <field name="property_id" ref="demo_data_1"/>
+            <field name="partner_id" ref="base.res_partner_1" />
+            <field name="property_id" ref="demo_data_1" />
             <field name="price">100</field>
-            <field name="validity" >14</field>
+            <field name="validity">14</field>
 
         </record>
-    
+
         <record id="demo_estate_offer_2" model="estate.property.offer">
-            <field name="partner_id" ref="base.res_partner_2"/>
-            <field name="property_id" ref="demo_data_1"/>
+            <field name="partner_id" ref="base.res_partner_2" />
+            <field name="property_id" ref="demo_data_1" />
             <field name="price">150</field>
             <field name="validity">14</field>
 
         </record>
-    
+
         <record id="demo_estate_offer_3" model="estate.property.offer">
-            <field name="partner_id" ref="base.res_partner_3"/>
-            <field name="property_id" ref="demo_data_1"/>
+            <field name="partner_id" ref="base.res_partner_3" />
+            <field name="property_id" ref="demo_data_1" />
             <field name="price">151</field>
             <field name="validity">14</field>
-            <field name="deadline_date" eval="datetime.now()+ relativedelta(days = 14)"/>
+            <field name="deadline_date" eval="datetime.now()+ relativedelta(days = 14)" />
         </record>
-      </odoo>
+    </odoo>
 </odoo>

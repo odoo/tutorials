@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="make_appointment_form_view" model="ir.ui.view">
+        <field name="name">make.appointment.form.view</field>
+        <field name="model">make.appointment</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="agenda"></field>
+                        <field name="date_from"></field>
+                        <field name="date_to"></field>
+                        <field name="organiser"></field>
+                        <field name="attendes_id"></field>
+                    </group>
+                    <footer>
+                        <button name="confirm_make_appointment" type="object" string="Confirm"
+                            class="btn-primary"
+                            data-hotkey="q" />
+                        <button string="Cancel" class="btn-secondary" special="cancel"
+                            data-hotkey="x" />
+                    </footer>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_make_appointment" model="ir.actions.act_window">
+        <field name="name">Create a new Meeting</field>
+        <field name="res_model">make.appointment</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="make_appointment_form_view"></field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="add_button_estate_property_form" model="ir.ui.view">
+        <field name="name">make.apppointment.form.view</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Make Meeting" name="%(make_meeting.action_make_appointment)d"
+                    type="action" class="btn-primary"></button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+    

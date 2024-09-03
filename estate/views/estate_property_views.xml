@@ -49,9 +49,4 @@
         <!-- <field name="domain">[('property_type_id', '=', 'active_id')]</field> -->
     </record>
 
-    <record id="action_add_offer_properties" model="ir.actions.act_window">
-        <field name="name">Add offer to Properties</field>
-        <field name="res_model">add.offer</field>
-        <field name="view_mode">form</field>
-    </record>
 </odoo>

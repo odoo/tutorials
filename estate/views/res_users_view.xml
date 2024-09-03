@@ -15,7 +15,7 @@
                             <field name="expected_price"/>
                         </tree>
                     </field>
-                </page>
+                </page> 
             </xpath>
         </field>
     </record>
