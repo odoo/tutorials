@@ -37,13 +37,12 @@
     </record>
 
     <record model="ir.rule" id="agent_estate_access_rule">
-        <field name="name">acess to the properties for an agent</field>
+        <field name="name">Company access</field>
         <field name="model_id" ref="model_estate_property"/>
         <field name="perm_read" eval="1" /> 
         <field name="perm_write" eval="0" /> 
         <field name="perm_create" eval="0" /> 
         <field name="perm_unlink" eval="0" /> 
-        <!-- <field name="groups" eval="[(4, ref('group_estate_user'))]" /> -->
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     </record>
 </odoo>
