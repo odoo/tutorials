@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="chronic_conditions_menu_action" model="ir.actions.act_window">
+        <field name="name">Chronic Conditions</field>
+        <field name="res_model">chronic.conditions</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create New Property
+            </p>
+        </field>
+    </record>
+
+    <record id="view_chronic_conditions_tree" model="ir.ui.view">
+        <field name="name">chronic.conditions.tree</field>
+        <field name="model">chronic.conditions</field>
+        <field name="arch" type="xml">
+            <tree string="Chronic Conditions">
+                <field name="sequence" widget="handle"/>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_chronic_conditions_form" model="ir.ui.view">
+        <field name="name">chronic.conditions.form</field>
+        <field name="model">chronic.conditions</field>
+        <field name="arch" type="xml">
+            <form string="Chronic Condition">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" style="font-size:24px; font-weight:bold;"/>
+                            <field name="parent_id"/>
+                        </group>
+                    </group>
+                    </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="allergies_menu_action" model="ir.actions.act_window">
+        <field name="name">Allergies</field>
+        <field name="res_model">dental.allergies</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create New Property
+            </p>
+        </field>
+    </record>
+
+    <record id="view_allergies_tree" model="ir.ui.view">
+        <field name="name">dental.allergies.tree</field>
+        <field name="model">dental.allergies</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="habits_substance_menu_action" model="ir.actions.act_window">
+        <field name="name">Habits/Substance Abuse</field>
+        <field name="res_model">habits.substance</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create New Property
+            </p>
+        </field>
+    </record>
+
+    <record id="view_habits_substance_tree" model="ir.ui.view">
+        <field name="name">habits.substance.tree</field>
+        <field name="model">habits.substance</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="dental_patient_action" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">dental.patient</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register New Patients
+            </p>
+        </field>
+    </record>
+
+    <record id="view_dental_patient_tree" model="ir.ui.view">
+        <field name="name">dental.patient.tree</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_dental_patient_form" model="ir.ui.view">
+        <field name="name">dental.patient.form</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <form string="Patients">
+                <header>
+                    <field name="state" widget="statusbar" />
+                </header>
+                <group>
+                    <field name="name" />
+                </group>
+                <sheet>
+                    <notebook>
+                        <page string="Medical History">
+                            <group>
+                                <group>
+                                    <field name="gp_id" />
+                                    <field name="gp_phone" readonly="1" />
+                                    <field name="chronic_conditions" widget="many2many_tags" />
+                                    <field name="hospitalized_this_year" />
+                                    <field name="medication" widget="many2many_tags" />
+                                </group>
+                                <group>
+                                    <field name="allergies" />
+                                    <field name="habits_substance_abuse" />
+                                    <field name="under_specialist_care" />
+                                    <field name="psychiatric_history" />
+                                </group>
+                            </group>
+                            <group string="Female Specific Information">
+                                <group>
+                                    <field name="is_pregnant" />
+                                    <field name="is_nursing" />
+                                    <field name="hormone_treatment" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Medical Aid Information">
+                            <group>
+                                <group>
+                                    <field name="medical_aid_id" />
+                                    <field name="medical_aid_plan" placeholder="Enter plan name..." />
+                                    <field name="medical_aid_number"
+                                        placeholder="Enter aid number..." />
+                                </group>
+                                <group>
+                                    <field name="main_number_code"
+                                        placeholder="Enter main number code..." />
+                                    <field name="dependant_code"
+                                        placeholder="Enter dependant code..." />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
