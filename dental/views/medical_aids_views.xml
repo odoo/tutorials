@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="medical_aids_menu_action" model="ir.actions.act_window">
+        <field name="name">Medical Aids</field>
+        <field name="res_model">medical.aids</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create New Property
+            </p>
+        </field>
+    </record>
+
+    <record id="view_medical_aids_tree" model="ir.ui.view">
+        <field name="name">medical.aids.tree</field>
+        <field name="model">medical.aids</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_medical_aids_form" model="ir.ui.view">
+        <field name="name">medical.aids.form</field>
+        <field name="model">medical.aids</field>
+        <field name="arch" type="xml">
+                    <form string="Medical Aids">
+                        <header>
+                            <field name="state" widget="statusbar"/>
+                        </header>
+                        <sheet>
+                            <group>
+                                <field name="name" string="Title" />
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="contact"/>
+                                    <field name="phone"/>
+                                    <field name="email"/>
+                                    <field name="note"/>
+                                </group>
+                                <group>
+                                    <field name="image" widget="image" options="{'size': (50, 50)}" nolabel="1"/>
+                                    <field name="company" />
+                                </group>
+                            </group>
+                        </sheet>
+                    </form>
+        </field>
+    </record>
+</odoo>

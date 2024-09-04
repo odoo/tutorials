@@ -1,0 +1,236 @@
+
+<odoo>
+    <template id="portal_my_home_extended" name="My Portal Extended" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[@id='portal_common_category']" position="before">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/dental/static/description/tooth.png'"/>
+                <t t-set="title">Dental</t>
+                <t t-set="text">Manage your dental records and appointments</t>
+                <t t-set="url" t-value="'/my/dental'"/>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_dental" name="My Dental Portal">
+        <t t-call="portal.portal_layout">
+            <t t-set="title">Dental</t>
+            <div class="container">
+                <h1>Dental</h1>
+                <div class="row">
+                    <div class="col-md-6 mb-4" t-foreach="patients" t-as="patient">
+                        <a t-attf-href="/my/dental/{{ patient.id }}">
+                            <div class="card">
+                                <div class="card-body d-flex align-items-center">
+                                    <img class="mr-3" src="/contacts/static/description/icon.svg"/>
+                                    <p class="card-title mb-0" t-esc="patient.name"/>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_my_dental_user" name="My Dental Portal User">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 order-md-2 mb-4">
+                        <a t-attf-href="/my/dental/{{ patient.id }}/personal">
+                            <div class="card">
+                                <div class="card-body d-flex align-items-center">
+                                    <img class="mr-3" src="/sale/static/src/img/bag.svg"/>
+                                    <p class="card-title mb-0">Personal</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 order-md-2 mb-4">
+                        <a t-attf-href="/my/dental/{{ patient.id }}/medical_history">
+                            <div class="card">
+                                <div class="card-body d-flex align-items-center">
+                                    <img class="mr-3" src="/account/static/src/img/Bill.svg"/>
+                                    <p class="card-title mb-0">Medical History</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 order-md-2 mb-4">
+                        <a t-attf-href="/my/dental/{{ patient.id }}/medical_aid">
+                            <div class="card">
+                                <div class="card-body d-flex align-items-center">
+                                    <img class="mr-3" src="/project/static/src/img/folder.svg"/>
+                                    <p class="card-title mb-0">Medical Aid</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 order-md-2 mb-4">
+                        <a t-attf-href="/my/dental/{{ patient.id }}/dental_history">
+                            <div class="card">
+                                <div class="card-body d-flex align-items-center">
+                                    <img class="mr-3" src="/project/static/src/img/tasks.svg"/>
+                                    <p class="card-title mb-0">Dental History and Next Appointment</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_my_dental_personal" name="My Dental Personal">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <h1>Personal Details</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Marital Status</th>
+                            <th>Date of Birth</th>
+                            <th>Company</th>
+                            <th>Occupation</th>
+                            <th>Identity Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <td>
+                                <span t-field="patient.name"/>
+                            </td>
+                            <td>
+                                <span t-field="patient.gender"/>
+                            </td>
+                            <td>
+                                <span t-field="patient.marital_status"/>
+                            </td>
+                            <td>
+                                <span t-field="patient.date_of_birth"/>
+                            </td>
+                            <td>
+                                <span t-field="patient.company_or_school_id"/>
+                            </td>
+                            <td>
+                                <span t-field="patient.occupation_or_grade"/>
+                            </td>
+                            <td>
+                                <span t-field="patient.identity_number"/>
+                            </td>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_my_dental_medical_history" name="My Dental Medical History">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <h1>Medical History</h1>
+                <div>
+                    <t t-foreach="history" t-as="history">
+                    <div class="card-body">
+                        <p><strong>Patient: </strong> <span t-esc="history.patient_id.name"/></p>
+                        <p><strong>Date: </strong> <span t-esc="history.date"/></p>
+                        <p><strong>Responsible: </strong> <span t-esc="history.responsible_id.name"/></p>
+                        <p><strong>Did not attend: </strong> <span t-esc="history.did_not_attend"/></p>
+                        <p><strong>Company: </strong> <span t-esc="history.company_id.name"/></p>
+                    </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_my_dental_medical_aid" name="My Dental Medical Aid">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <h1>Medical Aid</h1>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Medical Aid Plan</th>
+                                <th>Medical Aid Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span t-field="patient.medical_aids.name"/>
+                                </td>
+                                <td>
+                                    <span t-field="patient.medical_aids_plan"/>
+                                </td>
+                                <td>
+                                    <span t-field="patient.medical_aid_number"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_my_dental_dental_history" name="My Dental Dental History">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <h1>Dental History and Next Appointment</h1>
+                <div>
+                    <t t-foreach="history" t-as="history">
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <strong>Teeth History</strong>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Main Complaint: </strong></p>
+                                    <p class="form-control" rows="3" t-field="history.main_complaint"></p>
+                                    <p><strong>History: </strong></p>
+                                    <p class="form-control"  t-field="history.teeth_history"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <strong>Habits and X-rays</strong>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Habits: </strong></p>
+                                    <p class="form-control" rows="3" t-field="history.habits"></p>
+                                    <p><strong>X-ray File 1: </strong></p>
+                                    <img t-if="history.xray_file_1" t-att-src="'data:image/png;base64,%s' % history.xray_file_1"/>
+                                    <p><strong>X-ray File 2: </strong></p>
+                                    <img t-if="history.xray_file_2" t-att-src="'data:image/png;base64,%s' % history.xray_file_2"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <strong>Extra-Oral Observation</strong>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Extra-Oral Observation: </strong></p>
+                                    <p class="form-control" rows="3" t-field="history.extra_oral_observation"></p>
+                                    <p><strong>Clear Aligner File 1: </strong></p>
+                                    <img t-if="history.clear_align_file_1" t-att-src="'data:image/png;base64,%s' % history.clear_align_file_1"/>
+                                    <p><strong>Clear Aligner File 2: </strong></p>
+                                    <img t-if="history.clear_align_file_2" t-att-src="'data:image/png;base64,%s' % history.clear_align_file_2"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

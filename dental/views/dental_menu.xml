@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="dental_menu_root" name="Dental" web_icon="dental,static/description/tooth.png" />
+
+    <menuitem id="dental_first_menu" name="Patients" parent="dental_menu_root"
+        action="dental_patient_action" />
+
+    <menuitem id="dental_second_menu" name="Medical Aids" parent="dental_menu_root" action="medical_aids_menu_action" />
+
+    <menuitem id="dental_third_menu" name="Medical Symptoms" parent="dental_menu_root">
+        <menuitem id="chronic_conditions_menu" name="Chronic Conditions" action="chronic_conditions_menu_action" />
+        <menuitem id="allergies_menu" name="Allergies" action="allergies_menu_action" />
+        <menuitem id="habits_substance_menu" name="Habits/Substance Abuse" action="habits_substance_menu_action" />
+    </menuitem>
+
+    <menuitem id="dental_fourth_menu" name="Medication" parent="dental_menu_root" action="dental_medication_menu_action" />
+
+    <menuitem id="dental_fifth_menu" name="Configuration" parent="dental_menu_root" />
+</odoo>
