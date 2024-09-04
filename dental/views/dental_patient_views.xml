@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dental Patient Form View -->
+    <record id="dental_patient_form_view" model="ir.ui.view">
+        <field name="name">dental.patient.form</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <form string="Form View">
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="E.g Akhil Pundir"></field>
+                        <field name="patient_image" widget="image" class="oe_avatar" />
+                    </h1>
+                    <field name="state"></field>
+                    <notebook>
+                        <page string="Medical">
+                            <group>
+
+                                <group>
+                                    <field name="chronic_ids" string="Chronic Conditions"
+                                        widget="many2many_tags" />
+                                    <field name="hospitalised_year" string="Hospitalised this year"></field>
+                                    <field name="medication_ids" widget="many2many_tags"></field>
+                                </group>
+                                <group>
+                                    <field name="allergie_ids" widget="many2many_tags"></field>
+                                    <field name="habit_ids" widget="many2many_tags"></field>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="isfemale"></field>
+                                <field name="ispregnant" class="w-50" invisible="not isfemale" />
+                                <field name="isnursing" class="w-50" invisible="not isfemale" />
+                                <field name="areyouon" invisible="not isfemale"></field>
+                                <field name="description_female" class="w-50" string="Description"
+                                    invisible="not isfemale" />
+                            </group>
+                        </page>
+                        <page name="Medical Aids">
+                            <group>
+
+                                <group>
+                                    <field name="medicalaid_id" ></field>
+                                    <field name="medical_aid_plan" />
+                                    <field name="medical_aid_no">
+                                    </field>
+                                </group>
+                                <group>
+                                    <field name="main_member_code">
+                                    </field>
+                                    <field name="dependent_code">
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="History">
+                            <group>
+
+                               
+                            </group>
+                        </page>
+                        <page name="Patient Details">
+                            <group>
+                                <!-- <group > -->
+                                    <div>NEXT OF KIN</div>
+                                <!-- </group> -->
+                                <group >
+                                    <div class="">PATIENT DETAILS</div>
+                                </group>
+                               
+                            </group>
+                            <group>
+                                <group>
+                                   
+                                </group>
+                                <group>
+                                    <field name="ocupation">
+                                    </field>
+                                    <field name="identity_no">
+                                    </field>
+                                    <field name="birth_date">
+                                    </field>
+                                    <field name="gender">
+                                    </field>
+                                    <field name="marital_status">
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="Guarntor Details">
+
+                                
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dental Patient Kanban View  -->
+
+    <record id="dental_patient_kanban_view" model="ir.ui.view">
+        <field name="name">dental.patient.view.kanban</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="false">
+                <field name="state">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click d-flex align-items-center">
+                                <div class="w-[10%]">
+                                    <field name="patient_image" widget="image"
+                                        class="img-fluid rounded-circle" />
+                                </div>
+                                <div class=" flex-grow-1">
+                                    <strong class="d-block fs-5">
+                                        <field name="name" />
+                                    </strong>
+                                </div>
+                            </div>
+
+                        </t>
+                    </templates>
+                </field>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>
