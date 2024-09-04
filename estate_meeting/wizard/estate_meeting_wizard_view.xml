@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_meeting_wizard_form" model="ir.ui.view">
+        <field name="name">estate.meeting.wizard.form</field>
+        <field name="model">estate.meeting.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Property Offers">
+                <group>
+                    <field name="agenda" />
+                    <field name="start_date" />
+                    <field name="end_date" />
+                    <field name="description" />
+                    <field name="duration" />
+                </group>
+                <footer>
+                    <button name="action_schedule_meeting" string="Schedule" type="object" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_meeting_wizard_action" model="ir.actions.act_window">
+        <field name="name">Schedule Meeting</field>
+        <field name="res_model">estate.meeting.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="estate_meeting_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

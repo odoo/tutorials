@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="dental_patients_actions" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">dental.patients</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face"> Create a patient record</p>
+        </field>
+    </record>
+
+     <record id="dental_patients_kanban" model="ir.ui.view">
+        <field name="name">dental.patients.kanban</field>
+        <field name="model">dental.patients</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div>
+                                <strong>
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+                            
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="dental_patients_form" model="ir.ui.view">
+        <field name="name">dental.patients.form</field>
+        <field name="model">dental.patients</field>
+        <field name="arch" type="xml">
+            <form >
+                <header>
+                    <field name="state" widget="statusbar" decoration-bf="1" />
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                    <notebook>
+                        <page string="Medical">
+                            <group>
+                                <group> <field name="chronic_condition_ids" widget="many2many_tags" /></group>
+                                <group> <field name="hospitalised"/> </group>
+                                <group> <field name="medication_ids" widget="many2many_tags" /></group>
+                            </group>
+                            <group>
+                                <group> <field name="allergies_ids" widget="many2many_tags" /></group>
+                                <group> <field name="habits_ids" widget="many2many_tags" /></group>
+                                <group> <field name="special_care"/> </group>
+                                <group> <field name="psychiatric_history"/> </group>
+                            </group>
+                            <group>
+                                <group> <field name="pregnant"/> </group>
+                                <group> <field name="nursing"/> </group>
+                                <group> <field name="hrt"/> </group>
+                            </group>
+                            <group> <field name="notes" placeholder="Type down your notes here..."/> </group>
+                        </page>
+                        <page string="Medical Aid">
+                        </page>
+                        <page string="History">
+                        </page>
+                        <page string="Patient Detail">
+                        </page>
+                        <page string="Guarantor Details">
+                        </page>
+                    </notebook>                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

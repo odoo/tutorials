@@ -1,0 +1,7 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+dental.access_dental_patients,access_dental_patients,dental.model_dental_patients,base.group_user,1,1,1,1
+dental.access_dental_medical_aids,access_dental_medical_aids,dental.model_dental_medical_aids,base.group_user,1,1,1,1
+dental.access_dental_chronic_conditions,access_dental_chronic_conditions,dental.model_dental_chronic_conditions,base.group_user,1,1,1,1
+dental.access_dental_medication,access_dental_medication,dental.model_dental_medication,base.group_user,1,1,1,1
+dental.access_dental_allergies,access_dental_allergies,dental.model_dental_allergies,base.group_user,1,1,1,1
+dental.access_dental_habits,access_dental_habits,dental.model_dental_habits,base.group_user,1,1,1,1

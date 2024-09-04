@@ -68,23 +68,15 @@
                         <h2>
                             <t t-esc="property.name"/>
                         </h2>
-
-                        <p class="lead">Price: <strong>INR                            <t t-esc="property.expected_price"/>
-                        </strong>
-                    </p>
-                    <p>Bedrooms: <t t-esc="property.bedrooms"/>
-                    </p>
-                    <p>Garden Area: <t t-esc="property.garden_area"/>
-                    </p>
-                    <p>Living Area: <t t-esc="property.living_area"/>
-                        sq ft</p>
-                    <p class="mt-4">
-                        <t t-esc="property.description"/>
-                    </p>
-                    <a href="/contactus" class="btn btn-lg btn-primary mt-4">Contact Us for More Information</a>
+                        <p class="lead">Price: <strong>  <t t-esc="property.expected_price"/> ₹ </strong></p>
+                        <p>Bedrooms: <t t-esc="property.bedrooms"/> </p>
+                        <p>Garden Area: <t t-esc="property.garden_area"/></p>
+                        <p>Living Area: <t t-esc="property.living_area"/> sq ft</p>
+                        <p class="mt-4"> <t t-esc="property.description"/></p>
+                        <a href="/contactus" class="btn btn-lg btn-primary mt-4">Contact Us for More Information</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </t>
-</template>
+        </t>
+    </template>
 </odoo>
