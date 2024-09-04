@@ -1,0 +1,8 @@
+<odoo>
+    <record id="dental_habits_abuses_action" model="ir.actions.act_window">
+        <field name="name">Habits/Substance abuses</field>
+        <field name="res_model">dental.habits.abuse</field>
+        <field name="view_mode">tree,form</field>
+         
+    </record>
+</odoo>

@@ -1,0 +1,145 @@
+<odoo>
+    <record id="dental_patient_action" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">dental.patient</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="context">{'search_default_available': True, 'search_default_current': True}</field>
+
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No data found!
+            </p>
+            <p>
+                Use this menu to have an overview of your Pipeline.
+            </p>
+        </field>
+    </record>
+
+    <!-- form view -->
+
+
+    <record id="action_dental_form" model="ir.ui.view">
+        <field name="name">dental.patient.form</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <form string="description">
+                <header>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,today,done,invoice" />
+                </header>
+                <sheet>
+                    <div>
+                        <h1>
+                            <field name="name" placeholder="Name" />
+                        </h1>
+
+                    </div>
+                    <field name="patient_image" widget="image" class="oe_avatar" />
+
+                    <group>
+                        <field name="state" />
+                        <field name="history_ids" />
+                        
+
+                    </group>
+                    <notebook>
+                        <page string="Medical">
+                            <group>
+                                <group>
+                                    <field name="gpname" />
+                                    <field name="chronic_ids" widget="many2many_tags" />
+                                    <field name="hospitalised_year" />
+                                    <field name="medication_ids" widget="many2many_tags" />
+                                    <field name="gender" />
+                                    <field name="ispregnant" />
+                                    <field name="isnursing" />
+                                    <field name="areyouon" />
+                                </group>
+                                <group>
+                                    <field name="allergies_ids" widget="many2many_tags" />
+                                    <field name="habits_abuse_ids" widget="many2many_tags" />
+                                    <field name="under_speciality" />
+                                    
+                                </group>
+                            </group>
+                            <field name="notes" placeholder="Type down your notes here"/>
+
+
+                        </page>
+
+                        <page name="Medical Aid">
+                           <group>
+                            <group>
+                                <field name="medical_aids_ids"/>
+                                <field name="medical_aid_plan"/>
+                                <field name="medical_aid_no"/>
+                            </group>
+                            <group>
+                                <field name="main_member_code"/>
+                                <field name="dependent_code"/>
+                            </group>
+                           </group>
+                        </page>
+
+                        <page string="History">
+
+
+                        </page>
+                        <page string="Patient Details">
+
+
+                        </page>
+                        <page string="Guarantor Details">
+
+
+                        </page>
+                    </notebook>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
+            </form>
+
+        </field>
+    </record>
+
+    <!-- kanban view -->
+
+    <record id="action_dental_patient_kanban_view" model="ir.ui.view">
+        <field name="name">dental.patient.action.kanban.view</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="false">
+                <field name="state" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="container">
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="oe_kanban_global_click">
+                                        <strong>
+                                            <field name="name" />
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="w-52 h-52">
+                                        <field name="patient_image" widget="image" class="oe_avatar" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,8 @@
+<odoo>
+    <record id="dental_allergies_action" model="ir.actions.act_window">
+        <field name="name">Allergies</field>
+        <field name="res_model">dental.allergies</field>
+        <field name="view_mode">tree,form</field>
+         
+    </record>
+</odoo>

@@ -1,0 +1,8 @@
+<odoo>
+    <record id="dental_medical_aids_action" model="ir.actions.act_window">
+        <field name="name">Medical aids</field>
+        <field name="res_model">dental.medical.aids</field>
+        <field name="view_mode">tree,form</field>
+         
+    </record>
+</odoo>

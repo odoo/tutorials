@@ -1,0 +1,8 @@
+<odoo>
+    <record id="dental_chronic_condition_action" model="ir.actions.act_window">
+        <field name="name">Chronic Conditions</field>
+        <field name="res_model">dental.chronic.condition</field>
+        <field name="view_mode">tree,form</field>
+         
+    </record>
+</odoo>
