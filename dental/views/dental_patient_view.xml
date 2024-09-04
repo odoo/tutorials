@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_dental_patient_tree" model="ir.ui.view">
+        <field name="name">dental.patient.tree</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_dental_patient_form" model="ir.ui.view">
+        <field name="name">dental.patient.form</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <form string="Patient">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dental_patient_action" model="ir.actions.act_window">
+        <field name="name">Dental</field>
+        <field name="res_model">dental.patient</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add new patients
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_dental_medical_aids_tree" model="ir.ui.view">
+        <field name="name">dental.medical.aids.tree</field>
+        <field name="model">dental.medical.aids</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="phone" />
+                <field name="email" />
+                <field name="company_id" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_dental_medical_aids_form" model="ir.ui.view">
+        <field name="name">dental.medical.aids.form</field>
+        <field name="model">dental.medical.aids</field>
+        <field name="arch" type="xml">
+            <form string="Medical aids">
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" />
+                            <field name="phone" />
+                            <field name="email" />
+                        </group>
+                        <group>
+                            <field name="company_id" />
+                        </group>
+                    </group>
+                    <div>
+                        <field name="notes" placeholder="Type down your notes here .." />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dental_medical_aids_action" model="ir.actions.act_window">
+        <field name="name">Medical Aids</field>
+        <field name="res_model">dental.medical.aids</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add new medical aids
+            </p>
+        </field>
+    </record>
+</odoo>

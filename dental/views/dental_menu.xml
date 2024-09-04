@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="dental_menu_root" name="Dental">
+        <menuitem id="dental_first_menu" name="Patients" action="dental_patient_action"/>
+        <menuitem id="medical_aids_menu" name="Medical Aids" action="dental_medical_aids_action"/>
+        <menuitem id="dental_second_menu" name="Medical Symptoms">
+            <menuitem id="chronic_condition_menu" name="Chronic conditions" action="chronic_condition_action"/>
+            <menuitem id="allergy_menu" name="Allergies" action="allergy_action"/>
+            <menuitem id="habits_menu" name="Habit/Substance Abuse" action="habit_action"/>
+        </menuitem>
+        <menuitem id="dental_medication_menu" name="Medications" action="medication_action"/>
+    </menuitem>
+</odoo>
