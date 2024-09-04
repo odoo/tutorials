@@ -1,0 +1,99 @@
+<odoo>
+    <!-- Action  -->
+    <record id="dental_patient_action" model="ir.actions.act_window">
+        <field name="name">Patient</field>
+        <field name="res_model">dental.patient</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Dental Patient
+            </p>
+        </field>
+    </record>
+
+    <record id="dental_patient_tree_view" model="ir.ui.view">
+        <field name="name">dental.patient.tree</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <tree string="Channel">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="dental_patient_form" model="ir.ui.view">
+        <field name="name">dental.patient.form</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <form string="Dental Patient">
+                <sheet>
+                    <notebook>
+                        <page string="Medical History">
+                            <group>
+                                <group>
+                                    <field name="gp_id" />
+                                    <field name="gp_phone" readonly="1" />
+                                    <field name="chronic_conditions" widget="many2many_tags" />
+                                    <field name="hospitalized_this_year" />
+                                    <field name="medication" widget="many2many_tags" />
+                                </group>
+                                <group>
+                                    <field name="allergies" />
+                                    <field name="habits_substance_abuse" />
+                                    <field name="under_specialist_care" />
+                                    <field name="psychiatric_history" />
+                                </group>
+                            </group>
+                            <group string="Female Specific Information">
+                                <group>
+                                    <field name="is_pregnant" />
+                                    <field name="is_nursing" />
+                                    <field name="hormone_treatment" />
+                                </group>
+                            </group>
+                            <div>
+                                <field name="notes" placeholder="Type down your notes here" />
+                            </div>
+                        </page>
+                        <page string="Medical Aid">
+                            <group>
+                                <group>
+                                    <field name="medical_aid" />
+                                    <field name="medical_aid_plan" />
+                                    <field name="medical_aid_number" />
+                                </group>
+                                <group>
+                                    <field name="main_member_code" />
+                                    <field name="dependent_code" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dental_patient_kanban" model="ir.ui.view">
+        <field name="name">dental.patient.kanban</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="dental_patient_search" model="ir.ui.view">
+        <field name="name">dental.patient.search</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <search string="Dental Patient">
+                <field name="name" />
+            </search>
+        </field>
+    </record>
+</odoo>

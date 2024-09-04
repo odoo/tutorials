@@ -1,0 +1,34 @@
+<odoo>
+    <!-- Action  -->
+    <record id="dental_habits_action" model="ir.actions.act_window">
+        <field name="name">Habits</field>
+        <field name="res_model">dental.habits</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="dental_habits_tree_view" model="ir.ui.view">
+        <field name="name">dental.habits.tree</field>
+        <field name="model">dental.habits</field>
+        <field name="arch" type="xml">
+            <tree string="Channel">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="dental_habits_form" model="ir.ui.view">
+        <field name="name">dental.habits.form</field>
+        <field name="model">dental.habits</field>
+        <field name="arch" type="xml">
+            <form string="Dental Habits">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

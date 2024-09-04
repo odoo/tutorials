@@ -1,0 +1,38 @@
+<odoo>
+    <!-- Action  -->
+    <record id="dental_chronic_condition_action" model="ir.actions.act_window">
+        <field name="name">Chronic Conditions</field>
+        <field name="res_model">dental.chronic.conditions</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="dental_chronic_conditions_tree_view" model="ir.ui.view">
+        <field name="name">dental.chronic.conditions.tree</field>
+        <field name="model">dental.chronic.conditions</field>
+        <field name="arch" type="xml">
+            <tree string="Channel">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="dental_chronic_conditions_form" model="ir.ui.view">
+        <field name="name">dental.chronic.conditions.form</field>
+        <field name="model">dental.chronic.conditions</field>
+        <field name="arch" type="xml">
+            <form string="Dental Chronic Conditions">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                        </group>
+                    </group>
+                    <div>
+                        <field name="parent_id" />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

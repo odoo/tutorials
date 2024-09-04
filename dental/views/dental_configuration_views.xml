@@ -1,0 +1,33 @@
+<odoo>
+    <record id="dental_configuration_view" model="ir.actions.act_window">
+        <field name="name">Configuration</field>
+        <field name="res_model">dental.configuration</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="dental_configuration_tree_view" model="ir.ui.view">
+        <field name="name">dental.configuration.tree</field>
+        <field name="model">dental.configuration</field>
+        <field name="arch" type="xml">
+            <tree string="Channel">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="dental_configuration_form" model="ir.ui.view">
+        <field name="name">dental.configuration.form</field>
+        <field name="model">dental.configuration</field>
+        <field name="arch" type="xml">
+            <form string="Dental Configuration">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

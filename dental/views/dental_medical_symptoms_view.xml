@@ -1,0 +1,44 @@
+<odoo>
+    <!-- Action  -->
+    <record id="dental_medical_symptoms_action" model="ir.actions.act_window">
+        <field name="name">Medical Symptoms</field>
+        <field name="res_model">dental.medical.symptoms</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="dental_medical_symptoms_tree_view" model="ir.ui.view">
+        <field name="name">dental.medical.symptoms.tree</field>
+        <field name="model">dental.medical.symptoms</field>
+        <field name="arch" type="xml">
+            <tree string="Channel">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="dental_medical_symptoms_form" model="ir.ui.view">
+        <field name="name">dental.medical.symptoms.form</field>
+        <field name="model">dental.medical.symptoms</field>
+        <field name="arch" type="xml">
+            <form string="Dental Medical Symptoms">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dental_medical_symptoms_search" model="ir.ui.view">
+        <field name="name">dental.medical.symptoms.search</field>
+        <field name="model">dental.medical.symptoms</field>
+        <field name="arch" type="xml">
+            <search string="Dental Medical Symptoms">
+                <field name="name" />
+            </search>
+        </field>
+    </record>
+</odoo>
