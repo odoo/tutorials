@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_patient_history_tree" model="ir.ui.view">
+        <field name="name">dental.medical.history.tree</field>
+        <field name="model">dental.medical.history</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date" widget="date"/>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="patient_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_patient_history_form" model="ir.ui.view">
+        <field name="name">dental.medical.history.form</field>
+        <field name="model">dental.medical.history</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="patient_id" required="1"/>
+                            <field name="responsible_id"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="date" required="1"/>
+                            <field name="did_not_attend"/>
+                            <field name="company_id" required="1" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Teeth History">
+                            <field name="main_complaint"/>
+                            <field name="teeth_history"/>
+                        </group>
+                        <group string="X-rays">
+                            <field name="xray_file_1" widget="image"/>
+                            <field name="xray_file_2" widget="image"/>
+                        </group>                        
+                    </group>
+                    <group>
+                        <group string="Additional Information">
+                            <field name="habits"/>
+                            <field name="extra_oral_observation"/>
+                        </group>
+                        <group string="Clear Aligner Files">
+                            <field name="clear_align_file_1" widget="binary" filename="clear_align_filename_1"/>
+                            <field name="clear_align_filename_1" invisible="1"/>
+                            <field name="clear_align_file_2" widget="binary" filename="clear_align_filename_2"/>
+                            <field name="clear_align_filename_2" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Treatment Notes">
+                        <field name="treatment_notes" nolabel="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!-- Action -->
+    <record id="patient_history_action" model="ir.actions.act_window">
+        <field name="name">Patient History</field>
+        <field name="res_model">dental.medical.history</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

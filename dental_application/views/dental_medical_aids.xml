@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_dental_medical_aids" model="ir.actions.act_window">
+        <field name="name">Medical Aids</field>
+        <field name="res_model">dental.medical.aids</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="medicalaids_view_form" model="ir.ui.view">
+        <field name="name">dental.medical.aids.form</field>
+        <field name="model">dental.medical.aids</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <field name='image' class='oe_avatar' widget='image'></field>
+                        <h1>
+                            <field name="name" placeholder="e.g. Medihelp"/>
+                        </h1>
+                <group>
+                    <group>
+                        <field name="contact"/>
+                        <field name="phone"/>
+                        <field name="email"/>
+                    </group>  
+                    <group>
+                        <field name="company_id"/>
+                    </group>
+                </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="medicalaids_tree_view" model="ir.ui.view">
+        <field name="name">dental.medical.aids.tree</field>
+        <field name="model">dental.medical.aids</field>
+        <field name="arch" type="xml">
+            <tree string="Dental Medical Aids">
+                <field name="name"/>
+                <field name="contact"/>
+                <field name="phone"/>
+                <field name="email"/>
+            </tree>
+        </field>
+    </record>
+    
+</odoo>
