@@ -30,11 +30,13 @@
 		<field name="model">estate.property</field>
 		<field name="arch" type="xml">
 			<form string="Estate Properties">
-				<header>
-					<button name="action_cancel" type="object" invisible="state in ('cancelled', 'sold')" string="Cancel" class="btn btn-secondary" />
-					<button name="action_sold" type="object" invisible="state in ('cancelled', 'sold')" string="Sold" class="btn btn-primary" />
-					<field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold" />
-				</header>
+				<div class="inheritid1">
+					<header>
+						<button name="action_cancel" type="object" invisible="state in ('cancelled', 'sold')" string="Cancel" class="btn btn-secondary" />
+						<button name="action_sold" type="object" invisible="state in ('cancelled', 'sold')" string="Sold" class="btn btn-primary" />
+						<field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold" />
+					</header>
+				</div>
 				<sheet>
 					<header>
 						<h1>

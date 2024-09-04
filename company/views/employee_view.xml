@@ -1,0 +1,20 @@
+<odoo>
+    <record id="employee_action" model="ir.actions.act_window">
+		<field name="name">Employee</field>
+		<field name="res_model">add.employee</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+    <record id="view_employee_management_tree" model="ir.ui.view">
+		<field name="name">employee.management.tree</field>
+		<field name="model">add.employee</field>
+		<field name="arch" type="xml">
+			<tree string="Employee Management">
+				<field name="name" />
+				<field name="email" />
+				<field name="address" />
+				<field name="department" />
+			</tree>
+		</field>
+	</record>
+</odoo>

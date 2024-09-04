@@ -1,0 +1,41 @@
+<odoo>
+    <record id="allergies_action" model="ir.actions.act_window">
+            <field name="name">Allergies</field>
+            <field name="res_model">symptoms.allergies</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_state': True, 'search_default_current': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a module
+                </p>
+                <p>
+                    Leads are the qualification step before the creation of an opportunity.
+                </p>
+            </field>
+    </record>
+
+
+    <record id="view_allergies_tree" model="ir.ui.view">
+		<field name="name">symptoms.allergies.tree</field>
+		<field name="model">symptoms.allergies</field>
+		<field name="arch" type="xml">
+			<tree string="Allergies">
+                <field name="sequence" widget="handle" />
+				<field name="name" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="view_allergies_form" model="ir.ui.view">
+		<field name="name">symptoms.allergies.form</field>
+		<field name="model">symptoms.allergies</field>
+		<field name="arch" type="xml">
+			<form string="Allergies">
+                <h1>
+                    <field name="name" />
+                </h1>
+			</form>
+		</field>
+	</record>
+
+</odoo>

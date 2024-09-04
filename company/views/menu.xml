@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+	<menuitem id="company_menu_root" name="Company">
+		<menuitem id="first_level_menu" name="Management">
+			<menuitem id="company_menu_action" action="company.employee_action" />
+		</menuitem>
+	</menuitem>
+</odoo>

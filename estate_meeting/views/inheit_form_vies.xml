@@ -1,0 +1,21 @@
+<odoo>
+     <record id="view_property_form_inherit" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.view_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(estate_meeting.action_schedule_meeting_wizard)d" string="Schedule Meeting" type="action" class="btn-primary"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_schedule_meeting_wizard" model="ir.actions.act_window">
+        <field name="name">estate.meeting.wizard.name</field>
+        <field name="res_model">estate.meeting.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>
