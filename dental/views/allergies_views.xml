@@ -1,0 +1,13 @@
+<odoo>
+    <record id="detal_allergies_action" model="ir.actions.act_window">
+        <field name="name">Allergies</field>
+        <field name="res_model">dental.allergies</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_state': True, 'search_default_current': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Property product
+            </p>
+        </field>
+    </record>
+</odoo>

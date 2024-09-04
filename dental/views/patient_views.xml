@@ -1,0 +1,136 @@
+<odoo>
+    <record id="dental_patients_action" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">dental.patients</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'search_default_state': True, 'search_default_current': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Property product
+            </p>
+        </field>
+    </record>
+
+    <record id="dental_patients_tree" model="ir.ui.view">
+        <field name="name">Patients Tree</field>
+        <field name="model">dental.patients</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state in ('today', 'To do today') or state in ('done', 'Done')" decoration-bf="state in ('new', 'New')">
+                <field name="name" string="Title"/>
+                <field name="hospitalised"/>
+                <field name="under_specialist_care"/>
+                <field name="state" column_invisible='1'/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="dental_patients_form" model="ir.ui.view">
+        <field name="name">Patient</field>
+        <field name="model">dental.patients</field>
+        <field name="arch" type="xml">
+            <form string="description">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="new,today,done,invoice" invisible=""/>
+                </header>
+                <sheet>
+                    <div>
+                        <h1>
+                            <field name="name"/>
+                            <field name="patient_image" widget="image" class="oe_avatar" />
+                        </h1>
+                        <field name="state" />
+                        <group>
+                            <field name = "history_ids" string="History"/>
+                        </group>
+                    </div>
+                    <notebook>
+                        <page string="Medical">
+                            <div style="display:flex; felx-direction:row;">
+                                <group>
+
+                                    <field name="gp_name"/>
+                                    <field name="hospitalised"/>
+                                    <field name="chronic_condition" widget="many2many_tags"/>
+                                    <field name="medication" widget="many2many_tags"/>
+                                </group>
+                                <group>
+                                    <field name="allergy_ids" widget="many2many_tags"/>
+                                    <field name="habits" widget="many2many_tags"/>
+                                    <field name="under_specialist_care"/>
+                                    <field name="psychiatric_history"/>
+                                </group>
+
+                            </div>
+                            <group>
+                                <field name = "female"/>
+                                <field name = "pregnant" invisible="female != 1"/>
+                                <field name = "nursing" invisible="female != 1"/>
+                                <field name = "neither" invisible="female != 1"/>
+                            </group>
+                            <field name = "note" placeholder="Type your note here" string=" "/>
+                        </page>
+                        <page string="Medical Aid">
+                            <group>
+
+                            </group>
+                        </page>
+                        <page string="History">
+
+                            <field name = "history_ids" string="History"/>
+
+                        </page>
+                        <page string="Patient Details">
+                            <group>
+
+                            </group>
+                        </page>
+
+                        <page string="Guarantor Detail">
+                            <group>
+
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="dental_patients_kanban" model="ir.ui.view">
+        <field name="name">dental.patients.kanban</field>
+        <field name="model">dental.patients</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="true">
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <field name="patient_image" class="oe_avatar" widget="image"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <group>
+                                                <field name="name"/>
+                                            </group>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+
+        </field>
+    </record>
+</odoo>

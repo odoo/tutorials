@@ -1,0 +1,20 @@
+{
+    "name": "dental",
+    "version": "0.1",
+    "depends": ["base", "mail"],
+    "description": "Dental Application",
+    "data": [
+        "security/ir.model.access.csv",
+        "views/history_views.xml",
+        "views/medication_views.xml",
+        "views/habits_views.xml",
+        "views/allergies_views.xml",
+        "views/chronic_condition_views.xml",
+        "views/medical_aids_views.xml",
+        "views/patient_views.xml",
+        "views/menuitem.xml",
+    ],
+    "installable": True,
+    "application": True,
+    "license": "LGPL-3",
+}
