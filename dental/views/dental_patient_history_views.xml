@@ -1,0 +1,156 @@
+<odoo>
+    <record id="view_dental_patient_history_form" model="ir.ui.view">
+        <field name="name">Dental Patient History Form</field>
+        <field name="model">dental.patient.history</field>
+        <field name="arch" type="xml">
+            <form string="Dental Consultation">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="patient_id" required="1" />
+                            <field name="date" />
+                            <field name="did_not_attend" widget="checkbox" />
+                        </group>
+                        <group>
+                            <field name="company_id" />
+                        </group>
+                        <group string="TEETH HISTORY">
+                            <field name="main_complaint" />
+                            <field name="xray_file_1" widget="image" />
+                            <field name="habits" />
+                            <field name="clear_aligner_file_1" />
+                        </group>
+                        <group string="ADDITIONAL INFORMATION">
+                            <field name="history" />
+                            <field name="xray_file_2" widget="image" />
+                            <field name="extra_oral_observation" />
+                            <field name="clear_aligner_file_2" />
+                        </group>
+                        <group string="TOOTH CHART">
+                            <group string="Upper">
+                                <strong>
+                                    <div>
+                                        <div class="pt-3">18</div>
+                                        <div class="pt-3">17</div>
+                                        <div class="pt-3">16</div>
+                                        <div class="pt-3">15</div>
+                                        <div class="pt-3">14</div>
+                                        <div class="pt-3">13</div>
+                                        <div class="pt-3">12</div>
+                                        <div class="pt-3">11</div>
+                                        <div class="pt-3">28</div>
+                                        <div class="pt-3">27</div>
+                                        <div class="pt-3">26</div>
+                                        <div class="pt-3">25</div>
+                                        <div class="pt-3">24</div>
+                                        <div class="pt-3">23</div>
+                                        <div class="pt-3">22</div>
+                                        <div class="pt-3">21</div>
+                                    </div>
+                                </strong>
+                            </group>
+                            <group string="Upper">
+                                <field name="upper_18_staining" />
+                                <field name="upper_17_staining" />
+                                <field name="upper_16_staining" />
+                                <field name="upper_15_staining" />
+                                <field name="upper_14_staining" />
+                                <field name="upper_13_staining" />
+                                <field name="upper_12_staining" />
+                                <field name="upper_11_staining" />
+                                <field name="upper_28_staining" />
+                                <field name="upper_27_staining" />
+                                <field name="upper_26_staining" />
+                                <field name="upper_25_staining" />
+                                <field name="upper_24_staining" />
+                                <field name="upper_23_staining" />
+                                <field name="upper_22_staining" />
+                                <field name="upper_21_staining" />
+                            </group>
+                            <group string="Lower">
+                                <strong>
+                                    <div>
+                                        <div class="pt-3">48</div>
+                                        <div class="pt-3">47</div>
+                                        <div class="pt-3">46</div>
+                                        <div class="pt-3">45</div>
+                                        <div class="pt-3">44</div>
+                                        <div class="pt-3">43</div>
+                                        <div class="pt-3">42</div>
+                                        <div class="pt-3">41</div>
+                                        <div class="pt-3">38</div>
+                                        <div class="pt-3">37</div>
+                                        <div class="pt-3">36</div>
+                                        <div class="pt-3">35</div>
+                                        <div class="pt-3">34</div>
+                                        <div class="pt-3">33</div>
+                                        <div class="pt-3">32</div>
+                                        <div class="pt-3">31</div>
+                                    </div>
+                                </strong>
+                            </group>
+                            <group name="lower" string="Lower">
+                                <field name="lower_48_staining" />
+                                <field name="lower_47_staining" />
+                                <field name="lower_46_staining" />
+                                <field name="lower_45_staining" />
+                                <field name="lower_44_staining" />
+                                <field name="lower_43_staining" />
+                                <field name="lower_42_staining" />
+                                <field name="lower_41_staining" />
+                                <field name="lower_38_staining" />
+                                <field name="lower_37_staining" />
+                                <field name="lower_36_staining" />
+                                <field name="lower_35_staining" />
+                                <field name="lower_34_staining" />
+                                <field name="lower_33_staining" />
+                                <field name="lower_32_staining" />
+                                <field name="lower_31_staining" />
+                            </group>
+                        </group>
+                    </group>
+
+                    <group string="TREATMENT NOTES">
+                        <field name="treatment_notes" widget="text" />
+                    </group>
+
+                    <group string="BILLING">
+                        <field name="consultation_type" widget="selection" />
+                        <field name="call_out" widget="boolean" />
+                        <field name="scale_and_polish" widget="boolean" />
+                        <field name="fluoride" widget="boolean" />
+                        <field name="filling_description" widget="text" />
+                        <field name="aligner_delivery" widget="boolean" />
+                        <field name="whitening" widget="boolean" />
+                        <field name="fissure_sealant_qty" widget="float" />
+                        <field name="attachments_removed" widget="boolean" />
+                        <field name="aligner_followup_scan" widget="boolean" />
+                        <field name="other_notes" widget="text" />
+                    </group>
+
+                    <div>
+                        <field name="notes" placeholder="Type down your notes here" />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_dental_patient_history_tree" model="ir.ui.view">
+        <field name="name">dental.patient.history.tree</field>
+        <field name="model">dental.patient.history</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date" widget="date" />
+                <field name="name" />
+                <field name="description" />
+                <field name="tags" />
+            </tree>
+        </field>
+    </record>
+    <record id="dental_patient_history_menu_action" model="ir.actions.act_window">
+        <field name="name">Dental Patient History</field>
+        <field name="res_model">dental.patient.history</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

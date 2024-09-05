@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="portal_my_dental" name="My Dental">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>My Dental Records</h1>
+                <div class="row">
+                    <t t-foreach="patients" t-as="patient">
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><t t-esc="patient.name"/></h5>
+                                    <p class="card-text">Guarantor: <t t-esc="patient.guarantor_id.name"/></p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -3,11 +3,36 @@
     <record id="dental_patient_action" model="ir.actions.act_window">
         <field name="name">Patients</field>
         <field name="res_model">dental.patient</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Register New Patients
             </p>
+        </field>
+    </record>
+    <record id="view_dental_patient_kanban" model="ir.ui.view">
+        <field name="name">dental.patient.kanban</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="state" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name" />
+                                </strong>
+                                <div class="o_kanban_image">
+                                    <img
+                                        t-attf-src="#{kanban_image('dental.patient', 'image', record.id.raw_value)}"
+                                        role="img" t-att-alt="record.id.value" />
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
@@ -28,35 +53,49 @@
             <form string="Patients">
                 <header>
                     <field name="state" widget="statusbar" />
+                    <button name="action_book_appointment" string="Book Appointment" type="object" class="btn btn-primary"/>
                 </header>
-                <group>
-                    <field name="name" />
-                </group>
+
                 <sheet>
+
+
+                    <field name="name" />
+
+                    <field name="image_1920" widget="image" class="oe_avatar" />
                     <notebook>
+                        <!-- Existing pages here -->
                         <page string="Medical History">
                             <group>
                                 <group>
-                                    <field name="gp_id" />
-                                    <field name="gp_phone" readonly="1" />
-                                    <field name="chronic_conditions" widget="many2many_tags" />
-                                    <field name="hospitalized_this_year" />
-                                    <field name="medication" widget="many2many_tags" />
+                                    <field name="gp_id" string="GP's Name" />
+                                    <field name="gp_phone" string="GP's Phone" readonly="1" />
+                                    <field name="chronic_conditions" widget="many2many_tags"
+                                        string="Chronic Conditions" />
+                                    <field name="hospitalized_this_year"
+                                        string="Hospitalized This Year?" />
+                                    <field name="medication" widget="many2many_tags"
+                                        string="Medication" />
                                 </group>
                                 <group>
-                                    <field name="allergies" />
-                                    <field name="habits_substance_abuse" />
-                                    <field name="under_specialist_care" />
-                                    <field name="psychiatric_history" />
+                                    <field name="allergies" string="Allergies" />
+                                    <field name="habits_substance_abuse"
+                                        string="Habits/Substance Abuse" />
+                                    <field name="under_specialist_care"
+                                        string="Under Specialist Care" />
+                                    <field name="psychiatric_history" string="Psychiatric History" />
                                 </group>
                             </group>
                             <group string="Female Specific Information">
                                 <group>
-                                    <field name="is_pregnant" />
-                                    <field name="is_nursing" />
-                                    <field name="hormone_treatment" />
+                                    <field name="is_pregnant" string="Are you pregnant?" />
+                                    <field name="is_nursing" string="Are you nursing?" />
+                                    <field name="hormone_treatment" string="Are you on..." />
                                 </group>
                             </group>
+                        </page>
+                        <!-- Add the history page -->
+                        <page string="Patient History">
+                            <field name="patient_history_ids" />
                         </page>
                         <page string="Medical Aid Information">
                             <group>
@@ -74,8 +113,47 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Patient Details">
+                            <group string="Next of Kin">
+                                <group>
+                                    <field name="emergency_contact_id" string="Emergency Contact" />
+                                    <field name="mobile" string="Mobile" readonly="1" />
+                                </group>
+                            </group>
+                            <group string="Patient Details">
+                                <group>
+                                    <field name="company_id" string="Company/School" />
+                                    <field name="occupation" string="Occupation/Grade" />
+                                    <field name="identity_number" string="Identity Number" />
+                                    <field name="date_of_birth" string="Date of Birth" />
+                                </group>
+                                <group>
+                                    <field name="gender" widget="radio" />
+                                    <field name="marital_status" />
+                                </group>
+                            </group>
+                            <group string="Consent Form">
+                                <group>
+                                    <field name="consent_signature" widget="signature" />
+                                    <field name="consent_date" string="Consent Date" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Guarantor">
+                            <group>
+                                <field name="guarantor_id" string="Guarantor" />
+                                <field name="guarantor_mobile" string="Guarantor Mobile Phone" />
+                                <field name="guarantor_phone" string="Phone" />
+                                <field name="guarantor_email" string="Email" />
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="activity_ids" widget="chatter" />
+                    <field name="message_ids" widget="mail_thread" />
+                    <field name="message_follower_ids" widget="mail_followers" />
+                </div>
             </form>
         </field>
     </record>

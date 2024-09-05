@@ -14,8 +14,8 @@ class MedicalAids(models.Model):
         default='new'
     )
     contact = fields.Many2one('res.partner', string='Contact', required=True)
-    phone = fields.Char(related='contact.phone', string='Phone', required=True)
-    email = fields.Char(related='contact.email', string='Email', required=True)
-    note = fields.Text(string='Notes')
+    phone = fields.Char(related='contact.phone', string='Phone', readonly=True)
+    email = fields.Char(related='contact.email', string='Email', readonly=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
+    note = fields.Text(string='Notes')
     image = fields.Binary(string='Image')

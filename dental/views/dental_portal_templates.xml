@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherit the original template -->
+    <template id="portal_my_home_extension" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[@class='o_portal_my_home']/div[@class='o_portal_docs row g-2']" position="inside">
+            <!-- Add new Dental box -->
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/dental/static/src/image/dental.png'"/> <!-- Update the path to your dental icon -->
+                <t t-set="title">Dental</t>
+                <t t-set="text">Manage your dental appointments and records</t>
+                <t t-set="url" t-value="'/my/dental'"/>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </xpath>
+    </template>
+</odoo>

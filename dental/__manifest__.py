@@ -8,14 +8,17 @@
     'sequence': 1,
     'summary': 'Dental management',
     'depends': [
-        'base', 'website'
+        'base', 'website', 'portal', 'account'
     ],
     'data': [
         'security/ir.model.access.csv',
+        'views/dental_portal_templates.xml',
+        'views/portal_my_dental.xml',
         'views/dental_views.xml',
         'views/medical_aids_views.xml',
         'views/medical_symptoms_views.xml',
         'views/medication_views.xml',
+        'views/dental_patient_history_views.xml',
         'views/dental_menu.xml',
     ],
     'demo': [
