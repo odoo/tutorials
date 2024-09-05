@@ -5,6 +5,7 @@
     "description": "Dental Application",
     "data": [
         "security/ir.model.access.csv",
+        "views/tag_views.xml",
         "views/history_views.xml",
         "views/medication_views.xml",
         "views/habits_views.xml",

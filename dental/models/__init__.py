@@ -5,3 +5,4 @@ from . import dental_allergies
 from . import dental_habits
 from . import dental_medication
 from . import dental_history
+from . import dental_tags

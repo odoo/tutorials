@@ -5,13 +5,14 @@ class MedicalAids(models.Model):
 
     _name = "dental.medical.aid"
     _description = "Medical Aid Records"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
-
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _order = 'sequence DESC'
     name = fields.Char("Name")
+    image = fields.Image("Medical Aid")
     contact = fields.Char("Contact")
     phone = fields.Char("Phone")
     email = fields.Char("Email")
-    company = fields.Char("Company")
+    company_id = fields.Many2one("res.company")
     notes = fields.Char("Notes")
     state = fields.Selection(
         required=True,
@@ -23,3 +24,4 @@ class MedicalAids(models.Model):
             ("done", "Done"),
         ],
     )
+    sequence = fields.Integer()

@@ -12,6 +12,7 @@
         <menuitem id="dental_patients_level_four_menu" name="Medication" action="detal_medication_action">
         </menuitem>
         <menuitem id="dental_patients_level_five_menu" name="Configuration">
+            <menuitem id="dental_patients_model_tags" action="detal_tags_action"/>
         </menuitem>
     </menuitem>
 </odoo>

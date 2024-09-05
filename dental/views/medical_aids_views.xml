@@ -23,8 +23,25 @@
                     <div>
                         <h1>
                             <field name="name"/>
+                            <field name="image" widget="image" class="oe_avatar" />
                         </h1>
+                        <field name="state" />
+                        <group style="display:flex; felx-direction:row;">
+                            <group>
+                                <field name="contact"/>
+                                <field name="phone"/>
+                                <field name="email"/>
+                            </group>
+                            <div>
+                                <group >
+                                    <field name="company_id" string="Company or School"/>
+
+                                </group>
+                            </div>
+                        </group>
                     </div>
+                    <field name = "notes" placeholder="Type your note here" string=" "/>
+
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" />

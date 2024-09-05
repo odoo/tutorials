@@ -36,17 +36,19 @@ class Patients(models.Model):
         default="neither",
         selection=[
             ("neither", "Neither"),
-            ("Hormone", "Hormone Replacement Treatment"),
+            ("hormone", "Hormone Replacement Treatment"),
             ("female", "Birth Control"),
         ],
         string="Are you on...",
     )
+    medical_aid = fields.Many2one("dental.medical.aid")
     medical_aid_plan = fields.Char()
+    medical_aid_number = fields.Char()
     main_member_code = fields.Integer()
     dependent_code = fields.Char()
-    ocupation_grade = fields.Char()
-    identity_no = fields.Char()
-    birth_data = fields.Date()
+    ocupation_grade = fields.Char(string='Ocupation or Grade')
+    identity_no = fields.Char(string='Identity number')
+    birth_data = fields.Date(strong='Date of Birth')
     gender = fields.Selection(
         selection=[
             ("male", "Male"),
@@ -65,3 +67,13 @@ class Patients(models.Model):
     note = fields.Text()
     gp_name = fields.Many2one("res.users", string="GP's Name")
     history_ids = fields.One2many("dental.history", "patient")
+    emergency_contact = fields.Many2one("res.users")
+    mobile = fields.Char(related="emergency_contact.partner_id.phone")
+    company_id = fields.Many2one('res.company')
+    signature = fields.Image('Consent Signature', help='Signature', copy=False)
+    guaranator = fields.Many2one('res.users')
+    guaranator_mobile = fields.Char(related="guaranator.partner_id.mobile", string='Guaranator Mobile Phone')
+    guaranator_phone = fields.Char(related="guaranator.partner_id.phone", string='Phone')
+    guaranator_email = fields.Char(related="guaranator.partner_id.email", string='Email')
+    tag_ids = fields.Many2many('dental.tags', string='Tags')
+    guaranter_company = fields.Many2one('res.company', string='Company')

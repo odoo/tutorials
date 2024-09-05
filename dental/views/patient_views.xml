@@ -46,7 +46,7 @@
                     </div>
                     <notebook>
                         <page string="Medical">
-                            <div style="display:flex; felx-direction:row;">
+                            <div style="display:flex; felx-direction:row;justify-content: space-between;">
                                 <group>
 
                                     <field name="gp_name"/>
@@ -68,30 +68,70 @@
                                 <field name = "nursing" invisible="female != 1"/>
                                 <field name = "neither" invisible="female != 1"/>
                             </group>
-                            <field name = "note" placeholder="Type your note here" string=" "/>
                         </page>
                         <page string="Medical Aid">
-                            <group>
+                            <div style="display:flex; felx-direction:row;justify-content: space-between;">
+                                <group>
+                                    <field name="medical_aid"/>
+                                    <field name="medical_aid_plan"/>
+                                    <field name="medical_aid_number"/>
+                                </group>
+                                <div>
 
-                            </group>
+                                    <group>
+                                        <field name="main_member_code"/>
+                                        <field name="dependent_code"/>
+                                    </group>
+                                </div>
+                            </div>
                         </page>
                         <page string="History">
-
                             <field name = "history_ids" string="History"/>
-
                         </page>
                         <page string="Patient Details">
-                            <group>
+                            <group style="display:flex; felx-direction:row;">
+                                <group string="NEXT OF KIN">
+                                    <field name="emergency_contact"/>
+                                    <field name="mobile" widget="phone"/>
+                                    <group string="CONSENT FORM">
+                                        <field name="signature" string="Consent Signature"/>
+                                    </group>
+                                </group>
+                                <div>
 
+                                    <group string="PATIENT DETAILS">
+                                        <field name="company_id" string="Company or School"/>
+                                        <field name="ocupation_grade"/>
+                                        <field name="identity_no"/>
+                                        <field name="birth_data"/>
+                                        <field name="gender"/>
+                                        <field name="marital_status"/>
+                                    </group>
+                                </div>
                             </group>
                         </page>
 
                         <page string="Guarantor Detail">
-                            <group>
+                            <group style="display:flex; felx-direction:row;">
+                                <group string="Guarantor">
+                                    <field name="guaranator"/>
+                                    <field name="guaranator_mobile" widget="phone"/>
+                                    <field name="guaranator_phone"/>
+                                    <field name="guaranator_email"/>
 
+                                </group>
+                                <div>
+
+                                    <group string="OFFICE USE">
+                                        <field name="tag_ids" widget="many2many_tags"/>
+                                        <field name="guaranter_company" />
+                                    </group>
+                                </div>
                             </group>
                         </page>
                     </notebook>
+                    <field name = "note" placeholder="Type your note here" string=" "/>
+
                 </sheet>
 
                 <div class="oe_chatter">
