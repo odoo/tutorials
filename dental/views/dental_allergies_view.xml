@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="action_dental_allergies" model="ir.actions.act_window">
+            <field name="name">Allergies</field>
+            <field name="res_model">dental.allergies</field>
+            <field name="view_mode">tree,form</field>
+     </record>
+    
+     <record id="view_allergies_tree" model="ir.ui.view">
+            <field name="name">dental.allergies.tree</field>
+            <field name="model">dental.allergies</field>
+            <field name="arch" type="xml">
+                <tree string="Allergies">
+                    <field name="sequence" widget="handle" />   
+                    <field name="name"/>
+                </tree>
+            </field>
+     </record>
+
+     <record id="view_allergies_form" model="ir.ui.view">
+        <field name="name">dental.allergies.form</field>
+        <field name="model">dental.allergies</field>
+        <field name="arch" type="xml">
+            <form string="Allergies">
+                <sheet>
+                    <group>
+                       <h1> <field name="name"/> </h1>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
+
+
+   

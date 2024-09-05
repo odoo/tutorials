@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="action_dental_habits" model="ir.actions.act_window">
+            <field name="name">Habits/Substance Abuse</field>
+            <field name="res_model">dental.habits</field>
+            <field name="view_mode">form,tree</field>
+     </record>
+    
+     <record id="view_habits_tree" model="ir.ui.view">
+            <field name="name">dental.habits.tree</field>
+            <field name="model">dental.habits</field>
+            <field name="arch" type="xml">
+                <tree string="Habits/Substance Abuse">
+                    <field name="sequence" widget="handle" />
+                    <field name="name"/>
+                </tree>
+            </field>
+     </record>
+
+     <record id="view_habits_form" model="ir.ui.view">
+        <field name="name">dental.habits.form</field>
+        <field name="model">dental.habits</field>
+        <field name="arch" type="xml">
+            <form string="Habits/Substance Abuse">
+                <sheet>
+                    <group>
+                       <h1> <field name="name"/> </h1>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
+
+
+   

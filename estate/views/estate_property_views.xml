@@ -95,7 +95,7 @@
         <field name="arch" type="xml">
             <form string="Estate property">
                 <header>
-                    <button name="%(action_estate_property_event_wizard)d" type="action" string="Add Offers" class="oe_highlight"/>  
+                    
                     <button name="action_sold" type="object" string="Sell" invisible="state in ['sold','canceled']"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold','canceled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>

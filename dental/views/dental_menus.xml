@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <menuitem id="dental_menu_root" name="Dental" sequence="1"/>
+    <menuitem id="dental_patients_menu" name="Patients" parent="dental_menu_root" sequence="1" action="action_dental_patient"/>
+    <menuitem id="dental_medical_aids_menu" name="Medical Aids" parent="dental_menu_root" sequence="2" action="action_dental_medical_aid"/>
+    <menuitem id="dental_medical_symptoms_menu" name="Medical Symptoms" parent="dental_menu_root" sequence="3"/>
+        <menuitem id="chronic_diseases_menu" name="Chronic Conditions" parent="dental_medical_symptoms_menu" action="action_dental_chronic_diseases"/>
+        <menuitem id="allergies_menu" name="Allergies" parent="dental_medical_symptoms_menu" action="action_dental_allergies"/>
+        <menuitem id="habits_abuse_menu" name="Habits/Substance Abuse" parent="dental_medical_symptoms_menu" action="action_dental_habits"/>
+    <menuitem id="dental_medication_menu" name="Medication" parent="dental_menu_root" sequence="4" action="action_dental_medication"/>
+
+</odoo>
+
+

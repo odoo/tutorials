@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="action_dental_medical_aid" model="ir.actions.act_window">
+            <field name="name">Medical Aid</field>
+            <field name="res_model">dental.medical.aid</field>
+            <field name="view_mode">tree,form</field>
+     </record>
+    
+     <record id="view_medical_aid_tree" model="ir.ui.view">
+            <field name="name">dental.medical.aid.tree</field>
+            <field name="model">dental.medical.aid</field>
+            <field name="arch" type="xml">
+                <tree string="Medical Aid">
+                    <field name="name"/>
+                </tree>
+            </field>
+     </record>
+
+     <record id="view_medical_aid_form" model="ir.ui.view">
+        <field name="name">dental.medical.aid.form</field>
+        <field name="model">dental.medical.aid</field>
+        <field name="arch" type="xml">
+            <form string="Medical Aid">
+                <sheet>
+                       <h1> <field name="name"/> </h1>
+                    <group>
+                        <group>
+                            <field name="contact_name"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                        </group>
+                        <group>    
+                            <field name="company"/>
+                        </group>
+                        <field name="notes" placeholder="Type down your notes here"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
+
+
+   

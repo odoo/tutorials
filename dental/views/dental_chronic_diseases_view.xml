@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="action_dental_chronic_diseases" model="ir.actions.act_window">
+            <field name="name">Chronic Diseases</field>
+            <field name="res_model">dental.chronic.diseases</field>
+            <field name="view_mode">tree,form</field>
+     </record>
+    
+     <record id="view_chronic_diseases_tree" model="ir.ui.view">
+            <field name="name">dental.chronic.diseases.tree</field>
+            <field name="model">dental.chronic.diseases</field>
+            <field name="arch" type="xml">
+                <tree string="Chronic Conditions">
+                    <field name="sequence" widget="handle" />
+                    <field name="name"/>
+                </tree>
+            </field>
+     </record>
+
+     <record id="view_chronic_diseases_form" model="ir.ui.view">
+        <field name="name">dental.chronic.diseases.form</field>
+        <field name="model">dental.chronic.diseases</field>
+        <field name="arch" type="xml">
+            <form string="Chronic Diseases">
+                <sheet>
+                    <group>
+                       <h1> <field name="name"/> </h1>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
+
+
+   

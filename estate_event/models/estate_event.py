@@ -1,9 +1,9 @@
-from odoo import models, fields, api
+from odoo import models, fields
 
 
 class EstateEvent(models.Model):
     _name = 'estate.event'
-    _description = 'estate_event'
+    _description = 'estate property event'
 
     date = fields.Datetime(string="Date", required=True)
     attendee_ids = fields.Many2many('res.partner', string="Attendees")

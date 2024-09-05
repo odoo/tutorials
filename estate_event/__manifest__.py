@@ -8,14 +8,13 @@ Long description of module's purpose
     'website': "https://www.yourcompany.com",
     'category': 'Uncategorized',
     'version': '0.1',
-    'depends': ['base'],
+    'depends': ['base', 'estate', 'calendar'],
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
-        'views/templates.xml',
+        'wizard/estate_property_event_view.xml'
     ],
     'demo': [
         'demo/demo.xml',
     ],
 }
-

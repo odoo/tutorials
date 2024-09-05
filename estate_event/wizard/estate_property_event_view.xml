@@ -7,7 +7,7 @@
             <form string="Create Event">
                 <group>
                     <field name="date"/>
-                    <field name="attendee_ids" widget="many2many_tags"/>
+                    <field name="attendee_ids"/>
                     <field name="organizer_id"/>
                     <field name="event_name"/>
                 </group>
@@ -26,5 +26,17 @@
         <field name="view_id" ref="view_estate_property_event_wizard_form"/>
         <field name="target">new</field>
     </record>
+
+    <record id="view_estate_property_form_inherited" model="ir.ui.view">
+    <field name="name">estate.property.form.inherit.create.event</field>
+    <field name="model">estate.property</field>
+    <field name="inherit_id" ref="estate.estate_property_view_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//header" position="inside">
+            <button name="%(action_estate_property_event_wizard)d" type="action" string="Make event " class="oe_highlight"/>  
+        </xpath>
+    </field>
+</record>
+
 
 </odoo>

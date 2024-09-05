@@ -1,0 +1,9 @@
+<odoo>
+    <template id="report_patient">
+        <t t-call="web.external_layout">
+            <main>
+                <h1>Hello</h1>
+            </main>
+        </t>
+    </template>
+</odoo>

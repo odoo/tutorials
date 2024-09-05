@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="report_property_details" model="ir.actions.report">
+            <field name="name">Dental Patient</field>
+            <field name="model">dental.patient</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">dental.report_patient</field>
+            <field name="report_file">dental.report_patient</field>
+            <field name="binding_model_id" ref="model_dental_patient"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

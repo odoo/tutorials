@@ -6,13 +6,12 @@
     'author': 'Akya',
     'category': 'Real Estate/Brokerage',
     'sequence': '15',
-    'depends': ['base', 'mail','website'],
+    'depends': ['base', 'mail', 'website'],
     'data': [
         'security/estate_security.xml',
         'security/ir.model.access.csv',
         'data/estate.property.type.csv',
-        'wizard/estate_property_offer_wizard.xml',        
-        'wizard/estate_property_event_view.xml',
+        'wizard/estate_property_offer_wizard.xml',   
         'views/estate_property_views.xml',
         'views/estate_property_controller_template.xml',
         'views/estate_property_offer_view.xml',
@@ -23,7 +22,7 @@
         'report/estate_property_reports.xml',
         'report/estate_property_templates.xml',
     ],
-    'demo':[
+    'demo': [
         'demo/estate_property_demo.xml'
     ],
     'installable': True,

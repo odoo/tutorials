@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="action_dental_medication" model="ir.actions.act_window">
+            <field name="name">Medication</field>
+            <field name="res_model">dental.medication</field>
+            <field name="view_mode">tree,form</field>
+     </record>
+    
+     <record id="view_dental_medication_tree" model="ir.ui.view">
+            <field name="name">dental.medication.tree</field>
+            <field name="model">dental.medication</field>
+            <field name="arch" type="xml">
+                <tree string="Medication" editable="bottom">
+                    <field name="name"/>
+                </tree>
+            </field>
+     </record>
+
+     <record id="view_dental_medication_form" model="ir.ui.view">
+        <field name="name">dental.medication.form</field>
+        <field name="model">dental.medication</field>
+        <field name="arch" type="xml">
+            <form string="Medication">
+                <sheet>
+                    <group>
+                       <h1> <field name="name"/> </h1>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
+
+
+   

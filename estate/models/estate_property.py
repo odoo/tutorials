@@ -81,7 +81,6 @@ class EstateProperty(models.Model):
         return True
 
     def action_sold(self):
-        print("Old method called ############")
         if self.state != "canceled":
             if self.state == 'offer_accepted':
                 self.state = "sold"
