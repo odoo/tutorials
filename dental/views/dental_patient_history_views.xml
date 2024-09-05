@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="dental_patient_history_tree" model="ir.ui.view">
+        <field name="name">dental.patient.history.tree</field>
+        <field name="model">dental.patient.history</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="name" string="Display Name"/>
+                <field name="main_complaint" string="Description" />
+                <field name="tags"/>
+            </tree>
+        </field>
+    </record>
+
+     <record id="dental_patient_history_form" model="ir.ui.view">
+        <field name="name">dental.patient.history.form</field>
+        <field name="model">dental.patient.history</field>
+        <field name="arch" type="xml">
+            <form >
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="Name..."/>
+                    </h1>
+                    <group string="Billing">
+                        <group>
+                            <field name="date"/> 
+                            <field name="attend"/> 
+                        </group>
+                        <group>
+                            <field name="responsible"/> 
+                            <field name="tags"/>
+                            <field name="company"/> 
+                        </group>
+                    </group>
+                    <group >
+                        <group string="Teeth History">
+                            <field name="main_complaint"/> 
+                            <field name="x_ray_file1" widget="image"/> 
+                            <field name="habits"/> 
+                            <field name="clear_alligner_file1"/> 
+                        </group>
+                        <group string="Teeth History">
+                            <field name="history" /> 
+                            <field name="x_ray_file2" widget="image"/> 
+                            <field name="extra_oral_observation"/> 
+                            <field name="clear_alligner_file2"/> 
+                        </group>
+                    </group>
+                    <group string="Tooth Chart">
+                        <group>
+                            <group string="Upper">
+                                
+                            </group>
+                            <group string="Upper">
+                                <field name="upper_18" />
+                                <field name="upper_17" />
+                                <field name="upper_16" />
+                                <field name="upper_15" />
+                                <field name="upper_14" />
+                                <field name="upper_13" />
+                                <field name="upper_12" />
+                                <field name="upper_11" />
+                                <field name="upper_28" />
+                                <field name="upper_27" />
+                                <field name="upper_26" />
+                                <field name="upper_25" />
+                                <field name="upper_24" />
+                                <field name="upper_23" />
+                                <field name="upper_22" />
+                                <field name="upper_21" />
+                            </group>
+                            <group string="Lower">
+                            </group>
+                            <group string="Lower">
+                                <field name="lower_38" />
+                                <field name="lower_37" />
+                                <field name="lower_36" />
+                                <field name="lower_35" />
+                                <field name="lower_34" />
+                                <field name="lower_33" />
+                                <field name="lower_32" />
+                                <field name="lower_31" />
+                                <field name="lower_41" />
+                                <field name="lower_42" />
+                                <field name="lower_43" />
+                                <field name="lower_44" />
+                                <field name="lower_45" />
+                                <field name="lower_46" />
+                                <field name="lower_47" />
+                                <field name="lower_48" />
+                            </group>
+                        </group>
+                        <group>
+                            
+                        </group>
+                    </group>
+                    <group string="Treatment Notes">
+                        <field name="treatment_notes"/> 
+                    </group> 
+                    <group string="Billing">
+                        <field name="consulatation_type"/> 
+                        <field name="call_out"/> 
+                        <field name="scale_and_polish"/> 
+                        <field name="flouride"/> 
+                        <field name="filling_description"/> 
+                        <field name="alligner"/> 
+                        <field name="whitening"/> 
+                        <field name="fissure_seallant_quality"/> 
+                        <field name="attachment_removed"/> 
+                        <field name="alligner_scan"/> 
+                        <field name="other"/> 
+                        <field name="notes" placeholder="Type down you notes here..."/> 
+                    </group>               
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

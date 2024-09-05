@@ -3,9 +3,19 @@
     <record id="dental_medical_aids_actions" model="ir.actions.act_window">
         <field name="name">Madical Aids</field>
         <field name="res_model">dental.medical.aids</field>
-        <field name="view_mode">form</field>
+        <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face"> Create a medical aid</p>
+        </field>
+    </record>
+
+    <record id="dental_medical_aids_tree" model="ir.ui.view">
+        <field name="name">dental.medical.aids.tree</field>
+        <field name="model">dental.medical.aids</field>
+        <field name="arch" type="xml">
+            <tree sample="1">
+                <field name="name"/>
+            </tree>
         </field>
     </record>
 
@@ -20,7 +30,7 @@
                 <sheet>
                     <h1>
                         <field name="name" />
-                    </h1>                    
+                    </h1>
                     <group>
                         <group>
                             <field name="contact" />
@@ -34,6 +44,12 @@
                         <field name="notes" placeholder="Type down your notes here..."/>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
+
             </form>
         </field>
     </record>

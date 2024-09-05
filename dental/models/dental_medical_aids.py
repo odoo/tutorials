@@ -4,6 +4,8 @@ from odoo import fields, models
 class DentalMedicalAids(models.Model):
     _name = "dental.medical.aids"
     _description = "Table contains patient medical aids details."
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
 
     name = fields.Char()
     contact = fields.Char()

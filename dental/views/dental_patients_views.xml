@@ -9,7 +9,7 @@
         </field>
     </record>
 
-     <record id="dental_patients_kanban" model="ir.ui.view">
+    <record id="dental_patients_kanban" model="ir.ui.view">
         <field name="name">dental.patients.kanban</field>
         <field name="model">dental.patients</field>
         <field name="arch" type="xml">
@@ -19,11 +19,15 @@
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
                             <div>
+                                <field name="patient_image" widget="image" style="width: 64px; height: 64px; object-fit: cover;" />
+                            </div>
+                            <div>
                                 <strong>
                                     <field name="name"/>
+
                                 </strong>
                             </div>
-                            
+
                         </div>
                     </t>
                 </templates>
@@ -42,37 +46,95 @@
                 <sheet>
                     <h1>
                         <field name="name" />
+                        <field name="patient_image" widget="image" class="oe_avatar" />
                     </h1>
-                    <notebook>
+
+                    <group >
+                        <field name="patient_history_id"/>
+                    </group>
+                    <notebook >
                         <page string="Medical">
+                            <field name="gender" invisible="1" />
                             <group>
-                                <group> <field name="chronic_condition_ids" widget="many2many_tags" /></group>
-                                <group> <field name="hospitalised"/> </group>
-                                <group> <field name="medication_ids" widget="many2many_tags" /></group>
+                                <group>
+                                    <field name="gp_name_id" />
+                                    <field name="gp_phone" />
+                                    <field name="chronic_condition_ids" widget="many2many_tags" />
+                                    <field name="hospitalised"/>
+                                    <field name="medication_ids" widget="many2many_tags" />
+                                </group>
+                                <group>
+                                    <field name="allergies_ids" widget="many2many_tags" />
+                                    <field name="habits_ids" widget="many2many_tags" />
+                                    <field name="special_care"/>
+                                    <field name="psychiatric_history"/>
+                                </group>
+                                <group string="Female" invisible="gender == 'male'">
+                                    <field name="pregnant"/>
+                                    <field name="nursing"/>
+                                    <field name="hrt"/>
+                                </group>
                             </group>
-                            <group>
-                                <group> <field name="allergies_ids" widget="many2many_tags" /></group>
-                                <group> <field name="habits_ids" widget="many2many_tags" /></group>
-                                <group> <field name="special_care"/> </group>
-                                <group> <field name="psychiatric_history"/> </group>
-                            </group>
-                            <group>
-                                <group> <field name="pregnant"/> </group>
-                                <group> <field name="nursing"/> </group>
-                                <group> <field name="hrt"/> </group>
-                            </group>
-                            <group> <field name="notes" placeholder="Type down your notes here..."/> </group>
                         </page>
                         <page string="Medical Aid">
+                            <group>
+                                <group>
+                                    <field name="medical_aid_id" />
+                                    <field name="medical_aid_plan"/>
+                                    <field name="medical_aid_number"/>
+                                </group>
+                                <group>
+                                    <field name="main_member_code"/>
+                                    <field name="dependant_code"/>
+                                </group>
+                            </group>
                         </page>
                         <page string="History">
+                            <group >
+                                <field name="patient_history_id"/>
+                            </group>
                         </page>
                         <page string="Patient Detail">
+                            <group>
+                                <group string="Next of king">
+                                    <field name="guarantor_id" string="Emergency Contact"/>
+                                    <field name="guarantor_phone" string="Mobile"/>
+                                </group>
+                                <group string="Patient Details">
+                                    <field name="grade" />
+                                    <field name="identity_number" />
+                                    <field name="date_of_birth" />
+                                    <field name="gender" />
+                                    <field name="marital_status" />
+                                </group>
+                                <group string="Conset Form">
+                                    <field name="consent_signature" widget="signature"/>
+                                    <field name="consent_date" />
+                                </group>
+                            </group>
+
                         </page>
                         <page string="Guarantor Details">
+                            <group>
+                                <group string="Guarantor">
+                                    <field name="guarantor_id" />
+                                    <field name="guarantor_phone" />
+                                    <field name="guarantor_email" />
+                                </group>
+                                <group string="Office Use">
+                                    <field name="guarantor_tags" widget="many2many_tags"/>
+                                    <field name="guarantor_company" />
+                                </group>
+                            </group>
                         </page>
-                    </notebook>                    
+                    </notebook>
+                    <field name="notes" placeholder="Type down your notes here..."/>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
             </form>
         </field>
     </record>

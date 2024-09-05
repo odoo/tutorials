@@ -5,3 +5,4 @@ dental.access_dental_chronic_conditions,access_dental_chronic_conditions,dental.
 dental.access_dental_medication,access_dental_medication,dental.model_dental_medication,base.group_user,1,1,1,1
 dental.access_dental_allergies,access_dental_allergies,dental.model_dental_allergies,base.group_user,1,1,1,1
 dental.access_dental_habits,access_dental_habits,dental.model_dental_habits,base.group_user,1,1,1,1
+dental.access_dental_patient_history,access_dental_patient_history,dental.model_dental_patient_history,base.group_user,1,1,1,1

@@ -9,7 +9,7 @@
         </field>
     </record>
 
-    <record id="dental_chronic_conditions_tree" model="ir.ui.view">
+    <record id="dental_habits_tree" model="ir.ui.view">
         <field name="name">dental.habits.tree</field>
         <field name="model">dental.habits</field>
         <field name="arch" type="xml">
