@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="dental_menu_root" name="Dental">
+    <menuitem id="dental_menu_root" name="Dental"
+        web_icon="dental,static/description/Tooth-Icon.png">
         <menuitem id="dental_patient_menu" name="Patients" action="dental_patient_action" />
-        <menuitem id="dental_medical_acid_menu" name="Medical Acids"
+        <menuitem id="dental_medical_acid_menu" name="Medical Aids"
             action="dental_medical_aids_action" />
         <menuitem id="dental_medication_menu" name="Medication" action="dental_medication_action" />
 

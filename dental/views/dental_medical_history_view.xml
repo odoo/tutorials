@@ -1,0 +1,138 @@
+<odoo>
+    <record id="view_dental_history_form" model="ir.ui.view">
+        <field name="name">Dental Consultation Form</field>
+        <field name="model">dental.medical.history</field>
+        <field name="arch" type="xml">
+            <form string="Dental Consultation">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="patient_id" required="1" />
+                            <field name="date" default="context_today()" />
+                            <field name="did_not_attend" widget="checkbox" />
+                        </group>
+                        <group>
+                            <field name="tags" />
+                            <field name="company_id" />
+                        </group>
+                        <group string="TEETH HISTORY">
+                            <field name="main_complaint" />
+                            <field name="xray_file_1" widget="image" />
+                            <field name="habits" />
+                            <field name="clear_aligner_file_1" />
+                        </group>
+                        <group string="TEETH HISTORY">
+                            <field name="history" />
+                            <field name="xray_file_2" widget="image" />
+                            <field name="extra_oral_observation" />
+                            <field name="clear_aligner_file_2" />
+                        </group>
+                        <group string="TOOTH CHART">
+                            <group string="UPPER">
+                                <div>
+                                    <h6 style="height:28px;">18</h6>
+                                    <h6 style="height:28px;">17</h6>
+                                    <h6 style="height:28px;">16</h6>
+                                    <h6 style="height:28px;">15</h6>
+                                    <h6 style="height:28px;">14</h6>
+                                    <h6 style="height:28px;">13</h6>
+                                    <h6 style="height:28px;">12</h6>
+                                    <h6 style="height:28px;">11</h6>
+                                    <h6 style="height:28px;">28</h6>
+                                    <h6 style="height:28px;">27</h6>
+                                    <h6 style="height:28px;">26</h6>
+                                    <h6 style="height:28px;">25</h6>
+                                    <h6 style="height:28px;">24</h6>
+                                    <h6 style="height:28px;">23</h6>
+                                    <h6 style="height:28px;">22</h6>
+                                    <h6 style="height:28px;">21</h6>
+                                </div>
+                            </group>
+                            <group string="UPPER">
+                                <field name="tooth_18_staining" />
+                                <field name="tooth_17_staining" />
+                                <field name="tooth_16_staining" />
+                                <field name="tooth_15_staining" />
+                                <field name="tooth_14_staining" />
+                                <field name="tooth_13_staining" />
+                                <field name="tooth_12_staining" />
+                                <field name="tooth_11_staining" />
+                                <field name="tooth_28_staining" />
+                                <field name="tooth_27_staining" />
+                                <field name="tooth_26_staining" />
+                                <field name="tooth_25_staining" />
+                                <field name="tooth_24_staining" />
+                                <field name="tooth_23_staining" />
+                                <field name="tooth_22_staining" />
+                                <field name="tooth_21_staining" />
+                            </group>
+                            <group string="LOWER">
+                                <div style="">
+                                    <h6 style="height:28px;">38</h6>
+                                    <h6 style="height:28px;">37</h6>
+                                    <h6 style="height:28px;">36</h6>
+                                    <h6 style="height:28px;">35</h6>
+                                    <h6 style="height:28px;">34</h6>
+                                    <h6 style="height:28px;">33</h6>
+                                    <h6 style="height:28px;">32</h6>
+                                    <h6 style="height:28px;">31</h6>
+                                    <h6 style="height:28px;">41</h6>
+                                    <h6 style="height:28px;">42</h6>
+                                    <h6 style="height:28px;">43</h6>
+                                    <h6 style="height:28px;">44</h6>
+                                    <h6 style="height:28px;">45</h6>
+                                    <h6 style="height:28px;">46</h6>
+                                    <h6 style="height:28px;">47</h6>
+                                    <h6 style="height:28px;">48</h6>
+                                </div>
+                            </group>
+                            <group string="LOWER">
+                                <field name="tooth_38_staining" />
+                                <field name="tooth_37_staining" />
+                                <field name="tooth_36_staining" />
+                                <field name="tooth_35_staining" />
+                                <field name="tooth_34_staining" />
+                                <field name="tooth_33_staining" />
+                                <field name="tooth_32_staining" />
+                                <field name="tooth_31_staining" />
+                                <field name="tooth_41_staining" />
+                                <field name="tooth_42_staining" />
+                                <field name="tooth_43_staining" />
+                                <field name="tooth_44_staining" />
+                                <field name="tooth_45_staining" />
+                                <field name="tooth_46_staining" />
+                                <field name="tooth_47_staining" />
+                                <field name="tooth_48_staining" />
+                            </group>
+                        </group>
+                    </group>
+                    <group string="TREATMENT NOTES">
+                        <field name="treatment_notes" widget="text" />
+                    </group>
+                    <group string="BILLING">
+                        <field name="consultation_type" widget="selection" />
+                        <field name="call_out" widget="boolean" />
+                        <field name="scale_and_polish" widget="boolean" />
+                        <field name="fluoride" widget="boolean" />
+                        <field name="filling_description" widget="text" />
+                        <field name="aligner_delivery" widget="boolean" />
+                        <field name="whitening" widget="boolean" />
+                        <field name="fissure_sealant_qty" widget="float" />
+                        <field name="attachments_removed" widget="boolean" />
+                        <field name="aligner_followup_scan" widget="boolean" />
+                        <field name="other_notes" widget="text" />
+                    </group>
+                    <div>
+                        <field name="notes" placeholder="Type down your notes here" />
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -7,6 +7,7 @@ access_dental_configuration,access_dental_configuration,model_dental_configurati
 access_dental_chronic_conditions,access_dental_chronic_conditions,model_dental_chronic_conditions,base.group_user,1,1,1,1
 access_dental_allergies,access_dental_allergies,model_dental_allergies,base.group_user,1,1,1,1
 access_dental_habits,access_dental_habits,model_dental_habits,base.group_user,1,1,1,1
+dental.access_dental_medical_history,access_dental_medical_history,dental.model_dental_medical_history,base.group_user,1,1,1,1
 
 
 

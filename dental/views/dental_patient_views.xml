@@ -1,5 +1,4 @@
 <odoo>
-    <!-- Action  -->
     <record id="dental_patient_action" model="ir.actions.act_window">
         <field name="name">Patient</field>
         <field name="res_model">dental.patient</field>
@@ -17,6 +16,11 @@
         <field name="arch" type="xml">
             <tree string="Channel">
                 <field name="name" />
+                <field name="identity_number" />
+                <field name="medical_aid_id" />
+                <field name="date_of_birth" />
+                <field name="gender" />
+                <field name="marital_status" />
             </tree>
         </field>
     </record>
@@ -26,25 +30,47 @@
         <field name="model">dental.patient</field>
         <field name="arch" type="xml">
             <form string="Dental Patient">
+                <header>
+                    <button name="action_book_appointment" type="object" string="Book Appointment"
+                        class="btn btn-primary" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,to_do_today,done,to_invoice" />
+                </header>
                 <sheet>
+                    <field name='image' class='oe_avatar' widget='image' />
+                    <div>
+                        <h1 class="oe_title">
+                            <field name="name" />
+                        </h1>
+                    </div>
+
+                    <field name="history_ids">
+                        <tree>
+                            <field name='date' />
+                            <field name='patient_id' />
+                            <field name='tags' />
+                            <field name='filling_description' />
+                        </tree>
+                    </field>
                     <notebook>
-                        <page string="Medical History">
+                        <page string="Medical">
                             <group>
                                 <group>
                                     <field name="gp_id" />
                                     <field name="gp_phone" readonly="1" />
-                                    <field name="chronic_conditions" widget="many2many_tags" />
+                                    <field name="chronic_conditions_ids" widget="many2many_tags" />
                                     <field name="hospitalized_this_year" />
-                                    <field name="medication" widget="many2many_tags" />
+                                    <field name="medication_ids" widget="many2many_tags" />
+                                    <field name="state" />
                                 </group>
                                 <group>
-                                    <field name="allergies" />
-                                    <field name="habits_substance_abuse" />
+                                    <field name="allergies_ids" widget="many2many_tags" />
+                                    <field name="habits_substance_abuse_ids" widget="many2many_tags" />
                                     <field name="under_specialist_care" />
                                     <field name="psychiatric_history" />
                                 </group>
                             </group>
-                            <group string="Female Specific Information">
+                            <group string="Female">
                                 <group>
                                     <field name="is_pregnant" />
                                     <field name="is_nursing" />
@@ -58,7 +84,7 @@
                         <page string="Medical Aid">
                             <group>
                                 <group>
-                                    <field name="medical_aid" />
+                                    <field name="medical_aid_id" />
                                     <field name="medical_aid_plan" />
                                     <field name="medical_aid_number" />
                                 </group>
@@ -68,19 +94,91 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="History">
+                            <group>
+                                <field name="history_ids">
+                                    <tree>
+                                        <field name='date' />
+                                        <field name='patient_id' />
+                                        <field name='tags' />
+                                        <field name='filling_description' />
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Patient Details">
+                            <group>
+                                <group string="Next of Kin">
+                                    <field name="emergency_contact_id" />
+                                    <field name="mobile" widget='phone' />
+                                </group>
+
+                                <group string="Patient Details">
+                                    <field name="company_school_id" />
+                                    <field name="occupation_grade" />
+                                    <field name="identity_number" />
+                                    <field name="date_of_birth" />
+                                    <field name="gender" />
+                                    <field name="marital_status" />
+                                </group>
+                            </group>
+
+                            <group string="Consent Form">
+                                <field name="consent_signature" widget="signature" />
+                                <field name="consent_date" />
+                            </group>
+                            <div>
+                                <field name="notes" placeholder="Type down your notes here" />
+                            </div>
+                        </page>
+                        <page string="Gurantor Details">
+                            <group>
+                                <group string="Guarantor">
+                                    <field name="guarantor_id" />
+                                    <field name="guarantor_mobile" />
+                                    <field name="guarantor_phone" />
+                                    <field name="guarantor_email" />
+                                </group>
+                                <group string="Office Use">
+                                    <field name="tags" />
+                                    <field name="company_id" />
+                                </group>
+                            </group>
+                            <div>
+                                <field name="notes" placeholder="Type down your notes here" />
+                            </div>
+                        </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
             </form>
         </field>
     </record>
 
-    <record id="dental_patient_kanban" model="ir.ui.view">
+    <record id="dental_patient_kanban_view" model="ir.ui.view">
         <field name="name">dental.patient.kanban</field>
         <field name="model">dental.patient</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_group_by="state">
+                <field name="state" />
                 <templates>
                     <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name" />
+                                </strong>
+                                <div class="o_kanban_image">
+                                    <img
+                                        t-attf-src="#{kanban_image('dental.patient', 'image', record.id.raw_value)}"
+                                        role="img" t-att-alt="record.id.value" />
+                                </div>
+                            </div>
+                        </div>
                     </t>
                 </templates>
             </kanban>
