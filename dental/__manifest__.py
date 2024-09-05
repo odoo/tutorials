@@ -1,10 +1,12 @@
 {
     "name": "dental",
     "version": "0.1",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "account", "web"],
     "description": "Dental Application",
     "data": [
         "security/ir.model.access.csv",
+        "report/dental_patient_template.xml",
+        "report/dental_patient_report.xml",
         "views/tag_views.xml",
         "views/history_views.xml",
         "views/medication_views.xml",

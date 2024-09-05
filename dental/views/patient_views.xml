@@ -31,12 +31,13 @@
         <field name="arch" type="xml">
             <form string="description">
                 <header>
+                    <button class="btn-primary"  invisible="state in ('new', 'today')" name="generate_invoice_from_patient" title="Generate Invoice" type="object" string="Generate Invoice"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,today,done,invoice" invisible=""/>
                 </header>
                 <sheet>
                     <div>
                         <h1>
-                            <field name="name"/>
+                            <field name="name" placeholder="Name..."/>
                             <field name="patient_image" widget="image" class="oe_avatar" />
                         </h1>
                         <field name="state" />

@@ -32,13 +32,6 @@
                     <h1 class="oe_title">
                         <field name="name" placeholder="Name..."/>
                     </h1>
-                    <!-- <group>
-                        <group>
-                          <field name=""/>
-                        </group>
-                        <group>
-                        </group>
-                    </group> -->
                     <group string="BILLING">
                         <group>
                             <field name="patient"/>
@@ -54,7 +47,6 @@
                     </group>
                     <group>
                         <group string="TEETH HISTORY">
-                            <!-- <field name=""/> -->
                             <field name="main_complaint"/>
                             <field name="xfiel1" widget="image"/>
                             <field name="habits"/>
@@ -69,16 +61,80 @@
                     </group>
                     <group string="TOOTH CHART">
                         <group string="UPPER">
-                            <p> upper teeth from 18 to 21</p>
+                            <div>
+                                <h6 style="height:28px;">18</h6>
+                                <h6 style="height:28px;">17</h6>
+                                <h6 style="height:28px;">16</h6>
+                                <h6 style="height:28px;">15</h6>
+                                <h6 style="height:28px;">14</h6>
+                                <h6 style="height:28px;">13</h6>
+                                <h6 style="height:28px;">12</h6>
+                                <h6 style="height:28px;">11</h6>
+                                <h6 style="height:28px;">28</h6>
+                                <h6 style="height:28px;">27</h6>
+                                <h6 style="height:28px;">26</h6>
+                                <h6 style="height:28px;">25</h6>
+                                <h6 style="height:28px;">24</h6>
+                                <h6 style="height:28px;">23</h6>
+                                <h6 style="height:28px;">22</h6>
+                                <h6 style="height:28px;">21</h6>
+                            </div>
                         </group>
                         <group string="UPPER">
-                            <p> upper teeth from 18 to 21</p>
+                            <field name="tooth_18_staining"/>
+                            <field name="tooth_17_staining"/>
+                            <field name="tooth_16_staining"/>
+                            <field name="tooth_15_staining"/>
+                            <field name="tooth_14_staining"/>
+                            <field name="tooth_13_staining"/>
+                            <field name="tooth_12_staining"/>
+                            <field name="tooth_11_staining"/>
+                            <field name="tooth_28_staining"/>
+                            <field name="tooth_27_staining"/>
+                            <field name="tooth_26_staining"/>
+                            <field name="tooth_25_staining"/>
+                            <field name="tooth_24_staining"/>
+                            <field name="tooth_23_staining"/>
+                            <field name="tooth_22_staining"/>
+                            <field name="tooth_21_staining"/>
                         </group>
                         <group string="LOWER">
-                            <p> Lower teeth from 38 to 48</p>
+                            <div style="">
+                                <h6 style="height:28px;">38</h6>
+                                <h6 style="height:28px;">37</h6>
+                                <h6 style="height:28px;">36</h6>
+                                <h6 style="height:28px;">35</h6>
+                                <h6 style="height:28px;">34</h6>
+                                <h6 style="height:28px;">33</h6>
+                                <h6 style="height:28px;">32</h6>
+                                <h6 style="height:28px;">31</h6>
+                                <h6 style="height:28px;">41</h6>
+                                <h6 style="height:28px;">42</h6>
+                                <h6 style="height:28px;">43</h6>
+                                <h6 style="height:28px;">44</h6>
+                                <h6 style="height:28px;">45</h6>
+                                <h6 style="height:28px;">46</h6>
+                                <h6 style="height:28px;">47</h6>
+                                <h6 style="height:28px;">48</h6>
+                            </div>
                         </group>
                         <group string="LOWER">
-                            <p> Lower teeth from 38 to 48</p>
+                            <field name="tooth_38_staining"/>
+                            <field name="tooth_37_staining"/>
+                            <field name="tooth_36_staining"/>
+                            <field name="tooth_35_staining"/>
+                            <field name="tooth_34_staining"/>
+                            <field name="tooth_33_staining"/>
+                            <field name="tooth_32_staining"/>
+                            <field name="tooth_31_staining"/>
+                            <field name="tooth_41_staining"/>
+                            <field name="tooth_42_staining"/>
+                            <field name="tooth_43_staining"/>
+                            <field name="tooth_44_staining"/>
+                            <field name="tooth_45_staining"/>
+                            <field name="tooth_46_staining"/>
+                            <field name="tooth_47_staining"/>
+                            <field name="tooth_48_staining"/>
                         </group>
                     </group>
                     <group string="TREATMENT NOTES">
@@ -103,7 +159,14 @@
                     </group>
                     <field name="notes" placeholder="Type your note here..."/>
                 </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
             </form>
         </field>
     </record>
+
 </odoo>

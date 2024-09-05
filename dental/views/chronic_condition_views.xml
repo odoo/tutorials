@@ -30,7 +30,7 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name"/>
+                            <field name="name" placeholder="Cronic Condition..."/>
                         </h1>
                         <group>
                             <field name="description"/>
