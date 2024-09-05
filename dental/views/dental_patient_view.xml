@@ -6,6 +6,11 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name" />
+                <field name="ocuupation" />
+                <field name="date_of_birth" />
+                <field name="identity_number" />
+                <field name="gender" />
+                <field name="marital_status" />
             </tree>
         </field>
     </record>
@@ -14,21 +19,139 @@
         <field name="model">dental.patient</field>
         <field name="arch" type="xml">
             <form string="Patient">
+                <header>
+                    <button name="action_book_appointment" type="object" class="oe_highlight" string="Book appointment"
+                        invisible="state in ['to_invoice']" />
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}" />
+                </header>
                 <sheet>
+                    <field name="image" widget="image" class="oe_avatar" />
                     <div class="oe_title">
                         <h1>
                             <field name="name" />
                         </h1>
                     </div>
+                    <notebook>
+                        <page string="Medical">
+                            <group>
+                                <group>
+                                    <field name="gp_id" />
+                                    <field name="gp_phone" />
+                                    <field name="chronic_condition_ids" widget='many2many_tags' />
+                                    <field name="hospitalized_this_year" />
+                                    <field name="medication" widget='many2many_tags' />
+                                    <field name="marital_status" />
+                                </group>
+                                <group>
+                                    <field name="allergie_ids" widget='many2many_tags' />
+                                    <field name="substance_abuse_ids" widget='many2many_tags' />
+                                    <field name="under_specialist_care" />
+                                    <field name="psychiatric_history" />
+                                </group>
+                                <group string="FEMALE" invisible="gender != 'female'">
+                                    <field name="pregnant" />
+                                    <field name="nursing" />
+                                    <field name="hormone_treatment" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Medical Aid">
+                            <group>
+                                <group>
+                                    <field name="medical_aid_id" />
+                                    <field name="medical_aid_plan" />
+                                    <field name="medical_aid_number" />
+                                </group>
+                                <group>
+                                    <field name="main_member_code" />
+                                    <field name="dependant_code" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Medical History">
+                            <group>
+                                <field name="history_ids" />
+                            </group>
+                        </page>
+                        <page string="Patient Details">
+                            <group>
+                                <group string="NEXT OF KIN">
+                                    <field name="emergency_contact_id" />
+                                    <field name="emergency_phone" />
+                                </group>
+                                <group string="PATIENTS DETAILS">
+                                    <field name="company_id" />
+                                    <field name="ocuupation" />
+                                    <field name="date_of_birth" />
+                                    <field name="identity_number" />
+                                    <field name="gender" />
+                                    <field name="marital_status" />
+                                </group>
+                                <group string="CONSENT FORM">
+                                    <field name="consent_signature" widget="signature" />
+                                    <field name="consent_date" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Guarantor Details">
+                            <group>
+                                <group string="GUARANTOR">
+                                    <field name="guarantor_id" />
+                                    <field name="guarantor_mobile" widget="phone" />
+                                    <field name="guarantor_phone" widget="phone" />
+                                    <field name="guarantor_email" />
+
+                                </group>
+                                <group string="COMPANY">
+                                    <field name="guarantor_company_id" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <div>
+                        <field name="notes" placeholder="Type down your notes here .." />
+                    </div>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
             </form>
         </field>
     </record>
 
+    <record id="view_dental_patient_kanban" model="ir.ui.view">
+        <field name="name">dental.patient.kanban</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="state" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name" />
+                                </strong>
+                                <div class="o_kanban_image">
+                                    <img
+                                        t-attf-src="#{kanban_image('dental.patient', 'image', record.id.raw_value)}"
+                                        role="img" t-att-alt="record.id.value" />
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
     <record id="dental_patient_action" model="ir.actions.act_window">
         <field name="name">Dental</field>
         <field name="res_model">dental.patient</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Add new patients

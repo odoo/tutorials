@@ -5,6 +5,7 @@ class DentalMedicalAids(models.Model):
 
     _name = "dental.medical.aids"
     _description = "Dental medical aids"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(string='Name', required=True)
     partner_id = fields.Many2one(comodel_name="res.partner", string="Contact")

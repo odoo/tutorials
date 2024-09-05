@@ -5,7 +5,6 @@
         <field name="model">dental.medication</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="sequence" widget="handle" />
                 <field name="name" />
             </tree>
         </field>
@@ -22,6 +21,11 @@
                         </h1>
                     </div>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
             </form>
         </field>
     </record>

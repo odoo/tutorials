@@ -39,6 +39,11 @@
                         <field name="notes" placeholder="Type down your notes here .." />
                     </div>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
             </form>
         </field>
     </record>
