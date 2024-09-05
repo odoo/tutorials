@@ -3,7 +3,7 @@
     "version": "1.0",
     "license": "LGPL-3",
     "summary": "Manage properties",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "account"],
     "data": [
         "security/ir.model.access.csv",
         "views/pateint_views.xml",
@@ -12,9 +12,9 @@
         "views/habits.xml",
         "views/allergies.xml",
         "views/medication.xml",
+        "views/patient_history.xml",
         "views/menuitem.xml",
-        
-        ],
+    ],
     "installable": True,
     "application": True,
     "auto_install": False,

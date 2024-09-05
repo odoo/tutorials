@@ -1,4 +1,4 @@
-from odoo import  fields, models
+from odoo import fields, models
 
 
 class MedicationModel(models.Model):
@@ -6,5 +6,5 @@ class MedicationModel(models.Model):
     _description = "Medication"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(string="Medication") 
+    name = fields.Char(string="Medication")
     sequence = fields.Integer("Sequence")

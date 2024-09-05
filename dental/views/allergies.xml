@@ -31,9 +31,16 @@
 		<field name="model">symptoms.allergies</field>
 		<field name="arch" type="xml">
 			<form string="Allergies">
-                <h1>
-                    <field name="name" />
-                </h1>
+                <sheet>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
 			</form>
 		</field>
 	</record>

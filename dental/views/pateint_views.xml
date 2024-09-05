@@ -32,25 +32,103 @@
 		<field name="model">dental.patients</field>
 		<field name="arch" type="xml">
 			<form string="Patients">
+				<header>
+                    <field name="state" widget="statusbar" statusbar_visible="new,to do today,done,to invoice" />
+				  <button name="action_open_invoice" string="invoice"  type="object"/>
+                </header>
+				
 				<sheet>
-					<header>
-						<field name="name"/>
-					</header>
+					<div>
+						<h1>
+							<field name="name"/>
+						</h1>
+						<field name="image" widget="image" class="oe_avatar"/>
+					</div>
+					<group>
+						<field name="history_id"/>
+					</group>
 					<notebook>
 						<page string="Medical">
-							
+							<group>
+								<group>
+										<field name="gp_name" />
+										<field name="gp_phone" />
+										<field name="chronic_ids"  widget="many2many_tags"/>
+										<field name="hospitalised_this_year" string="Hospitalised This Year"/>
+										<field name="medication"  widget="many2many_tags"/>
+								</group>
+								<group>
+										<field name="aleergies_ids"  widget="many2many_tags"/>
+										<field name="habits_ids"  widget="many2many_tags"/>
+										<field name="under_special_care"  />
+										<field name="psychiatric_history"  />
+								</group>
+								<group string="FEMALE" invisible="gender != 'female'">
+									<field name="are_you_pregnant"/>
+									<field name="are_you_nursing"/>
+									<field name="are_you_on" />
+								</group>
+								
+							</group>
 						</page>
 						<page string="Medical Aid">
+							<group>
+								<group>
+									<field name="medical_aid_id" />
+									<field name="medical_aid_plan" />
+									<field name="medical_aid_number" />
+								</group>
+								<group>
+									<field name="main_member_code" />
+									<field name="dependant_code" />
+								</group>
+							</group>
 						</page>
 						<page string="History">
+							<field name="history_id"/>
 						</page>
-						<page string="Patirnts Details">
+						<page string="Patient Details">
+							<group>
+								<group string="NEXT OF KIN">
+									<group>
+										<field name="phone_number"/>
+									</group>
+								</group>
+								<group string="PATIENT DETAILS">
+									<group>
+										<field name="occupation_or_grade"/>
+										<field name="identity_number"/>
+										<field name="date_of_birth"/>
+										<field name="gender"/>
+										<field name="marital_status"  />
+									</group>
+								</group>
+								<group string="CONSENT FORM">
+								</group>
+							</group>
 						</page>
 						<page string="Gurantor Details">
+							<group>
+								<group string="GURANTOR">
+									<field name="guarantor_id" />
+									<field name="guarantor_phone"/>
+									<field name="guarantor_email"/>
+								</group>
+								<group string="OFFICE USE">
+									<field name="guarantor_company"/>
+									<field name="guarantor_tags"  widget="many2many_tags" />
+								</group>
+							</group>
+							
 						</page>
 					</notebook>
-					<field name="state"/>
+					<field name="notes" placeholder="Enter your notes here..." />
 				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
 			</form>
 		</field>
 	</record>
@@ -65,15 +143,17 @@
 						<div class="oe_kanban_global_click">
 							<div class="row">
 								<div class="col-12">
+									<div class="image-container">
+										<field name="image" widget="image"  class="oe_avatar" style="height: 70px; width: 70px; object-fit: cover;"/>
+									</div>
 									<strong>
 										<field name="name"/>
-                                        <field name="state"/>  
 									</strong>
 								</div>
 							</div>
 						</div>
 					</t>
-				</templates>
+            </templates>
 			</kanban>
 		</field>
 	</record>

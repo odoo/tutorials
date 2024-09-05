@@ -1,4 +1,4 @@
-from odoo import  fields, models
+from odoo import fields, models
 
 
 class MedicalAidsModel(models.Model):
@@ -6,9 +6,10 @@ class MedicalAidsModel(models.Model):
     _description = "Medical Aids"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(string="Name") 
-    contact = fields.Char(string="Contact") 
-    phone_number = fields.Char(string="Phone Number")  
+    name = fields.Char(string="Name")
+    sequence = fields.Integer("Sequence")
+    contact = fields.Char(string="Contact")
+    phone_number = fields.Char(string="Phone Number")
     email = fields.Char(string="Email")
     company_id = fields.Many2one(
         "res.company",
@@ -26,5 +27,3 @@ class MedicalAidsModel(models.Model):
         tracking=True,
         default="new",
     )
-    
-    

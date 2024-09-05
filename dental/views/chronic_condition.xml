@@ -3,7 +3,6 @@
             <field name="name">Chronic Condition</field>
             <field name="res_model">chronic.condition</field>
             <field name="view_mode">tree,form</field>
-            <field name="context">{'search_default_state': True, 'search_default_current': True}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create a module
@@ -31,9 +30,17 @@
 		<field name="model">chronic.condition</field>
 		<field name="arch" type="xml">
 			<form string="Chronic Condition">
-                <h1>
-                    <field name="name" />
-                </h1>
+                <sheet>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                    <field name="description" />
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
 			</form>
 		</field>
 	</record>

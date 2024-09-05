@@ -9,4 +9,8 @@
 			<menuitem id="property_tag_action" action="real_estate_property_tag_action" name="Property Tag" />
 		</menuitem>
 	</menuitem>
+	<menuitem id="estate_setting" name="Settings" groups="estate.estate_group_manager">
+            <menuitem id="estate_property_type" action="estate_property_type_action" name="Property Type" />
+            <menuitem id="estate_property_tag" action="estate_property_tag_action" name="Property Tag" />
+	</menuitem> 
 </odoo>

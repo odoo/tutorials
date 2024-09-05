@@ -1,4 +1,4 @@
-from odoo import  fields, models
+from odoo import fields, models
 
 
 class habitModel(models.Model):
@@ -6,5 +6,5 @@ class habitModel(models.Model):
     _description = "Habits"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char() 
+    name = fields.Char()
     sequence = fields.Integer("Sequence")

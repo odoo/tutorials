@@ -1,4 +1,4 @@
-from odoo import  fields, models
+from odoo import fields, models
 
 
 class AllergiesModel(models.Model):
@@ -6,5 +6,5 @@ class AllergiesModel(models.Model):
     _description = "Medical Aids"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char() 
+    name = fields.Char()
     sequence = fields.Integer("Sequence")

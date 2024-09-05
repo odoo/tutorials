@@ -20,6 +20,7 @@
 		<field name="model">medical.aids</field>
 		<field name="arch" type="xml">
 			<tree string="Medical Aids">
+                <field name="sequence" widget="handle" />
 				<field name="name" />
 				<field name="contact" />
 				<field name="phone_number" />
@@ -55,6 +56,11 @@
                     </group>
 
 				</sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
 			</form>
 		</field>
 	</record>
