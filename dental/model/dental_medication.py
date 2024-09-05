@@ -4,6 +4,7 @@ from odoo import fields, models
 class medication(models.Model):
     _name = "dental.medication"
     _description = "Medication"
-    
-    name = fields.Char(required = True)
-    patient_ids = fields.One2many("dental.patient", "medical_aids_ids")
+    _order = "sequence, id desc"
+
+    name = fields.Char(required=True)
+    sequence = fields.Integer("Sequence")

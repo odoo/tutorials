@@ -3,6 +3,67 @@
         <field name="name">Medical aids</field>
         <field name="res_model">dental.medical.aids</field>
         <field name="view_mode">tree,form</field>
-         
+
+    </record>
+
+    <!-- Tree view -->
+
+    <record id="dental_medical_aids_tree" model="ir.ui.view">
+        <field name="name">dental.medical.aids</field>
+        <field name="model">dental.medical.aids</field>
+        <field name="arch" type="xml">
+            <tree sample="1">
+
+                <field name='sequence' widget='handle' />
+                <field name="name" string="Title" />
+
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- Form view -->
+
+    <record id="dental_medical_aids_form" model="ir.ui.view">
+        <field name="name">Medical Aids</field>
+        <field name="model">dental.medical.aids</field>
+        <field name="arch" type="xml">
+            <form string="description">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in_progress,done"
+                        invisible="" />
+                </header>
+                <sheet>
+                    <div>
+                        <h1>
+                            <field name="name" />
+                            <field name="image" widget="image" class="oe_avatar" />
+                        </h1>
+
+                        <group>
+                            <group>
+                                <field name="state" />
+                                <!-- <field name="contact"/> -->
+                                <field name="phone_number" />
+                                <field name="email" />
+                            </group>
+                            <div>
+                                <group>
+                                    <field name="company_id" string="Company" />
+
+                                </group>
+                            </div>
+                        </group>
+                    </div>
+                    <field name="notes" placeholder="Type your note here" string=" " />
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
+            </form>
+        </field>
     </record>
 </odoo>

@@ -3,6 +3,6 @@ dental.access_dental_patient,access_dental_patient,dental.model_dental_patient,b
 dental.access_dental_medical_aids,access_dental_medical_aids,dental.model_dental_medical_aids,base.group_user,1,1,1,1
 dental.access_dental_chronic_condition,access_dental_chronic_condition,dental.model_dental_chronic_condition,base.group_user,1,1,1,1
 dental.access_dental_allergies,access_dental_allergies,dental.model_dental_allergies,base.group_user,1,1,1,1
-dental.access_dental_habits_abuse,access_dental_habits_abuse,dental.model_dental_habits_abuse,base.group_user,1,0,0,0
+dental.access_dental_habits_abuse,access_dental_habits_abuse,dental.model_dental_habits_abuse,base.group_user,1,1,1,1
 dental.access_dental_medication,access_dental_medication,dental.model_dental_medication,base.group_user,1,1,1,1
 dental.access_dental_history,access_dental_history,dental.model_dental_history,base.group_user,1,1,1,1

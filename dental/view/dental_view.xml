@@ -16,15 +16,35 @@
         </field>
     </record>
 
+    <!-- Tree view -->
+
+    <record id="action_dental_patient_tree" model="ir.ui.view">
+        <field name="name">dental.patient</field>
+        <field name="model">dental.patient</field>
+        <field name="arch" type="xml">
+            <tree sample="1">
+
+                <field name='sequence' widget='handle' />
+                <field name="name" string="Title" />
+                <field name="state" invisible="1" />
+
+            </tree>
+        </field>
+    </record>
+
     <!-- form view -->
 
 
-    <record id="action_dental_form" model="ir.ui.view">
+    <record id="action_dental_patient_form" model="ir.ui.view">
         <field name="name">dental.patient.form</field>
         <field name="model">dental.patient</field>
         <field name="arch" type="xml">
             <form string="description">
                 <header>
+                    <header>
+                        <button name="button_to_invoice" type="object" string="Invoice"
+                            invisible="state in ('new', 'today')" />
+                    </header>
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,today,done,invoice" />
                 </header>
@@ -40,7 +60,7 @@
                     <group>
                         <field name="state" />
                         <field name="history_ids" />
-                        
+
 
                     </group>
                     <notebook>
@@ -60,37 +80,83 @@
                                     <field name="allergies_ids" widget="many2many_tags" />
                                     <field name="habits_abuse_ids" widget="many2many_tags" />
                                     <field name="under_speciality" />
-                                    
+
                                 </group>
                             </group>
-                            <field name="notes" placeholder="Type down your notes here"/>
+                            <field name="notes" placeholder="Type down your notes here" />
 
 
                         </page>
 
                         <page name="Medical Aid">
-                           <group>
                             <group>
-                                <field name="medical_aids_ids"/>
-                                <field name="medical_aid_plan"/>
-                                <field name="medical_aid_no"/>
+                                <group>
+                                    <field name="medical_aids_ids" />
+                                    <field name="medical_aid_plan" />
+                                    <field name="medical_aid_no" />
+                                </group>
+                                <group>
+                                    <field name="main_member_code" />
+                                    <field name="dependent_code" />
+                                </group>
                             </group>
-                            <group>
-                                <field name="main_member_code"/>
-                                <field name="dependent_code"/>
-                            </group>
-                           </group>
                         </page>
 
                         <page string="History">
+                            <group>
+                                <field name="history_ids" />
+                            </group>
 
 
                         </page>
                         <page string="Patient Details">
 
+                            <group>
+                                <group string="NEXT OF KIN">
+                                    <field name="emergency_contact" string="Emergency Contact" />
+                                    <field name="mobile" string="Mobile" widget="phone" />
+
+
+                                </group>
+                                <group string="PATIENT DETAILS">
+                                    <field name="company_id" string="Company or School" />
+                                    <field name="occupation" string="Occupation or Grade" />
+                                    <field name="identity_no" string="Identity Number" />
+                                    <field name="birth_data" string="Date of Birth" />
+                                    <field name="gender" string="Gender" />
+                                    <field name="marital_status" string="Marital Status" />
+
+                                </group>
+                                <group string="CONSENT FORM">
+                                    <field name="signature" string="Consent Signature" />
+                                    <field name="birth_data" string="Consent Date" />
+
+                                </group>
+
+                            </group>
+                            <field name="notes" placeholder="Type down your notes here" />
+
 
                         </page>
                         <page string="Guarantor Details">
+                            <group>
+                                <group string="GUARANTOR">
+                                    <field name="guarantor" string="Guarantor" />
+                                    <field name="guarantor_mobile" string="Guarantor Mobile"
+                                        widget="phone" />
+                                    <field name="guarantor_phone" string="Phone" />
+                                    <field name="guarantor_email" string="Email" />
+
+
+                                </group>
+                                <group string="OFFICE USE">
+                                    <field name="tags_ids" string="Tags" widget="many2many_tags" />
+                                    <field name="guarantor_company_id" string="Company" />
+
+                                </group>
+
+                            </group>
+                            <field name="notes" placeholder="Type down your notes here" />
 
 
                         </page>

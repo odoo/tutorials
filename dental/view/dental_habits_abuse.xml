@@ -3,6 +3,19 @@
         <field name="name">Habits/Substance abuses</field>
         <field name="res_model">dental.habits.abuse</field>
         <field name="view_mode">tree,form</field>
-         
+
+    </record>
+
+    <record id="action_dental_habits_abuse_tree" model="ir.ui.view">
+        <field name="name">dental.habits.abuse</field>
+        <field name="model">dental.habits.abuse</field>
+        <field name="arch" type="xml">
+            <tree sample="1">
+
+                <field name='sequence' widget='handle' />
+                <field name="name" string="Title" />
+
+            </tree>
+        </field>
     </record>
 </odoo>

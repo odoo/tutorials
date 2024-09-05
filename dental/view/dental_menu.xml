@@ -9,7 +9,8 @@
         </menuitem>
 
         <menuitem id="dental_medical_symptoms_level_menu" name="Medical Symptoms">
-            <menuitem id="dental_chronic_condition_menu_action" action="dental_chronic_condition_action" />
+            <menuitem id="dental_chronic_condition_menu_action"
+                action="dental_chronic_condition_action" />
             <menuitem id="dental_allergies_menu_action" action="dental_allergies_action" />
             <menuitem id="dental_habits_abuse_menu_action" action="dental_habits_abuses_action" />
 
@@ -20,11 +21,9 @@
         </menuitem>
 
         <menuitem id="dental_configration_level_menu" name="Configration">
-            
+
         </menuitem>
 
-        
-       
-    
+
     </menuitem>
 </odoo>

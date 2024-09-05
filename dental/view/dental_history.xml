@@ -14,11 +14,177 @@
         <field name="name">History Tree</field>
         <field name="model">dental.history</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
-                <field name='date'/>
-                <field name='description'/>
-                <field name='tags'/>
+            <tree>
+                <field name='dispaly_name' />
+                <field name='date' />
+                <field name='description' />
+                <field name='tags' />
             </tree>
         </field>
     </record>
+
+    <record id='detal_history_form' model='ir.ui.view'>
+        <field name="name">History form</field>
+        <field name="model">dental.history</field>
+        <field name="arch" type="xml">
+            <form>
+                <h1>
+                    <field name="dispaly_name" placeholder="Name..." />
+                </h1>
+
+                <sheet>
+                    <group string="BILLING">
+                        <group>
+                            <field name="patient" />
+                            <field name="date" />
+                            <field name="did_not_attend" string="Did not attend" />
+                        </group>
+                        <group>
+                            <field name="responsible" string="Responsible" />
+                            <field name="tags" string="Tags" />
+                            <field name="company" string="Company" />
+                        </group>
+
+                        <group string="TEETH HISTORY">
+                            <field name="description" string="Main Compalint" />
+                            <field name="x_ray1" string="X-ray file 1" widget="image" />
+                            <field name="habits" string="Habits" />
+                            <field name="clear_aligner1" string="Clear Aligner 1" widget="image" />
+                        </group>
+                        <group string="TEETH HISTORY">
+                            <field name="history" string="History" />
+                            <field name="x_ray2" string="X-ray file 2" widget="image" />
+                            <field name="extra_oral_observation" string="Extra-Oral Observation" />
+                            <field name="clear_aligner2" string="Clear Aligner 1" widget="image" />
+                        </group>
+
+                        <group string="TOOTH CHART">
+
+                            <group string="UPPER">
+                                <strong>
+                                    <div>
+                                        <div>11</div>
+                                        <div class="pt-3">12</div>
+                                        <div class="pt-3">13</div>
+                                        <div class="pt-3">14</div>
+                                        <div class="pt-3">15</div>
+                                        <div class="pt-3">16</div>
+                                        <div class="pt-3">17</div>
+                                        <div class="pt-3">18</div>
+                                        <div class="pt-3">19</div>
+                                        <div class="pt-3">20</div>
+                                        <div class="pt-3">21</div>
+                                        <div class="pt-3">22</div>
+                                        <div class="pt-3">23</div>
+                                        <div class="pt-3">24</div>
+                                        <div class="pt-3">25</div>
+                                        <div class="pt-3">26</div>
+                                        <div class="pt-3">27</div>
+                                        <div class="pt-3">28</div>
+
+
+                                    </div>
+                                </strong>
+
+                            </group>
+
+                            <group string="UPPER">
+                                <field name="teeth_11" />
+                                <field name="teeth_12" />
+                                <field name="teeth_13" />
+                                <field name="teeth_14" />
+                                <field name="teeth_15" />
+                                <field name="teeth_16" />
+                                <field name="teeth_17" />
+                                <field name="teeth_18" />
+                                <field name="teeth_19" />
+                                <field name="teeth_20" />
+                                <field name="teeth_21" />
+                                <field name="teeth_22" />
+                                <field name="teeth_23" />
+                                <field name="teeth_24" />
+                                <field name="teeth_25" />
+                                <field name="teeth_26" />
+                                <field name="teeth_27" />
+                                <field name="teeth_28" />
+                            </group>
+
+                            <group string="LOWER">
+                                <strong>
+                                    <div>
+                                        <div>31</div>
+                                        <div class="pt-3">32</div>
+                                        <div class="pt-3">33</div>
+                                        <div class="pt-3">34</div>
+                                        <div class="pt-3">35</div>
+                                        <div class="pt-3">36</div>
+                                        <div class="pt-3">37</div>
+                                        <div class="pt-3">38</div>
+                                        <div class="pt-3">39</div>
+                                        <div class="pt-3">40</div>
+                                        <div class="pt-3">41</div>
+                                        <div class="pt-3">42</div>
+                                        <div class="pt-3">43</div>
+                                        <div class="pt-3">44</div>
+                                        <div class="pt-3">45</div>
+                                        <div class="pt-3">46</div>
+                                        <div class="pt-3">47</div>
+                                        <div class="pt-3">48</div>
+
+                                    </div>
+                                </strong>
+
+                            </group>
+                            <group string="LOWER">
+                                <field name="teeth_31" />
+                                <field name="teeth_32" />
+                                <field name="teeth_33" />
+                                <field name="teeth_34" />
+                                <field name="teeth_35" />
+                                <field name="teeth_36" />
+                                <field name="teeth_37" />
+                                <field name="teeth_38" />
+                                <field name="teeth_39" />
+                                <field name="teeth_40" />
+                                <field name="teeth_41" />
+                                <field name="teeth_42" />
+                                <field name="teeth_43" />
+                                <field name="teeth_44" />
+                                <field name="teeth_45" />
+                                <field name="teeth_46" />
+                                <field name="teeth_47" />
+                                <field name="teeth_48" />
+
+                            </group>
+
+                        </group>
+
+                    </group>
+                    <group string="TREATMENT NOTES">
+                        <field name="treatment_notes" />
+
+                    </group>
+                    <group string="BILLING">
+                        <field name="consulatation_type" />
+                        <field name="call_out" />
+                        <field name="scale_and_polish" />
+                        <field name="flouride" />
+                        <field name="filling_description" />
+                        <field name="alligner_delivery" />
+                        <field name="whitening" />
+                        <field name="fissure_seallant_quality" />
+                        <field name="attachment_removed" />
+                        <field name="alligner_followup_scan" />
+                        <field name="other" />
+
+
+                    </group>
+                    <field name="notes" placeholder="Type down your notes here" />
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+
 </odoo>

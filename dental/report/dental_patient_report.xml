@@ -1,0 +1,13 @@
+<odoo>
+    <record id="report_dental_patient" model="ir.actions.report">
+        <field name="name">Dental Patient</field>
+        <field name="model">dental.patient</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dental.report_dental_patient_templates</field>
+        <field name="report_file">dental.report_dental_patient_templates</field>
+        <field name="print_report_name">'Dental patient - %s' % (object.name or
+            'Attendee').replace('/','')</field>
+        <field name="binding_model_id" ref="model_dental_patient" />
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

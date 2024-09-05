@@ -6,7 +6,7 @@
             <tree sample="1" editable="bottom" decoration-success="status in ('accepted')"
                 decoration-danger="status in ('refused')">
 
-                <field name='sequence' widget='handle' />
+                <field name='sequence' widget='handle'  />
                 <field name='price' />
                 <field name='partner_id' />
                 <field name="validity" />
