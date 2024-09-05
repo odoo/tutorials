@@ -6,4 +6,8 @@ class DentalMedications(models.Model):
     _description = "This Model is for Medication"
 
     name = fields.Char(required=True)
-
+    sequence = fields.Integer(
+        "Sequence",
+        default=1,
+        help="Used to order stages. Lower is better.",
+    )

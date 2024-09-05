@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <menuitem id="dental_patient_model" name="Dental">
-        <menuitem id="dental_patient_first_view" name="Patient" action="dental.action_dental_patient_view">
+        <menuitem id="dental_patient_first_view" name="Patient"
+            action="dental.action_dental_patient_view">
         </menuitem>
         <menuitem id="dental_patient_second_menu" name="Medical Aids"
             action="action_medical_aids_view">

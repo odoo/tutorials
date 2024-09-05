@@ -6,4 +6,8 @@ class DentalAllegies(models.Model):
     _description = "This Model is for Medical Allergies"
 
     name = fields.Char(required=True)
-
+    sequence = fields.Integer(
+        "Sequence",
+        default=1,
+        help="Used to order stages. Lower is better.",
+    )

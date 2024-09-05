@@ -6,41 +6,53 @@
         <field name="model">dental.patient</field>
         <field name="arch" type="xml">
             <form string="Form View">
+                <header>
+                    <field name="state" widget="statusbar"></field>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" placeholder="E.g Akhil Pundir"></field>
                         <field name="patient_image" widget="image" class="oe_avatar" />
                     </h1>
-                    <field name="state"></field>
+                    <group>
+                        <field name="state"></field>
+                        <field name="history_ids" string="History">
+                        </field>
+                    </group>
                     <notebook>
                         <page string="Medical">
                             <group>
 
                                 <group>
+                                    <field name="gp_name" string="GP's Name"></field>
+                                    <field name="gp_phone" string="GP's Phone"></field>
                                     <field name="chronic_ids" string="Chronic Conditions"
                                         widget="many2many_tags" />
                                     <field name="hospitalised_year" string="Hospitalised this year"></field>
                                     <field name="medication_ids" widget="many2many_tags"></field>
+                                    <field name="isfemale" string="Female"></field>
+
                                 </group>
                                 <group>
                                     <field name="allergie_ids" widget="many2many_tags"></field>
                                     <field name="habit_ids" widget="many2many_tags"></field>
+                                    <field name="under_speciality" string="Unser specialist care"></field>
+                                    <field name="physicatric_history" string="Psychiatric History"></field>
                                 </group>
                             </group>
-                            <group>
-                                <field name="isfemale"></field>
-                                <field name="ispregnant" class="w-50" invisible="not isfemale" />
-                                <field name="isnursing" class="w-50" invisible="not isfemale" />
-                                <field name="areyouon" invisible="not isfemale"></field>
-                                <field name="description_female" class="w-50" string="Description"
-                                    invisible="not isfemale" />
+                            <group name="female" string="Female">
+                                <field name="ispregnant" class="w-50" invisible="not isfemale"
+                                    string="Are you pregnant" />
+                                <field name="isnursing" class="w-50" invisible="not isfemale"
+                                    string="Are you nursing" />
+                                <field name="areyouon" invisible="not isfemale" string="Are you on"></field>
                             </group>
                         </page>
                         <page name="Medical Aids">
                             <group>
 
                                 <group>
-                                    <field name="medicalaid_id" ></field>
+                                    <field name="medicalaid_id"></field>
                                     <field name="medical_aid_plan" />
                                     <field name="medical_aid_no">
                                     </field>
@@ -52,28 +64,21 @@
                                     </field>
                                 </group>
                             </group>
+
                         </page>
                         <page name="History">
-                            <group>
-
-                               
-                            </group>
+                            <field name="history_ids" string="History">
+                            </field>
                         </page>
                         <page name="Patient Details">
+
                             <group>
-                                <!-- <group > -->
-                                    <div>NEXT OF KIN</div>
-                                <!-- </group> -->
-                                <group >
-                                    <div class="">PATIENT DETAILS</div>
+                                <group name="Next of kin" string="Next of kin">
+                                    <field name="emegency_contact_id" string="emeergency contact"></field>
+                                    <field name="mobile" options="{}"></field>
                                 </group>
-                               
-                            </group>
-                            <group>
-                                <group>
-                                   
-                                </group>
-                                <group>
+                                <group name="Patient Details" string="Patient Details">
+                                    <field name="company_id" string="Company or School"></field>
                                     <field name="ocupation">
                                     </field>
                                     <field name="identity_no">
@@ -86,13 +91,29 @@
                                     </field>
                                 </group>
                             </group>
+                            <group name="Consent Form" string="Consent Form">
+                                <field name="consent_sign"></field>
+                                <field name="consent_date"></field>
+                            </group>
                         </page>
                         <page name="Guarntor Details">
+                            <group>
+                                <group name="Gurantor" string="Gurantor">
+                                    <field name="gurantor" string="Gurantor"></field>
+                                    <field name="gurantor_mobile" string="Gurantor Mobile Phone"></field>
+                                    <field name="gurantor_phone" string="Phone"></field>
+                                    <field name="gurantor_email" string="Email"></field>
+                                </group>
+                                <group name="Office" string="Office Use">
+                                    <field name="gurantor_company_id" string="company"></field>
+                                    <field name="gurantor_tags" widget="many2many_tags"></field>
+                                </group>
 
-                                
+                            </group>
+
                         </page>
-
                     </notebook>
+                    <field name="description_female" placeholder="Write your text here" />
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" />
@@ -113,15 +134,18 @@
                 <field name="state">
                     <templates>
                         <t t-name="kanban-box">
-                            <div class="oe_kanban_global_click d-flex align-items-center">
-                                <div class="w-[10%]">
-                                    <field name="patient_image" widget="image"
-                                        class="img-fluid rounded-circle" />
-                                </div>
-                                <div class=" flex-grow-1">
-                                    <strong class="d-block fs-5">
-                                        <field name="name" />
-                                    </strong>
+                            <div class="oe_kanban_global_click ">
+                                <div class="d-flex align-items-center ">
+
+                                    <div class="w-50 ">
+                                        <field name="patient_image" widget="image"
+                                        class="img-fluid rounded-circle " />
+                                    </div>
+                                    <div class="mx-auto">
+                                        <strong class="">
+                                            <field name="name" />
+                                        </strong>
+                                    </div>
                                 </div>
                             </div>
 
@@ -129,6 +153,149 @@
                     </templates>
                 </field>
             </kanban>
+        </field>
+    </record>
+
+    <!-- Form View for Medical Aids  -->
+    <record id="action_medical_aids_view_form" model="ir.ui.view">
+        <field name="name">medical.aids.form.view</field>
+        <field name="model">medical.aids</field>
+        <field name="arch" type="xml">
+            <form string="Form View">
+                <field name="state" widget="statusbar"></field>
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="E.g Akhil Pundir"></field>
+                    </h1>
+                    <group>
+                        <field name="state"></field>
+
+                        <group>
+                            <field name="contact" string="Contact">
+                            </field>
+                            <field name="phone"></field>
+                            <field name="email"></field>
+                        </group>
+                        <group>
+                            <field name="comapny_id"></field>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="wirte down your notes here"></field>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="tree_view_medical_aids" model="ir.ui.view">
+        <field name="name">tree.view.mdication</field>
+        <field name="model">medical.aids</field>
+        <field name="arch" type="xml">
+            <tree string="Medicaton" default_order="sequence">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Medicaton Tree View -->
+    <record id="tree_view_Medication" model="ir.ui.view">
+        <field name="name">tree.view.mdication</field>
+        <field name="model">medication</field>
+        <field name="arch" type="xml">
+            <tree string="Medicaton" default_order="sequence">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="form_view_Medication" model="ir.ui.view">
+        <field name="name">medical.aids.form.view</field>
+        <field name="model">medication</field>
+        <field name="arch" type="xml">
+            <form string="Form View">
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="E.g Akhil Pundir"></field>
+                    </h1>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View for Chronic Conditons -->
+    <record id="tree_view_chronic_condition" model="ir.ui.view">
+        <field name="name">tree.view.mdication</field>
+        <field name="model">chronic.condition</field>
+        <field name="arch" type="xml">
+            <tree string="Medicaton" default_order="sequence">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record id="form_view_chronic_conditon" model="ir.ui.view">
+        <field name="name">medical.aids.form.view</field>
+        <field name="model">chronic.condition</field>
+        <field name="arch" type="xml">
+            <form string="Form View">
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="E.g Akhil Pundir"></field>
+                    </h1>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Tree view for allergies -->
+    <record id="tree_view_allergies" model="ir.ui.view">
+        <field name="name">tree.view.mdication</field>
+        <field name="model">allergies</field>
+        <field name="arch" type="xml">
+            <tree string="Allergies" default_order="sequence">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="form_view_allergies" model="ir.ui.view">
+        <field name="name">medical.aids.form.view</field>
+        <field name="model">allergies</field>
+        <field name="arch" type="xml">
+            <form string="Form View">
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="E.g Akhil Pundir"></field>
+                    </h1>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Tree view for Habits -->
+    <record id="tree_view_habits" model="ir.ui.view">
+        <field name="name">tree.view.mdication</field>
+        <field name="model">habits</field>
+        <field name="arch" type="xml">
+            <tree string="Medicaton" default_order="sequence">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="form_view_habits" model="ir.ui.view">
+        <field name="name">medical.aids.form.view</field>
+        <field name="model">habits</field>
+        <field name="arch" type="xml">
+            <form string="Form View">
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="E.g Akhil Pundir"></field>
+                    </h1>
+                </sheet>
+            </form>
         </field>
     </record>
 

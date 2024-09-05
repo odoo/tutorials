@@ -4,7 +4,7 @@
     <record id="action_dental_patient_view" model="ir.actions.act_window">
         <field name="name">Patients</field>
         <field name="res_model">dental.patient</field>
-        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No data found!
@@ -42,7 +42,7 @@
         <field name="res_model">habits</field>
         <field name="view_mode">tree,form</field>
     </record>
-
+    <!-- Record Action for  Medicaton  -->
     <record id="action_medical_medications" model="ir.actions.act_window">
         <field name="name">Medication </field>
         <field name="res_model">medication</field>
