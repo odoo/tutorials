@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, Command
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 class DentalPatients(models.Model):
     _name = "dental.patient"
     _description = "patients"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(string='Name', required=True)
     stage = fields.Selection(
@@ -24,12 +25,17 @@ class DentalPatients(models.Model):
         string="Company",
         copy=False
     )
-    phone_number = fields.Char(string="GP's Phone", related="doctor_id.phone")
+    patient_guarantor_id = fields.Many2one(
+        'dental.guarantor',
+        string="Guranator"
+    )
+    image = fields.Image()
+    doc_phone_number = fields.Char(string="GP's Phone", related="doctor_id.phone")
     chronic_conditions_ids = fields.Many2many('chronic.conditions', string="Chronic Condtions")
     allergies_ids = fields.Many2many('dental.allergies', string="Allergies")
     habits_substance_ids = fields.Many2many('habits.substance', string="Habits and substance abuse")
     medication_ids = fields.Many2many('dental.medication', string="Medication")
-    hospitialized = fields.Char(string="Hospitalized this year")
+    hospitalized = fields.Char(string="Hospitalized this year")
     specialized_care = fields.Char(string="Under Specialist Care")
     psychiatric_history = fields.Char(string="Psychiatric history")
     gender = fields.Selection(
@@ -52,3 +58,50 @@ class DentalPatients(models.Model):
         selection=[('single', 'Single'), ('married', 'Married'), ('divorced', 'Divorced'), ('widowed', 'Widowed')],
         required=True,
         default='single')
+    emergency_contact_id = fields.Many2one(
+        'res.users',
+        string="Emergency Contact",
+        copy=False
+    )
+    emergency_contact_phone = fields.Char(string="Mobile", related="emergency_contact_id.phone")
+    consent_date = fields.Date(string="Consent Date")
+    consent_signature = fields.Binary(string="Consent Signature")
+    notes = fields.Text()
+    insurance_id = fields.Many2one('medical.aids')
+    medical_aids_plan = fields.Char(string="Medical Aid Plan")
+    medical_aids_number = fields.Char(string="Medical Aid Number")
+    main_member_code = fields.Char(string="Main Member Code")
+    depedent_code = fields.Char(string="Dependent Code")
+    medical_history_ids = fields.One2many('medical.history', 'patient_id', string="Medical History")
+
+    def book_appointment_button(self):
+        self.stage = 'to invoice'
+        move_vals = {
+            'partner_id': self.patient_guarantor_id.guarantor_id.id,
+            'move_type': 'out_invoice',
+            'invoice_line_ids': [
+                Command.create({
+                "name": "consultation fees",
+                "quantity": 1,
+                "price_unit": 500
+            })
+            ]
+        }
+        self.env['account.move'].check_access_rights('create')
+        self.env['account.move'].check_access_rule('create')
+        self.env['account.move'].sudo().create(move_vals)
+
+class Guarantor(models.Model):
+    _name = "dental.guarantor"
+    _description = "Gurantor of the patient"
+
+    guarantor_id = fields.Many2one(
+        'res.users',
+        string="Guarantor",
+        copy=False
+    )
+    patient_ids = fields.One2many('dental.patient', 'patient_guarantor_id')
+    guarantor_phone = fields.Char(string="Guarantor Mobile Phone", related="guarantor_id.phone")
+    phone = fields.Char(string="Phone")
+    guarantor_email = fields.Char(string="Email", related="guarantor_id.email")
+    notes = fields.Text()

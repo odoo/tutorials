@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <template id="portal_my_home_extension" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[@class='o_portal_my_home']/div[@class='o_portal_docs row g-2']"
+            position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/dental/static/Description/dental.png'" /> 
+                <t t-set="title">Dental</t>
+                <t t-set="text">Manage your dental appointments and records</t>
+                <t t-set="url" t-value="'/my/dental'" />
+                <t t-set="config_card" t-value="True" />
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Dental Patient List -->
+    <template id="portal_my_dental" name="Dental Patients">
+        <t t-call="website.layout">
+            <div>
+                <h2>Dental Patients</h2>
+                <div class="row">
+                    <t t-foreach="patients" t-as="patient">
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <a t-att-href="'/my/dental/%s' %patient.guarantor_id.id">
+                                <strong>
+                                    <t t-esc="patient.guarantor_id" />
+                                </strong>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Patient Details -->
+    <template id="portal_my_dental_patient" name="Dental Patient Details">
+        <t t-call="website.layout">
+            <div class="o_portal_my_dental_patient">
+                <h2>
+                    <t t-esc="patient.guarantor_id" />
+                </h2>
+                <!-- <div class="row">
+                    <div class="col-12 col-md-6">
+                        <strong>Personal Info:</strong>
+                        <p>Date of Birth: <t t-esc="patient.date_of_birth"/></p>
+                        <p>Guarantor: <t t-esc="patient.guarantor_name.name"/></p>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <strong>Medical History:</strong>
+                        <p><t t-esc="patient.medical_history"/></p>
+                    </div>
+                </div> -->
+            </div>
+        </t>
+    </template>
+</odoo>

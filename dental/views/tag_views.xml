@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_dental_tags" model="ir.actions.act_window">
+        <field name="name">Dental Tags</field>
+        <field name="res_model">dental.tags</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_dental_tags_tree" model="ir.ui.view">
+        <field name="name">dental.tags.tree</field>
+        <field name="model">dental.tags</field>
+        <field name="arch" type="xml">
+            <tree string="Dental Tags" editable="bottom">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+</odoo>

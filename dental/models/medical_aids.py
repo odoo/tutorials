@@ -21,3 +21,10 @@ class MedicalAids(models.Model):
     )
     note = fields.Text(string="")
     image = fields.Image(string="")
+
+class MedicalAidsDetails(models.Model):
+    _name = "medicalaids.details"
+    _inherits = {'medical.aids':'medical_aids_id'}
+
+    medical_aids_id = fields.Many2one('medical.aids')
+    

@@ -25,98 +25,147 @@
         <field name="name">dental.patient.kanban</field>
         <field name="model">dental.patient</field>
         <field name="arch" type="xml">
-          <kanban default_group_by="stage" sortable="True"> 
-            <field name="stage" invisible="1"/>
-            <templates>
-              <t t-name="kanban-box">
-                <div class="oe_kanban_global_click">
-                  <div>
-                    <strong>
-                      <field name="name" />
-                    </strong>
-                  </div>
-                </div>
-              </t>
-            </templates>
-            <quick_create name="stage"/>
-            <column name="stage" options="{'sortable': True, 'foldable': True}">
-                <header>
-                    <field name="name"/>
-                </header>
-            </column>
-          </kanban>
+            <kanban default_group_by="stage" sortable="True">
+                <field name="stage" invisible="1" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img
+                                    t-attf-src="#{kanban_image('dental.patient', 'image', record.id.raw_value)}"
+                                    role="img" t-att-alt="record.id.value" />
+                            </div>
+                            <div>
+                                <strong>
+                                    <field name="name" />
+                                </strong>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+                <quick_create name="stage" />
+                <column name="stage" options="{'sortable': True, 'foldable': True}">
+                    <header>
+                        <field name="name" />
+                    </header>
+                </column>
+            </kanban>
         </field>
-      </record>
+    </record>
 
-      <record id="dental_patient_view_form" model="ir.ui.view">
+    <record id="view_dental_patient_form" model="ir.ui.view">
         <field name="name">dental.patient.form</field>
         <field name="model">dental.patient</field>
         <field name="arch" type="xml">
-          <form string="Property">
-            <sheet>
-              <group>
-                <h1>
-                  <group>
-                    <field name="name" />
-                  </group>
-                </h1>
-                <group></group>
-                <group>
-                  <field name="state" />
-                  <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
-                  <field name="property_type_id" options="{'no_create': True, 'no_open': True}" />
-                  <field name="postcode" />
-                  <field name="date_availability" />
-                  <field name="company_id" />
-                </group>
-                <group>
-                  <field name="expected_price" />
-                  <field name="selling_price" />
-                  <field name="best_price" />
-                </group>
-              </group>
-              <notebook>
-                <page string="Description">
-                  <group>
-                    <field string="Bedrooms" name="bedrooms" />
-                    <field name="living_area" />
-                    <field name="facades" />
-                    <field name="garage" />
-                    <field name="garden" />
-                    <field name="garden_area" invisible="not garden" />
-                    <field name="garden_orientation" invisible="not garden" />
-                    <field name="state" />
-                    <field name='total_area' />
-                  </group>
-                </page>
-                <page string="Offers">
-                  <group>
-                    <field name="offer_ids"
-                      readonly="state == 'offer accepted' or state == 'sold' or state == 'cancelled'">
-                      <tree string="Offers" editable="bottom" decoration-success="status == 'accepted'"
-                        decoration-danger="status == 'refused'">
-                        <field name="price" />
-                        <field name="partner_id" />
-                        <field name="status" optional="status == 'accepted' or status == 'refused'" />
-                        <button name="action_accept_button" type="object" string="Accept"
-                          icon="fa-check" invisible="status == 'accepted' or status == 'refused'" />
-                        <button name="action_refuse_button" type="object" string="Refuse"
-                          icon="fa-level-down" invisible="status == 'accepted' or status == 'refused'" />
-                        <field name="validity" />
-                        <field name="date_deadline" />
-                      </tree>
-                    </field>
-                  </group>
-                </page>
-                <page string="Other Info">
-                  <group>
-                    <field name="seller_id" />
-                    <field name="buyer_id" />
-                  </group>
-                </page>
-              </notebook>
-            </sheet>
-          </form>
+            <form>
+                <header>
+                    <button name="book_appointment_button" type="object" string="Book Appointment" />
+                    <field name="stage" widget="statusbar" options="{'clickable': '1'}" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" class="oe-title" />
+                    </group>
+                    <group>
+                        <field name="medical_history_ids" string="History" />
+                    </group>
+                    <notebook>
+                        <page string="Medical">
+                            <group>
+                                <group>
+                                    <field name="doctor_id" />
+                                    <field name="doc_phone_number" widget="phone" />
+                                    <field name="chronic_conditions_ids" widget="many2many_tags" />
+                                    <field name="hospitalized" />
+                                    <field name="medication_ids" widget="many2many_tags" />
+                                </group>
+                                <group>
+                                    <field name="allergies_ids" widget="many2many_tags" />
+                                    <field name="habits_substance_ids" widget="many2many_tags" />
+                                    <field name="specialized_care" />
+                                    <field name="psychiatric_history" />
+                                </group>
+                                <group string="FEMALE" invisible="gender != 'female'">
+                                    <field name="pregnant" />
+                                    <field name="nursing" />
+                                    <field name="hormone" />
+                                </group>
+                            </group>
+                            <div>
+                                <field name="notes" placeholder="Type down your notes here" />
+                            </div>
+                        </page>
+
+                        <page string="Medical Aid">
+                            <group>
+                                <group>
+                                    <field name="insurance_id" string="Medical Aid" />
+                                    <field name="medical_aids_plan" />
+                                    <field name="medical_aids_number" />
+                                </group>
+                                <group>
+                                    <field name="main_member_code" />
+                                    <field name="depedent_code" />
+                                </group>
+                            </group>
+                            <div>
+                                <field name="notes" placeholder="Type down your notes here" />
+                            </div>
+                        </page>
+
+                        <page string="History">
+                            <field name="medical_history_ids" string="History" />
+                        </page>
+
+                        <page string="Patient Details">
+                            <group>
+                                <group string="Next of Kin">
+                                    <field name="emergency_contact_id" />
+                                    <field name="emergency_contact_phone" />
+                                </group>
+                                <group string="Patient details">
+                                    <field name="company_id" />
+                                    <field name="occupation" />
+                                    <field name="identity_num" />
+                                    <field name="birthdate" />
+                                    <field name="gender" />
+                                    <field name="maritial_status" />
+                                </group>
+                                <group string="Consent Form">
+                                    <field name="consent_signature" widget="signature" />
+                                    <field name="consent_date" />
+                                </group>
+                            </group>
+                            <div>
+                                <field name="notes" placeholder="Type down your notes here" />
+                            </div>
+                        </page>
+
+                        <page string="Guarantor">
+                            <group>
+                                <group>
+                                    <field name="patient_guarantor_id" />
+                                    <field name="medical_aids_plan" />
+                                    <field name="medical_aids_number" />
+                                </group>
+                                <group>
+                                    <field name="main_member_code" />
+                                    <field name="depedent_code" />
+                                </group>
+                            </group>
+                            <div>
+                                <field name="notes" placeholder="Type down your notes here" />
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                    <field name="activity_ids" />
+                </div>
+            </form>
         </field>
-      </record>
+    </record>
+
 </odoo>
