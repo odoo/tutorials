@@ -12,7 +12,7 @@
             <tree>
                 <field name="date" widget="date"/>
                 <field name="name" />
-                <field name="description"/>
+                <field name="treatment_notes" string="Description"/>
                 <field name="tags"/>
             </tree>
         </field>

@@ -45,3 +45,11 @@ class DentalPortal(CustomerPortal):
         return request.render('dental.portal_my_dental_dental_history', {
             'history': history
         })
+
+    @http.route('/my/dental/<int:patient_id>/dental_history/<int:history_id>', type='http', auth='user', website=True)
+    def portal_my_dental_dental_history_detail(self, patient_id, history_id, **kw):
+        history = request.env['patient.history'].search([('patient_id', '=', patient_id)])
+        medical_history = history.browse(history_id)
+        return request.render('dental.portal_my_dental_dental_history_detail', {
+            'medical_history': medical_history
+        })

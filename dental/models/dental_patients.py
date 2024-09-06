@@ -6,7 +6,6 @@ class DentalPatients(models.Model):
     _description = "Patients"
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
 
-    portal_access = fields.Boolean(string="Portal Access", default=True)
     name = fields.Char(string='Name', required=True, tracking=True)
     state = fields.Selection([
         ('new', 'New'),
@@ -52,7 +51,7 @@ class DentalPatients(models.Model):
     gender = fields.Selection([
         ('female', 'Female'),
         ('male', 'Male'),
-        ('neither', 'Neither')
+        ('other', 'Other')
     ], string="Gender", default='female')
 
     marital_status = fields.Selection([
@@ -75,7 +74,7 @@ class DentalPatients(models.Model):
 
     history_ids = fields.One2many('patient.history', 'history_id', string="History")
 
-    def action_toinvoice(self):
+    def action_to_invoice(self):
         self.state = 'toinvoice'
         move_vals = {
             'partner_id': self.guarantor_name.id,
@@ -94,13 +93,8 @@ class DentalPatients(models.Model):
 
     def book_appointment_button(self):
         move_vals = {
-            'appointment_duration': 1,
-            'appointment_tz': self.env.user.tz,
-            'assign_method': 'resource_time',
-            'max_schedule_days': 1,
-            'min_cancellation_hours': 24,
-            'min_schedule_hours': 48,
-            'name': 'Appointment',
-            'schedule_based_on': 'users',
+            'name': self.name,
+            'appointment_type_id': self.env.ref('appointment.appointment_type_dental_care').id,
+            'duration': 1,
         }
-        self.env['appointment.type'].sudo().create(move_vals)
+        self.env['calendar.event'].sudo().create(move_vals)

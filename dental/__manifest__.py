@@ -1,9 +1,9 @@
 {
     'name': 'DENTAL',
-    'version': '1.2',
-    'description': "",
+    'version': '1.0',
+    'description': "Dental Management System",
     'depends': [
-        'base_setup', 'website', 'account', 'portal'
+        'base', 'website', 'account', 'portal'
     ],
     'data': [
         'security/ir.model.access.csv',
