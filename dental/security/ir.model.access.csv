@@ -6,3 +6,4 @@ access_dental_allergy,access_dental_allergy,model_dental_allergy,base.group_user
 access_dental_habits,access_dental_habits,model_dental_habit,base.group_user,1,1,1,1
 access_dental_medication,access_dental_medication,model_dental_medication,base.group_user,1,1,1,1
 dental.access_dental_medical_history,access_dental_medical_history,dental.model_dental_medical_history,base.group_user,1,1,1,1
+dental.access_dental_stage,access_dental_stage,dental.model_dental_stage,base.group_user,1,1,1,1

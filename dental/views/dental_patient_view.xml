@@ -20,9 +20,11 @@
         <field name="arch" type="xml">
             <form string="Patient">
                 <header>
-                    <button name="action_book_appointment" type="object" class="oe_highlight" string="Book appointment"
-                        invisible="state in ['to_invoice']" />
-                    <field name="state" widget="statusbar" options="{'clickable': '1'}" />
+                    <button name="action_book_appointment" type="object" class="oe_highlight"
+                        string="Book appointment" />
+                    <button name="action_create_invoice" type="object" class="oe_highlight"
+                        string="Create Invoice" />
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" />
                 </header>
                 <sheet>
                     <field name="image" widget="image" class="oe_avatar" />
@@ -125,19 +127,21 @@
         <field name="name">dental.patient.kanban</field>
         <field name="model">dental.patient</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state">
-                <field name="state" />
+            <kanban default_group_by="stage_id">
+                <field name="stage_id" />
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_global_click">
-                            <div class="oe_kanban_details">
-                                <strong class="o_kanban_record_title">
-                                    <field name="name" />
-                                </strong>
-                                <div class="o_kanban_image">
-                                    <img
-                                        t-attf-src="#{kanban_image('dental.patient', 'image', record.id.raw_value)}"
-                                        role="img" t-att-alt="record.id.value" />
+                        <div class="oe_kanban_content flex-grow-1">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name" />
+                                    </strong>
+                                    <div class="o_kanban_image">
+                                        <img
+                                            t-attf-src="#{kanban_image('dental.patient', 'image', record.id.raw_value)}"
+                                            role="img" t-att-alt="record.id.value" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +155,7 @@
     <record id="dental_patient_action" model="ir.actions.act_window">
         <field name="name">Dental</field>
         <field name="res_model">dental.patient</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Add new patients

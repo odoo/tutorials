@@ -1,7 +1,7 @@
 {
     'name': "Dental App",
     'version': '1.0',
-    'depends': ['base',"mail",'account'],
+    'depends': ['base', "mail", 'account', 'website', 'portal'],
     'description': """ Dental module """,
     'data': ['security/ir.model.access.csv',
              'views/dental_patient_view.xml',
@@ -13,6 +13,7 @@
              'views/dental_medical_history_view.xml',
              'views/dental_menu.xml',
              'views/dental_portal_template.xml'],
+    'demo': ['data/dental_stage_demo.xml'],
     'installable': True,
     'application': True,
     'sequence': -2,

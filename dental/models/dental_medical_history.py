@@ -11,17 +11,18 @@ class DentalMedicalHistory(models.Model):
         string="Date", default=fields.Date.context_today, required=True)
     patient_id = fields.Many2one(
         'dental.patient', string="Patient", required=True)
-    main_complaint = fields.Text(string="Main Complaint")
-    history = fields.Text(string="History")
-    company_id = fields.Many2one('res.company', string='Company')
+    main_complaint = fields.Char(string="Main Complaint")
+    history = fields.Char(string="History")
+    company_id = fields.Many2one(
+        'res.company', string='Company', default=lambda self: self.env.company)
     did_not_attend = fields.Boolean(required=True)
     xray_file_1 = fields.Binary(string="X-ray File 1")
     xray_file_2 = fields.Binary(string="X-ray File 2")
     clear_aligner_file_1 = fields.Binary(string="Clear Aligner File 1")
     clear_aligner_file_2 = fields.Binary(string="Clear Aligner File 2")
-    habits = fields.Text(string="Habits")
-    extra_oral_observation = fields.Text(string="Extra-Oral Observation")
-    treatment_notes = fields.Text(string="Treatment Notes")
+    habits = fields.Char(string="Habits")
+    extra_oral_observation = fields.Char(string="Extra-Oral Observation")
+    treatment_notes = fields.Char(string="Treatment Notes")
     consultation_type = fields.Selection([
         ('full_consultation', 'Full Consultation with Bitewings and Scan'),
         ('basic_consultation', 'Basic Consultation'),
@@ -31,7 +32,7 @@ class DentalMedicalHistory(models.Model):
     call_out = fields.Boolean(string="Call Out")
     scale_and_polish = fields.Boolean(string="Scale and Polish")
     fluoride = fields.Boolean(string="Fluoride")
-    filling_description = fields.Text(string="Filling Description")
+    filling_description = fields.Char(string="Filling Description")
     aligner_delivery = fields.Boolean(
         string="Aligner Delivery and Attachment Placed")
     whitening = fields.Boolean(string="Whitening")
@@ -39,10 +40,10 @@ class DentalMedicalHistory(models.Model):
         string="Fissure Sealant Quantity", digits=(6, 2))
     attachments_removed = fields.Boolean(string="Attachments Removed")
     aligner_followup_scan = fields.Boolean(string="Aligner Follow-up Scan")
-    other_notes = fields.Text(string="Other Notes")
+    other_notes = fields.Char(string="Other Notes")
 
     # General notes field at the end
-    notes = fields.Text(string="Additional Notes")
+    notes = fields.Char(string="Additional Notes")
 
     upper_18_staining = fields.Boolean(string='18 Staining')
     upper_17_staining = fields.Boolean(string='17 Staining')

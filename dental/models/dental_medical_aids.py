@@ -11,6 +11,6 @@ class DentalMedicalAids(models.Model):
     partner_id = fields.Many2one(comodel_name="res.partner", string="Contact")
     phone = fields.Char(string='Phone no.', related='partner_id.phone')
     email = fields.Char(related='partner_id.email')
-    company_id = fields.Many2one(comodel_name="res.company", string="Company")
+    company_id = fields.Many2one(comodel_name="res.company", string="Company", default=lambda self: self.env.company)
     notes = fields.Text()
     image = fields.Image(related='partner_id.image_1920')

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record model="dental.stage" id="stage_1">
+        <field name="name">New</field>
+        <field name="sequence">1</field>
+    </record>
+    <record model="dental.stage" id="stage_2">
+        <field name="name">To do today</field>
+        <field name="sequence">2</field>
+    </record>
+    <record model="dental.stage" id="stage_3">
+        <field name="name">To Invoice</field>
+        <field name="sequence">3</field>
+    </record>
+    <record model="dental.stage" id="stage_4">
+        <field name="name">Done</field>
+        <field name="sequence">4</field>
+    </record>
+</odoo>
