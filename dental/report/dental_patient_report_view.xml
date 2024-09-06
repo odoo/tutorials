@@ -1,23 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <template id="dental_patient_report_view">
         <t t-foreach="docs" t-as="record">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <h2>
-                            <span t-field="record.name"/>
+                        <h2 class="text-center">
+                            <strong>Patient Name: </strong>
+                            <span t-field="record.name" />
                         </h2>
-                        <div>
-                            <strong>Gurantor:</strong>
-                         
-                            <span t-field="record.gurantor"/>
+
+                        <div class="mt-4">
+                            <h3>Guarantor Information</h3>
+                            <p>
+                                <strong>Guarantor:</strong>
+                                <span t-field="record.gurantor" />
+                            </p>
+                            <p>
+                                <strong>Phone:</strong>
+                                <span t-field="record.gurantor_tags" />
+                            </p>
+                            <p>
+                                <strong>Email:</strong>
+                                <span t-field="record.gurantor_email" />
+                            </p>
+                        </div>
+
+                        <div class="mt-4">
+                            <h3>Medical Aid Information</h3>
+                            <p>
+                                <strong>Medical Aid:</strong>
+                                <span t-field="record.medicalaid_id" />
+                            </p>
+                            <p>
+                                <strong>Plan:</strong>
+                                <span t-field="record.medical_aid_plan" />
+                            </p>
+                            <p>
+                                <strong>Medical Aid Number:</strong>
+                                <span t-field="record.medical_aid_no" />
+                            </p>
+                            <p>
+                                <strong>Main Member Code:</strong>
+                                <span t-field="record.main_member_code" />
+                            </p>
+                            <p>
+                                <strong>Dependant Code:</strong>
+                                <span t-field="record.dependent_code" />
+                            </p>
+                        </div>
+
+                        <div class="mt-4">
+                            <h3>Emergency Contact</h3>
+                            <p>
+                                <strong>Contact:</strong>
+                                <span t-field="record.emegency_contact_id" />
+                            </p>
+                        </div>
+
+                        <div class="mt-4">
+                            <h3>Medical Information</h3>
+                            <p>
+                                <strong>Chronic Conditions:</strong>
+                                <t t-foreach="record.chronic_ids" t-as="condition">
+                                    <span class="badge bg-warning" t-field="condition.name" />
+                                </t>
+                            </p>
+                            <p>
+                                <strong>Allergies:</strong>
+                                <t t-foreach="record.allergie_ids" t-as="allergy">
+                                    <span class="badge bg-danger" t-field="allergy.name" />
+                                </t>
+                            </p>
+                            <p>
+                                <strong>Habits/Substance Abuse:</strong>
+                                <t t-foreach="record.habit_ids" t-as="habit">
+                                    <span class="badge bg-info" t-field="habit.name" />
+                                </t>
+                            </p>
                         </div>
                     </div>
                 </t>
             </t>
         </t>
     </template>
-
 </odoo>

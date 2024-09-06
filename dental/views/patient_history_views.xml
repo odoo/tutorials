@@ -1,4 +1,5 @@
 <odoo>
+    <!-- Record Acion For Dental Patient History -->
     <record id="detal_history_action" model="ir.actions.act_window">
         <field name="name">History</field>
         <field name="res_model">patient.history</field>

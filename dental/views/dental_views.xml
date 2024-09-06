@@ -16,13 +16,13 @@
     </record>
 
     <!-- Record Action for the Medical Aids View -->
-
     <record id="action_medical_aids_view" model="ir.actions.act_window">
         <field name="name">Medical Help</field>
         <field name="res_model">medical.aids</field>
         <field name="view_mode">tree,form</field>
 
     </record>
+
     <!--  Record Action for all the three items of Medical Symptoms  -->
     <record id="action_medical_aids_chronic" model="ir.actions.act_window">
         <field name="name">Chronic Conditions</field>
@@ -30,6 +30,7 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- Record Action for Mediical Allergies -->
     <record id="action_medical_aids_allergies" model="ir.actions.act_window">
         <field name="name">Allergies</field>
         <field name="res_model">allergies</field>
@@ -37,17 +38,17 @@
 
     </record>
 
+    <!-- Record Action for Habits -->
     <record id="action_medical_aids_habits" model="ir.actions.act_window">
         <field name="name">Habits </field>
         <field name="res_model">habits</field>
         <field name="view_mode">tree,form</field>
     </record>
+
     <!-- Record Action for  Medicaton  -->
     <record id="action_medical_medications" model="ir.actions.act_window">
         <field name="name">Medication </field>
         <field name="res_model">medication</field>
         <field name="view_mode">tree,form</field>
     </record>
-
-
 </odoo>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <menuitem id="dental_patient_model" name="Dental">
+    <menuitem id="dental_patient_model" name="Dental" web_icon="dental,static/description/dental_img.png">
         <menuitem id="dental_patient_first_view" name="Patient"
             action="dental.action_dental_patient_view">
         </menuitem>

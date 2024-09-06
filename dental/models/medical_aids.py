@@ -18,5 +18,4 @@ class DentalMedicalAids(models.Model):
     sequence = fields.Integer(
         "Sequence",
         default=1,
-        help="Used to order stages. Lower is better.",
     )

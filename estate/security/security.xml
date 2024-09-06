@@ -18,7 +18,7 @@
     </record>
 
     <record id="rule_estate_group_manager" model="ir.rule">
-        <field ref="model_estate_property" name="model_id" />
+        <field ref="model_eustate_property" name="model_id" />
         <field name="name">Manager permissions</field>
         <field name="perm_unlink" eval="False" />
         <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]" />

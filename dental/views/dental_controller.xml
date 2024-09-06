@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- To open all the patient in which user is gurantor -->
+    <template id="dental_card_controller">
+        <t t-call="website.layout">
+            <div style="container" class=" mt-5 container">
+                    <t t-set="breadcrumbs_searchbar" t-value="True" />
+                    <nav
+                        t-attf-class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar {{classes if classes else ''}}">
+        
+                        <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                            <li class="breadcrumb-item ms-1" data-oe-model="ir.ui.view" data-oe-id="682"
+                                data-oe-field="arch" data-oe-xpath="/t[1]/ol[1]/li[1]">
+                                <a href="/my" aria-label="Home" title="Home">
+                                    <i class="fa fa-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a href="/home/dental" title="Dental">
+                                    Dental
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+
+                <h1 class="text-center mt-5">Dentals</h1>
+                <div t-if="patients" class="d-flex justify-content-start flex-wrap">
+                    <div t-foreach="patients" t-as="record" class="bg-light shadow-sm border "
+                        style="margin:1rem;padding-inline:0.5rem;padding-right:2rem; width:fit-content;">
+                        <a t-attf-href="/home/dental/#{record.id}" class="text-decoration-none ">
+                            <div class="d-flex align-items-center p-2 rounded">
+                                <img t-att-src="'/dental/static/description/image.png'" alt="Avatar"
+                                    class="o_avatar o_portal_contact_img rounded-circle me-3"
+                                    style="width: 40px; height: 40px; object-fit: cover;" />
+                                <h5 class="mb-0 pe-4">
+                                    <t t-out="record.name" />
+                                </h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div t-else="">
+                    <p>No patient is available at the moment.</p>
+                </div>
+                <div class="mt-5 bottom-0">
+                    <div class=""
+                        style="
+                    width: fit-content;
+                    margin: auto;">
+                        <t t-call="website.pager" />
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- To open all the four card for specific patient -->
+    <template id="patient_details_controller" name="Patient Details">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <nav
+                t-attf-class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar {{classes if classes else ''}}">
+
+                <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                    <li class="breadcrumb-item ms-1" data-oe-model="ir.ui.view" data-oe-id="682"
+                        data-oe-field="arch" data-oe-xpath="/t[1]/ol[1]/li[1]">
+                        <a href="/my" aria-label="Home" title="Home">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active ">
+                        <a href="/home/dental" title="Dental">
+                            Dental
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active ">
+                        <t t-out="patients.name"/>
+                    </li>
+                </ol>
+            </nav>
+                <h2 class="text-center mb-4 " style="color:#65435c;">
+                    <strong>
+                        Patient Name:
+                    </strong>
+                    <t t-out="patients.name" />
+                </h2>
+                <div class="container my-4">
+                    <div class="row justify-content-around mb-4">
+                        <div class="col-md-5">
+                            <a
+                                t-attf-href="/home/dental/personal/#{patients.id}"
+                                class="text-decoration-none">
+                                <div
+                                    class="border border-primary rounded p-4 text-center bg-light shadow-sm d-flex">
+                                    <img t-att-src="'/dental/static/description/bag.svg'"
+                                        alt="Avatar"
+                                        class="o_avatar o_portal_contact_img rounded-circle me-3"
+                                        style="width: 40px; height: 40px; object-fit: cover;" />
+                                    <h4 class="mb-0">Personal</h4>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-5">
+                            <a
+                                t-attf-href="/home/dental/hisory/#{patients.id}"
+                                class="text-decoration-none">
+                                <div
+                                    class="border border-primary rounded p-4 text-center bg-light shadow-sm d-flex">
+                                    <img t-att-src="'/dental/static/description/Bill.svg'"
+                                        alt="Avatar"
+                                        class="o_avatar o_portal_contact_img rounded-circle me-3"
+                                        style="width: 40px; height: 40px; object-fit: cover;" />
+                                    <h4 class="mb-0">Medical History</h4>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row justify-content-around">
+                        <div class="col-md-5">
+                            <a
+                                t-attf-href="/home/dental/medicalaid/#{patients.id}"
+                                class="text-decoration-none">
+                                <div
+                                    class="border border-primary rounded p-4 text-center bg-light shadow-sm d-flex">
+                                    <img t-att-src="'/dental/static/description/folder.svg'"
+                                        alt="Avatar"
+                                        class="o_avatar o_portal_contact_img rounded-circle me-3"
+                                        style="width: 40px; height: 40px; object-fit: cover;" />
+                                    <h4 class="mb-0">Medical Aids</h4>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-5">
+                            <a t-attf-href="/home/dental/appointment/#{patients.id}"
+                                class="text-decoration-none">
+                                <div
+                                    class="border border-primary rounded p-4  bg-light shadow-sm d-flex">
+                                    <img t-att-src="'/dental/static/description/tasks.svg'"
+                                        alt="Avatar"
+                                        class="o_avatar o_portal_contact_img rounded-circle me-3"
+                                        style="width: 40px; height: 40px; object-fit: cover;" />
+                                    <h4 class="mb-0">Dental History and Next Appointment</h4>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template to show medical History Table -->
+    <template id="patient_details_controller_history_table" name="Patient Medical Details">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <nav
+                t-attf-class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar {{classes if classes else ''}}">
+
+                <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                    <li class="breadcrumb-item ms-1" data-oe-model="ir.ui.view" data-oe-id="682"
+                        data-oe-field="arch" data-oe-xpath="/t[1]/ol[1]/li[1]">
+                        <a href="/my" aria-label="Home" title="Home">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active ">
+                        <a href="/home/dental" title="Dental">
+                            Dental
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+            <div class="text-center mb-3">
+                <h3>Patient Hisotry Table</h3>
+            </div>
+
+            <t t-if="not patients">
+                <p class="alert alert-warning">There are no History for the Patient</p>
+            </t>
+            <t t-if="patients" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Date</th>
+                        <th>name</th>
+                        <th class='d-none d-md-table-cell'>responsible</th>
+                        <th class='d-none d-md-table-cell'>description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="patients" t-as="patient">
+                        <tr>
+                            <td>
+                                <t t-out="patient.date" />
+                            </td>
+                            <td>
+                                <a t-attf-href="/home/dental/history/form/#{patient.id}"
+                                    class="text-decoration-none ">
+
+                                    <span t-out="patient.name" />
+                                </a>
+                            </td>
+                            <td class='d-none d-md-table-cell'>
+                                <span t-out="patient.responsible" />
+                            </td>
+                            <td class='d-none d-md-table-cell'>
+                                <span t-out="patient.description" />
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <!-- Template to show medical and Appointments -->
+    <template id="patient_details_controller_appointment" name="Patient Medical Details">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <nav
+                t-attf-class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar {{classes if classes else ''}}">
+
+                <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                    <li class="breadcrumb-item ms-1" data-oe-model="ir.ui.view" data-oe-id="682"
+                        data-oe-field="arch" data-oe-xpath="/t[1]/ol[1]/li[1]">
+                        <a href="/my" aria-label="Home" title="Home">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active ">
+                        <a href="/home/dental" title="Dental">
+                            Dental
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+            <div class="text-center mb-3">
+                <h3>Patient Hisotry And Appointments</h3>
+            </div>
+
+
+            <t t-if="not patients">
+                <p class="alert alert-warning">There are no History for the Patient</p>
+            </t>
+            <t t-if="patients" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Date</th>
+                        <th>name</th>
+                        <th class='d-none d-md-table-cell'>responsible</th>
+                        <th class='d-none d-md-table-cell'>description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="patients" t-as="patient">
+                        <tr>
+                            <td>
+                                <t t-out="patient.date" />
+                            </td>
+                            <td>
+                                <span t-out="patient.name" />
+                            </td>
+                            <td class='d-none d-md-table-cell'>
+                                <span t-out="patient.responsible" />
+                            </td>
+                            <td class='d-none d-md-table-cell'>
+                                <span t-out="patient.description" />
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <!-- To Show Personal Details -->
+
+    <template id="patient_my_dental_personal" name="My Dental Personal">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <nav
+                t-attf-class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar {{classes if classes else ''}}">
+
+                <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                    <li class="breadcrumb-item ms-1" data-oe-model="ir.ui.view" data-oe-id="682"
+                        data-oe-field="arch" data-oe-xpath="/t[1]/ol[1]/li[1]">
+                        <a href="/my" aria-label="Home" title="Home">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active ">
+                        <a href="/home/dental" title="Dental">
+                            Dental
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="container text-center">
+                <h1>Personal Details</h1>
+                <div class="container mt-4">
+                    <t t-foreach="patients" t-as="patient">
+                        <!-- Patient Card -->
+                        <div class="card mb-4 shadow-lg border-0">
+                            <!-- Card Header -->
+                            <div class="card-header bg-primary text-white text-center py-3">
+                                <h4 class="mb-0">Patient Information</h4>
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Left Column -->
+                                    <div class="col-md-6">
+                                        <!-- Name and Date of Birth -->
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Name:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.name" readonly="readonly" />
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Date of Birth:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.birth_date" readonly="readonly" />
+                                        </div>
+
+                                        <!-- GP Name and Phone -->
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">GP Name:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.gp_name.name"
+                                                readonly="readonly" />
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">GP Phone:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.gp_phone" readonly="readonly" />
+                                        </div>
+
+                                        <!-- Emergency Contact and Mobile -->
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Emergency Contact:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.emegency_contact_id.name"
+                                                readonly="readonly" />
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Emergency Contact Mobile:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.mobile" readonly="readonly" />
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Column -->
+                                    <div class="col-md-6">
+                                        <!-- Occupation and Identity Number -->
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Occupation:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.ocupation" readonly="readonly" />
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Identity Number:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.identity_no"
+                                                readonly="readonly" />
+                                        </div>
+
+                                        <!-- Consent Date and Medical Aid -->
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Consent Date:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.consent_date"
+                                                readonly="readonly" />
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Medical Aid:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.medicalaid_id.name"
+                                                readonly="readonly" />
+                                        </div>
+
+                                        <!-- Medical Aid Number and Plan -->
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Medical Aid Number:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.medical_aid_no"
+                                                readonly="readonly" />
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Medical Aid Plan:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.medical_aid_plan"
+                                                readonly="readonly" />
+                                        </div>
+
+                                        <!-- Main Member Code -->
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Main Member Code:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.main_member_code"
+                                                readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Chronic Conditions, Allergies, Medication, and Specialist Care -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Chronic Conditions:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="', '.join([chronic.name for chronic in patient.chronic_ids])"
+                                                readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Allergies:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="', '.join([allergy.name for allergy in patient.allergie_ids])"
+                                                readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Medication:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="', '.join([medication.name for medication in patient.medication_ids])"
+                                                readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Under Specialist Care:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.under_speciality"
+                                                readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Habits and Psychiatric History -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Habits / Substance Abuse:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="', '.join([habit.name for habit in patient.habit_ids])"
+                                                readonly="readonly" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="text-primary">Psychiatric History:</label>
+                                            <input type="text" class="form-control"
+                                                t-att-value="patient.physicatric_history"
+                                                readonly="readonly" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+
+            </div>
+        </t>
+    </template>
+
+    <!-- To show the Medical Aids Form in Website -->
+    <template id="patient_my_dental_medical_aids" name="My Dental Personal">
+        <t t-call="portal.portal_layout">
+            <div class="container text-center">
+                <t t-set="breadcrumbs_searchbar" t-value="True" />
+                <nav
+                    t-attf-class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar {{classes if classes else ''}}">
+
+                    <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                        <li class="breadcrumb-item ms-1" data-oe-model="ir.ui.view" data-oe-id="682"
+                            data-oe-field="arch" data-oe-xpath="/t[1]/ol[1]/li[1]">
+                            <a href="/my" aria-label="Home" title="Home">
+                                <i class="fa fa-home"></i>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active ">
+                            <a href="/home/dental" title="Dental">
+                                Dental
+                            </a>
+                        </li>
+                    </ol>
+                </nav>
+                <h1>Medical Aids Details</h1>
+                <div class="container mt-4">
+                    <t t-foreach="patients" t-as="record">
+                        <form class="border p-4 rounded bg-light shadow-sm">
+                            <!-- Row 1 -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" id="name" class="form-control"
+                                        t-att-value="record.name" readonly="readonly" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="contact" class="form-label">Contact</label>
+                                    <input type="text" id="contact" class="form-control"
+                                        t-att-value="record.contact" readonly="readonly" />
+                                </div>
+                            </div>
+
+                            <!-- Row 2 -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Phone</label>
+                                    <input type="text" id="phone" class="form-control"
+                                        t-att-value="record.phone" readonly="readonly" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="text" id="email" class="form-control"
+                                        t-att-value="record.email" readonly="readonly" />
+                                </div>
+                            </div>
+
+                            <!-- Row 3 -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="description" class="form-label">Description</label>
+                                    <input type="text" id="description" class="form-control"
+                                        t-att-value="record.description" readonly="readonly" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Phone </label>
+                                    <input type="text" id="phone" class="form-control"
+                                        t-att-value="record.phone" readonly="readonly" />
+                                </div>
+                            </div>
+                        </form>
+                    </t>
+                </div>
+
+
+            </div>
+        </t>
+    </template>
+
+    <!-- To show the Dental card on the my route  -->
+    <template id="portal_my_home_extended" name="My Portal Extended"
+        inherit_id="portal.portal_my_home">
+        <xpath expr="//div[@id='portal_common_category']" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/dental/static/description/bag.svg'" />
+                <t t-set="title">Dental</t>
+                <t t-set="text">Manage your dental records and appointments</t>
+                <t t-set="url" t-value="'/home/dental'" />
+                <t t-set="config_card" t-value="True" />
+            </t>
+        </xpath>
+    </template>
+
+    <!-- To show the history Form view when clicked on one  -->
+    <template id="patient_my_dental_medical_history_form" name="My Dental Personal">
+        <t t-call="portal.portal_layout">
+            <div class="container text-center">
+                <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <nav
+                t-attf-class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar {{classes if classes else ''}}">
+
+                <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                    <li class="breadcrumb-item ms-1" data-oe-model="ir.ui.view" data-oe-id="682"
+                        data-oe-field="arch" data-oe-xpath="/t[1]/ol[1]/li[1]">
+                        <a href="/my" aria-label="Home" title="Home">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active ">
+                        <a href="/home/dental" title="Dental">
+                            Dental
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+
+                <h1>History Form View</h1>
+                <div class="container mt-4">
+
+                    <form class="border p-4 rounded bg-light shadow-sm">
+                        <!-- Row 1 -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" id="name" class="form-control"
+                                    t-att-value="patient.name" readonly="readonly" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="description" class="form-label">description</label>
+                                <input type="text" id="description" class="form-control"
+                                    t-att-value="patient.description" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="date" class="form-label">date</label>
+                                <input type="text" id="date" class="form-control"
+                                    t-att-value="patient.date" readonly="readonly" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="responsible" class="form-label">responsible</label>
+                                <input type="text" id="responsible" class="form-control"
+                                    t-att-value="patient.responsible" readonly="readonly" />
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

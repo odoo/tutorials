@@ -7,5 +7,6 @@ class DentalChronicCondition(models.Model):
 
     name = fields.Char(required=True)
     sequence = fields.Integer(
-        "Sequence", default=1, help="Used to order stages. Lower is better."
+        "Sequence",
+        default=1,
     )

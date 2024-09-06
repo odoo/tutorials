@@ -1,6 +1,5 @@
-from datetime import datetime, timedelta, date
+from datetime import date
 from odoo import fields, models, api, Command
-from odoo.exceptions import UserError, ValidationError
 
 
 class DentalPatient(models.Model):
@@ -79,7 +78,6 @@ class DentalPatient(models.Model):
     def create_patient_invoice(self):
         if self.state == "toinvoice":
             for record in self:
-                print(record.gurantor.id)
                 values_property = {
                     "partner_id": record.gurantor.partner_id.id,
                     "move_type": "out_invoice",
