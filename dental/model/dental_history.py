@@ -21,14 +21,6 @@ class History(models.Model):
     clear_aligner1 = fields.Image()
     clear_aligner2 = fields.Image()
     treatment_notes = fields.Text()
-    consulatation_type = fields.Selection(
-        copy=False,
-        selection=[
-            ("full_consulatation", "Full Consultation with bite-wings and scan"),
-            ("basic_consultation", "Basic Consulatation"),
-            ("no_consulatation", "No Consulatation"),
-        ],
-    )
     call_out = fields.Boolean()
     scale_and_polish = fields.Boolean()
     flouride = fields.Boolean()

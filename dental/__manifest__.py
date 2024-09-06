@@ -2,7 +2,7 @@
     "name": "dental",
     "version": "0.1",
     "license": "LGPL-3",
-    "depends": ["base", "mail", "account"],
+    "depends": ["base", "mail", "account", "website"],
     "description": "Dental Application",
     "installable": True,
     "application": True,
@@ -17,6 +17,7 @@
         "view/dental_allergies.xml",
         "view/dental_habits_abuse.xml",
         "view/dental_medication.xml",
+        "view/dental_controller.xml",
         "view/dental_menu.xml",
     ],
 }

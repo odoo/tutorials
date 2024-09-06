@@ -1,0 +1,228 @@
+<odoo>
+
+    <template id="Portal_my_home_Dental_card" name="Dental &amp; Bills"
+        inherit_id="portal.portal_my_home" customize_show="True" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="after">
+            <t t-set="portal_client_category_enable" t-value="True" />
+            <t t-set="portal_vendor_category_enable" t-value="True" />
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <div id="portal_client_category" position="inside">
+                <div id="portal_vendor_category" position="inside">
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="icon" t-value="'/account/static/src/img/Bill.svg'" />
+                        <t t-set="title">Dental</t>
+                        <t t-set="url" t-value="'/home/dental'" />
+                        <t t-set="text">Dental Module</t>
+                        <t t-set="placeholder_count" t-value="'bill_count'" />
+                    </t>
+                </div>
+
+            </div>
+
+        </div>
+        <div id="portal_vendor_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/account/static/src/img/Bill.svg'" />
+                <t t-set="title">Dental</t>
+                <t t-set="url" t-value="'/my/dental'" />
+                <t t-set="text">Dental Module</t>
+                <t t-set="placeholder_count" t-value="'bill_count'" />
+            </t>
+        </div>
+    </template>
+
+
+    <template id="all_dental_patients_card">
+        <t t-call="website.layout">
+            <div style="container" class="mb-5 container">
+                <h1 class="text-center mt-5">Dentals</h1>
+                <div t-if="patients" class="d-flex justify-content-around flex-wrap">
+                    <div t-foreach="patients" t-as="record">
+                        <a t-attf-href="/home/dental/#{record.id}">
+                            <div class="">
+                                <div class="card w-100 h-50">
+
+                                    <img t-att-src="'/dental/static/description/patient.png'"
+                                        alt="Patient Pic"
+                                        class="img-fluid w-50" />
+                                    <div class="card-body">
+
+                                        <h5 class="card-title">
+                                            <t t-esc="record.name" />
+                                        </h5>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div t-else="">
+                    <p>No Patient record are available at the moment.</p>
+                </div>
+
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-auto p-2">
+                    <t t-call="website.pager">
+                        <t t-set="pager_url" t-value="'/home/dental'" />
+                    </t>
+                </div>
+            </div>
+
+        </t>
+    </template>
+
+    <template id="dental_patient_detail_card">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div>
+                    <h2>Patient: </h2>
+                    <strong>
+                        <t t-out="patient_record.name" />
+                    </strong>
+                </div>
+                <div class="container">
+
+
+                    <div class="row justify-content-around flex-wrap ">
+
+
+                        <div class="col-md-4 mb-3">
+                            <div class="o_portal_index_card">
+                                <a
+                                    t-attf-href="/web?#id={{patient_record.id}}&amp;model=dental.patient&amp;view_type=form"
+                                    t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
+                                    <div class="o_portal_icon align-self-start">
+                                        <img t-att-src="'/dental/static/description/bag.svg'"
+                                            alt="Bill Icon" />
+                                    </div>
+                                    <div>
+                                        <h5
+                                            t-attf-class="mt-0 mb-1 #{'d-flex gap-2' if placeholder_count or count else ''}">
+                                            Personal
+
+                                        </h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4 mb-3">
+                            <div class="o_portal_index_card">
+                                <a
+                                    t-attf-href="/web?#id={{patient_record.id}}&amp;model=dental.patient&amp;view_type=form"
+                                    t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
+                                    <div class="o_portal_icon align-self-start">
+                                        <img t-att-src="'/dental/static/description/Bill.svg'"
+                                            alt="Bill Icon" />
+                                    </div>
+                                    <div>
+                                        <h5
+                                            t-attf-class="mt-0 mb-1 #{'d-flex gap-2' if placeholder_count or count else ''}">
+                                            Medical History
+
+                                        </h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="row mt-5 justify-content-around flex-wrap">
+
+
+                        <div class="col-md-4 mb-3">
+                            <div class="o_portal_index_card">
+                                <a
+                                    t-attf-href="/web?#id={{patient_record.medical_aids_ids.id}}&amp;model=dental.medical.aids&amp;view_type=form"
+                                    t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
+                                    <div class="o_portal_icon align-self-start">
+                                        <img t-att-src="'/dental/static/description/folder.svg'"
+                                            alt="Bill Icon" />
+                                    </div>
+                                    <div>
+                                        <h5
+                                            t-attf-class="mt-0 mb-1 #{'d-flex gap-2' if placeholder_count or count else ''}">
+                                            Medical Aid
+
+                                        </h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4 mb-3">
+                            <div class="o_portal_index_card">
+                                <a t-attf-href="/home/dental/history/#{patient_record.id}"
+                                    t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
+                                    <div class="o_portal_icon align-self-start">
+                                        <img t-att-src="'/dental/static/description/tasks.svg'"
+                                            alt="Bill Icon" />
+                                    </div>
+                                    <div>
+                                        <h5
+                                            t-attf-class="mt-0 mb-1 #{'d-flex gap-2' if placeholder_count or count else ''}">
+                                            Dental History and Next Appointment
+
+                                        </h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </t>
+    </template>
+    <template id="dental_patient_history_details" name="Dental History and Next Appointment">
+        <t t-call="portal.portal_layout">
+
+            <t t-if="history_records" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Display Name </th>
+
+                        <th class='d-none d-md-table-cell'>Date</th>
+                        <th>Description</th>
+                        <th>Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="history_records" t-as="history">
+                        <tr>
+                            <td>
+                                <span t-field="history.dispaly_name" />
+                            </td>
+                            <td>
+                                <span t-field="history.date" />
+                            </td>
+                            <td>
+                                <span t-field="history.description" />
+                            </td>
+
+
+                            <td>
+                                <span t-field="history.tags" />
+                            </td>
+
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>
