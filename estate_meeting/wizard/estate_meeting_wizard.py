@@ -19,9 +19,8 @@ class ScheduleMeeting(models.TransientModel):
         active_ids = context.get("active_ids", [])
         properties = request.env["estate.property"].sudo().browse(active_ids)
 
-        for property in properties:
-            salesman = property.salesman_id
-            print("Salesman:", salesman.name)
+        for properties in properties:
+            salesman = properties.salesman_id
         self.env["calendar.event"].create(
             {
                 "name": self.agenda,

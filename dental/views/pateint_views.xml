@@ -40,11 +40,12 @@
 				<sheet>
 					<div>
 						<h1>
-							<field name="name"/>
+							<field name="name" placeholder="Name.."/>
 						</h1>
 						<field name="image" widget="image" class="oe_avatar"/>
 					</div>
 					<group>
+                    <field name="state"/>
 						<field name="history_id"/>
 					</group>
 					<notebook>

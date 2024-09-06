@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ 
+    <template id="dental_patient_view_controller">
+        <t t-call="website.layout">
+            <div style="container" class="mb-5 container">
+                <h1 class="text-center mt-5">Dental</h1>
+                <div t-if="patients">
+                    <div class="d-flex justify-content-start flex-wrap">
+                        <div t-foreach="patients" t-as="record"
+                            style="width:28%; margin:2rem;padding:2px; border:solid black 2px">
+                            <img src="dental/static/icons/icon.svg" />
+                            <a t-attf-href="/patient/#{record.id}" class="text-decoration-none">
+                                <br />
+                                <h4 style="width:100%;text-align:center;margin-top:1rem;">
+                                    <t t-out="record.name"/>
+                                </h4>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="pagination-container" style="width: 100%; text-align: center; margin-top: 2rem;">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" t-att-class="page == 1 and 'disabled'">
+                                    <a t-att-href="'/dental?page=%d' % (page - 1)" class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
+                                </li>
+                                <t t-foreach="range(1, total_pages + 1)" t-as="p">
+                                    <li class="page-item" t-att-class="p == page and 'active'">
+                                        <a t-att-href="'/dental?page=%d' % p" class="page-link">
+                                            <t t-esc="p"/>
+                                        </a>
+                                    </li>
+                                </t>
+                                <li class="page-item" t-att-class="page == total_pages and 'disabled'">
+                                    <a t-att-href="'/dental?page=%d' % (page + 1)" class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div t-else="">
+                    <p>No Patient Available At This Moment.</p>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="patient_details_view_controller" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h2 class="text-center mb-4">
+                    <t t-esc="patients.name" />
+                </h2>
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="width: 48%;">
+                        <a t-attf-href="/web?#id={{patients.id}}&amp;model=dental.patients&amp;view_type=form" class="text-decoration-none">
+                            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                                <img t-att-src="'/dental/static/icons/bag.svg'"/>
+                                <h5>Personal</h5>
+                                <p></p>
+                            </div>
+                        </a>
+                        <a t-attf-href="/web?#id={{patients.id}}&amp;model=dental.patients&amp;view_type=form" class="text-decoration-none">
+                            <div style="border: 1px solid #ccc; padding: 15px; display: flex; align-items: center; justify-content: center;">
+                                <img t-att-src="'/dental/static/icons/Bill.svg'"/>
+                                        <h5>Medical History</h5>
+                                        <p></p>
+                            </div>
+                        </a>
+                    </div>
+                    <div style="width: 48%;">
+                        <a t-attf-href="/web?#id={{patients.medical_aid_id.id}}&amp;model=medical.aids&amp;view_type=form" class="text-decoration-none">
+                           
+                            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                                <img t-att-src="'/dental/static/icons/folder.svg'"/>
+                                <h5>Medical Aid</h5>
+                                <p></p>
+                            </div>
+                        </a>
+                        <a t-attf-href="/dental/history/#{patients.id}" class="text-decoration-none">
+                            <div style="border: 1px solid #ccc; padding: 15px; display: flex; align-items: center; justify-content: center;">
+                                <img t-att-src="'/dental/static/icons/tasks.svg'"/>
+                                <h5>Dental History and Next Appointment</h5>
+                                <p></p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="dental_history_view" name="My Invoices and Payments">
+      <t t-call="portal.portal_layout">
+        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+        <t t-call="portal.portal_searchbar">
+            <t t-set="title">Invoices</t>
+        </t>
+        <t t-if="not patients">
+            <p class="alert alert-warning">There are currently no invoices and payments for your account.</p>
+        </t>
+        <t t-if="patients" t-call="portal.portal_table">
+            <thead>
+                <tr class="active">
+                    <th>Date</th>
+                    <th>Gender</th>
+                    <th class='d-none d-md-table-cell'>Due Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="patients" t-as="record">
+                    <tr>
+                        <td>
+                            <t t-out="record.date_of_birth" />
+                        </td>
+                        <td>
+                            <t t-out="record.gender" />
+                        </td>
+                        <td>
+                            <t t-out="record.date_of_birth" />
+                        </td>
+                        <td>
+                            <t t-out="record.state" />
+                        </td>
+                       
+                    </tr>
+                </t>
+            </tbody>
+        </t>
+      </t>
+    </template>
+
+    <template id="portal_my_home_dental" name="Dental" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+            <t t-set="portal_vendor_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/appointment/static/src/img/calendar.svg'"/>
+                <t t-set="title">Dental</t>
+                <t t-set="url" t-value="'/dental'"/>
+                <t t-set="text">Follow, reschedule or cancel your appointments</t>
+                <t t-set="placeholder_count" t-value="'invoice_count'"/>
+            </t>
+        </div>
+    </template>
+
+</odoo>

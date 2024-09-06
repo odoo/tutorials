@@ -12,6 +12,7 @@
         "views/habits.xml",
         "views/allergies.xml",
         "views/medication.xml",
+        "views/dental_controller.xml",
         "views/patient_history.xml",
         "views/menuitem.xml",
     ],

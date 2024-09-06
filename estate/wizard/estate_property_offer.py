@@ -13,7 +13,6 @@ class AddOffer(models.TransientModel):
 
     def action_make_offer(self):
         context = self.env.context
-        print(context)
         active_ids = context.get("active_ids", [])
         for property_id in active_ids:
             self.env["estate.property.offer"].create(

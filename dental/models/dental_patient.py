@@ -7,7 +7,7 @@ class PatientModel(models.Model):
     _description = "Dental Patients"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char()
+    name = fields.Char(required=True)
     state = fields.Selection(
         selection=[
             ("new", "New"),
@@ -78,12 +78,10 @@ class PatientModel(models.Model):
     guarantor_tags = fields.Many2many(string="Tags", related="guarantor_id.category_id")
 
     def action_open_invoice(self):
-        if self.state == "new":
-            print("invoice")
+        if self.state == "to invoice":
             for patient_id in self:
                 self.ensure_one()
                 invoice_obj = self.env["account.move"]
-                print(patient_id.guarantor_id)
                 invoice_vals = {
                     "partner_id": patient_id.guarantor_id.id,
                     "move_type": "out_invoice",
