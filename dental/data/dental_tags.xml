@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Incisors -->
+        <record id="dental_tag_incisor_upper_left_1" model="dental.tags">
+            <field name="name">Upper Left Central Incisor</field>
+        </record>
+        <record id="dental_tag_incisor_upper_left_2" model="dental.tags">
+            <field name="name">Upper Left Lateral Incisor</field>
+        </record>
+        <record id="dental_tag_incisor_upper_right_1" model="dental.tags">
+            <field name="name">Upper Right Central Incisor</field>
+        </record>
+        <record id="dental_tag_incisor_upper_right_2" model="dental.tags">
+            <field name="name">Upper Right Lateral Incisor</field>
+        </record>
+        <record id="dental_tag_incisor_lower_left_1" model="dental.tags">
+            <field name="name">Lower Left Central Incisor</field>
+        </record>
+        <record id="dental_tag_incisor_lower_left_2" model="dental.tags">
+            <field name="name">Lower Left Lateral Incisor</field>
+        </record>
+        <record id="dental_tag_incisor_lower_right_1" model="dental.tags">
+            <field name="name">Lower Right Central Incisor</field>
+        </record>
+        <record id="dental_tag_incisor_lower_right_2" model="dental.tags">
+            <field name="name">Lower Right Lateral Incisor</field>
+        </record>
+
+        <!-- Canines -->
+        <record id="dental_tag_canine_upper_left" model="dental.tags">
+            <field name="name">Upper Left Canine</field>
+        </record>
+        <record id="dental_tag_canine_upper_right" model="dental.tags">
+            <field name="name">Upper Right Canine</field>
+        </record>
+        <record id="dental_tag_canine_lower_left" model="dental.tags">
+            <field name="name">Lower Left Canine</field>
+        </record>
+        <record id="dental_tag_canine_lower_right" model="dental.tags">
+            <field name="name">Lower Right Canine</field>
+        </record>
+
+        <!-- Premolars -->
+        <record id="dental_tag_premolar_upper_left_1" model="dental.tags">
+            <field name="name">Upper Left First Premolar</field>
+        </record>
+        <record id="dental_tag_premolar_upper_left_2" model="dental.tags">
+            <field name="name">Upper Left Second Premolar</field>
+        </record>
+        <record id="dental_tag_premolar_upper_right_1" model="dental.tags">
+            <field name="name">Upper Right First Premolar</field>
+        </record>
+        <record id="dental_tag_premolar_upper_right_2" model="dental.tags">
+            <field name="name">Upper Right Second Premolar</field>
+        </record>
+        <record id="dental_tag_premolar_lower_left_1" model="dental.tags">
+            <field name="name">Lower Left First Premolar</field>
+        </record>
+        <record id="dental_tag_premolar_lower_left_2" model="dental.tags">
+            <field name="name">Lower Left Second Premolar</field>
+        </record>
+        <record id="dental_tag_premolar_lower_right_1" model="dental.tags">
+            <field name="name">Lower Right First Premolar</field>
+        </record>
+        <record id="dental_tag_premolar_lower_right_2" model="dental.tags">
+            <field name="name">Lower Right Second Premolar</field>
+        </record>
+
+        <!-- Molars -->
+        <record id="dental_tag_molar_upper_left_1" model="dental.tags">
+            <field name="name">Upper Left First Molar</field>
+        </record>
+        <record id="dental_tag_molar_upper_left_2" model="dental.tags">
+            <field name="name">Upper Left Second Molar</field>
+        </record>
+        <record id="dental_tag_molar_upper_left_3" model="dental.tags">
+            <field name="name">Upper Left Third Molar (Wisdom Tooth)</field>
+        </record>
+        <record id="dental_tag_molar_upper_right_1" model="dental.tags">
+            <field name="name">Upper Right First Molar</field>
+        </record>
+        <record id="dental_tag_molar_upper_right_2" model="dental.tags">
+            <field name="name">Upper Right Second Molar</field>
+        </record>
+        <record id="dental_tag_molar_upper_right_3" model="dental.tags">
+            <field name="name">Upper Right Third Molar (Wisdom Tooth)</field>
+        </record>
+        <record id="dental_tag_molar_lower_left_1" model="dental.tags">
+            <field name="name">Lower Left First Molar</field>
+        </record>
+        <record id="dental_tag_molar_lower_left_2" model="dental.tags">
+            <field name="name">Lower Left Second Molar</field>
+        </record>
+        <record id="dental_tag_molar_lower_left_3" model="dental.tags">
+            <field name="name">Lower Left Third Molar (Wisdom Tooth)</field>
+        </record>
+        <record id="dental_tag_molar_lower_right_1" model="dental.tags">
+            <field name="name">Lower Right First Molar</field>
+        </record>
+        <record id="dental_tag_molar_lower_right_2" model="dental.tags">
+            <field name="name">Lower Right Second Molar</field>
+        </record>
+        <record id="dental_tag_molar_lower_right_3" model="dental.tags">
+            <field name="name">Lower Right Third Molar (Wisdom Tooth)</field>
+        </record>
+    </data>
+</odoo>

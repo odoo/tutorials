@@ -59,6 +59,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="book_invoice_button" type="object" string="Invoice" invisible="stage == 'to invoice'"/>
                     <button name="book_appointment_button" type="object" string="Book Appointment" />
                     <field name="stage" widget="statusbar" options="{'clickable': '1'}" />
                 </header>
@@ -144,13 +145,14 @@
                         <page string="Guarantor">
                             <group>
                                 <group>
-                                    <field name="patient_guarantor_id" />
-                                    <field name="medical_aids_plan" />
-                                    <field name="medical_aids_number" />
+                                    <field name="guarantor_id" />
+                                    <field name="guarantor_phone" />
+                                    <field name="phone" />
+                                    <field name="guarantor_email" />
                                 </group>
                                 <group>
-                                    <field name="main_member_code" />
-                                    <field name="depedent_code" />
+                                    <field name="guarantor_company" />
+                                    <field name="tag_ids" widget="many2many_tags" />
                                 </group>
                             </group>
                             <div>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<odoo noupdate="1">
+<!-- Medical SYmptoms DATA -->
+
+    <record model="chronic.conditions" id="chronic_type1">
+        <field name="name">Diabetes- Type 2</field>
+    </record>
+    <record model="chronic.conditions" id="chronic_type2">
+        <field name="name">Heart Conditions</field>
+    </record>
+    <record model="dental.allergies" id="allergies_type1">
+        <field name="name">Latex</field>
+    </record>
+    <record model="dental.allergies" id="allergies_type2">
+        <field name="name">Mercury</field>
+    </record>
+    <record model="habits.substance" id="habits_type1">
+        <field name="name">Alcohol</field>
+    </record>
+
+<!-- Medication DATA -->
+
+    <record model="dental.medication" id="medication_type1">
+        <field name="name">Acetaminophen</field>
+    </record>
+    <record model="dental.medication" id="medication_type2">
+        <field name="name">Corticosteroids</field>
+    </record>
+    <record model="dental.medication" id="medication_type3">
+        <field name="name">Ibuprofen</field>
+    </record>
+    <record model="dental.medication" id="medication_type4">
+        <field name="name">Pilocarpine</field>
+    </record>
+</odoo>

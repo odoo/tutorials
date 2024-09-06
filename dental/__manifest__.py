@@ -3,12 +3,15 @@
     'version': '1.2',
     'description': "",
     'depends': [
-        'base_setup', 'website',
-        'mail'
+        'base', 'website',
+        'mail', 'account'
     ],
     'data': [
         'security/ir.model.access.csv',
-        
+
+        'data/dental_data.xml',
+        'data/dental_tags.xml',
+
         'views/portal_template.xml',
         'views/tag_views.xml',
         'views/medical_history_views.xml',

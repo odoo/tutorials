@@ -1,6 +1,4 @@
 from odoo import models, fields, Command
-from datetime import date
-from dateutil.relativedelta import relativedelta
 
 
 class DentalPatients(models.Model):
@@ -25,10 +23,17 @@ class DentalPatients(models.Model):
         string="Company",
         copy=False
     )
-    patient_guarantor_id = fields.Many2one(
-        'dental.guarantor',
-        string="Guranator"
+    guarantor_id = fields.Many2one(
+        'res.users',
+        string="Guarantor",
+        copy=False
     )
+    guarantor_phone = fields.Char(string="Guarantor Mobile Phone", related="guarantor_id.phone")
+    phone = fields.Char(string="Phone")
+    guarantor_email = fields.Char(string="Email", related="guarantor_id.email")
+    guarantor_company = fields.Many2one('res.company')
+    tag_ids = fields.Many2many('dental.tags', string="Tags")
+
     image = fields.Image()
     doc_phone_number = fields.Char(string="GP's Phone", related="doctor_id.phone")
     chronic_conditions_ids = fields.Many2many('chronic.conditions', string="Chronic Condtions")
@@ -74,10 +79,11 @@ class DentalPatients(models.Model):
     depedent_code = fields.Char(string="Dependent Code")
     medical_history_ids = fields.One2many('medical.history', 'patient_id', string="Medical History")
 
-    def book_appointment_button(self):
+    def book_invoice_button(self):
         self.stage = 'to invoice'
+        self.guarantor_id = self.env.user.id
         move_vals = {
-            'partner_id': self.patient_guarantor_id.guarantor_id.id,
+            'partner_id': self.guarantor_id.id,
             'move_type': 'out_invoice',
             'invoice_line_ids': [
                 Command.create({
@@ -91,17 +97,15 @@ class DentalPatients(models.Model):
         self.env['account.move'].check_access_rule('create')
         self.env['account.move'].sudo().create(move_vals)
 
-class Guarantor(models.Model):
-    _name = "dental.guarantor"
-    _description = "Gurantor of the patient"
-
-    guarantor_id = fields.Many2one(
-        'res.users',
-        string="Guarantor",
-        copy=False
-    )
-    patient_ids = fields.One2many('dental.patient', 'patient_guarantor_id')
-    guarantor_phone = fields.Char(string="Guarantor Mobile Phone", related="guarantor_id.phone")
-    phone = fields.Char(string="Phone")
-    guarantor_email = fields.Char(string="Email", related="guarantor_id.email")
-    notes = fields.Text()
+    def book_appointment_button(self):
+        move_vals = {
+            'appointment_duration': 1,
+            'appointment_tz': self.env.user.tz,
+            'assign_method': 'resource_time',
+            'max_schedule_days': 1,
+            'min_cancellation_hours': 24,
+            'min_schedule_hours': 48,
+            'name': 'Appointment',
+            'schedule_based_on': 'users',
+        }
+        self.env['appointment.type'].sudo().create(move_vals)
