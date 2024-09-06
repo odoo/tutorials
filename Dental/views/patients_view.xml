@@ -5,12 +5,21 @@
         <field name="name">dental.patient.kanban</field>
         <field name="model">dental.patient</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_group_by="state">
+                <field name="state" />
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
-                            <field name="patient_image"  widget="image" style="max-width: 100px; max-height: 100px;"/>
-                            <field name="name" class="fw-bold"/>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name" />
+                                </strong>
+                                <div class="o_kanban_image">
+                                    <img
+                                        t-attf-src="#{kanban_image('dental.patient', 'image', record.id.raw_value)}"
+                                        role="img" t-att-alt="record.id.value" />
+                                </div>
+                            </div>
                         </div>
                     </t>
                 </templates>
@@ -43,10 +52,15 @@
                         <h1>
                             <field name="name" placeholder="e.g. John Doe"/>
                         </h1>
-                        <field name="patient_image"  widget="image" style="max-width: 100px; max-height: 100px;"/>
+                        <field name="patient_image"  widget="image" class="oe_avatar"/>
                     </div>
                     <group string="History">
-                        <field name="patient_history_id">  
+                        <field name="patient_history_id">
+                            <tree> 
+                                <field name="date"/>
+                                <field name="name"/>
+                                <field name="description"/>
+                            </tree> 
                         </field>
                     </group>
                     <notebook>
@@ -76,7 +90,12 @@
                         </page>
 
                         <page string="History">
-                            <field name="patient_history_id">  
+                            <field name="patient_history_id">
+                                <tree editable="bottom">
+                                    <field name="date"/>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                </tree>
                             </field>
                         </page>
                         <page string="Medical Aids">
@@ -98,15 +117,15 @@
                         <page string="Patient Details">
                             <group>
                                 <group string="Next of Kin">
-                                    <field name="emergency_contact_id"/>
+                                    <field name="emergency_contact_id" required="1"/>
                                     <field name="emergency_contact_mobile" readonly="1" widget="phone"/>
                                 </group>
                                 <group string="Patient Details">
                                     <field name="company_or_school_id"/>
                                     <field name="occupation_or_grade"/>
                                     <field name="identity_number"/>
-                                    <field name="date_of_birth"/>
-                                    <field name="gender"/>
+                                    <field name="date_of_birth" required="1"/>
+                                    <field name="gender" required="1"/>
                                     <field name="marital_status"/>
                                 </group>
                             </group>
@@ -132,9 +151,9 @@
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">
-                    <field name="activity_ids"/>
-                    <field name="message_follower_ids"/>
-                    <field name="message_ids" widget="mail_thread"/>
+                    <field name="activity_ids" widget="chatter" />
+                    <field name="message_ids" widget="mail_thread" />
+                    <field name="message_follower_ids" widget="mail_followers" />
                 </div>
             </form>
         </field>
@@ -146,7 +165,7 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create New Property
+                Create New Patients in your Dental Clinic
             </p>
         </field>
     </record>

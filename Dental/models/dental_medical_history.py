@@ -1,51 +1,87 @@
-from odoo import models, fields,api
+from odoo import models, fields
 from datetime import date
 
-class DentalMedicalHistory(models.Model):
-    _name = 'dental.medical.history'
-    _description = 'Dental Medical History'
 
-    history_id = fields.Many2one('dental.patient', string="History")
-    name = fields.Char(string="Name", store=True)
-    patient_id = fields.Many2one('dental.patient', string="Patient", required=True)
-    responsible_id = fields.Many2one('res.users', string="Responsible", default=lambda self: self.env.user)
-    date = fields.Date(string="Date", default=date.today())
+class DentalPatientHistory(models.Model):
+    _name = 'dental.medical.history'
+    _description = 'Dental Patient History'
+
+    name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
-    did_not_attend = fields.Boolean(string="Did not attend", required=True)
-    company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
+    patient_id = fields.Many2one('dental.patient', string="Patient", required=True)
+    date = fields.Date(string="Date", default=date.today(), required=True)
     main_complaint = fields.Text(string="Main Complaint")
-    teeth_history = fields.Text(string="History")
+    history = fields.Text(string="History")
+    company_id = fields.Many2one('res.company', string='Company')
+    did_not_attend = fields.Boolean(string="Did Not Attend")
+    tags = fields.Char(string="Tags")
+
+    xray_file_1 = fields.Binary(string="X-ray File 1")
+    xray_file_2 = fields.Binary(string="X-ray File 2")
+    clear_aligner_file_1 = fields.Binary(string="Clear Aligner File 1")
+    clear_aligner_file_2 = fields.Binary(string="Clear Aligner File 2")
+
     habits = fields.Text(string="Habits")
     extra_oral_observation = fields.Text(string="Extra-Oral Observation")
-    xray_file_1 = fields.Image(string="X-ray file 1")
-    xray_file_2 = fields.Image(string="X-ray file 2")
-    clear_align_file_1 = fields.Binary(string="Clear Aligner File 1")
-    clear_align_file_2 = fields.Binary(string="Clear Aligner File 2")
-    
-    
-    # Billing Fileds
+
+    teeth_chart = fields.Char(string="Teeth Chart")
+
+    treatment_notes = fields.Text(string="Treatment Notes")
+
     consultation_type = fields.Selection([
-        ('full', 'Full consultation with bite-wings and scan'),
-        ('basic', 'Basic consultation'),
-        ('none', 'No consultation')
+        ('full_consultation', 'Full Consultation with Bitewings and Scan'),
+        ('basic_consultation', 'Basic Consultation'),
+        ('no_consultation', 'No Consultation')
     ], string="Consultation Type")
 
     call_out = fields.Boolean(string="Call Out")
     scale_and_polish = fields.Boolean(string="Scale and Polish")
     fluoride = fields.Boolean(string="Fluoride")
+
     filling_description = fields.Text(string="Filling Description")
 
-    aligner_delivery = fields.Boolean(string="Aligner delivery and attachment placed")
+    aligner_delivery = fields.Boolean(
+        string="Aligner Delivery and Attachment Placed")
     whitening = fields.Boolean(string="Whitening")
-    fissure_sealant_qty = fields.Float(string="Fissure Sealant - Quantity", digits=(6, 2))
+
+    fissure_sealant_qty = fields.Float(
+        string="Fissure Sealant Quantity", digits=(6, 2))
 
     attachments_removed = fields.Boolean(string="Attachments Removed")
-    aligner_follow_up_scan = fields.Boolean(string="Aligner Follow-up Scan")
+    aligner_followup_scan = fields.Boolean(string="Aligner Follow-up Scan")
 
-    other_description = fields.Text(string="Other")
-    notes = fields.Text(string="Notes")
+    other_notes = fields.Text(string="Other Notes")
+    upper_18_staining = fields.Boolean(string='18 Staining')
+    upper_17_staining = fields.Boolean(string='17 Staining')
+    upper_16_staining = fields.Boolean(string='16 Staining')
+    upper_15_staining = fields.Boolean(string='15 Staining')
+    upper_14_staining = fields.Boolean(string='14 Staining')
+    upper_13_staining = fields.Boolean(string='13 Staining')
+    upper_12_staining = fields.Boolean(string='12 Staining')
+    upper_11_staining = fields.Boolean(string='11 Staining')
+    upper_28_staining = fields.Boolean(string='28 Staining')
+    upper_27_staining = fields.Boolean(string='27 Staining')
+    upper_26_staining = fields.Boolean(string='26 Staining')
+    upper_25_staining = fields.Boolean(string='25 Staining')
+    upper_24_staining = fields.Boolean(string='24 Staining')
+    upper_23_staining = fields.Boolean(string='23 Staining')
+    upper_22_staining = fields.Boolean(string='22 Staining')
+    upper_21_staining = fields.Boolean(string='21 Staining')
+    lower_31_staining = fields.Boolean(string='31 Staining')
+    lower_32_staining = fields.Boolean(string='32 Staining')
+    lower_33_staining = fields.Boolean(string='33 Staining')
+    lower_34_staining = fields.Boolean(string='34 Staining')
+    lower_35_staining = fields.Boolean(string='35 Staining')
+    lower_36_staining = fields.Boolean(string='36 Staining')
+    lower_37_staining = fields.Boolean(string='37 Staining')
+    lower_38_staining = fields.Boolean(string='38 Staining')
+    lower_41_staining = fields.Boolean(string='41 Staining')
+    lower_42_staining = fields.Boolean(string='42 Staining')
+    lower_43_staining = fields.Boolean(string='43 Staining')
+    lower_44_staining = fields.Boolean(string='44 Staining')
+    lower_45_staining = fields.Boolean(string='45 Staining')
+    lower_46_staining = fields.Boolean(string='46 Staining')
+    lower_47_staining = fields.Boolean(string='47 Staining')
+    lower_48_staining = fields.Boolean(string='48 Staining')
 
-    @api.depends('patient_id', 'date')
-    def _compute_name(self):
-        for record in self:
-            record.name = f"{record.patient_id.name} - {record.date}" if record.patient_id and record.date else "New History"
+    notes = fields.Text(string="Additional Notes")

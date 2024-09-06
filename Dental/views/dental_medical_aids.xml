@@ -28,6 +28,11 @@
                     </group>
                 </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="activity_ids" widget="chatter" />
+                    <field name="message_ids" widget="mail_thread" />
+                    <field name="message_follower_ids" widget="mail_followers" />
+                </div>
             </form>
         </field>
     </record>
@@ -43,6 +48,5 @@
                 <field name="email"/>
             </tree>
         </field>
-    </record>
-    
+    </record>   
 </odoo>
