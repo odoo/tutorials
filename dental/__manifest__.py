@@ -1,10 +1,12 @@
 {
     "name": "dental",
     "version": "0.1",
-    "depends": ["base", "mail", "account", "web"],
+    "depends": ["base", "mail", "account", "website", "portal"],
     "description": "Dental Application",
     "data": [
         "security/ir.model.access.csv",
+        "data/dental_patients.xml",
+        "views/dental_controller.xml",
         "report/dental_patient_template.xml",
         "report/dental_patient_report.xml",
         "views/tag_views.xml",
@@ -15,6 +17,7 @@
         "views/chronic_condition_views.xml",
         "views/medical_aids_views.xml",
         "views/patient_views.xml",
+        "views/dental_portal_template.xml",
         "views/menuitem.xml",
     ],
     "installable": True,

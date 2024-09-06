@@ -5,7 +5,7 @@
                 <t t-call="web.external_layout">
                     <div class="page">
                         <div class="container mt-4">
-                            <h2 class="font-weight-bold">
+                            <h2 class="fw-bold">
                                 Patient Name: <span t-field="record.name"/>
                             </h2>
                             <h4 class="mt-3">

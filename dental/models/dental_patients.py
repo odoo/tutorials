@@ -87,7 +87,6 @@ class Patients(models.Model):
         logging.info("Generating invoice...")
         if self.state == "done":
             for patient in self:
-                self.ensure_one()
                 invoice_obj = self.env["account.move"]
                 invoice_vals = {
                     "partner_id": patient.guaranator.partner_id.id,
