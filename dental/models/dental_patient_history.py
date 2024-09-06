@@ -10,7 +10,7 @@ class DentalPatientHistory(models.Model):
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
     patient_id = fields.Many2one('dental.patient', string="Patient", required=True)
-    date = fields.Date(string="Date", default=fields.Date.context_today, required=True)
+    date = fields.Datetime(string="Date", default=fields.Datetime.now, required=True)
     main_complaint = fields.Text(string="Main Complaint")
     history = fields.Text(string="History")
     company_id = fields.Many2one('res.company', string='Company')
@@ -38,7 +38,7 @@ class DentalPatientHistory(models.Model):
         ('full_consultation', 'Full Consultation with Bitewings and Scan'),
         ('basic_consultation', 'Basic Consultation'),
         ('no_consultation', 'No Consultation')
-    ], string="Consultation Type")
+    ], shabits_substance_abusetring="Consultation Type")
 
     call_out = fields.Boolean(string="Call Out")
     scale_and_polish = fields.Boolean(string="Scale and Polish")

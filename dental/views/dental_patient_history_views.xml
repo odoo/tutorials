@@ -130,7 +130,7 @@
                     </group>
 
                     <div>
-                        <field name="notes" placeholder="Type down your notes here" />
+                        <field name="tags" placeholder="Type down your notes here" />
                     </div>
                 </sheet>
             </form>
@@ -143,7 +143,7 @@
             <tree>
                 <field name="date" widget="date" />
                 <field name="name" />
-                <field name="description" />
+                <field name="other_notes" string="Notes" />
                 <field name="tags" />
             </tree>
         </field>
