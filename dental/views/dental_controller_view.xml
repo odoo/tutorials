@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_my_home_invoice" name="Show Invoices &amp; Bills" inherit_id="portal.portal_my_home" customize_show="True" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+            <t t-set="portal_vendor_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/account/static/src/img/Bill.svg'"/>
+                <t t-set="title">Dental</t>
+                <t t-set="url" t-value="'/dental'"/>
+                <t t-set="text">Dental Module</t>
+                <t t-set="placeholder_count" t-value="'invoice_count'"/>
+            </t>
+            <div id="portal_vendor_category" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/account/static/src/img/Bill.svg'"/>
+                    <t t-set="title">Dental</t>
+                    <t t-set="url" t-value="'/dental'"/>
+                    <t t-set="text">Dental Module</t>
+                    <t t-set="placeholder_count" t-value="'bill_count'"/>
+                </t>
+            </div>
+        </div>
+    </template>
+
+    <template id="dental_patient_page">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+            <h1 class="text-center mb-5">Available Patients</h1>
+            <div class="row">
+                <t t-foreach="patients" t-as="patient">
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="card patient-card shadow-lg">
+                    <div class="card-body text-center">
+                        <a t-attf-href="/dental/#{patient.name}">
+                        <img
+                            t-attf-src="/dental/static/description/icon.svg"
+                            alt="Patient Image"
+                            class="rounded-circle mx-auto mb-3"
+                            style="width: 100px; height: 100px;"
+                        />
+                        <h4 class="card-title mb-0">
+                            <t t-esc="patient.name" />
+                        </h4>
+                        </a>
+                    </div>
+                    </div>
+                </div>
+                </t>
+            </div>
+            </div>
+        </t>
+  </template>
+
+    <template id="dental_patient_details_page" name="Dental Patient Details Page">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="breadcrumb">
+                    <a href="/">Home</a> / <a href="/dental">Dental</a> / <t t-esc="patient.name" />
+                </div>
+                <h1 class="text-center mt-3"><t t-esc="patient.name" /></h1>
+
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <a t-attf-href="/web?#id={{patient.id}}&amp;model=dental.patient&amp;view_type=form" class="card text-center shadow-lg">
+                            <div class="card-body">
+                                <img
+                            t-attf-src="/dental/static/description/bag.svg"
+                            alt="Patient Image"
+                            class="rounded-circle mx-auto mb-3"
+                            style="width: 100px; height: 100px;"
+                                />
+                                <h4 class="card-title">Personal</h4>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a t-attf-href="/web?#id={{patient.id}}&amp;model=dental.patient&amp;view_type=form" class="card text-center shadow-lg">
+                            <div class="card-body">
+                                <img
+                            t-attf-src="/dental/static/description/Bill.svg"
+                            alt="Patient Image"
+                            class="rounded-circle mx-auto mb-3"
+                            style="width: 100px; height: 100px;"
+                                />
+                                <h4 class="card-title">Medical History</h4>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 mt-4">
+                        <a t-attf-href="/web?#id={{patient.id}}&amp;model=dental.patient&amp;view_type=form" class="card text-center shadow-lg">
+                            <div class="card-body">
+                                <img
+                            t-attf-src="/dental/static/description/folder.svg"
+                            alt="Patient Image"
+                            class="rounded-circle mx-auto mb-3"
+                            style="width: 100px; height: 100px;"
+                                />
+                                <h4 class="card-title">Medical Aid</h4>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 mt-4">
+                        <a t-attf-href="/dental/#{patient.name}/medical_history" class="card text-center shadow-lg">
+                            <div class="card-body">
+                                <img
+                            t-attf-src="/dental/static/description/tasks.svg"
+                            alt="Patient Image"
+                            class="rounded-circle mx-auto mb-3"
+                            style="width: 100px; height: 100px;"
+                                />
+                                <h4 class="card-title">Dental History and Next Appointment</h4>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="dental_history_list_view">
+        <t t-call="website.layout">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="text-center mb-4">Dental History</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Subscription</th>
+                                <th>Next Billing Date</th>
+                                <th>Recurring Plan</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                    </table>    
+                </div>
+            </div>
+        </div>
+        </t>
+    </template>
+
+    <template id="patient_details_controller_appointment" name="Patient Medical Details">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True" />
+
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Patient History</t>
+                </t>
+                <t t-if="not patients">
+                    <p class="alert alert-warning">There are no History for the Patient</p>
+                </t>
+                <t t-if="patients" t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th>Date</th>
+                            <th>name</th>
+                            <th class='d-none d-md-table-cell'>responsible</th>
+                            <th class='d-none d-md-table-cell'>description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="patients" t-as="patient">
+                            <tr>
+                                <td>
+                                    <t t-out="patient.date" />
+                                </td>
+                                <td>
+                                    <span t-out="patient.name" />
+                                </td>
+                                <td class='d-none d-md-table-cell'>
+                                    <span t-out="patient.responsible" />
+                                </td>
+                                <td class='d-none d-md-table-cell'>
+                                    <span t-out="patient.description" />
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+        </template>
+    
+</odoo>
+
+
+
+                        
