@@ -41,6 +41,7 @@
         <field name="arch" type="xml">
             <form >
                 <header>
+                    <button name="action_create_invoice" type="object" string="Create Invoice" />
                     <field name="state" widget="statusbar" decoration-bf="1" />
                 </header>
                 <sheet>

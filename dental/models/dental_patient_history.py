@@ -27,7 +27,8 @@ class DentalPatientHistory(models.Model):
             ("full consulatation", "Full Consultation with bite-wings and scan"),
             ("basic consultation", "Basic Consulatation"),
             ("no consulatation", "No Consulatation"),
-        ])
+        ],
+    )
     call_out = fields.Boolean()
     scale_and_polish = fields.Boolean()
     flouride = fields.Boolean()
@@ -73,6 +74,3 @@ class DentalPatientHistory(models.Model):
     lower_46 = fields.Boolean(string="46 Staining")
     lower_47 = fields.Boolean(string="47 Staining")
     lower_48 = fields.Boolean(string="48 Staining")
-
-
-   

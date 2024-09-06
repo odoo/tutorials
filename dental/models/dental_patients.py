@@ -1,4 +1,5 @@
-from odoo import fields, models
+from datetime import date
+from odoo import Command, fields, models
 
 
 class DentalPatients(models.Model):
@@ -78,3 +79,18 @@ class DentalPatients(models.Model):
     guarantor_tags = fields.Many2many(string="Tags", related='guarantor_id.category_id')
     consent_signature = fields.Binary()
     consent_date = fields.Date()
+
+    def action_create_invoice(self):
+        self.check_access_rights('write')
+        self.check_access_rule('write')
+        self.env["account.move"].sudo().create(
+            {
+                "move_type": "out_invoice",
+                "partner_id": self.guarantor_id.id ,
+                "date": date.today(),
+                "invoice_line_ids": [
+                Command.create({'name': self.name, 'quantity': 1, 'price_unit': 1000}),
+                ],
+            }
+        )
+        return True

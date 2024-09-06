@@ -1,0 +1,14 @@
+<odoo>
+    <template id="portal_my_home_dental" name="Show Invoices" inherit_id="portal.portal_my_home" customize_show="True" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <div id="portal_dental_category" class="o_portal_category row g-2 mt-3">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">Dental</t>
+                    <t t-set="text">Your dental module data</t>
+                    <t t-set="url" t-value="'/my/dental'"/>
+                    <t t-set="placeholder_count" t-value="'invoice_count'" />
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>

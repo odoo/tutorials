@@ -1,0 +1,73 @@
+<odoo>
+    <template id="dental_patient_website">
+        <t t-call="website.layout">
+            <div class="container">
+
+                <div t-if="patients">
+                    <div class="row">
+                        <div class="col-md-4 mb-4" t-foreach="patients" t-as="patient">
+                            <div class="card" style="height: 100%;">
+                                <a t-attf-href="/patient/#{patient.id}">
+                                    <div class="card-body d-flex flex-column justify-content-center">
+                                        <h5 class="card-title text-center mb-0">
+                                            <t t-esc="patient.name"/>
+                                        </h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div t-else="">
+                    <p>No patients are available at the moment.</p>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="dental_patient_details_page" name="Dental Patient Details Page">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="breadcrumb">
+                    <a href="/">Home</a> /                    <a href="/dental">Dental</a> /                    <t t-esc="patient.name" />
+                </div>
+                <h1 class="text-center mt-3">
+                    <t t-esc="patient.name" />
+                </h1>
+
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <a t-attf-href="/web?#id={{patient.id}}&amp;model=dental.patient&amp;view_type=form" class="card text-center shadow-lg">
+                            <div class="card-body">
+                                <h4 class="card-title">Personal</h4>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a t-attf-href="/web?#id={{patient.id}}&amp;model=dental.patient&amp;view_type=form" class="card text-center shadow-lg">
+                            <div class="card-body">
+                                <h4 class="card-title">Medical History</h4>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 mt-4">
+                        <a t-attf-href="/web?#id={{patient.id}}&amp;model=dental.patient&amp;view_type=form" class="card text-center shadow-lg">
+                            <div class="card-body">
+                                <h4 class="card-title">Medical Aid</h4>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 mt-4">
+                        <a t-attf-href="/dental/#{patient.name}/medical_history" class="card text-center shadow-lg">
+                            <div class="card-body">
+                                <h4 class="card-title">Dental History and Next Appointment</h4>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
