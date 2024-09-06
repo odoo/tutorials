@@ -1,4 +1,3 @@
-version: "3"
 services:
   web:
     build:
@@ -15,10 +14,7 @@ services:
     volumes:
       - web-data:/var/lib/odoo
       - ./custom-addons:/mnt/custom-addons
-      - ./3rd-party-addons:/mnt/3rd-party-addons
-      - ./multioss-addons:/mnt/multioss-addons
       - ./../odoo-enterprise-17:/mnt/odoo-enterprise
-      - ./requirements.txt:/mnt/requirements.txt
     environment:
       - HOST=db
       - USER=odoo

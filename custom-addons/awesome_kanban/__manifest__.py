@@ -19,7 +19,7 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'awesome_kanban/static/src/**/*',
+            'static/src/**/*',
         ],
     },
     'license': 'AGPL-3'

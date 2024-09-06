@@ -23,7 +23,7 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'awesome_dashboard/static/src/**/*',
+            'static/src/**/*',
         ],
     },
     'license': 'AGPL-3'

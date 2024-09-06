@@ -19,7 +19,7 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'awesome_gallery/static/src/**/*',
+            'static/src/**/*',
         ],
     },
     'license': 'AGPL-3'
