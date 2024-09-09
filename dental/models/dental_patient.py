@@ -100,7 +100,7 @@ class DentalPatient(models.Model):
                 ],
 
             }
-            self.env['account.move'].create(move_vals)
+            self.env['account.move'].sudo().create(move_vals)
 
     def action_book_appointment(self):
         self.state = 'to_invoice'

@@ -23,7 +23,7 @@
                         <a t-attf-href="/my/dental/{{ patient.id }}">
                             <div class="card">
                                 <div class="card-body d-flex align-items-center">
-                                    <img class="mr-3" src="/contacts/static/description/icon.svg" />
+                                    <img class="ms-3" src="/contacts/static/description/icon.svg" />
                                     <p class="card-title mb-0" t-esc="patient.name" />
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                         <a t-attf-href="/my/dental/{{ patient.id }}/personal">
                             <div class="card">
                                 <div class="card-body d-flex align-items-center">
-                                    <img class="mr-3" src="/sale/static/src/img/bag.svg" />
+                                    <img class="ms-3" src="/sale/static/src/img/bag.svg" />
                                     <p class="card-title mb-0">Personal</p>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                         <a t-attf-href="/my/dental/{{ patient.id }}/medical_history">
                             <div class="card">
                                 <div class="card-body d-flex align-items-center">
-                                    <img class="mr-3" src="/account/static/src/img/Bill.svg" />
+                                    <img class="ms-3" src="/account/static/src/img/Bill.svg" />
                                     <p class="card-title mb-0">Medical History</p>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                         <a t-attf-href="/my/dental/{{ patient.id }}/medical_aid">
                             <div class="card">
                                 <div class="card-body d-flex align-items-center">
-                                    <img class="mr-3" src="/project/static/src/img/folder.svg" />
+                                    <img class="ms-3" src="/project/static/src/img/folder.svg" />
                                     <p class="card-title mb-0">Medical Aid</p>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@
                         <a t-attf-href="/my/dental/{{ patient.id }}/dental_history">
                             <div class="card">
                                 <div class="card-body d-flex align-items-center">
-                                    <img class="mr-3" src="/project/static/src/img/tasks.svg" />
+                                    <img class="ms-3" src="/project/static/src/img/tasks.svg" />
                                     <p class="card-title mb-0">Dental History and Next Appointment</p>
                                 </div>
                             </div>
@@ -88,101 +88,94 @@
     <template id="portal_my_dental_personal" name="My Dental Personal">
         <t t-call="portal.portal_layout">
             <div class="container">
-                <h1>Personal Details</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Date Of Birth</th>
-                            <th>Marital Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <td>
-                            <span t-field="patient.name" />
-                        </td>
-                        <td>
-                            <span t-field="patient.gender" />
-                        </td>
-                        <td>
-                            <span t-field="patient.date_of_birth" />
-                        </td>
-                        <td>
-                            <span t-field="patient.marital_status" />
-                        </td>
-                    </tbody>
-                </table>
+                <h1 class="mb-4 text-center text-primary">Personal Details</h1>
+                <form class="bg-light p-4 rounded shadow-sm">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Name</label>
+                        <input type="text" class="form-control" t-att-value="patient.name"
+                            readonly="readonly" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Gender</label>
+                        <input type="text" class="form-control" t-att-value="patient.gender"
+                            readonly="readonly" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Date of Birth</label>
+                        <input type="text" class="form-control" t-att-value="patient.date_of_birth"
+                            readonly="readonly" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Marital Status</label>
+                        <input type="text" class="form-control" t-att-value="patient.marital_status"
+                            readonly="readonly" />
+                    </div>
+                </form>
             </div>
         </t>
     </template>
 
     <template id="portal_my_dental_medical_history" name="My Dental Medical History">
         <t t-call="portal.portal_layout">
-            <div class="container">
-                <h1>Medical History</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Patient</th>
-                            <th>Date</th>
-                            <th>Consultation Type</th>
-                            <th>Company</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr t-foreach="medical_history" t-as="record">
-                            <td>
-                                <span t-field="record.patient_id" />
-                            </td>
-                            <td>
-                                <span t-field="record.date" />
-                            </td>
-                            <td>
+            <div class="container mt-5">
+                <h1 class="mb-4 text-center text-primary">Medical History</h1>
+                <t t-foreach="medical_history" t-as="record">
+                    <div class="list-group">
+                        <a href="#"
+                            class="list-group-item list-group-item-action flex-column align-items-start mb-3 border-primary">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 text-primary">Patient: <span
+                                        t-field="record.patient_id" /></h5>
+                                <small class="text-muted">
+                                    <span t-field="record.date" />
+                                </small>
+                            </div>
+                            <p class="mb-1">
+                                <strong>Consultation Type:</strong>
                                 <span t-field="record.consultation_type" />
-                            </td>
-                            <td>
+                            </p>
+                            <p class="mb-1">
+                                <strong>Company:</strong>
                                 <span t-field="record.company_id" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                            </p>
+                        </a>
+                    </div>
+                </t>
             </div>
         </t>
     </template>
 
     <template id="portal_my_dental_medical_aid" name="My Dental Medical Aid">
         <t t-call="portal.portal_layout">
-            <div class="container">
-                <h1>Medical Aid</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Medical Aid Plan</th>
-                            <th>Medical Aid Number</th>
-                            <th>Main Member Code</th>
-                            <th>Dependent Code</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <td>
-                            <span t-field="medical_aid.name" />
-                        </td>
-                        <td>
-                            <span t-field="medical_aid.medical_aid_plan" />
-                        </td>
-                        <td>
-                            <span t-field="medical_aid.medical_aid_number" />
-                        </td>
-                        <td>
-                            <span t-field="medical_aid.main_member_code" />
-                        </td>
-                        <td>
-                            <span t-field="medical_aid.dependent_code" />
-                        </td>
-                    </tbody>
-                </table>
+            <div class="container mt-5">
+                <h1 class="mb-4 text-center text-primary">Medical Aid</h1>
+                <form class="bg-white p-4 rounded-lg shadow-lg border border-primary">
+                    <div class="mb-4">
+                        <label class="form-label text-primary">Name</label>
+                        <input type="text" class="form-control form-control-lg"
+                            t-att-value="medical_aid.name" readonly="readonly" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-primary">Medical Aid Plan</label>
+                        <input type="text" class="form-control form-control-lg"
+                            t-att-value="medical_aid.medical_aid_plan" readonly="readonly" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-primary">Medical Aid Number</label>
+                        <input type="text" class="form-control form-control-lg"
+                            t-att-value="medical_aid.medical_aid_number" readonly="readonly" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-primary">Main Member Code</label>
+                        <input type="text" class="form-control form-control-lg"
+                            t-att-value="medical_aid.main_member_code" readonly="readonly" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-primary">Dependent Code</label>
+                        <input type="text" class="form-control form-control-lg"
+                            t-att-value="medical_aid.dependent_code" readonly="readonly" />
+                    </div>
+                </form>
             </div>
         </t>
     </template>
@@ -195,9 +188,10 @@
                     <thead>
                         <tr>
                             <th>Patient</th>
-                            <th>Date</th>
-                            <th>Consultation Type</th>
-                            <th>Company</th>
+                            <th>Extra Oral observation</th>
+                            <th>Habits</th>
+                            <th>Treatment notes</th>
+                            <th>Consultation type</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -206,13 +200,16 @@
                                 <span t-field="record.patient_id" />
                             </td>
                             <td>
-                                <span t-field="record.date" />
+                                <span t-field="record.extra_oral_observation" />
+                            </td>
+                            <td>
+                                <span t-field="record.habits" />
+                            </td>
+                            <td>
+                                <span t-field="record.treatment_notes" />
                             </td>
                             <td>
                                 <span t-field="record.consultation_type" />
-                            </td>
-                            <td>
-                                <span t-field="record.company_id" />
                             </td>
                         </tr>
                     </tbody>
@@ -220,5 +217,4 @@
             </div>
         </t>
     </template>
-
 </odoo>

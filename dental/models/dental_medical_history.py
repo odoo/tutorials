@@ -11,7 +11,7 @@ class DentalMedicalHistory(models.Model):
     date = fields.Date(
         string="Date", default=fields.Date.context_today, required=True)
     patient_id = fields.Many2one(
-        'dental.patient', string="Patient", required=True)
+        'dental.patient', string="Patient")
     main_complaint = fields.Text(string="Main Complaint")
     history = fields.Text(string="History")
     tags = fields.Char(string="Tags")

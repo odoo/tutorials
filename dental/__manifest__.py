@@ -3,7 +3,7 @@
     'version': '17.0',
     'summary': 'Manage Dental Patients , Appointments and Medical Record',
     'author': 'Your Name',
-    'depends': ['base', 'mail', 'account'],
+    'depends': ['base', 'mail', 'account', 'website', 'portal'],
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
