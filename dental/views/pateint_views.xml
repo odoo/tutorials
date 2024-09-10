@@ -1,4 +1,5 @@
 <odoo>
+
     <record id="pateint_action" model="ir.actions.act_window">
             <field name="name">Pateints</field>
             <field name="res_model">dental.patients</field>
@@ -13,7 +14,6 @@
                 </p>
             </field>
     </record>
-
 
     <record id="view_pateint_tree" model="ir.ui.view">
 		<field name="name">dental.patients.tree</field>
@@ -33,7 +33,7 @@
 		<field name="arch" type="xml">
 			<form string="Patients">
 				<header>
-                    <field name="state" widget="statusbar" statusbar_visible="new,to do today,done,to invoice" />
+                    <field name="state" widget="statusbar" statusbar_visible="new,to do today,done,to invoice" options='{"clickable":"1"}'  />
 				  <button name="action_open_invoice" string="invoice"  type="object"/>
                 </header>
 				
@@ -96,13 +96,11 @@
 									</group>
 								</group>
 								<group string="PATIENT DETAILS">
-									<group>
 										<field name="occupation_or_grade"/>
 										<field name="identity_number"/>
 										<field name="date_of_birth"/>
 										<field name="gender"/>
 										<field name="marital_status"  />
-									</group>
 								</group>
 								<group string="CONSENT FORM">
 								</group>
@@ -139,6 +137,7 @@
 		<field name="model">dental.patients</field>
 		<field name="arch" type="xml">
 			<kanban  default_group_by="state">
+				<field name="state"/>
 				<templates>
 					<t t-name="kanban-box">
 						<div class="oe_kanban_global_click">
@@ -154,8 +153,9 @@
 							</div>
 						</div>
 					</t>
-            </templates>
+				</templates>
 			</kanban>
 		</field>
 	</record>
+	
 </odoo>

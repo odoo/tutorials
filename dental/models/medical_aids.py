@@ -27,4 +27,3 @@ class MedicalAidsModel(models.Model):
         tracking=True,
         default="new",
     )
-    pateint_id = fields.One2many("dental.patients", "medical_aid_id")

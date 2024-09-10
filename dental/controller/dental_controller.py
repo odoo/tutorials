@@ -3,7 +3,7 @@ from odoo.http import request
 
 
 class DentalController(http.Controller):
-
+    # show dental on my account
     @http.route(
         [
             "/dental",
@@ -44,6 +44,7 @@ class DentalController(http.Controller):
             },
         )
 
+    # show all patient
     @http.route(
         ["/patient/<int:record_id>"],
         type="http",
@@ -59,6 +60,65 @@ class DentalController(http.Controller):
             },
         )
 
+    # show personal detail
+    @http.route(
+        ["/personal/detail/<int:record_id>"],
+        type="http",
+        auth="public",
+        website=True,
+    )
+    def show_personal_detail(self, record_id, **kwargs):
+        data = request.env["dental.patients"].sudo().browse(record_id)
+        return request.render(
+            "dental.personal_detail_template",
+            {
+                "personal": data,
+            },
+        )
+
+    # show medical Aid detail
+    @http.route(
+        ["/patients/medical_aid/detail/<int:record_id>"],
+        type="http",
+        auth="public",
+        website=True,
+    )
+    def show_medical_aid_detail(self, record_id, **kwargs):
+        data = request.env["dental.patients"].sudo().browse(record_id)
+        medical_aid_id = data.medical_aid_id.id
+        medical_aid = (
+            request.env["medical.aids"]
+            .sudo()
+            .search(
+                [
+                    ("id", "=", medical_aid_id),
+                ],
+            )
+        )
+        return request.render(
+            "dental.medical_aid_detail_template",
+            {
+                "medical_aid": medical_aid,
+                "patient": data,
+            },
+        )
+
+    # medical history
+    @http.route(
+        ["/medical/history/<int:patient_id>"],
+        type="http",
+        auth="public",
+        website=True,
+    )
+    def show_medical_history(self, patient_id, **kwargs):
+        data = request.env["dental.patients"].sudo().browse(patient_id)
+        history_id = data.history_id
+        return request.render(
+            "dental.portal_medical_history_template",
+            {"history": history_id, "patient": data},
+        )
+
+    # dental history
     @http.route(
         ["/dental/history/<int:patient_id>"],
         type="http",
@@ -67,9 +127,29 @@ class DentalController(http.Controller):
     )
     def show_dental_history(self, patient_id, **kwargs):
         data = request.env["dental.patients"].sudo().browse(patient_id)
+        history_id = data.history_id
         return request.render(
             "dental.dental_history_view",
             {
-                "patients": data,
+                "history": history_id,
+                "patient": data,
+            },
+        )
+
+    # Dental_history_detail
+    @http.route(
+        ["/history/detail/<int:history_id>/<int:patient_id>"],
+        type="http",
+        auth="public",
+        website=True,
+    )
+    def show_dental_history_detail(self, history_id, patient_id, **kwargs):
+        patient = request.env["dental.patients"].sudo().browse(patient_id)
+        data = request.env["pateint.history"].sudo().browse(history_id)
+        return request.render(
+            "dental.dental_history_detail_view",
+            {
+                "history": data,
+                "patient": patient,
             },
         )

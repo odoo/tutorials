@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-	<menuitem id="pateint_root_menu" name="Dental">
+	<menuitem id="pateint_root_menu" name="Dental"  web_icon="dental,static/icons/dental.png">
 		<menuitem id="pateint_root_menu_leve1" name="Pateints">
 			<menuitem id="pateint_root_menu_leve1_action" action="dental.pateint_action" />
 		</menuitem>
