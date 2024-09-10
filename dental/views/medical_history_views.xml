@@ -55,42 +55,86 @@
                                 <field name="aligner_file2" />
                             </group>
                         </group>
-                        <group string="Tooth chart">
+                        <group string="Tooth Chart">
                             <group string="Upper">
-                                <field name="upper_18" string="18"/>
-                                <field name="upper_17" string="17"/>
-                                <field name="upper_16" string="16"/>
-                                <field name="upper_15" string="15"/>
-                                <field name="upper_14" string="14"/>
-                                <field name="upper_13" string="13"/>
-                                <field name="upper_12" string="12"/>
-                                <field name="upper_11" string="11"/>
-                                <field name="upper_28" string="28"/>
-                                <field name="upper_27" string="27"/>
-                                <field name="upper_26" string="26"/>
-                                <field name="upper_25" string="25"/>
-                                <field name="upper_24" string="24"/>
-                                <field name="upper_23" string="23"/>
-                                <field name="upper_22" string="22"/>
-                                <field name="upper_21" string="21"/>
+                                <strong>
+                                    <div>
+                                        <div class="pt-3">18</div>
+                                        <div class="pt-3">17</div>
+                                        <div class="pt-3">16</div>
+                                        <div class="pt-3">15</div>
+                                        <div class="pt-3">14</div>
+                                        <div class="pt-3">13</div>
+                                        <div class="pt-3">12</div>
+                                        <div class="pt-3">11</div>
+                                        <div class="pt-3">28</div>
+                                        <div class="pt-3">27</div>
+                                        <div class="pt-3">26</div>
+                                        <div class="pt-3">25</div>
+                                        <div class="pt-3">24</div>
+                                        <div class="pt-3">23</div>
+                                        <div class="pt-3">22</div>
+                                        <div class="pt-3">21</div>
+                                    </div>
+                                </strong>
+                            </group>
+                            <group string="Upper">
+                                <field name="upper_18" />
+                                <field name="upper_17" />
+                                <field name="upper_16" />
+                                <field name="upper_15" />
+                                <field name="upper_14" />
+                                <field name="upper_13" />
+                                <field name="upper_12" />
+                                <field name="upper_11" />
+                                <field name="upper_28" />
+                                <field name="upper_27" />
+                                <field name="upper_26" />
+                                <field name="upper_25" />
+                                <field name="upper_24" />
+                                <field name="upper_23" />
+                                <field name="upper_22" />
+                                <field name="upper_21" />
                             </group>
                             <group string="Lower">
-                                <field name="lower_38" string="38"/>
-                                <field name="lower_37" string="37"/>
-                                <field name="lower_36" string="36"/>
-                                <field name="lower_35" string="35"/>
-                                <field name="lower_34" string="34"/>
-                                <field name="lower_33" string="33"/>
-                                <field name="lower_32" string="32"/>
-                                <field name="lower_31" string="31"/>
-                                <field name="lower_48" string="48"/>
-                                <field name="lower_47" string="47"/>
-                                <field name="lower_46" string="46"/>
-                                <field name="lower_45" string="45"/>
-                                <field name="lower_44" string="44"/>
-                                <field name="lower_43" string="43"/>
-                                <field name="lower_42" string="42"/>
-                                <field name="lower_41" string="41"/>
+                                <strong>
+                                    <div>
+                                        <div class="pt-3">48</div>
+                                        <div class="pt-3">47</div>
+                                        <div class="pt-3">46</div>
+                                        <div class="pt-3">45</div>
+                                        <div class="pt-3">44</div>
+                                        <div class="pt-3">43</div>
+                                        <div class="pt-3">42</div>
+                                        <div class="pt-3">41</div>
+                                        <div class="pt-3">38</div>
+                                        <div class="pt-3">37</div>
+                                        <div class="pt-3">36</div>
+                                        <div class="pt-3">35</div>
+                                        <div class="pt-3">34</div>
+                                        <div class="pt-3">33</div>
+                                        <div class="pt-3">32</div>
+                                        <div class="pt-3">31</div>
+                                    </div>
+                                </strong>
+                            </group>
+                            <group name="lower" string="Lower">
+                                <field name="lower_48" />
+                                <field name="lower_47" />
+                                <field name="lower_46" />
+                                <field name="lower_45" />
+                                <field name="lower_44" />
+                                <field name="lower_43" />
+                                <field name="lower_42" />
+                                <field name="lower_41" />
+                                <field name="lower_38" />
+                                <field name="lower_37" />
+                                <field name="lower_36" />
+                                <field name="lower_35" />
+                                <field name="lower_34" />
+                                <field name="lower_33" />
+                                <field name="lower_32" />
+                                <field name="lower_31" />
                             </group>
                         </group>
                         <group string="Treatment notes">
@@ -107,7 +151,6 @@
                             <field name="fissure_sealant_qty" widget="float" />
                             <field name="attachments_removed" widget="boolean" />
                             <field name="aligner_followup_scan" widget="boolean" />
-                            <field name="other_notes" widget="text" />
                         </group>
 
                         <div>

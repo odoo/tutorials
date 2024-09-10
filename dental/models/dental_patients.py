@@ -1,4 +1,4 @@
-from odoo import models, fields, Command
+from odoo import models, fields, Command, api
 
 
 class DentalPatients(models.Model):
@@ -79,6 +79,23 @@ class DentalPatients(models.Model):
     depedent_code = fields.Char(string="Dependent Code")
     medical_history_ids = fields.One2many('medical.history', 'patient_id', string="Medical History")
 
+    @api.onchange("stage")
+    def _onchange_stage(self):
+        if self.stage == 'to invoice':
+            self.guarantor_id = self.env.user.id
+            move_vals = {
+            'partner_id': self.guarantor_id.id,
+            'move_type': 'out_invoice',
+            'invoice_line_ids': [
+                Command.create({
+                "name": "consultation fees",
+                "quantity": 1,
+                "price_unit": 500
+            })
+            ]
+            }
+            self.env['account.move'].create(move_vals)
+
     def book_invoice_button(self):
         self.stage = 'to invoice'
         self.guarantor_id = self.env.user.id
@@ -93,19 +110,12 @@ class DentalPatients(models.Model):
             })
             ]
         }
-        self.env['account.move'].check_access_rights('create')
-        self.env['account.move'].check_access_rule('create')
-        self.env['account.move'].sudo().create(move_vals)
+        self.env['account.move'].create(move_vals)
 
     def book_appointment_button(self):
         move_vals = {
-            'appointment_duration': 1,
-            'appointment_tz': self.env.user.tz,
-            'assign_method': 'resource_time',
-            'max_schedule_days': 1,
-            'min_cancellation_hours': 24,
-            'min_schedule_hours': 48,
-            'name': 'Appointment',
-            'schedule_based_on': 'users',
+            'duration': 1,
+            'appointment_type_id': self.env.ref('appointment.appointment_type_dental_care').id,
+            'name': f"{self.name}-Dentist Appointment"
         }
-        self.env['appointment.type'].sudo().create(move_vals)
+        self.env['calendar.event'].create(move_vals)

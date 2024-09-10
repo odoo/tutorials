@@ -18,24 +18,31 @@
         <t t-call="portal.portal_layout">
             <t t-set="title">Dental</t>
             <div class="container">
-                <h1>Dental</h1>
+                <h1 class="text-center">Dental</h1>
                 <div class="row">
-                    <div class="col-md-6 mb-4" t-foreach="users" t-as="user">
-                        <a t-attf-href="/my/dental/{{ user.id }}">
-                            <div class="card">
-                                <div class="card-body d-flex align-items-center">
-                                    <img class="ms-3 img img-fluid" src="/contacts/static/description/icon.svg" />
-                                    <p class="card-title mb-0" t-esc="user.name" />
+                    <t t-foreach="users" t-as="user">
+                        <div class="col-md-6 mb-4">
+                            <a t-attf-href="/my/dental/{{ user.id }}">
+                                <div class="card shadow-sm border-primary">
+                                    <div class="card-body d-flex align-items-center">
+                                        <img class="ms-3 img img-fluid"
+                                            src="/contacts/static/description/icon.svg" />
+                                        <p class="card-title ms-3 mb-0 text-primary"
+                                            t-esc="user.name" />
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <t t-call="portal.pager" t-options="{'pager': pager}" />
                 </div>
             </div>
         </t>
     </template>
 
-    <template id="portal_my_dental_user" name="Patient details">
+    <template id="portal_my_dental_user" name="User Menu">
         <t t-call="portal.portal_layout">
             <div class="container">
                 <div class="row">
@@ -43,7 +50,8 @@
                         <a t-attf-href="/my/dental/{{ patient.id }}/personal">
                             <div class="card">
                                 <div class="card-body d-flex align-items-center">
-                                    <img class="ms-3 img img-fluid" src="/sale/static/src/img/bag.svg" />
+                                    <img class="ms-3 img img-fluid"
+                                        src="/sale/static/src/img/bag.svg" />
                                     <p class="card-title mb-0">Personal</p>
                                 </div>
                             </div>
@@ -53,7 +61,8 @@
                         <a t-attf-href="/my/dental/{{ patient.id }}/medical_history">
                             <div class="card">
                                 <div class="card-body d-flex align-items-center">
-                                    <img class="ms-3 img img-fluid" src="/account/static/src/img/Bill.svg" />
+                                    <img class="ms-3 img img-fluid"
+                                        src="/account/static/src/img/Bill.svg" />
                                     <p class="card-title mb-0">Medical History</p>
                                 </div>
                             </div>
@@ -65,7 +74,8 @@
                         <a t-attf-href="/my/dental/{{ patient.id }}/medical_aid">
                             <div class="card">
                                 <div class="card-body d-flex align-items-center">
-                                    <img class="ms-3 img img-fluid" src="/project/static/src/img/folder.svg" />
+                                    <img class="ms-3 img img-fluid"
+                                        src="/project/static/src/img/folder.svg" />
                                     <p class="card-title mb-0">Medical Aid</p>
                                 </div>
                             </div>
@@ -75,7 +85,8 @@
                         <a t-attf-href="/my/dental/{{ patient.id }}/dental_history">
                             <div class="card">
                                 <div class="card-body d-flex align-items-center">
-                                    <img class="ms-3 img img-fluid" src="/project/static/src/img/tasks.svg" />
+                                    <img class="ms-3 img img-fluid"
+                                        src="/project/static/src/img/tasks.svg" />
                                     <p class="card-title mb-0">Dental History and Next Appointment</p>
                                 </div>
                             </div>
@@ -86,47 +97,51 @@
         </t>
     </template>
 
-    <template id="portal_my_dental_personal" name="My Dental Personal">
+    <template id="portal_my_dental_personal" name="Patient details">
         <t t-call="portal.portal_layout">
-            <div class="container text-center">
-                <h1>Personal Details</h1>
+            <div class="container">
+                <h1 class="text-center mb-4">Personal Details</h1>
                 <div>
                     <t t-foreach="patient" t-as="patient">
-                        <div class="card">
-                            <div class="card-body align-items-center">
-                                <img class="ms-3 img img-fluid" src="patient.image" />
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Company</th>
-                                            <th>Gender</th>
-                                            <th>BirthDate</th>
-                                            <th>Marital Status</th>
-                                            <th>Occupation</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <td>
-                                            <span t-field="patient.name" />
-                                        </td>
-                                        <td>
-                                            <span t-field="patient.company_id" />
-                                        </td>
-                                        <td>
-                                            <span t-field="patient.gender" />
-                                        </td>
-                                        <td>
-                                            <span t-field="patient.birthdate" />
-                                        </td>
-                                        <td>
-                                            <span t-field="patient.maritial_status" />
-                                        </td>
-                                        <td>
-                                            <span t-field="patient.occupation" />
-                                        </td>
-                                    </tbody>
-                                </table>
+                        <div class="card mb-3 shadow-sm border-primary">
+                            <div class="card-body px-4 py-3">
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Name:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="patient.name" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Company:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="patient.company_id" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Gender:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="patient.gender" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Birthdate:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="patient.birthdate" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Maritial Status:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="patient.maritial_status" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Ocupation:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="patient.occupation" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </t>
@@ -137,86 +152,49 @@
 
     <template id="portal_my_dental_medical_history" name="Medical History">
         <t t-call="portal.portal_layout">
-            <div class="container text-center">
-                <h1>Medical History</h1>
+            <div class="container">
+                <h1 class="text-center mb-4">Medical History</h1>
                 <div>
-
-                    <div class="card">
-                        <div class="card-body align-items-center">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Date</th>
-                                        <th>Attendance</th>
-                                        <th>Main Complaint</th>
-                                        <th>Company</th>
-                                        <th>Consultation Type</th>
-                                    </tr>
-                                </thead>
-                                <t t-foreach="medical_historys" t-as="medical_history">
-                                    <tbody>
-                                        <td>
-                                            <span t-field="medical_history.name" />
-                                        </td>
-                                        <td>
-                                            <span t-field="medical_history.date" />
-                                        </td>
-                                        <td>
-                                            <span t-field="medical_history.did_not_attend" />
-                                        </td>
-                                        <td>
-                                            <span t-field="medical_history.company_id" />
-                                        </td>
-                                        <td>
-                                            <span t-field="medical_history.consultation_type" />
-                                        </td>
-                                    </tbody>
-                                </t>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </t>
-    </template>
-
-    <template id="portal_my_dental_medical_aid" name="Medical Aid">
-        <t t-call="portal.portal_layout">
-            <div class="container text-center">
-                <h1>Medical Aid</h1>
-                <div>
-                    <t t-foreach="medical_aid" t-as="medical_aid">
-                        <div class="card">
-                            <div class="card-body align-items-center">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Contact</th>
-                                            <th>Email</th>
-                                            <th>Company</th>
-                                            <th>Phone</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <td>
-                                            <span t-field="medical_aid.name" />
-                                        </td>
-                                        <td>
-                                            <span t-field="medical_aid.partner_id" />
-                                        </td>
-                                        <td>
-                                            <span t-field="medical_aid.email_address" />
-                                        </td>
-                                        <td>
-                                            <span t-field="medical_aid.company_id" />
-                                        </td>
-                                        <td>
-                                            <span t-field="medical_aid.phone_number" />
-                                        </td>
-                                    </tbody>
-                                </table>
+                    <t t-foreach="medical_historys" t-as="medical_history">
+                        <div class="card mb-3 shadow-sm border-primary">
+                            <div class="card-body px-4 py-3">
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Name:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_history.name" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Date:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_history.date" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Attendance:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_history.did_not_attend" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Main Complaint:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_history.main_complaint" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Company:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_history.company_id" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Consultation
+                                        Type:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_history.consultation_type" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </t>
@@ -225,13 +203,302 @@
         </t>
     </template>
 
-    <template id="portal_my_dental_dental_history" name="Dental History">
+    <template id="portal_my_dental_medical_aid" name="Medical Aid">
         <t t-call="portal.portal_layout">
-            <div class="container text-center">
-                <h1>Dental History</h1>
+            <div class="container">
+                <h1 class="text-center mb-4">Medical Aid</h1>
                 <div>
+                    <t t-foreach="medical_aids" t-as="medical_aid">
+                        <div class="card mb-3 shadow-sm border-primary">
+                            <div class="card-body px-4 py-3">
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Name:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_aid.name" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Contact:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_aid.partner_id.name" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Email:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_aid.email_address" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Company:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_aid.company_id.name" />
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label class="form-label col-sm-4 text-primary">Phone:</label>
+                                    <div class="form-control-plaintext col-sm-8 ps-3">
+                                        <span t-field="medical_aid.phone_number" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
                 </div>
             </div>
         </t>
     </template>
+
+
+    <template id="portal_my_dental_dental_history" name="Dental History">
+        <t t-call="portal.portal_layout">
+            <div class="container text-center">
+                <h1>Dental History</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Xray1</th>
+                            <th>Xray2</th>
+                            <th>Extra Oral observation</th>
+                            <th>Habits</th>
+                            <th>Treatment notes</th>
+                            <th>Consultation type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="medical_historys" t-as="rec">
+                            <td>
+                                <a
+                                    t-attf-href="/my/dental/{{ rec.patient_id.id }}/dental_history/{{rec.id}}">
+                                    <span t-field="rec.name" />
+                                </a>
+                            </td>
+                            <td>
+                                <span t-field="rec.date" />
+                            </td>
+                            <td>
+                                <span t-field="rec.xray_file1" />
+                            </td>
+                            <td>
+                                <span t-field="rec.xray_file2" />
+                            </td>
+                            <td>
+                                <span t-field="rec.extra_observation" />
+                            </td>
+                            <td>
+                                <span t-field="rec.habits" />
+                            </td>
+                            <td>
+                                <span t-field="rec.treatment_notes" />
+                            </td>
+                            <td>
+                                <span t-field="rec.consultation_type" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_teeth_staining" name="Teeth Staining">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <h1 class="text-center">Teeth Staining</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Upper Teeth</h2>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tooth</th>
+                                    <th>Staining</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>18</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_18 else '✗'" /></td>
+                                </tr>
+                                <tr>
+                                    <td>17</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_17 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>16</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_16 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>15</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_15 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>14</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_14 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>13</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_13 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>12</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_12 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>11</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_11 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>28</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_28 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>27</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_27 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>26</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_26 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>25</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_25 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>24</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_24 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>23</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_23 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>22</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_22 else '✗'"/></td>
+                                </tr>
+                                <tr>
+                                    <td>21</td>
+                                    <td><t t-esc="'✓' if medical_history.upper_21 else '✗'"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h2>Lower Teeth</h2>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tooth</th>
+                                    <th>Staining</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>38</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_38 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>37</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_37 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>36</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_36 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>35</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_35 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>34</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_34 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>33</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_33 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>32</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_32 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>31</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_31 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>48</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_48 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>47</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_47 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>46</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_46 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>45</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_45 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>44</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_44 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>43</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_43 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>42</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_42 else '✗'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>41</td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.lower_41 else '✗'" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
 </odoo>

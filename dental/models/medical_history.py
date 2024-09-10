@@ -7,7 +7,7 @@ class MedicalHistory(models.Model):
     _description = "Medical History"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(string="Name", compute="_computed_name")
+    name = fields.Char(string="Name", compute="_computed_name", store=True)
     patient_id = fields.Many2one('dental.patient', string="Patient", required=True)
     date = fields.Date(string="Date", default=fields.Date.today())
     did_not_attend = fields.Boolean(string="Did not attend", required=True)
@@ -50,10 +50,7 @@ class MedicalHistory(models.Model):
     attachments_removed = fields.Boolean(string="Attachments Removed")
     aligner_followup_scan = fields.Boolean(string="Aligner Follow-up Scan")
 
-    other_notes = fields.Text(string="Other Notes")
-
-    # General notes field at the end
-    notes = fields.Text(string="Additional Notes")
+    notes = fields.Text(string="Other Notes")
 
     upper_18 = fields.Boolean(string="18 Staining")
     upper_17 = fields.Boolean(string="17 Staining")
