@@ -1,7 +1,7 @@
 <odoo>
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate_property.form</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
                 <div class="oe_title">
@@ -9,8 +9,10 @@
                         <field name="name" string="Title"/>
                     </h1>
                 </div>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <group>
                     <group>
+                        <field name="property_type"/>
                         <field name="postcode"/>
                         <field name="date_availability" string="Available From"/>
                     </group>
@@ -32,14 +34,23 @@
                             <field name="garden_orientation"/>
                         </group>
                     </page>
+                    <page string="Offers">
+                        <field name="offers_ids"/>
+                    </page>
+                    <page string="Other Info">
+                        <group>
+                            <field name="salesperson_id" string="Salesperson"/>
+                            <field name="buyer_id" string="Buyer"/>
+                        </group>
+                    </page>
                 </notebook>
             </form>
         </field>
     </record>
 
     <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate_property.tree</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Properties">
                 <field name="name" string="Title"/>
@@ -48,14 +59,15 @@
                 <field name="living_area" string="Living Area (sqm)" />
                 <field name="expected_price"/>
                 <field name="selling_price"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="date_availability" string="Available From"/>
             </tree>
         </field>
     </record>
 
     <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate_property.view.search</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.view.search</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Properties">
                 <field name="name" string="Title"/>
@@ -75,7 +87,7 @@
 
      <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
-        <field name="res_model">estate_property</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>
