@@ -3,8 +3,7 @@ from odoo import fields, models
 class EstateProperty(models.Model):
     _name = "estate_property"
     _description = "Property estates"
-    _order = "sequence"
-
+    
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
