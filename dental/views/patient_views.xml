@@ -18,6 +18,7 @@
             <tree decoration-success="state in ('today', 'To do today') or state in ('done', 'Done')" decoration-bf="state in ('new', 'New')">
                 <field name="name" string="Title"/>
                 <field name="hospitalised"/>
+                <field name="guaranator"/>
                 <field name="under_specialist_care"/>
                 <field name="state" column_invisible='1'/>
             </tree>
@@ -31,8 +32,8 @@
         <field name="arch" type="xml">
             <form string="description">
                 <header>
-                    <button class="btn-primary"  invisible="state in ('new', 'today')" name="generate_invoice_from_patient" title="Generate Invoice" type="object" string="Generate Invoice"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,today,done,invoice" invisible=""/>
+                    <button class="btn-primary" invisible="state in ('new', 'today')" name="generate_invoice_from_patient" title="Generate Invoice" type="object" string="Generate Invoice"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,today,done,invoice" options="{'clickable':'1'}"/>
                 </header>
                 <sheet>
                     <div>
@@ -40,7 +41,7 @@
                             <field name="name" placeholder="Name..."/>
                             <field name="patient_image" widget="image" class="oe_avatar" />
                         </h1>
-                        <field name="state" />
+                        <!-- <field name="state" /> -->
                         <group>
                             <field name = "history_ids" string="History"/>
                         </group>
@@ -148,7 +149,7 @@
         <field name="name">dental.patients.kanban</field>
         <field name="model">dental.patients</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state" records_draggable="true">
+            <kanban default_group_by="state" records_draggable="true" sample="1" >
                 <field name="state"/>
                 <templates>
                     <t t-name="kanban-box">

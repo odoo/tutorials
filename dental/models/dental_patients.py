@@ -26,6 +26,7 @@ class Patients(models.Model):
             ("done", "Done"),
             ("invoice", "To invoice"),
         ],
+         tracking=True,
     )
     female = fields.Boolean(string="FEMALE")
     pregnant = fields.Boolean(string="Are you pregnant")

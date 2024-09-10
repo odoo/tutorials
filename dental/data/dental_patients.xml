@@ -42,26 +42,32 @@
             Command.create({
                 'name':'Ram History',
                 'did_not_attend':'true',
+                'date':'2023-09-09',
                 'main_complaint':'Toothache in upper left quadrant'}),
             Command.create({
                 'name':'Ram History',
                 'did_not_attend':'true',
+                 'date':'2022-09-09',
                 'main_complaint':'Sensitivity to cold in lower right quadrant'}),
             Command.create({
                 'name':'Ram History',
                 'did_not_attend':'true',
+                 'date':'2021-09-08',
                 'main_complaint':'Bleeding gums'}),
             Command.create({
                 'name':'Ram History',
                 'did_not_attend':'true',
+                 'date':'2021-08-09',
                 'main_complaint':'Missing tooth'}),
             Command.create({
                 'name':'Ram History',
                 'did_not_attend':'true',
+                 'date':'2020-09-10',
                 'main_complaint':'Painful jaw'}),
             Command.create({
                 'name':'Ram History',
                 'did_not_attend':'true',
+                 'date':'2020-02-01',
                 'main_complaint':'Bad breath'}),
             ]"/>
         </record>
@@ -73,6 +79,28 @@
             <field name="psychiatric_history">Normal</field>
             <field name="marital_status">single</field>
             <field name="medical_aid" ref="dental.mediaid2"/>
+              <field name="history_ids" eval="[
+            Command.create({
+                'name':'Toothache',
+                'did_not_attend':'true',
+                'date':'2023-09-09',
+                'main_complaint':'Toothache in upper left quadrant'}),
+            Command.create({
+                'name':'Sensitivity',
+                'did_not_attend':'true',
+                 'date':'2022-09-09',
+                'main_complaint':'Sensitivity to cold in lower right quadrant'}),
+            Command.create({
+                'name':'Bleeding',
+                'did_not_attend':'true',
+                 'date':'2021-09-08',
+                'main_complaint':'Bleeding gums'}),
+            Command.create({
+                'name':'Shyam History',
+                'did_not_attend':'true',
+                 'date':'2021-08-09',
+                'main_complaint':'Missing tooth'}),
+            ]"/>
         </record>
         <record id="patients3" model="dental.patients">
             <field name="name">Krishna</field>

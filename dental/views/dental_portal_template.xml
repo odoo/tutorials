@@ -3,9 +3,20 @@
         <t t-call="website.layout">
             <div id="wrap" class="h-100 d-flex flex-column align-item-center justify-content-between">
                 <div class="container-sm mt-4" style="width:50%;">
-                    <h3 class="text-center mb-4">Patients</h3>
-                    <div class="row" style="display:flex; ">
-                        <t t-foreach="patinets" t-as="record">
+                    <nav class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar ">
+                        <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                            <li class="breadcrumb-item ms-1">
+                                <a t-attf-href="/my/home" aria-label="Home" title="Home">
+                                    <i class="fa fa-home"></i>
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+
+
+                    <h4 class="text-center mb-4">Patients</h4>
+                    <div class="row" style="display:flex; justify-content: center;">
+                        <t t-foreach="patients" t-as="record">
                             <div class="card m-3 border border-white" style="max-width: 240px; background-color:#e3e3e3; height:75px;">
                                 <a t-att-href="'/my/dental/' + str(record.name) + '/' + str(record.id)" class="o_action pt-2" style="text-decoration:none;height:80px;">
 
@@ -24,13 +35,13 @@
                         </t>
                     </div>
                 </div>
-                <div class="d-flex flex-row align-items-center justify-content-center" style="width: 100%; height: 30px;">
+                <div class="d-flex flex-row align-items-center justify-content-center" style="width: 100%; height: 30px; ">
 
-                    <!-- previous page Button -->
+                    <!-- previous page button -->
                     <t t-if="pager['current_page'] > 1">
                         <div class="m-1 rounded-circle" style="width: 20px; height: 20px; text-align: center;">
                             <a t-att-href="'/my/dental/page/' + str(pager['current_page'] - 1)">
-                                &#171;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <!-- Previous button symbol -->
+                                &#171;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <!-- Previous button symbol -->
                             </a>
                         </div>
                     </t>
@@ -87,7 +98,7 @@
                     <t t-if="pager['total_page'] > pager['current_page']">
                         <div class="m-1 rounded-circle" style="width: 20px; height: 20px; text-align: center;">
                             <a t-att-href="'/my/dental/page/' + str(pager['current_page'] + 1)">
-                                &#187;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <!-- Previous button symbol -->
+                                &#187;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <!-- Previous button symbol -->
                             </a>
                         </div>
                     </t>
@@ -99,16 +110,29 @@
     <template id="dental_individual_patient_template" name="Dental">
         <t t-call="website.layout">
             <div id="wrap" class="h-100 d-flex flex-column align-item-center justify-content-between">
-
                 <div class="container">
+                    <nav class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar ">
+                        <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                            <li class="breadcrumb-item ms-1">
+                                <a t-attf-href="/my/home" aria-label="Home" title="Home">
+                                    <i class="fa fa-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental" aria-label="Dental" title="Dental">
+                                    Dental
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+
                     <h4 class="text-center mb-4 m-4">
-                        <t t-out="patinets.name"/>
+                        <t t-out="patient.name"/>
                     </h4>
                     <div class="row">
-
                         <div class="col-md-6 mb-3">
                             <div class="o_portal_index_card">
-                                <a t-attf-href="/web?#id={{patinets.id}}&amp;model=dental.patients&amp;view_type=form" t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
+                                <a t-attf-href="/my/dental/#{patient.name}/#{patient.id}/personal" t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
                                     <div class="o_portal_icon align-self-start">
                                         <img t-att-src="'/dental/static/src/img/bag.svg'" />
                                     </div>
@@ -123,8 +147,8 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <div t-att-class="'o_portal_index_card '">
-                                <a t-attf-href="/web?#id={{patinets.id}}&amp;model=dental.patients&amp;view_type=form" t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
+                            <div t-att-class="'o_portal_index_card '" t-if="patient.history_ids">
+                                <a t-attf-href="/my/dental/#{patient.name}/#{patient.id}/medical_history" t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
                                     <div class="o_portal_icon align-self-start">
                                         <img t-att-src="'/dental/static/src/img/Bill.svg'" />
                                     </div>
@@ -143,7 +167,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <div t-att-class="'o_portal_index_card '">
-                                <a t-attf-href="/web?#id={{patinets.medical_aid.id}}&amp;model=dental.medical.aid&amp;view_type=form" t-att-title="title" t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
+                                <a t-attf-href="/my/dental/#{patient.name}/#{patient.id}/medical_aid" t-att-title="title" t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
                                     <div class="o_portal_icon align-self-start">
                                         <img t-att-src="'/dental/static/src/img/folder.svg'" />
                                     </div>
@@ -158,7 +182,7 @@
 
                         <div class="col-md-6 mb-3">
                             <div t-att-class="'o_portal_index_card '">
-                                <a t-att-href="'/my/dental/' + str(patinets.name) + '/' + str(patinets.id) + '/dentalhistory'" t-att-title="title" t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
+                                <a t-att-href="'/my/dental/' + str(patient.name) + '/' + str(patient.id) + '/dentalhistory'" t-att-title="title" t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
                                     <div class="o_portal_icon align-self-start">
                                         <img t-att-src="'/dental/static/src/img/tasks.svg'"/>
                                     </div>
@@ -177,43 +201,307 @@
         </t>
     </template>
 
-
     <template id="dental_patient_history_template" name="Dental">
-        <t t-call="portal.portal_layout">
-            <t t-if="patient_history" t-call="portal.portal_table">
-                <thead>
-                    <tr class="active text-center">
-                        <th>Name #</th>
-                        <th>Date</th>
-                        <th>Description </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <t t-foreach="patient_history" t-as="history">
-                        <tr>
-                            <td class="text-center">
-                                <span t-field="history.name"/>
-                            </td>
-                            <td class='d-none d-md-table-cell text-center'>
-                                <span t-field="history.date"/>
-                            </td>
+        <t t-call="website.layout">
+            <div class="o_portal_wrap">
+                <div class="container pt-3">
+                    <nav class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar ">
+                        <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                            <li class="breadcrumb-item ms-1">
+                                <a t-attf-href="/my/home" aria-label="Home" title="Home">
+                                    <i class="fa fa-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental" aria-label="Dental" title="Dental">
+                                    Dental
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental/#{patient.name}/#{patient.id}" aria-label="Patient Name" title="Patient Name">
+                                    <span t-field="patient.name"/>
+                                </a>
+                            </li>
+                        </ol>
 
-                            <td class="text-center">
-                                <span t-out="history.main_complaint"/>
-                            </td>
-                        </tr>
+                        <div class="collapse navbar-collapse flex-wrap-reverse justify-content-end gap-3">
+                            <div class="nav flex-column flex-sm-row gap-2 ms-auto p-0 mb-3 mb-lg-0 mt-1 mt-lg-0">
+                                <div>
+                                    <span class="small me-1 navbar-text">Sort By:</span>
+                                    <div class="btn-group">
+                                        <button id="portal_searchbar_sortby" data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle">
+                                            <span t-if="sort_by == 'date'">Date</span>
+                                             <span t-if="sort_by == 'main_complaint'">Main Complaint</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a t-attf-href="/my/dental/#{patient.name}/#{patient.id}/dentalhistory?sortby=date" class="dropdown-item active">
+                                                <span>Date</span>
+                                            </a>
+                                            <a t-attf-href="/my/dental/#{patient.name}/#{patient.id}/dentalhistory?sortby=main_complaint" class="dropdown-item">
+                                                <span>Main Complaint</span>
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ms-lg-2">
+                                    <span class="small me-1 navbar-text">Filter By:</span>
+                                    <div class="btn-group">
+                                        <button id="portal_searchbar_filters" data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle">
+                                            <t t-if="filter_by == 'all'">All</t>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a t-attf-href="/my/dental/#{patient.name}/#{patient.id}/dentalhistory?filterby=all" class="dropdown-item">
+                                                <span>All</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <t t-if="patient_history" t-call="portal.portal_table">
+                        <thead>
+                            <tr class="active text-center">
+                                <th>Name #</th>
+                                <th>Date</th>
+                                <th>Description </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="patient_history" t-as="history">
+                                <tr>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/dental/#{patient.name}/#{patient.id}/medical_history/#{history.id}" class="m-5">
+                                            <span t-field="history.name"/>
+                                        </a>
+                                    </td>
+                                    <td class='d-none d-md-table-cell text-center'>
+                                        <span t-field="history.date"/>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span t-out="history.main_complaint"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
                     </t>
-                </tbody>
-            </t>
+                </div>
+            </div>
         </t>
     </template>
 
-
-    <template id="dental_patient_dummy_template" name="Dental">
+    <template id="dental_patient_personal_template" name="Dental">
         <t t-call="website.layout">
             <div id="wrap" class="h-100 d-flex flex-column align-item-center justify-content-between">
                 <div class="container mt-4">
-                    <h1 class="text-center mb-4">Dummy checked </h1>
+                    <nav class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar ">
+                        <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                            <li class="breadcrumb-item ms-1">
+                                <a t-attf-href="/my/home" aria-label="Home" title="Home">
+                                    <i class="fa fa-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental" aria-label="Dental" title="Dental">
+                                    Dental
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental/#{patient.name}/#{patient.id}" aria-label="Patient Name" title="Patient Name">
+                                    <span t-field="patient.name"/>
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+                    <t t-foreach="patient" t-as="record">
+                        <form class="needs-validation">
+                            <fieldset>
+                                <legend>Patient Form View</legend>
+                                <div t-if="record.patient_image" class="mb-3">
+                                    <img class="img-thumbnail" style="max-height: 400px; max-width: 500px;" t-att-src="image_data_uri(record.patient_image)"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" id="name" class="form-control" t-att-value="record.name" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="date" class="form-label">State:</label>
+                                    <input type="text" id="date" class="form-control" t-att-value="record.state" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="guarantor" class="form-label">Guarantor:</label>
+                                    <input type="text" id="guarantor" class="form-control" t-att-value="patient.guaranator.name" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="guarantor" class="form-label">Medical Aid:</label>
+                                    <input type="text" id="guarantor" class="form-control" t-att-value="patient.medical_aid.name" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="dental_patient_medical_history_template" name="Dental">
+        <t t-call="website.layout">
+            <div id="wrap" class="h-100 d-flex flex-column align-item-center justify-content-between">
+                <div class="container mt-4">
+                    <nav class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar ">
+                        <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                            <li class="breadcrumb-item ms-1">
+                                <a t-attf-href="/my/home" aria-label="Home" title="Home">
+                                    <i class="fa fa-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental" aria-label="Dental" title="Dental">
+                                    Dental
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental/#{history.patient.name}/#{history.patient.id}" aria-label="Patient Name" title="Patient Name">
+                                    <span t-field="history.patient.name"/>
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+
+                    <t t-foreach="history" t-as="record">
+                        <form class="needs-validation">
+                            <fieldset>
+                                <legend>Medical History Form View</legend>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" class="form-control" t-att-value="record.name" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="date" class="form-label">Date:</label>
+                                    <input type="text" class="form-control" t-att-value="record.date" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="guarantor" class="form-label">Patient:</label>
+                                    <input type="text" class="form-control" t-att-value="record.patient.name" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3" t-if="record.filling_description">
+                                    <label for="guarantor" class="form-label">Filling Description:</label>
+                                    <input type="text" class="form-control" t-att-value="record.filling_description" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="dental_patient_medical_aid_template" name="Dental">
+        <t t-call="website.layout">
+            <div id="wrap" class="h-100 d-flex flex-column align-item-center justify-content-between">
+                <div class="container mt-4">
+                    <nav class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar ">
+                        <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                            <li class="breadcrumb-item ms-1">
+                                <a t-attf-href="/my/home" aria-label="Home" title="Home">
+                                    <i class="fa fa-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental" aria-label="Dental" title="Dental">
+                                    Dental
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental/#{patient.name}/#{patient.id}" aria-label="Patient Name" title="Patient Name">
+                                    <span t-field="patient.name"/>
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+                    <t t-foreach="medical_aid" t-as="record">
+                        <form class="needs-validation">
+                            <fieldset>
+                                <legend>Medical Aid Form View</legend>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" class="form-control" t-att-value="record.name" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="date" class="form-label">Phone:</label>
+                                    <input type="text" class="form-control" t-att-value="record.phone" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="guarantor" class="form-label">Company:</label>
+                                    <input type="text" class="form-control" t-att-value="record.company_id.name" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3" t-if="record.notes">
+                                    <label for="guarantor" class="form-label">Notes:</label>
+                                    <input type="text" class="form-control" t-att-value="record.notes" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="dental_patient_medical_history_clicked_template" name="Dental">
+        <t t-call="website.layout">
+            <div id="wrap" class="h-100 d-flex flex-column align-item-center justify-content-between">
+                <div class="container mt-4">
+                    <nav class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar ">
+                        <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+                            <li class="breadcrumb-item ms-1">
+                                <a t-attf-href="/my/home" aria-label="Home" title="Home">
+                                    <i class="fa fa-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental" aria-label="Dental" title="Dental">
+                                    Dental
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental/#{history.patient.name}/#{history.patient.id}" aria-label="Patient Name" title="Patient Name">
+                                    <span t-field="history.patient.name"/>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active ">
+                                <a t-attf-href="/my/dental/#{history.patient.name}/#{history.patient.id}/dentalhistory" aria-label="Patient Name" title="Patient Name">
+                                    History
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+
+                    <t t-foreach="history" t-as="record">
+                        <form class="needs-validation">
+                            <fieldset>
+                                <legend>Medical History Form View</legend>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" class="form-control" t-att-value="record.name" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="date" class="form-label">Date:</label>
+                                    <input type="text" class="form-control" t-att-value="record.date" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="guarantor" class="form-label">Patient:</label>
+                                    <input type="text" class="form-control" t-att-value="record.patient.name" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                                <div class="mb-3" t-if="record.filling_description">
+                                    <label for="guarantor" class="form-label">Filling Description:</label>
+                                    <input type="text" class="form-control" t-att-value="record.filling_description" readonly="readonly" style="background-color:white; color:black;"/>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </t>
                 </div>
             </div>
         </t>
