@@ -5,6 +5,7 @@ class EstateProperty(models.Model):
     _description = "Property estates"
 
     state = fields.Selection(
+        default='New',
         string='Stage',
         selection=[('New', 'New'), ('Offer_Received', 'Offer Received'), ('Offer_Accepted', 'Offer Accepted'), ('Sold', 'Sold'), ('Canceled', 'Canceled')],
     )
