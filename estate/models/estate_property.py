@@ -5,7 +5,7 @@ class EstateProperty(models.Model):
     _description = "Property estates"
 
     state = fields.Selection(
-        string='Type',
+        string='Stage',
         selection=[('New', 'New'), ('Offer_Received', 'Offer Received'), ('Offer_Accepted', 'Offer Accepted'), ('Sold', 'Sold'), ('Canceled', 'Canceled')],
     )
     name = fields.Char(required=True)
@@ -24,7 +24,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        string='Type',
+        string='Garden Orientation',
         selection=[('North', 'North'), ('East', 'East'), ('South', 'South'), ('West', 'West')],
     )
     active = fields.Boolean(default=True)

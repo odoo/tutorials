@@ -1,4 +1,59 @@
 <odoo>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate_property.form</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <div class="oe_title">
+                    <h1>
+                        <field name="name" string="Title"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="postcode"/>
+                        <field name="date_availability" string="Available From"/>
+                    </group>
+                    <group>
+                        <field name="expected_price"/>
+                        <field name="selling_price"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Description">
+                        <group>
+                            <field name="description"/>
+                            <field name="bedrooms"/>
+                            <field name="living_area" string="Living Area (sqm)" />
+                            <field name="facades"/>
+                            <field name="garage"/>
+                            <field name="garden"/>
+                            <field name="garden_area" string="Garden Area (sqm)" />
+                            <field name="garden_orientation"/>
+                        </group>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_tree" model="ir.ui.view">
+        <field name="name">estate_property.tree</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <tree string="Properties">
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)" />
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability" string="Available From"/>
+            </tree>
+        </field>
+    </record>
+
+
      <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
         <field name="res_model">estate_property</field>
