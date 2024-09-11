@@ -179,7 +179,7 @@
         <field name="name">dental.patient.action.kanban.view</field>
         <field name="model">dental.patient</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state" records_draggable="false">
+            <kanban default_group_by="state" records_draggable="false" groups_draggable="true">
                 <field name="state" />
                 <templates>
                     <t t-name="kanban-box">

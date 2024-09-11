@@ -11,7 +11,7 @@ class dentalController(Controller):
     def dental_patient(self, **kwarg):
         current_user = request.env.user
         page = int(kwarg.get("page", 1))
-        total_patients = request.env["dental.patient"].search_count(
+        total_patients = request.env["dental.patient"].sudo().search_count(
             [("guarantor", "=", current_user.id)]
         )
 
@@ -21,8 +21,8 @@ class dentalController(Controller):
             page=page,
             step=4,
         )
-        patients = request.env["dental.patient"].search(
-            [("guarantor", "=", current_user.id)], limit=3, offset=pager["offset"]
+        patients = request.env["dental.patient"].sudo().search(
+            [("guarantor", "=", current_user.id)], limit=4, offset=pager["offset"]
         )
 
         return request.render(
@@ -37,7 +37,7 @@ class dentalController(Controller):
     )
     def patient_details(self, record_id, **kwarg):
 
-        patient_record = request.env["dental.patient"].browse(record_id)
+        patient_record = request.env["dental.patient"].sudo().browse(record_id)
         return request.render(
             "dental.dental_patient_detail_card", {"patient_record": patient_record}
         )
@@ -49,10 +49,69 @@ class dentalController(Controller):
         website="True",
     )
     def history_details(self, patient_id, **kwarg):
-        patient_records = request.env["dental.patient"].browse(patient_id)
+        patient_records = request.env["dental.patient"].sudo().browse(patient_id)
         history_records = patient_records.history_ids
 
         return request.render(
             "dental.dental_patient_history_details",
             {"history_records": history_records},
+        )
+
+    @route(
+        "/home/dental/personal/<int:patient_id>", type="http", auth="user", website=True
+    )
+    def dental_patient_personal_details(self, patient_id, **kwarg):
+        patient = request.env["dental.patient"].sudo().browse(patient_id)
+        return request.render(
+            "dental.dental_patient_personal_details", {"patient": patient}
+        )
+
+    @route(
+        "/home/dental/medicalhistory/<int:patient_id>",
+        type="http",
+        auth="user",
+        website=True,
+    )
+    def dental_patient_medical_history1(self, patient_id, **kwarg):
+        patient = request.env["dental.patient"].sudo().browse(patient_id)
+        medical_history = patient.history_ids
+        return request.render(
+            "dental.dental_patient_medical_history",
+            {"medical_history": medical_history},
+        )
+
+    @route(
+        "/home/dental/medicalaids/<int:patient_id>",
+        type="http",
+        auth="user",
+        website=True,
+    )
+    def dental_patient_medical_aids(self, patient_id, **kwarg):
+        patient = request.env["dental.patient"].sudo().browse(patient_id)
+        medical_aid = patient.medical_aids_ids
+        return request.render(
+            "dental.dental_patient_medical_aids", {"medical_aid": medical_aid}
+        )
+
+    @route(
+        "/home/dental/history/<int:patient_id>", type="http", auth="user", website=True
+    )
+    def dental_patient_medical_history(self, patient_id, **kwarg):
+        patient = request.env["dental.patient"].sudo().browse(patient_id)
+        dental_history = patient.history_ids
+        return request.render(
+            "dental.dental_patient_dental_history", {"dental_history": dental_history}
+        )
+
+    @route(
+        "/home/dental/history/form/<int:history_id>",
+        type="http",
+        auth="user",
+        website=True,
+    )
+    def dental_patient_medical_history_form_view(self, history_id, **kwarg):
+        history = request.env["dental.history"].sudo().browse(history_id)
+
+        return request.render(
+            "dental.dental_patient_medical_history_form_view", {"history": history}
         )

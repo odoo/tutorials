@@ -1,41 +1,25 @@
 <odoo>
 
-    <template id="Portal_my_home_Dental_card" name="Dental &amp; Bills"
-        inherit_id="portal.portal_my_home" customize_show="True" priority="30">
-        <xpath expr="//div[hasclass('o_portal_docs')]" position="after">
-            <t t-set="portal_client_category_enable" t-value="True" />
-            <t t-set="portal_vendor_category_enable" t-value="True" />
-        </xpath>
-        <div id="portal_client_category" position="inside">
-            <div id="portal_client_category" position="inside">
-                <div id="portal_vendor_category" position="inside">
-                    <t t-call="portal.portal_docs_entry">
-                        <t t-set="icon" t-value="'/account/static/src/img/Bill.svg'" />
-                        <t t-set="title">Dental</t>
-                        <t t-set="url" t-value="'/home/dental'" />
-                        <t t-set="text">Dental Module</t>
-                        <t t-set="placeholder_count" t-value="'bill_count'" />
-                    </t>
-                </div>
-
-            </div>
-
-        </div>
-        <div id="portal_vendor_category" position="inside">
+    <template id="portal_my_home_extended" name="My Portal Extended"
+        inherit_id="portal.portal_my_home">
+        <xpath expr="//div[@id='portal_common_category']" position="inside">
             <t t-call="portal.portal_docs_entry">
-                <t t-set="icon" t-value="'/account/static/src/img/Bill.svg'" />
+                <t t-set="icon" t-value="'/dental/static/description/Bill.svg'" />
                 <t t-set="title">Dental</t>
-                <t t-set="url" t-value="'/my/dental'" />
                 <t t-set="text">Dental Module</t>
-                <t t-set="placeholder_count" t-value="'bill_count'" />
+                <t t-set="url" t-value="'/home/dental'" />
+                <t t-set="config_card" t-value="True" />
             </t>
-        </div>
+        </xpath>
     </template>
 
 
     <template id="all_dental_patients_card">
         <t t-call="website.layout">
+
             <div style="container" class="mb-5 container">
+                <div class="breadcrumb">
+                    <a href="/my">Home</a> / Dental </div>
                 <h1 class="text-center mt-5">Dentals</h1>
                 <div t-if="patients" class="d-flex justify-content-around flex-wrap">
                     <div t-foreach="patients" t-as="record">
@@ -64,7 +48,7 @@
                 </div>
 
             </div>
-            <div class="row justify-content-center">
+            <div class="row mt-5 justify-content-center">
                 <div class="col-auto p-2">
                     <t t-call="website.pager">
                         <t t-set="pager_url" t-value="'/home/dental'" />
@@ -77,14 +61,19 @@
 
     <template id="dental_patient_detail_card">
         <t t-call="website.layout">
+
             <div class="container mt-5">
+                <div class="breadcrumb">
+                    <a href="/my">Home</a> / <a href="/home/dental">Dental</a> / <t
+                        t-esc="patient_record.name" />
+                </div>
                 <div>
                     <h2>Patient: </h2>
                     <strong>
                         <t t-out="patient_record.name" />
                     </strong>
                 </div>
-                <div class="container">
+                <div class="container mb-5">
 
 
                     <div class="row justify-content-around flex-wrap ">
@@ -92,8 +81,8 @@
 
                         <div class="col-md-4 mb-3">
                             <div class="o_portal_index_card">
-                                <a
-                                    t-attf-href="/web?#id={{patient_record.id}}&amp;model=dental.patient&amp;view_type=form"
+
+                                <a t-attf-href="/home/dental/personal/#{patient_record.id}"
                                     t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
                                     <div class="o_portal_icon align-self-start">
                                         <img t-att-src="'/dental/static/description/bag.svg'"
@@ -114,7 +103,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="o_portal_index_card">
                                 <a
-                                    t-attf-href="/web?#id={{patient_record.id}}&amp;model=dental.patient&amp;view_type=form"
+                                    t-attf-href="/home/dental/medicalhistory/#{patient_record.id}"
                                     t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
                                     <div class="o_portal_icon align-self-start">
                                         <img t-att-src="'/dental/static/description/Bill.svg'"
@@ -141,7 +130,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="o_portal_index_card">
                                 <a
-                                    t-attf-href="/web?#id={{patient_record.medical_aids_ids.id}}&amp;model=dental.medical.aids&amp;view_type=form"
+                                    t-attf-href="/home/dental/medicalaids/#{patient_record.id}"
                                     t-attf-class="d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
                                     <div class="o_portal_icon align-self-start">
                                         <img t-att-src="'/dental/static/description/folder.svg'"
@@ -178,7 +167,6 @@
                             </div>
                         </div>
 
-
                     </div>
                 </div>
             </div>
@@ -186,41 +174,401 @@
 
         </t>
     </template>
-    <template id="dental_patient_history_details" name="Dental History and Next Appointment">
+    <template id="dental_patient_medical_history" name="Medical History">
+        <t t-call="portal.portal_layout">
+            <div class="container text-center">
+                <h1>Medical History</h1>
+                <div>
+
+                    <div class="card">
+                        <div class="card-body align-items-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                        <th>Attendance</th>
+                                        <th>Main Complaint</th>
+                                        <th>Company</th>
+                                        <th>Consultation Type</th>
+                                    </tr>
+                                </thead>
+                                <t t-foreach="medical_history" t-as="history">
+                                    <tbody>
+                                        <td>
+                                            <a t-attf-href="/home/dental/history/form/#{history.id}">
+                                                <span t-field="history.dispaly_name" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span t-field="history.date" />
+                                        </td>
+                                        <td>
+                                            <span t-field="history.did_not_attend" />
+                                        </td>
+                                        <td>
+                                            <span t-field="history.description" />
+                                        </td>
+                                        <td>
+                                            <span t-field="history.company" />
+                                        </td>
+                                        <td>
+                                            <span t-field="history.consulatation_type" />
+                                        </td>
+                                    </tbody>
+                                </t>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="dental_patient_personal_details" name="My Dental Personal">
         <t t-call="portal.portal_layout">
 
-            <t t-if="history_records" t-call="portal.portal_table">
-                <thead>
-                    <tr class="active">
-                        <th>Display Name </th>
+            <div class="container text-center">
 
-                        <th class='d-none d-md-table-cell'>Date</th>
-                        <th>Description</th>
-                        <th>Tags</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <t t-foreach="history_records" t-as="history">
-                        <tr>
-                            <td>
-                                <span t-field="history.dispaly_name" />
-                            </td>
-                            <td>
-                                <span t-field="history.date" />
-                            </td>
-                            <td>
-                                <span t-field="history.description" />
-                            </td>
+                <h1>Personal Details</h1>
+                <div>
+                    <t t-foreach="patient" t-as="patient">
+                        <div class="card  shadow-sm">
+
+                            <div class="m-5">
+                                <div class="row mt-2 mb-3">
+                                    <!-- Name -->
+                                    <div class="mb-3 col-6  align-items-center">
+                                        <label for="name" class="me-3">Name</label>
+
+                                        <div
+                                            class="border rounded mt-3 px-3 py-2 bg-light w-100 flex-grow-1">
+                                            <span t-field="patient.name" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-6 align-items-center">
+
+                                        <label for="name" class="me-3">Company</label>
 
 
-                            <td>
-                                <span t-field="history.tags" />
-                            </td>
+                                        <div
+                                            class="border rounded mt-3 px-3 py-2 bg-light w-100 flex-grow-1">
+                                            <span t-field="patient.company_id" />
+                                        </div>
+                                    </div>
+                                </div>
 
-                        </tr>
+                                <div class="row mt-2 mb-3">
+                                    <div class="mb-3 col-6 align-items-center">
+
+                                        <label for="name" class="me-3">DOB</label>
+
+
+                                        <div
+                                            class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                            <span t-field="patient.birth_data" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-6  align-items-center">
+
+                                        <label for="name" class="me-3">Gender</label>
+
+                                        <div
+                                            class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                            <span t-field="patient.gender" />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-2 mb-3">
+
+                                    <div class="mb-3 col-6 align-items-center">
+
+                                        <label for="name" class="me-3">Identity Number</label>
+
+                                        <div
+                                            class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                            <span t-field="patient.identity_no" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-6  align-items-center">
+
+                                        <label for="name" class="me-3">Marital Status</label>
+
+
+                                        <div
+                                            class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                            <span t-field="patient.marital_status" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2 mb-3">
+
+                                    <div class="mb-3 col-6 align-items-center">
+
+                                        <label for="name" class="me-3">Occupation</label>
+
+
+                                        <div
+                                            class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                            <span t-field="patient.occupation" />
+                                        </div>
+                                    </div>
+                                    <!-- City -->
+                                    <div class="mb-3 col-6  align-items-center">
+
+                                        <label for="name" class="me-3">Medical Aids</label>
+
+                                        <div
+                                            class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                            <span t-field="patient.medical_aids_ids" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2 mb-3">
+
+                                    <div class="mb-3 col-6 align-items-center">
+
+                                        <label for="name" class="me-3">Emergency Contact</label>
+
+
+                                        <div
+                                            class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                            <span t-field="patient.emergency_contact" />
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-6  align-items-center">
+
+                                        <label for="name" class="me-3">Chronic Conditions</label>
+
+
+                                        <div
+                                            class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                            <span t-field="patient.chronic_ids" />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
                     </t>
-                </tbody>
-            </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="dental_patient_medical_history_form_view" name="Medical History Form View">
+        <t t-call="portal.portal_layout">
+            <div class="container text-center mb-2">
+                <h1>Medical History Form View</h1>
+
+                <div>
+
+                    <div class="card  shadow-sm mb-5">
+
+                        <div class="m-5 p-3">
+                            <div class="row mt-5">
+                                <!-- Name -->
+                                <div class="mb-3 col-6 align-items-center">
+                                    <label for="name" class="me-3">Name</label>
+
+                                    <div
+                                        class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                        <span t-field="history.dispaly_name" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 col-6 align-items-center">
+
+                                    <label for="name" class="me-3">Tag</label>
+
+
+                                    <div
+                                        class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                        <span t-field="history.tags" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5">
+                                <!-- Name -->
+                                <div class="mb-3 col-6 align-items-center">
+                                    <label for="name" class="me-3">Attendence</label>
+
+                                    <div
+                                        class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                        <span t-field="history.did_not_attend" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 col-6  align-items-center">
+
+                                    <label for="name" class="me-3">Company</label>
+
+
+                                    <div
+                                        class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                        <span t-field="history.company" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5">
+                                <!-- Name -->
+                                <div class="mb-3 col-6  align-items-center">
+                                    <label for="name" class="me-3">Consulatation Type</label>
+
+                                    <div
+                                        class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                        <span t-field="history.consulatation_type" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 col-6  align-items-center">
+
+                                    <label for="name" class="me-3">Responsible</label>
+
+
+                                    <div
+                                        class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                        <span t-field="history.responsible" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </t>
+    </template>
+
+    <template id="dental_patient_medical_aids" name="Medical Aids">
+        <t t-call="portal.portal_layout">
+            <div class="container text-center">
+
+                <h1>Medical Aids</h1>
+                <div>
+
+                    <div class="card  shadow-sm">
+
+                        <div class="m-5">
+                            <div class="row mt-3 mb-3">
+                                <!-- Name -->
+                                <div class="mb-3 col-6  align-items-center">
+                                    <label for="name" class="me-3">Name</label>
+
+                                    <div
+                                        class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                        <span t-field="medical_aid.name" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 col-6  align-items-center">
+
+                                    <label for="name" class="me-3">Phone Number</label>
+
+
+                                    <div
+                                        class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                        <span t-field="medical_aid.phone_number" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="mb-3 col-6  align-items-center">
+
+                                    <label for="name" class="me-3">Company</label>
+
+
+                                    <div
+                                        class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                        <span t-field="medical_aid.company_id" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 col-6  align-items-center">
+
+                                    <label for="name" class="me-3">Email</label>
+
+                                    <div
+                                        class="border rounded mt-2 px-3 py-2 bg-light w-100 flex-grow-1">
+                                        <span t-field="medical_aid.email" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="dental_patient_dental_history" name="Dental History">
+        <t t-call="portal.portal_layout">
+            <div class="container text-center">
+                <h1>Dental History</h1>
+                <div>
+
+                    <div class="card">
+                        <div class="card-body align-items-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                        <th>Attendance</th>
+                                        <th>Main Complaint</th>
+                                        <th>Company</th>
+                                        <th>Consultation Type</th>
+                                    </tr>
+                                </thead>
+                                <t t-foreach="dental_history" t-as="history">
+                                    <tbody>
+                                        <td>
+                                            <span t-field="history.dispaly_name" />
+                                        </td>
+                                        <td>
+                                            <span t-field="history.date" />
+                                        </td>
+                                        <td>
+                                            <span t-field="history.did_not_attend" />
+                                        </td>
+                                        <td>
+                                            <span t-field="history.description" />
+                                        </td>
+                                        <td>
+                                            <span t-field="history.company" />
+                                        </td>
+                                        <td>
+                                            <span t-field="history.consulatation_type" />
+                                        </td>
+                                    </tbody>
+                                </t>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </t>
     </template>
 

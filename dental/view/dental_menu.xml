@@ -1,5 +1,5 @@
 <odoo>
-    <menuitem id="dental_patient_root" name="Dental app">
+    <menuitem id="dental_patient_root" name="Dental app"  web_icon="dental,static/description/Dental.png" >
         <menuitem id="dental_patient_level_menu" name="Patients">
             <menuitem id="dental_patient_menu_action" action="dental_patient_action" />
         </menuitem>

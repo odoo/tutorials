@@ -5,7 +5,7 @@
     "depends": ["base", "mail", "account", "website"],
     "description": "Dental Application",
     "installable": True,
-    "application": True,
+    "application": False,
     "data": [
         "security/ir.model.access.csv",
         "report/dental_patient_templates.xml",
