@@ -19,14 +19,19 @@
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree string="Offers">
+            <tree 
+                string="Offers" 
+                editable="bottom"
+                decoration-success="status == 'accepted'"
+                decoration-danger="status == 'refused'"
+            >
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <button name="action_accept_offer" string="Accept offer" type="object" icon="fa-check"/>
-                <button name="action_refuse_offer" string="Refuse offer" type="object" icon="fa-times"/>
-                <field name="status"/>
+                <button name="action_accept_offer" invisible="status != False" string="Accept offer" type="object" icon="fa-check"/>
+                <button name="action_refuse_offer" invisible="status != False" string="Refuse offer" type="object" icon="fa-times"/>
+                <field name="status" invisible="1"/>
             </tree>
         </field>
     </record>

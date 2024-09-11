@@ -1,4 +1,33 @@
 <odoo>
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property Types">
+                <field name="name"/>
+                <field name="property_ids">
+                    <tree>
+                        <field name="name" />
+                        <field name="expected_price" />
+                        <field name="state" />
+                    </tree>
+                </field>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="Property Types">
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Title"/>
+            </tree>
+        </field>
+    </record>
+
+
      <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>

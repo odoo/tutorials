@@ -5,6 +5,7 @@ from odoo.tools.float_utils import float_is_zero, float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property estates"
+    _order = 'id DESC'
 
     state = fields.Selection(
         default='new',
