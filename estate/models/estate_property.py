@@ -7,12 +7,11 @@ class EstateProperty(models.Model):
     _description = "Property estates"
 
     state = fields.Selection(
-        default='New',
+        default='new',
         string='Stage',
-        selection=[('New', 'New'), ('Offer_Received', 'Offer Received'), ('Offer_Accepted', 'Offer Accepted'), ('Sold', 'Sold'), ('Canceled', 'Canceled')],
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
     )
     active = fields.Boolean(default=True)
-
 
     property_type = fields.Many2one(
         "estate.property.type",
@@ -90,15 +89,15 @@ class EstateProperty(models.Model):
     # actions
     def action_mark_as_sold(self):
         self.ensure_one()
-        if self.state == 'Canceled':
+        if self.state == 'canceled':
             # _ underscore is for translation
             raise UserError(_('Cancelled properties cannot be sold'))
-        self.state = 'Sold'
+        self.state = 'sold'
         return True # have to return somehing from public methods so XML-RPC layer(?) works
 
     def action_mark_as_cancelled(self):
         self.ensure_one()
-        if self.state == 'Sold':
+        if self.state == 'sold':
             raise UserError(_('Sold properties cannot be cancelled'))
-        self.state = 'Canceled'
+        self.state = 'canceled'
         return True # have to return somehing from public methods so XML-RPC layer(?) works

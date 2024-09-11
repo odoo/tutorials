@@ -8,7 +8,7 @@ class EstatePropertyType(models.Model):
     price = fields.Float(required=True)
     status = fields.Selection(
         string="Status",
-        selection=[('Accepted', 'Accepted'), ('Refused', 'Refused')],
+        selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         copy=False
     )
     partner_id = fields.Many2one("res.partner", string="Offer by")
@@ -37,7 +37,7 @@ class EstatePropertyType(models.Model):
     # actions
     def action_accept_offer(self):
         self.ensure_one()
-        self.status = 'Accepted'
+        self.status = 'accepted'
         if self.property_id.selling_price == 0.0:
             self.property_id.buyer_id = self.partner_id
             self.property_id.selling_price = self.price
@@ -47,8 +47,8 @@ class EstatePropertyType(models.Model):
 
     def action_refuse_offer(self):
         self.ensure_one()
-        if self.status == 'Accepted': # if previously accepted, reset offer values
+        if self.status == 'accepted': # if previously accepted, reset offer values
             self.property_id.selling_price = 0.0
             self.property_id.buyer_id = None
-        self.status = 'Refused'
+        self.status = 'refused'
         return True
