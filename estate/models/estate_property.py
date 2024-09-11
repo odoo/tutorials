@@ -1,5 +1,6 @@
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -50,6 +51,17 @@ class EstateProperty(models.Model):
         ('positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive.'),
         ('positive_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be strictly positive.'),
     ]
+    
+    @api.constrains('selling_price')
+    def _selling_against_expected_check(self):
+        for record in self:
+            if float_is_zero(record.selling_price, 2):
+                continue
+            
+            # error if (selling price < 90% of expected_price)
+            if float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1:
+                raise ValidationError(_('Selling price must be at least 90% of expected price'))
+
 
     @api.depends("garden_area", "living_area")
     def _total_area(self):
@@ -77,16 +89,16 @@ class EstateProperty(models.Model):
 
     # actions
     def action_mark_as_sold(self):
-        for record in self:
-            if record.state == 'Canceled':
-                # _ underscore is for translation
-                raise UserError(_('Cancelled properties cannot be sold'))
-            record.state = 'Sold'
+        self.ensure_one()
+        if self.state == 'Canceled':
+            # _ underscore is for translation
+            raise UserError(_('Cancelled properties cannot be sold'))
+        self.state = 'Sold'
         return True # have to return somehing from public methods so XML-RPC layer(?) works
 
     def action_mark_as_cancelled(self):
-        for record in self:
-            if record.state == 'Sold':
-                raise UserError(_('Sold properties cannot be cancelled'))
-            record.state = 'Canceled'
+        self.ensure_one()
+        if self.state == 'Sold':
+            raise UserError(_('Sold properties cannot be cancelled'))
+        self.state = 'Canceled'
         return True # have to return somehing from public methods so XML-RPC layer(?) works
