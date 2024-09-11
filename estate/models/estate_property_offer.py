@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.offer"
@@ -27,3 +28,23 @@ class EstatePropertyType(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.today()).days
+
+
+    # actions
+    def action_accept_offer(self):
+        self.ensure_one()
+        self.status = 'Accepted'
+        if self.property_id.selling_price == 0.0:
+            self.property_id.buyer_id = self.partner_id
+            self.property_id.selling_price = self.price
+        else:
+            raise UserError(_('You cannot accept multiple offers at the same time.'))
+        return True
+
+    def action_refuse_offer(self):
+        self.ensure_one()
+        if self.status == 'Accepted': # if previously accepted, reset offer values
+            self.property_id.selling_price = 0.0
+            self.property_id.buyer_id = None
+        self.status = 'Refused'
+        return True

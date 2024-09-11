@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -68,3 +69,19 @@ class EstateProperty(models.Model):
             else:
                 self.garden_area = None
                 self.garden_orientation = None
+
+    # actions
+    def action_mark_as_sold(self):
+        for record in self:
+            if record.state == 'Canceled':
+                # _ underscore is for translation
+                raise UserError(_('Cancelled properties cannot be sold'))
+            record.state = 'Sold'
+        return True # have to return somehing from public methods so XML-RPC layer(?) works
+
+    def action_mark_as_cancelled(self):
+        for record in self:
+            if record.state == 'Sold':
+                raise UserError(_('Sold properties cannot be cancelled'))
+            record.state = 'Canceled'
+        return True # have to return somehing from public methods so XML-RPC layer(?) works
