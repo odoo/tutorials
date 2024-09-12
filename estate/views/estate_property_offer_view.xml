@@ -1,0 +1,68 @@
+<odoo>
+    <!-- created the action for the estate.property.offer model and it gives tree and form view to
+    it -->
+    <record id="action_open_offer" model="ir.actions.act_window">
+        <field name="name">Estate Property Offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id','=',active_id)]</field>
+    </record>
+    <record id="estate_property_offer_tree_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.tree.view</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="price" string="Price" />
+                <field name="partner_id" string="Partner" />
+                <field name="Validity" string="Validity" />
+                <field name="deadline" string="Deadline" />
+            </tree>
+
+        </field>
+    </record>
+
+    <!-- created a tree view for estate.property.offer model and provided the fields to it -->
+
+    <!-- <record id="estate_property_offer_tree_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.tree.view</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree string="estate property offer tree">
+                <field name="price" string="Price" />
+                <field name="partner_id" string="Partner" />
+                <field name="Validity" string="Validity" />
+                <field name="deadline" string="Deadline" />
+                <button name="action_accept" type="object" icon="fa-check" title="accept"
+                    invisible="status in ['accepted','refused'] and status != ''"></button>
+                <button name="action_refuse" type="object" icon="fa-remove" title="refuse"
+                    invisible="status in ['accepted','refused'] and status != ''"></button>
+                <field name="status" string="Status" />
+            </tree>
+        </field>
+    </record> -->
+
+    <!-- created the form view for estate.property.offer model and provided the fields to it -->
+    <record id="estate_property_offer_form_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.form.view</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="estate property offer form">
+                <!-- <button name="open_offer" position="before">
+                    <button name="action_oppen_offer" type="object"
+                            class="oe_stat_button" icon="fa-money"
+                            invisible="offer_count == 0">
+                        <field name="offer_count" widget="statinfo" string="Offer(s)"/>
+                    </button>
+                </button> -->
+                <group>
+                    <field name="price" string="Price" />
+                    <field name="partner_id" string="Partner" />
+                    <field name="Validity" string="Validity(days)" />
+                    <field name="deadline" string="Deadline" />
+                    <field name="status" string="Status" />
+                </group>
+            </form>
+
+        </field>
+    </record>
+</odoo>   

@@ -1,0 +1,57 @@
+<odoo>
+    <!-- created the action for the estate.property.type model to trigger inside setings in  menu
+    items and it gives tree and form view to it -->
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="estate_property_type_tree_view" model="ir.ui.view">
+        <field name="name">estate.property.type.tree.view</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="estate property type tree">
+                <field name='sequence' widget='handle' />
+                <field name="name" string="Tittle" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="estate_property_type_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form.view</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="estate property type form ">
+                <header>
+                    <button type="action" name="%(estate.action_open_offer)d" string="Offer"
+                        icon="fa-money" class="oe_stat_button">
+                        <field name="offer_count" string="Offer Count" class="oe_stat_button" />
+                    </button>
+                </header>
+                <sheet>
+                    <div>
+                        <H1>
+                            <field name="name"></field>
+                        </H1>
+                        <notebook>
+                            <!-- created the Description Section -->
+                            <page string="Properties">
+
+                                <field name='property_ids'>
+                                    <tree>
+                                        <field name='name' string='Title' />
+                                        <field name='expected_price' string='Expected Price' />
+                                        <field name='state' string='Status' />
+                                    </tree>
+
+                                </field>
+
+                            </page>
+                        </notebook>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

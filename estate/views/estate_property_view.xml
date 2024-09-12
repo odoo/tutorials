@@ -1,0 +1,147 @@
+<!-- <xml version="1.0" encoding="utf-8"> -->
+<odoo>
+    <!-- created the action for the estate.property model to trigger inside Advertisments in menu
+    items and it gives tree and form view to it-->
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
+
+
+    <!-- created a tree view for the estate.property model and provided the fields to it -->
+    <record id="estate_property_tree_view" model="ir.ui.view">
+        <field name="name">estate.property.tree.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="estate property tree"
+                decoration-success="state in ['offer_recieved','offer_accepted']"
+                decoration-bf="state == 'offer_accepted'" decoration-muted="state=='sold'">
+                <field name="name" string="Tittle" />
+                <field name="postcode" string="Postcode" />
+                <field name="bedrooms" string="BedRooms" />
+                <field name="living_area" string="Living Area (sqm)" />
+                <field name="expected_price" string="Expected price" />
+                <field name="selling_price" string="Selling Price" />
+                <field name="date_availablity" optional="hidden" string="Available From" />
+                <field name="state" string="State" optional="hidden" />
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- created a form view for estate.property model and provided the fields to it -->
+    <record id="estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="estate property form ">
+                <header>
+                    <!-- created the sold and cancel button -->
+                    <button name="action_sold" type="object" string="SOLD"
+                        invisible="state in ['sold','canceled']"></button>
+                    <button name="action_cancel" type="object" string="CANCEL"
+                        invisible="state in ['sold','canceled']"></button>
+                    <field name='state' widget='statusbar'></field>
+                </header>
+                <sheet>
+                    <div>
+                        <H1>
+                            <field name="name"></field>
+                        </H1>
+                        <!-- created the tags for the property -->
+                        <field name="tag_ids" string="Tags" widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
+                        <group>
+                            <group>
+                                <group>
+                                    <field name="state" string="State" />
+                                    <field name="property_type_id" string="Property Type"
+                                        options="{'no_open': True, 'no_create': True}"></field>
+                                    <field name="postcode" string="Postcode"></field>
+                                    <field name="date_availablity" string="Available From"></field>
+                                </group>
+                                <group>
+                                    <field name="expected_price" string="Expected Price"></field>
+                                    <field name="best_price" string="Best Offer"></field>
+                                    <field name="selling_price" string="Selling Price"></field>
+                                </group>
+                            </group>
+                        </group>
+                        <notebook>
+                            <!-- created the Description Section -->
+                            <page string="Description">
+                                <group>
+                                    <field name="description" string="Description" />
+                                    <field name="bedrooms" string="Bedrooms" />
+                                    <field name="living_area" string="Living Area (sqm)" />
+                                    <field name="facades" string="Facades" />
+                                    <field name="garage" string="Garage" />
+                                    <field name="garden" string="Garden" />
+                                    <field name="garden_area" string="Garden Area (sqm)"
+                                        invisible='not garden' />
+                                    <field name="garden_orientation" string="Garden Orientation"
+                                        invisible='not garden' />
+                                    <field name="total" string="Total Area" />
+                                </group>
+
+                            </page>
+                            <!-- created the offers Section -->
+                            <page string="Offers">
+                                <field name="offer_ids" readonly="state == 'offer_accepted'">
+                                    <tree editable="top" create="1" delete="1" multi_edit="1"
+                                        string="estate property offer tree"
+                                        decoration-success="status=='accepted'"
+                                        decoration-danger="status=='refused'">
+                                        <field name="price" string="Price" />
+                                        <field name="partner_id" string="Partner" />
+                                        <field name="Validity" string="Validity" />
+                                        <field name="deadline" string="Deadline" />
+                                        <button name="action_accept" type="object" icon="fa-check"
+                                            title="accept"
+                                            invisible="status in ['accepted','refused']"></button>
+                                        <button name="action_refuse" type="object" icon="fa-remove"
+                                            title="refuse"
+                                            invisible="status in ['accepted','refused']"></button>
+                                        <field name="status" string="Status" optional="hidden" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <!-- created the other Info Section -->
+                            <page string="Other Info">
+                                <group>
+                                    <field name="saler_id" string="Salesman" />
+                                    <field name="buyer_id" string="Buyer" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- creatd the search view for the estate.property model -->
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="estate property search">
+                <!-- created the search fields -->
+                <field name="name" string="Title" />
+                <field name="postcode" string="Postcode" />
+                <field name="expected_price" string="Expected Price" />
+                <field name="bedrooms" string="Bedrooms" />
+                <field name="living_area" string="Living Area" />
+                <field name="facades" string="Facades" />
+                <field name="living_area" string="Living Area"
+                    filter_domain="[('living_area', '>=', self)]" />
+                <!-- created tge filter to filter out the data on specific field -->
+                <filter name="available" string="Available"
+                    domain="['|', ('state','=','new'),('state','=','offer_recieved')]" />
+
+            </search>
+        </field>
+    </record>
+</odoo>
+<!-- </xml> -->

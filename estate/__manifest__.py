@@ -1,0 +1,20 @@
+{
+    "name": "Real_estate",
+    "version": "0.1",
+    "license": "LGPL-3",
+    "category": "Estate_props",
+    "author": "sahilpanghal(span)",
+    "summary": "Real estate module",
+    "description": "Real estate module",
+    "installable": True,
+    "application": True,
+    "depends": ["base"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/estate_property_view.xml",
+        "views/estate_property_offer_view.xml",
+        "views/estate_property_type_view.xml",
+        "views/estate_property_tag_view.xml",
+        "views/estate_menu.xml",
+    ],
+}

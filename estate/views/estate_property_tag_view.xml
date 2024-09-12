@@ -1,0 +1,20 @@
+<odoo>
+    <!-- created the action for the estate.proprty.tag model to trigger inside setings in menu items
+    and it gives tree and form view to it -->
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="estate_property_tag_tree_view" model="ir.ui.view">
+        <field name="name">estate.property.tag.tree.view</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <tree editable="top" create="1" delete="1" multi_edit="1"
+                string="estate property tag tree">
+                <field name="name" string="Tittle" />
+            </tree>
+        </field>
+    </record>
+</odoo> 
