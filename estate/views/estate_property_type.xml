@@ -1,0 +1,50 @@
+<odoo>
+    <record id="estate_property_type_model_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="estate_property_type_tree_view" model="ir.ui.view">
+        <field name="name">estate.property.type.tree.view</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="manual ordering of property types">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record id="estate_property_type_form_view" model="ir.ui.view">
+        <field name="name">estate.property.type.form.view</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="d-flex justify-content-end">
+                        <header>
+                            <button name="%(estate.action_open_offer)d" type="action" string="Offer"
+                                icon="fa-money" class="oe_stat_button">
+                                <field name="offer_count" string="Offer Count">
+                                </field>
+                            </button>
+                        </header>
+                    </div>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                    <notebook>
+                        <page string="properties">
+                            <field name="property_ids" options='{"format": false}'>
+                                <tree>
+                                    <field name="title" />
+                                    <field name="expected_price" />
+                                    <field name="status" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
