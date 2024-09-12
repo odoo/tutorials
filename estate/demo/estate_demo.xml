@@ -1,0 +1,56 @@
+<odoo>
+        <record id="estate_demo_data3" model="estate.property">
+            <field name="property_type_id" ref="id4"/>
+            <field name="title">Big Villa</field>
+            <field name="status">new</field>
+            <field name="myestate_model">A nice and big villa</field>
+            <field name="Postcode">12345</field>
+            <field name="date_availability">2020-02-02</field>
+            <field name="expected_price">1600</field>
+            <field name="selling_price">14400</field>
+            <field name="Bedrooms">6</field>
+            <field name="living_area">100</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">100000</field>
+            <field name="garden_orientation">South</field>
+        </record>
+        <record id="estate_demo_data4" model="estate.property">
+            <field name="property_type_id" ref="id4"/>
+            <field name="title">Trailer home</field>
+            <field name="status">Cancelled</field>
+            <field name="myestate_model">Home in a trailer park</field>
+            <field name="Postcode">"54321"</field>
+            <field name="date_availability">1970-01-01</field>
+            <field name="expected_price">1000</field>
+            <field name="selling_price">12000</field>
+            <field name="Bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+        </record>
+        <record id="estate_demo_data6" model="estate.property">
+            <field name="property_type_id" ref="id4"/>
+            <field name="title">Trailer home fgh</field>
+            <field name="status">Cancelled</field>
+            <field name="myestate_model">Home in a trailer park</field>
+            <field name="Postcode">"54321"</field>
+            <field name="date_availability">1970-01-01</field>
+            <field name="expected_price">1000</field>
+            <field name="selling_price">12000</field>
+            <field name="Bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="offer_ids" eval="[
+                Command.create({
+                    'partner_id':ref('base.res_partner_12'),
+                    'price': 1500002,
+                    'validity':14,
+                })
+
+            ]"/>
+          </record>
+        
+</odoo>
