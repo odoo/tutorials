@@ -1,0 +1,25 @@
+{
+    "name": "Real_estate",
+    "depends": ["base"],
+    "Description": "estate_Module",
+    "license": "LGPL-3",
+    "summary": "estate module for different purpose",
+    "author": "koye_odoo",
+    "version": "0.0.1",
+    "application": True,
+    "installable": True,
+    "data": [
+        "security/ir.model.access.csv",
+        "views/estate_property_views.xml",
+        "views/estate_property_offer.xml",
+        "views/estate_property_type.xml",
+        "views/estate_property_tag.xml",
+        "views/estate_menus.xml",
+        "views/res_users_views.xml",
+        "data/estate.property.type.csv",
+    ],
+    "demo": [
+        "demo/estate_demo.xml",
+        "demo/estate_offer_demo.xml",
+    ],
+}
