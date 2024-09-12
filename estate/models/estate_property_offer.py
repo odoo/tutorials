@@ -1,5 +1,5 @@
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError, UserError
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.offer"
@@ -55,3 +55,34 @@ class EstatePropertyType(models.Model):
             self.property_id.buyer_id = None
         self.status = 'refused'
         return True
+    
+    # model crud
+    @api.model
+    def create(self, vals):
+        if vals['property_id']:
+            property_record = self.env['estate.property'].browse(vals['property_id'])
+            property_record.state = 'offer_received'
+            if vals['price'] < property_record.best_price:
+                raise ValidationError(_("Cannot create an offer where the offer price is lower than the current best price."))
+        return super().create(vals)
+    
+'''     example 'vals'
+    {'state': 'new'
+     'name': 'Cat House'
+     'tag_ids': []
+     'property_type_id': 1
+     'postcode': False
+     'date_availability': '2024-12-12'
+     'expected_price': 0
+     'description': False
+     'bedrooms': 2
+      'living_area': 0
+      'facades': 0
+      'garage': False
+      'garden': False
+      'garden_area': 0
+      'garden_orientation': False
+      'offers_ids': []
+       'salesperson_id': 2
+       'buyer_id': False}
+    '''

@@ -102,3 +102,9 @@ class EstateProperty(models.Model):
             raise UserError(_('Sold properties cannot be cancelled'))
         self.state = 'canceled'
         return True # have to return somehing from public methods so XML-RPC layer(?) works
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_active(self):
+        if self.state not in ['new','canceled']:
+            raise UserError(_('Cannot delete a property that is not "New" or "Cancelled"'))
+        
