@@ -15,5 +15,9 @@
 
     <menuitem id="dental_fourth_menu" name="Medication" parent="dental_menu_root" action="dental_medication_menu_action" />
 
-    <menuitem id="dental_fifth_menu" name="Configuration" parent="dental_menu_root" action="action_dental_tags"/>
+    <menuitem id="dental_fifth_menu" name="Configuration" parent="dental_menu_root" />
+    
+    <menuitem id="dental_seventh_menu" name="Dental Tags" parent="dental_fifth_menu" action="action_dental_tags"/>
+
+    <menuitem id="dental_sixth_menu" parent="dental_fifth_menu" name="Stages" action="dental_stage_action"/>
 </odoo>

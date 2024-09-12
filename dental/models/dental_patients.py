@@ -7,12 +7,9 @@ class DentalPatients(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(string='Name', required=True)
-    stage = fields.Selection(
-        string='Stage',
-        selection=[('new', 'New'), ('to do today', 'To Do Today'), ('done', 'Done'), ('to invoice', 'To Invoice')],
-        help='stage of the appointment',
-        required=True,
-        default='new')
+    
+    stage_id = fields.Many2one('dental.stage', string="Stage")
+
     doctor_id = fields.Many2one(
         'res.partner',
         string="GP's Name",
@@ -79,9 +76,9 @@ class DentalPatients(models.Model):
     depedent_code = fields.Char(string="Dependent Code")
     medical_history_ids = fields.One2many('medical.history', 'patient_id', string="Medical History")
 
-    @api.onchange("stage")
+    @api.onchange("stage_id")
     def _onchange_stage(self):
-        if self.stage == 'to invoice':
+        if self.stage_id.name == 'To Invoice':
             self.guarantor_id = self.env.user.id
             move_vals = {
             'partner_id': self.guarantor_id.id,
@@ -97,7 +94,7 @@ class DentalPatients(models.Model):
             self.env['account.move'].create(move_vals)
 
     def book_invoice_button(self):
-        self.stage = 'to invoice'
+        self.stage_id.name = 'To Invoice'
         self.guarantor_id = self.env.user.id
         move_vals = {
             'partner_id': self.guarantor_id.id,

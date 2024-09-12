@@ -32,4 +32,24 @@
     <record model="dental.medication" id="medication_type4">
         <field name="name">Pilocarpine</field>
     </record>
+
+<!-- Stage DATA -->
+
+    <record model="dental.stage" id="dental_stage_type1">
+        <field name="name">New</field>
+        <field name="sequence">1</field>
+    </record>
+    <record model="dental.stage" id="dental_stage_type2">
+        <field name="name">To Do Today</field>
+        <field name="sequence">2</field>
+    </record>
+    <record model="dental.stage" id="dental_stage_type3">
+        <field name="name">Done</field>
+        <field name="sequence">3</field>
+    </record>
+    <record model="dental.stage" id="dental_stage_type4">
+        <field name="name">To Invoice</field>
+        <field name="sequence">4</field>
+    </record>
+
 </odoo>

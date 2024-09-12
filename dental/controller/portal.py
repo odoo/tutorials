@@ -75,3 +75,25 @@ class DentalPortal(CustomerPortal):
         return request.render('dental.portal_teeth_staining', {
             'medical_history': medical_history,
         })
+
+    @http.route('/dentalappointment', type='http', auth='user', website=True)
+    def portal_dental_appointment(self, **kw):
+        return request.render('dental.create_patient_form', {})
+
+    @http.route('/createpatient', type='http', auth='user', website=True)
+    def portal_create_patient(self, **kw):
+        vals = {
+            'name': kw.get("name"),
+            'birthdate': kw.get("birthdate"),
+            'stage_id': 1
+        }
+        new_patient = request.env['dental.patient'].sudo().create(vals)
+        return request.render('dental.create_patient_details_form', {
+            'patient_id': new_patient.id
+        })
+        
+    @http.route('/createpatient/<int:patient_id>', type='http', auth='user', website=True)
+    def portal_dental_appointment_details(self, patient_id, **kw):
+        patient = request.env['dental.patient'].browse(patient_id)
+        patient.sudo().write(kw)
+        return request.render('dental.patient_created', {})

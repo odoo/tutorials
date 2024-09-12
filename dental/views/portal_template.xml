@@ -303,7 +303,7 @@
         </t>
     </template>
 
-    <template id="portal_teeth_staining" name="Teeth Staining">
+    <template id="portal_teeth_staining" name="Tooth Chart">
         <t t-call="portal.portal_layout">
             <div class="container">
                 <h1 class="text-center">Teeth Staining</h1>
@@ -320,67 +320,99 @@
                             <tbody>
                                 <tr>
                                     <td>18</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_18 else '✗'" /></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_18 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>17</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_17 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_17 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>16</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_16 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_16 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>15</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_15 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_15 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>14</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_14 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_14 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>13</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_13 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_13 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>12</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_12 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_12 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>11</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_11 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_11 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>28</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_28 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_28 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>27</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_27 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_27 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>26</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_26 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_26 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>25</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_25 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_25 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>24</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_24 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_24 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>23</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_23 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_23 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>22</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_22 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_22 else '✗'" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>21</td>
-                                    <td><t t-esc="'✓' if medical_history.upper_21 else '✗'"/></td>
+                                    <td>
+                                        <t t-esc="'✓' if medical_history.upper_21 else '✗'" />
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -501,4 +533,125 @@
         </t>
     </template>
 
+    <template id="create_patient_form" name="Create Patient">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container my-5">
+                    <form role="form" action="/createpatient" method="POST">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" name="name" t-att-value="name" id="name"
+                                class="form-control" required="required" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthdate" class="form-label">Birthdate</label>
+                            <input type="date" name="birthdate" id="birthdate" class="form-control"
+                                required="required" />
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="create_patient_details_form" name="Patient details">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <form role="form" t-attf-action="/createpatient/#{patient_id}" method="POST" class="container my-5">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3>Personal Information</h3>
+                                <div class="mb-3">
+                                    <label for="identity_num" class="form-label">Identity Number</label>
+                                    <input type="text" name="identity_num" t-att-value="identity_num" id="identity_num" class="form-control" required="required"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select name="gender" id="gender" class="form-select" required="required">
+                                        <option value="female">Female</option>
+                                        <option value="male">Male</option>
+                                        <option value="neither">Neither</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="maritial_status" class="form-label">Marital Status</label>
+                                    <select name="maritial_status" id="maritial_status" class="form-select">
+                                        <option value="single">Single</option>
+                                        <option value="married">Married</option>
+                                        <option value="divorced">Divorced</option>
+                                        <option value="widowed">Widowed</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="occupation" class="form-label">Occupation</label>
+                                    <input type="text" name="occupation" t-att-value="occupation" id="occupation" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3>Medical Information</h3>
+                                <div class="mb-3">
+                                    <label for="hospitalized" class="form-label">Hospitalized this Year</label>
+                                    <input type="text" name="hospitalized" t-att-value="hospitalized" id="hospitalized" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="specialized_care" class="form-label">Under Specialist Care</label>
+                                    <input type="text" name="specialized_care" t-att-value="specialized_care" id="specialized_care" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="psychiatric_history" class="form-label">Psychiatric History</label>
+                                    <input type="text" name="psychiatric_history" t-att-value="psychiatric_history" id="psychiatric_history" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3>Consent</h3>
+                                <div class="mb-3">
+                                    <label for="consent_date" class="form-label">Consent Date</label>
+                                    <input type="date" name="consent_date" t-att-value="consent_date" id="consent_date" class="form-control"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="consent_signature" class="form-label">Consent Signature</label>
+                                    <input type="file" name="consent_signature" id="consent_signature" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <record id="patient_created" model="website.page">
+        <field name="name">Created</field>
+        <field name="type">qweb</field>
+        <field name="url">/patient-created</field>
+        <field name="website_published">True</field>
+        <field name="key">dental.patient_created</field>
+        <field name="arch" type="xml">
+            <t name="Created" t-name="dental.patient_created">
+                <t t-call="website.layout">
+                    <div id="wrap">
+                        <div class="container my-5">
+                            <h1>Successfully Created</h1>
+                        </div>
+                    </div>
+                </t>
+            </t>  
+        </field>
+    </record>
 </odoo>

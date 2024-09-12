@@ -4,4 +4,4 @@ from . import medical_symptoms
 from . import medication
 from . import medical_history
 from . import dental_tags
-# from . import account_move
+from . import dental_stage
