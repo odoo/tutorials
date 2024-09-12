@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record forcecreate="True" id="decimal_point" model="decimal.precision">
+        <field name="name">Rating Value</field>
+        <field name="digits">2</field> <!-- Number of decimal points. Allow user to choose. -->
+    </record>
+</odoo>

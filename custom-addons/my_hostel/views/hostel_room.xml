@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="hostel_room_form_view" model="ir.ui.view">
+        <field name="name">hostel.room.form.view</field>
+        <field name="model">hostel.room</field>
+        <field name="arch" type="xml">
+            <!-- TODO: Add the form view for hostel.room model -->
+
+
+        </field>
+    </record>
+</odoo>

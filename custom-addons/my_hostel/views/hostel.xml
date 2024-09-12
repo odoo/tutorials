@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is used to define the views for the hostel module UI-->
+<odoo>
+    <!-- Adding custom action that opens the views for the Hostel -->
+    <record id="action_hostel" model="ir.actions.act_window"> <!-- action that opens the vies -->
+        <field name="name">Hostel</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hostel.hostel</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new hostel.
+            </p>
+        </field>
+    </record>
+    <!-- Adding custom menu items -->
+    <menuitem id="hostel_main_menu" name="Hostel" sequence="1"></menuitem>
+    <menuitem id="hostel_type_menu" name="Hostel Type" parent="hostel_main_menu" action="my_hostel.action_hostel"
+              groups="my_hostel.group_hostel_manager" sequence="1"></menuitem>
+
+
+    <!-- Adding custom form view. What user sees in UI -->
+    <record id="view_hostel_form_view" model="ir.ui.view">
+        <field name="name">hostel.hostel.form.view</field>
+        <field name="model">hostel.hostel</field>
+        <field name="arch" type="xml">
+            <form string="Hostel">
+                <sheet>
+                    <div class="oe_title">
+                        <h3>
+                            <table>
+                                <tr>
+                                    <td style="padding-right: 10px;">
+                                        <field name="name" required="1" placeholder="Name"/>
+                                    </td>
+
+                                    <td style="padding-right: 10px;">
+                                        <field name="hostel_code" placeholder="Hostel Code"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </h3>
+                    </div>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <group>
+                        <group>
+                            <label for="street" string="Address"/>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street_2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City..." class="o_address_city"/>
+                                <field name="state_id" placeholder="State" class="o_address_state"
+                                       options="{'no_open': True}"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country"
+                                       options="{'no_open' : True, 'no_create': True}"/>
+                            </div>
+                            <field name="mobile" widget="phone"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="email" widget="email" context="{'gravatar_image': True}"/>
+                        </group>
+                        <group>
+                            <field name="hostel_floors"/>
+                            <field name="active"/>
+                            <field name="type"/>
+                            <field name="hostel_rating"/>
+                            <field name="other_info"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Description..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Adding custom tree (list) view -->
+    <record id="view_hostel_tree_view" model="ir.ui.view">
+        <field name="name">hostel.hostel.tree.view</field>
+        <field name="model">hostel.hostel</field>
+        <field name="arch" type="xml">
+            <tree string="Hostel">
+                <field name="name"/>
+                <field name="hostel_code"/>
+                <field name="street"/>
+                <field name="street_2"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Adding custom search view -->
+    <record id="view_hostel_search_view" model="ir.ui.view">
+        <field name="name">Hostel Search</field>
+        <field name="model">hostel.hostel</field>
+        <field name="arch" type="xml">
+            <search string="Hostel">
+                <field name="name"/>
+                <field name="hostel_code"/>
+                <field name="street"/>
+                <field name="street_2"/>
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -15,6 +15,7 @@ services:
       - web-data:/var/lib/odoo
       - ./custom-addons:/mnt/custom-addons
       - ./../odoo-enterprise-17:/mnt/odoo-enterprise
+      - ./../odoo-17:/mnt/odoo
     environment:
       - HOST=db
       - USER=odoo
