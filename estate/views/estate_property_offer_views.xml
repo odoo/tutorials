@@ -25,7 +25,7 @@
                 decoration-success="status == 'accepted'"
                 decoration-danger="status == 'refused'"
             >
-                <field name="property_name"/>
+                <field name="property_name" column_invisible="context.get('hide_property_name')"/>
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>

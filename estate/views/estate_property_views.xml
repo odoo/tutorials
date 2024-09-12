@@ -3,7 +3,7 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Property">
+            <form string="Property" delete="True">
                 <sheet>
                     <header>
                         <group invisible="state in ['sold', 'canceled']">
@@ -17,7 +17,9 @@
                             <field name="name" string="Title"/>
                         </h1>
                     </div>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                    <group>
+                        <field name="tag_ids" string="Tags" widget="many2many_tags" options="{'color_field': 'color'}" />
+                    </group>
                     <group>
                         <group>
                             <field name="state" />
@@ -45,8 +47,8 @@
                                 <field name="total_area"/>
                             </group>
                         </page>
-                        <page string="Offers">
-                            <field name="offers_ids" readonly="state in ['offer_accepted', 'sold', 'canceled']"/>
+                        <page string="Offers"> 
+                            <field name="offers_ids" context="{'hide_property_name': True}" readonly="state in ['offer_accepted', 'sold', 'canceled']"/>
                         </page>
                         <page string="Other Info">
                             <group>
