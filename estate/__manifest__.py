@@ -1,0 +1,26 @@
+{
+    "name": "Real_Estate",
+    "depends": ["base"],
+    "Description": "Estate Module by aneg",
+    "category": "Real Estate",
+    "license": "LGPL-3",
+    "summary": "Real_Estate module for different purpose",
+    "author": "aneg_odoo",
+    "version": "0.1",
+    "application": True,
+    "installable": True,
+    "data": [
+        "security/ir.model.access.csv",
+        "views/estate_property_offer.xml",
+        "views/estate_property_views.xml",
+        "views/estate_property_type.xml",
+        "views/estate_property_tag.xml",
+        "views/estate_menus.xml",
+        "views/res_users_view.xml",
+        "data/estate.property.type.csv",
+    ],
+    "demo": [
+        "demo/estate_demo.xml",
+        "demo/estate_offer_demo.xml",
+    ],
+}

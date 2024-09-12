@@ -1,0 +1,30 @@
+<odoo>
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">properties offer </field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+    <record id="estate_property_offer_tree_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.tree.view</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree editable="top" create="1" delete="1" multi_edit="1"
+                decoration-danger="status=='Refused'"
+                decoration-success="status=='Accepted'">
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="validity" />
+                <field
+                    name="date_deadline" />
+                <button name="action_confirm" type="object"
+                    icon="fa-check" title="refuse" string=""
+                    invisible="status =='Accepted' or status=='Refused'" />
+                <button
+                    name="action_cancel" type="object" icon="fa-times" title="refuse" string=""
+                    invisible="status =='Accepted' or status=='Refused'" />
+                <field name="status" optional="hide" />
+            </tree>
+        </field>
+    </record>
+</odoo>
