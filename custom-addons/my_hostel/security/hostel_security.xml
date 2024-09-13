@@ -15,4 +15,6 @@
         <field name="name">Hostel User</field>
         <field name="category_id" ref="module_category_hostel"/>
     </record>
+
+
 </odoo>

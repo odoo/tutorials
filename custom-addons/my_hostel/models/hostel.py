@@ -45,6 +45,7 @@ class Hostel(models.Model):
 
     @api.depends('hostel_code')
     def _compute_display_name(self):
+        """This function creates a name for the record based on the hostel name and hostel code."""
         for record in self:
             name = record.name
             if record.hostel_code:

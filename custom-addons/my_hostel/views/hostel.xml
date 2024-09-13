@@ -2,6 +2,7 @@
 <!-- This file is used to define the views for the hostel module UI-->
 <odoo>
     <!-- Adding custom action that opens the views for the Hostel -->
+    <!-- This action is used to open the views for the hostel model -->
     <record id="action_hostel" model="ir.actions.act_window"> <!-- action that opens the vies -->
         <field name="name">Hostel</field>
         <field name="type">ir.actions.act_window</field>
@@ -14,8 +15,8 @@
         </field>
     </record>
     <!-- Adding custom menu items -->
-    <menuitem id="hostel_main_menu" name="Hostel" sequence="1"></menuitem>
-    <menuitem id="hostel_type_menu" name="Hostel Type" parent="hostel_main_menu" action="my_hostel.action_hostel"
+    <menuitem id="hostel_main_menu_new" name="Hostel" sequence="1"></menuitem>
+    <menuitem id="hostel_type_menu" name="Hostel" parent="hostel_main_menu_new" action="my_hostel.action_hostel"
               groups="my_hostel.group_hostel_manager" sequence="1"></menuitem>
 
 

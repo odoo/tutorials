@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../odoo-17/.idea/odoo-17.iml" filepath="$PROJECT_DIR$/../odoo-17/.idea/odoo-17.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../odoo-enterprise-17/.idea/odoo-enterprise-17.iml" filepath="$PROJECT_DIR$/../odoo-enterprise-17/.idea/odoo-enterprise-17.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../odoo-17/.idea/odoo_v17.iml" filepath="$PROJECT_DIR$/../odoo-17/.idea/odoo_v17.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/tutorials.iml" filepath="$PROJECT_DIR$/.idea/tutorials.iml" />
     </modules>
   </component>

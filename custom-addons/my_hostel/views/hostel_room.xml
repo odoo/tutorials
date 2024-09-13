@@ -1,13 +1,55 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
-    <record id="hostel_room_form_view" model="ir.ui.view">
-        <field name="name">hostel.room.form.view</field>
-        <field name="model">hostel.room</field>
-        <field name="arch" type="xml">
-            <!-- TODO: Add the form view for hostel.room model -->
-
-
+    <!-- Adding custom action that opens the views for the Hostel Room -->
+    <record id="action_hostel_room" model="ir.actions.act_window">
+        <field name="name">Hostel Room</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hostel.room</field> <!-- Assuming the model is 'hostel.room' -->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new hostel room.
+            </p>
         </field>
     </record>
+
+    <!-- Adding custom menu items for Hostel Room -->
+    <menuitem id="hostel_room_main_menu" name="Hostel Room" sequence="2" parent="hostel_main_menu_new"
+              action="my_hostel.action_hostel_room" groups="my_hostel.group_hostel_manager"/>
+
+    <!-- Adding custom tree (list) view for Hostel Room -->
+    <record id="view_hostel_room_tree_view" model="ir.ui.view">
+        <field name="name">hostel.room.tree.view</field>
+        <field name="model">hostel.room</field>
+        <field name="arch" type="xml">
+            <tree string="Hostel Room">
+                <field name="room_name"/>
+                <field name="room_number"/>
+                <field name="floor_number"/>
+                <field name="rent_amount"/>
+                <field name="currency_id"/>
+                <field name="hostel_id"/>
+                <field name="student_ids"/>
+                <field name="hostel_amenities_ids"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Adding custom search view for Hostel Room -->
+    <record id="view_hostel_room_search_view" model="ir.ui.view">
+        <field name="name">hostel.room.search.view</field>
+        <field name="model">hostel.room</field>
+        <field name="arch" type="xml">
+            <search string="Search Hostel Room">
+                <field name="room_name" string="Room Name"/>
+                <field name="room_number" string="Room Number"/>
+                <field name="floor_number" string="Floor Number"/>
+                <field name="rent_amount" string="Rent Amount"/>
+                <field name="currency_id" string="Currency"/>
+            </search>
+        </field>
+    </record>
+
+
 </odoo>
