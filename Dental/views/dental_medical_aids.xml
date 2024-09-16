@@ -4,7 +4,7 @@
     <record id="action_dental_medical_aids" model="ir.actions.act_window">
         <field name="name">Medical Aids</field>
         <field name="res_model">dental.medical.aids</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form</field>   
     </record>
 
     <record id="medicalaids_view_form" model="ir.ui.view">

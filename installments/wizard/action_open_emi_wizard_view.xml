@@ -1,0 +1,29 @@
+<odoo>
+    <record id="open_emi_wizard_form" model="ir.ui.view">
+        <field name="name">action.open.emi.form</field>
+        <field name="model">action.open.emi.wizard</field>
+        <field name="arch" type="xml">
+            <form string="EMI">
+                <group>
+                    <field name="total_so_amount"/>
+                    <field name="down_payment"/>
+                    <field name="remaining_amount"/>
+                    <field name="interest"/>
+                    <field name="num_installments"/>
+                    <field name="installment_amount"/>
+                </group>
+                <footer>
+                    <button string="Add EMI Installment" type="object" name="add_installment" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record> 
+        <!-- Action to open the wizard -->
+        <record id="action_open_emi_wizard" model="ir.actions.act_window">
+            <field name="name">Add EMI</field>
+            <field name="res_model">action.open.emi.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="open_emi_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+</odoo>

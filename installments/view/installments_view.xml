@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_order_form_inherited" model="ir.ui.view">
+        <field name="name">sale.order.form.inherited</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='so_button_below_order_lines']" position="inside">
+                    <button string="Add EMI"
+                        name="%(installments.action_open_emi_wizard)d"
+                        type="action"
+                        class="btn btn-primary"/>
+                </xpath>
+            </field>
+    </record>
+</odoo>

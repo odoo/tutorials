@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="installment_product" model="product.product">
+        <field name="name">Installment</field>
+    </record>
+
+    <record id="emi_product" model="product.product">
+        <field name="name">Monthly EMI</field>
+    </record>
+</odoo>
