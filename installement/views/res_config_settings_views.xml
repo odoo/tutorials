@@ -1,0 +1,62 @@
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.base.setup</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="0" />
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='integration']" position="after">
+                <block title="Installement Process" name="installement_process">
+                    <setting id="max_duration" help="Define max duration">
+                        <field name="max_duration" />
+                        <a>Years</a>
+                    </setting>
+                    <setting id="annual_rate_percentage" help="Define Annual Rate Percentage">
+                        <field name="annual_rate_percentage" />
+                        <a>% Per Year</a>
+                    </setting>
+                    <setting id="down_payment_percentage" help="Define Down Payment Percentage">
+                        <field name="down_payment_percentage" />
+                        <a>% From Product Price</a>
+                    </setting>
+                    <setting id="administrative_expenses_percentage"
+                        help="Define Administrative Expenses Percentage">
+                        <field name="administrative_expenses_percentage" />
+                        <a>% From Amount After D.Payment</a>
+                    </setting>
+                    <setting id="delay_penalty_percentage" help="Define Delay Penalty Percentage">
+                        <field name="delay_penalty_percentage" />
+                        <a>% From Monthly Amount</a>
+                    </setting>
+                    <setting id="delay_penalty_process" help="Define Delay Penalty Process">
+                        <field name="delay_penalty_process" />
+                        <a>Days</a>
+                        <br />
+                        <help>Delay penalty percentage will be applied after exceed the delay
+                            process period. </help>
+                    </setting>
+                </block>
+                <block title="Needed Documents" name="needed_documents">
+                    <setting id="nid">
+                        <field name="nid" />
+                    </setting>
+                    <setting id="salary_component">
+                        <field name="salary_component" />
+                    </setting>
+                    <setting id="bank_statement">
+                        <field name="bank_statement" />
+                    </setting>
+                    <setting id="bank_rate_letter">
+                        <field name="bank_rate_letter" />
+                    </setting>
+                    <setting id="rental_contract">
+                        <field name="rental_contract" />
+                    </setting>
+                    <setting id="ownership_contract">
+                        <field name="ownership_contract" />
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>
