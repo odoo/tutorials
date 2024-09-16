@@ -3,11 +3,11 @@
     'name': "Awesome Owl",
 
     'summary': """
-        Starting module for "Discover the JS framework, chapter 1: Owl components"
+        Companion addon for the Odoo Smartclass 2024 on the JS Framework
     """,
 
     'description': """
-        Starting module for "Discover the JS framework, chapter 1: Owl components"
+        Companion addon for the Odoo Smartclass 2024 on the JS Framework
     """,
 
     'author': "Odoo",
@@ -17,7 +17,7 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Tutorials',
-    'version': '0.1',
+    'version': '0.2',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'web'],
@@ -31,6 +31,7 @@
             ('include', 'web._assets_helpers'),
             'web/static/src/scss/pre_variables.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
+            'web/static/lib/bootstrap/scss/_maps.scss',
             ('include', 'web._assets_bootstrap'),
             ('include', 'web._assets_core'),
             'web/static/src/libs/fontawesome/css/font-awesome.css',
