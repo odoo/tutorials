@@ -38,7 +38,7 @@ class DentalPatientHistory(models.Model):
         ('full_consultation', 'Full Consultation with Bitewings and Scan'),
         ('basic_consultation', 'Basic Consultation'),
         ('no_consultation', 'No Consultation')
-    ], shabits_substance_abusetring="Consultation Type")
+    ], string="Consultation Type")
 
     call_out = fields.Boolean(string="Call Out")
     scale_and_polish = fields.Boolean(string="Scale and Polish")

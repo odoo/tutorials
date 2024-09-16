@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_installment_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.installment</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='integration']" position="after">
+                <block title="Installment Process" id="installment_general_settings">
+                    <setting id="max_duration_setting" help="Define your Max duration">
+                        <field name="max_duration"/>
+                        <a>Years</a>
+                    </setting>
+                    <setting id="annual_rate_percentage_setting" help="Define the Annual Rate Percentage">
+                        <field name="annual_rate_percentage"/>
+                        <a>%Per Year</a>
+                    </setting>
+                    <setting id="down_payment_percentage_setting" help="Define the Down Payment Percentage">
+                        <field name="down_payment_percentage"/>
+                        <a>%From Product Price</a>
+                    </setting>
+                    <setting id="administrative_expense_percentage_setting" help="Define the Administrative Expense Percentage">
+                        <field name="administrative_expense_percentage"/>
+                        <a>%From Amount After D.Payment</a>
+                    </setting>
+                    <setting id="delay_penalty_percentage_setting" help="Define the Delay Penalty Percentage">
+                        <field name="delay_penalty_percentage"/>
+                        <a>%From Monthly Amount</a>
+                    </setting>
+                    <setting id="delay_penalty_process_setting" help="Define the Delay Penalty Process">
+                        <field name="delay_penalty_process"/>
+                        <a>Days</a>
+                        <br>
+                            <help>
+                                help="Define the Delay Penalty Process"
+                            </help>    
+                        </br>
+                    </setting>
+                </block>
+                <block title="Needed Documentation" name="Documentation">
+                    <setting id="nid_setting">
+                        <field name="nid"/>
+                    </setting>
+                    <setting id="bank_statement_setting">
+                        <field name="bank_statement"/>
+                    </setting>
+                    <setting id="rental_contract_setting">
+                        <field name="rental_contract"/>
+                    </setting>
+                    <setting id="salary_components_setting">
+                        <field name="salary_components"/>
+                    </setting>
+                    <setting id="bank_rate_letter_setting">
+                        <field name="bank_rate_letter"/>
+                    </setting>
+                    <setting id="ownership_contract_setting">
+                        <field name="ownership_contract"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

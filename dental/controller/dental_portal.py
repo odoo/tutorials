@@ -6,7 +6,7 @@ from odoo.addons.portal.controllers.portal import CustomerPortal
 class DentalPortal(CustomerPortal):
     @http.route('/my/dental', type='http', auth='user', website=True)
     def portal_my_dental(self, **kw):
-        patients = request.env['dental.patient'].search([('guarantor_id', '=', request.env.user.id)])
+        patients = request.env['dental.patient'].search([('guarantor_id', '=', request.env.user.id), ('gender', '=', 'male'), ('patient_history_ids', '!=', False), ('emergency_contact_id', '!=', False)])
         return request.render('dental.portal_my_dental', {
             'patients': patients
         })
