@@ -1,0 +1,12 @@
+<odoo>
+    <data noupdate="1">
+        <record id="product_installment" model="product.product">
+            <field name="name">Installment</field>
+            <field name="detailed_type">service</field>
+        </record>
+        <record id="product_monthly" model="product.product">
+            <field name="name">Monthly</field>
+            <field name="detailed_type">service</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,6 @@
+<odoo>
+    <menuitem id="installment_root_menu" name="Installment"/>
+    <menuitem id="subscription_menu" name="Subscriptions" parent="installment_root_menu" action="action_installment" />
+    <menuitem id="installment_config_menu" name="Configuration" parent="installment_root_menu" />
+    <menuitem id="installment_config_settings_menu" name="Settings" parent="installment_config_menu" action="action_installment_config_settings"/>
+</odoo>

@@ -1,0 +1,29 @@
+<odoo>
+    <record id='from_add_emi' model='ir.ui.view'>
+        <field name="name">Add EMI Form</field>
+        <field name="model">add.emi</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="total_so_amount"/>
+                    <field name="down_payment"/>
+                    <field name="remaining_amount" readonly='1'/>
+                    <field name="interest" readonly='1'/>
+                    <field name="number_monthly_installment" readonly='1'/>
+                    <field name="installement_amount" readonly='1'/>
+                </group>
+                <footer>
+                    <button name="add_installment" class="btn btn-primary" string="Add Installment" type="object"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_add_emi" model="ir.actions.act_window">
+        <field name="name">Add EMI</field>
+        <field name="res_model">add.emi</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="from_add_emi" />
+        <field name="target">new</field>
+    </record>
+</odoo>

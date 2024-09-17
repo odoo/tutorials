@@ -1,0 +1,26 @@
+<odoo>
+    <record id="action_installment" model="ir.actions.act_window">
+        <field name="name">Installment</field>
+        <field name="res_model">installment.installment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Installment
+            </p>
+        </field>
+    </record>
+
+    <record id="view_installment" model="ir.ui.view">
+        <field name="name">Subscription</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_order_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='so_button_below_order_lines']/button" position="before">
+                <button name="installment.action_add_emi" class="btn btn-primary" invisible="state not in ['draft']" string="Add EMI" type="action"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_upload_documents" class="btn btn-primary " icon="fa-file-text" string="Document" type="object"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
