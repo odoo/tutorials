@@ -1,9 +1,4 @@
 <odoo>
-    <menuitem id="estate_menu_root" name="Estate">
-        <menuitem id="estate_menu_first_level" name="Advertisements">
-            <menuitem id="estate.property_menu_action" name="Properties" action="estate_property_action"/>
-        </menuitem>
-    </menuitem>
 
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
@@ -11,12 +6,14 @@
         <field name="arch" type="xml">
             <tree string="Estate">
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="estate_property_tag_ids" widget="many2many_tags"/>
             </tree>
         </field>
     </record>
@@ -34,12 +31,16 @@
             <form string="Estate Property">
                 <sheet>
                     <div>
-                        <h1>
+                        <h1 class="mb32">
                             <field name="name"/>
                         </h1>
                     </div>
                     <group>
                         <group>
+                            <field name="estate_property_tag_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -59,6 +60,16 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="active"/>
+                            </group>
+                        </page>
+                        <page string="Offer">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer_id" string="Buyer"/>
+                                <field name="salesperson_id" string="Salesman"/>
                             </group>
                         </page>
                     </notebook>
@@ -78,14 +89,28 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
-
+                <field name="property_type_id"/>
                 <group string="Group By">
                     <filter name="postcode_groupby" string="Postcode" context="{'group_by':'postcode'}"/>
+                    <filter name="estate_property_type_groupby" string="Property Type"
+                            context="{'group_by':'property_type_id'}"/>
                 </group>
-                <filter name="available" string="Available" domain="['|',('state','=','new'),('state','=','offer received')]"/>
+                <filter name="available" string="Available"
+                        domain="['|',('state','=','new'),('state','=','offer received')]"/>
             </search>
         </field>
 
     </record>
+
+    <menuitem id="estate_menu_root" name="Estate">
+        <menuitem id="estate_menu_first_level" name="Advertisements" sequence="1">
+            <menuitem id="estate_property_menu_action" name="Properties" action="estate_property_action"/>
+        </menuitem>
+        <menuitem id="estate_menu_second_level" name="Settings" sequence="2">
+            <menuitem id="estate_property_type_menu_action" name="Property Type" action="estate_property_type_action"/>
+            <menuitem id="estate_property_tag_menu_action" name="Property Tags" action="estate_property_tag_action"/>
+        </menuitem>
+    </menuitem>
+
 
 </odoo>
