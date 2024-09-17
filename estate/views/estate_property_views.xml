@@ -78,7 +78,11 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
-                <filter name="available" string="Available" domain="['|',('state','==','new'),('state','==','offer received')]"/>
+
+                <group string="Group By">
+                    <filter name="postcode_groupby" string="Postcode" context="{'group_by':'postcode'}"/>
+                </group>
+                <filter name="available" string="Available" domain="['|',('state','=','new'),('state','=','offer received')]"/>
             </search>
         </field>
 
