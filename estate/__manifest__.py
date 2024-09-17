@@ -12,4 +12,3 @@
         'views/estate_menus.xml',
     ],
 }
-
