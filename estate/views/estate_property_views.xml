@@ -17,7 +17,7 @@
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price" string="Expected Price"/>
-                <field name="read_only_selling_price" string="Selling Price"/>
+                <field name="selling_price" string="Selling Price"/>
                 <field name="date_availability" string="Available From"/>
                 <field name="tag_ids" widget="many2many_tags"/>
             </tree>
@@ -45,7 +45,7 @@
                         </group>
                         <group>
                             <field class="ml32" name="expected_price"/>
-                            <field class="ml32" name="read_only_selling_price" string="Selling Price"/>
+                            <field class="ml32" name="selling_price" string="Selling Price"/>
                         </group>
                     </group>
                     <notebook>
