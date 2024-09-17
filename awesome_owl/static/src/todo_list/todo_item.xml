@@ -2,13 +2,13 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoItem">
         <div class="form-check">
-            <t t-set="todo" t-value="props.model.getTodo(props.id)"/>
-            <input class="form-check-input" type="checkbox" t-att-id="todo.id" t-att-checked="todo.isCompleted" t-on-change="onChange"/>
+            <t t-set="todo" t-value="props.todo"/>
+            <input class="form-check-input" type="checkbox" t-att-id="todo.id" t-att-checked="todo.isCompleted" t-on-change="() => todo.toggle()"/>
             <label t-att-for="todo.id" t-att-class="todo.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
                 <t t-esc="todo.id"/>.
                 <t t-esc="todo.description"/>
             </label>
-            <span role="button" class="fa fa-trash ms-3 text-danger" t-on-click="onRemove"/>
+            <span role="button" class="fa fa-trash ms-3 text-danger" t-on-click="() => todo.remove()"/>
         </div>
     </t>
 </templates>
