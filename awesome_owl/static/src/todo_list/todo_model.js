@@ -1,21 +1,30 @@
 
+export class Todo {
+    static nextId = 1;
+
+    constructor(model, description) {
+        this._model = model;
+        this.id = Todo.nextId++;
+        this.description = description;
+        this.isCompleted = false;
+    }
+
+    toggle() {
+        this.isCompleted = !this.isCompleted;
+    }
+
+    remove() {
+        this._model.remove(this.id);
+    }
+}
 
 export class TodoModel {
     constructor() {
         this.todos = [];
-        this.nextId = 1;
-    }
-
-    getTodo(id) {
-        return this.todos.find((todo) => todo.id === id);
     }
 
     add(description) {
-        const todo = {
-            id: this.nextId++,
-            description,
-            isCompleted: false,
-        }
+        const todo = new Todo(this, description);
         this.todos.push(todo);
     }
 
@@ -23,13 +32,6 @@ export class TodoModel {
         const todoIndex = this.todos.findIndex((todo) => todo.id === id);
         if (todoIndex >= 0) {
             this.todos.splice(todoIndex, 1);
-        }
-    }
-
-    toggle(id) {
-        const todo = this.getTodo(id);
-        if (todo) {
-            todo.isCompleted = !todo.isCompleted;
         }
     }
 }
