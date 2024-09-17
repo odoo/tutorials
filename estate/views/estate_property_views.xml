@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Estate Property</field>
+        <field name="res_model">estate_property</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="estate_property_view_tree" model="ir.ui.view">
+        <field name="name">estate_property_tree</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <tree string="Properties">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="property_type_id" string="Property Type"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="read_only_selling_price" string="Selling Price"/>
+                <field name="date_availability" string="Available From"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate_property_form</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <div class="oe_title">
+                        <h1 class="mb6">
+                            <field name="name" class="mb16"/>
+                        </h1>
+                        <field name="active" invisible="1"/>
+                    </div>
+                    <field class="mb32" name="tag_ids" widget="many2many_tags"/>
+                    <group>
+                        <group>
+                            <field class="ml32" name="property_type_id"/>
+                            <field class="ml32" name="postcode"/>
+                            <field class="ml32" name="date_availability" string="Available From"/>
+                        </group>
+                        <group>
+                            <field class="ml32" name="expected_price"/>
+                            <field class="ml32" name="read_only_selling_price" string="Selling Price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field class="ml32" name="description"/>
+                                <field class="ml32" name="bedrooms"/>
+                                <field class="ml32" name="living_area"/>
+                                <field class="ml32" name="facades"/>
+                                <field class="ml32" name="garage"/>
+                                <field class="ml32" name="garden"/>
+                                <field class="ml32" name="garden_area"/>
+                                <field class="ml32" name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <tree string="Offers">
+                                    <field name="price" string="Price"/>
+                                    <field name="partner_id" string="Partner"/>
+                                    <field name="status" string="Status"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field class="ml32" name="salesperson_id" string="Salesman"/>
+                                <field class="ml32" name="buyer_id" string="Buyer"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate_property_search</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <search string="Search Property">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="property_type_id" string="Property Type"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="facades" string="Facades"/>
+                <filter string="Available" name="filter_available" domain="['|', ('state','=','new'), ('state','=','offer_received')]"/>
+                <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
+                <filter string="Property Type" name="group_by_property_type" context="{'group_by':'property_type_id'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>
