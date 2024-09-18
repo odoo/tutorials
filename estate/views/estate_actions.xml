@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-	<record id="real_estate_action" model="ir.actions.act_window">
-		<field name="name">Real Estate</field>
-		<field name="res_model">estate_property</field>
+<openerp>
+	<record id="real_estate_property_action" model="ir.actions.act_window">
+		<field name="name">Properties</field>
+		<field name="res_model">estate.property</field>
 		<field name="view_mode">tree,form</field>
 	</record>
-</odoo>
+	<record id="real_estate_property_type_action" model="ir.actions.act_window">
+		<field name="name">Property types</field>
+		<field name="res_model">estate.property.type</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+	<record id="real_estate_property_tag_action" model="ir.actions.act_window">
+		<field name="name">Property tags</field>
+		<field name="res_model">estate.property.tag</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+		<record id="real_estate_property_offer_action" model="ir.actions.act_window">
+		<field name="name">Property offers</field>
+		<field name="res_model">estate.property.offer</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+</openerp>

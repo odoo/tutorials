@@ -9,6 +9,9 @@
     'data': [
         'security/ir.model.access.csv',
         'views/estate_actions.xml',
+        'views/estate_search.xml',
+        'views/estate_form.xml',
+        'views/estate_list.xml',
         'views/estate_menus.xml',
     ],
 }

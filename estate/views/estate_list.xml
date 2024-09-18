@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <record id="estate_property_tree" model="ir.ui.view">
+        <field name="name">estate_propetry_tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Estate properties">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="selling_price"/>
+                <field name="available_from"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="estate_property_type_tree" model="ir.ui.view">
+        <field name="name">estate_propetry_type_tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="Estate property types">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+</openerp>

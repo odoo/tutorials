@@ -4,7 +4,7 @@ from odoo import models, fields
 
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "Real Estate Property"
     _order = "name, id"
 
@@ -63,6 +63,11 @@ class EstateProperty(models.Model):
              "canceled: The listing has been canceled.",
     )
     active = fields.Boolean('Active', default=True)
+    property_type_id = fields.Many2one("estate.property.type", "Property types")
+    buyer_id = fields.Many2one("res.partner", "Buyer")
+    salesperson_id = fields.Many2one("res.users", "Salesperson", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     def _compute_selling_price(self):
         return 42069
