@@ -1,5 +1,7 @@
 from odoo import api, fields, models
 from datetime import date, timedelta
+from odoo.exceptions import UserError
+
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -30,3 +32,20 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
     
+    
+    def action_accept_offer(self):
+        for record in self:
+            if 'accepted' in record.mapped("property_id.offer_ids.status"):
+                raise UserError("Multiple offers can't be accepted.")
+            record.status = 'accepted'
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+        return True
+    
+    def action_refuse_offer(self):
+        for record in self:
+            if record.status == 'accepted':
+                record.property_id.buyer_id = False
+                record.property_id.selling_price = False
+            record.status = 'refused'
+        return True
