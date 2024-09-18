@@ -8,7 +8,13 @@
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="property_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <button name="action_accept" type="object" title="Accept offer" string="" icon="fa-check"/>
+                <button name="action_refuse" type="object" title="Refuse offer" string="" icon="fa-times"/>
+                <field name="status"/>
             </tree>
+
         </field>
     </record>
 
@@ -22,6 +28,8 @@
                         <field name="price" string="Price"/>
                         <field name="partner_id"/>
                         <field name="property_id"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
                     </group>
 
                 </sheet>
