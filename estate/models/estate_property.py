@@ -1,7 +1,8 @@
 from odoo import fields, models, api
 from datetime import timedelta
 from odoo.exceptions import UserError
-
+from odoo.tools.float_utils import float_is_zero, float_compare
+from odoo.exceptions import ValidationError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -34,6 +35,18 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+
+    _sql_constraints = [
+        ('property_positive_expected_price', 'CHECK (expected_price > 0)', 'Expected price must be positive'),
+        ('property_positive_selling_price', 'CHECK (selling_price >= 0)', 'Selling price must be positive'),
+    ]
+
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            # selling_price < expected_price*0.9
+            if not float_is_zero(record.selling_price, 2) and float_compare(record.selling_price, record.expected_price*0.9, 2) == -1:
+                raise ValidationError('The selling price cannot be lower than 90% of the expected price.')
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
