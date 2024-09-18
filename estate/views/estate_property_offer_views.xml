@@ -22,11 +22,16 @@
         <field name="name">estate_property_offer_tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree string="Property Offers" editable="bottom">
+            <tree
+                string="Property Offers"
+                editable="bottom"
+                decoration-success="status == 'accepted'"
+                decoration-danger="status == 'refused'">>
                 <field name="price"/>
                 <field name="partner_id"/>
-                <button name="action_accept" type="object" title="Accept" icon="fa-check"/>
-                <button name="action_reject" type="object" title="Reject" icon="fa-close"/>
+                <field name="property_id" column_invisible="True" />
+                <button name="action_accept" type="object" title="Accept" icon="fa-check" invisible="status" />
+                <button name="action_reject" type="object" title="Reject" icon="fa-close" invisible="status"/>
                 <field name="status" />
             </tree>
         </field>

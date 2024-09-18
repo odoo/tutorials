@@ -7,8 +7,11 @@
             <form string="Property">
                 <sheet>
                     <header class="mb32">
-                        <button name="action_set_as_sold" string="SOLD" type="object" class="mr8" />
-                        <button name="action_set_as_cancelled" string="CANCEL" type="object"  />
+                        <div invisible="state == 'cancelled' or state == 'sold'">
+                            <button name="action_set_as_sold" string="SOLD" type="object" class="mr8" />
+                            <button name="action_set_as_cancelled" string="CANCEL" type="object"  />
+                        </div>
+                        <field name="state" widget="statusbar"/>
                     </header>
                     <div class="oe_title">
                         <h1 class="mb6">
@@ -16,11 +19,10 @@
                         </h1>
                         <field name="active" invisible="1"/>
                     </div>
-                    <field class="mb32" name="tag_ids" widget="many2many_tags"/>
+                    <field class="mb32" name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group>
                         <group>
-                            <field class="ml32" name="state" string="Status"/>
-                            <field class="ml32" name="property_type_id"/>
+                            <field class="ml32" name="property_type_id" options='{"no_create": True}'/>
                             <field class="ml32" name="postcode"/>
                             <field class="ml32" name="date_availability" string="Available From"/>
                         </group>
@@ -39,13 +41,13 @@
                                 <field class="ml32" name="facades"/>
                                 <field class="ml32" name="garage"/>
                                 <field class="ml32" name="garden"/>
-                                <field class="ml32" name="garden_area"/>
-                                <field class="ml32" name="garden_orientation"/>
+                                <field class="ml32" name="garden_area" invisible="not garden"/>
+                                <field class="ml32" name="garden_orientation" invisible="not garden"/>
                                 <field class="ml32" name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -63,7 +65,11 @@
         <field name="name">estate_property_tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Properties">
+            <tree string="Properties"
+                  decoration-success="state == 'offer_received'"
+                  decoration-bf="state == 'offer_accepted'"
+                  decoration-muted="state == 'sold'">
+                <field name="state" invisible="1"/>
                 <field name="name" string="Title"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="property_type_id" string="Property Type"/>

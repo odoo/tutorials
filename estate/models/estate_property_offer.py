@@ -6,6 +6,8 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offers"
 
+    _order = "price desc"
+
     price = fields.Float(required=True)
     status = fields.Selection(
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False
