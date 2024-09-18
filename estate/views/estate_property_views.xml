@@ -93,7 +93,10 @@
                 <field name="expected_price" string="Expected Price"/>
                 <field name="property_type_id" string="Property Type"/>
                 <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field
+                    name="living_area"
+                    string="Living Area (sqm)"
+                    filter_domain="[('living_area', '&gt;=', self)]"/>
                 <field name="facades" string="Facades"/>
                 <filter string="Available" name="filter_available" domain="['|', ('state','=','new'), ('state','=','offer_received')]"/>
                 <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
