@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+shelter.access_shelter_animal,access_shelter_animal,shelter.model_shelter_animal,base.group_user,1,1,1,1
+shelter.access_shelter_animal_type,access_shelter_animal_type,shelter.model_shelter_animal_type,base.group_user,1,1,1,1
+shelter.access_shelter_animal_race,access_shelter_animal_race,shelter.model_shelter_animal_race,base.group_user,1,1,1,1
