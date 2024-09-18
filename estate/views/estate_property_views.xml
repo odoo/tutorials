@@ -45,6 +45,7 @@
                         </group>
                         <group>
                             <field class="ml32" name="expected_price"/>
+                            <field class="ml32" name="best_price" string="Best Offer"/>
                             <field class="ml32" name="selling_price" string="Selling Price"/>
                         </group>
                     </group>
@@ -59,6 +60,7 @@
                                 <field class="ml32" name="garden"/>
                                 <field class="ml32" name="garden_area"/>
                                 <field class="ml32" name="garden_orientation"/>
+                                <field class="ml32" name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
