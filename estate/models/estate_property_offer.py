@@ -1,7 +1,7 @@
 from odoo import api, models, fields
 from dateutil.relativedelta import relativedelta
 from datetime import date
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -39,17 +39,23 @@ class EstateProperty(models.Model):
                 record.create_date = date.today()
             record.deadline = record.create_date + relativedelta(days=record.Validity)
 
-    @api.onchange("name")
-    def _onchange_offer(self):
-        if self.name:
-            self.property_id.state = "offer_recieved"
-
     # created the inverse function that will compute the validity when we manually update the deadline i.e deadline - creation date
     def _inverse_deadline(self):
         for record in self:
             record.Validity = (
                 record.deadline.toordinal() - record.create_date.toordinal()
             )
+
+    # create a create model that will make status as offer recieved when we create the offer
+    @api.model
+    def create(self, vals):
+        record = super().create(vals)
+        if record.price < record.property_id.best_price:
+            raise ValidationError(
+                "One of the offer is present which is best than your offer."
+            )
+        record.property_id.state = "offer_recieved"
+        return record
 
     # created the action for the accept button that will accept the offer from the offers for a property.
     def action_accept(self):

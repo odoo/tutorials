@@ -1,0 +1,24 @@
+<odoo>
+    <record id="inherited_res_users_form" model="ir.ui.view">
+        <field name="name">inherited.res.user</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <!-- find field description and add the field
+             new_field after it -->
+            <xpath expr="//page[@name='preferences']" position="after">
+                <page string="Real Estate Properties">
+                    <field name="property_ids">
+                        <tree>
+                            <field name='name' string='Title' />
+                            <field name='state' string='Status' />
+                            <field name='selling_price' string='Selling Price' />
+                            <field name='expected_price' string='Expected Price' />
+                        </tree>
+                    </field>
+
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

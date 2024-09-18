@@ -35,6 +35,7 @@ class EstateProperty(models.Model):
             ("canceled", "Canceled"),
         ],
         default="new",
+        readonly=True,
     )
     active = fields.Boolean(default=True)
     saler_id = fields.Many2one(
@@ -74,8 +75,8 @@ class EstateProperty(models.Model):
     def _compute_bestprice(self):
         for record in self:
             if record.offer_ids:
+                max1 = 0
                 for i in record.offer_ids:
-                    max1 = 0
                     if i.price > max1:
                         max1 = i.price
                     record.best_price = max1
@@ -102,6 +103,12 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "the selling price cannot be lower than 90'%' of the expected price."
                 )
+
+    # creating a delection check function that will check if the property is sold or not
+    @api.ondelete(at_uninstall=False)
+    def _check_property(self):
+        if any(user.state not in ("new", "canceled") for user in self):
+            raise UserError("You can't delete a property that is in process.")
 
     # created the action for the sold button that will chage the state field of the property to sold
     def action_sold(self):

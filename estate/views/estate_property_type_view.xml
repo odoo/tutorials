@@ -23,13 +23,15 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="estate property type form ">
-                <header>
-                    <button type="action" name="%(estate.action_open_offer)d" string="Offer"
-                        icon="fa-money" class="oe_stat_button">
-                        <field name="offer_count" string="Offer Count" class="oe_stat_button" />
-                    </button>
-                </header>
                 <sheet>
+                    <div class="d-flex justify-content-end">
+                        <header>
+                            <button type="action" name="%(estate.action_open_offer)d" string="Offer"
+                                icon="fa-money" class="oe_stat_button">
+                                <field name="offer_count" class="oe_stat_button"
+                                    string="Offers Count" /> Offers </button>
+                        </header>
+                    </div>
                     <div>
                         <H1>
                             <field name="name"></field>
