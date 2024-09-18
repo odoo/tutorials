@@ -5,9 +5,7 @@
             <field name="name">estate.property.offers.view.tree</field>
             <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
-                <tree string="Offer" 
-                editable="top">
-                    <field name="property_id"/>
+                <tree string="Offer">
                     <field name="partner_id"/>
                     <field name="price"/>
                     <field name="status"/>
@@ -21,9 +19,11 @@
             <field name="arch" type="xml">
                 <form string="Estate">
                     <sheet>
-                        <field name="price"/>
-                        <field name="partner_id"/>
-                        <field name="status"/>
+                        <group>
+                            <field name="price"/>
+                            <field name="partner_id"/>
+                            <field name="status"/>
+                        </group>
                     </sheet>
                 </form>
             </field>

@@ -52,13 +52,7 @@
                             </group>
                         </page>
                         <page name="Offers">
-                            <field name="offer_ids">
-                                <tree String="Property Offers" editable="top">
-                                    <field name="partner_id"/>
-                                    <field name="price"/>
-                                    <field name="status"/>
-                                </tree>
-                            </field>
+                            <field name="offer_ids"/>
                         </page>
                         <page name="Other Info">
                             <group>
