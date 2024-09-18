@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
-                    <header>
+                    <header class="mb32">
                         <button name="action_set_as_sold" string="SOLD" type="object" class="mr8" />
                         <button name="action_set_as_cancelled" string="CANCEL" type="object"  />
                     </header>
@@ -45,15 +45,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <tree string="Offers">
-                                    <field name="price" string="Price"/>
-                                    <field name="partner_id" string="Partner"/>
-                                    <button name="action_accept" states="draft" type="object" title="Accept" icon="fa-check"/>
-                                    <button name="action_reject" states="draft" type="object" title="Reject" icon="fa-close"/>
-                                    <field name="status" string="Status"/>
-                                </tree>
-                            </field>
+                            <field name="offer_ids"/>
                         </page>
                         <page string="Other Info">
                             <group>

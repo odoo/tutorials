@@ -17,4 +17,18 @@
             </form>
         </field>
     </record>
+
+    <record id="estate_property_offer_view_tree" model="ir.ui.view">
+        <field name="name">estate_property_offer_tree</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree string="Property Offers" editable="bottom">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <button name="action_accept" type="object" title="Accept" icon="fa-check"/>
+                <button name="action_reject" type="object" title="Reject" icon="fa-close"/>
+                <field name="status" />
+            </tree>
+        </field>
+    </record>
 </odoo>
