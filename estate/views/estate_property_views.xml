@@ -49,8 +49,8 @@
                                 <tree string="Offers">
                                     <field name="price" string="Price"/>
                                     <field name="partner_id" string="Partner"/>
-                                    <button name="action_accept" states="draft" type="object" icon="fa-check"/>
-                                    <button name="action_reject" states="draft" type="object" icon="fa-close"/>
+                                    <button name="action_accept" states="draft" type="object" title="Accept" icon="fa-check"/>
+                                    <button name="action_reject" states="draft" type="object" title="Reject" icon="fa-close"/>
                                     <field name="status" string="Status"/>
                                 </tree>
                             </field>
