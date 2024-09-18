@@ -1,35 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Estate Property</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate_property_tree</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <tree string="Properties">
-                <field name="name" string="Title"/>
-                <field name="postcode" string="Postcode"/>
-                <field name="property_type_id" string="Property Type"/>
-                <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="selling_price" string="Selling Price"/>
-                <field name="date_availability" string="Available From"/>
-                <field name="tag_ids" widget="many2many_tags"/>
-            </tree>
-        </field>
-    </record>
-
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate_property_form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                    <header>
+                        <button name="action_set_as_sold" string="SOLD" type="object" class="mr8" />
+                        <button name="action_set_as_cancelled" string="CANCEL" type="object"  />
+                    </header>
                     <div class="oe_title">
                         <h1 class="mb6">
                             <field name="name" class="mb16"/>
@@ -39,6 +19,7 @@
                     <field class="mb32" name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field class="ml32" name="state" string="Status"/>
                             <field class="ml32" name="property_type_id"/>
                             <field class="ml32" name="postcode"/>
                             <field class="ml32" name="date_availability" string="Available From"/>
@@ -68,6 +49,8 @@
                                 <tree string="Offers">
                                     <field name="price" string="Price"/>
                                     <field name="partner_id" string="Partner"/>
+                                    <button name="action_accept" states="draft" type="object" icon="fa-check"/>
+                                    <button name="action_reject" states="draft" type="object" icon="fa-close"/>
                                     <field name="status" string="Status"/>
                                 </tree>
                             </field>
@@ -81,6 +64,24 @@
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_tree" model="ir.ui.view">
+        <field name="name">estate_property_tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Properties">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="property_type_id" string="Property Type"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="date_availability" string="Available From"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+            </tree>
         </field>
     </record>
 
@@ -101,5 +102,11 @@
                 <filter string="Property Type" name="group_by_property_type" context="{'group_by':'property_type_id'}"/>
             </search>
         </field>
+    </record>
+
+     <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Estate Property</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
     </record>
 </odoo>

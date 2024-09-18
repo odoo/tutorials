@@ -1,5 +1,6 @@
-from odoo import models, fields, api
-from datetime import datetime
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -27,4 +28,23 @@ class EstatePropertyOffer(models.Model):
             create_date = rec.create_date or fields.Datetime.now()
             rec.validity = (rec.date_deadline - create_date.date()).days
 
+    def action_accept(self):
+        for rec in self:
+            if rec.property_id.state == 'sold':
+                raise UserError(_('This property is already sold.'))
+            rec.status = 'accepted'
+            rec.property_id.state = 'sold'
+            rec.property_id.buyer_id = rec.partner_id
+            rec.property_id.selling_price = rec.price
+        return True
+
+    def action_reject(self):
+        for rec in self:
+            old_record_status = rec.status
+            rec.status = 'refused'
+            if old_record_status == 'accepted':
+                rec.property_id.state = 'offer_received'
+                rec.property_id.buyer_id = False
+                rec.property_id.selling_price = 0.0
+        return True
 
