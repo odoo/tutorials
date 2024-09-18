@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -28,3 +29,18 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - date).days
+
+    def action_accept_offer(self):
+        for record in self:
+            if record.property_id.state == "sold":
+                raise UserError("The property is already sold")
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.state = "sold"
+        return True
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
+        return True
