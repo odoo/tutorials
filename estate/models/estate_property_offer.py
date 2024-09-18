@@ -2,7 +2,7 @@ from odoo import models, fields, api
 from datetime import datetime
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate_property_offer"
+    _name = "estate.property.offer"
     _description = "Real Estate Property Offers"
 
     price = fields.Float(required=True)
@@ -11,7 +11,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     partner_id = fields.Many2one('res.partner', required=True)
-    property_id = fields.Many2one('estate_property', required=True)
+    property_id = fields.Many2one('estate.property', required=True)
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')

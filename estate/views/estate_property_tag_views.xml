@@ -2,7 +2,7 @@
 <odoo>
     <record id="estate_settings_property_tags_action" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
-        <field name="res_model">estate_property_tag</field>
+        <field name="res_model">estate.property.tag</field>
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>

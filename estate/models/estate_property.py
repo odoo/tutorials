@@ -2,7 +2,7 @@ from odoo import models, fields, api
 
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "Real Estate Properties"
 
     active = fields.Boolean(default=True)
@@ -29,14 +29,14 @@ class EstateProperty(models.Model):
     )
     total_area = fields.Integer(compute='_compute_total_area')
 
-    property_type_id = fields.Many2one('estate_property_type')
+    property_type_id = fields.Many2one('estate.property.type')
 
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
 
-    tag_ids = fields.Many2many('estate_property_tag', string='Tags')
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
 
-    offer_ids = fields.One2many('estate_property_offer', 'property_id', string='Offers')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
 
     best_price = fields.Float(compute='_compute_best_price')
 
@@ -60,6 +60,3 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-
-
-

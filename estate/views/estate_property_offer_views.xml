@@ -2,7 +2,7 @@
 <odoo>
     <record id="estate_property_offers_view_form" model="ir.ui.view">
             <field name="name">estate_property_offers_form</field>
-            <field name="model">estate_property_offer</field>
+            <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
                 <form string="Offers">
                     <sheet>
