@@ -26,7 +26,7 @@
                 string="Property Offers"
                 editable="bottom"
                 decoration-success="status == 'accepted'"
-                decoration-danger="status == 'refused'">>
+                decoration-danger="status == 'refused'">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="property_id" column_invisible="True" />
