@@ -7,6 +7,8 @@
             <tree string="Properties">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
                 <field name="status"/>
             </tree>
         </field>
@@ -20,10 +22,11 @@
                 <group>
                     <field name="price"/>
                     <field name="partner_id"/>
+                    <field name="validity"/>
+                    <field name="date_deadline"/>
                     <field name="status"/>
                 </group>
             </form>
         </field>
     </record>
-
 </odoo>
