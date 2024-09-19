@@ -1,6 +1,8 @@
 import datetime
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -35,11 +37,29 @@ class EstatePropertyOffer(models.Model):
             timedelta = datetime.timedelta(days=record.validity)
             record.date_deadline = starting_date + timedelta
 
+    @api.constrains('date_deadline')
+    def _check_date_deadline(self):
+        for record in self:
+            if record.date_deadline < fields.Date.today():
+                raise ValidationError("The end date cannot be set in the past")
+
     def _inverse_date_deadline(self):
         for record in self:
             starting_date = record.create_date.date() or datetime.date.today()
             timedelta = record.date_deadline - starting_date
             record.validity = timedelta.days
+
+    @api.constrains('status', 'price')
+    def _check_sale_price_above_minimum(self):
+        for record in self:
+            if (
+                    record.status == 'accepted'
+                    and
+                    float_compare(record.price, record.property_id.minimum_sale_price, 5) < 0
+            ):
+                raise ValidationError(
+                    "The selling price of a property cannot be less than 90% of the expected sale price"
+                )
 
     def accept_offer(self):
         self.status = 'accepted'

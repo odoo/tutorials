@@ -14,9 +14,12 @@ class EstateProperty(models.Model):
          'Bedrooms must be a non-negative number or NULL.'),
         ('check_facades', 'check(facades is NULL OR (facades >= 0 AND facades <= 4))',
          'The number of facades must be 0 <= facades <= 4'),
+        ('expected_price_strictly_positive', 'CHECK(expected_price > 0)',
+         'The expected price must be strictly positive'),
+        ('name_uniq', 'unique (name)', 'Estate property already exists!')
     ]
 
-    name = fields.Char("Name", required=True, index=True, help="Name of the property")
+    name = fields.Char("Name", required=True, index=True, help="Name of the property", copy=False)
     description = fields.Text("Description", translate=True)
     postcode = fields.Char("Postcode", help="Postcode of the property")
     available_from = fields.Date("Date", required=True,
@@ -25,6 +28,7 @@ class EstateProperty(models.Model):
         required=True,
         help="The price you expect the property to be sold for",
     )
+    minimum_sale_price = fields.Float("Minimum sale price", compute="_compute_minimum_sale_price")
     selling_price = fields.Float("Selling price", compute="_compute_selling_price")
     bedrooms = fields.Integer("Bedrooms", default=2, required=False, help="Number of bedrooms of your property")
     living_area = fields.Float("Living area (sqm)", default=0)
@@ -102,6 +106,11 @@ class EstateProperty(models.Model):
         for record in self:
             record.buyer_id = next(
                 (offer.partner_id for offer in record.mapped("offer_ids") if offer.status == 'accepted'), None)
+
+    @api.depends('expected_price')
+    def _compute_minimum_sale_price(self):
+        for record in self:
+            record.minimum_sale_price = record.expected_price * 0.9
 
     @staticmethod
     def _fsm_can_transition(src_state, dst_state):
