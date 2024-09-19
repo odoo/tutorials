@@ -69,3 +69,12 @@ class EstatePropertyOffer(models.Model):
         return True
 
 
+    #TODO: What about batch creation ?
+    @api.model
+    def create(self, vals_list):
+
+        estate_property_record = self.env["estate.property"].browse(vals_list["property_id"])
+        estate_property_record.state = "offer_received"
+        return super().create(vals_list)
+
+

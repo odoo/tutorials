@@ -1,5 +1,5 @@
 #self.env(environment())
-
+        import ipdb; ipdb.set_trace()
 open odoo in shell mode: odoo-bin shell
 
             #filtered: return the records in self(input recordset) satisfying param func

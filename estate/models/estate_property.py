@@ -93,15 +93,6 @@ class Estate(models.Model):
                 record.garden_area = 0
                 record.garden_orientation = None
 
-    @api.onchange("offer_ids")
-    def _onchange_offer_ids(self):
-        for record in self:
-            if record.offer_ids:
-                if record.offer_ids.filtered(lambda o: o.status == "accepted"):
-                    record.state = "offer_accepted"
-                else:
-                    record.state = "offer_received"
-
     def action_sold(self):
         for record in self:
             if record.state == "canceled":
@@ -124,3 +115,10 @@ class Estate(models.Model):
         for record in self:
             if not float_is_zero(record.selling_price,precision_rounding=0.01) and float_compare(record.selling_price,record.expected_price * THRESHOLD, precision_rounding=0.01) <= 0:
                 raise ValidationError(_(f"The selling price cannot be lower than 90% of the expected price"))
+
+    # we do this instead of overriding unlink because when we unisntall the app there should not be potentials user error thrown
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_new_or_canceled(self):
+        for record in self:
+            if record.state == "offer_received" or record.state == "offer_accepted" or record.state == "sold":
+                raise UserError(_(f"You cannot delete a property that is not new or canceled"))

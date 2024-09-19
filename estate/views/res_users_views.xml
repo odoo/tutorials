@@ -1,0 +1,16 @@
+<odoo>
+    <record id="res_users_view_tree" model="ir.ui.view">
+        <field name="name">res.users.view.tree.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Properties">
+                    <field name="property_ids"/>
+                </page>
+
+            </notebook>
+
+        </field>
+    </record>
+</odoo>
