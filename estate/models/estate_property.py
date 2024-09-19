@@ -1,6 +1,6 @@
 import datetime
 
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class EstateProperty(models.Model):
@@ -20,20 +20,17 @@ class EstateProperty(models.Model):
     postcode = fields.Char("Postcode", help="Postcode of the property")
     available_from = fields.Date("Date", required=True,
                                  default=lambda _: datetime.date.today() + datetime.timedelta(days=30 * 3))
-    currency_id = fields.Many2one(
-        'res.currency', string="Currency",
-    )
-    expected_price = fields.Monetary(
+    expected_price = fields.Float(
         required=True,
         help="The price you expect the property to be sold for",
     )
-    selling_price = fields.Monetary("Selling price", compute="_compute_selling_price", readlonly=True, store=True)
+    selling_price = fields.Float("Selling price", compute="_compute_selling_price", readlonly=True, store=True)
     bedrooms = fields.Integer("Bedrooms", default=2, required=False, help="Number of bedrooms of your property")
     living_area = fields.Float("Living area (sqm)", default=0)
     facades = fields.Integer("Facades", required=False, help="Number of facades of your property")
     garage = fields.Boolean("Garage", default=False)
     garden = fields.Boolean("Has a garden", required=True, default=False, help="Whether the property has a garden")
-    garden_area = fields.Float("Garden area (sqm)", default=0)
+    garden_area = fields.Float("Garden area (sqm)", default=lambda self: self._garden_area_default)
     garden_orientation = fields.Selection(
         string="Garden orientation",
         selection=[
@@ -42,6 +39,7 @@ class EstateProperty(models.Model):
             ('east', 'East'),
             ('west', 'West'),
         ],
+        default=lambda self: self._garden_orientation_default
     )
     state = fields.Selection(
         string="State",
@@ -68,6 +66,29 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", "Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    total_area = fields.Float("Total area", compute="_compute_total_area", store=True)
+    best_offer = fields.Float("Best offer", compute="_compute_best_offer", store=True)
+
+    def _garden_area_default(self):
+        return 10
+
+    def _garden_orientation_default(self):
+        return 'north'
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        self.garden_area = self.garden and self._garden_area_default() or None
+        self.garden_orientation = self.garden and self._garden_orientation_default() or None
+
+    @api.depends("offer_ids.price")
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped('price'), default=0)
 
     def _compute_selling_price(self):
-        return 42069
+        pass

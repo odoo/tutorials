@@ -19,8 +19,8 @@
                             <field name="available_from"/>
                         </group>
                         <group>
-                            <field name="currency_id"/>
                             <field name="expected_price"/>
+                            <field name="best_offer"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -35,6 +35,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
