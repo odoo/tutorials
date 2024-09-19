@@ -21,6 +21,13 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline"
     )
 
+    def init(self):
+        self.env.cr.execute("""
+            CREATE UNIQUE INDEX IF NOT EXISTS estate_property_offer_single_accepted_status
+            ON %s (property_id)
+            WHERE status = 'accepted'
+        """ % self._table)
+
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -33,3 +40,9 @@ class EstatePropertyOffer(models.Model):
             starting_date = record.create_date.date() or datetime.date.today()
             timedelta = record.date_deadline - starting_date
             record.validity = timedelta.days
+
+    def accept_offer(self):
+        self.status = 'accepted'
+
+    def refuse_offer(self):
+        self.status = 'refused'

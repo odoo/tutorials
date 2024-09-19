@@ -5,6 +5,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate property">
+                <header>
+                    <button name="action_set_sold" class="oe_highlight" type="object" string="Sold" invisible="state in ('sold', 'canceled')"/>
+                    <button name="action_set_cancel" type="object" string="Cancel" invisible="state in ('sold', 'canceled')"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -15,6 +19,8 @@
                     </div>
                     <group>
                         <group>
+                            <field name="state" readonly="True"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="available_from"/>
                         </group>

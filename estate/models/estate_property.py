@@ -1,6 +1,7 @@
 import datetime
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -24,7 +25,7 @@ class EstateProperty(models.Model):
         required=True,
         help="The price you expect the property to be sold for",
     )
-    selling_price = fields.Float("Selling price", compute="_compute_selling_price", readlonly=True, store=True)
+    selling_price = fields.Float("Selling price", compute="_compute_selling_price")
     bedrooms = fields.Integer("Bedrooms", default=2, required=False, help="Number of bedrooms of your property")
     living_area = fields.Float("Living area (sqm)", default=0)
     facades = fields.Integer("Facades", required=False, help="Number of facades of your property")
@@ -62,7 +63,7 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean('Active', default=True)
     property_type_id = fields.Many2one("estate.property.type", "Property types")
-    buyer_id = fields.Many2one("res.partner", "Buyer")
+    buyer_id = fields.Many2one("res.partner", "Buyer", compute="_compute_buyer")
     salesperson_id = fields.Many2one("res.users", "Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
@@ -90,5 +91,40 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped('price'), default=0)
 
+    @api.depends("offer_ids.price")
     def _compute_selling_price(self):
-        pass
+        for record in self:
+            record.selling_price = next(
+                (offer.price for offer in record.mapped("offer_ids") if offer.status == 'accepted'), 0)
+
+    @api.depends("offer_ids.partner_id")
+    def _compute_buyer(self):
+        for record in self:
+            record.buyer_id = next(
+                (offer.partner_id for offer in record.mapped("offer_ids") if offer.status == 'accepted'), None)
+
+    @staticmethod
+    def _fsm_can_transition(src_state, dst_state):
+        return (src_state, dst_state) not in [
+            ('sold', 'canceled'),
+            ('canceled', 'sold')
+        ]
+
+    def action_set_sold(self):
+        for record in self:
+            record.state = 'sold'
+        return True
+
+    def action_set_cancel(self):
+        for record in self:
+            record.state = 'canceled'
+        return True
+
+    def write(self, vals):
+        # validate fsm state transition
+        if dst_state := vals.get('state', None):
+            for src_state in self.mapped('state'):
+                if not self._fsm_can_transition(src_state, dst_state):
+                    raise UserError(f"Invalid state transition from {src_state} to {dst_state}")
+
+        super().write(vals)
