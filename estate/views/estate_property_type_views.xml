@@ -11,13 +11,35 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
+                <header>
+<!--TODO: clean the label-->
+                    <button type="action" name="%(estate_property_offer_action)d" class="oe_stat_button" string="Offers">
+                        <field name="offer_count" widget="statinfo" string=" Offers"/>
+                    </button>
+                </header>
                 <sheet>
                     <div>
                         <h1 class="mb32">
                             <field name="name"/>
                         </h1>
                     </div>
+
+
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <tree>
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state" string="Status"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+
                 </sheet>
+
             </form>
 
         </field>

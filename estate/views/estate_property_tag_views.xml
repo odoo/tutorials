@@ -12,10 +12,23 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <field name="color"/>
                     <field name="name" string="Name"/>
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="estate_property_tag_tree_view" model="ir.ui.view">
+        <field name="name">Property Tags</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <tree string="Tags" editable="bottom">
+                <field name="color"/>
+                <field name="name" string="Name"/>
+            </tree>
+        </field>
+
     </record>
 
 </odoo>
