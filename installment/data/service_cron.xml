@@ -1,0 +1,12 @@
+<odoo>
+    <record id="ir_cron_installment_invoice" model="ir.cron">
+        <field name="name">Send installment invoices automatically</field>
+        <field name="model_id" ref="model_installment_installment"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_create_invoice()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+</odoo>

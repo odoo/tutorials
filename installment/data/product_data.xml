@@ -1,12 +1,17 @@
 <odoo>
     <data noupdate="1">
-        <record id="product_installment" model="product.product">
-            <field name="name">Installment</field>
+        <record id="due_penalty" model="product.product">
+            <field name="name">Penalty</field>
             <field name="detailed_type">service</field>
         </record>
-        <record id="product_monthly" model="product.product">
-            <field name="name">Monthly</field>
-            <field name="detailed_type">service</field>
+
+        <record id="product_down_payment" model="product.product">
+            <field name="name">Down Payment</field>
+        </record>
+
+        <record id="product_installment" model="product.product">
+            <field name="name">Installment</field>
+            <field name="recurring_invoice">True</field>
         </record>
     </data>
 </odoo>

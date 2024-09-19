@@ -1,4 +1,5 @@
 from odoo import models, fields, api, Command
+from odoo.exceptions import UserError
 
 
 class AddEmi(models.TransientModel):
@@ -19,14 +20,16 @@ class AddEmi(models.TransientModel):
         max_duration = float(
             config_param.get_param("installment.max_duration", default=0.0)
         )
+        if max_duration == 0:
+            raise UserError("Max Duration is zero.")
         down_payment_percentage = int(
             config_param.get_param("installment.down_payment", default=0)
         )
-        annual_rate = float(
-            config_param.get_param("installment.annual_rate", default=0.0)
+        annual_rate = int(
+            config_param.get_param("installment.annual_rate", default=0)
         )
 
-        administrative_expenses = float(
+        administrative_expenses = int(
             config_param.get_param("installment.administrative_expenses", default=0.0)
         )
         # Total
@@ -41,7 +44,8 @@ class AddEmi(models.TransientModel):
         annuall_intrest = ((annual_rate / 100) * total_remaining) * max_duration
         total_remaining += annuall_intrest
         # Installment Amount
-        installment_ammount = (total_remaining) / (max_duration * 12)
+        installment_months = max_duration * 12
+        installment_ammount = total_remaining / installment_months
         # print(annuall_intrest)
         res.update(
             {
@@ -72,8 +76,8 @@ class AddEmi(models.TransientModel):
                 {
                     "order_id": sale_order.id,
                     "product_uom_qty": 1.0,
-                    "price_unit": -self.installement_amount,
-                    "product_id": self.env.ref("installment.product_monthly").id,
+                    "price_unit": self.down_payment,
+                    "product_id": self.env.ref("installment.product_down_payment").id,
                     "product_uom": self.env.ref("uom.product_uom_unit").id,
                     "tax_id": None,
                 },
