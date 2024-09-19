@@ -52,7 +52,7 @@
         <form>
           <widget name="long_stay_banner" invisible="state == 'adopted' or not is_present_for_six_month" class="mb-2"/>
           <header>
-            <field name="state" widget="statusbar" options="{ 'clickable': True }" />
+            <field name="state" widget="statusbar_rainbowman" options="{ 'clickable': True, 'rainbow_stages': ['adopted'] }" />
           </header>
           <sheet>
             <widget name="web_ribbon" title="Adopted" bg_color="text-bg-success" invisible="state != 'adopted'"/>
