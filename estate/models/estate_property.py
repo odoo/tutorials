@@ -7,6 +7,8 @@ from odoo.exceptions import ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real estate property"
+    _order = "id desc"
+
     active = fields.Boolean(default=True)
     name = fields.Char(required=True, string="Title")
     postcode = fields.Char()
