@@ -8,8 +8,8 @@
                 <sheet>
                     <header class="mb32">
                         <div invisible="state == 'cancelled' or state == 'sold'">
-                            <button name="action_set_as_sold" string="SOLD" type="object" class="mr8" />
-                            <button name="action_set_as_cancelled" string="CANCEL" type="object"  />
+                            <button name="action_set_sold" string="SOLD" type="object" class="mr8" />
+                            <button name="action_set_cancelled" string="CANCEL" type="object"  />
                         </div>
                         <field name="state" widget="statusbar"/>
                     </header>

@@ -65,14 +65,14 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def action_set_as_sold(self):
+    def action_set_sold(self):
         for record in self:
             if record.state == "cancelled":
                 raise UserError(_("Cannot sell a canceled property"))
             record.state = 'sold'
         return True
 
-    def action_set_as_cancelled(self):
+    def action_set_cancelled(self):
         for record in self:
             if record.state == "sold":
                 raise UserError(_("Cannot cancel a sold property"))
@@ -87,9 +87,6 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for rec in self:
-            print("rec.state", rec.state)
-            print("rec.selling_price", rec.selling_price)
-            print("rec.expected_price", rec.expected_price)
             if rec.state == 'sold' and float_compare(rec.selling_price, rec.expected_price * 0.9, precision_digits=2) < 0:
                 raise UserError(_("The selling price must be at least 90% of the expected price."))
 

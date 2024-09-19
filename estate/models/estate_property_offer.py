@@ -36,8 +36,10 @@ class EstatePropertyOffer(models.Model):
         for rec in self:
             if rec.property_id.state == 'sold':
                 raise UserError(_('This property is already sold.'))
+            if rec.property_id.offer_ids.filtered(lambda r: r.status == 'accepted'):
+                raise UserError(_('Another offer has already been accepted on this property.'))
             rec.status = 'accepted'
-            rec.property_id.state = 'sold'
+            rec.property_id.state = 'offer_accepted'
             rec.property_id.buyer_id = rec.partner_id
             rec.property_id.selling_price = rec.price
         return True
