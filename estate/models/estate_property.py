@@ -30,7 +30,7 @@ class EstateProperty(models.Model):
     facades = fields.Integer("Facades", required=False, help="Number of facades of your property")
     garage = fields.Boolean("Garage", default=False)
     garden = fields.Boolean("Has a garden", required=True, default=False, help="Whether the property has a garden")
-    garden_area = fields.Float("Garden area (sqm)", default=lambda self: self._garden_area_default)
+    garden_area = fields.Float("Garden area (sqm)", default=lambda self: self._garden_area_default())
     garden_orientation = fields.Selection(
         string="Garden orientation",
         selection=[
@@ -39,7 +39,7 @@ class EstateProperty(models.Model):
             ('east', 'East'),
             ('west', 'West'),
         ],
-        default=lambda self: self._garden_orientation_default
+        default=lambda self: self._garden_orientation_default()
     )
     state = fields.Selection(
         string="State",
