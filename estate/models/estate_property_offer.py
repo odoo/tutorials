@@ -36,6 +36,14 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
 
+    @api.model
+    def create(self, vals):
+        property_id = self.env['estate.property'].browse(vals['property_id'])
+        if vals['price'] < property_id.best_price:
+            raise UserError("Your offer is too low. You cannot create an offer lower than the best offer.")
+        property_id.state = 'offer_received'
+        return super().create(vals)
+
     def action_accept_offer(self):
         for record in self:
             if 'accepted' in record.mapped("property_id.offer_ids.status"):
