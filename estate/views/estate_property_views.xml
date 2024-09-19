@@ -69,7 +69,7 @@
                   decoration-success="state == 'offer_received'"
                   decoration-bf="state == 'offer_accepted'"
                   decoration-muted="state == 'sold'">
-                <field name="state" invisible="1"/>
+                <field name="state" column_invisible="1"/>
                 <field name="name" string="Title"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="property_type_id" string="Property Type"/>
