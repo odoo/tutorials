@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="shelter.LongStayBannerWidget">
+        <div class="bg-warning  text-bg-warning p-2 rounded">
+            Oh no, <t t-esc="animalName" /> has been here for a long time...
+        </div>
+    </t>
+
+</templates>

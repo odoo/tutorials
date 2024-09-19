@@ -50,6 +50,7 @@
       <field name="model">awesome_shelter.animal</field>
       <field name="arch" type="xml">
         <form>
+          <widget name="long_stay_banner" invisible="state == 'adopted' or not is_present_for_six_month" class="mb-2"/>
           <header>
             <field name="state" widget="statusbar" options="{ 'clickable': True }" />
           </header>

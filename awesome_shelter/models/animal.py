@@ -39,5 +39,5 @@ class Animal(models.Model):
     def _compute_is_present_for_six_month(self):
         for record in self:
             record.is_present_for_six_month = (
-                fields.Date.today() + relativedelta(months=-6) < record.drop_date
+                fields.Date.today() + relativedelta(months=-6) > record.drop_date
             )
