@@ -10,6 +10,7 @@ class EstateProperty(models.Model):
         ('check_price', 'CHECK(expected_price > 0)', "A property expected price must be strictly positive."),
         ('check_selling_price', 'CHECK(selling_price >= 0)', "A property selling price must be positive"),
     ]
+    _order = "id desc"
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text()
@@ -42,8 +43,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_offer", string="Best Offer")
-    
-    
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -53,13 +53,14 @@ class EstateProperty(models.Model):
     def _compute_best_offer(self):
         for record in self:
             record.best_price = max(self.offer_ids.mapped('price'), default=0)
-            
+
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
         for propert in self:
-            if not float_is_zero(propert.selling_price, 2) and float_compare(propert.selling_price, 0.9*propert.expected_price, 2) < 0:
+            if not float_is_zero(propert.selling_price, 2) and float_compare(propert.selling_price,
+                                                                             0.9 * propert.expected_price, 2) < 0:
                 raise ValidationError('The selling price cannot be lower tan 90% of the expected price')
-            
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -68,15 +69,14 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = False
             self.garden_orientation = False
-            
-    
+
     def action_set_sold(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("Canceled properties can't be sold.")
             record.state = 'sold'
         return True
-    
+
     def action_set_cancel(self):
         for record in self:
             if record.state == 'sold':
