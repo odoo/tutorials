@@ -13,8 +13,7 @@
       <field name="arch" type="xml">
         <list string="Animals">
           <field name="name" />
-          <field name="type_id" />
-          <field name="pictogram" widget="image" options="{ 'size': [18, 18] }"/>
+          <field name="type_id"  widget="animal_type_many2one" options="{ 'image_field': 'pictogram' }" />
           <field name="owner_id" widget="many2one_avatar"/>
           <field name="state" widget="badge" decoration-success="state == 'adopted'"/>
         </list>
