@@ -19,11 +19,11 @@
                             <field class="text-break" options="{'line_breaks': False}" widget="text" name="name"
                                    placeholder="Main St 1 property"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
                     <group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="available_from"/>
                         </group>
@@ -42,17 +42,16 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'canceled')"/>
                         </page>
                         <page string="Other info">
                             <group>
-                                <field name="property_type_id"/>
                                 <field name="buyer_id"/>
                                 <field name="salesperson_id"/>
                             </group>
@@ -68,11 +67,25 @@
         <field name="arch" type="xml">
             <form string="Estate property type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(real_estate_property_offer_by_active_property_type_action)d" type="action"
+                                class="oe_stat_button" icon="fa-money"
+                                invisible="offer_count == 0">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">
+                                    <field name="offer_count"/> offers
+                                </span>
+                            </div>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
                         </h1>
                     </div>
+                    <group>
+                        <field name="offer_count"/>
+                    </group>
                     <notebook>
                         <page name="Properties">
                             <field name="property_ids">
@@ -82,6 +95,9 @@
                                     <field name="state"/>
                                 </tree>
                             </field>
+                        </page>
+                        <page name="Offers">
+                            <field name="offer_ids"/>
                         </page>
                     </notebook>
                 </sheet>

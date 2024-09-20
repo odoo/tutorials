@@ -23,6 +23,7 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline"
     )
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     def init(self):
         self.env.cr.execute("""

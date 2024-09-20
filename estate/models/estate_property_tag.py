@@ -11,3 +11,4 @@ class PropertyType(models.Model):
     ]
 
     name = fields.Char("Name", index=True, translate=True, required=True)
+    color = fields.Integer("Color", required=True)

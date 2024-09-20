@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<record id="real_estate_property_action" model="ir.actions.act_window">
-		<field name="name">Properties</field>
-		<field name="res_model">estate.property</field>
-		<field name="view_mode">tree,form</field>
-	</record>
-	<record id="real_estate_property_type_action" model="ir.actions.act_window">
-		<field name="name">Property types</field>
-		<field name="res_model">estate.property.type</field>
-		<field name="view_mode">tree,form</field>
-	</record>
-	<record id="real_estate_property_tag_action" model="ir.actions.act_window">
-		<field name="name">Property tags</field>
-		<field name="res_model">estate.property.tag</field>
-		<field name="view_mode">tree,form</field>
-	</record>
-		<record id="real_estate_property_offer_action" model="ir.actions.act_window">
-		<field name="name">Property offers</field>
-		<field name="res_model">estate.property.offer</field>
-		<field name="view_mode">tree,form</field>
-	</record>
+    <record id="real_estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
+    <record id="real_estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="real_estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="real_estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="real_estate_property_offer_by_active_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property offers</field>
+        <field name="res_model">estate.property.offer</field>
+		<field name="domain">[('property_type_id', '=', active_id)]</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 </openerp>
