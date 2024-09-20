@@ -1,0 +1,20 @@
+{
+    "name": "Installment",
+    "version": "1.0",
+    "summary": "Installment",
+    "description": "Installment",
+    "author": "Akya",
+    "depends": ["base", "sale_subscription", "documents"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/installment_plan_view.xml",
+        "wizard/add_emi_wizard_view.xml",
+        "views/res_config_settings_views.xml",
+        "views/sale_order_view.xml",
+        "views/installment_menus.xml",
+        'data/product_data.xml',
+    ],
+    "installable": True,
+    "application": False,
+    "license": "AGPL-3",
+}

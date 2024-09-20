@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="installment_menu_root" name="Installment" sequence="1"/>
+    <menuitem id="installment_plan_menu" name="Patients" parent="installment_menu_root" sequence="1" action="action_installment_plan"/>
+    <menuitem id="dental_patients_menu" name="Configuration" parent="installment_menu_root" sequence="2" action="action_website_configuration"/>
+</odoo>

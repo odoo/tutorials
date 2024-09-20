@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_view" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="btn oe_stat_button btn-outline-secondary flex-grow-1 flex-lg-grow-0" name="action_upload_documents" type="object">
+                    <i class="o_button_icon fa fa-fw fa-file-pdf-o"></i>
+                    <span class="o_stat_text">Upload Documents</span>
+                </button>
+            </xpath>
+            <xpath expr="//div[@name='so_button_below_order_lines']" position="inside">
+                <button name='installment.action_add_emi_wizard'
+                        string="Add EMI" 
+                        type="action" 
+                        class="btn-primary"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.cron" id="account_analytic_cron_for_invoice">
+        <field name="name">Task Cron</field>
+        <field name="model_id" ref="installment.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">model.create_recurring_invoice()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(datetime.now() + timedelta(minutes=7)).strftime('%Y-%m-%d %H:%M:%S')"/>
+    </record>
+</odoo>
