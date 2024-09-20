@@ -26,6 +26,7 @@
                 decoration-bf="state in ('offer_accepted')" decoration-muted="state in ('sold')">
                 <header>
                     <button string="Add offer" name="%(estate.add_offer_action)d" type="action" />
+                    <button string="Draft" name="add_properties_draft" type="object" />
                 </header>
                 <field name='sequence' widget='handle' />
                 <field name="name" string="Title" />

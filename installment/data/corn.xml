@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record model="ir.cron" id="installemnt_invoice_corn">
+            <field name="name">installemnt.invoice.corn</field>
+            <field name="model_id" ref="model_account_move"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_recurring_create_invoice()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+
+        </record>
+    </data>
+</odoo>

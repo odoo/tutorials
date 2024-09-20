@@ -1,0 +1,9 @@
+<odoo>
+    <menuitem id="installment_root" name="Installment app">
+        <menuitem id="installment_configration_level_menu" name="Configration">
+            <menuitem id="installment_configuration_menu_action"
+                action="action_sale_config_settings" />
+        </menuitem>
+
+    </menuitem>
+</odoo>

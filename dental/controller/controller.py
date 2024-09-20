@@ -11,18 +11,24 @@ class dentalController(Controller):
     def dental_patient(self, **kwarg):
         current_user = request.env.user
         page = int(kwarg.get("page", 1))
-        total_patients = request.env["dental.patient"].sudo().search_count(
-            [("guarantor", "=", current_user.id)]
+        total_patients = (
+            request.env["dental.patient"]
+            .sudo()
+            .search_count([("guarantor", "=", current_user.id)])
         )
 
         pager = request.website.pager(
             url="/home/dental",
             total=total_patients,
             page=page,
-            step=4,
+            step=4
         )
-        patients = request.env["dental.patient"].sudo().search(
-            [("guarantor", "=", current_user.id)], limit=4, offset=pager["offset"]
+        patients = (
+            request.env["dental.patient"]
+            .sudo()
+            .search(
+                [("guarantor", "=", current_user.id)], limit=4, offset=pager["offset"]
+            )
         )
 
         return request.render(

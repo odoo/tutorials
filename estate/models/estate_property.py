@@ -121,3 +121,9 @@ class estate_property(models.Model):
         for record in self:
             if record.state != "new" and record.state != "canceled":
                 raise ValidationError("can't be deleted")
+
+    def add_properties_draft(self):
+
+        for record in self:
+            if record.state == "canceled" or record.state == "offer_received":
+                record.state = "new"

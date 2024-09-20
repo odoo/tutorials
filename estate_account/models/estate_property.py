@@ -29,3 +29,6 @@ class InheritedModel(models.Model):
             }
         self.env["account.move"].sudo().create(invoice_vals)
         return result
+    
+    
+         

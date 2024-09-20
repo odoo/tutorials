@@ -1,0 +1,37 @@
+<odoo>
+
+    <record id="add_emi_form_view" model="ir.ui.view">
+        <field name="name">add.emi.form.view</field>
+        <field name="model">add.emi</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="total_amount" />
+                        <field name="down_payment" />
+                        <field name="remaining_amount" />
+                        <field name="interest" />
+                        <field name="number_monthly_installment" />
+                        <field name="installment_amount" />
+                    </group>
+                    <footer>
+                        <button name="add_Emi_installment" type="object"
+                            string="Add Installment" class="btn-primary" data-hotkey="q" />
+                        <button string="Cancel" class="btn-secondary" special="cancel"
+                            data-hotkey="x" />
+                    </footer>
+
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="add_emi_action" model="ir.actions.act_window">
+        <field name="name">Add EMI</field>
+        <field name="res_model">add.emi</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="add_emi_form_view" />
+        <field name="target">new</field>
+    </record>
+</odoo>
