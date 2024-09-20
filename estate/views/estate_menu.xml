@@ -2,7 +2,7 @@
 <odoo>
     <!-- created the menu items for the model to show inside the module -->
     <menuitem id="test_menu_root" name="Real Estate"
-        web_icon="estate,static/description/realestate.png">
+        web_icon="estate,static/description/icon.png">
         <menuitem id="test_first_level_menu" name="Advertisments">
             <menuitem id="test_model_menu_action" action="estate_property_action" />
         </menuitem>

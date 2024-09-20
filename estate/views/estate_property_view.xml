@@ -5,7 +5,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
 
@@ -121,6 +121,53 @@
             </form>
         </field>
     </record>
+
+    <!-- created the kanban view for the estate.property model and provided the fields to it -->
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="false">
+                <field name="state">
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <strong>
+                                    <field name="name" />
+                                </strong>
+                                <div>
+                                    <span>Expected Price: </span>
+                                    <field name="expected_price" />
+                                </div>
+                                <div>
+                                    <field name="tag_ids" widget="many2many_tags"
+                                        options="{'color_field':'color'}" />
+                                </div>
+                                <div>
+                                    <t t-if="record.state.raw_value == 'offer_received'">
+
+                                        <strong>Best Price: </strong>
+                                        <field name="best_price" />
+                                    </t>
+                                </div>
+                                <div>
+                                    <t t-if="record.state.raw_value == 'offer_accepted'">
+
+                                        <strong>Selling Price: </strong>
+                                        <field name="selling_price" />
+                                    </t>
+                                </div>
+
+                            </div>
+
+                        </t>
+                    </templates>
+                </field>
+            </kanban>
+        </field>
+    </record>
+
     <!-- creatd the search view for the estate.property model -->
     <record id="estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>

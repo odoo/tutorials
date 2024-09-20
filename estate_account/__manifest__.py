@@ -6,7 +6,6 @@
     "author": "sahilpanghal(span)",
     "summary": "Estate Account",
     "description": "Estate Account",
-    "application": True,
     "installable": True,
     "auto_install": True,
     "depends": ["base", "account", "estate"],

@@ -8,6 +8,7 @@
     "description": "Real estate module",
     "installable": True,
     "application": True,
+    "icons": ["static/description/realestate.png"],
     "depends": ["base"],
     "data": [
         "security/ir.model.access.csv",
