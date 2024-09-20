@@ -1,0 +1,39 @@
+<odoo>
+    <record id='form_document_upload' model='ir.ui.view'>
+        <field name="name">Document Upload Request</field>
+        <field name="model">installment.document</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <label for="activity_date_deadline_range"/>
+                            <div class="o_row">
+                                <field name="activity_date_deadline_range"/>
+                                <field name="activity_date_deadline_range_type"/>
+                            </div>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <label for="activity_note"/>
+                    <field name="activity_note" widget="html" />
+
+                </sheet>
+
+                <footer>
+                    <button name="check_wizard_ok" class="btn btn-primary" string="Request" type="object"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_document_upload" model="ir.actions.act_window">
+        <field name="name">Document Request</field>
+        <field name="res_model">installment.document</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="form_document_upload" />
+        <field name="target">new</field>
+    </record>
+</odoo>

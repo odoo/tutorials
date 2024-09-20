@@ -6,6 +6,7 @@
     "depends": ["base", "sale_subscription", "documents", "account"],
     "data": [
         "security/ir.model.access.csv",
+        "wizard/document_wizard.xml",
         "wizard/add_emi_wizard.xml",
         "views/installment_views.xml",
         "views/res_config_settings_views.xml",

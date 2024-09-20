@@ -19,7 +19,9 @@
                 <button name="installment.action_add_emi" class="btn btn-primary" invisible="state not in ['draft']" string="Add EMI" type="action"/>
             </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
-                <button name="action_upload_documents" class="btn btn-primary " icon="fa-file-text" string="Document" type="object"/>
+                <!-- <button name="action_upload_documents" class="btn btn-primary " icon="fa-file-text" string="Document" type="object"/> -->
+                <button name="installment.action_document_upload" class="btn btn-primary " icon="fa-file-text" string="Document" type="action"/>
+
             </xpath>
         </field>
     </record>

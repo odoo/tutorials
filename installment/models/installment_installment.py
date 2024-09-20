@@ -22,21 +22,16 @@ class Installment(models.Model):
                 ("state", "=", "posted"),
                 ("payment_state", "=", "not_paid"),
                 ("penalty_applied", "=", False),
-                (
-                    "invoice_date_due",
-                    "<=",
-                    today - timedelta(days=delay_penalty_process),
-                ),  # filter the invoice which exceed the delay procces day
+                ("invoice_date_due", "<=", today - timedelta(days=delay_penalty_process)),
             ]
         )
-        _logger.info(f" account---->>> {invoices}")
+        _logger.info(" account---->>>")
         for invoice in invoices:
             list = self._calculate_penalty(invoice.amount_total)
             for line in invoice.line_ids:
-                if (
-                    line.product_id.id
-                    == self.env.ref("installment.product_installment").id
-                ):
+                if (line.product_id.id == self.env.ref("installment.product_installment").id):
+                    sale_order = self.env['sale.order'].search([("invoice_ids", "=", invoice.id)])
+                    # print(sale_order.name)
                     values = {
                         "move_type": "out_invoice",
                         "partner_id": invoice.partner_id.id,
@@ -68,14 +63,20 @@ class Installment(models.Model):
                         ],
                     }
                     new_invoice = self.env["account.move"].create(values)
-                    _logger.info(new_invoice.name)
                     new_invoice.action_post()
-                    invoice.write(
-                        {
+                    _logger.info(new_invoice.name)
+                    # Set the invoice with sale order
+                    # print("Invoice set Sale Order")
+                    # print(sale_order.invoice_ids)
+                    # print(new_invoice.line_ids)
+                    sale_order.order_line.invoice_lines = [
+                        Command.set(new_invoice.line_ids.ids)
+                    ]
+                    # print(sale_order.name)
+                    # print(sale_order.invoice_ids)
+                    invoice.write({
                             "penalty_applied": True,
-                        }
-                    )
-
+                        })
                 else:
                     continue
 
@@ -85,12 +86,8 @@ class Installment(models.Model):
         Return the list[ penatly amount, due process day, percentage ]
         """
         config_param = self.env["ir.config_parameter"]
-        delay_penalty_percentage = int(
-            config_param.get_param("installment.delay_penalty_percentage", default=0)
-        )
-        delay_penalty_process = int(
-            config_param.get_param("installment.delay_penalty_process", default=0)
-        )
+        delay_penalty_percentage = int(config_param.get_param("installment.delay_penalty_percentage", default=0))
+        delay_penalty_process = int(config_param.get_param("installment.delay_penalty_process", default=0))
         float_delay_penalty_percentage = delay_penalty_percentage / 100
         return [
             amount_total * float_delay_penalty_percentage,

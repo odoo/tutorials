@@ -17,21 +17,12 @@ class AddEmi(models.TransientModel):
         active_id = self.env.context["active_id"]
         sale_order = self.env["sale.order"].browse(active_id)
         config_param = self.env["ir.config_parameter"]
-        max_duration = float(
-            config_param.get_param("installment.max_duration", default=0.0)
-        )
+        max_duration = float(config_param.get_param("installment.max_duration", default=0.0))
         if max_duration == 0:
             raise UserError("Max Duration is zero.")
-        down_payment_percentage = int(
-            config_param.get_param("installment.down_payment", default=0)
-        )
-        annual_rate = int(
-            config_param.get_param("installment.annual_rate", default=0)
-        )
-
-        administrative_expenses = int(
-            config_param.get_param("installment.administrative_expenses", default=0.0)
-        )
+        down_payment_percentage = int(config_param.get_param("installment.down_payment", default=0))
+        annual_rate = int(config_param.get_param("installment.annual_rate", default=0))
+        administrative_expenses = int(config_param.get_param("installment.administrative_expenses", default=0.0))
         # Total
         total = sale_order.amount_total
         # Down Payment calculated
