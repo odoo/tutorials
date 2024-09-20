@@ -9,8 +9,8 @@
         </div>
 
         <div>
-            <Card title="'Card 1'" content="'Card 1 content'"/>
-            <Card title="'Card 2'" content="'Card 2 content'"/>
+            <Card title="'Card 1'" content="value1"/>
+            <Card title="'Card 2'" content="value2"/>
         </div>
     </t>
 
