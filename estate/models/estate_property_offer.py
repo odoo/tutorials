@@ -65,7 +65,7 @@ class EstatePropertyOffer(models.Model):
 
         property_record = self.env['estate.property'].browse(property_id)
         if property_record.best_price >= price:
-            raise UserError(_(f"The offer price must be higher than {property_record.best_price}"))
+            raise UserError(_('The offer price must be higher than %s', property_record.best_price))
 
         property_record.state = 'offer_received'
 
