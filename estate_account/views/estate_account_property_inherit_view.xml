@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="estate_property_inherit_view_form" model="ir.ui.view">
+            <field name="name">estate.property.inherited.form</field>
+            <field name="model">estate.property</field>
+            <field name="inherit_id" ref="estate.estate_property_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoice" class="oe_stat_button"
+                                type="object"
+                                icon="fa-usd"
+                                invisible="invoice_count == 0"
+                                string="Invoices">
+                            <field String="Invoices" name="invoice_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
