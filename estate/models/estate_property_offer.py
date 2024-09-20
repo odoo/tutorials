@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from datetime import date, timedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -36,12 +37,13 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
-        property_id = self.env['estate.property'].browse(vals['property_id'])
-        if vals['price'] < property_id.best_price:
-            raise UserError("Your offer is too low. You cannot create an offer lower than the best offer.")
-        property_id.state = 'offer_received'
+        for offer in vals:
+            property_id = self.env['estate.property'].browse(offer['property_id'])
+            if offer['price'] < property_id.best_price:
+                raise UserError("Your offer is too low. You cannot create an offer lower than the best offer.")
+            property_id.state = 'offer_received'
         return super().create(vals)
 
     def action_accept_offer(self):
