@@ -100,3 +100,4 @@ class PatientModel(models.Model):
                     ],
                 }
                 invoice_obj.create(invoice_vals)
+

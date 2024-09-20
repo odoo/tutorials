@@ -48,3 +48,4 @@ class EstatePropertyController(http.Controller):
             "estate.property_view_details",
             {"record": record},
         )
+    

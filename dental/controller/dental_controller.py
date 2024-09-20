@@ -14,10 +14,7 @@ class DentalController(http.Controller):
     )
     def show_all_the_data(self, page=1, **kwargs):
         user = request.env.user
-        try:
-            page = int(page)
-        except ValueError:
-            page = 1
+        page = int(page)
         patient = request.env["dental.patients"].sudo()
         patient_per_page = 6
         total_patients = patient.search_count(

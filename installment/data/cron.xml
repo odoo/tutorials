@@ -1,0 +1,11 @@
+<odoo>
+    <record id="ir_cron_auto_tranfer" model="ir.cron">
+        <field name="name">Perform Transfers</field>
+        <field name="model_id" ref="installment.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">model.action_cron_auto_transfer()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+</odoo>

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+installment.access_add_emi_button,access_add_emi_button,installment.model_add_emi_button,base.group_user,1,1,1,1

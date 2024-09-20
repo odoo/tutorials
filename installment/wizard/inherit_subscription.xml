@@ -1,0 +1,24 @@
+<odoo>
+    <record id="add_emi_view" model="ir.ui.view">
+        <field name="name">add.emi.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div//button[@name='action_open_discount_wizard']" position="before">
+                <button string="Add Emi"
+                        name="%(installment.add_emi_button_wizard_action)d"
+                        type="action"
+                        class="btn btn-primary"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button 
+                name="action_upload_documents"
+                class="btn oe_stat_button btn-outline-secondary flex-grow-1 flex-lg-grow-0"  
+                type="object">
+                    <i class="o_button_icon fa fa-fw fa-file-pdf-o"></i>
+                    <span class="o_stat_text">Upload Documents</span>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

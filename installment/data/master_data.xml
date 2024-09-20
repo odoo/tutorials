@@ -1,0 +1,15 @@
+<odoo>
+    <record id="product1" model="product.product">
+        <field name="name">Installment</field>
+        <field name="recurring_invoice">True</field>
+    </record>
+
+    <record id="product2" model="product.product">
+        <field name="name">Down Payment</field>
+    </record>
+
+    <record id="product3" model="product.product">
+        <field name="name">Penalty</field>
+    </record>
+
+</odoo>

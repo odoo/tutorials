@@ -1,0 +1,61 @@
+<odoo>
+    <!-- show installment setting in setting  -->
+    <record id="res_config_settings_view_form_installment" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.insatllment</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app  string="Installment" data-string="Installment" name="Installment">
+                    <block title="Installment Process" name="installment_setting_container">
+                        <setting id="max_duration" string="Max Duration" help="Define Max Duration.">
+                            <field name="max_duration" class="o_light_label" />
+                            <label string="years" for="max_duration"/>
+                        </setting>
+                        <setting id="annual_rate_percentage1" string="Annual Rate Percentage" help="Define Annual Rate Percentage.">
+                            <field name="annual_rate_perc" class="o_light_label" />
+                            <label string="%Per Year" for="annual_rate_perc"/>
+                        </setting>
+                        <setting id="down_payment_percentage" string="Down Payment Percentage" help="Define Down Payment Percentage.">
+                            <field name="down_payment_perc" class="o_light_label"/>
+                            <label string="%From Product Price" for="down_payment_perc"/>
+                        </setting>
+                        <setting id="administ_expenses" string="Adminst" help="Define Administrative expenses Percentage.">
+                            <field name="administ_exp" class="o_light_label"/>
+                            <label string="%From Amount After D.Payment" for="administ_exp"/>
+                        </setting>
+                        <setting id="delay_panalty_perc" string="Delay Penalty percentage" help="Define Delay Penalty Percentage.">
+                            <field name="delay_panalty_perc" class="o_light_label"/>
+                            <label string="%From Monthly Amount" for="delay_panalty_perc"/>
+                        </setting>
+                        <setting id="delay_panalty_process1" string="Delay Penalty Process" help="Define Delay Penalty Process.">
+                            <field name="delay_panalty_process" class="o_light_label"/>
+                            <label string="Days" for="delay_panalty_process"/>
+                        </setting>
+                    </block> 
+                    <block title="Needed Documents" name="installment_setting_container">
+                        <setting id="Nid" >
+                            <field name="nid"/>
+                        </setting>
+                        <setting id="salary_component_id" >
+                            <field name="salary_component"/>
+                        </setting>
+                        <setting id="bank_statement_id" >
+                            <field name="bank_statement"/>
+                        </setting>
+                        <setting id="bank_rate_letter_id" >
+                            <field name="bank_rate_letter"/>
+                        </setting>
+                        <setting id="rental_contract_id" >
+                            <field name="rental_contract"/>
+                        </setting>
+                        <setting id="owner_contract_id" >
+                            <field name="owner_contract"/>
+                        </setting>
+                    </block> 
+                </app> 
+            </xpath>
+        </field>
+    </record> 
+</odoo>
