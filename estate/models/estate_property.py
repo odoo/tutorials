@@ -1,13 +1,13 @@
 import datetime
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    _order = "name, id"
+    _order = "id desc"
 
     _sql_constraints = [
         ('estate_property_check_bedrooms', 'CHECK(bedrooms IS NULL OR bedrooms >= 0)',
@@ -58,6 +58,7 @@ class EstateProperty(models.Model):
         default="new",
         required=True,
         copy=False,
+        readonly=False,
         help="State of the property.\n"
              "new: A new property that has just been listed.\n"
              "offer_received: An offer has been made on the property.\n"
@@ -101,6 +102,12 @@ class EstateProperty(models.Model):
             record.selling_price = next(
                 (offer.price for offer in record.mapped("offer_ids") if offer.status == 'accepted'), 0)
 
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        for record in self:
+            if record.offer_ids and record.state == 'new':
+                record.state = 'offer_received'
+
     @api.depends("offer_ids.partner_id")
     def _compute_buyer(self):
         for record in self:
@@ -119,6 +126,25 @@ class EstateProperty(models.Model):
             ('canceled', 'sold')
         ]
 
+    def update_state(self):
+        """
+        Updates the state of the property based on the list/state of existing offers.
+        """
+        for record in self:
+            # only the buttons change stuff to sold and canceled states
+            if record.state == 'sold' or record.state == 'canceled':
+                continue
+
+            exist_offers = bool(record.offer_ids)
+            exist_accepted_offers = exist_offers and any(offer.status == 'accepted' for offer in record.mapped('offer_ids'))
+
+            if not exist_offers:
+                record.state = 'new'
+            elif not exist_accepted_offers:
+                record.state = 'offer_received'
+            else:
+                record.state = 'offer_accepted'
+
     def action_set_sold(self):
         for record in self:
             record.state = 'sold'
@@ -134,6 +160,6 @@ class EstateProperty(models.Model):
         if dst_state := vals.get('state', None):
             for src_state in self.mapped('state'):
                 if not self._fsm_can_transition(src_state, dst_state):
-                    raise UserError(f"Invalid state transition from {src_state} to {dst_state}")
+                    raise UserError(_("Invalid state transition from %s to %s", src_state, dst_state))
 
         super().write(vals)

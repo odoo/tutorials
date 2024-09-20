@@ -8,6 +8,7 @@ from odoo.tools import float_compare
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offers to estate properties"
+    _order = "price desc"
 
     price = fields.Float("Price")
     partner_id = fields.Many2one("res.partner", "Partner", required=True)
@@ -55,7 +56,7 @@ class EstatePropertyOffer(models.Model):
             if (
                     record.status == 'accepted'
                     and
-                    float_compare(record.price, record.property_id.minimum_sale_price, 5) < 0
+                    float_compare(record.price, record.property_id.minimum_sale_price, 2) < 0
             ):
                 raise ValidationError(
                     "The selling price of a property cannot be less than 90% of the expected sale price"
@@ -63,6 +64,11 @@ class EstatePropertyOffer(models.Model):
 
     def accept_offer(self):
         self.status = 'accepted'
+        for record in self:
+            record.property_id.update_state()
 
     def refuse_offer(self):
         self.status = 'refused'
+        for record in self:
+            record.property_id.update_state()
+
