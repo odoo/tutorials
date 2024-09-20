@@ -11,3 +11,6 @@ open odoo in shell mode: odoo-bin shell
 
             #TODO: investigate the write method to update a recordset instead of a for loop
             #in fields.py def write(self, records, value):
+
+
+python monkey patching: dynamically modify of extend method or class. Allows to change or replace methods attributes or classe (often used in testing)

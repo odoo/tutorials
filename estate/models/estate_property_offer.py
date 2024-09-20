@@ -68,13 +68,14 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.state = "offer_received"
         return True
 
-
-    #TODO: What about batch creation ?
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
 
-        estate_property_record = self.env["estate.property"].browse(vals_list["property_id"])
-        estate_property_record.state = "offer_received"
-        return super().create(vals_list)
+            estate_property_record = self.env["estate.property"].browse(vals["property_id"])
+            if vals["price"] < estate_property_record.best_price:
+                raise UserError(_(f"You cannot add an offer whose price is less than the current best price."))
+            estate_property_record.state = "offer_received"
+            return super().create(vals_list)
 
 

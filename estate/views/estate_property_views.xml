@@ -4,7 +4,8 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Estate" decoration-muted="state=='sold'" decoration-bf="state == 'offer_accepted'" decoration-success="state == 'offer_received' or state == 'offer_accepted'">
+            <tree string="Estate" decoration-muted="state=='sold'" decoration-bf="state == 'offer_accepted'"
+                  decoration-success="state == 'offer_received' or state == 'offer_accepted'">
                 <field name="state"/>
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
@@ -24,7 +25,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="context">{'search_default_available':True}</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
@@ -58,7 +59,8 @@
                             <field name="best_price"/>
                         </group>
                         <group>
-                            <field name="estate_property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="estate_property_tag_ids" widget="many2many_tags"
+                                   options="{'color_field': 'color'}"/>
                         </group>
                     </group>
                     <notebook>
@@ -78,7 +80,8 @@
                         </page>
                         <page string="Offer">
                             <field name="state" invisible="True"/>
-                            <field name="offer_ids" readonly="state == 'offer_accepted' or state == 'sold' or state == 'canceled'"/>
+                            <field name="offer_ids"
+                                   readonly="state == 'offer_accepted' or state == 'sold' or state == 'canceled'"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -99,7 +102,7 @@
             <search string="Estate Property">
                 <field name="name"/>
                 <field name="postcode"/>
-<!--                TODO: Why does the field below not show in the search view ? -->
+                <!--                TODO: Why does the field below not show in the search view ? -->
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area','>=', 'self')]"/>
@@ -115,6 +118,41 @@
             </search>
         </field>
 
+    </record>
+
+    <record id="estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id">
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <b>
+                                <field name="name"/>
+                            </b>
+                            <div>
+                                <span>Expected Price: </span>
+                                <field name="expected_price"/>
+                            </div>
+
+                            <t t-debug="1"/>
+                            <div t-if="record.state.raw_value == 'offer_received'">
+                                <span>Best Price: </span>
+                                <field name="best_price"/>
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
+                                <span>Selling Price: </span>
+                                <field name="selling_price"/>
+                            </div>
+                            <field name="estate_property_tag_ids"/>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
     </record>
 
     <menuitem id="estate_menu_root" name="Estate">
