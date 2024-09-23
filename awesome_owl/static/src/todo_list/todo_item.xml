@@ -7,6 +7,7 @@
                    t-on-change="onChange"/>
             <t t-esc="props.todo.id"/>.
             <t t-esc="props.todo.description"/>
+            <span role="Button" class="fa fa-remove" t-on-click="onRemove"/>
         </div>
     </t>
 </templates>
