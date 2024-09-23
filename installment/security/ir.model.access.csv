@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_installment_add_emi_wizard,access_installment_add_emi_wizard,model_installment_add_emi_wizard,base.group_user,1,1,1,1
+installment.access_add_emi,access_add_emi,installment.model_add_emi,base.group_user,1,1,1,1

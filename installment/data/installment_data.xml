@@ -1,8 +1,0 @@
-<odoo>
-    <record id="product_1" model="product.product">
-        <field name="name">Installment</field>
-    </record>
-    <record id="product_2" model="product.product">
-        <field name="name">EMI</field>
-    </record>
-</odoo>

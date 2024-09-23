@@ -1,54 +1,81 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
-class AddEmiWizard(models.TransientModel):
-    _name = 'installment.add.emi.wizard'
-    _description = 'Add Emi Wizard'
+class AddEMIWizard(models.TransientModel):
+    _name = "add.emi"
+    _description = "Add EMI Wizard"
 
-    totalso_amount = fields.Float(string="Total Amount", readonly=True)
-    down_payment = fields.Float(string="Down Payment", compute="_compute_values")
-    remaining_amount = fields.Float(string="Remaining Amount", compute="_compute_values")
-    remaining_amount2 = fields.Float(string="Remaining Amount2", compute="_compute_values")
-    interest = fields.Float(string="Interest", compute="_compute_values")
-    administrative_expense = fields.Float(string="Administrative Expense", compute="_compute_values")
-    nof_installment = fields.Integer(string="No. of Monthly Installment", compute="_compute_values")
-    installment_amount = fields.Float(string="Installment Amount", compute="_compute_values")
+    total_so_amount = fields.Float(string="Total SO Amount", readonly=True)
+    down_payment = fields.Float(string="Down Payment", readonly=True)
+    remaining_amount = fields.Float(string="Remaining Amount", readonly=True)
+    admin_expenses = fields.Float(string="Admin Expenses", readonly=True)
+    interest = fields.Float(string="Interest", readonly=True)
+    number_of_installments = fields.Integer(
+        string="Number of Monthly Installments", readonly=True
+    )
+    installment_amount = fields.Float(string="Installment Amount", readonly=True)
 
-    def default_get(self, fields_list):
-        defaults = super().default_get(fields_list)
-        defaults['totalso_amount'] = self.env['sale.order'].browse(self.env.context.get('active_id')).amount_total
-        return defaults
+    @api.model
+    def default_get(self, fields):
+        res = super().default_get(fields)
+        IrConfigParam = self.env["ir.config_parameter"]
+        down_payment_percentage = float(
+            IrConfigParam.get_param("installment.down_payment_percentage", default=0)
+        )
+        annual_rate = float(
+            IrConfigParam.get_param("installment.annual_rate", default=0)
+        )
+        admin_expenses_percentage = float(
+            IrConfigParam.get_param("installment.admin_expenses_percentage", default=0)
+        )
+        max_duration = float(IrConfigParam.get_param("installment.max_duration"))
 
-    @api.depends("totalso_amount")
-    def _compute_values(self):
-        for rec in self:
-            down_payment_percent = self.env['ir.config_parameter'].get_param('installment.down_payment_percentage')
-            x = float(rec.totalso_amount) * float(down_payment_percent)
-            rec.down_payment = x / 100
-            rec.remaining_amount = rec.totalso_amount - rec.down_payment
-            administrative_expense_percent = self.env['ir.config_parameter'].get_param('installment.administrative_expense_percentage')
-            y = float(rec.remaining_amount) * float(administrative_expense_percent)
-            rec.administrative_expense = y / 100
-            rec.remaining_amount2 = rec.remaining_amount + rec.administrative_expense
-            annual_rate_percent = self.env['ir.config_parameter'].get_param('installment.annual_rate_percentage')
-            z = float(rec.remaining_amount2) * float(annual_rate_percent)
-            rec.interest = z / 100
-            nof_install = float(self.env['ir.config_parameter'].get_param('installment.max_duration'))
-            rec.nof_installment = nof_install * 12
-            final_amount = rec.remaining_amount2 + rec.interest
-            rec.installment_amount = final_amount / rec.nof_installment
+        sales_order = self.env["sale.order"].browse(self._context.get("active_id"))
+        total_amount = sales_order.amount_total
+        down_payment = total_amount * (down_payment_percentage / 100)
+        remaining_amount = total_amount - down_payment
+        admin_expenses = remaining_amount * (admin_expenses_percentage / 100)
+        remaining_amount_after_expenses = remaining_amount + admin_expenses
+        interest = remaining_amount_after_expenses * (annual_rate / 100) * max_duration
+        final_amount = remaining_amount_after_expenses + interest
+        if max_duration != 0:
+            number_of_installments = max_duration * 12
+        else:
+            number_of_installments = 1
+        installment_amount = final_amount / number_of_installments
 
-    def action_add_emi(self):
-        move_vals = [{
-            'product_id': self.env.ref('installment.product_1').id,
-            'order_id': self.env.context.get('active_id'),
-            'price_unit': self.installment_amount,
-            'product_uom_qty': 1
-        },
-        {
-            'product_id': self.env.ref('installment.product_2').id,
-            'order_id': self.env.context.get('active_id'),
-            'product_uom_qty': 4,
-            'price_unit': -self.installment_amount,
-        }]
-        self.env['sale.order.line'].create(move_vals)
+        res.update(
+            {
+                "total_so_amount": total_amount,
+                "down_payment": down_payment,
+                "remaining_amount": remaining_amount,
+                "admin_expenses": admin_expenses,
+                "interest": interest,
+                "number_of_installments": number_of_installments,
+                "installment_amount": installment_amount,
+            }
+        )
+        return res
+
+    def action_add_installment(self):
+
+        sales_order = self.env["sale.order"].browse(self._context.get("active_id"))
+
+        self.env["sale.order.line"].create(
+            {
+                "name": "Installments",
+                "order_id": sales_order.id,
+                "product_id": self.env.ref("installment.product_installment").id,
+                "product_uom_qty": 1,
+                "price_unit": self.installment_amount,
+            }
+        )
+        self.env["sale.order.line"].create(
+            {
+                "name": "Down Payment",
+                "order_id": sales_order.id,
+                "product_id": self.env.ref("installment.product_down_payment").id,
+                "product_uom_qty": 1,
+                "price_unit": self.down_payment,
+            }
+        )
