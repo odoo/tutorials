@@ -1,7 +1,7 @@
 {
     'name': 'Real estate module',
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base', 'contacts'],
     'author': 'Anton Romanova <contact@antonromanova.com>',
     'category': 'Sales',
     'application': True,
@@ -13,5 +13,6 @@
         'views/estate_form.xml',
         'views/estate_list.xml',
         'views/estate_menus.xml',
+        'views/res_partner_form.xml',
     ],
 }
