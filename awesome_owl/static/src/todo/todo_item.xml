@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo.todo_item">
+        <div class="row align-items-center py-2">
+            <div class="col">
+                <input class="form-check-input me-2" type="checkbox" t-on-change="onToggleDone" t-att-checked="props.todo.done" t-att-id="'todo-checkbox-' + props.todo.id"/>
+                <label class="form-check-label text-decoration-line" t-att-for="'todo-checkbox-' + props.todo.id" t-att-class="{'text-muted text-decoration-line-through': props.todo.done}">
+                    <t t-esc="props.todo.name"/>
+                    <small class="text-muted ms-2">
+                        <br/>
+                        Added: <t t-esc="formattedDateAdded"/><span t-if="formattedDateCompleted">
+                        <br/>
+                        Completed: <t t-esc="formattedDateCompleted"/></span>
+                    </small>
+                </label>
+            </div>
+            <div class="col-md-auto">
+                <button type="button" class="btn btn-outline-danger" t-on-click="onDeleteClicked">
+                    <i class="fa fa-trash"/>
+                </button>
+            </div>
+        </div>
+    </t>
+</templates>

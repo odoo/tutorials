@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo.todo_list">
+            <div class="input-group">
+                <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Add a new task..."
+                    t-model="state.newTodo"
+                    t-on-keyup="addTodoOnEnter"
+                />
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    t-on-click="addTodo">
+                    Add
+                </button>
+            </div>
+        <ul class="list-group">
+            <li t-foreach="state.todos" t-as="todo" t-key="todo.id" class="list-group-item">
+                <TodoItem todo="todo" onDeleteClicked.bind="removeTodoItem"/>
+            </li>
+        </ul>
+    </t>
+</templates>
