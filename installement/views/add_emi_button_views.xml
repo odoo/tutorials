@@ -3,13 +3,25 @@
     <record id="add_emi_button_views_form" model="ir.ui.view">
         <field name="name">sale.order.form</field>
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_primary_form_view" />
         <field name="arch" type="xml">
-            <xpath expr="//div[@name='so_button_below_order_lines']" position='inside'>
+            <xpath expr="//button[@name='action_open_discount_wizard']" position='before'>
                 <button name="%(installement.add_emi_button_wizard_action)d"
                     type="action"
                     string="Add Emi"
                     class="btn btn-primary" />
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button
+                    name="document_upload_installement"
+                    class="oe_stat_button"
+                    icon="fa-file-text"
+                    type="object"
+                    widget="statinfo"
+                    string="Document"
+                >
+                </button>
             </xpath>
         </field>
     </record>

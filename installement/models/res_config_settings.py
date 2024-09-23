@@ -5,17 +5,17 @@ class ResConfigSettings(models.TransientModel):
 
     _inherit = "res.config.settings"
 
-    max_duration = fields.Float(
+    max_duration = fields.Integer(
         string="Max Duration", config_parameter='installement.max_duration')
-    annual_rate_percentage = fields.Float(
+    annual_rate_percentage = fields.Integer(
         string='Annual Rate Percentage', config_parameter='installement.annual_rate_percentage')
-    down_payment_percentage = fields.Float(
+    down_payment_percentage = fields.Integer(
         string="Down Payment Percentage", config_parameter='installement.down_payment_percentage')
-    administrative_expenses_percentage = fields.Float(
+    administrative_expenses_percentage = fields.Integer(
         string='Administrative Expenses Percentage', config_parameter='installement.administrative_expenses_percentage')
-    delay_penalty_percentage = fields.Float(
+    delay_penalty_percentage = fields.Integer(
         string="Delay Penalty Percentage", config_parameter='installement.delay_penalty_percentage')
-    delay_penalty_process = fields.Float(
+    delay_penalty_process = fields.Integer(
         string='Delay Penalty Process', config_parameter='installement.delay_penalty_process')
 
     nid = fields.Boolean("Nid")

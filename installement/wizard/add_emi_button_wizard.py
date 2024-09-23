@@ -25,15 +25,16 @@ class AddEmiButtonWizard(models.TransientModel):
     @api.depends("total_sale_amount")
     def _compute_values(self):
         for rec in self:
+            # fetching down_payment_percent from setting and calulating down payment
             down_payment_percent = self.env['ir.config_parameter'].get_param(
                 'installement.down_payment_percentage')
             x = float(rec.total_sale_amount) * float(down_payment_percent)
             rec.down_payment = x / 100
 
-            # remaining amount
+            # calculating remaining amount
             rec.remaining_amount = rec.total_sale_amount - rec.down_payment
 
-            # admin expense
+            # fetching administrative_expenses_percentage from setting and calulating admin expense
             administrative_expenses_percentage = self.env['ir.config_parameter'].get_param(
                 'installement.administrative_expenses_percentage')
             y = float(rec.remaining_amount) * \
@@ -43,6 +44,7 @@ class AddEmiButtonWizard(models.TransientModel):
             # toal remaining amount
             rec.remaining_amount_2 = rec.remaining_amount + rec.admin_expense
 
+            # fetching annual rate percentage from setting and calulating interest
             annual_rate_percentage = self.env['ir.config_parameter'].get_param(
                 'installement.annual_rate_percentage')
             z = float(rec.remaining_amount_2) * float(annual_rate_percentage)
@@ -52,6 +54,7 @@ class AddEmiButtonWizard(models.TransientModel):
                 'installement.max_duration'))
             rec.number_of_monthly_installement = float(max_dur) * 12
 
+            # calculating installement amount
             rec.installement_amount = (
                 rec.remaining_amount_2 + rec.interest) / rec.number_of_monthly_installement
 
@@ -77,3 +80,8 @@ class AddEmiButtonWizard(models.TransientModel):
                     'price_unit': self.installement_amount,
                 }
             ])
+
+            self.env['sale.order'].browse(
+                self.env.context.get('active_id')).is_installable = True
+            self.env['sale.order'].browse(self.env.context.get(
+                'active_id')).installement_amount = self.installement_amount

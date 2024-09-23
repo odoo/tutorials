@@ -1,7 +1,7 @@
 {
     'name': 'Installement App',
     'version': '17.0',
-    'depends': ['base', 'sale'],
+    'depends': ['base', 'sale_subscription'],
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
@@ -9,6 +9,7 @@
         'views/add_emi_button_views.xml',
         'views/res_config_settings_views.xml',
         'data/data.xml',
+        'data/penalty_installement.xml'
     ],
     'installable': True,
     'application': True,
