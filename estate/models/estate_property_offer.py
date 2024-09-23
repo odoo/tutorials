@@ -1,7 +1,7 @@
 import datetime
 
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools import float_compare
 
 
@@ -73,3 +73,8 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.property_id.update_state()
 
+    @api.model
+    def create(self, vals):
+        if vals['price'] < self.env["estate.property"].browse(vals["property_id"]).best_offer:
+            raise UserError(_("It's not possible to create an offer with a lower price than an existing offer"))
+        return super().create(vals)

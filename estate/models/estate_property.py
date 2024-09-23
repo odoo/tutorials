@@ -104,9 +104,7 @@ class EstateProperty(models.Model):
 
     @api.onchange("offer_ids")
     def _onchange_offer_ids(self):
-        for record in self:
-            if record.offer_ids and record.state == 'new':
-                record.state = 'offer_received'
+        self.update_state()
 
     @api.depends("offer_ids.partner_id")
     def _compute_buyer(self):
@@ -136,7 +134,8 @@ class EstateProperty(models.Model):
                 continue
 
             exist_offers = bool(record.offer_ids)
-            exist_accepted_offers = exist_offers and any(offer.status == 'accepted' for offer in record.mapped('offer_ids'))
+            exist_accepted_offers = exist_offers and any(
+                offer.status == 'accepted' for offer in record.mapped('offer_ids'))
 
             if not exist_offers:
                 record.state = 'new'
@@ -155,6 +154,10 @@ class EstateProperty(models.Model):
             record.state = 'canceled'
         return True
 
+    def is_deletable(self):
+        return all(record.state in ('new', 'canceled') for record in self)
+
+    @api.model
     def write(self, vals):
         # validate fsm state transition
         if dst_state := vals.get('state', None):
@@ -162,4 +165,9 @@ class EstateProperty(models.Model):
                 if not self._fsm_can_transition(src_state, dst_state):
                     raise UserError(_("Invalid state transition from %s to %s", src_state, dst_state))
 
-        super().write(vals)
+        return super().write(vals)
+
+    @api.ondelete(at_uninstall=False)
+    def _check_if_deletable(self):
+        if not self.is_deletable():
+            raise UserError("Cannot delete record")
