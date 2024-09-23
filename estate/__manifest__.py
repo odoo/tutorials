@@ -12,11 +12,15 @@
     "depends": ["base"],
     "data": [
         "security/ir.model.access.csv",
+        "data/estate.property.type.csv",
         "views/estate_property_view.xml",
         "views/estate_property_offer_view.xml",
         "views/estate_property_type_view.xml",
         "views/estate_property_tag_view.xml",
         "views/estate_menu.xml",
         "views/res_users.xml",
+    ],
+    "demo": [
+        "demo/estate_property_demo.xml",
     ],
 }
