@@ -1,0 +1,9 @@
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="room_availability_menu"
+        name="Availability"
+        action="dubbing_rooms.room_availability_action"
+        parent="room.room_menu_root"
+        sequence="1"/>
+</odoo> -->

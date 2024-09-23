@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="room_availability_view_list" model="ir.ui.view">
+        <field name="name">room.availability.list</field>
+        <field name="model">room.availability</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="start_time"></field>
+                <field name="end_time"></field>
+            </tree>
+        </field>
+    </record>
+</odoo>

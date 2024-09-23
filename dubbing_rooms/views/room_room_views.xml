@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="room_room_view_form" model="ir.ui.view">
+        <field name="name">room.room.form.inherit</field>
+        <field name="model">room.room</field>
+        <field name="inherit_id" ref="room.room_room_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//page[@name='Appearance']" position="after">
+                <page string="Availability">
+                    <group>
+                        <field name="availability_ids"></field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

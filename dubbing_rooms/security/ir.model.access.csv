@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+dubbing_rooms.access_room_availability,access_room_availability,dubbing_rooms.model_room_availability,base.group_user,1,1,1,1
