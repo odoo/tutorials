@@ -43,13 +43,15 @@ class ActionOpenEmiWizard(models.TransientModel):
             'product_id': self.env.ref('installments.installment_product').id,
             'order_id': self.env.context.get('active_id'),
             'name': "Installment",
-            'product_uom_qty' : 1,
+            'product_uom_qty': 1,
             'price_unit': self.installment_amount
         }, {
             'product_id': self.env.ref('installments.emi_product').id,
             'order_id': self.env.context.get('active_id'),
             'name': "Monthly EMI",
-            'product_uom_qty' : 4,
+            'product_uom_qty': 4,
             'price_unit': -(self.installment_amount)
         }]
         self.env['sale.order.line'].create(move_vals)
+        self.env['sale.order'].browse(self.env.context.get('active_id')).is_installable = True
+        self.env['sale.order'].browse(self.env.context.get('active_id')).installment_amount = self.installment_amount

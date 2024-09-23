@@ -7,4 +7,8 @@
     <record id="emi_product" model="product.product">
         <field name="name">Monthly EMI</field>
     </record>
+
+    <record id="product3" model="product.product">
+        <field name="name">Fine</field>
+    </record>
 </odoo>
