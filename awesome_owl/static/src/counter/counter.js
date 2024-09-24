@@ -9,24 +9,23 @@ export class Counter extends Component {
             type: Function,
             optional: true,
         },
+        counter: Object
     }
 
     setup() {
-        this.counter = useState({ value: 0 });
     };
 
     updateValue(newValue) {
-        let oldValue = this.counter.value;
-        this.counter.value = newValue;
+        this.props.counter.value = newValue;
         if (this.props.onChange) {
-            this.props.onChange(this, oldValue);
+            this.props.onChange();
         }
     }
 
     increment() {
-        this.updateValue(this.counter.value + 1);
+        this.updateValue(this.props.counter.value + 1);
     }
     decrement() {
-        this.updateValue(this.counter.value - 1);
+        this.updateValue(this.props.counter.value - 1);
     }
 }

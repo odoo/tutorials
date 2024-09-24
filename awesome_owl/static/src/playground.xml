@@ -4,23 +4,20 @@
     <t t-name="awesome_owl.playground">
 
         <div class="container my-4">
-            <h3 class="text-center mt-3">The sum of both counters is <t t-esc="sum.value"/></h3>
+            <h3 class="text-center mt-3">The sum of both counters is <t t-esc="state.sum"/></h3>
             <hr/>
             <Card title="'Here\'s a todo list with counters!'">
 
                 <TodoList/>
                 <div class="row mt-4">
-                    <div class="col-md-6 col-12 mb-3">
-                        <Card title="'Here\'s a counter'">
-                            <Counter onChange.bind="handleCounterChange"/>
-                        </Card>
-                    </div>
 
-                    <div class="col-md-6 col-12 mb-3">
-                        <Card title="'Here\'s a counter'">
-                            <Counter onChange.bind="handleCounterChange"/>
-                        </Card>
-                    </div>
+                    <t t-foreach="Object.entries(state.counters)" t-as="pair" t-key="pair[0]">
+                        <div class="col-md-6 col-12 mb-3">
+                            <Card title="'Counter #' + pair[0]">
+                                <Counter t-props="{'counter': pair[1], 'onChange': updateCounterSum.bind(this)}"/>
+                            </Card>
+                        </div>
+                    </t>
                 </div>
             </Card>
         </div>

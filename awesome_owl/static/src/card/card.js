@@ -10,4 +10,14 @@ export class Card extends Component {
             type: Object
         }
     }
+
+    setup() {
+        this.state = useState({
+            collapsed: false
+        });
+    }
+
+    toggleCollapse() {
+        this.state.collapsed = !this.state.collapsed;
+    }
 }

@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.card.card">
-        <div class="card-body">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">
+        <div class="card mb-3">
+            <div class="card-header">
+                <div class="row">
+                    <h5 class="card-title col">
                         <t t-esc="props.title"/>
                     </h5>
+                    <button type="button" class="btn btn-light col-sm-auto" t-on-click="toggleCollapse">
+                        <i t-att-class="'fa fa-chevron-' + (state.collapsed ? 'down' : 'up')"/>
+                    </button>
                 </div>
-                <div class="card-body">
-                  <div class="card-text">
-                    <t t-slot="default"/>
+            </div>
+            <div class="card-body">
+                <div t-att-class="{'collapse': state.collapsed}">
+                    <div class="card-text">
+                        <t t-slot="default"/>
+                    </div>
                 </div>
-              </div>
             </div>
         </div>
     </t>
