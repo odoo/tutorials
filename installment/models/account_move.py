@@ -12,9 +12,7 @@ class accountMove(models.Model):
 
         today = fields.Date.today()
         delay_penalty_process = float(
-            self.env["ir.config_parameter"]
-            .sudo()
-            .get_param("installment.delay_penalty_process")
+            self.env["ir.config_parameter"].get_param("installment.delay_penalty_process")
         )
 
         invoices = self.env["account.move"].search(
@@ -68,7 +66,7 @@ class accountMove(models.Model):
                             ],
                         }
                         new_invoice = (
-                            self.env["account.move"].sudo().create(invoice_vals)
+                            self.env["account.move"].create(invoice_vals)
                         )
                         new_invoice.action_post()
                         invoice.write({"applied_penalty": True})
@@ -76,9 +74,7 @@ class accountMove(models.Model):
     def calculate_penalty_amount(self, invoice):
 
         down_penalty_percentage = float(
-            self.env["ir.config_parameter"]
-            .sudo()
-            .get_param("installment.down_penalty_percentage")
+            self.env["ir.config_parameter"].get_param("installment.down_penalty_percentage")
         )
         penalty_amount = (invoice.amount_total * down_penalty_percentage) / 100
         return penalty_amount

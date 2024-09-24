@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 installment.access_add_emi,access_add_emi,installment.model_add_emi,base.group_user,1,1,1,1
-installment.access_documents_request,access_documents_request,installment.model_documents_request,base.group_user,1,1,1,1

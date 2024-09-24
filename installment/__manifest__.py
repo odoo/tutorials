@@ -10,7 +10,6 @@
         "security/ir.model.access.csv",
         "views/installment_setting_view.xml",
         "wizard/add_emi_view.xml",
-        "wizard/documents_request_view.xml",
         "views/installment_menu.xml",
         "views/sales_order_view.xml",
         "data/product_data.xml",

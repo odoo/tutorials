@@ -24,22 +24,16 @@ class addEMI(models.TransientModel):
         order_line = sale_order.order_line
 
         max_duration = float(
-            self.env["ir.config_parameter"].sudo().get_param("installment.max_duration")
+            self.env["ir.config_parameter"].get_param("installment.max_duration")
         )
         down_payment_rate = float(
-            self.env["ir.config_parameter"]
-            .sudo()
-            .get_param("installment.down_payment_percentage")
+            self.env["ir.config_parameter"].get_param("installment.down_payment_percentage")
         )
         annual_percentage_rate = float(
-            self.env["ir.config_parameter"]
-            .sudo()
-            .get_param("installment.annual_percentage_rate")
+            self.env["ir.config_parameter"].get_param("installment.annual_percentage_rate")
         )
         administrative_expenses_percentage = float(
-            self.env["ir.config_parameter"]
-            .sudo()
-            .get_param("installment.administrative_expenses_percentage")
+            self.env["ir.config_parameter"].get_param("installment.administrative_expenses_percentage")
         )
 
         if max_duration == 0:

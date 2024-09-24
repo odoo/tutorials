@@ -8,12 +8,14 @@
                 <button name="%(installment.add_emi_action)s" type="action" string="Add EMI" />
             </xpath>
 
-            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
-                <button name="%(action_upload_documents)s" type="action" string="Add Documents"
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_upload_documents_from_sale_order" type="object" string="Add Documents"
                     class="oe_stat_button"
-                    icon="fa-file-pdf-o" />
+                    icon="fa-file-pdf-o" ></button>
             </xpath>
         </field>
     </record>
+
+
 
 </odoo>
