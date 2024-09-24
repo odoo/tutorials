@@ -12,12 +12,12 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
+        this.statistics = useService("statistics_service");
         this.display = {
             controlPanel: {}
         }
-        this.rpc = useService("rpc");
         onWillStart(async () => {
-            this.stats = await this.rpc("/awesome_dashboard/statistics");
+            this.stats = await this.statistics.loadStatistics();
         })
     }
 
