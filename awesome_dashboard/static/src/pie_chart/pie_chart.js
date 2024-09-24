@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import {loadJS} from "@web/core/assets";
-import {Component, onMounted, onWillStart, onWillUnmount, useRef} from "@odoo/owl";
+import {Component, onMounted, onWillPatch, onWillStart, onWillUnmount, useRef} from "@odoo/owl";
 
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
@@ -16,6 +16,8 @@ export class PieChart extends Component {
         onWillStart(() => loadJS(["/web/static/lib/Chart/Chart.js"]));
         onMounted(this.renderChart);
         onWillUnmount(this.onWillUnmount);
+
+        onWillPatch(this.renderChart)
     }
 
     onWillUnmount() {
@@ -23,6 +25,7 @@ export class PieChart extends Component {
             this.chart.destroy();
         }
     }
+
 
     renderChart() {
         if (this.chart) {
