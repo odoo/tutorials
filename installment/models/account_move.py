@@ -5,7 +5,7 @@ from odoo import Command, models, fields, api
 class accountMove(models.Model):
     _inherit = "account.move"
 
-    applied_penalty = fields.Boolean(string="Applied Penalty", default=False)
+    penalty_applied = fields.Boolean(string="Applied Penalty", default=False)
 
     @api.model
     def create_recurring_invoice(self):
@@ -13,7 +13,6 @@ class accountMove(models.Model):
         today = fields.Date.today()
         delay_penalty_process = float(
             self.env["ir.config_parameter"]
-            .sudo()
             .get_param("installment.delay_penalty_process")
         )
 
@@ -22,7 +21,7 @@ class accountMove(models.Model):
                 ("state", "=", "posted"),
                 ("payment_state", "=", "not_paid"),
                 ("move_type", "=", "out_invoice"),
-                ("applied_penalty", "=", False),
+                ("penalty_applied", "=", False),
             ]
         )
         for invoice in invoices:
@@ -56,16 +55,15 @@ class accountMove(models.Model):
                             ],
                         }
                         new_invoice = (
-                            self.env["account.move"].sudo().create(invoice_vals)
+                            self.env["account.move"].create(invoice_vals)
                         )
                         new_invoice.action_post()
-                        invoice.write({"applied_penalty": True})
+                        invoice.write({"penalty_applied": True})
 
     def calculate_penalty_amount(self, invoice):
 
         delay_penalty_percentage = float(
             self.env["ir.config_parameter"]
-            .sudo()
             .get_param("installment.delay_penalty_percentage")
         )
 

@@ -1,0 +1,31 @@
+<odoo>
+    <!-- Warranty Configuration Tree View -->
+    <record id="view_warranty_config_tree" model="ir.ui.view">
+        <field name="name">warranty.config.tree</field>
+        <field name="model">warranty.config</field>
+        <field name="arch" type="xml">
+            <tree string="Warranty Configuration" editable="bottom">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="period" />
+                <field name="percentage"/>
+            </tree>
+        </field>
+    </record>
+    <!-- Warranty Configuration Action -->
+    <record id="action_warranty_config" model="ir.actions.act_window">
+        <field name="name">Warranty Configuration</field>
+        <field name="res_model">warranty.config</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_warranty_config_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configure Warranty Plans here.
+            </p>
+        </field>
+    </record>
+    <!-- Add the Menu Item -->
+    <menuitem id="menu_warranty_config" name="Warranty Configuration"
+              parent="sale.menu_sale_config"
+              action="action_warranty_config"/>
+</odoo>

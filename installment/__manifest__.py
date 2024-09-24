@@ -15,6 +15,6 @@
         'data/product_data.xml',
     ],
     "installable": True,
-    "application": False,
+    "application": True,
     "license": "AGPL-3",
 }
