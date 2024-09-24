@@ -38,6 +38,10 @@
                         <t t-esc="stats.average_time"/>
                     </div>
                 </DashboardItem>
+                <DashboardItem size="2">
+                    Shirt orders by size
+                    <PieChart data="stats.orders_by_size" label="'Shirt orders by size'"/>
+                </DashboardItem>
             </div>
         </Layout>
     </t>
