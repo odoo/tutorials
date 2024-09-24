@@ -1,4 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 installment.access_installment_installment,access_installment_installment,installment.model_installment_installment,base.group_user,1,1,1,1
 installment.access_add_emi,access_add_emi,installment.model_add_emi,base.group_user,1,1,1,1
-installment.access_installment_document,access_installment_document,installment.model_installment_document,base.group_user,1,1,1,1

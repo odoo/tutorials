@@ -2,35 +2,36 @@ from datetime import timedelta
 import logging
 from odoo import api, Command, models, fields
 
-_logger = logging.getLogger(__name__)
-
 
 class Installment(models.Model):
     _name = "installment.installment"
 
     @api.model
     def _cron_create_invoice(self):
-        _logger.info(" account cron---->")
         today = fields.Date.today()
         config_param = self.env["ir.config_parameter"]
         delay_penalty_process = int(
-            config_param.get_param("installment.delay_penalty_process", default=0)
+            config_param.get_param(
+                "installment.delay_penalty_process", default=0)
         )
-        invoices = self.env["account.move"].search(
-            [
-                ("move_type", "=", "out_invoice"),
-                ("state", "=", "posted"),
-                ("payment_state", "=", "not_paid"),
-                ("penalty_applied", "=", False),
-                ("invoice_date_due", "<=", today - timedelta(days=delay_penalty_process)),
-            ]
-        )
-        _logger.info(" account---->>>")
+        invoices = self.env["account.move"].search([
+            ("move_type", "=", "out_invoice"),
+            ("state", "=", "posted"),
+            ("payment_state", "=", "not_paid"),
+            ("penalty_applied", "=", False),
+            (
+                "invoice_date_due",
+                "<=",
+                today - timedelta(days=delay_penalty_process),
+            ),
+        ])
         for invoice in invoices:
             list = self._calculate_penalty(invoice.amount_total)
             for line in invoice.line_ids:
                 if (line.product_id.id == self.env.ref("installment.product_installment").id):
-                    sale_order = self.env['sale.order'].search([("invoice_ids", "=", invoice.id)])
+                    sale_order = self.env["sale.order"].search(
+                        [("invoice_ids", "=", invoice.id)]
+                    )
                     # print(sale_order.name)
                     values = {
                         "move_type": "out_invoice",
@@ -64,19 +65,14 @@ class Installment(models.Model):
                     }
                     new_invoice = self.env["account.move"].create(values)
                     new_invoice.action_post()
-                    _logger.info(new_invoice.name)
-                    # Set the invoice with sale order
-                    # print("Invoice set Sale Order")
-                    # print(sale_order.invoice_ids)
-                    # print(new_invoice.line_ids)
                     sale_order.order_line.invoice_lines = [
                         Command.set(new_invoice.line_ids.ids)
                     ]
-                    # print(sale_order.name)
-                    # print(sale_order.invoice_ids)
-                    invoice.write({
+                    invoice.write(
+                        {
                             "penalty_applied": True,
-                        })
+                        }
+                    )
                 else:
                     continue
 
@@ -86,8 +82,14 @@ class Installment(models.Model):
         Return the list[ penatly amount, due process day, percentage ]
         """
         config_param = self.env["ir.config_parameter"]
-        delay_penalty_percentage = int(config_param.get_param("installment.delay_penalty_percentage", default=0))
-        delay_penalty_process = int(config_param.get_param("installment.delay_penalty_process", default=0))
+        delay_penalty_percentage = int(
+            config_param.get_param(
+                "installment.delay_penalty_percentage", default=0)
+        )
+        delay_penalty_process = int(
+            config_param.get_param(
+                "installment.delay_penalty_process", default=0)
+        )
         float_delay_penalty_percentage = delay_penalty_percentage / 100
         return [
             amount_total * float_delay_penalty_percentage,

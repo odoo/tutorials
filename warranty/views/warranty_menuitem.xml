@@ -1,0 +1,4 @@
+<odoo>
+  <menuitem id="warranty_root_menu" name="Warranty" action="warranty.action_warranty"/>
+  <menuitem id="warranty_submenu" name="Warranty Configuration" parent="sale.menu_sale_config" action="warranty.action_warranty" />
+</odoo>

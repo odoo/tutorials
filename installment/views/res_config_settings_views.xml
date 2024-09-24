@@ -11,22 +11,27 @@
                             <field name="max_duration" style="width: 40%; min-width: 4rem;"/>
                             <span> years</span>
                         </setting>
+
                         <setting string="Anual Rate Percentage" help="Define Annual Rate Percentage">
                             <field name="annual_rate" style="width: 40%; min-width: 4rem;"/>
                             <span> %Per Years</span>
                         </setting>
+
                         <setting string="Down Payment" help=" Define Down Payment Percentage">
                             <field name="down_payment" style="width: 40%; min-width: 4rem;"/>
                             <span> %From Product Price</span>
                         </setting>
+                        
                         <setting string="Administrative Expenses Percentage" help="Define Administrative Expense Percentage">
                             <field name="administrative_expenses" style="width: 40%; min-width: 4rem;"/>
                             <span>%From Amount After D.Payment</span>
                         </setting>
+
                         <setting string="Delay Penalty Percentage" help="Define Delay Penalty Percentage">
                             <field name="delay_penalty_percentage" style="width: 40%; min-width: 4rem;"/>
                             <span>%From Monthly Amount</span>
                         </setting>
+
                         <setting string="Delay Penalty Process" help="Define Delay Penalty Process">
                             <field name="delay_penalty_process" style="width: 40%; min-width: 4rem;"/>
                             <span>Days</span>
@@ -35,22 +40,28 @@
                             </div>
                         </setting>
                     </block>
+
                     <block title="Needed Documents" name="needed_document">
                         <setting string="Nid">
                             <field name="nid"/>
                         </setting>
+
                         <setting string="Salary Components">
                             <field name="salary_components"/>
                         </setting>
+
                         <setting string="Bank Statement">
                             <field name="bank_statement"/>
                         </setting>
+
                         <setting string="Bank Rate Letter">
                             <field name="bank_rate_letter"/>
                         </setting>
+
                         <setting string="Rental Contract">
                             <field name="rental_contract"/>
                         </setting>
+
                         <setting string="Ownership Contract">
                             <field name="ownership_contract"/>
                         </setting>

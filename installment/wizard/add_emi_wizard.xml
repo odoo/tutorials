@@ -12,6 +12,7 @@
                     <field name="number_monthly_installment"/>
                     <field name="installement_amount"/>
                 </group>
+                
                 <footer>
                     <button name="add_installment" class="btn btn-primary" string="Add Installment" type="object"/>
                 </footer>
