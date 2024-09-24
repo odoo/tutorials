@@ -2,7 +2,69 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <t t-set-slot="control-panel-always-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"/>
+                </button>
+            </t>
+            <div class="text-center py-2">
+                <div class="spinner-border " role="status" t-if="statisticsState.refreshing">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="box-parent d-flex flex-wrap justify-content-center gap-2 p-2" t-if="statisticsState.dataAvailable">
+                <div class="box">
+                    <DashboardItem title="'Avg. T-Shirts/Order'">
+                        <i class="fa fa-shopping-bag fa-3x text-primary mb-3"/>
+                        <p class="display-6 fw-bold mb-0">
+                            <t t-esc="statisticsState.average_quantity"/>
+                        </p>
+                    </DashboardItem>
+                </div>
+                <div class="box">
+                    <DashboardItem title="'Avg. Order Time'">
+                        <i class="fa fa-hourglass-half fa-3x text-primary mb-3"/>
+                        <p class="display-6 fw-bold mb-0">
+                            <t t-esc="statisticsState.average_time"/>
+                        </p>
+                    </DashboardItem>
+                </div>
+                <div class="box">
+                    <DashboardItem title="'New orders'">
+                        <i class="fa fa-cart-plus fa-3x text-primary mb-3"/>
+                        <p class="display-6 fw-bold mb-0">
+                            <t t-esc="statisticsState.nb_new_orders"/>
+                        </p>
+                    </DashboardItem>
+                </div>
+                <div class="box">
+                    <DashboardItem title="'Cancelled orders'">
+                        <i class="fa fa-ban fa-3x text-primary mb-3"/>
+                        <p class="display-6 fw-bold mb-0">
+                            <t t-esc="statisticsState.nb_cancelled_orders"/>
+                        </p>
+                    </DashboardItem>
+                </div>
+                <div class="box">
+                    <DashboardItem title="'Total orders'">
+                        <i class="fa fa-dollar fa-3x text-primary mb-3"/>
+                        <p class="display-6 fw-bold mb-0">
+                            <t t-esc="statisticsState.total_amount"/>
+                        </p>
+                    </DashboardItem>
+                </div>
+                <div class="box">
+                    <DashboardItem title="'Pie chart'">
+                        <canvas id="awesome_dashboard_chart" width="400" height="400"/>
+                    </DashboardItem>
+                </div>
+            </div>
+        </Layout>
     </t>
 
 </templates>

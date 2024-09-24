@@ -2,6 +2,7 @@
 
 import logging
 import random
+import time
 
 from odoo import http
 from odoo.http import request
@@ -20,6 +21,8 @@ class AwesomeDashboard(http.Controller):
             'nb_new_orders': the number of new orders, this month
             'total_amount': the total amount of orders, this month
         """
+
+        time.sleep(1)  # Simulate a long computation
 
         return {
             'average_quantity': random.randint(4, 12),

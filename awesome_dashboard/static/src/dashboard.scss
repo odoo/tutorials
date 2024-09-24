@@ -1,0 +1,28 @@
+$text: #1a0d05;
+$background: #fcf5f3;
+$primary: #d76228;
+$secondary: #82d0e8;
+$accent: #6c57e0;
+
+
+.o_dashboard {
+  background-color: $background;
+}
+
+html {
+  color: $text;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Lucida Sans", "Noto Sans", sans-serif;
+}
+
+.box-parent {
+  align-items: stretch;
+}
+
+.box, .box-no-stretch {
+  flex: 1 1 50px;
+  min-height: 100px;
+}
+
+.box-no-stretch {
+  flex-grow: 0;
+}
