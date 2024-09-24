@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import {registry} from "@web/core/registry";
-import {memoize} from "@web/core/utils/functions";
+import {reactive} from "@odoo/owl";
 
 
 export async function loadStatistics(rpc) {
@@ -10,11 +10,21 @@ export async function loadStatistics(rpc) {
 
 export const statisticsService = {
     dependencies: ["rpc"],
-    async: ["loadStatistics"],
     start(env, {rpc}) {
-        return {
-            loadStatistics: memoize(() => loadStatistics(rpc)),
-        };
+        const statistics = reactive({});
+
+        async function loadData() {
+            const updates = await loadStatistics(rpc);
+            Object.assign(statistics, updates);
+        }
+
+
+        loadData().then(() => {
+            setInterval(loadData, 10 * 60 * 1000);
+        });
+
+
+        return statistics;
     }
 }
 
