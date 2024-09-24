@@ -9,10 +9,34 @@
             </t>
             <div class="d-flex flex-wrap">
                 <DashboardItem>
-                    content 1
+                    Number of new orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="stats.nb_new_orders"/>
+                    </div>
                 </DashboardItem>
-                <DashboardItem size="2">
-                    content 2
+                <DashboardItem>
+                    Total amount of new orders
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="stats.total_amount"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Average amount of t-shirt by order this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="stats.average_quantity"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of cancelled orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="stats.nb_cancelled_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="stats.average_time"/>
+                    </div>
                 </DashboardItem>
             </div>
         </Layout>
