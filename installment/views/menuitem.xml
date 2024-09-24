@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <odoo>
-	<menuitem id="action_installment_config_settings" name="Installment">
+	<menuitem id="action_installment_config_settings" name="Installment"/>
 </odoo>

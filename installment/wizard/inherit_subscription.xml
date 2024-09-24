@@ -1,6 +1,7 @@
 <odoo>
     <record id="add_emi_view" model="ir.ui.view">
         <field name="name">add.emi.view</field>
+        <field name="mode">extension</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">

@@ -4,13 +4,12 @@
     <!-- show all patient -->
     <template id="dental_patient_view_controller">
         <t t-call="website.layout">
-            <div style="container" class="mb-5 container">
-                <nav class="navbar navbar-expand-lg flex-wrap mb-4 p-0 o_portal_navbar ">
-                    <ol class="o_portal_submenu breadcrumb mb-0 flex-grow-1 px-0">
+            <div class="container mb-5">
+                <nav class="navbar navbar-expand-lg flex-wrap mb-4 p-0">
+                    <ol class="breadcrumb mb-0 flex-grow-1 px-0">
                         <li class="breadcrumb-item active">
                             <a t-attf-href="/my/home" aria-label="Home">
-                                <i class="fa fa-home">
-                                </i>
+                                <i class="fa fa-home"></i>
                             </a>
                         </li>
                     </ol>
@@ -18,18 +17,18 @@
                 <h1 class="text-center mt-5">Dental</h1>
                 <div t-if="patients">
                     <div class="d-flex justify-content-start flex-wrap">
-                        <div t-foreach="patients" t-as="record"
-                            style="width:28%;length:10%; margin:2rem;padding:1px; border-radius:10px; border:solid black 1px background: #f9f9f9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); transition: all 0.3s ease;">
-                            <img src="dental/static/icons/icon.svg" />
-                            <a t-attf-href="/patient/#{record.id}" class="text-decoration-none">
-                                <br />
-                                <h4 style="width:100%;text-align:center;">
-                                    <t t-out="record.name"/>
-                                </h4>
-                            </a>
+                        <div t-foreach="patients" t-as="record" class="card" style="width: 28%; margin: 2rem; padding: 1px; border-radius: 10px; background: #f9f9f9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); transition: all 0.3s ease;">
+                            <img src="dental/static/icons/icon.svg" class="card-img-top" />
+                            <div class="card-body">
+                                <a t-attf-href="/patient/#{record.id}" class="text-decoration-none">
+                                    <h4 class="card-title text-center">
+                                        <t t-out="record.name"/>
+                                    </h4>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div class="pagination-container" style="width: 100%; text-align: center; margin-top: 2rem;">
+                    <div class="pagination-container text-center mt-4">
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item" t-att-class="page == 1 and 'disabled'">
@@ -59,7 +58,7 @@
             </div>
         </t>
     </template>
-
+    
     <!-- for ptient detail View -->
     <template id="patient_details_view_controller" name="Patient Details">
         <t t-call="website.layout">

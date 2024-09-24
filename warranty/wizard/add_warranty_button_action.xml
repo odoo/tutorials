@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_warranty_tree_view" model="ir.ui.view">
+        <field name="name">add.warranty.tree.view</field>
+        <field name="model">add.warranty.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="0">
+                <field name= "product_template_id"/>
+                <field name= "year"/>
+                <field name= "end_date"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_warranty_form" model="ir.ui.view">
+        <field name="name">add.warranty.form.view</field>
+        <field name="model">add.warranty</field>
+        <field name="arch" type="xml">
+            <form >
+               <sheet>
+                    <field name="product_ids"></field>
+               </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
