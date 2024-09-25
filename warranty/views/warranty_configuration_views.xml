@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="warrannty_configuration_tree_view" model="ir.ui.view">
+        <field name="name">warranty.configuration.tree.view</field>
+        <field name="model">warranty.configuration</field>
+        <field name="arch" type="xml">
+            <tree string="Warranty Configuration" editable="top" create="1" edit="1">
+                <field name="name" />
+                <field name="product_id" />
+                <field name="percentage" />
+                <field name="years" />
+            </tree>
+        </field>
+    </record>
+    <record id="warranty_configuration_action" model="ir.actions.act_window">
+        <field name="name">Warranty Configuration</field>
+        <field name="res_model">warranty.configuration</field>
+        <field name="view_id" ref="warrannty_configuration_tree_view" />
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>
