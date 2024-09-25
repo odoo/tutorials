@@ -4,7 +4,7 @@
     "license": "LGPL-3",
     "category": "Subscription Installment",
     "summary": "Subscription Installment",
-    "depends": ["base_setup", "sale_subscription","documents"],
+    "depends": ["base_setup", "sale_subscription", "documents"],
     "data": [
         "security/ir.model.access.csv",
         "wizard/add_button_emi_views.xml",

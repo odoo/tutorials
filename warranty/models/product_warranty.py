@@ -1,7 +1,7 @@
-from odoo import models, fields, api
+from odoo import models, fields
 
 
 class ProductWarranty(models.Model):
-    _name='product.warranty'
-    
-    name = fields.Char('Title')
+    _name = "product.warranty"
+
+    name = fields.Char("Title")

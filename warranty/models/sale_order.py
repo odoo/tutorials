@@ -1,5 +1,4 @@
-from odoo import  models
-from datetime import timedelta
+from odoo import models
 from odoo.exceptions import UserError
 
 
@@ -11,12 +10,23 @@ class SaleOrder(models.Model):
         for product in products:
             if product.product_template_id.is_warranty_available:
                 return {
-                    'type': 'ir.actions.act_window',
-                    'name': 'Add Warranty',
-                    'res_model': 'add.warranty',
-                    'view_mode': 'form',
-                    'view_id': self.env.ref('warranty.view_warranty_form').id,
-                    'target': 'new',  
+                    "type": "ir.actions.act_window",
+                    "name": "Add Warranty",
+                    "res_model": "add.warranty",
+                    "view_mode": "form",
+                    "view_id": self.env.ref("warranty.view_warranty_form").id,
+                    "target": "new",
                 }
             else:
-                raise UserError('This product does not have a warranty.')
+                raise UserError("This product does not have a warranty.")
+
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": "Warning",
+                "message": "No product with an available warranty found in this order.",
+                "type": "warning",
+                "sticky": False,
+            },
+        }

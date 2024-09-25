@@ -5,31 +5,31 @@ from datetime import timedelta
 class InvoiceCreate(models.Model):
     _inherit = "sale.order"
 
-    #create cron function
+    # create cron function
     @api.model
     def action_cron_auto_transfer(self):
-        invoices = (
-            self.env["account.move "]
-            .search(
-                [
-                    ( "line_ids.product_id","=",self.env.ref("installment.product1").id,),
-                    ("state", "in", ["posted", "open"]),
-                    ("payment_state", "!=", "paid"),
-                    ("penalty_applied", "=", False),
-                ]
-            )
+        invoices = self.env["account.move "].search(
+            [
+                (
+                    "line_ids.product_id",
+                    "=",
+                    self.env.ref("installment.product1").id,
+                ),
+                ("state", "in", ["posted", "open"]),
+                ("payment_state", "!=", "paid"),
+                ("penalty_applied", "=", False),
+            ]
         )
-        
+
         current_date = fields.Date.today()
         for invoice in invoices:
-            print(invoice.sale_order_line.id)
             penalty_delay_date = self.env["ir.config_parameter"].get_param(
                 "installment.delay_panalty_process"
             )
-            
+
             penalty_delay_days = int(float(penalty_delay_date))
             invoice_date = invoice.invoice_date_due + timedelta(days=penalty_delay_days)
-            
+
             if current_date >= invoice_date:
                 penalty_amount = self.calculate_penalty_amount(invoice)
                 values = {
@@ -64,13 +64,12 @@ class InvoiceCreate(models.Model):
     # calculate penalty amounte
     def calculate_penalty_amount(self, invoice):
         down_penalty_percentage = float(
-            self.env["ir.config_parameter"]
-            .get_param("installment.delay_panalty_perc")
+            self.env["ir.config_parameter"].get_param("installment.delay_panalty_perc")
         )
-        
+
         penalty_invoice_amount = (invoice.amount_total * down_penalty_percentage) / 100
         return penalty_invoice_amount
-    
+
     # create fuction for document upload
     def action_upload_documents(self):
         # Retrieve the configuration settings
@@ -94,7 +93,8 @@ class InvoiceCreate(models.Model):
         for order in self:
             # Ensure the Installments folder exists
             installments_folder = self.env["documents.folder"].search(
-                [("name", "=", "Installments")], limit=1)
+                [("name", "=", "Installments")], limit=1
+            )
             if not installments_folder:
                 installments_folder = self.env["documents.folder"].create(
                     {

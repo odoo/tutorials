@@ -139,15 +139,10 @@ class MyModel(models.Model):
                 raise UserError(
                     "You cannot delete a property that is not in 'New' or 'Canceled' state."
                 )
-                
-                
-                
-    def state_change_action(self): 
+
+    def state_change_action(self):
         for property in self:
             if property.state == "offer recieved" or property.state == "cancelled":
-                property.state ="new"
+                property.state = "new"
             else:
-                raise UserError(
-                    "You can't change status invalid property."
-                )
-                   
+                raise UserError("You can't change status invalid property.")

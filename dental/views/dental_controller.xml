@@ -143,25 +143,25 @@
                     <div style="width: 60%; border: 1px solid #ccc; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <h3 class="text-center mb-4" style="color: #714B67;">PERSONAL INFORMATION</h3>
                         <form t-foreach="personal" t-as="record">
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="first_name" style="font-weight: bold;">Name:</label>
                                 <input type="text" id="first_name" name="record.name" class="form-control" t-att-value="record.name" readonly="true" />
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="gender" style="font-weight: bold;">Gender:</label>
                                 <input type="text" id="gender" name="record.gender" class="form-control" t-att-value="record.gender" readonly="true" />
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="dob" style="font-weight: bold;">Date of Birth:</label>
                                 <input type="text" id="dob" name="record.date_of_birth" class="form-control" t-att-value="record.date_of_birth" readonly="true" />
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="occupation" style="font-weight: bold;">Occupation:</label>
                                 <textarea id="occupation" name="record.occupation_or_grade" class="form-control" rows="3" readonly="true">
                                     <t t-esc="record.occupation_or_grade"/>
                                 </textarea>                            
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="marital_status" style="font-weight: bold;">Marital Status:</label>
                                 <input type="text" id="marital_status" name="record.marital_status" class="form-control" t-att-value="record.marital_status" readonly="true" />
                             </div>
@@ -200,19 +200,19 @@
                     <div style="width: 60%; border: 1px solid #ccc; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <h3 class="text-center mb-4" style="color: #714B67;">MEDICAL AID</h3>
                         <t t-foreach="medical_aid" t-as="record">
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="name" style="font-weight: bold;">Name:</label>
                                 <input type="text" id="name" name="record.name" class="form-control" t-att-value="record.name" readonly="true" />
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="contact" style="font-weight: bold;">Contact:</label>
                                 <input type="text" id="contact" name="record.contact" class="form-control" t-att-value="record.contact" readonly="true" />
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="phone_number" style="font-weight: bold;">Phone Number:</label>
                                 <input type="text" id="phone_number" name="record.phone_number" class="form-control" t-att-value="record.phone_number" readonly="true" />
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="email" style="font-weight: bold;">Email:</label>
                                 <input type="text" id="email" name="record.email" class="form-control" t-att-value="record.email" readonly="true" />
                             </div>
@@ -379,19 +379,19 @@
                     <div style="width: 60%; border: 1px solid #ccc; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <h3 class="text-center mb-4" style="color: #714B67;">DENTAL HISTORY DETAIL</h3>
                         <t t-foreach="history" t-as="record">
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="name" style="font-weight: bold;">Name:</label>
                                 <input type="text" id="name" name="record.display_name" class="form-control" t-att-value="record.display_name" readonly="true" />
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="contact" style="font-weight: bold;">Date:</label>
                                 <input type="text" id="contact" name="record.date" class="form-control" t-att-value="record.date" readonly="true" />
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="phone_number" style="font-weight: bold;">Description:</label>
                                 <input type="text" id="phone_number" name="record.description" class="form-control" t-att-value="record.description" readonly="true" />
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="mb-3">
                                 <label for="email" style="font-weight: bold;">Tags:</label>
                                 <input type="text" id="email" name="record.tags" class="form-control" t-att-value="record.tags" readonly="true" />
                             </div>
