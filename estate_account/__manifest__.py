@@ -8,4 +8,5 @@
     "version": "0.1",
     "application": True,
     "installable": True,
+    "data": ["report/estate_account_report.xml"],
 }
