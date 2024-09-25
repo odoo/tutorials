@@ -28,6 +28,7 @@
         <kanban>
           <templates>
             <t t-name="card" class="flex-row">
+              <widget name="web_ribbon" title="Adopted" bg_color="text-bg-success" invisible="state != 'adopted'"/>
               <aside class="o_kanban_aside_full">
                 <field name="picture" class="w-100" widget="image" options="{'img_class': 'object-fit-cover w-100 h-100'}" invisible="not picture"/>
                 <field name="pictogram" class="w-100" widget="image" options="{'img_class': 'object-fit-content w-100 h-100'}" invisible="picture"/>
@@ -53,6 +54,7 @@
             <field name="state" widget="statusbar" options="{ 'clickable': True }" />
           </header>
           <sheet>
+            <widget name="web_ribbon" title="Adopted" bg_color="text-bg-success" invisible="state != 'adopted'"/>
             <group col="4">
               <group col="2">
                 <field name="name" />
