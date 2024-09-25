@@ -78,5 +78,5 @@ class AddEmi(models.TransientModel):
                 "product_uom": self.env.ref("uom.product_uom_unit").id,
                 "tax_id": None,
             })]
-        
+
         return

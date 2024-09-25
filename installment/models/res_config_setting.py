@@ -12,7 +12,7 @@ class ResConfigSettings(models.TransientModel):
     )
     delay_penalty_percentage = fields.Integer(string="Delay Penalty Percentage", config_parameter="installment.delay_penalty_percentage")
     delay_penalty_process = fields.Integer(string="Delay Penalty Process", config_parameter="installment.delay_penalty_process")
-    nid = fields.Boolean(string="National ID (NID)",config_parameter="installment.nid")
+    nid = fields.Boolean(string="National ID (NID)", config_parameter="installment.nid")
     salary_components = fields.Boolean(string="Salary Components", config_parameter="installment.salary_components")
     bank_statement = fields.Boolean(string="Bank Statement", config_parameter="installment.bank_statement")
     bank_rate_letter = fields.Boolean(string="Bank Rate Letter", config_parameter="installment.bank_rate_letter")

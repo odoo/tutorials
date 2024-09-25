@@ -4,9 +4,11 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+
             <xpath expr="//div[@name='so_button_below_order_lines']/button" position="before">
-                <button name="warranty.action_add_warranty" class="btn btn-primary" invisible="state not in ['draft']" string="Add Warranty" type="action"/>
+                <button name="warranty.action_add_warranty" invisible="state not in ['draft']" string="Add Warranty" type="action"/>
             </xpath>
+            
         </field>
     </record>
 </odoo>

@@ -1,5 +1,4 @@
 from datetime import timedelta
-import logging
 from odoo import api, Command, models, fields
 
 
