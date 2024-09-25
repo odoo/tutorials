@@ -13,6 +13,7 @@
         'views/inherited_user_views.xml',
         'views/estate_menus.xml',
         'data/estate.property.type.csv',
+        'demo/demo_property.xml',
     ],
     'installable': True,
     'application': True,
