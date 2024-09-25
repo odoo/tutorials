@@ -9,5 +9,5 @@
     "installable": True,
     "auto_install": True,
     "depends": ["base", "account", "estate"],
-    "data": [],
+    "data": ["report/estate_account_property_invoice.xml"],
 }

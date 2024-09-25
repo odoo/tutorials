@@ -13,6 +13,9 @@
     "data": [
         "security/ir.model.access.csv",
         "data/estate.property.type.csv",
+        "report/estate_property_offer_report.xml",
+        "report/estate_property_offer_subTemplate.xml",
+        "report/estate_property_offer_report_template.xml",
         "views/estate_property_view.xml",
         "views/estate_property_offer_view.xml",
         "views/estate_property_type_view.xml",

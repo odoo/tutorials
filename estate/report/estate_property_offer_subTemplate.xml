@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="sub_template_estate_property_offers">
+        <t t-if="property.offer_ids">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="offers" t-value="property.mapped('offer_ids')" />
+                    <tr t-foreach="offers" t-as="offer">
+                        <td>
+                            <span t-field="offer.price" />
+                        </td>
+                        <td>
+                            <span t-field="offer.partner_id" />
+                        </td>
+                        <td>
+                            <span t-field="offer.Validity" />
+                        </td>
+                        <td>
+                            <span t-field="offer.deadline" />
+                        </td>
+                        <td>
+                            <span t-field="offer.status" />
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+
+        <t t-else="">
+            <div>
+                There is no offer at this time.......
+            </div>
+        </t>
+    </template>
+
+</odoo>
