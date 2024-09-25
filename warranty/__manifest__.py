@@ -1,0 +1,25 @@
+{
+    'name': 'Warranty',
+    'summary': 'Warranty Configuration Module',
+    'description': 'Module for managing warranty configurations and related functionalities.',
+    'category': 'Sales',
+    'version': '1.0',
+    'author': 'yasp',
+    'license': 'LGPL-3',
+    'depends': [
+        'base',
+        'sale_subscription',
+        'stock',
+        'website_sale',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'wizard/warranty_wizard_views.xml',
+        'views/warranty_config_views.xml',
+        'views/product_views.xml',
+        'views/sale_order_views.xml',
+        'views/menu_views.xml',
+    ],
+    'installable': True,
+    'application': True,
+}
