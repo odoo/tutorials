@@ -24,5 +24,4 @@
     <function model="estate.property.offer" name="action_confirm">
         <value eval="[ref('estate_property_offer_demo_3')]" />
     </function>
-
 </odoo>

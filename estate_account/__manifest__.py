@@ -1,6 +1,6 @@
 {
     "name": "Estate_Account",
-    "depends": ["estate", "account"],
+    "depends": ["base", "estate", "account"],
     "Description": "estate_account",
     "category": "",
     "license": "LGPL-3",
@@ -9,4 +9,7 @@
     "version": "0.1",
     "application": True,
     "installable": True,
+    "data": [
+        "report/estate_account_report.xml",
+    ],
 }

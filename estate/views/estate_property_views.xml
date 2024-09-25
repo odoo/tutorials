@@ -40,7 +40,6 @@
                         invisible=" status=='sold' or status=='cancelled'" class="btn btn-primary" />
                     <field name="status" widget="statusbar"
                         statusbar_visible="new,offer received,offer accepted,sold" />
-
                 </header>
                 <sheet>
                     <h1>
@@ -65,8 +64,6 @@
                             <page string="Description">
                                 <group>
                                     <field name="myestate_model" />
-
-
                                     <field name="bedrooms" />
                                     <field name="living_area" />
                                     <field name="facades" />
@@ -92,7 +89,6 @@
                 </sheet>
             </form>
         </field>
-
     </record>
     <record id="estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
@@ -110,7 +106,6 @@
                 <filter string="group_by_postcode" name="postcode"
                     context="{'group_by' :'postcode'}" />
             </search>
-
         </field>
     </record>
     <record id="estate_property_kanbanview" model="ir.ui.view">
@@ -119,7 +114,6 @@
         <field name="arch" type="xml">
             <kanban class="o_kanban_mobile" default_group_by="property_type"
                 records_draggable="False" groups_dragabble="False">
-
                 <field name="status" />
                 <template>
                     <t t-name="kanban-box">
@@ -128,7 +122,6 @@
                                 <span>
                                     <field name="name" />
                                 </span>
-
                             </strong>
                             <div> Expected Price: <field name="expected_price" />
                             </div>
@@ -141,15 +134,10 @@
                             <div t-if="record.status.raw_value == 'offer accepted'">
                                 <field name="selling_price" />
                             </div>
-
                         </div>
                     </t>
                 </template>
-
             </kanban>
-
         </field>
     </record>
-
-
 </odoo>

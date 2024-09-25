@@ -4,7 +4,6 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
     </record>
-
     <record id="estate_property_type_tree_view" model="ir.ui.view">
         <field name="name">state.property.type.tree.view</field>
         <field name="model">estate.property.type</field>
@@ -49,6 +48,5 @@
                 </sheet>
             </form>
         </field>
-
     </record>
 </odoo>

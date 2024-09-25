@@ -1,0 +1,15 @@
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="comment">The agents can manage the properties under their care, or properties
+            which are not specifically under the care of any agent.</field>
+    </record>
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]" />
+        <field name="comment">The managers can configure the system (manage available types and
+            tags) as well as oversee every property in the pipeline..</field>
+    </record>
+</odoo>

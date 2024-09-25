@@ -1,4 +1,4 @@
-from odoo import models, Command
+from odoo import Command, models
 
 
 class estateaccount(models.Model):
@@ -10,12 +10,11 @@ class estateaccount(models.Model):
                 {
                     "name": "test",
                     "move_type": "out_invoice",
-                    "partner_id": record.offer_id.partner_id.id,
+                    "partner_id": record.Buyer_id.id,
                     "line_ids": [
                         Command.create(
                             {
                                 "name": record.name,
-                                # "product_id": record.Buyer_id.id,
                                 "quantity": 1.0,
                                 "price_unit": 0.06 * (record.selling_price),
                             }
@@ -30,4 +29,4 @@ class estateaccount(models.Model):
                     ],
                 }
             )
-            return super().sold_button()
+        return super().sold_button()

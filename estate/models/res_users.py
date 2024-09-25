@@ -1,5 +1,5 @@
-from odoo import models, fields
 from datetime import datetime
+from odoo import fields, models
 
 
 class Resusers(models.Model):

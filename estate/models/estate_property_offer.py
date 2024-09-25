@@ -1,5 +1,5 @@
-from odoo import api, models, fields
 from datetime import date, timedelta
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -7,7 +7,6 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
-
     price = fields.Float("Price")
     status = fields.Selection(
         [("Accepted", "Accepted"), ("Refused", "Refused")], readonly=True
@@ -46,12 +45,9 @@ class EstatePropertyOffer(models.Model):
     def action_cancel(self):
         for record in self:
             record.status = "Refused"
-            # record.property_id.selling_price = 0
 
     @api.model
     def create(self, vals):
-        # self.env["estate.property"].browse(vals["property_id"]).check_limit(vals)
-        # return super().create(vals)
         record = super().create(vals)
         if record.property_id:
             record.property_id.status = "offer received"

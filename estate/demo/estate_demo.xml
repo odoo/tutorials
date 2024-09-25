@@ -1,5 +1,4 @@
 <odoo>
-
     <record id="estate_demo_data3" model="estate.property">
         <field name="property_type" ref="id4" />
         <field name="name">Big Villa</field>
@@ -16,7 +15,6 @@
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
-
     </record>
     <record id="estate_demo_data5" model="estate.property">
         <field name="property_type" ref="id4" />
@@ -32,8 +30,6 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
     </record>
-
-
     <record id="estate_demo_data4" model="estate.property">
         <field name="property_type" ref="id4" />
         <field name="name">Trailor Home3</field>

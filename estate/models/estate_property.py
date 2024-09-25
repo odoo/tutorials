@@ -1,14 +1,13 @@
-from odoo import api, models, fields
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
 class estateproperty(models.Model):
-    _name = "estate.property"  #: name of the Model
+    _name = "estate.property"
     _description = "estate_model"
     _order = "id desc"
-
     name = fields.Char("Title", default="Unknown")
     myestate_model = fields.Text("Description")
     postcode = fields.Char("Postcode")
@@ -32,7 +31,7 @@ class estateproperty(models.Model):
             ("new", "New"),
             ("offer received", "Offer Received"),
             ("offer accepted", "Offer Accepted"),
-            ("sold", "Sold"),
+            ("sold", "sold"),
             ("cancelled", "Cancelled"),
         ],
         default="new",
@@ -48,7 +47,6 @@ class estateproperty(models.Model):
     offer_id = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total = fields.Float(compute="_compute_total", string="Total Area (sqm)")
     best_price = fields.Float(compute="_compute_price", string="Best offer")
-
     _sql_constraints = [
         (
             "check_sellingprice_expectedprice_not_negative",
@@ -104,9 +102,3 @@ class estateproperty(models.Model):
         for record in self:
             if record.status not in ("new", "Cancelled"):
                 raise UserError("Only new and cancelled properties can be deleted")
-
-    # def check_limit(self, vals):
-    #     self.status = "offer received"
-
-    #     if vals.get("price") <= self.best_price:
-    #         raise ValidationError("the offer must be higher than best price")

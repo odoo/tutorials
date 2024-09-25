@@ -1,11 +1,10 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
     _name = "estate.property.type"
     _description = "EstatePropertyType"
     _order = "name"
-
     name = fields.Char("Property Types", required=True)
     _sql_constraints = [
         ("uniq_propertytype", "unique(name)", "A property type name must be unique"),
@@ -18,7 +17,6 @@ class EstateProperty(models.Model):
     sequence = fields.Integer(
         "Sequence", default=1, help="To manually reorder property types"
     )
-
     api.depends("offer_id")
 
     def _num_of_offers(self):
