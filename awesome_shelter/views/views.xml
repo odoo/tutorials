@@ -24,7 +24,7 @@
       <field name="name">awesome_shelter.animal.kanban</field>
       <field name="model">awesome_shelter.animal</field>
       <field name="arch" type="xml">
-        <kanban>
+        <kanban js_class="shelter_kanban">
           <templates>
             <t t-name="kanban-card" class="flex-row">
               <widget name="web_ribbon" title="Adopted" bg_color="text-bg-success" invisible="state != 'adopted'"/>
