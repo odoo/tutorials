@@ -4,10 +4,8 @@ from odoo.exceptions import ValidationError
 
 class sale_order(models.Model):
     _inherit = "sale.order"
-    
-    
-    def action_upload_documents_from_sale_order(self):
 
+    def action_upload_documents_from_sale_order(self):
         installment_folder = self.env["documents.folder"].search(
             [("name", "=", "Installment Documents")], limit=1
         )
@@ -22,9 +20,7 @@ class sale_order(models.Model):
                 }
             )
 
-       
         subfolder = self.env["documents.folder"].search([("name", "=", self.name)])
-
         if not subfolder:
             subfolder = self.env["documents.folder"].create(
                 {
@@ -63,7 +59,11 @@ class sale_order(models.Model):
             if should_upload:
                 # Check if the document already exists in the subfolder
                 existing_document = self.env["documents.document"].search(
-                    [("                       ", "=", doc_type), ("folder_id", "=", subfolder.id)], limit=1
+                    [
+                        ("                       ", "=", doc_type),
+                        ("folder_id", "=", subfolder.id),
+                    ],
+                    limit=1,
                 )
 
                 # Create the document only if it does not already exist
@@ -73,12 +73,11 @@ class sale_order(models.Model):
                         "folder_id": subfolder.id,
                     }
                     self.env["documents.document"].create(document_data)
-        
         return {
             "type": "ir.actions.act_window",
             "name": "Documents",
             "res_model": "documents.document",
             "view_mode": "kanban,tree,form",
             "domain": [("folder_id", "=", subfolder.id)],
-            "context": {'searchpanel_default_folder_id': subfolder.id},
-        }           
+            "context": {"searchpanel_default_folder_id": subfolder.id},
+        }

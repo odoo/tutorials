@@ -1,40 +1,35 @@
 <odoo>
 
-    <record id = "add_warranty_tree_view" model="ir.ui.view">
+    <record id="add_warranty_tree_view" model="ir.ui.view">
         <field name="name">add.warranty.tree.view</field>
         <field name="model">warranty.wizard.line</field>
         <field name="arch" type="xml">
             <tree sample="1" editable="bottom" create="0">
-                <field name="product_id" />
+                <field name="product_id" optional="hide" />
+                <field name="name" readonly="1" />
                 <field name="year" />
                 <field name="end_date" />
             </tree>
         </field>
 
     </record>
-     
+
     <record id="add_warranty_form_view" model="ir.ui.view">
         <field name="name">add.warranty.tree.view</field>
         <field name="model">warranty.wizard</field>
         <field name="arch" type="xml">
             <form>
-                <sheet> 
+                <sheet>
                     <field name="warranty_line_ids"></field>
-                <footer>
-                    <button name="apply_warranties" type="object" string="Apply Warranties" class="btn-primary" data-hotkey="q" />
-                    <button string="Cancel" class="btn-secondary" special="cancel"
-                        data-hotkey="x" />
-                </footer>
+                    <footer>
+                        <button name="apply_warranties" type="object" string="Add"
+                            class="btn-primary" data-hotkey="q" />
+                        <button string="Cancel" class="btn-secondary" special="cancel"
+                            data-hotkey="x" />
+                    </footer>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <!-- <record id="add_warranty_action" model="ir.actions.act_window">
-        <field name="name">Add Warranty</field>
-        <field name="res_model">warranty.add</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="add_warranty_tree_view" />
-        <field name="target">new</field>
-    </record> -->
 </odoo>

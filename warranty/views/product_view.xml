@@ -7,13 +7,10 @@
 
             <xpath expr="//page[@name='sales']" position="inside">
                 <group>
-                    <field name="is_warranty_available" string="Is Warranty Available"/>
+                    <field name="is_warranty_available" string="Is Warranty Available" />
                 </group>
             </xpath>
-            
+
         </field>
     </record>
-
-
-
 </odoo>
