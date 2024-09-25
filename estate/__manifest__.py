@@ -14,6 +14,7 @@
         'views/estate_menus.xml',
         'data/estate.property.type.csv',
         'demo/demo_property.xml',
+        'demo/demo_property_offer.xml',
     ],
     'installable': True,
     'application': True,
