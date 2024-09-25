@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="product_warranty1" model="product.warranty">
+            <field name="name">1 Year Warranty</field>
+            <field name="product_id">2</field>
+            <field name="percentage">10</field>
+            <field name='year'>1</field>
+        </record>
+</odoo>
