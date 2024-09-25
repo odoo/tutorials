@@ -10,7 +10,7 @@ class estateaccount(models.Model):
                 {
                     "name": "test",
                     "move_type": "out_invoice",
-                    "partner_id": record.offer_ids.partner_id.id,
+                    "partner_id": record.buyer_id.id,
                     "line_ids": [
                         Command.create(
                             {
