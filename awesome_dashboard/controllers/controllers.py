@@ -2,6 +2,7 @@
 
 import logging
 import random
+import time
 
 from odoo import http
 from odoo.http import request

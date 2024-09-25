@@ -78,7 +78,6 @@ class Estate(models.Model):
         for record in self:
             if record.offer_ids:
                 # mapped: apply the param func on all records in self and return the result as a list of recordset
-                # TODO: understand this better
                 record.best_price = max(record.mapped("offer_ids.price"))
             else:
                 record.best_price = None
@@ -97,16 +96,14 @@ class Estate(models.Model):
         for record in self:
             if record.state == "canceled":
                 raise UserError(_("Canceled properties cannot be sold"))
-            else:
-                record.state = "sold"
+            record.state = "sold"
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError(_("A sold property cannot be canceled"))
-            else:
-                record.state = "canceled"
+            record.state = "canceled"
         return True
 
     @api.constrains("selling_price", "expected_price")

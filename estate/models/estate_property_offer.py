@@ -3,16 +3,14 @@ from odoo.addons.base.tests.test_uninstall import environment
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 
+
 class EstatePropertyOffer(models.Model):
-
-
     _name = "estate.property.offer"
     _description = "Offers of estate.property"
     _sql_constraints = [
         ('check_price_positive', 'CHECK(price > 0)', 'The offer price must be positive.')
     ]
     _order = "price desc"
-
 
     price = fields.Float()
     status = fields.Selection(
@@ -26,13 +24,14 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
-    property_type_id = fields.Many2one(comodel_name="estate.property.type",related="property_id.property_type_id", store=True)
+    property_type_id = fields.Many2one(comodel_name="estate.property.type", related="property_id.property_type_id",
+                                       store=True)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
             if record.create_date:
-                record.date_deadline = fields.Date.add(record.create_date.date(),days=record.validity)
+                record.date_deadline = fields.Date.add(record.create_date.date(), days=record.validity)
             else:
                 record.date_deadline = fields.Date.add(fields.Date.today(), days=record.validity)
 
@@ -44,11 +43,11 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for offer in self:
 
-            #filtered: return the records in self(input recordset) satisfying param func
-            #return self.browse([rec.id for rec in self if func(rec)])
-            #self = recordset so here it is the offer_ids of property
-            #for each record if func is true then we put its id in a list
-            #browse() fetch a new recordset based on the id of the input list
+            # filtered: return the records in self(input recordset) satisfying param func
+            # return self.browse([rec.id for rec in self if func(rec)])
+            # self = recordset so here it is the offer_ids of property
+            # for each record if func is true then we put its id in a list
+            # browse() fetch a new recordset based on the id of the input list
             for other_offer in offer.property_id.offer_ids.filtered(lambda o: o.id != offer.id):
                 if other_offer.status == "accepted":
                     raise UserError(_(f"Only one offer can be accepted"))
@@ -58,7 +57,6 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.selling_price = offer.price
             offer.property_id.state = "offer_accepted"
         return True
-
 
     def action_refuse(self):
         for offer in self:
@@ -70,6 +68,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+
         for vals in vals_list:
 
             estate_property_record = self.env["estate.property"].browse(vals["property_id"])
@@ -77,5 +76,3 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(_(f"You cannot add an offer whose price is less than the current best price."))
             estate_property_record.state = "offer_received"
             return super().create(vals_list)
-
-

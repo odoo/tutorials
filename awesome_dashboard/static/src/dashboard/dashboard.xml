@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+
+        <Layout display="{controlPanel: {}}" className="'o_dashboard h-100'" t-if="stats.isReady">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="displayCustomerKanban">Customers</button>
+                <button class="btn btn-primary" t-on-click="displayLeads">Leads</button>
+            </t>
+
+            <DashboardItem>
+                <p>Average Quantity</p>
+                 <t t-esc="stats.average_quantity"/>
+            </DashboardItem>
+
+            <DashboardItem>
+
+                <PieChart data="stats['orders_by_size']"/>
+            </DashboardItem>
+
+<!--            <t t-foreach="statsService" t-as="stat" t-key="stat">-->
+<!--                <DashboardItem>-->
+<!--                    <t t-esc="stat"/><p>       </p><t t-esc="stats[stat]"/>-->
+<!--                </DashboardItem>-->
+<!--            </t>-->
+        </Layout>
+    </t>
+
+</templates>

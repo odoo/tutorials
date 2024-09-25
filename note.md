@@ -14,3 +14,10 @@ open odoo in shell mode: odoo-bin shell
 
 
 python monkey patching: dynamically modify of extend method or class. Allows to change or replace methods attributes or classe (often used in testing)
+[expression for item in iterable if condition]
+
+run odoo server
+./odoo-bin --addons-path="addons/,../enterprise/,../tutorials" -d db -u estate
+
+
+server location: http://localhost:8069/

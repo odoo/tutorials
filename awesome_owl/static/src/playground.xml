@@ -3,7 +3,22 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <Card title="'card 1'">
+                <Counter/>
+            </Card>
+            <div>
+                <TodoList/>
+            </div>
+            <div class="me-3">
+                <p>Hello World</p>
+            </div>
+            <div>
+                <h3>Total Sum: <t t-esc="state.totalSum"/></h3>
+                <Counter onChange.bind="incrementTotalSum"/>
+                <Counter onChange.bind="incrementTotalSum"/>
+            </div>
+
+
         </div>
     </t>
 
