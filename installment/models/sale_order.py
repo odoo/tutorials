@@ -65,7 +65,7 @@ class SaleOrder(models.Model):
                 )
 
                 if not existing_doc:
-                    new_doc = self.env["documents.document"].create(
+                    self.env["documents.document"].create(
                         {
                             "name": doc_name,
                             "folder_id": folder.id,

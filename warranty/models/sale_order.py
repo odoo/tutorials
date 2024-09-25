@@ -18,10 +18,21 @@ class SaleOrder(models.Model):
                 line.product_id.warranty_available for line in order.order_line
             )
 
-    @api.model
+
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
+
+    warranty_product_id = fields.Many2one(
+        "sale.order.line",
+        string="Warranty Product",
+    )
+
     def unlink(self):
         for line in self:
-            # Check if the line has a warranty before unlinking
-            if line.warranty_year_id:
-                line.write({"warranty_year_id": False, "warranty_end_date": False})
-        return super().unlink()
+            warranty_product_ids = self.env["sale.order.line"].search(
+                [("warranty_product_id", "=", line.id)]
+            )
+            if warranty_product_ids:
+                warranty_product_ids.unlink()
+
+            return super().unlink()

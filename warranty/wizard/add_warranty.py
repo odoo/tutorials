@@ -1,6 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, Command
 from dateutil.relativedelta import relativedelta
-import re
 
 
 class AddWarranty(models.TransientModel):
@@ -12,7 +11,7 @@ class AddWarranty(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        res = super(AddWarranty, self).default_get(fields)
+        res = super().default_get(fields)
         sale_order = self.env["sale.order"].browse(self._context.get("active_id"))
         res["sale_order_id"] = sale_order.id
 
@@ -33,24 +32,35 @@ class AddWarranty(models.TransientModel):
         return res
 
     def add_warranty(self):
-        sales_order = self.env["sale.order"].browse(self._context.get("active_id"))
-        for line in self.warranty_line_ids:
-            if line.warranty_id:
-                # Calculate warranty price based on the warranty percentage
-                warranty_price = sales_order.amount_total * (
-                    line.warranty_id.percentage / 100
-                )
+        active_id = self.env.context.get("active_id")
+        sale_order = self.env["sale.order"].browse(active_id)
 
-                # Create new warranty lines in the sale order
-                self.env["sale.order.line"].create(
-                    {
-                        "name": f"Extended Warranty \nEnd Date:{line.end_date} Warranty",
-                        "order_id": sales_order.id,
-                        "product_id": line.warranty_id.product_id.id,
-                        "product_uom_qty": 1,
-                        "price_unit": warranty_price,
-                    }
-                )
+        # Iterate over warranty lines from the wizard
+        for line in self.warranty_line_ids:
+            if line.warranty_years:
+                for order_line in sale_order.order_line:
+                    # Find the product in the sale order line
+                    if order_line.product_id == line.product_id:
+                        # Calculate the warranty price based on the original product line subtotal
+                        price = (
+                            order_line.price_subtotal * line.warranty_years.percentage
+                        ) / 100
+
+                        # Append the warranty as a separate sale order line without removing the product
+                        sale_order.order_line = [
+                            Command.create(
+                                {
+                                    "name": f"Extended Warranty\nEnd date: {line.end_date}",
+                                    "order_id": sale_order.id,
+                                    "product_id": line.warranty_years.product_id.id,  # Use the warranty product
+                                    "product_uom": 1,
+                                    "product_uom_qty": 1,
+                                    "price_unit": price,
+                                    "warranty_product_id": order_line.id,
+                                    "tax_id": None,  # You can adjust tax settings here if needed
+                                }
+                            )
+                        ]
 
 
 class AddWarrantyLine(models.TransientModel):
@@ -61,16 +71,16 @@ class AddWarrantyLine(models.TransientModel):
         "add.warranty", string="Warranty Wizard", required=True
     )
     product_id = fields.Many2one("product.product", string="Product", required=True)
-    warranty_id = fields.Many2one(
+    warranty_years = fields.Many2one(
         "warranty.config", string="Warranty Period", required=True
     )
     end_date = fields.Date(string="End Date", compute="_compute_end_date", store=True)
 
-    @api.depends("warranty_id")
+    @api.depends("warranty_years")
     def _compute_end_date(self):
         for record in self:
-            if record.warranty_id:
-                time_period = record.warranty_id.period
+            if record.warranty_years:
+                time_period = record.warranty_years.period
                 record.end_date = fields.Date.context_today(self) + relativedelta(
                     years=time_period
                 )

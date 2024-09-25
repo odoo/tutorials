@@ -10,7 +10,6 @@
         "views/warranty_config_view.xml",
         "views/sale_order_view.xml",
         "views/product_template_view.xml",
-        "data/product_data.xml",
     ],
     "installable": True,
     "application": True,
