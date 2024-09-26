@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="estate.MapField">
+<!--        <span t-if="props.readonly" t-esc="formattedValue" />-->
+        <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
+         <div id="map" style="height: 250px;"></div>
+<!--        <h3>TEST</h3>-->
+<!--        <input -->
+<!--            t-else="" -->
+<!--            t-on-focusin="onFocusIn" -->
+<!--            t-on-focusout="onFocusOut" -->
+<!--            t-att-id="props.id" -->
+<!--            t-ref="numpadDecimal"  -->
+<!--            t-att-placeholder="props.placeholder" -->
+<!--            t-att-type="props.inputType" -->
+<!--            inputmode="decimal" -->
+<!--            class="o_input" -->
+<!--            autocomplete="off"-->
+<!--            t-att-step="props.step" />-->
+    </t>
+
+</templates>

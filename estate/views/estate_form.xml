@@ -25,6 +25,7 @@
                         <group>
                             <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
+                            <field name="postgis_location" widget="map_widget"/>
                             <field name="available_from"/>
                         </group>
                         <group>

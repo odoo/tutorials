@@ -3,6 +3,8 @@ import datetime
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
+from .. import fields as estate_fields
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -24,6 +26,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char("Postcode", help="Postcode of the property")
     available_from = fields.Date("Date", required=True,
                                  default=lambda _: datetime.date.today() + datetime.timedelta(days=30 * 3))
+    postgis_location = estate_fields.PointField("Location", required=False)
     expected_price = fields.Float(
         required=True,
         help="The price you expect the property to be sold for",
