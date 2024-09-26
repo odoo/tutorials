@@ -47,7 +47,7 @@ class EstateProperty(models.Model):
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
-            record.total_area = record.living_area + record.garden_area
+            record.total_area = record.living_area + (record.garden_area if record.garden else 0)
 
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
@@ -66,9 +66,6 @@ class EstateProperty(models.Model):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
-        else:
-            self.garden_area = False
-            self.garden_orientation = False
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
@@ -81,6 +78,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("Canceled properties can't be sold.")
+            if 'accepted' not in record.offer_ids.mapped('status'):
+                raise UserError("You can't sell a property without having accepted an offer.")
             record.state = 'sold'
         return True
 
