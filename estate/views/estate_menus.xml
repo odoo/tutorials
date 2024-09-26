@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem id="test_menu_root" name="Real_estate">
-        <!-- web_icon="estate,static/description/icon.png -->
         <menuitem id="test_first_level_menu" name="Advertisements">
             <menuitem id="test_model_menu_action" action="estate_property_model_action" />
         </menuitem>
