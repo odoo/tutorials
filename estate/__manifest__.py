@@ -2,6 +2,7 @@
     "name": "Real_estate",
     "depends": ["base"],
     "Description": "estate_Module",
+    "category": "Real Estate/Brokerage",
     "license": "LGPL-3",
     "summary": "estate module for different purpose",
     "author": "koye_odoo",
@@ -9,7 +10,6 @@
     "application": True,
     "installable": True,
     "data": [
-        "security/ir.model.access.csv",
         "views/estate_property_views.xml",
         "views/estate_property_offer.xml",
         "views/estate_property_type.xml",
@@ -20,6 +20,8 @@
         "report/subtemplate_offers_table.xml",
         "report/estate_property_templates.xml",
         "report/estate_property_reports.xml",
+        "security/security.xml",
+        "security/ir.model.access.csv",
     ],
     "demo": [
         "demo/estate_demo.xml",

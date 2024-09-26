@@ -14,7 +14,6 @@
             decoration-bf="status=='Offer Accepted'"
             decoration-muted="status=='Sold'">
             <field name="status" optional="hide" />
-
             <field name="title" />
             <field name="property_type_id" />
             <field name="Postcode" />
@@ -25,7 +24,6 @@
             <field name="selling_price" />
             <field name="date_availability" optional="hide" />
          </tree>
-
       </field>
    </record>
    <record id="estate_property_model_form_view" model="ir.ui.view">
@@ -60,7 +58,6 @@
                   </group>
                   <notebook>
                      <page string="Description">
-
                         <group>
                            <field name="myestate_model" />
                            <field name="Bedrooms" />
@@ -71,7 +68,6 @@
                            <field name="garden_area" invisible="not garden" />
                            <field name="garden_orientation" invisible="not garden" />
                            <field name="total" />
-
                         </group>
                      </page>
                      <page string="offers">
@@ -80,10 +76,8 @@
                      </page>
                      <page string="other info">
                         <group>
-
                            <field name="buyer_id" />
                            <field name="salesperson_id" />
-
                         </group>
                      </page>
                   </notebook>
@@ -92,8 +86,6 @@
          </form>
       </field>
    </record>
-
-
    <record id="estate_property_model_search_view" model="ir.ui.view">
       <field name="name">estate.property.model.search.view</field>
       <field name="model">estate.property</field>
@@ -108,9 +100,7 @@
             <filter string="Available" name="status"
                domain="['|' , ('status','=','new') , ('status','=','Offer Received')]" />
             <filter string="group_by_postcode" name="Postcode" context="{'group_by':'Postcode'}" />
-
          </search>
-
       </field>
    </record>
    <record id="estate_property_kanbanview" model="ir.ui.view">
@@ -143,8 +133,6 @@
                </t>
             </templates>
          </kanban>
-
       </field>
    </record>
-
 </odoo>

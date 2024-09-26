@@ -7,20 +7,6 @@ class estatepropertyoffer(models.Model):
     _name = "estate.property.offer"
     _description = "model for inserting offers"
     _order = "price desc"
-
-    price = fields.Float("price")
-    status = fields.Selection(
-        [("Accepted", "Accepted"), ("Refused", "Refused")], string="Status", copy=False
-    )
-    partner_id = fields.Many2one("res.partner", required=True, string="Partner")
-    property_id = fields.Many2one("estate.property", required=True)
-    validity = fields.Integer(string="Validity(days)", default=7)
-    date_deadline = fields.Date(
-        string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
-    )
-    property_type_id = fields.Many2one(
-        related="property_id.property_type_id", store=True
-    )
     _sql_constraints = [
         (
             "check_offerprice_not_negative",
@@ -28,6 +14,21 @@ class estatepropertyoffer(models.Model):
             "The offer price should be greater than 0",
         ),
     ]
+
+    price = fields.Float("price")
+    validity = fields.Integer(string="Validity(days)", default=7)
+    status = fields.Selection(
+        [("Accepted", "Accepted"), ("Refused", "Refused")], string="Status", copy=False
+    )
+
+    partner_id = fields.Many2one("res.partner", required=True, string="Partner")
+    property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
+    date_deadline = fields.Date(
+        string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
+    )
 
     @api.depends("validity")
     def _compute_deadline(self):
@@ -51,8 +52,6 @@ class estatepropertyoffer(models.Model):
 
     @api.model
     def create(self, vals):
-        # self.env["estate.property"].browse(vals["property_id"]).check_limit(vals)
-        # return super().create(vals)
         record = super().create(vals)
         if record.property_id:
             record.property_id.status = "Offer Received"
