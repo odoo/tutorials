@@ -1,13 +1,21 @@
-from odoo import api, models, fields
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
 class estateproperty(models.Model):
+
     _name = "estate.property"
     _description = "estate module for different purpose"
     _order = "id desc"
+    _sql_constraints = [
+        (
+            "check_sellingprice_expectedprice_not_negative",
+            "CHECK(selling_price >= 0.0 and expected_price >= 0.0)",
+            "The selling price and expected_price should be greater than 0.",
+        ),
+    ]
 
     title = fields.Char("title", default="Unknown")
     myestate_model = fields.Text(string="description")
@@ -40,6 +48,7 @@ class estateproperty(models.Model):
         default="new",
         copy=False,
     )
+
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
@@ -47,17 +56,11 @@ class estateproperty(models.Model):
     buyer_id = fields.Many2one("res.users", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
+
     total = fields.Float(compute="_compute_total", string="Total Area(sqm)")
     best_price = fields.Float(
         compute="_compute_max_price", string="Best offer", store=True
     )
-    _sql_constraints = [
-        (
-            "check_sellingprice_expectedprice_not_negative",
-            "CHECK(selling_price >= 0.0 and expected_price >= 0.0)",
-            "The selling price and expected_price should be greater than 0.",
-        ),
-    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
@@ -78,6 +81,18 @@ class estateproperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
+    @api.constrains("selling_price", "expected_price")
+    def validate_selling_price(self):
+        for record in self:
+
+            if (
+                record.selling_price < (0.9 * record.expected_price)
+                and record.selling_price != 0
+            ):
+                raise ValidationError(
+                    "the selling price cannot be lower than 90% of the expected price."
+                )
+
     def action_sold(self):
         for record in self:
             if record.status == "Cancelled":
@@ -92,25 +107,8 @@ class estateproperty(models.Model):
             else:
                 record.status = "Cancelled"
 
-    @api.constrains("selling_price", "expected_price")
-    def validate_selling_price(self):
-        for record in self:
-
-            if (
-                record.selling_price < (0.9 * record.expected_price)
-                and record.selling_price != 0
-            ):
-                raise ValidationError(
-                    "the selling price cannot be lower than 90% of the expected price."
-                )
-
     @api.ondelete(at_uninstall=False)
     def _prevent_property_deletion(self):
         for record in self:
             if record.status not in ("new", "Cancelled"):
                 raise UserError("Only new and cancelled properties can be deleted")
-
-    # def check_limit(self, vals):
-    #     self.status == "Offer Received"
-    #     if vals.get("price") <= self.best_price:
-    #         raise ValidationError("the offer must be higher than best price")
