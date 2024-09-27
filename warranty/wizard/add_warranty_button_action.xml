@@ -5,7 +5,7 @@
         <field name="model">add.warranty.line</field>
         <field name="arch" type="xml">
             <tree editable="bottom" create="0">
-                <field name= "product_template_id" />
+                <field name= "product_id" />
                 <field name= "year"/>
                 <field name= "end_date"/>
             </tree>
@@ -18,7 +18,7 @@
             <form >
                <sheet>
 
-                    <field name="product_ids" optional="hide"></field>
+                    <field name="warranty_line_ids" optional="hide"></field>
                     <footer>
                         <button name="action_add_waranty_product" type="object" string="Add" class="btn-primary" data-hotkey="q" />
                         <button string="Cancel" class="btn-secondary" special="cancel"
