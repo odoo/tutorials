@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
     <record id="estate_offer_demo_1" model="estate.property.offer">
         <field name="partner_id" ref="base.res_partner_12" />
         <field name="property_id" ref="estate.estate_demo_data3" />
