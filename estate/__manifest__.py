@@ -5,6 +5,8 @@
         'base',
     ],
     'data': [
+        'reports/estate_property_report.xml',
+        'reports/estate_property_report_template.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
