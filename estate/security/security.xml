@@ -12,4 +12,11 @@
         <field name="comment">The managers can configure the system (manage available types and
             tags) as well as oversee every property in the pipeline.</field>
     </record>
+    <record id="rule_limiting_agents" model="ir.rule">
+        <field name="name">limiting agents</field>
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]" />
+        <field name="domain_force">['|', ('salesperson_id', '=',user.id ), ('salesperson_id', '=',
+            False)]</field>
+    </record>
 </odoo>
