@@ -1,73 +1,82 @@
 /** @odoo-module */
 import { registry } from "@web/core/registry";
-import { Component, useState } from "@odoo/owl";
+import { Component } from "@odoo/owl";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { loadJS } from "@web/core/assets";
-import { parseFloat } from "@web/views/fields/parsers";
+import { useService } from "@web/core/utils/hooks";
 
 
 export class MapField extends Component {
     static template = "estate.MapField";
 
-    // when ready and rendered
     setup() {
-        loadJS("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js").then((e) => {
-
-
-            var map = L.map('map').setView([this.value[0][0], this.value[0][1]], 13);
-
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-            let marker = L.marker([this.value[0][0], this.value[0][1]]).addTo(map);
-
-            // write coordinates to input field when map is clicked
-
-            map.on('click', (e) => {
-                var lat = e.latlng.lat;
-                var lon = e.latlng.lng;
-
-                marker.setLatLng([lat, lon]);
-                // console.log(this.props.record.update)
-                this.props.record.update({[this.props.name]: `${lat},${lon}`});
-            });
+        this.notification = useService("notification");
+        loadJS("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js").then(() => {
+            this.waitForMapElement()
+                .then(() => {
+                    const coordinates = this.value !== null ? [this.value[0][0], this.value[0][1]] : null;
+                    this.initializeMap(coordinates);
+                })
+                .catch((error) => {
+                    // use odoo's error handling
+                    this.notification.add(error, { type: "danger" });
+                });
         });
     }
 
+    async waitForMapElement(timeout = 1000) {
+        const pollInterval = 100;
+        const start = performance.now();
+        return new Promise((resolve, reject) => {
+            const checkMapExists = () => {
+                console.log("Waiting for map element...");
+                if (document.getElementById("map")) {
+                    resolve();
+                } else if (performance.now() - start > timeout) {
+                    reject("Map element not found");
+                } else {
+                    setTimeout(checkMapExists, pollInterval);
+                }
+            };
+            checkMapExists();
+        });
+    }
 
-    // get coordinates() {
-    //     console.log(this.update)
-    //     return this.props.record.data[this.props.name][0];
-    // }
+    initializeMap(coordinates) {
+        // If no coordinates exist, set a default view over a general location (e.g., the whole world)
+        const defaultCoordinates = coordinates || [20.0, 0.0];
+        const defaultZoom = coordinates ? 10 : 2;
 
-    // onFocusIn() {
-        // this.state.hasFocus = true;
-    // }
+        const map = L.map('map').setView(defaultCoordinates, defaultZoom);
 
-    // onFocusOut() {
-        // this.state.hasFocus = false;
-    // }
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            minZoom: 2
+        }).addTo(map);
 
-    // parse(value) {
-        // return this.props.inputType === "number" ? Number(value) : parseFloat(value);
-    // }
+        let marker = coordinates ? L.marker(coordinates).addTo(map) : null;
+        this.addMapClickListener(map, marker);
+    }
 
-    // get formattedValue() {
-        // if (
-        //     !this.props.formatNumber ||
-        //     (this.props.inputType === "number" && !this.props.readonly && this.value)
-        // ) {
-        //     return this.value;
-        // }
-        // if (this.props.humanReadable && !this.state.hasFocus) {
-        //     return formatFloat(this.value, {
-        //         digits: this.digits,
-        //         humanReadable: true,
-        //         decimals: this.props.decimals,
-        //     });
-        // } else {
-        //     return formatFloat(this.value, { digits: this.digits, humanReadable: false });
-        // }
-    // }
+    addMapClickListener(map, marker) {
+        map.on('click', (e) => {
+            const { lat, lng } = e.latlng;
+            if (!marker) {
+                marker = L.marker([lat, lng]).addTo(map);
+            } else {
+                marker.setLatLng([lat, lng]);
+            }
+            this.updateRecord(lat, lng);
+            const zoomLevel = map.getZoom() < 10 ? 10 : map.getZoom();
+            map.setView([lat, lng], zoomLevel);
+        });
+    }
+
+    updateRecord(lat, lng) {
+        this.props.record.update({
+            [this.props.name]: `${lat},${lng}`
+        });
+    }
 
     get value() {
         return this.props.record.data[this.props.name];

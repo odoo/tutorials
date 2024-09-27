@@ -14,11 +14,8 @@ class PointField(fields.Field):
     column_type = ('geography(POINT, 4326)', 'geography(POINT, 4326)')
 
     def convert_to_read(self, value, record, values=None):
-        if value is None:
+        if not value:
             return None
-
-        if not isinstance(value, str):
-            raise UserError(f"Invalid point type: {value} ({type(value)})")
 
         # try to split by comma and convert to float
         try:
