@@ -1,6 +1,6 @@
-from odoo import api, models, fields
 from dateutil.relativedelta import relativedelta
 from datetime import date
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -33,9 +33,7 @@ class EstateProperty(models.Model):
     @api.depends("Validity")
     def _compute_deadline(self):
         for record in self:
-            if record.create_date:
-                pass
-            else:
+            if not record.create_date:
                 record.create_date = date.today()
             record.deadline = record.create_date + relativedelta(days=record.Validity)
 

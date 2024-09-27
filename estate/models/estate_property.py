@@ -1,5 +1,5 @@
-from odoo import api, models, fields
 from dateutil.relativedelta import relativedelta
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -94,12 +94,7 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
-            if (
-                record.selling_price == 0
-                or record.selling_price >= (90 / 100) * record.expected_price
-            ):
-                pass
-            else:
+            if record.selling_price <= (90 / 100) * record.expected_price:
                 raise ValidationError(
                     "the selling price cannot be lower than 90'%' of the expected price."
                 )
@@ -113,12 +108,10 @@ class EstateProperty(models.Model):
     # created the action for the sold button that will chage the state field of the property to sold
     def action_sold(self):
         for record in self:
-            if record.state == "canceled":
+            if record.state in ["sold", "canceled"]:
                 raise UserError(
-                    "This Property couldn't be sold Because it is alredy canceled."
+                    "This property is alredy sold or canceled. You can't sell it."
                 )
-            elif record.state == "sold":
-                raise UserError("This property is alredy Sold.")
             else:
                 record.state = "sold"
         return True

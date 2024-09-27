@@ -11,5 +11,4 @@
             <menuitem id="test_model_menu_action3" action="estate_property_tag_action" />
         </menuitem>
     </menuitem>
-
 </odoo>

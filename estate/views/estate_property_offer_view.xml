@@ -47,13 +47,6 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="estate property offer form">
-                <!-- <button name="open_offer" position="before">
-                    <button name="action_oppen_offer" type="object"
-                            class="oe_stat_button" icon="fa-money"
-                            invisible="offer_count == 0">
-                        <field name="offer_count" widget="statinfo" string="Offer(s)"/>
-                    </button>
-                </button> -->
                 <group>
                     <field name="price" string="Price" />
                     <field name="partner_id" string="Partner" />

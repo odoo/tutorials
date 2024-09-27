@@ -2,7 +2,7 @@
     "name": "Real_estate",
     "version": "0.1",
     "license": "LGPL-3",
-    "category": "Estate_props",
+    "category": "Real Estate/Brokerage",
     "author": "sahilpanghal(span)",
     "summary": "Real estate module",
     "description": "Real estate module",
@@ -11,6 +11,7 @@
     "icons": ["static/description/realestate.png"],
     "depends": ["base"],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "data/estate.property.type.csv",
         "report/estate_property_offer_report.xml",
