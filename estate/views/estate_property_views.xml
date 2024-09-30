@@ -49,6 +49,7 @@
                      <field name="status" />
                      <field name="property_type_id" options="{'no_create': True, 'no_edit': True}" />
                      <field name="Postcode" />
+                     <field name="company_id"/>
                      <field name="date_availability" />
                   </group>
                   <group>
