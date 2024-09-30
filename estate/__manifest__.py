@@ -10,6 +10,9 @@
     "application": True,
     "installable": True,
     "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "wizard/wizard_view.xml",
         "views/estate_property_views.xml",
         "views/estate_property_offer.xml",
         "views/estate_property_type.xml",
@@ -20,8 +23,6 @@
         "report/subtemplate_offers_table.xml",
         "report/estate_property_templates.xml",
         "report/estate_property_reports.xml",
-        "security/security.xml",
-        "security/ir.model.access.csv",
     ],
     "demo": [
         "demo/estate_demo.xml",
