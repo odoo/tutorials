@@ -17,6 +17,7 @@ class EstateProperty(models.Model):
     sequence = fields.Integer(
         "Sequence", default=1, help="To manually reorder property types"
     )
+
     api.depends("offer_id")
 
     def _num_of_offers(self):

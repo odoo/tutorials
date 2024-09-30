@@ -8,6 +8,7 @@ class estateproperty(models.Model):
     _name = "estate.property"
     _description = "estate_model"
     _order = "id desc"
+
     name = fields.Char("Title", default="Unknown")
     myestate_model = fields.Text("Description")
     postcode = fields.Char("Postcode")
@@ -37,7 +38,13 @@ class estateproperty(models.Model):
         default="new",
         copy=False,
     )
-    last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
+    company_id = fields.Many2one(
+        "res.company",
+        string="company",
+        default=lambda self: self.env.company,
+        required=True,
+        readonly=False,
+    )
     property_type = fields.Many2one("estate.property.type", string="Property Type")
     sale_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
@@ -100,5 +107,5 @@ class estateproperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _prevent_property_deletion(self):
         for record in self:
-            if record.status not in ("new", "Cancelled"):
+            if record.status not in ("new", "cancelled"):
                 raise UserError("Only new and cancelled properties can be deleted")

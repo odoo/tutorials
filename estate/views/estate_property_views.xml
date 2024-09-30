@@ -24,7 +24,6 @@
                 <field name="selling_price" />
                 <field
                     name="date_availability" optional="hide" />
-                <field name="last_seen" />
             </tree>
         </field>
     </record>
@@ -140,4 +139,4 @@
             </kanban>
         </field>
     </record>
-</odoo>
+</odoo>     

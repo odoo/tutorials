@@ -1,3 +1,4 @@
+<!--inheriting template-->
 <odoo>
     <data>
         <template id="report_estate_account_invoice" inherit_id="estate.report_property_offers">

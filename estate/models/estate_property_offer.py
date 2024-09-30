@@ -33,6 +33,7 @@ class EstatePropertyOffer(models.Model):
                 ele.create_date = date.today()
             ele.date_deadline = ele.create_date + timedelta(days=ele.validity)
 
+    @api.onchange("date_deadline")
     def _inverse_deadline(self):
         for ele in self:
             ele.validity = abs((ele.date_deadline - ele.create_date.date()).days)
