@@ -6,6 +6,8 @@ from odoo.exceptions import UserError, ValidationError
 
 class estateproperty(models.Model):
 
+    # ---------------------------------------- Private Attributes ---------------------------------
+
     _name = "estate.property"
     _description = "estate module for different purpose"
     _order = "id desc"
@@ -16,6 +18,8 @@ class estateproperty(models.Model):
             "The selling price and expected_price should be greater than 0.",
         ),
     ]
+
+    # --------------------------------------- Fields Declaration ----------------------------------
 
     title = fields.Char("title", default="Unknown")
     myestate_model = fields.Text(string="description")
@@ -49,6 +53,14 @@ class estateproperty(models.Model):
         copy=False,
     )
 
+    #  Relational Fields
+    company_id = fields.Many2one(
+        "res.company",
+        string="company",
+        default=lambda self: self.env.company,
+        required=True,
+        readonly=False,
+    )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
@@ -57,10 +69,14 @@ class estateproperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
 
+    # Computed Fields
+
     total = fields.Float(compute="_compute_total", string="Total Area(sqm)")
     best_price = fields.Float(
         compute="_compute_max_price", string="Best offer", store=True
     )
+
+    # ---------------------------------------- Compute methods ------------------------------------
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
@@ -71,6 +87,8 @@ class estateproperty(models.Model):
     def _compute_max_price(self):
         for ele in self:
             ele.best_price = max(ele.mapped("offer_ids.price"), default=0)
+
+    # ----------------------------------- Constrains and Onchanges --------------------------------
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -93,6 +111,8 @@ class estateproperty(models.Model):
                     "the selling price cannot be lower than 90% of the expected price."
                 )
 
+    #  ----------------------------------- Action methods --------------------------------
+
     def action_sold(self):
         for record in self:
             if record.status == "Cancelled":
@@ -106,6 +126,8 @@ class estateproperty(models.Model):
                 raise UserError("Sold properties cannot be cancelled")
             else:
                 record.status = "Cancelled"
+
+    # On delete
 
     @api.ondelete(at_uninstall=False)
     def _prevent_property_deletion(self):

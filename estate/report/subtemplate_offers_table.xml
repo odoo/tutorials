@@ -6,7 +6,7 @@
                     <tr>
                         <th>Price</th>
                         <th>Partner</th>
-                        <th>Validitty(days)</th>
+                        <th>Validity(days)</th>
                         <th>Deadline</th>
                         <th>Satate</th>
                     </tr>
