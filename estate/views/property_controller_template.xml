@@ -1,0 +1,92 @@
+<odoo>
+    <template id="properties_template">
+        <t t-call="website.layout">
+            <div style="container" class="mb-5 container">
+                <h1 class="text-center mt-5">Available Properties</h1>
+                <div t-if="properties" class="d-flex justify-content-start flex-wrap">
+                    <div t-foreach="properties" t-as="property"
+                        style="width:28%; margin:2rem;padding:2px; border:solid black 2px">
+                        <a t-attf-href="/property/#{property.id}">
+                            <img style="width:100%;height:100%" t-if="property.property_image"
+                                t-att-src="image_data_uri(property.property_image)"
+                            />
+                            <br />
+                            <h4 style="width:100%;text-align:center;margin-top:1rem;">
+                                <t t-out="property.title" />
+                            </h4>
+                        </a>
+                    </div>
+                </div>
+                <div t-else="">
+                    <p>No properties are available now!</p>
+                </div>
+                <div class="d-flex justify-content-center mt-5">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <t t-foreach="range(1, total_pages + 1)" t-as="x">
+                                <li
+                                    t-att-class="'page-item' + ('' if x != page_no else ' active')">
+                                    <a t-attf-href="/properties/#{x}" class="page-link">
+                                        <t t-out="x" />
+                                    </a>
+                                </li>
+                            </t>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="template_property_details" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h2 class="text-center mb-4">
+                    <t t-out="prop_details.title" />
+                </h2>
+                <div class="d-flex justify-content-between border p-5 border-5">
+                    <div class="col-md-6 col-12" style="width:45%">
+                        <t t-if="prop_details.property_image">
+                            <img t-att-src="image_data_uri(prop_details.property_image)"
+                                style="width:100%;height:100%" />
+                        </t>
+                        <t t-else="">
+                            <img src="/web/static/src/img/placeholder.png" class="img-fluid rounded"
+                                alt="No Image Available" />
+                        </t>
+                    </div>
+
+                    <div class="col-md-6 col-12" style="width:45%">
+
+                        <p class="">
+                            <strong> Price: INR <t t-out="prop_details.expected_price" />
+                            </strong>
+                        </p>
+                        <p>
+                            <b>Bedrooms:</b>
+                            <t t-out="prop_details.Bedrooms" />
+                        </p>
+                        <p>
+                            <b>Garden Area:</b>
+                            <t t-out="prop_details.garden_area" />
+                        </p>
+                        <p><b>Living Area:</b> <t t-out="prop_details.living_area" /> sq ft</p>
+                        <p class="mt-4">
+                            <b>
+                                <t t-out="prop_details.myestate_model" />
+                            </b>
+                        </p>
+                        <p>
+                            <b>
+                                Postcode:
+                            </b>
+                            <t t-out="prop_details.Postcode" />
+                        </p>
+                        <!-- <a href="/contactus" class="btn btn-lg btn-primary mt-4">Contact Us for
+                        More
+                            Information</a> -->
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

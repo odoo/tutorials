@@ -13,6 +13,11 @@
             decoration-success="status=='Offer Received'or status=='Offer Accepted'"
             decoration-bf="status=='Offer Accepted'"
             decoration-muted="status=='Sold'">
+            <header>
+               <button name="%(estate.action_add_offer_properties)d" type="action"
+                  string="Add Offer"
+                  class="btn btn-primary" />
+            </header>
             <field name="status" optional="hide" />
             <field name="title" />
             <field name="property_type_id" />
@@ -49,7 +54,7 @@
                      <field name="status" />
                      <field name="property_type_id" options="{'no_create': True, 'no_edit': True}" />
                      <field name="Postcode" />
-                     <field name="company_id"/>
+                     <field name="company_id" />
                      <field name="date_availability" />
                   </group>
                   <group>

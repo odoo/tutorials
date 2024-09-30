@@ -11,3 +11,4 @@ estate.access_estate_property_agent,access_estate_property_agent,estate.model_es
 estate.access_estate_property_type_agent,access_estate_property_type_agent,estate.model_estate_property_type,estate_group_user,1,0,0,0
 estate.access_estate_property_tag_agent,access_estate_property_tag_agent,estate.model_estate_property_tag,estate_group_user,1,0,0,0
 estate.access_estate_property_offer_agent,access_estate_property_offer_agent,estate.model_estate_property_offer,base.group_user,1,1,1,0
+estate.access_add_offers_wizard,access_add_offers_wizard,estate.model_add_offers_wizard,base.group_user,1,1,1,0
