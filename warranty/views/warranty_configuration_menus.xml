@@ -1,0 +1,11 @@
+<odoo>
+    <record id="warranty_configuration_action" model="ir.actions.act_window">
+        <field name="name">warrantyconfiguration </field>
+        <field name="res_model">storewarranty.configuration</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="warranty_configuration_menu"
+        name="Warranty Configuration"
+        parent="sale.menu_sale_config"
+        action="warranty.warranty_configuration_action" />
+</odoo>
