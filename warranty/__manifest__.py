@@ -1,6 +1,6 @@
 {
     "name": "warranty",
-    "depends": ["base", "stock", "sale_management"],
+    "depends": ["base", "sale_subscription"],
     "Description": "warranty_Module",
     "license": "LGPL-3",
     "summary": "warranty module for different purpose",
@@ -10,10 +10,9 @@
     "installable": True,
     "data": [
         "security/ir.model.access.csv",
+        "wizard/add_warranty_view.xml",
+        "views/warranty_config_view.xml",
+        "views/sale_order_view.xml",
         "views/product_template_view.xml",
-        "views/warranty_configuration_views.xml",
-        "views/warranty_configuration_menus.xml",
-        "wizard/wizard_view.xml",
-        "views/sale_order_line_view.xml",
     ],
 }
