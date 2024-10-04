@@ -1,0 +1,79 @@
+<odoo>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Real Estate Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+
+    <record id="view_estate_property_tree" model="ir.ui.view">
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Properties">
+                <field name="name"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="bedrooms"/>
+                <field name="postcode"/>
+                <field name="state" string="Status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_estate_property_tree" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Properties">
+                <field name="name"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="bedrooms"/>
+                <field name="postcode"/>
+                <field name="state" string="Status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property Details">
+                <sheet>
+                    <group>
+                         <field name="name" string="Name" required="1"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="postcode" string="Postcode" />
+                            <!-- <field name="date_availability" string="Availability Date" /> -->
+                        </group>
+                        <group>
+                            <field name="expected_price" string="Expected Price" />
+                            <field name="selling_price" string="Selling Price" readonly="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" string="Detailed Description"/>
+                                <field name="living_area" string="Living Area (m²)"/>
+                                <field name="facades" string="Number of Facades"/>
+                                <field name="garage" string="Garage"/>
+                                <field name="garden" string="Garden"/>
+                                <field name="garden_area" string="Garden Area (m²)"/>
+                                <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="bedrooms" string="Number of Bedrooms"/>
+                                <field name="state" string="Status"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
+
+
