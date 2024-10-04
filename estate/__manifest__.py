@@ -23,6 +23,7 @@
         "report/subtemplate_offers_table.xml",
         "report/estate_property_templates.xml",
         "report/estate_property_reports.xml",
+         "views/property_controller_template.xml",
     ],
     "demo": [
         "demo/estate_demo.xml",

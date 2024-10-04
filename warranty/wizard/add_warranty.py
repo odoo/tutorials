@@ -86,6 +86,4 @@ class AddWarrantyLine(models.TransientModel):
         for record in self:
             if record.warranty_years:
                 time_period = record.warranty_years.period
-                record.end_date = datetime.now() + relativedelta(
-                    years=time_period
-                )
+                record.end_date = datetime.now() + relativedelta(years=time_period)

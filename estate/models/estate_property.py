@@ -52,6 +52,7 @@ class estateproperty(models.Model):
         default="new",
         copy=False,
     )
+    property_image = fields.Image("Property Image")
 
     #  Relational Fields
     company_id = fields.Many2one(
