@@ -81,9 +81,6 @@
                             </b>
                             <t t-out="prop_details.Postcode" />
                         </p>
-                        <!-- <a href="/contactus" class="btn btn-lg btn-primary mt-4">Contact Us for
-                        More
-                            Information</a> -->
                     </div>
                 </div>
             </div>
