@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_private_action" model="ir.actions.act_window">
+       <field name="name">Private</field>
+       <field name="res_model">estate_property</field>
+       <field name="view_mode">list,form</field>
+    </record>
+    
+    <record id="estate_property_action" model="ir.actions.act_window">
+         <field name="name">Properties</field>
+         <field name="res_model">estate_property</field>
+         <field name="view_mode">list,form</field>
+     </record>
+
+     <record id="estate_custom_action" model="ir.actions.act_window">
+        <field name="name">Custom</field>
+        <field name="res_model">estate_property</field>
+        <field name="view_mode">list,form</field>
+     </record>
+
+
+
+     <record id="estate_private34_action" model="ir.actions.act_window">
+        <field name="name">Private34</field>
+        <field name="res_model">estate_property</field>
+        <field name="view_mode">list,form</field>
+     </record>
+
+     <record id="estate_property_view_tree" model="ir.ui.view">
+        <field name="name">estate_property_view_tree</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <tree string="list_tree">
+                <field name="name"/>
+                <field name="expected_price"/>
+            </tree>
+        </field>
+     </record>
+
+
+</odoo> 
