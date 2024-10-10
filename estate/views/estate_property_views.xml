@@ -1,8 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
- <record id="estate_property_action" model="ir.actions.act_window">
-    <field name="name">Real Estate </field>
-    <field name="res_model">estate.property</field>
-    <field name="view_mode">tree,form</field>
-</record>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Real Estate </field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- showing column headings -->
+    <record id="estate_property_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.tree</field> 
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Real Estate">
+                <field name="name"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="property_type_id"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area(sqm)"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="date_availability" string="Available From"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- showing forms in records -->
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Lost Reason">
+                <sheet>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                    <group>
+                        <field name="tag_ids" string="Tags" widget="many2many_tags"/>
+                    </group>
+
+                    <group>
+                        <group>
+                            <field name="property_type_id"/>
+                            <field name="postcode"/>
+                            <field name="date_availability" string="Available From"/>
+                        </group>
+                        <group>
+                            <field name="selling_price"/>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                        </group>
+                    </group> 
+                    <notebook>
+
+                        <!-- Description Tab -->
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
+                                <field name="state"/>
+                                <field name="property_type_id"/>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+
+                        <!-- Offers Tab -->
+                        <page string="Offers">
+                                <field name="offer_ids">
+                                    <tree editable="bottom">
+                                        <field name="partner_id" string="Partner"/>
+                                        <field name="price"/>
+                                        <field name="status" string="Status"/>
+                                    </tree>
+                                </field>
+                        </page>
+
+                        <!-- Others Info Tab -->
+                        <page string="Other Info">
+                            <group>
+                                <field name="seller_id"/>
+                                <field name="buyer_id" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- for search -->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Data">
+
+                <!-- Search tab -->
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="facades" string="Facades"/>
+                <field name="property_type_id"/>
+                <!-- Adding filters -->
+                <filter string="Include archived" name="archived" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Selling Price" name="selling_price" domain="[('expected_price', '&gt;', 1500000)]"/>
+                <separator/>
+                <filter string="State" name="state" domain="['|',('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+
+                <!-- Added groups -->
+                <group expand="1" string="Group By">
+                    <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
 </odoo>
