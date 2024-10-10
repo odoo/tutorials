@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">estate properties types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <record id="estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.view.tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" string="Property Type"></field>
+            </tree>
+        </field>
+    </record> -->
+
+    <!-- <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property Type">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="property_ids">
+                            <tree editable="top">
+                                <field name="name"/>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                                <field name="state"/>
+                            </tree>
+                            <form>
+                                <group>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="selling_price"/>
+                                    <field name="state"/>
+                                    <field name="property_type_id" />
+                                </group>
+                            </form>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record> -->
+
+</odoo>
