@@ -3,6 +3,7 @@
         <field name="name">Real Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form,kanban</field>
+        <!-- <field name="context">{'form_view_initial_mode': 'edit'}</field> -->
     </record>
 
     <record id="view_estate_property_tree" model="ir.ui.view">
@@ -12,15 +13,20 @@
             <tree string="Properties">
                 <field name="name"/>
                 <field name="expected_price" string="Expected Price"/>
+                <field name="best_price" string="Best Offer"/>
                 <field name="selling_price" string="Selling Price"/>
                 <field name="bedrooms"/>
                 <field name="postcode"/>
+                <field name="total_area" string="Total Area"/>
                 <field name="state" string="Status"/>
+                <field name="property_type_id" string="Property Type"/>
+                <field name="buyer_id" string="Buyer"/>
+                <field name="seller_id" string="Salesperson"/>
             </tree>
         </field>
     </record>
 
-    <record id="view_estate_property_tree" model="ir.ui.view">
+    <record id="view_estate_property_kanban" model="ir.ui.view">
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -41,39 +47,83 @@
         <field name="arch" type="xml">
             <form string="Property Details">
                 <sheet>
-                    <group>
-                         <field name="name" string="Name" required="1"/>
-                    </group>
-                    <group>
-                        <group>
-                            <field name="postcode" string="Postcode" />
-                            <!-- <field name="date_availability" string="Availability Date" /> -->
+                    <h1><field name="name" options="{'no_label': True}"/></h1>
+                    <group> 
+                        <group>  
+                            <field name="property_type_id" string="Property Type"/>
+                            <field name="postcode" string="Postcode"/>
+                            <field name="tag_ids" string="Tags" widget="many2many_tags"/>
                         </group>
                         <group>
-                            <field name="expected_price" string="Expected Price" />
-                            <field name="selling_price" string="Selling Price" readonly="1" />
+                                <field name="expected_price" string="Expected Price"/>
+                                <field name="best_price" string="Best Offer"/>
+                                <field name="selling_price" string="Selling Price" readonly="1"/>
                         </group>
+                        
                     </group>
+
                     <notebook>
+
                         <page string="Description">
                             <group>
                                 <field name="description" string="Detailed Description"/>
+                                <field name="bedrooms" string="Number of Bedrooms"/>
                                 <field name="living_area" string="Living Area (m²)"/>
                                 <field name="facades" string="Number of Facades"/>
                                 <field name="garage" string="Garage"/>
                                 <field name="garden" string="Garden"/>
                                 <field name="garden_area" string="Garden Area (m²)"/>
                                 <field name="garden_orientation" string="Garden Orientation"/>
-                                <field name="bedrooms" string="Number of Bedrooms"/>
+                                <field name="total_area" string="Total Area" readonly="1"/>
                                 <field name="state" string="Status"/>
                             </group>
                         </page>
+                        
+                        <page string="Sales Info">
+                            <group>
+                                <field name="buyer_id" string="Buyer"/>
+                                <field name="seller_id" string="Salesperson"/>
+                            </group>
+                        </page>
+
+                        <!-- <page string="Tags">
+                            <group>
+                                <field name="tag_ids" widget="many2many_tags"/>
+                            </group>
+                        </page> -->
+                        
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <tree> <!-- editable="bottom" create="true" -->
+                                    <field name="partner_id"/>
+                                    <field name="price"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline" readonly="1"/>
+                                    <field name="status"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="bedrooms"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Sold" name="sold" domain="[('state', '=', 'sold')]"/>
+                <filter string="New" name="new" domain="[('state', '=', 'new')]"/>
+            </search>
+        </field>
+    </record>
+
 </odoo>
-
-
