@@ -7,7 +7,6 @@ class EstateProperty(models.Model):
 
     
     # fields
-    
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -30,6 +29,28 @@ class EstateProperty(models.Model):
         string='State',
         copy=False,
         default='new',
-       
         selection=[('new', 'New'), ('offer received', 'Offer Recieved'),('offer accepted', 'Offer Accepted'),('sold', 'Sold'),('canceled', 'Canceled')],
         help="Direction selection from North,South,East,West")
+    property_type_id = fields.Many2one(
+        'estate.property.type', 
+        string='Property Type',
+    )
+    salesperson = fields.Many2one(
+        'res.users',
+        string = 'Salesman',
+        default=lambda self: self.env.user
+    )
+    buyer = fields.Many2one(
+        'res.partner',
+        string = 'Buyer',
+        copy= False
+    )
+    tag_ids = fields.Many2many(
+        'estate.property.tags',
+        string = "Tags"
+    )
+    offer_ids = fields.One2many(
+        'estate.property.offers',
+        "property_id",
+        # string= "Offers"
+    )
