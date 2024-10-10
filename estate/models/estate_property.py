@@ -1,8 +1,8 @@
-from odoo import models, fields
+from odoo import models, fields # type: ignore
 from datetime import timedelta
 
 class estateProperty(models.Model):
-        _name = "estate_property"
+        _name = "estate.property"
         _description = "This is property Table."
 
         name = fields.Char(required=True)
@@ -34,3 +34,25 @@ class estateProperty(models.Model):
             copy=False,
             default='new' 
         )
+        property_type_id = fields.Many2one(
+                'estate.property.type',
+                'Property Type'
+        )
+        seller_id = fields.Many2one(
+                'res.users',
+                'Salesman',
+                default=lambda self: self.env.user
+        )
+        buyer_id = fields.Many2one(
+                'res.partner',
+                'Buyer'
+        )
+        tag_ids = fields.Many2many(
+                comodel_name='estate.property.tag',
+                string='Tag'
+        )
+        offer_ids = fields.One2many(
+                'estate.property.offer', 
+                'property_id'
+        )
+        

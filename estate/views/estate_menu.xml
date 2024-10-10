@@ -2,8 +2,17 @@
 <odoo>
     <menuitem id="estate_menu_root" name="Real State">
 
-        <menuitem id="estate_menu_first_level_setting" name="Setting" sequence="1">
-                
+        <menuitem id="estate_menu_first_level_setting" name="Setting">
+            <menuitem
+                id="estate_property_type_second_level_menu"
+                action="estate_property_type_action"/>
+            
+            <menuitem
+                id="estate_property_tag_second_level_menu"
+                action="estate_property_tag_action"/>
+        </menuitem>
+        
+        <menuitem id="estate_menu_first_level_custom" name="Custom" sequence="2">
             <menuitem id="estate_menu_second_level_Try" name = "Try" action="estate_private_action" sequence="4"/>
             
             <menuitem id="estate_menu_second_level_setting" name="Parent" sequence="1" >    
@@ -15,31 +24,27 @@
                     id="estate_third_level_setting_second_DFJDK"
                     name="hello"
                     action="estate_private34_action" sequence="1"  />
-
+    
             </menuitem>
-
+    
             <menuitem id="estate_menu_second_level_setting_pp" name="Config" sequence="3">
                 
                 <menuitem id="estate_menu_third_level_setting" name="Sahil" sequence="2">
-
+    
                     <menuitem
                         id="estate_third_level_setting"
                         action="estate_private_action"/>
-
-
+    
+    
                 </menuitem>
-
+    
                 
                 <menuitem
                     id="estate_third_level_setting_second"
                     name="hello"
                     action="estate_private34_action" sequence="1" />
-
+    
             </menuitem>
-        
-        </menuitem>
-
-        <menuitem id="estate_menu_first_level_custom" name="Custom" sequence="2">
             
             <menuitem id="estate_menu_second_level_custom" action="estate_custom_action"/>
         
