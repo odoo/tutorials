@@ -1,7 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields # type: ignore
 
 class TestModel(models.Model):
-    _name = "test_model"
+    _name = "test.model"
     _description = "This is test Table."
-
-    

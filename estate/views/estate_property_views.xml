@@ -1,40 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+   <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="estate_private_action" model="ir.actions.act_window">
-       <field name="name">Private</field>
-       <field name="res_model">estate_property</field>
+       <field name="name">BreadCrums</field>
+       <field name="res_model">estate.property</field>
        <field name="view_mode">list,form</field>
     </record>
     
-    <record id="estate_property_action" model="ir.actions.act_window">
-         <field name="name">Properties</field>
-         <field name="res_model">estate_property</field>
-         <field name="view_mode">list,form</field>
+     <record id="estate_private34_action" model="ir.actions.act_window">
+        <field name="name">ijij</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
      </record>
 
      <record id="estate_custom_action" model="ir.actions.act_window">
         <field name="name">Custom</field>
-        <field name="res_model">estate_property</field>
-        <field name="view_mode">list,form</field>
-     </record>
-
-
-
-     <record id="estate_private34_action" model="ir.actions.act_window">
-        <field name="name">Private34</field>
-        <field name="res_model">estate_property</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
      </record>
 
      <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate_property_view_tree</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="list_tree">
                 <field name="name"/>
-                <field name="expected_price"/>
+                <!-- <field name="expected_price" invisible="1"/> -->
+                <!-- <field name="active" invisible="122" /> -->
+                 <field name="expected_price" />
+                 <field name="active" />
+                <field name="selling_price" />
+                <field name="state" />
             </tree>
         </field>
+     </record>
+
+     <record id="estate_property_view_form" model="ir.ui.view">
+      <field name="name">estate_property_view_form</field>
+      <field name="model">estate.property</field>
+      <field name="arch" type="xml">
+         <form string="My New House">
+            <sheet>
+               <group>
+                   <group>
+                        <field name="tag_ids" widget="many2many_tags" />
+                        <field name="property_type_id"/>
+                       <field name="name"/>
+                       <field name="expected_price"/>
+                       <!-- <field name="expected_price"/>
+                       <field name="expected_price"/>
+                       <field name="expected_price"/>
+                       <field name="expected_price"/>
+                       <field name="expected_price"/>
+                       <field name="expected_price"/>
+                       <field name="expected_price"/>
+                       <field name="expected_price"/>
+                       <field name="expected_price"/>
+                       <field name="expected_price"/>
+                       <field name="expected_price"/>
+                       <field name="expected_price"/> -->
+                     </group>
+                     <group>
+                      <field name="state"/>
+                      <field name="garden"/>
+                      <field name="selling_price" />
+                      <field name="postcode" />
+                   </group>
+               </group>
+               
+               <notebook>
+                   <page string="Description">
+                       <!-- <field name="selling_price"/> -->
+                       <group>
+                           <group>
+                              <field name="name"/>
+                              <field name="expected_price"/>
+                           </group>
+                           <group>
+                              <field name="state"/>
+                              <field name="garden"/>
+                              <field name="selling_price" />
+                           </group>
+                        </group>
+                   </page>
+                   <page string="Vendor">
+                       <!-- <field name="selling_price"/> -->
+                   </page>
+                   <page string="Other Info">
+                     <group>
+                        <field name="seller_id"/>
+                        <field name="buyer_id"/>
+                     </group>
+                   </page>
+                   <page string="Offer">
+                        <field name="offer_ids">
+                           <tree>
+                              <field name="price"/>
+                              <field name="status" />
+                              <field name="partner_id"/>
+                              <field name="property_id" />
+                           </tree>
+                        </field>
+                   </page>
+               </notebook>
+           </sheet>
+         </form>
+      </field>
+     </record>
+
+     <record id="estate_property_view_search" model="ir.ui.view">
+      <field name="name">estate_property_view_search</field>
+      <field name="model">estate.property</field>
+      <field name="arch" type="xml">
+         <search string="Test">
+            <field name="name" string="Carrer" />
+            <!-- <separator/> -->
+            <field name="selling_price" />
+            <field name="expected_price" />
+            <filter name="expected_price" string="Expected Price" domain="[('expected_price', '&lt;=', '0')]" />
+            <group expand="1" string="Group By">
+               <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+               <filter string="Bedroom" name="bedrooms" context="{'group_by':'bedrooms', 'residual_visible':True}"/> 
+               <filter string="Bedroom" name="bedrooms" context="{'group_by':'bedrooms', 'residual_visible':True}"/>
+            </group>
+         </search>
+      </field>
      </record>
 
 
