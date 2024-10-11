@@ -70,12 +70,36 @@ class EstateProperty(models.Model):
         'property_id'
     )
 
-    # compute the total area by living_area and garden_area
+    # store the total area by living_area and garden_area
     total_area = fields.Integer(compute="_compute_totalArea")
+
+    # store the best price of offers
+    # if we use store=True then it saves the computed value in database too
+    best_offer_price = fields.Integer(compute="_compute_bestPrice", store=True)
+
 
     # function for compute the total area
     @api.depends("living_area","garden_area")
     def _compute_totalArea(self):
         for record in self:
-            print("valueeeeee: ", record)
+            # print("living area : ", record.living_area)
+            # print("garden area : ", record.garden_area)
             record.total_area = record.living_area + record.garden_area
+
+    # function for compute the best price of offers
+    @api.depends("offer_ids.price")
+    def _compute_bestPrice(self):
+        for record in self:
+            # print("Price list of all offers : ", record.mapped("offer_ids.price"))
+            # record.best_offer_price = max(record.mapped("offer_ids.price"), default=0)
+            record.best_offer_price = max(record.offer_ids.mapped("price"), default=0)
+
+    # change in value of garden(Boolean) reflects garden_area and garden_orientation automatically
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""
