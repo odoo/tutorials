@@ -1,5 +1,7 @@
-from odoo import fields, models # type: ignore
+from odoo import fields, models,api # type: ignore
 from datetime import datetime, timedelta
+from odoo.exceptions import UserError # type: ignore
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -54,3 +56,43 @@ class EstateProperty(models.Model):
         "property_id",
         # string= "Offers"
     )
+    total_area = fields.Float(compute = "_compute_area", string = "Total Area (sqm)")
+
+    best_price = fields.Float(compute = "_compute_best_price", store=True)
+
+    # Functions
+    @api.depends('living_area', 'garden_area')
+    def _compute_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+            
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            # max_price = 0
+            # for offer in record.offer_ids:
+            #     max_price = offer.price if offer.price > max_price else max_price
+            # record.best_price = max_price
+            # by mapped method
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_price = 0.0
+    
+    @api.onchange('garden_area', 'garden_orientation', 'garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+    
+    def action_sold(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError("You cannot mark a canceled property as sold.")
+            record.state == 'sold'
+
+            
