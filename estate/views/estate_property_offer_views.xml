@@ -6,6 +6,27 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- <record id="estate_property_offer_form_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Property Offer">
+                <header>
+                    <button name="action_accept_offer" type="object" string="Accept" class="btn-primary" states="pending"/>
+                    <button name="action_refuse_offer" type="object" string="Refuse" class="btn-danger" states="pending"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record> -->
+
+
     <!-- <record id="estate_property_offer_tree_view" model="ir.ui.view">
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>

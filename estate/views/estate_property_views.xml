@@ -46,6 +46,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Details">
+                <div style="gap: 5px;">
+                <button name="action_set_sold_property" type="object" string="Sold" class="btn-link" modifiers='{"invisible": [[ "state", "not in", ["new", "offer_received", "offer_accepted"]]]}'/>
+                <button name="action_cancel_property" type="object" string="Cancel" class="btn-link" modifiers='{"invisible": [[ "state", "not in", ["new", "offer_received", "offer_accepted"]]]}'/>
+                </div>
                 <sheet>
                     <h1><field name="name" options="{'no_label': True}"/></h1>
                     <group> 
@@ -97,9 +101,12 @@
                                 <tree> <!-- editable="bottom" create="true" -->
                                     <field name="partner_id"/>
                                     <field name="price"/>
+                                    <field name="created_date"/>
                                     <field name="validity"/>
-                                    <field name="date_deadline" readonly="1"/>
+                                    <field name="date_deadline"/>
                                     <field name="status"/>
+                                    <button name="action_accept_offer" type="object" icon="fa-check" string="Accept" states="pending"/>
+                                    <button name="action_refuse_offer" type="object" icon="fa-times" string="Refuse" states="pending"/>
                                 </tree>
                             </field>
                         </page>

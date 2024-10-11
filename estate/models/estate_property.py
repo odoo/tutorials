@@ -1,5 +1,6 @@
-from odoo import api,fields, models
+from odoo import api,fields, models, exceptions
 from datetime import datetime, timedelta
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -11,6 +12,18 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(default=lambda self: datetime.now() + timedelta(days=90))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True)
+
+    _sql_constraints = [
+        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive.'),
+        ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'Selling price must be positive.'),
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price and record.expected_price and record.selling_price < 0.9 * record.expected_price:
+                raise exceptions.ValidationError("Selling price cannot be lower than 90% of the expected price.")
+
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -22,7 +35,17 @@ class EstateProperty(models.Model):
         ('south', 'South'), 
         ('east', 'East'), 
         ('west', 'West')
-    ])
+    ],
+        help="Orientation of Garden")
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10 
+            self.garden_orientation = 'north' 
+        else:
+            self.garden_area = 0 
+            self.garden_orientation = False 
 
     total_area = fields.Float(compute="_compute_total_area", string="Total Area", store=True)
     @api.depends('living_area', 'garden_area')
@@ -30,12 +53,13 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
 
-    best_price = fields.Float(compute="_compute_best_price", inverse="_inverse_best_price", string="Best Offer", store=True)
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer", store=True)
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
-    # def _inverse_best_price(self):
+
+    # def _inverse_best_price(self): inverse="_inverse_best_price"
     #     for record in self:
     #         for offer in record.offer_ids:
     #             offer.price = record.best_price
@@ -56,6 +80,19 @@ class EstateProperty(models.Model):
         ('sold', 'Sold'),
         ('canceled', 'Canceled')],
         required=True, default='new')
+    
+    def action_cancel_property(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("You cannot cancel a sold property.")
+            record.state = 'canceled'
+
+    def action_set_sold_property(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError("You cannot sell a cancelled property.")
+            record.state = 'sold'
+
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer")
     seller_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
