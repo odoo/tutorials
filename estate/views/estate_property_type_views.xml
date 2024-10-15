@@ -5,5 +5,41 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
     </record>
+    
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.view.tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="Property Tags">
+                <field name="name"/>
+                <field name="sequence" widget="handle"/>
+            </tree>
+        </field>
+    </record>
 
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property Type">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <!-- Because of this property_id we can access its fields -->
+                            <field name="property_id"> 
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="expected_price" string="Partner"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>

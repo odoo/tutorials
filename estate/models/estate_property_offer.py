@@ -1,9 +1,18 @@
 from odoo import api, fields, models  # type: ignore
 from datetime import timedelta, date
+from odoo.exceptions import UserError# type: ignore
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer Ayve"
+    _order = "price desc"
+    _sql_constraints = [
+        (
+            "check_offerprice_not_negative",
+            "CHECK(price >= 0.0)",
+            "The Offer Price should be greater than 0.",
+        ),
+    ]
 
     price = fields.Float()
     status = fields.Selection(
@@ -57,13 +66,19 @@ class EstatePropertyOffer(models.Model):
     #Action Button
     def action_accept_offer(self):
         for record in self:
-            record.status = "accepted"
+            if(record.property_id.buyer_id):
+                if(record.partner_id != record.property_id.buyer_id):
+                    raise UserError("This Property has already accepted an offer.")
+            else:
+                record.status='accepted'
+                record.property_id.buyer_id=record.partner_id
+                record.property_id.selling_price=record.price
         return True
 
     def action_refuse_offer(self):
         for record in self:
-            record.status = "refused"
+            record.status='refused'
+            record.property_id.buyer_id=False
+            record.property_id.selling_price=False
         return True
-
-
-    
+ 
