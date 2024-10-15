@@ -1,6 +1,6 @@
 from odoo import fields, models,api # type: ignore
 from datetime import datetime, timedelta
-from odoo.exceptions import UserError # type: ignore
+from odoo.exceptions import UserError,RedirectWarning, ValidationError # type: ignore
 
 
 class EstateProperty(models.Model):
@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
 
     
     # fields
+    
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -59,7 +60,22 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute = "_compute_area", string = "Total Area (sqm)")
 
     best_price = fields.Float(compute = "_compute_best_price", store=True)
+    
+    # Constraints
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'A property expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'A property selling price must be positive'), 
+        
+    ]
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price < (0.9 * record.expected_price) and (record.selling_price > 0):
+                raise ValidationError("Selling price cannot be lower than 90 percentage of the expected price.")
+    
     # Functions
     @api.depends('living_area', 'garden_area')
     def _compute_area(self):
@@ -74,6 +90,7 @@ class EstateProperty(models.Model):
             # for offer in record.offer_ids:
             #     max_price = offer.price if offer.price > max_price else max_price
             # record.best_price = max_price
+
             # by mapped method
             if record.offer_ids:
                 record.best_price = max(record.offer_ids.mapped('price'))
@@ -89,10 +106,39 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
     
-    def action_sold(self):
+    def action_out_sold(self):
         for record in self:
             if record.state == 'canceled':
                 raise UserError("You cannot mark a canceled property as sold.")
-            record.state == 'sold'
+            record.state = 'sold'
 
-            
+    def action_cancel(self):
+        if self.state == 'sold':
+            raise UserError("You cannot mark a sold property as canceled.")
+        self.state = 'canceled'
+    
+    def action_sold(self):
+        if self.state == 'canceled':
+            raise UserError("You cannot mark a canceled property as sold.")
+        self.state = 'sold'
+    def go_to(self):
+        action_id = self.env.ref('estate.action_estate_consumer_form').id
+        message = "The customer does not have an email address. Please complete the customer information."
+        button_text = "Go to Customer"
+        raise RedirectWarning(message, action_id, button_text)
+    #  <button name="%(some_action)d" type="action" string="Open Form"/> -->
+    #                 <!-- <button name='False' type = "delete" string = "Delete"/> -->
+
+    #                 <!-- The type attribute defines the kind of action the button triggers
+    #                  type="object": Calls a Python method on the server.
+    #                  type="action": Executes a predefined client-side action 
+    #                  (such as opening a different view, report, or wizard). 
+    #                  type="delete": Deletes the current record.
+    #                  type="edit", type="save"
+    
+    
+    
+
+        
+
+    
