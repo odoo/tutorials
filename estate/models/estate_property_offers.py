@@ -1,5 +1,6 @@
-from odoo import fields, models,api 
+from odoo import fields, models,api  # type: ignore
 from datetime import timedelta, datetime
+from odoo.exceptions import ValidationError # type: ignore
 
 class EstatePropertyOffers(models.Model):
 
@@ -17,7 +18,21 @@ class EstatePropertyOffers(models.Model):
 
     validity = fields.Integer(default = 7)
     date_deadline = fields.Date(compute = "_compute_date_deadline", inverse="_inverse_date_deadline", store="True")
-
+    
+    # Constraints
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)',
+         'An offer price must be strictly positive'),
+    ]
+    
+    @api.constrains('status', 'property_id.selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            
+            if record.property_id.selling_price > 0 and record.status == 'accepted':
+                raise ValidationError('You cannot accept multiple offers')
+            
+    
     # Functions
     @api.depends('validity')
     def _compute_date_deadline(self):
@@ -34,3 +49,17 @@ class EstatePropertyOffers(models.Model):
             else:
                 record.validity = 7
     
+    def action_accepted(self):
+        self.status = "accepted"
+        self.property_id.buyer = self.partner_id
+        self.property_id.selling_price = self.price
+
+    def action_refused(self):
+        if self.status == 'accepted':
+            self.status = "refused"
+            self.property_id.selling_price = False
+            self.property_id.buyer = False
+        else:
+            self.status = "refused"
+
+   
