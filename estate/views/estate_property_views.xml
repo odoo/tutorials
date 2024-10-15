@@ -3,7 +3,14 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Real Estate </field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              Create a Property in your Records.
+            </p><p>
+              Odoo helps you track all your records.
+            </p>
+          </field>
     </record>
 
 
@@ -26,16 +33,45 @@
         </field>
     </record>
 
+    <record id="estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" archivable="false" sample="1">
+                <field name="name"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click">
+                            <div>
+                                <strong class="o_kanban_record_title"><span><field name="name"/></span></strong>
+                            </div>
+                            <div>
+                                <span class="o_kanban_record_subtitle"><field name="expected_price"/></span>
+                            </div>
+                            <div>
+                              <field name="tag_ids"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 
     <!-- showing forms in records -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Lost Reason">
+            <form string="Estate Properties">
                 <header>
-                    <button name="sold_button" type="object" string="SOLD"/>
+                    <button name="sold_button" class="oe_highlight" type="object" string="SOLD"/>
                     <button name="cancel_button" type="object" string="CANCEL"/>
+                    <button name="%(estate_property_tag_action)d" type="action" string="Tags"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
                 </header>
                 <sheet>
                     <h1>
@@ -52,9 +88,9 @@
                             <field name="date_availability" string="Available From"/>
                         </group>
                         <group>
-                            <field name="selling_price"/>
                             <field name="expected_price"/>
                             <field name="best_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group> 
                     <notebook>
@@ -70,7 +106,7 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
-                                <field name="state"/>
+                                <!-- <field name="state"/> -->
                                 <field name="property_type_id"/>
                                 <field name="total_area"/>
                             </group>
@@ -78,17 +114,17 @@
 
                         <!-- Offers Tab -->
                         <page string="Offers">
+                            <sheet>
                                 <field name="offer_ids">
-                                    <tree>
+                                    <tree open_form_view="True" editable="bottom">
                                         <field name="partner_id" string="Partner"/>
                                         <field name="price"/>
                                         <field name="validity"/>
                                         <field name="date_deadline"/>
-                                        <button name="action_refuse_offer" type="object" icon="fa-close" title="Refuse Offer"/>
-                                        <button name="action_accept_offer" type="object" icon="fa-check" title="Accept Offer"/>
+                                        <button name="action_refuse_offer" type="object" string="Refuse" icon="fa-close" title="Refuse Offer"/>
+                                        <button name="action_accept_offer" type="object" string="Accept" icon="fa-check" title="Accept Offer"/>
 
                                         <field name="status" string="Status"/>
-                                        <!-- <button name="action_confirm" string="Confirm" states="draft" type="object" icon="fa-check"/> -->
                                     </tree>
                                     <!-- <form>
                                         <group>
@@ -100,6 +136,7 @@
                                         </group>
                                     </form> -->
                                 </field>
+                            </sheet>
                         </page>
 
                         <!-- Others Info Tab -->
@@ -111,6 +148,12 @@
                         </page>
                     </notebook>
                 </sheet>
+                <!-- <div class="oe_chatter">
+                    <field name="offer_ids"/>
+                    <field name="seller_id"/>
+                    <field name="buyer_id"/>
+                </div> -->
+                <!-- <div class="o_attachment_preview"/> -->
             </form>
         </field>
     </record>
@@ -136,6 +179,8 @@
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <separator/>
                 <filter string="Selling Price" name="selling_price" domain="[('expected_price', '&gt;', 1500000)]"/>
+                <separator/>
+                <filter string="Sold" name="state" domain="[('state', '=', 'sold')]"/>
                 <separator/>
                 <filter string="State" name="state" domain="['|',('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
 

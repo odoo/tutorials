@@ -1,10 +1,20 @@
 from datetime import date, timedelta
-from odoo import api, fields, models  # type: ignore
+from odoo import api, fields, models  
+from odoo.exceptions import UserError, ValidationError 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Application Ayve"
+    _order = "id desc" # default_order="id desc" provides ordering manually for different view forms, _order is used at globally
+    _sql_constraints = [
+        (
+            "check_SP_and_EP_not_negative",
+            "CHECK(expected_price > 0.0 and selling_price >= 0.0)",
+            "The Expected Price And Selling Price should be greater than 0.",
+        ),
+    ]
 
+ 
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -107,13 +117,29 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
     
     # Actions for button
+    '''
+    The first important detail to note is that our method name isn’t prefixed with an underscore (_). 
+    This makes our method a public method, which can be called directly from the Odoo interface (through an RPC call).
+    Until now, all methods we created (compute, onchange) were called internally, so we used private methods prefixed 
+    by an underscore. You should always define your methods as private unless they need to be called from the user interface.
+    '''
     def sold_button(self):
         for record in self:
+            if record.state=="canceled":
+                raise UserError("Property marked as Canceled can not be Sold!")
             record.state = "sold"
         return True
     
     def cancel_button(self):
         for record in self:
+            if record.state=="sold":
+                raise UserError("Property marked as Sold can not be Canceled!")
             record.state = "canceled"
         return True
-        
+    
+    @api.constrains("expected_price","selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if(record.selling_price < (0.9 * record.expected_price) and record.selling_price !=0):
+                raise ValidationError("The Selling Price can not be lower than 90% of the Expected Price.")
+
