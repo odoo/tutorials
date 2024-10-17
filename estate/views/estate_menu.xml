@@ -12,7 +12,7 @@
                 action="estate_property_tag_action"/>
         </menuitem>
         
-        <menuitem id="estate_menu_first_level_custom" name="Custom" sequence="2">
+        <!-- <menuitem id="estate_menu_first_level_custom" name="Custom" sequence="2">
             <menuitem id="estate_menu_second_level_Try" name = "Try" action="estate_private_action" sequence="4"/>
             
             <menuitem id="estate_menu_second_level_setting" name="Parent" sequence="1" >    
@@ -48,9 +48,9 @@
             
             <menuitem id="estate_menu_second_level_custom" action="estate_custom_action"/>
         
-        </menuitem>
+        </menuitem> -->
 
-        <menuitem id="estate_menu_first_level_private" name="Private" sequence="3">
+        <menuitem id="estate_menu_first_level_private" name="Advertisements" sequence="3">
             
             <menuitem id="estate_menu_second_level_private" action="estate_private_action"/>
         
