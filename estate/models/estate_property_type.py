@@ -5,6 +5,8 @@ class estatePropertyType(models.Model):
     _description = "This is property Type table."
 
     name = fields.Char(required=True)
+    active = fields.Boolean(Default=False)
+    number = fields.Integer()
 
 
 
