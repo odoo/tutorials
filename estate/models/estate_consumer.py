@@ -1,6 +1,6 @@
-from odoo import fields, models,api  # type: ignore
+from odoo import fields, models,api 
 from datetime import timedelta, datetime
-from odoo.exceptions import ValidationError # type: ignore
+from odoo.exceptions import ValidationError 
 
 class EstateConsumerModel(models.Model):
 

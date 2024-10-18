@@ -6,6 +6,7 @@ class EstatePropertyOffers(models.Model):
 
     _name = "estate.property.offers"
     _description = "Estate Property Offers Model"
+    _order = "price desc"
     
     price = fields.Float(string='Offer Price')
     status = fields.Selection(
@@ -15,6 +16,7 @@ class EstatePropertyOffers(models.Model):
        )
     partner_id = fields.Many2one('res.partner', required=True) 
     property_id = fields.Many2one('estate.property', required=True)
+    property_type_id = fields.Many2one('estate.property.type',related='property_id.property_type_id', store= True)
 
     validity = fields.Integer(default = 7)
     date_deadline = fields.Date(compute = "_compute_date_deadline", inverse="_inverse_date_deadline", store="True")
@@ -28,8 +30,7 @@ class EstatePropertyOffers(models.Model):
     @api.constrains('status', 'property_id.selling_price')
     def _check_selling_price(self):
         for record in self:
-            
-            if record.property_id.selling_price > 0 and record.status == 'accepted':
+            if record.property_id.selling_price > 0:
                 raise ValidationError('You cannot accept multiple offers')
             
     
@@ -40,7 +41,7 @@ class EstatePropertyOffers(models.Model):
             if record.create_date:
                 record.date_deadline = record.create_date + timedelta(record.validity)
             else:
-                record.date_deadline = datetime.today() + timedelta(7)
+                record.date_deadline = datetime.today() + timedelta(record.validity)
     
     def _inverse_date_deadline(self):
         for record in self:

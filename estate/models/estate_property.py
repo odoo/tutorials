@@ -1,13 +1,14 @@
-from odoo import fields, models,api # type: ignore
+from odoo import fields, models,api 
 from datetime import datetime, timedelta
-from odoo.exceptions import UserError,RedirectWarning, ValidationError # type: ignore
+from odoo.exceptions import UserError,RedirectWarning, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Model"
+    _order = "id desc"
+    # _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    
     # fields
     
     name = fields.Char(required=True)
@@ -26,14 +27,16 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string='Direction',
         selection=[('north', 'North'), ('south', 'South'),('east', 'East'),('west', 'West')],
-        help="Direction selection from North,South,East,West")
+        help="Direction selection from North,South,East,West",
+        )
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(
         string='State',
         copy=False,
         default='new',
         selection=[('new', 'New'), ('offer received', 'Offer Recieved'),('offer accepted', 'Offer Accepted'),('sold', 'Sold'),('canceled', 'Canceled')],
-        help="Direction selection from North,South,East,West")
+        help="Direction selection from North,South,East,West",
+        tracking=True)
     property_type_id = fields.Many2one(
         'estate.property.type', 
         string='Property Type',
