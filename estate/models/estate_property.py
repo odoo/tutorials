@@ -14,7 +14,6 @@ class EstateProperty(models.Model):
         ),
     ]
 
- 
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -142,4 +141,12 @@ class EstateProperty(models.Model):
         for record in self:
             if(record.selling_price < (0.9 * record.expected_price) and record.selling_price !=0):
                 raise ValidationError("The Selling Price can not be lower than 90% of the Expected Price.")
-
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_new_cancel_delete(self):
+        for record in self:
+            if(record.state == "offer_received" or record.state == "offer_accepted" or record.state == "sold"):
+            # if(record.state != 'new' or record.state != 'canceled'):
+                raise UserError("You can Only delete New and Canceled Property.")
+        return True
+        

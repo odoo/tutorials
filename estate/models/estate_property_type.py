@@ -1,4 +1,4 @@
-from odoo import fields, models  # type: ignore
+from odoo import api,fields, models  # type: ignore
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
@@ -14,6 +14,16 @@ class EstatePropertyType(models.Model):
 
 
     name = fields.Char(required=True)
-    property_id = fields.One2many('estate.property',"property_type_id", string="Property")
-    sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
+    property_id = fields.One2many('estate.property',"property_type_id", string="Property", )
+    offer_ids=fields.One2many('estate.property.offer',"property_type_id", string="Offer IDs")
+    offer_count = fields.Integer(compute="_compute_offer_counts", store=True)
+    #sequence field is used in combination with the handle (look in property type views)
+    sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.") # for manual ordering
+
+    @api.depends("offer_ids")
+    def _compute_offer_counts(self):
+        for record in self:
+            print(record.offer_ids)
+            count=len(record.offer_ids)
+            record.offer_count=count
     

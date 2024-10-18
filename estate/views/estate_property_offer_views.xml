@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_offers_action" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[("property_type_id", "=",active_id)]</field>
+        <field name="help" type="html" >
+            <p class="o_view_nocontent_smiling_face">
+              No Offers are found!
+            </p><p>
+              Add the Offers first.
+            </p>
+          </field>
+    </record>
+
+    <record id="estate_property_offer_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.tree</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree string="Property Offers" decoration-success="status in ('accepted')" decoration-danger="status in ('refused')" sample="1">
+                <field name="price"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <field name="status" string="Status"/>
+                </tree>
+        </field>
+    </record>
+</odoo>

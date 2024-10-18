@@ -36,13 +36,15 @@ class EstatePropertyOffer(models.Model):
         string="Property ID"
     )
 
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store="True")
+
     validity =  fields.Integer(
         string="Validity(Days)",
         default=7
     )
     
     date_deadline=fields.Date(
-        string="Dateline",
+        string="Deadline",
         compute="_compute_deadline",
         inverse="_inverse_deadline",
         store=True
@@ -81,4 +83,4 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id=False
             record.property_id.selling_price=False
         return True
- 
+    
