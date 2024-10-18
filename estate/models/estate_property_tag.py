@@ -18,3 +18,6 @@ class estatePropertyTag(models.Model):
         comodel_name='estate.property',
         string='properties'
     )
+    _sql_constraints = [
+            ('check_unique_tag_name','UNIQUE(name)','This tag is already exists.')
+    ]

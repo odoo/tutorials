@@ -26,6 +26,10 @@ class estatePropertyOffer(models.Model):
     sum = fields.Integer(compute='_compute_sum', string="Sum")
     sum2 = fields.Integer(compute='_compute_sum2', string="Sum2")
 
+    _sql_constraints = [
+            ('check_offer_price','CHECK(price > 0)','A property offer price must be strictly positive.')
+    ]
+
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -51,4 +55,17 @@ class estatePropertyOffer(models.Model):
     def _compute_sum2(self):
         for record in self:
             record.sum2 = 7 + record.sum
+
+    def action_accept(self):
+            self.status = 'accepted'
+            self.property_id.buyer_id = self.partner_id
+            self.property_id.selling_price = self.price
+
+    def action_refuse(self):
+            if(self.status == 'accepted'):
+                self.status = 'refused'
+                self.property_id.buyer_id = False
+                self.property_id.selling_price = False
+            else: 
+                self.status = 'refused'
     

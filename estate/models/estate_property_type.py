@@ -8,6 +8,10 @@ class estatePropertyType(models.Model):
     active = fields.Boolean(Default=False)
     number = fields.Integer()
 
+    _sql_constraints = [
+            ('check_unique_type_name','UNIQUE(name)','This type is already exists.')
+    ]
+
 
 
 

@@ -1,5 +1,6 @@
 from odoo import models, fields, api # type: ignore
 from datetime import timedelta
+from odoo.exceptions import UserError, ValidationError
 
 class estateProperty(models.Model):
         _name = "estate.property"
@@ -70,6 +71,11 @@ class estateProperty(models.Model):
 
         best_offer = fields.Float(compute='_compute_best_offer')
 
+        _sql_constraints = [
+                ('check_selling_price','CHECK(selling_price >= 0)','A property selling price must be positive.'),
+                ('check_expected_price','CHECK(expected_price > 0)','A property expected price must be strictly positive.')
+        ]
+
         @api.depends('garden_area', 'living_area')
         def _compute_total_area(self):
                 self.totalArea = self.garden_area + self.living_area
@@ -102,4 +108,22 @@ class estateProperty(models.Model):
 
         # offer = fields.Integer(related='offer_ids.id')
         # property_record = self.env['estate.property'].browse(1)
+
+        def action_sold(self):
+                if(self.state == 'cancelled'):
+                        raise UserError("You can not mark a cancelled property as sold.")
+                self.state = 'sold'
         
+        def action_cancelled(self):
+                if(self.state == 'sold'):
+                        raise UserError("You can not mark sold property as cancelled")
+                self.state = 'cancelled'
+
+        @api.constrains('selling_price', 'expected_price')
+        def _check_selling_price(self):
+                for record in self:
+                        if record.selling_price < (0.9 * record.expected_price) and (record.selling_price > 0):
+                               raise ValidationError("Selling price cannot be lower than 90 percentage of the expected price.")
+
+        
+                        
