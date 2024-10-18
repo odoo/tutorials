@@ -4,49 +4,61 @@
         <field name="name">estate properties types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              You can add some new Property Types by clicking on the New button.
+            </p>
+        </field>
     </record>
-
-    <!-- <record id="estate_property_type_view_tree" model="ir.ui.view">
+    
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
         <field name="name">estate.property.type.view.tree</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <tree string="">
-                <field name="name" string="Property Type"></field>
+            <tree string="Property Type tree view" sample="1">
+                <field name="name"/>
+                <field name="sequence" widget="handle"/>
             </tree>
         </field>
-    </record> -->
+    </record>
 
-    <!-- <record id="estate_property_type_view_form" model="ir.ui.view">
+    <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Property Type">
+            <form string="Property Type Form view">
+                <div class="oe_button_box" name="button_box" position="inside">
+                    <button name="%(estate_property_offer_action)d"
+                            class="oe_stat_button"
+                            type="action"
+                            icon="fa-money">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_count"/>
+                                </span>
+                                <span class="o_stat_text">
+                                    Offers
+                                </span>
+                            </div>
+                    </button>
+                </div>
+                <h1>
+                    <field name="name" />
+                </h1>
                 <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                    <group>
-                        <field name="property_ids">
-                            <tree editable="top">
-                                <field name="name"/>
-                                <field name="expected_price"/>
-                                <field name="selling_price"/>
-                                <field name="state"/>
-                            </tree>
-                            <form>
-                                <group>
-                                    <field name="name"/>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <tree editable="top">
+                                    <field name="name" string="Title"/>
                                     <field name="expected_price"/>
-                                    <field name="selling_price"/>
-                                    <field name="state"/>
-                                    <field name="property_type_id" />
-                                </group>
-                            </form>
-                        </field>
-                    </group>
+                                    <field name="state" string="Status"/>  
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
-    </record> -->
-
+    </record>
 </odoo>
