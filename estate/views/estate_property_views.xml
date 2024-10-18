@@ -3,60 +3,72 @@
         <field name="name">Real Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form,kanban</field>
-        <!-- <field name="context">{'form_view_initial_mode': 'edit'}</field> -->
+        <field name="context">{'search_default_state': True}</field>
+    </record>
+
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name"/>
+                <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area', '&gt;=', self)]"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="bedrooms"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Sold" name="sold" domain="[('state', '=', 'sold')]"/>
+                <filter string="New" name="new" domain="[('state', '=', 'new')]"/>
+                <filter string="Available" name="state" domain="['|',('state', '=', 'new'),('state', '=', 'offer_received')]"/>
+            </search>
+        </field>
     </record>
 
     <record id="view_estate_property_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Properties">
+            <tree string="Properties" 
+                decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-bf="state == 'offer_accepted'"
+                decoration-muted="state=='sold'">
+
                 <field name="name"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="best_price" string="Best Offer"/>
                 <field name="selling_price" string="Selling Price"/>
                 <field name="bedrooms"/>
+                <field name="living_area" string="Living Area (m²)"/>
                 <field name="postcode"/>
                 <field name="total_area" string="Total Area"/>
-                <field name="state" string="Status"/>
+                <field name="state" string="State"/>
                 <field name="property_type_id" string="Property Type"/>
                 <field name="buyer_id" string="Buyer"/>
                 <field name="seller_id" string="Salesperson"/>
+                <field name="offer_ids" string="offers"/>
+                
             </tree>
         </field>
     </record>
-
-    <record id="view_estate_property_kanban" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <tree string="Properties">
-                <field name="name"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="selling_price" string="Selling Price"/>
-                <field name="bedrooms"/>
-                <field name="postcode"/>
-                <field name="state" string="Status"/>
-            </tree>
-        </field>
-    </record>
-
+ 
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Details">
-                <div style="gap: 5px;">
-                <button name="action_set_sold_property" type="object" string="Sold" class="btn-link" modifiers='{"invisible": [[ "state", "not in", ["new", "offer_received", "offer_accepted"]]]}'/>
-                <button name="action_cancel_property" type="object" string="Cancel" class="btn-link" modifiers='{"invisible": [[ "state", "not in", ["new", "offer_received", "offer_accepted"]]]}'/>
-                </div>
+                <header>
+                <button name="action_set_sold_property" type="object" string="Sold" class="oe_highlight" title="Sold" invisible="state == 'sold' or state == 'canceled'" />
+                <button name="action_cancel_property" type="object" string="Cancel" title="cancle" invisible="state == 'sold' or state == 'canceled'"/>
+                <field name="state" widget="statusbar" options="{'clickable': '1'}"/> <!-- options="{'horizontal': true}" -->
+                </header>
                 <sheet>
                     <h1><field name="name" options="{'no_label': True}"/></h1>
                     <group> 
                         <group>  
-                            <field name="property_type_id" string="Property Type"/>
+                            <field name="property_type_id" string="Property Type" options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode" string="Postcode"/>
-                            <field name="tag_ids" string="Tags" widget="many2many_tags"/>
+                            <field name="date_availability" string="Availability Date"/>
+                            <field name="tag_ids" string="Tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                         <group>
                                 <field name="expected_price" string="Expected Price"/>
@@ -76,10 +88,11 @@
                                 <field name="facades" string="Number of Facades"/>
                                 <field name="garage" string="Garage"/>
                                 <field name="garden" string="Garden"/>
-                                <field name="garden_area" string="Garden Area (m²)"/>
-                                <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="garden_area" string="Garden Area (m²)" invisible="not garden"/>
+                                <field name="garden_orientation" string="Garden Orientation" invisible="not garden" />
                                 <field name="total_area" string="Total Area" readonly="1"/>
                                 <field name="state" string="Status"/>
+                                <field name="date_availability" optional="hide"/> 
                             </group>
                         </page>
                         
@@ -97,40 +110,41 @@
                         </page> -->
                         
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <tree> <!-- editable="bottom" create="true" -->
+                            <field name="offer_ids" readonly="state == 'offer_accepted' or state == 'sold' or state == 'canceled'">
+                                <tree create="true" domain="[('property_id.state', '!=', 'offer_accepted'), ('property_id.state', '!=', 'sold'), ('property_id.state', '!=', 'canceled')]"
+                                    decoration-success="status == 'accepted'"
+                                    decoration-danger="status == 'refused'">
+
                                     <field name="partner_id"/>
                                     <field name="price"/>
                                     <field name="created_date"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
                                     <field name="status"/>
-                                    <button name="action_accept_offer" type="object" icon="fa-check" string="Accept" states="pending"/>
-                                    <button name="action_refuse_offer" type="object" icon="fa-times" string="Refuse" states="pending"/>
+                                    <button name="action_accept_offer" type="object" icon="fa-check" string="Accept" states="pending" invisible="status != 'pending'"/>
+                                    <button name="action_refuse_offer" type="object" icon="fa-times" string="Refuse" states="pending" invisible="status != 'pending'"/>
                                 </tree>
                             </field>
                         </page>
-                        
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-
-    <record id="view_estate_property_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+  
+    <!-- <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Search Properties">
+            <tree string="Properties">
                 <field name="name"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
                 <field name="bedrooms"/>
-                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
-                <filter string="Sold" name="sold" domain="[('state', '=', 'sold')]"/>
-                <filter string="New" name="new" domain="[('state', '=', 'new')]"/>
-            </search>
+                <field name="postcode"/>
+                <field name="state" string="Status"/>
+            </tree>
         </field>
-    </record>
+    </record> -->
 
 </odoo>

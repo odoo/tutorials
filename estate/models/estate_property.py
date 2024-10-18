@@ -1,10 +1,11 @@
-from odoo import api,fields, models, exceptions
+from odoo import api,fields, models, exceptions #type: ignore
 from datetime import datetime, timedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError #type: ignore
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"  # Default order by descending ID
 
     name = fields.Char(required=True)
     description = fields.Text()
