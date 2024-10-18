@@ -23,9 +23,21 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="%(estate_property_offers_action)d"
+                                type="action" icon="fa-money">
+                            <div class="o_stat_info o_field_widget">
+                                <span class="o_stat_text text_success">
+                                    Offers
+                                    <field name="offer_count"/>
+                                </span>
+                            </div>
+                        </button>
+                    </div>
                     <h1>
                         <field name="name"/>
                     </h1>
+                     <field name="sequence"/>
                     <notebook>
                         <page string="Properties">
                             <!-- Because of this property_id we can access its fields -->

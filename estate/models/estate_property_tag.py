@@ -4,6 +4,7 @@ class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "Estate Property Tag Ayve"
     _order = "name"
+    color = fields.Integer()
 
     #constraint name, definition of constraint, a display warning
     _sql_constraints = [
