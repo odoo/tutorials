@@ -1,9 +1,15 @@
-from odoo import fields,models, api
 from datetime import timedelta
+from odoo.exceptions import UserError, ValidationError
+from odoo import api, fields, models 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Description"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'A property expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'A property selling price must be positive.')
+    ]
+    _order = 'id desc'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -18,7 +24,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        [
+        selection=[
             ('north', 'North'),
             ('south', 'South'),
             ('east', 'East'),
@@ -67,7 +73,7 @@ class EstateProperty(models.Model):
     # property One2many realtion with offer
     offer_ids = fields.One2many(
         'estate.property.offer',
-        'property_id'
+        'property_id',
     )
 
     # store the total area by living_area and garden_area
@@ -77,21 +83,22 @@ class EstateProperty(models.Model):
     # if we use store=True then it saves the computed value in database too
     best_offer_price = fields.Integer(compute="_compute_bestPrice", store=True)
 
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price != 0.0 and record.selling_price < 0.9 * self.expected_price:
+                raise ValidationError("selling price cannot be lower than 90% of the expected price.")
 
     # function for compute the total area
     @api.depends("living_area","garden_area")
     def _compute_totalArea(self):
         for record in self:
-            # print("living area : ", record.living_area)
-            # print("garden area : ", record.garden_area)
             record.total_area = record.living_area + record.garden_area
 
     # function for compute the best price of offers
     @api.depends("offer_ids.price")
     def _compute_bestPrice(self):
         for record in self:
-            # print("Price list of all offers : ", record.mapped("offer_ids.price"))
-            # record.best_offer_price = max(record.mapped("offer_ids.price"), default=0)
             record.best_offer_price = max(record.offer_ids.mapped("price"), default=0)
 
     # change in value of garden(Boolean) reflects garden_area and garden_orientation automatically
@@ -103,3 +110,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+  
+    def action_property_sold(self):
+        for record in self:
+            if(record.state=="canceled"):
+                raise UserError("This property is already Cancelled.")
+            else:
+                record.state = 'sold'
+        return True
+
+    def action_property_cancel(self):
+        for record in self:
+            if(record.state=="sold"):
+                raise UserError("This property is already Sold.")
+            else:
+                record.state = 'canceled'
+        return True

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                You can add some offers from the property view.
+            </p>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.tree</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="status=='accepted'" decoration-danger="status=='refused'">
+                <field name="price"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="validity" string="Validity (days)"/>
+                <field name="date_deadline" string="Deadline"/>
+                <field name="status" column_invisible="1"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
