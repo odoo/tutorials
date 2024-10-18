@@ -1,44 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <odoo>
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Type</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Start creating new property types</p>
+        </field>
     </record>
 
-    <!-- <record id="estate_property_type_view_tree" model="ir.ui.view">
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
         <field name="name">estate.property.type.view.tree</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <tree string="Property Type">
+            <tree string="Property Type" sample='1' >
                 <field name="name" string="Name"/>
+                <field name="sequence" widget="handle"/>
             </tree>
         </field>
     </record> 
-
 
     <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-
             <form string="Property type">
-                <sheet>
-                    <group>
-                            <field name="name" string="Name" />
-                            <field name="property_ids">
-                                <tree string="Property Type">
-                                    <field name="name" string="Name"/>
-                                    <field name ="expected_price"/>
-                                    <field name="selling_price"/>
-                                </tree>
-                            </field>
-                    </group>
-                </sheet>
+              <button name="%(estate_property_offer_view_action)d" type="action" title="Offers" class="oe_stat_button">Offers</button>
+                <h1>
+                    <field name="name" string="Name" />
+                </h1>
+                <group>
+                    <field name="offer_count"/>
+                    <field name="sequence"/>
+                </group>
+            <notebook>
+                <page name="Properties">
+                        <field name="property_ids">
+                            <tree string="Property Type">
+                                <field name="name" string="Name"/>
+                                <field name ="expected_price"/>
+                                <field name="selling_price"/>
+                            </tree>
+                        </field>
+                </page>
+            </notebook>
             </form>
         </field>
-    </record> -->
-
-
+    </record>
 </odoo>
