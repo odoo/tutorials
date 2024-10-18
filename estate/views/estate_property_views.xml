@@ -4,40 +4,72 @@
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'default_name': "Harshhhh", 'search_default_name': "Atishay"}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+              You can add some new Estate Properties by clicking on the New button.
+            </p>
+        </field>
     </record>
 
     <record id="estate_property_tree_view" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Properties">
+            <tree string="Properties tree" 
+                  sample="1" 
+                  decoration-success="state in ('offer received', 'offer_accepted')"
+                  decoration-bf="state == 'offer_accepted'"
+                  decoration-muted="state=='sold'"
+            >
                 <field name="name" string="Title"/>
-                <field name="postcode" string="abc"/>
+                <field name="postcode" string="Postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" string="Available From"/>
-                <field name="property_type_id" string="Property Type" />
+                <field name="date_availability" string="Available From" optional="hide"/>
+                <field name="property_type_id" string="Property Type"/>
+                <field name="tag_ids" string="Tags" widget="many2many_tags" options="{'color_field':'color'}"/>
+                <field name="state" column_invisible="1"/>
             </tree>
         </field>
     </record>
 
     <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+        <field name="name">estate.property.form</field> 
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties form">
+                <header>
+                    <button name="action_property_sold" 
+                            type="object" 
+                            class="oe_highlight" 
+                            string="Sold" 
+                            title="Sold" 
+                            invisible="state in ('sold', 'canceled')"
+                    />
+                    <button name="action_property_cancel" 
+                            type="object" 
+                            string="Cancel" 
+                            title="Canceled"
+                            invisible="state in ('sold', 'canceled')"
+
+                    />
+                    <button name="%(estate_property_tag_action)d" type="action" string="Call action" title="action button"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
                     <group>
-                        <field name="tag_ids" string="Tags" widget="many2many_tags"/>
+                        <field name="tag_ids" string="Tags" widget="many2many_tags" options="{'color_field':'color'}"/>
                     </group>
                     <group>
                         <group>
-                            <field name="property_type_id" string="Property Type" />
+                            <field name="state" string="status"/>
+                            <field name="property_type_id" string="Property Type" options="{'no_create': true, 'no_create_edit': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -56,8 +88,8 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="state" />
                                 <field name="active" />
                                 <field name="total_area"/>
@@ -65,13 +97,15 @@
                         </page>
                         <page string="offers">
                             <group>
-                                <field name="offer_ids">
-                                    <tree>
+                                <field name="offer_ids" readonly="state in ('offer_accepted',   'sold', 'canceled')">
+                                    <tree editable="bottom" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
                                         <field name="price"/>
                                         <field name="partner_id" string="Partner"/>
                                         <field name="validity" string="Validity (days)"/>
                                         <field name="date_deadline" string="Deadline"/>
-                                        <field name="status"/>
+                                        <button name="action_offer_accepted" type="object" icon="fa-check" title="accept" invisible="status == 'accepted' or status == 'refused'"/>
+                                        <button name="action_offer_refused" type="object" icon="fa-remove" title="reject" invisible="status == 'accepted' or status == 'refused'"/>
+                                        <field name="status" column_invisible="1"/>
                                     </tree>
                                     <form>
                                         <group>
@@ -79,11 +113,10 @@
                                             <field name="partner_id" string="Partner"/>
                                             <field name="validity" string="Validity (days)"/>
                                             <field name="date_deadline" string="Deadline"/>
-                                            <field name="status"/>                                        
+                                            <field name="status" readonly='1'/>                                        
                                         </group>
                                     </form>
                                 </field>
-                                <!-- <field name="offer_ids" /> -->
                             </group>
                         </page>
                         <page string="Other Info">
@@ -110,10 +143,11 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades"/>
                 <field name="property_type_id" string="Property Type" />
-                <filter name="state" domain="[('state', '=', 'new'), ('state', '=', 'offer received')]"/>
-                <filter name="bedrooms" domain="[('bedrooms', '&lt;=', '2')]"/>
-                <group string="Group By" expand="1">
-                    <filter name="postcode" string="postcode" context="{'group_by': 'postcode', 'residual_visible':False}" />
+                <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area', '&gt;=', self)]"/>
+                <filter name="state" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter name="bedrooms" domain="[('bedrooms', '&lt;=', '3')]"/>
+                <group string="Group By">
+                    <filter name="postcode" string="postcode" context="{'group_by': 'postcode'}" />
                 </group>
             </search>
         </field>
