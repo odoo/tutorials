@@ -4,6 +4,32 @@
         <field name="name">Property Tags</field>
         <field name="res_model">estate.property.tags</field>
         <field name="view_mode">tree,form,kanban</field>
-       
+        
+    </record> 
+    <record id="estate_property_tags_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.tags.tree</field>
+        <field name="model">estate.property.tags</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_estate_property_tags_form" model="ir.ui.view">
+        <field name="name">estate.property.tags.view.form</field>
+        <field name="model">estate.property.tags</field>
+        <field name="arch" type="xml">
+            <form string="Consumer">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="color"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+        
+        
     </record> 
 </odoo>

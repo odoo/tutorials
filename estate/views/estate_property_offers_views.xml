@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_offers_action" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offers</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+
+    <record id="estate_property_offers_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.offers.view.tree</field>
+        <field name="model">estate.property.offers</field>
+        <field name="arch" type="xml">
+         
+                <tree >
+                    <field name="price"></field>
+                    
+                    <field name="partner_id"></field>
+                    <field name="validity"></field>
+                    <field name="date_deadline" string = "Deadline"></field>
+                    <button name="action_accepted" type="object" icon="fa-check" invisible="status != False"/>
+                    <button name="action_refused" type="object" icon="fa-times" invisible="status != False"/>
+                    <field name="status" optional='1'></field>
+                </tree>
+           
+        </field>
+     </record>
+     
+
+</odoo>
