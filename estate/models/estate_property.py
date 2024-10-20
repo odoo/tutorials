@@ -5,6 +5,8 @@ from odoo.exceptions import UserError, ValidationError
 class estateProperty(models.Model):
         _name = "estate.property"
         _description = "This is property Table."
+        _order = "selling_price desc, name"
+        # _order = "number"
 
         name = fields.Char(required=True)
         description = fields.Text()
@@ -29,7 +31,7 @@ class estateProperty(models.Model):
         active = fields.Boolean(default=True)
         state = fields.Selection(
             string = 'State',
-            selection = [('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+            selection = [('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
             help = "Offer available in five type.",
             required=True,
             copy=False,
@@ -39,8 +41,7 @@ class estateProperty(models.Model):
                 comodel_name='estate.property.type',
                 string='Property Type',
                 domain="[('number', '>=', 0)]",
-                ondelete='cascade',
-                store=False # 3 option: cascade, set null, restrict
+                ondelete='cascade' # 3 option: cascade, set null, restrict
                 # index, traking, store, compute, related
         )
         seller_id = fields.Many2one(

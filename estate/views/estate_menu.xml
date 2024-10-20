@@ -52,7 +52,7 @@
 
         <menuitem id="estate_menu_first_level_private" name="Advertisements" sequence="3">
             
-            <menuitem id="estate_menu_second_level_private" action="estate_private_action"/>
+            <menuitem id="estate_menu_second_level_private" action="estate_property_action"/>
         
         </menuitem>
 
