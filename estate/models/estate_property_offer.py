@@ -5,6 +5,7 @@ class estatePropertyOffer(models.Model):
 
     _name = "estate.property.offer"
     _description = "This is offer table"
+    _order = "id desc"
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -29,6 +30,13 @@ class estatePropertyOffer(models.Model):
     _sql_constraints = [
             ('check_offer_price','CHECK(price > 0)','A property offer price must be strictly positive.')
     ]
+
+    property_type_id = fields.Many2one(
+        comodel_name="estate.property.type",
+        related="property_id.property_type_id",
+        store=True
+    )
+    
 
     @api.depends('validity')
     def _compute_date_deadline(self):
