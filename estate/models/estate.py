@@ -1,3 +1,5 @@
+from dataclasses import field
+
 from odoo import fields, models
 
 
@@ -5,7 +7,7 @@ class Estate(models.Model):
     _name = "estate.estate"
     _description = "This is the estate model."
 
-    status = fields.Char()
+    status_id = fields.Many2one("estate.status")
     price = fields.Float()
     bed = fields.Integer()
     bath = fields.Integer()
@@ -14,3 +16,10 @@ class Estate(models.Model):
     state = fields.Char()
     zip_code = fields.Char()
     house_size = fields.Float()
+
+
+class Status(models.Model):
+    _name = "estate.status"
+    _description = "This is the description."
+
+    name = fields.Char()
