@@ -1,6 +1,8 @@
 from datetime import timedelta
+
 from odoo.exceptions import UserError, ValidationError
-from odoo import api, fields, models 
+from odoo import api, fields, models
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -90,7 +92,7 @@ class EstateProperty(models.Model):
                 raise ValidationError("selling price cannot be lower than 90% of the expected price.")
 
     # function for compute the total area
-    @api.depends("living_area","garden_area")
+    @api.depends("living_area", "garden_area")
     def _compute_totalArea(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
@@ -110,10 +112,10 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
-  
+
     def action_property_sold(self):
         for record in self:
-            if(record.state=="canceled"):
+            if record.state == "canceled":
                 raise UserError("This property is already Cancelled.")
             else:
                 record.state = 'sold'
@@ -121,8 +123,13 @@ class EstateProperty(models.Model):
 
     def action_property_cancel(self):
         for record in self:
-            if(record.state=="sold"):
+            if record.state == "sold":
                 raise UserError("This property is already Sold.")
             else:
                 record.state = 'canceled'
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_delete_new_canceled(self):
+        if self.state not in ['new', 'canceled']:
+            raise UserError("You can not delete a property which is not new or canceled.")
