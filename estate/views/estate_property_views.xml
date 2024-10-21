@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="name"/>
+                <field name="property_type_id" optional="show"/>
+                <field name="postcode" optional="show"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="show"/>
+                <field name="bedrooms" optional="hide"/>
+                <field name="living_area" optional="hide"/>
+                <field name="expected_price" optional="show"/>
+                <field name="selling_price" optional="show"/>
+                <field name="date_availability" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'offer_received'"
+                       decoration-success="state in ['sold', 'offer_accepted']"
+                       decoration-danger="state == 'canceled'"
+                       optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Properties">
+                <header>
+                    <button name="action_sold" type="object" class="btn-primary" string="Sold"
+                            invisible="state in ['sold', 'canceled']"/>
+                    <button name="action_canceled" type="object" string="Cancel"
+                            invisible="state in ['sold', 'canceled']"/>
+                    <button name="action_reset" type="object" string="Reset"
+                            invisible="state not in ['sold', 'canceled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <div class="mb-3">
+                        <field name="tag_ids" widget="form.many2many_tags" options="{'color_field': 'color'}"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="property_type_id" can_create="False" can_write="False"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="best_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"
+                                   context="{'list_view_ref':'estate.estate_property_offer_view_list'}"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_filter" model="ir.ui.view">
+        <field name="name">estate.property.list.select</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Property">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="bedrooms" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="facades" filter_domain="[('living_area', '>=', self)]"/>
+
+                <filter name="available" string="Available"
+                        domain="[('date_availability', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Postcode" name="postcode" domain="[]" context="{'group_by': 'postcode'}"/>
+                    <filter string="Property Type" name="property_type" domain="[]"
+                            context="{'group_by': 'property_type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
+</odoo>
