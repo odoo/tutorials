@@ -10,8 +10,8 @@
         <field name="name">estate.estate.list</field>
         <field name="model">estate.estate</field>
         <field name="arch" type="xml">
-            <list string="Estate">
-                <field name="status"/>
+            <list string="Estate" editable="True">
+                <field name="status_id"/>
                 <field name="price"/>
                 <field name="city"/>
                 <field name="state"/>
