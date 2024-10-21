@@ -1,11 +1,13 @@
-from odoo import api,fields, models, exceptions #type: ignore
 from datetime import datetime, timedelta
+
+from odoo import api, exceptions, fields, models  #type: ignore
 from odoo.exceptions import UserError #type: ignore
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-    _order = "id desc"  # Default order by descending ID
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -39,7 +41,7 @@ class EstateProperty(models.Model):
     ],
         help="Orientation of Garden")
 
-    @api.onchange('garden')
+    @api.onchange()
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10 
@@ -48,8 +50,8 @@ class EstateProperty(models.Model):
             self.garden_area = 0 
             self.garden_orientation = False 
 
-    total_area = fields.Float(compute="_compute_total_area", string="Total Area", store=True)
-    @api.depends('living_area', 'garden_area')
+    total_area = fields.Float(compute="_compute_total_area", string="Total Area")
+    # @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
@@ -60,11 +62,10 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
 
-    # def _inverse_best_price(self): inverse="_inverse_best_price"
+    # def _inverse_best_price(self):
     #     for record in self:
     #         for offer in record.offer_ids:
     #             offer.price = record.best_price
-
     #         if not record.offer_ids:
     #             self.env['estate.property.offer'].create({
     #                 'property_id': record.id,
@@ -99,5 +100,10 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
-
     
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancelled(self):
+        for property in self:
+            if property.state not in ['new', 'cancelled']:
+                raise UserError('You cannot delete a property unless it is in "New" or "Cancelled" state.')
+                

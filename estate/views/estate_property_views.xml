@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Real Estate Properties</field>
@@ -32,7 +33,6 @@
                 decoration-success="state in ('offer_received', 'offer_accepted')"
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state=='sold'">
-
                 <field name="name"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="best_price" string="Best Offer"/>
@@ -46,11 +46,45 @@
                 <field name="buyer_id" string="Buyer"/>
                 <field name="seller_id" string="Salesperson"/>
                 <field name="offer_ids" string="offers"/>
-                
             </tree>
         </field>
     </record>
- 
+
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.kanban.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="False">
+                <field name="state"></field>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click">
+                            <div>
+                                <strong class="o_kanban_record_title"><span><field name="name"/></span></strong>
+                            </div>
+                            <div>
+                                Expected Price : <field name='expected_price'/>
+                             </div>
+                             <t t-if="record.state.raw_value == 'offer_received'">
+                                 <div>
+                                 Best Offer price : <field name="best_price"/>
+                                 </div>
+                             </t>
+                             <t t-if="record.state.raw_value  == 'offer_accepted'">
+                                 <div>
+                                 Selling Price : <field name="selling_price"/>
+                                 </div>
+                             </t>
+                             <div>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -74,12 +108,10 @@
                                 <field name="expected_price" string="Expected Price"/>
                                 <field name="best_price" string="Best Offer"/>
                                 <field name="selling_price" string="Selling Price" readonly="1"/>
-                        </group>
-                        
+                        </group> 
                     </group>
 
                     <notebook>
-
                         <page string="Description">
                             <group>
                                 <field name="description" string="Detailed Description"/>
@@ -102,12 +134,6 @@
                                 <field name="seller_id" string="Salesperson"/>
                             </group>
                         </page>
-
-                        <!-- <page string="Tags">
-                            <group>
-                                <field name="tag_ids" widget="many2many_tags"/>
-                            </group>
-                        </page> -->
                         
                         <page string="Offers">
                             <field name="offer_ids" readonly="state == 'offer_accepted' or state == 'sold' or state == 'canceled'">
@@ -131,20 +157,5 @@
             </form>
         </field>
     </record>
-  
-    <!-- <record id="view_estate_property_kanban" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <tree string="Properties">
-                <field name="name"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="selling_price" string="Selling Price"/>
-                <field name="bedrooms"/>
-                <field name="postcode"/>
-                <field name="state" string="Status"/>
-            </tree>
-        </field>
-    </record> -->
 
 </odoo>

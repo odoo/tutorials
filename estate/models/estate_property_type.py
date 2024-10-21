@@ -1,4 +1,5 @@
-from odoo import api, models, fields #type: ignore
+from odoo import api, fields, models #type: ignore
+
 
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
@@ -25,3 +26,4 @@ class EstatePropertyType(models.Model):
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
+            

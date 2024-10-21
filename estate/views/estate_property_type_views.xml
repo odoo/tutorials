@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
@@ -26,7 +27,6 @@
                         <field name="name"/>
                     </h1>
                         <field name="sequence" />
-
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
@@ -43,10 +43,4 @@
         </field>
     </record>
 
-    <record id="action_estate_property_offer" model="ir.actions.act_window">
-        <field name="name">Property Offers</field>
-        <field name="res_model">estate.property.offer</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('property_type_id', '=', active_id)]</field>
-    </record>
 </odoo>

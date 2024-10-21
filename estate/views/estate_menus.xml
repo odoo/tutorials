@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
     <menuitem id="estate_menu_root" web_icon="estate,static/logo.png" name="Real Estate">
