@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="estate_property_offer_view_list" model="ir.ui.view">
+    <field name="name">estate.property.offer.view.list</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+        <list editable="bottom" >
+            <field name='price'/>
+            <field name='partner_id'/>
+            <field name='status'/>
+            <button name="action_accept" invisible="status" string='Accept' type="object" icon='fa-check'/>
+            <button name="action_refuse" invisible="status" string='Refuse' type="object" icon='fa-remove'/>
+        </list>
+    </field>
+  </record>
+
+
+  <!-- Action window that uses the tree view -->
+    <record id="estate_property_offer_view" model="ir.actions.act_window">
+        <field name="name">Properties offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,search</field> 
+    </record>
+</odoo>
