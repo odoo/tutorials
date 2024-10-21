@@ -15,6 +15,7 @@
         'views/estate_property_views.xml',
         'views/estate_menus_view.xml',
         'security/ir.model.access.csv',
+        'views/res_users_inherited_view.xml',
     ],
     # data files containing optionally loaded demonstration data
     'demo': [],
