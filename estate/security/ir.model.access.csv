@@ -3,4 +3,3 @@ access_estate_property,access_estate_property,model_estate_property,base.group_u
 access_estate_property_type,access_estate_property_type,model_estate_property_type,base.group_user,1,1,1,1
 access_estate_property_tags,access_estate_property_tags,model_estate_property_tags,base.group_user,1,1,1,1
 access_estate_property_offers,access_estate_property_offers,model_estate_property_offers,base.group_user,1,1,1,1
-access_estate_consumer,access_estate_consumer,model_estate_consumer,base.group_user,1,1,1,1
