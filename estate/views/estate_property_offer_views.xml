@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">form, list</field>
+        <field name="domain">[('event_id', '=', active_id)]</field>
+    </record>
+
+    <record id="estate_property_offer_form_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Entries">
+                <header>
+                    <button name="action_estate_property_offer_accept" type="object" string="Accept" invisible="status == 'accepted' or status == 'refused'"/>
+                    <button name="action_estate_property_offer_refuse" type="object" string="Refuse" invisible="status == 'accepted' or status == 'refused'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_list_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Entries" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <button name="action_estate_property_offer_accept" type="object" string="Accept" icon="fa-check"/>
+                <button name="action_estate_property_offer_refuse" type="object" string="Refuse" icon="fa-times"/>
+            </list>
+        </field>
+    </record>
+</odoo>

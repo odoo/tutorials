@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_settings_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_settings_form_view" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Entries">
+                <header>
+                    <button type="action" name="%(estate_property_offer_action)d" string="Offers"/>
+                </header>
+                <sheet>
+                    <h1 class="mb32">
+                        <field name="name"/>
+                    </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <group>
+                                <field name="line_ids">
+                                    <list>
+                                        <field name="title"/>
+                                        <field name="expected_price"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_settings_list_view" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Entries">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_settings_line_list_view" model="ir.ui.view">
+        <field name="name">estate.property.type.line.list</field>
+        <field name="model">estate.property.type.line</field>
+        <field name="arch" type="xml">
+            <list string="Entries">
+                <field name="sequence" widget="handle"/>
+                <field name="title"/>
+            </list>
+        </field>
+    </record>
+</odoo>
