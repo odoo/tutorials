@@ -1,6 +1,8 @@
 from datetime import timedelta, datetime
-from odoo.exceptions import UserError
+
+from odoo.exceptions import UserError, ValidationError
 from odoo import api, fields, models
+
 
 class EstatePpropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -49,20 +51,20 @@ class EstatePpropertyOffer(models.Model):
 
     def action_offer_accepted(self):
         for record in self:
-            if(record.property_id.buyer_id):
+            if record.property_id.buyer_id:
                 raise UserError("This Property has already accepted an offer.")
             else:
-                record.status='accepted'
-                record.property_id.buyer_id=record.partner_id
-                record.property_id.selling_price=record.price
+                record.status = 'accepted'
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.selling_price = record.price
         return True
 
     def action_offer_refused(self):
         for record in self:
             if record.status == 'accepted':
-                record.property_id.buyer_id=False
-                record.property_id.selling_price=False
-            self.status='refused'
+                record.property_id.buyer_id = False
+                record.property_id.selling_price = False
+            self.status = 'refused'
         return True
 
     def group_and_sum_prices(self):
@@ -72,13 +74,11 @@ class EstatePpropertyOffer(models.Model):
             ['property_id', 'price:sum'],    # Group by property_id, sum of price
             ['property_id']                  # Group by field
         )
-        
-        # Output the result to the terminal for debugging purposes
-        print(result)
-        print('----------------------------------------------------------------')
-        for group in result:
-            property_id = group['property_id'][1]  # property_id name
-            total_price = group['price']
-            print(f"Property: {property_id}, Total Price: {total_price}")
-        print('----------------------------------------------------------------')
-        return result
+
+    @api.model
+    def create(self, vals_list):
+        property_id = self.env['estate.property'].browse(vals_list['property_id'])
+        if vals_list['price'] < property_id.best_offer_price:
+            raise ValidationError("You can not create offer with a lower amount than an existing offer.")
+        property_id.state =  'offer received'
+        return super(EstatePpropertyOffer, self).create(vals_list)
