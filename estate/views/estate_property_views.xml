@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'default_name': "Harshhhh", 'search_default_name': "Atishay"}</field>
         <field name="domain"></field>
         <!-- <field name="target">fullscreen</field> -->
@@ -151,6 +151,41 @@
                     <filter name="postcode" string="postcode" context="{'group_by': 'postcode'}" />
                 </group>
             </search>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="False">
+                <field name="state"></field>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <strong>
+                                <field name="name"/>
+                            </strong>
+                            <div>
+                                Expected Price : <field name="expected_price"/>
+                            </div>
+                            <t t-if="record.state.raw_value == 'offer received'">
+                                <div>
+                                    Best Offer Price : <field name="best_offer_price" string="Best Offer"/>
+                                </div>
+                            </t>
+                            <t t-if="record.state.raw_value == 'offer_accepted'">
+                                <div>
+                                    Selling Price : <field name="selling_price"/>
+                                </div>
+                            </t>
+                            <div>
+                                <field name="tag_ids" string="Tags" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>

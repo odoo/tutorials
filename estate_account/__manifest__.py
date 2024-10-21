@@ -5,7 +5,7 @@
     'author': "Harsh Chaudhari",
     'category': 'Category',
     'description': """
-    Real Estate description...
+    Real Estate Account description...
     """,
     # data files always loaded at installation
     'data': [
