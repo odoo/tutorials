@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Real Estate Property Type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Types">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Types">
+                <sheet>
+                    <div name="button_box" position="inside">
+                        <button class="oe_stat_button"
+                                 type="action"
+                                 icon="fa-money"
+                                 name="%(estate.estate_property_offer_action)d">
+                                 <field string="Offers" name="offer_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
