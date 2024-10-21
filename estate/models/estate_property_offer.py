@@ -1,0 +1,81 @@
+from odoo import fields, models, api
+from odoo.exceptions import UserError
+
+
+class EstatePropertyOffer(models.Model):
+    _name = "estate.property.offer"
+    _description = "Real Estate Property Offer"
+
+    price = fields.Float("Price")
+    status = fields.Selection(
+        selection=[
+            ("accepted", "Accepted"),
+            ("refused", "Refused"),
+        ],
+        copy=False,
+        string="Status"
+        )
+    partner_id = fields.Many2one("res.partner", string="Buyer")
+    property_id = fields.Many2one("estate.property", string="Property")
+    validity = fields.Integer("Validity (in days)", default="7")
+    date_deadline = fields.Date(
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+        string="Deadline"
+    )
+
+    @api.depends("validity")
+    def _compute_date_deadline(self):
+        for record in self:
+            create_date = fields.Date.to_date(record.create_date)
+            base_date = create_date if create_date is not None else fields.Date.today()
+            record.date_deadline = fields.Date.add(base_date, days=record.validity)
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            record.validity = (record.date_deadline - fields.Date.today()).days
+
+    def accept_offer(self):
+        for record in self:
+            query = """
+            SELECT
+                count(*) as offer_accepted
+            FROM
+                estate_property_offer
+            WHERE
+                property_id = %(property_id)s
+            AND
+                status = 'accepted'
+            AND
+                id != %(id)s
+            """
+            self.env.cr.execute(query, {
+                'property_id': record.property_id.id,
+                'id': record.id
+            })
+
+            query_result = self.env.cr.dictfetchone()
+
+            if query_result['offer_accepted'] > 0:
+                raise UserError('Only one offer can be accepted per property.')
+            else:
+                record.status = "accepted"
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.selling_price = record.price
+        return True
+
+    def refuse_offer(self):
+        for record in self:
+            if record.status == "accepted":
+                record.property_id.buyer_id = None
+                record.property_id.selling_price = "0"
+            record.status = "refused"
+        return True
+
+    _sql_constraints = [
+        (
+            'check_offer_price',
+            'CHECK(price > 0)',
+            'The offer price of a propery should always be positive'
+        )
+    ]
