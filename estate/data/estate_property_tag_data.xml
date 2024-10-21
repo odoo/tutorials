@@ -1,0 +1,25 @@
+<odoo>
+    <record id="demo_tag_1" model="estate.property.tag">
+        <field name="name">Cozy</field>
+        <field name="color">3</field>
+        <field name="description">Cozy house</field>
+    </record>
+
+    <record id="demo_tag_2" model="estate.property.tag">
+        <field name="name">Work</field>
+        <field name="color">4</field>
+        <field name="description">Nice workplace</field>
+    </record>
+
+    <record id="demo_tag_3" model="estate.property.tag">
+        <field name="name">Family</field>
+        <field name="color">5</field>
+        <field name="description">For family</field>
+    </record>
+
+    <record id="demo_tag_4" model="estate.property.tag">
+        <field name="name">Special</field>
+        <field name="color">8</field>
+        <field name="description">Special property</field>
+    </record>
+</odoo>
