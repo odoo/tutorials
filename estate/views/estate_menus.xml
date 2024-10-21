@@ -1,0 +1,8 @@
+<odoo>
+    <menuitem id="root_menu" name="Real Estate"/>
+    <menuitem id="ads_menu" name="Advertisements" parent="root_menu"/>
+    <menuitem id="prop_settings_menu" name="Settings" parent="root_menu"/>
+    <menuitem id="prop_menu" action="property_action" parent="ads_menu"/>
+    <menuitem id="prop_type_menu" action="property_type_action" parent="prop_settings_menu"/>
+    <menuitem id="prop_tag_menu" action="property_tag_action" parent="prop_settings_menu"/>
+</odoo>
