@@ -5,6 +5,8 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
         <field name="context">{'default_name': "Harshhhh", 'search_default_name': "Atishay"}</field>
+        <field name="domain"></field>
+        <!-- <field name="target">fullscreen</field> -->
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
               You can add some new Estate Properties by clicking on the New button.
@@ -54,7 +56,6 @@
                             string="Cancel" 
                             title="Canceled"
                             invisible="state in ('sold', 'canceled')"
-
                     />
                     <button name="%(estate_property_tag_action)d" type="action" string="Call action" title="action button"/>
                     <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
@@ -91,13 +92,13 @@
                                 <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
                                 <field name="garden_orientation" invisible="not garden"/>
                                 <field name="state" />
-                                <field name="active" />
+                                <field name="active"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="offers">
                             <group>
-                                <field name="offer_ids" readonly="state in ('offer_accepted',   'sold', 'canceled')">
+                                <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'canceled')">
                                     <tree editable="bottom" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
                                         <field name="price"/>
                                         <field name="partner_id" string="Partner"/>
