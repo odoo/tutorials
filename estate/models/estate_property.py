@@ -7,10 +7,9 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Model"
     _order = "id desc"
-    # _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     # fields
-    
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -46,6 +45,7 @@ class EstateProperty(models.Model):
         string = 'Salesman',
         default=lambda self: self.env.user
     )
+
     buyer = fields.Many2one(
         'res.partner',
         string = 'Buyer',
@@ -58,12 +58,14 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many(
         'estate.property.offers',
         "property_id",
-        # string= "Offers"
+        ondelete = 'cascade'
     )
     total_area = fields.Float(compute = "_compute_area", string = "Total Area (sqm)")
 
     best_price = fields.Float(compute = "_compute_best_price", store=True)
     
+    
+
     # Constraints
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
@@ -74,12 +76,18 @@ class EstateProperty(models.Model):
     ]
 
     @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
+    def _check_selling_price(self):@api.ondelete(at_uninstall=False)
+    def unlink_prop(self):
+        if any(record.state not in ('new', 'canceled') for record in self):
+            raise UserError('You cannot delete the records that are not in the "new" or "canceled" state.')
         for record in self:
-            if record.selling_price < (0.9 * record.expected_price) and (record.selling_price > 0):
+            if record.selling_price < (0.9 * record.expected_pri@api.ondelete(at_uninstall=False)
+    def unlink_prop(self):
+        if any(record.state not in ('new', 'canceled') for record in self):
+            raise UserError('You cannot delete the records that are not in the "new" or "canceled" state.')ce) and (record.selling_price > 0):
                 raise ValidationError("Selling price cannot be lower than 90 percentage of the expected price.")
     
-    # Functions
+    # Methods
     @api.depends('living_area', 'garden_area')
     def _compute_area(self):
         for record in self:
@@ -89,12 +97,6 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            # max_price = 0
-            # for offer in record.offer_ids:
-            #     max_price = offer.price if offer.price > max_price else max_price
-            # record.best_price = max_price
-
-            # by mapped method
             if record.offer_ids:
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
@@ -108,12 +110,6 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-    
-    def action_out_sold(self):
-        for record in self:
-            if record.state == 'canceled':
-                raise UserError("You cannot mark a canceled property as sold.")
-            record.state = 'sold'
 
     def action_cancel(self):
         if self.state == 'sold':
@@ -124,20 +120,9 @@ class EstateProperty(models.Model):
         if self.state == 'canceled':
             raise UserError("You cannot mark a canceled property as sold.")
         self.state = 'sold'
-    def go_to(self):
-        action_id = self.env.ref('estate.action_estate_consumer_form').id
-        message = "The customer does not have an email address. Please complete the customer information."
-        button_text = "Go to Customer"
-        raise RedirectWarning(message, action_id, button_text)
-    #  <button name="%(some_action)d" type="action" string="Open Form"/> -->
-    #                 <!-- <button name='False' type = "delete" string = "Delete"/> -->
+    
 
-    #                 <!-- The type attribute defines the kind of action the button triggers
-    #                  type="object": Calls a Python method on the server.
-    #                  type="action": Executes a predefined client-side action 
-    #                  (such as opening a different view, report, or wizard). 
-    #                  type="delete": Deletes the current record.
-    #                  type="edit", type="save"
+
     
     
     

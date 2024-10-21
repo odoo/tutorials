@@ -1,6 +1,6 @@
 from odoo import fields, models,api  # type: ignore
 from datetime import timedelta, datetime
-from odoo.exceptions import ValidationError # type: ignore
+from odoo.exceptions import ValidationError,UserError # type: ignore
 
 class EstatePropertyOffers(models.Model):
 
@@ -21,6 +21,18 @@ class EstatePropertyOffers(models.Model):
     validity = fields.Integer(default = 7)
     date_deadline = fields.Date(compute = "_compute_date_deadline", inverse="_inverse_date_deadline", store="True")
     
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            best_offer = self.env['estate.property'].browse(vals['property_id']).best_price
+            if vals['price'] < best_offer:
+                raise UserError("You cannot create an offer with price lesser than %f" %best_offer)
+            else:   
+                offer = super(EstatePropertyOffers, self).create(vals_list)
+                self.env['estate.property'].browse(vals['property_id']).state = 'offer received'
+                return offer
+
     # Constraints
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)',
@@ -34,7 +46,7 @@ class EstatePropertyOffers(models.Model):
                 raise ValidationError('You cannot accept multiple offers')
             
     
-    # Functions
+    # Methods
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -54,6 +66,7 @@ class EstatePropertyOffers(models.Model):
         self.status = "accepted"
         self.property_id.buyer = self.partner_id
         self.property_id.selling_price = self.price
+        self.property_id.state = 'offer accepted'
 
     def action_refused(self):
         if self.status == 'accepted':

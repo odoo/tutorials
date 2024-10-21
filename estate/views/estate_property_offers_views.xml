@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="estate_property_offers_action" model="ir.actions.act_window">
         <field name="name">Offers</field>
         <field name="res_model">estate.property.offers</field>
@@ -15,7 +14,6 @@
          
                 <tree >
                     <field name="price"></field>
-                    
                     <field name="partner_id"></field>
                     <field name="validity"></field>
                     <field name="date_deadline" string = "Deadline"></field>
@@ -26,6 +24,4 @@
            
         </field>
      </record>
-     
-
 </odoo>
