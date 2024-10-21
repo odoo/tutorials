@@ -1,0 +1,43 @@
+<odoo>
+    <record id="demo_house_1" model="estate.property">
+        <field name="name">House in Namur</field>
+        <field name="postcode">5000</field>
+        <field name="state">offer_accepted</field>
+        <field name="expected_price">450000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">180</field>
+        <field name="property_type_id" ref="estate.demo_type_1"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('demo_tag_1'), ref('demo_tag_3')])]"/>
+    </record>
+
+    <record id="demo_house_2" model="estate.property">
+        <field name="name">Office in Bruxelle</field>
+        <field name="postcode">1000</field>
+        <field name="expected_price">900000</field>
+        <field name="bedrooms">0</field>
+        <field name="living_area">1300</field>
+        <field name="property_type_id" ref="estate.demo_type_2"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('demo_tag_4')])]"/>
+    </record>
+
+    <record id="demo_house_3" model="estate.property">
+        <field name="name">Villa in Knokke</field>
+        <field name="postcode">1460</field>
+        <field name="expected_price">650000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">270</field>
+        <field name="property_type_id" ref="estate.demo_type_3"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('demo_tag_1'), ref('demo_tag_3'), ref('demo_tag_4')])]"/>
+    </record>
+
+    <record id="demo_house_4" model="estate.property">
+        <field name="name">House in Charleroi</field>
+        <field name="postcode">3000</field>
+        <field name="expected_price">250000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">195</field>
+        <field name="property_type_id" ref="estate.demo_type_1"/>
+        <field name="tag_ids" eval="[(6, 0, [ ref('demo_tag_3')])]"/>
+    </record>
+
+</odoo>

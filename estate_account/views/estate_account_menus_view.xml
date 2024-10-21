@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="estate_account_menu_root" name="Real Estate Account" web_icon="estate_account,static/description/logo.png">
+    </menuitem>
+</odoo>
