@@ -1,4 +1,4 @@
-from dataclasses import field
+from importlib.metadata import requires
 
 from odoo import fields, models
 
@@ -12,9 +12,7 @@ class Estate(models.Model):
     bed = fields.Integer()
     bath = fields.Integer()
     street = fields.Char()
-    city = fields.Char()
-    state = fields.Char()
-    zip_code = fields.Char()
+    city = fields.Many2one("res.city")
     house_size = fields.Float()
 
 
@@ -22,4 +20,4 @@ class Status(models.Model):
     _name = "estate.status"
     _description = "This is the description."
 
-    name = fields.Char()
+    name = fields.Char(required=True)
