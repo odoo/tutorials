@@ -6,15 +6,16 @@
     'Author': 'Alex',
     'summary': '',
     'description': 'This is the module for the training',
-    'depends': ['base'],
+    'depends': ['base', 'base_address_extended'],
     'data': [
         'security/ir.model.access.csv',
         'views/estate_properties_view.xml',
         'views/estate_menu.xml',
         'data/estate.status.csv',
+        'data/res.city.csv',
+        'data/estate.estate.csv',
     ],
     'demo': [
-        'data/estate.estate.csv',
     ],
     'application': True,
     'installable': True,

@@ -12,7 +12,7 @@ class Estate(models.Model):
     bed = fields.Integer()
     bath = fields.Integer()
     street = fields.Char()
-    city = fields.Many2one("res.city")
+    city_id = fields.Many2one("res.city")
     house_size = fields.Float()
 
 
