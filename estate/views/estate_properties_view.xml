@@ -10,7 +10,7 @@
         <field name="name">estate.estate.list</field>
         <field name="model">estate.estate</field>
         <field name="arch" type="xml">
-            <list string="Estate" editable="bottom">
+            <list string="Estate">
                 <field name="address"/>
                 <field name="status_id"/>
                 <field name="price"/>
@@ -28,13 +28,13 @@
                         <field name="status_id"/>
                     </group>
                     <notebook>
-                        <page name="General data">
+                        <page name="general_data" string="General data">
                             <group>
                                 <field name="price"/>
                                 <field name="house_size"/>
                             </group>
                         </page>
-                        <page name="Address">
+                        <page name="address" string="Address">
                             <group>
                                 <group>
                                     <field name="street"/>
@@ -44,7 +44,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Rooms">
+                        <page name="rooms" string="Rooms">
                             <group>
                                 <group>
                                     <field name="bath"></field>

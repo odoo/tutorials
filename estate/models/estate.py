@@ -1,6 +1,3 @@
-from dataclasses import field
-from importlib.metadata import requires
-
 from odoo import api, fields, models
 
 

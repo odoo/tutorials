@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="inherit_estate_estate_form" model="ir.ui.view">
+        <field name="name">inherit.estate.estate.form</field>
+        <field name="model">estate.estate</field>
+        <field name="inherit_id" ref="estate.estate_estate_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='rooms']" position="after">
+                <page name="Offers">
+                    <field name="offer_ids">
+                        <list editable="top">
+                            <field name="amount"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
