@@ -5,11 +5,21 @@
         <field name="model">estate.estate</field>
         <field name="inherit_id" ref="estate.estate_estate_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//notebook" position="before">
+                <group>
+                    <field name="accept_offers" />
+                    <field name="has_accepted_offer" invisible="not accept_offers"/>
+                </group>
+            </xpath>
             <xpath expr="//page[@name='rooms']" position="after">
-                <page name="Offers">
+                <page name="Offers" invisible="not accept_offers">
                     <field name="offer_ids">
-                        <list editable="top">
+                        <list editable="top" default_order="amount desc, write_date">
+                            <field name="is_accepted"/>
+                            <field name="user_id"/>
                             <field name="amount"/>
+                            <field name="create_date"/>
+                            <field name="write_date" decoration-warning="create_date != write_date"/>
                         </list>
                     </field>
                 </page>
