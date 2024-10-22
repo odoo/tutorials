@@ -9,5 +9,9 @@
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
     ],
-    'license': 'LGPL-3',
+    'license': "LGPL-3",
+    # data files containing optionally loaded demonstration data
+    'demo': [
+        "demo/demo.xml",
+    ],
 }

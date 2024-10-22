@@ -27,3 +27,8 @@ class EstateProperty(models.Model):
         string='State',
         selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', "Cancelled")]
     )
+
+    def action_cancel(self):
+        state = self.state
+        if state != 'cancelled':
+            self.state = 'cancelled'
