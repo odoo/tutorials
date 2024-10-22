@@ -11,9 +11,9 @@
         <field name="model">estate.estate</field>
         <field name="arch" type="xml">
             <list string="Estate" editable="bottom">
+                <field name="address"/>
                 <field name="status_id"/>
                 <field name="price"/>
-                <field name="city_id"/>
             </list>
         </field>
     </record>

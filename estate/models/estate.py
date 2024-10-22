@@ -1,12 +1,14 @@
+from dataclasses import field
 from importlib.metadata import requires
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class Estate(models.Model):
     _name = "estate.estate"
     _description = "This is the estate model."
 
+    address = fields.Char(compute="_compute_address")
     status_id = fields.Many2one("estate.status")
     price = fields.Float()
     bed = fields.Integer()
@@ -14,6 +16,11 @@ class Estate(models.Model):
     street = fields.Char()
     city_id = fields.Many2one("res.city")
     house_size = fields.Float()
+
+    @api.depends("street", "city_id")
+    def _compute_address(self):
+        for record in self:
+            record.address = f"{record.street}, {record.city_id.name}, {record.city_id.country_id.name}"
 
 
 class Status(models.Model):
