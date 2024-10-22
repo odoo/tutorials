@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Properties Types</field>
+        <field name="name">Types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -13,7 +13,8 @@
             <tree string="Property Type">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
-                <field name="number" />
+                <field name="active" />
+                <field name="number"/>
             </tree>
         </field>
     </record>
@@ -29,16 +30,21 @@
                             <field name="offer_count" string="Offers" widget="statinfo"/>
                         </button>
                     </div>
-                    <h1>
+                    <h3>
                         <field name="name"/>
-                    </h1>
-                    <field name="active" string="Active"/>
+                    </h3>
+                    <group>
+                        <field name="active"/>
+                    </group>
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
-                                <tree create="False">
-                                    <field name="name" string="Title"/>
+                                <tree create="False" decoration-success="state == 'offer received' or state == 'offer accepted'" decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
+                                    <field name="name"/>
+                                    <field name="bedrooms"/>
                                     <field name="expected_price"/>
+                                    <field name="best_offer"/>
+                                    <field name="selling_price"/>
                                     <field name="state"/>
                                 </tree>
                             </field>

@@ -1,4 +1,5 @@
-from odoo import fields, models, Command
+from odoo import models, Command
+
 
 class estateProperty(models.Model):
 
@@ -27,6 +28,7 @@ class estateProperty(models.Model):
                 Command.create(invoice_price),
                 Command.create(invoice_administrative_fees)
             ]
-        }) 
+        })
 
         return supper_call
+        

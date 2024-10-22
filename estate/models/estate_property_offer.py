@@ -1,6 +1,8 @@
-from odoo import models, fields, api
 from datetime import timedelta, datetime
+
+from odoo import models, fields, api
 from odoo.exceptions import UserError
+
 
 class estatePropertyOffer(models.Model):
 
@@ -52,10 +54,8 @@ class estatePropertyOffer(models.Model):
         for record in self:
             if record.property_id.state in ['sold', 'offer accepted']:
                 raise UserError("Already one offer is accepted.")
-
             if record.status == 'accepted':
                 continue
-
             record.status = 'accepted'
             record.property_id.state = 'offer accepted'
             record.property_id.buyer_id = self.partner_id

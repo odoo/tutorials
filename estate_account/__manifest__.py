@@ -8,5 +8,5 @@
     'demo': [
     ],
     'installable': True,
-    'application': False, 
+    'application': False,
 }
