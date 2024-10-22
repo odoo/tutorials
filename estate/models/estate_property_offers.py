@@ -1,6 +1,6 @@
-from odoo import fields, models,api  # type: ignore
+from odoo import fields, models, api
 from datetime import timedelta, datetime
-from odoo.exceptions import ValidationError,UserError # type: ignore
+from odoo.exceptions import ValidationError,UserError
 
 class EstatePropertyOffers(models.Model):
 
@@ -40,7 +40,7 @@ class EstatePropertyOffers(models.Model):
     ]
     
     @api.constrains('status', 'property_id.selling_price')
-    def _check_selling_price(self):
+    def _check_if_exsits_accepted_offer(self): 
         for record in self:
             if record.property_id.selling_price > 0:
                 raise ValidationError('You cannot accept multiple offers')
