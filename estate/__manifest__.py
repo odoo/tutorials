@@ -12,9 +12,10 @@
         'views/estate_properties_view.xml',
         'views/estate_menu.xml',
         'data/estate.status.csv',
+    ],
+    'demo': [
         'data/estate.estate.csv',
     ],
-    'demo': [],
     'application': True,
     'installable': True,
     'license': 'LGPL-3',
