@@ -13,6 +13,7 @@ class Estate(models.Model):
     street = fields.Char()
     city_id = fields.Many2one("res.city")
     house_size = fields.Float()
+    is_archived = fields.Boolean(default=False)
 
     @api.depends("street", "city_id")
     def _compute_address(self):
