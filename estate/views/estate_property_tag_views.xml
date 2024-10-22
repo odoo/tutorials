@@ -23,7 +23,6 @@
                     <group>
                         <field name="name"/>
                         <field name="active"/>
-                        <!-- <field name="property_ids"/> -->
                     </group>
                 </sheet>
             </form>
