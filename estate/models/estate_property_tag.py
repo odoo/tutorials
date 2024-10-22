@@ -15,10 +15,13 @@ class estatePropertyTag(models.Model):
     #             column1='property_id',
     #             column2='tag_id'
     #     )
-    property_ids = fields.Many2many(
-        comodel_name='estate.property',
-        string='properties'
-    )
+    # property_ids = fields.Many2many(
+    #     comodel_name='estate.property',
+    #     string='properties'
+    # )
+
+    # property_type_id = 
+
     color = fields.Integer(default=12)
     _sql_constraints = [
             ('check_unique_tag_name','UNIQUE(name)','This tag is already exists.')

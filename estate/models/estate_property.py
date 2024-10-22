@@ -63,7 +63,8 @@ class estateProperty(models.Model):
         # estate_property_tag_rel automatically made
         offer_ids = fields.One2many(
                 'estate.property.offer', 
-                'property_id'
+                'property_id',
+                ondelete='restrict'
         )
         number = fields.Integer(related='property_type_id.number')
         totalArea = fields.Integer(compute='_compute_total_area', store=True)
@@ -126,5 +127,10 @@ class estateProperty(models.Model):
                         if record.selling_price < (0.9 * record.expected_price) and (record.selling_price > 0):
                                raise ValidationError("Selling price cannot be lower than 90 percentage of the expected price.")
 
-        
+        # @api.ondelete(at_uninstall=False)
+        def _gfgfg(self):
+                for record in self:
+                        if record.state not in ("new", "cancelled"):
+                                raise UserError("You can not delete a property which are in offer received, offer accepted or sold state.")
+
                         

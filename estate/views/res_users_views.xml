@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="res_user_views_form" model="ir.ui.view">
+        <field name="name">res_user_views_form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <page name="preferences" position="before">
+                <page name="estate" string="Real Estate Properties">
+                    <field name="property_ids"/>
+                </page>
+            </page>
+        </field>
+    </record>
+</odoo>
