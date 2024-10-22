@@ -1,301 +1,301 @@
-id,status,price,street,city,bed,bath,status_id,zip_code,house_size
-estate_0,for_sale,105000.0,1962661.0,Adjuntas,2,5,estate.status.1,601.0,920.0
-estate_1,for_sale,80000.0,1902874.0,Adjuntas,7,10,estate.status.0,601.0,1527.0
-estate_2,for_sale,67000.0,1404990.0,Juana Diaz,4,3,estate.status.0,795.0,748.0
-estate_3,for_sale,145000.0,1947675.0,Ponce,10,7,estate.status.0,731.0,1800.0
-estate_4,for_sale,65000.0,331151.0,Mayaguez,4,2,estate.status.1,680.0,
-estate_5,for_sale,179000.0,1850806.0,San Sebastian,3,4,estate.status.0,612.0,2520.0
-estate_6,for_sale,50000.0,1298094.0,Ciales,5,0,estate.status.0,639.0,2040.0
-estate_7,for_sale,71600.0,1048466.0,Ponce,3,7,estate.status.1,731.0,1050.0
-estate_8,for_sale,100000.0,734904.0,Ponce,4,6,estate.status.1,730.0,1092.0
-estate_9,for_sale,300000.0,1946226.0,Las Marias,4,5,estate.status.1,670.0,5403.0
-estate_10,for_sale,89000.0,1902814.0,Isabela,10,3,estate.status.1,662.0,1106.0
-estate_11,for_sale,150000.0,1773902.0,Juana Diaz,10,4,estate.status.0,795.0,1045.0
-estate_12,for_sale,155000.0,1946165.0,Lares,4,3,estate.status.1,669.0,4161.0
-estate_13,for_sale,79000.0,1761024.0,Utuado,7,8,estate.status.0,641.0,1620.0
-estate_14,for_sale,649000.0,1879215.0,Ponce,4,8,estate.status.0,731.0,2677.0
-estate_15,for_sale,120000.0,17854.0,Yauco,10,2,estate.status.0,698.0,1100.0
-estate_16,for_sale,235000.0,13687.0,Mayaguez,7,8,estate.status.0,680.0,3450.0
-estate_17,for_sale,105000.0,1868721.0,Ponce,9,6,estate.status.1,728.0,1500.0
-estate_18,for_sale,575000.0,1312671.0,San Sebastian,7,6,estate.status.1,685.0,4000.0
-estate_19,for_sale,140000.0,6710.0,Anasco,4,3,estate.status.1,610.0,1230.0
-estate_20,for_sale,50000.0,1902835.0,Yauco,4,10,estate.status.1,698.0,621.0
-estate_21,for_sale,165000.0,117231.0,Moca,9,10,estate.status.0,676.0,3000.0
-estate_22,for_sale,189000.0,1307740.0,Coamo,9,0,estate.status.1,769.0,1213.0
-estate_23,for_sale,115000.0,481889.0,Ponce,2,10,estate.status.1,716.0,1148.0
-estate_24,for_sale,122500.0,437877.0,Yauco,7,7,estate.status.1,698.0,1118.0
-estate_25,for_sale,255000.0,1948621.0,San Sebastian,2,5,estate.status.1,685.0,1500.0
-estate_26,for_sale,425000.0,955013.0,Ponce,5,5,estate.status.0,730.0,3000.0
-estate_27,for_sale,93000.0,1854860.0,Guayanilla,1,4,estate.status.0,656.0,1300.0
-estate_28,for_sale,75000.0,511838.0,Manati,9,2,estate.status.1,676.0,1080.0
-estate_29,for_sale,469000.0,1857020.0,Isabela,9,10,estate.status.0,662.0,2505.0
-estate_30,for_sale,189000.0,1902849.0,Villalba,8,4,estate.status.0,766.0,1943.0
-estate_31,for_sale,225000.0,1987398.0,Ponce,1,8,estate.status.1,717.0,1600.0
-estate_32,for_sale,495000.0,1962660.0,Santa Isabel,7,8,estate.status.0,757.0,2886.0
-estate_33,for_sale,220000.0,523790.0,Ponce,0,7,estate.status.1,730.0,850.0
-estate_34,for_sale,70500.0,1856955.0,Yauco,9,6,estate.status.0,698.0,936.0
-estate_35,for_sale,305000.0,1902855.0,Moca,10,6,estate.status.0,676.0,1928.0
-estate_36,for_sale,475000.0,1940314.0,San Sebastian,10,1,estate.status.0,685.0,3690.0
-estate_37,for_sale,195000.0,1856898.0,Utuado,8,5,estate.status.0,641.0,2500.0
-estate_38,for_sale,120000.0,1667467.0,Las Marias,0,3,estate.status.0,670.0,1800.0
-estate_39,for_sale,650000.0,1902746.0,Mayaguez,4,6,estate.status.0,680.0,3709.0
-estate_40,for_sale,555000.0,480944.0,Ponce,8,3,estate.status.0,730.0,3100.0
-estate_41,for_sale,3900000.0,269007.0,Penuelas,7,10,estate.status.0,624.0,9297.0
-estate_42,for_sale,400000.0,1857015.0,Moca,7,10,estate.status.0,676.0,43082.0
-estate_43,for_sale,380000.0,1855421.0,Hatillo,0,1,estate.status.0,659.0,
-estate_44,for_sale,95000.0,1868667.0,Aguada,7,8,estate.status.0,602.0,600.0
-estate_45,for_sale,74000.0,1902824.0,Aguada,10,3,estate.status.1,602.0,900.0
-estate_46,for_sale,139500.0,397960.0,Aguada,2,9,estate.status.0,602.0,3000.0
-estate_47,for_sale,149900.0,1850822.0,Aguada,9,6,estate.status.0,602.0,2100.0
-estate_48,for_sale,180000.0,1234696.0,Aguada,1,9,estate.status.0,602.0,1138.0
-estate_49,for_sale,249000.0,1902736.0,Aguada,2,4,estate.status.1,602.0,1380.0
-estate_50,for_sale,252000.0,1902727.0,Aguada,9,1,estate.status.1,602.0,2500.0
-estate_51,for_sale,160000.0,1842923.0,Aguada,4,1,estate.status.0,602.0,813.0
-estate_52,for_sale,90000.0,1837494.0,Aguada,4,9,estate.status.1,602.0,813.0
-estate_53,for_sale,500000.0,10282.0,Aguada,1,1,estate.status.0,602.0,2962.0
-estate_54,for_sale,339000.0,268641.0,Aguada,10,5,estate.status.1,602.0,1955.0
-estate_55,for_sale,265000.0,1868699.0,Aguada,4,4,estate.status.0,602.0,1200.0
-estate_56,for_sale,10000000.0,1233063.0,Aguada,2,3,estate.status.0,602.0,6000.0
-estate_57,for_sale,389000.0,1902739.0,Aguada,1,7,estate.status.1,602.0,1880.0
-estate_58,for_sale,575000.0,1962620.0,Aguada,5,0,estate.status.1,602.0,2500.0
-estate_59,for_sale,35000.0,1234597.0,Aguada,8,8,estate.status.1,602.0,
-estate_60,for_sale,58000.0,1966337.0,Aguada,1,2,estate.status.1,602.0,
-estate_61,for_sale,85000.0,1188097.0,Aguada,2,6,estate.status.0,602.0,
-estate_62,for_sale,47000.0,1841588.0,Aguada,9,8,estate.status.1,602.0,
-estate_63,for_sale,720000.0,1667516.0,Aguada,9,0,estate.status.0,602.0,2715.0
-estate_64,for_sale,375000.0,166250.0,Aguada,3,2,estate.status.1,602.0,2775.0
-estate_65,for_sale,50000.0,1946326.0,Aguada,6,2,estate.status.0,602.0,
-estate_66,for_sale,3250000.0,1856959.0,Rincon,6,2,estate.status.0,602.0,
-estate_67,for_sale,39500.0,1902841.0,Aguada,2,1,estate.status.1,602.0,
-estate_68,for_sale,249500.0,1032552.0,Aguada,1,9,estate.status.0,602.0,
-estate_69,for_sale,1399000.0,6714.0,Aguada,8,4,estate.status.0,602.0,5517.0
-estate_70,for_sale,600000.0,1946165.0,Aguada,6,3,estate.status.1,602.0,2400.0
-estate_71,for_sale,649000.0,1946165.0,Aguada,7,5,estate.status.1,602.0,
-estate_72,for_sale,189000.0,1902894.0,Aguada,0,9,estate.status.0,602.0,951.0
-estate_73,for_sale,150000.0,1902798.0,Aguada,2,0,estate.status.0,602.0,
-estate_74,for_sale,74000.0,1966339.0,Aguada,7,1,estate.status.0,602.0,
-estate_75,for_sale,65500.0,16882.0,Aguada,7,0,estate.status.0,602.0,
-estate_76,for_sale,67500.0,1760196.0,Aguada,7,6,estate.status.1,602.0,
-estate_77,for_sale,74000.0,1842584.0,Aguada,0,6,estate.status.0,602.0,
-estate_78,for_sale,130000.0,1902763.0,Aguada,10,0,estate.status.1,602.0,
-estate_79,for_sale,95000.0,1188098.0,Aguada,5,3,estate.status.1,602.0,
-estate_80,for_sale,329000.0,939073.0,Rincon,7,2,estate.status.1,602.0,
-estate_81,for_sale,130000.0,6711.0,Aguada,1,5,estate.status.1,602.0,
-estate_82,for_sale,94770.0,166251.0,Aguada,10,8,estate.status.1,602.0,
-estate_83,for_sale,150000.0,1902760.0,Aguada,4,7,estate.status.1,602.0,
-estate_84,for_sale,165000.0,167086.0,Aguada,6,7,estate.status.1,602.0,
-estate_85,for_sale,215000.0,595559.0,Aguadilla,9,5,estate.status.0,603.0,2070.0
-estate_86,for_sale,63000.0,1856967.0,Aguadilla,5,0,estate.status.0,603.0,1184.0
-estate_87,for_sale,215000.0,1268649.0,Aguadilla,6,2,estate.status.0,603.0,1900.0
-estate_88,for_sale,115000.0,1962563.0,Aguadilla,5,5,estate.status.0,603.0,980.0
-estate_89,for_sale,99000.0,1499349.0,Aguadilla,2,9,estate.status.1,603.0,1408.0
-estate_90,for_sale,850000.0,792809.0,Aguadilla,3,6,estate.status.0,603.0,8460.0
-estate_91,for_sale,140000.0,1868702.0,Aguadilla,4,4,estate.status.1,603.0,1116.0
-estate_92,for_sale,499000.0,117065.0,Aguadilla,4,4,estate.status.1,603.0,3734.0
-estate_93,for_sale,180000.0,846259.0,Aguadilla,10,4,estate.status.1,603.0,1500.0
-estate_94,for_sale,225900.0,1946283.0,Aguadilla,9,2,estate.status.1,603.0,2618.0
-estate_95,for_sale,260000.0,1136713.0,Aguadilla,4,0,estate.status.1,603.0,1760.0
-estate_96,for_sale,31179.0,1987983.0,Aguadilla,10,5,estate.status.1,603.0,
-estate_97,for_sale,500000.0,1902866.0,Aguadilla,10,10,estate.status.0,603.0,2950.0
-estate_98,for_sale,225000.0,1838380.0,Aguada,0,9,estate.status.0,603.0,1565.0
-estate_99,for_sale,28000.0,1236850.0,Aguadilla,4,4,estate.status.0,603.0,
-estate_100,for_sale,425000.0,1946165.0,Aguadilla,6,7,estate.status.0,603.0,3468.0
-estate_101,for_sale,300000.0,1258490.0,Aguadilla,5,8,estate.status.1,603.0,547.0
-estate_102,for_sale,75000.0,1902896.0,Aguadilla,0,1,estate.status.1,603.0,
-estate_103,for_sale,290000.0,117027.0,Aguadilla,1,2,estate.status.0,603.0,2280.0
-estate_104,for_sale,550000.0,483647.0,Aguadilla,9,0,estate.status.1,603.0,4020.0
-estate_105,for_sale,234900.0,1850808.0,Aguadilla,3,7,estate.status.1,603.0,2035.0
-estate_106,for_sale,44720.0,1839304.0,Aguadilla,9,7,estate.status.0,603.0,
-estate_107,for_sale,35000.0,1946284.0,Aguadilla,5,7,estate.status.1,603.0,
-estate_108,for_sale,75000.0,1868632.0,Aguadilla,6,9,estate.status.0,603.0,
-estate_109,for_sale,37000.0,1946165.0,Aguadilla,3,10,estate.status.1,603.0,
-estate_110,for_sale,37359.0,913730.0,Aguadilla,10,9,estate.status.0,603.0,
-estate_111,for_sale,739500.0,598237.0,Aguadilla,10,7,estate.status.0,603.0,
-estate_112,for_sale,65000.0,595558.0,Aguadilla,7,5,estate.status.0,603.0,
-estate_113,for_sale,56406.0,1667035.0,Aguadilla,8,9,estate.status.1,603.0,
-estate_114,for_sale,620000.0,119241.0,Aguadilla,1,0,estate.status.1,603.0,3267.0
-estate_115,for_sale,649900.0,1850840.0,Aguadilla,8,3,estate.status.0,603.0,3700.0
-estate_116,for_sale,44995.0,595223.0,Aguadilla,1,0,estate.status.0,603.0,
-estate_117,for_sale,37779.0,1563956.0,Aguadilla,9,7,estate.status.0,603.0,
-estate_118,for_sale,60123.0,1838382.0,Aguadilla,7,5,estate.status.0,603.0,
-estate_119,for_sale,38279.0,6248.0,Aguadilla,10,3,estate.status.1,603.0,
-estate_120,for_sale,199900.0,1838381.0,Aguada,2,3,estate.status.0,603.0,
-estate_121,for_sale,125000.0,822915.0,Aguadilla,3,3,estate.status.1,603.0,
-estate_122,for_sale,200000.0,1857008.0,Aguadilla,8,4,estate.status.0,603.0,
-estate_123,for_sale,150000.0,6707.0,Aguadilla,8,4,estate.status.0,603.0,
-estate_124,for_sale,8000000.0,6475.0,Isabela,8,10,estate.status.0,603.0,
-estate_125,for_sale,1000000.0,1850843.0,Aguadilla,0,6,estate.status.0,603.0,
-estate_126,for_sale,695000.0,1902854.0,Aguadilla,8,4,estate.status.1,603.0,
-estate_127,for_sale,98000.0,1850836.0,Maricao,9,10,estate.status.1,606.0,2156.0
-estate_128,for_sale,55000.0,1857017.0,Maricao,8,4,estate.status.0,606.0,2156.0
-estate_129,for_sale,75000.0,1856895.0,Maricao,6,0,estate.status.0,606.0,1563.0
-estate_130,for_sale,80000.0,1897887.0,Maricao,9,10,estate.status.1,606.0,915.0
-estate_131,for_sale,160000.0,1902838.0,Maricao,8,9,estate.status.0,606.0,
-estate_132,for_sale,46900.0,1757054.0,Mayaguez,6,3,estate.status.0,680.0,982.0
-estate_133,for_sale,125000.0,436480.0,Hormigueros,8,2,estate.status.0,660.0,2000.0
-estate_134,for_sale,95000.0,595722.0,Guanica,2,2,estate.status.1,653.0,1393.0
-estate_135,for_sale,330000.0,1902816.0,Cabo Rojo,4,0,estate.status.1,623.0,1620.0
-estate_136,for_sale,115000.0,1394934.0,Mayaguez,8,4,estate.status.0,680.0,1760.0
-estate_137,for_sale,285000.0,575006.0,Cabo Rojo,6,6,estate.status.0,623.0,1000.0
-estate_138,for_sale,215000.0,1480314.0,Mayaguez,10,0,estate.status.0,680.0,2200.0
-estate_139,for_sale,115000.0,962228.0,Cabo Rojo,9,1,estate.status.0,623.0,1205.0
-estate_140,for_sale,140000.0,757729.0,Mayaguez,10,3,estate.status.0,680.0,1200.0
-estate_141,for_sale,87000.0,13690.0,Mayaguez,0,7,estate.status.1,682.0,
-estate_142,for_sale,250000.0,1071244.0,Cabo Rojo,9,9,estate.status.1,623.0,3052.0
-estate_143,for_sale,70000.0,387673.0,San German,3,3,estate.status.0,683.0,894.0
-estate_144,for_sale,190000.0,6946.0,Mayaguez,5,5,estate.status.1,680.0,1600.0
-estate_145,for_sale,150000.0,598681.0,San German,7,6,estate.status.1,683.0,363.0
-estate_146,for_sale,750000.0,1855338.0,Cabo Rojo,10,6,estate.status.0,623.0,4800.0
-estate_147,for_sale,125000.0,939072.0,Mayaguez,9,7,estate.status.1,682.0,390.0
-estate_148,for_sale,950000.0,1854848.0,Rincon,3,6,estate.status.0,677.0,3852.0
-estate_149,for_sale,1200000.0,1181969.0,Aguada,2,7,estate.status.1,677.0,6000.0
-estate_150,for_sale,495000.0,1446813.0,Lajas,3,6,estate.status.1,667.0,6500.0
-estate_151,for_sale,90000.0,950033.0,Mayaguez,6,2,estate.status.0,682.0,778.0
-estate_152,for_sale,395000.0,948184.0,Cabo Rojo,0,6,estate.status.0,623.0,2800.0
-estate_153,for_sale,82000.0,1840559.0,Mayaguez,8,2,estate.status.0,680.0,471.0
-estate_154,for_sale,389000.0,593379.0,Cabo Rojo,2,3,estate.status.0,623.0,1356.0
-estate_155,for_sale,45000.0,1856894.0,Cabo Rojo,7,1,estate.status.1,623.0,
-estate_156,for_sale,65000.0,49178.0,Cabo Rojo,4,6,estate.status.0,623.0,
-estate_157,for_sale,80000.0,1855526.0,Cabo Rojo,9,1,estate.status.1,623.0,
-estate_158,for_sale,120000.0,1897484.0,Cabo Rojo,6,4,estate.status.1,623.0,
-estate_159,for_sale,70000.0,113181.0,Cabo Rojo,0,2,estate.status.0,623.0,
-estate_160,for_sale,391000.0,10284.0,Hormigueros,5,10,estate.status.1,660.0,
-estate_161,for_sale,160000.0,10282.0,Cabo Rojo,6,0,estate.status.0,623.0,
-estate_162,for_sale,290000.0,10282.0,Cabo Rojo,2,3,estate.status.1,623.0,
-estate_163,for_sale,835000.0,10282.0,Hormigueros,6,7,estate.status.0,660.0,
-estate_164,for_sale,159000.0,1902890.0,Mayaguez,9,3,estate.status.1,680.0,
-estate_165,for_sale,79000.0,1902821.0,Anasco,3,0,estate.status.1,610.0,
-estate_166,for_sale,149900.0,6713.0,Anasco,2,0,estate.status.0,610.0,1687.0
-estate_167,for_sale,106000.0,1966340.0,Anasco,8,2,estate.status.0,610.0,826.0
-estate_168,for_sale,165000.0,560745.0,Anasco,2,9,estate.status.1,610.0,2327.0
-estate_169,for_sale,499000.0,1307166.0,Anasco,4,6,estate.status.0,610.0,
-estate_170,for_sale,140000.0,1667382.0,Anasco,7,4,estate.status.1,610.0,
-estate_171,for_sale,450000.0,1793737.0,Isabela,3,3,estate.status.1,662.0,4000.0
-estate_172,for_sale,485000.0,1446871.0,Isabela,6,8,estate.status.0,662.0,3066.0
-estate_173,for_sale,1800000.0,1902806.0,Isabela,10,9,estate.status.1,662.0,10000.0
-estate_174,for_sale,975000.0,1913925.0,Isabela,4,4,estate.status.0,662.0,3739.0
-estate_175,for_sale,950000.0,6927.0,Rincon,3,6,estate.status.1,677.0,2450.0
-estate_176,for_sale,349000.0,1966335.0,Rincon,9,10,estate.status.0,677.0,1688.0
-estate_177,for_sale,39900.0,1862028.0,Arecibo,7,9,estate.status.1,612.0,878.0
-estate_178,for_sale,29900.0,1862027.0,Arecibo,2,3,estate.status.1,612.0,878.0
-estate_179,for_sale,475000.0,1427607.0,Arecibo,10,10,estate.status.0,612.0,10000.0
-estate_180,for_sale,200000.0,1946165.0,Arecibo,4,9,estate.status.0,612.0,3413.0
-estate_181,for_sale,84900.0,1840770.0,Arecibo,8,1,estate.status.1,612.0,
-estate_182,for_sale,148000.0,1902831.0,Arecibo,10,8,estate.status.1,612.0,2058.0
-estate_183,for_sale,39500.0,1946165.0,Arecibo,7,4,estate.status.0,612.0,800.0
-estate_184,for_sale,220000.0,1856978.0,Arecibo,6,7,estate.status.1,612.0,2900.0
-estate_185,for_sale,75000.0,1856974.0,Arecibo,5,3,estate.status.0,612.0,1100.0
-estate_186,for_sale,110000.0,1856516.0,Arecibo,4,9,estate.status.0,612.0,1000.0
-estate_187,for_sale,150000.0,1946210.0,Arecibo,8,9,estate.status.0,612.0,800.0
-estate_188,for_sale,69900.0,1840775.0,Arecibo,5,6,estate.status.1,612.0,
-estate_189,for_sale,79000.0,1855343.0,Arecibo,2,8,estate.status.1,612.0,2472.0
-estate_190,for_sale,65000.0,1856972.0,Arecibo,4,6,estate.status.1,612.0,1044.0
-estate_191,for_sale,179000.0,1855451.0,Arecibo,8,10,estate.status.0,612.0,2200.0
-estate_192,for_sale,145000.0,1427895.0,Arecibo,0,9,estate.status.1,612.0,3500.0
-estate_193,for_sale,79000.0,821104.0,Arecibo,5,3,estate.status.0,612.0,1262.0
-estate_194,for_sale,360000.0,1567105.0,Arecibo,0,1,estate.status.0,612.0,6000.0
-estate_195,for_sale,50000.0,1967771.0,Arecibo,1,6,estate.status.0,612.0,
-estate_196,for_sale,134900.0,1840769.0,Arecibo,6,4,estate.status.1,612.0,1856.0
-estate_197,for_sale,94600.0,1992381.0,Arecibo,2,0,estate.status.1,612.0,1009.0
-estate_198,for_sale,59900.0,1840776.0,Arecibo,0,3,estate.status.1,612.0,
-estate_199,for_sale,239000.0,1551669.0,Arecibo,9,4,estate.status.0,612.0,2715.0
-estate_200,for_sale,279000.0,1902853.0,Arecibo,3,6,estate.status.0,612.0,2872.0
-estate_201,for_sale,100000.0,1900756.0,Arecibo,6,10,estate.status.0,612.0,1028.0
-estate_202,for_sale,89000.0,1856938.0,Arecibo,9,1,estate.status.1,612.0,
-estate_203,for_sale,168000.0,1902837.0,Arecibo,8,2,estate.status.1,612.0,1600.0
-estate_204,for_sale,150000.0,1509489.0,Arecibo,6,7,estate.status.0,612.0,1604.0
-estate_205,for_sale,60000.0,1850825.0,Arecibo,7,0,estate.status.0,612.0,
-estate_206,for_sale,140000.0,918510.0,Arecibo,1,0,estate.status.0,612.0,1500.0
-estate_207,for_sale,70000.0,1855345.0,Arecibo,6,1,estate.status.0,612.0,680.0
-estate_208,for_sale,80000.0,982996.0,Arecibo,7,6,estate.status.0,612.0,750.0
-estate_209,for_sale,135000.0,1437193.0,Arecibo,9,2,estate.status.0,612.0,1500.0
-estate_210,for_sale,215000.0,1449539.0,Arecibo,0,3,estate.status.1,612.0,2183.0
-estate_211,for_sale,42900.0,1855937.0,Camuy,8,4,estate.status.1,612.0,
-estate_212,for_sale,49900.0,1840772.0,Arecibo,8,9,estate.status.0,612.0,
-estate_213,for_sale,138000.0,199310.0,Arecibo,3,6,estate.status.1,612.0,1000.0
-estate_214,for_sale,289000.0,1856979.0,Arecibo,5,2,estate.status.0,612.0,2832.0
-estate_215,for_sale,132000.0,1725570.0,Arecibo,4,6,estate.status.0,612.0,1000.0
-estate_216,for_sale,197000.0,1856909.0,Arecibo,8,5,estate.status.1,612.0,1500.0
-estate_217,for_sale,1200000.0,1946308.0,Arecibo,8,7,estate.status.0,612.0,
-estate_218,for_sale,185000.0,869853.0,Manati,3,6,estate.status.1,674.0,1700.0
-estate_219,for_sale,200000.0,1855347.0,Hatillo,4,0,estate.status.1,659.0,3400.0
-estate_220,for_sale,210000.0,913609.0,Morovis,10,10,estate.status.0,687.0,2500.0
-estate_221,for_sale,105000.0,1869494.0,Manati,4,8,estate.status.0,674.0,921.0
-estate_222,for_sale,113600.0,1837500.0,Manati,0,0,estate.status.1,674.0,800.0
-estate_223,for_sale,174900.0,1985068.0,Barceloneta,3,6,estate.status.0,617.0,1195.0
-estate_224,for_sale,3000000.0,1836183.0,Quebradillas,6,6,estate.status.0,678.0,3000.0
-estate_225,for_sale,134000.0,733378.0,Vega Baja,2,3,estate.status.1,693.0,895.0
-estate_226,for_sale,245000.0,867517.0,Vega Baja,0,6,estate.status.0,693.0,2038.0
-estate_227,for_sale,161000.0,435967.0,Caguas,5,9,estate.status.0,727.0,1100.0
-estate_228,for_sale,225000.0,1881195.0,Vega Baja,9,7,estate.status.0,693.0,1217.0
-estate_229,for_sale,290000.0,1868675.0,Manati,7,4,estate.status.1,674.0,2236.0
-estate_230,for_sale,375000.0,1854739.0,Barceloneta,1,4,estate.status.0,617.0,2961.0
-estate_231,for_sale,425000.0,1856906.0,Camuy,5,5,estate.status.0,627.0,2400.0
-estate_232,for_sale,1100000.0,1120998.0,Quebradillas,5,1,estate.status.0,678.0,3000.0
-estate_233,for_sale,418000.0,2402.0,Hatillo,1,4,estate.status.1,659.0,3650.0
-estate_234,for_sale,365000.0,1902830.0,Morovis,7,0,estate.status.1,687.0,2366.0
-estate_235,for_sale,55000.0,1902872.0,Hatillo,6,9,estate.status.0,659.0,
-estate_236,for_sale,62000.0,1902871.0,Hatillo,6,4,estate.status.0,659.0,
-estate_237,for_sale,350000.0,1902881.0,Hatillo,3,1,estate.status.0,659.0,
-estate_238,for_sale,95000.0,151105.0,Quebradillas,4,7,estate.status.0,95000.0,1757.0
-estate_239,for_sale,64900.0,1850837.0,Camuy,1,2,estate.status.0,627.0,
-estate_240,for_sale,49900.0,1861976.0,Barceloneta,3,4,estate.status.1,617.0,1150.0
-estate_241,for_sale,70000.0,1877370.0,Barceloneta,1,4,estate.status.0,617.0,
-estate_242,for_sale,90000.0,1844124.0,Barceloneta,2,1,estate.status.1,617.0,955.0
-estate_243,for_sale,111000.0,1985086.0,Barceloneta,0,3,estate.status.1,617.0,1015.0
-estate_244,for_sale,114400.0,1855327.0,Barceloneta,6,3,estate.status.0,617.0,1105.0
-estate_245,for_sale,113500.0,1967757.0,Barceloneta,7,0,estate.status.0,617.0,955.0
-estate_246,for_sale,59200.0,594668.0,Dorado,0,0,estate.status.0,646.0,700.0
-estate_247,for_sale,63800.0,13692.0,Toa Baja,1,6,estate.status.1,949.0,950.0
-estate_248,for_sale,45000.0,1168757.0,Toa Alta,0,1,estate.status.0,953.0,1000.0
-estate_249,for_sale,55000.0,1913914.0,Dorado,6,7,estate.status.0,646.0,800.0
-estate_250,for_sale,100000.0,1547175.0,Vega Alta,2,3,estate.status.1,692.0,1400.0
-estate_251,for_sale,80000.0,1584559.0,Corozal,4,5,estate.status.1,783.0,1500.0
-estate_252,for_sale,55000.0,1913924.0,Naranjito,10,5,estate.status.1,719.0,1500.0
-estate_253,for_sale,157500.0,377951.0,Toa Alta,10,7,estate.status.0,953.0,1650.0
-estate_254,for_sale,2000000.0,780900.0,Dorado,10,3,estate.status.1,646.0,3500.0
-estate_255,for_sale,11500000.0,974575.0,Dorado,1,3,estate.status.1,646.0,7000.0
-estate_256,for_sale,3500000.0,595727.0,Dorado,0,5,estate.status.1,646.0,2500.0
-estate_257,for_sale,270000.0,1879198.0,Toa Alta,1,3,estate.status.0,953.0,2400.0
-estate_258,for_sale,5000000.0,388280.0,Dorado,4,10,estate.status.0,646.0,3500.0
-estate_259,for_sale,25000.0,12674.0,Toa Alta,2,9,estate.status.0,953.0,
-estate_260,for_sale,172000.0,1940307.0,Naranjito,9,3,estate.status.0,719.0,1880.0
-estate_261,for_sale,65000.0,397849.0,Toa Alta,4,8,estate.status.1,953.0,2600.0
-estate_262,for_sale,1325000.0,600545.0,Dorado,7,5,estate.status.0,646.0,2500.0
-estate_263,for_sale,625000.0,5095.0,Vega Alta,8,1,estate.status.0,692.0,2096.0
-estate_264,for_sale,465000.0,1609595.0,Dorado,0,1,estate.status.1,646.0,2200.0
-estate_265,for_sale,575000.0,652522.0,Dorado,9,9,estate.status.1,646.0,1500.0
-estate_266,for_sale,1100000.0,1484017.0,Dorado,10,10,estate.status.1,646.0,3500.0
-estate_267,for_sale,550000.0,1837660.0,Dorado,4,5,estate.status.0,646.0,1800.0
-estate_268,for_sale,895000.0,1947221.0,Dorado,8,6,estate.status.1,646.0,2490.0
-estate_269,for_sale,495000.0,1946328.0,Vega Alta,9,4,estate.status.1,646.0,1564.0
-estate_270,for_sale,635000.0,6119.0,Vega Alta,10,8,estate.status.1,692.0,2100.0
-estate_271,for_sale,1125000.0,1854725.0,Dorado,6,3,estate.status.0,646.0,1172.0
-estate_272,for_sale,97000.0,1988142.0,Cabo Rojo,3,4,estate.status.1,622.0,900.0
-estate_273,for_sale,134000.0,1902722.0,Cabo Rojo,7,2,estate.status.0,622.0,900.0
-estate_274,for_sale,365000.0,1139967.0,Cabo Rojo,1,4,estate.status.0,622.0,2800.0
-estate_275,for_sale,260000.0,1645160.0,Cabo Rojo,0,8,estate.status.1,622.0,2214.0
-estate_276,for_sale,75000.0,1856947.0,Boqueron,4,3,estate.status.0,622.0,
-estate_277,for_sale,460000.0,1450082.0,Cabo Rojo,3,1,estate.status.0,622.0,3328.0
-estate_278,for_sale,250000.0,268562.0,Cabo Rojo,0,1,estate.status.0,622.0,
-estate_279,for_sale,1321000.0,1917469.0,Cabo Rojo,4,1,estate.status.1,622.0,
-estate_280,for_sale,63000.0,1888053.0,Hormigueros,7,3,estate.status.1,660.0,1233.0
-estate_281,for_sale,75000.0,1819530.0,Mayaguez,8,4,estate.status.1,680.0,1200.0
-estate_282,for_sale,325000.0,1879192.0,Cabo Rojo,7,1,estate.status.0,623.0,4000.0
-estate_283,for_sale,499900.0,2000888.0,Yauco,5,8,estate.status.0,698.0,
-estate_284,for_sale,101800.0,1879216.0,Cabo Rojo,4,1,estate.status.1,623.0,1000.0
-estate_285,for_sale,25000.0,962678.0,Cabo Rojo,6,3,estate.status.0,623.0,491.0
-estate_286,for_sale,205000.0,1002452.0,Guanica,6,2,estate.status.1,653.0,976.0
-estate_287,for_sale,135000.0,198778.0,Hormigueros,4,9,estate.status.0,660.0,1163.0
-estate_288,for_sale,104000.0,1311508.0,Mayaguez,9,8,estate.status.0,682.0,1175.0
-estate_289,for_sale,275000.0,1902773.0,Lajas,9,6,estate.status.0,667.0,1200.0
-estate_290,for_sale,182000.0,1902859.0,Cabo Rojo,8,1,estate.status.1,623.0,
-estate_291,for_sale,1400000.0,1902832.0,Cabo Rojo,3,2,estate.status.1,623.0,
-estate_292,for_sale,155000.0,1902829.0,San German,1,8,estate.status.0,683.0,
-estate_293,for_sale,115000.0,1009987.0,Cabo Rojo,9,6,estate.status.1,636.0,
-estate_294,for_sale,100000.0,1193340.0,Cabo Rojo,1,4,estate.status.0,623.0,1044.0
-estate_295,for_sale,75000.0,1104886.0,Cabo Rojo,1,8,estate.status.0,623.0,980.0
-estate_296,for_sale,122000.0,521774.0,Cabo Rojo,9,6,estate.status.1,623.0,1400.0
-estate_297,for_sale,150000.0,1837366.0,Cabo Rojo,8,4,estate.status.1,623.0,936.0
-estate_298,for_sale,325000.0,1917857.0,Cabo Rojo,9,4,estate.status.0,623.0,3089.0
-estate_299,for_sale,130000.0,560375.0,Cabo Rojo,3,7,estate.status.1,623.0,2064.0
+id,price,street,city,bed,bath,status_id,state,zip_code,house_size
+estate_0,105000.0,1962661.0,Adjuntas,2,5,estate.status.0,Puerto Rico,601.0,920.0
+estate_1,80000.0,1902874.0,Adjuntas,7,10,estate.status.1,Puerto Rico,601.0,1527.0
+estate_2,67000.0,1404990.0,Juana Diaz,4,3,estate.status.0,Puerto Rico,795.0,748.0
+estate_3,145000.0,1947675.0,Ponce,10,7,estate.status.0,Puerto Rico,731.0,1800.0
+estate_4,65000.0,331151.0,Mayaguez,4,2,estate.status.0,Puerto Rico,680.0,
+estate_5,179000.0,1850806.0,San Sebastian,3,4,estate.status.0,Puerto Rico,612.0,2520.0
+estate_6,50000.0,1298094.0,Ciales,5,0,estate.status.0,Puerto Rico,639.0,2040.0
+estate_7,71600.0,1048466.0,Ponce,3,7,estate.status.1,Puerto Rico,731.0,1050.0
+estate_8,100000.0,734904.0,Ponce,4,6,estate.status.0,Puerto Rico,730.0,1092.0
+estate_9,300000.0,1946226.0,Las Marias,4,5,estate.status.1,Puerto Rico,670.0,5403.0
+estate_10,89000.0,1902814.0,Isabela,10,3,estate.status.0,Puerto Rico,662.0,1106.0
+estate_11,150000.0,1773902.0,Juana Diaz,10,4,estate.status.0,Puerto Rico,795.0,1045.0
+estate_12,155000.0,1946165.0,Lares,4,3,estate.status.1,Puerto Rico,669.0,4161.0
+estate_13,79000.0,1761024.0,Utuado,7,8,estate.status.0,Puerto Rico,641.0,1620.0
+estate_14,649000.0,1879215.0,Ponce,4,8,estate.status.0,Puerto Rico,731.0,2677.0
+estate_15,120000.0,17854.0,Yauco,10,2,estate.status.1,Puerto Rico,698.0,1100.0
+estate_16,235000.0,13687.0,Mayaguez,7,8,estate.status.1,Puerto Rico,680.0,3450.0
+estate_17,105000.0,1868721.0,Ponce,9,6,estate.status.0,Puerto Rico,728.0,1500.0
+estate_18,575000.0,1312671.0,San Sebastian,7,6,estate.status.1,Puerto Rico,685.0,4000.0
+estate_19,140000.0,6710.0,Anasco,4,3,estate.status.0,Puerto Rico,610.0,1230.0
+estate_20,50000.0,1902835.0,Yauco,4,10,estate.status.0,Puerto Rico,698.0,621.0
+estate_21,165000.0,117231.0,Moca,9,10,estate.status.0,Puerto Rico,676.0,3000.0
+estate_22,189000.0,1307740.0,Coamo,9,0,estate.status.0,Puerto Rico,769.0,1213.0
+estate_23,115000.0,481889.0,Ponce,2,10,estate.status.0,Puerto Rico,716.0,1148.0
+estate_24,122500.0,437877.0,Yauco,7,7,estate.status.1,Puerto Rico,698.0,1118.0
+estate_25,255000.0,1948621.0,San Sebastian,2,5,estate.status.0,Puerto Rico,685.0,1500.0
+estate_26,425000.0,955013.0,Ponce,5,5,estate.status.1,Puerto Rico,730.0,3000.0
+estate_27,93000.0,1854860.0,Guayanilla,1,4,estate.status.1,Puerto Rico,656.0,1300.0
+estate_28,75000.0,511838.0,Manati,9,2,estate.status.0,Puerto Rico,676.0,1080.0
+estate_29,469000.0,1857020.0,Isabela,9,10,estate.status.1,Puerto Rico,662.0,2505.0
+estate_30,189000.0,1902849.0,Villalba,8,4,estate.status.1,Puerto Rico,766.0,1943.0
+estate_31,225000.0,1987398.0,Ponce,1,8,estate.status.0,Puerto Rico,717.0,1600.0
+estate_32,495000.0,1962660.0,Santa Isabel,7,8,estate.status.1,Puerto Rico,757.0,2886.0
+estate_33,220000.0,523790.0,Ponce,0,7,estate.status.0,Puerto Rico,730.0,850.0
+estate_34,70500.0,1856955.0,Yauco,9,6,estate.status.0,Puerto Rico,698.0,936.0
+estate_35,305000.0,1902855.0,Moca,10,6,estate.status.0,Puerto Rico,676.0,1928.0
+estate_36,475000.0,1940314.0,San Sebastian,10,1,estate.status.0,Puerto Rico,685.0,3690.0
+estate_37,195000.0,1856898.0,Utuado,8,5,estate.status.1,Puerto Rico,641.0,2500.0
+estate_38,120000.0,1667467.0,Las Marias,0,3,estate.status.0,Puerto Rico,670.0,1800.0
+estate_39,650000.0,1902746.0,Mayaguez,4,6,estate.status.0,Puerto Rico,680.0,3709.0
+estate_40,555000.0,480944.0,Ponce,8,3,estate.status.0,Puerto Rico,730.0,3100.0
+estate_41,3900000.0,269007.0,Penuelas,7,10,estate.status.0,Puerto Rico,624.0,9297.0
+estate_42,400000.0,1857015.0,Moca,7,10,estate.status.1,Puerto Rico,676.0,43082.0
+estate_43,380000.0,1855421.0,Hatillo,0,1,estate.status.0,Puerto Rico,659.0,
+estate_44,95000.0,1868667.0,Aguada,7,8,estate.status.1,Puerto Rico,602.0,600.0
+estate_45,74000.0,1902824.0,Aguada,10,3,estate.status.0,Puerto Rico,602.0,900.0
+estate_46,139500.0,397960.0,Aguada,2,9,estate.status.0,Puerto Rico,602.0,3000.0
+estate_47,149900.0,1850822.0,Aguada,9,6,estate.status.0,Puerto Rico,602.0,2100.0
+estate_48,180000.0,1234696.0,Aguada,1,9,estate.status.1,Puerto Rico,602.0,1138.0
+estate_49,249000.0,1902736.0,Aguada,2,4,estate.status.1,Puerto Rico,602.0,1380.0
+estate_50,252000.0,1902727.0,Aguada,9,1,estate.status.1,Puerto Rico,602.0,2500.0
+estate_51,160000.0,1842923.0,Aguada,4,1,estate.status.1,Puerto Rico,602.0,813.0
+estate_52,90000.0,1837494.0,Aguada,4,9,estate.status.1,Puerto Rico,602.0,813.0
+estate_53,500000.0,10282.0,Aguada,1,1,estate.status.1,Puerto Rico,602.0,2962.0
+estate_54,339000.0,268641.0,Aguada,10,5,estate.status.0,Puerto Rico,602.0,1955.0
+estate_55,265000.0,1868699.0,Aguada,4,4,estate.status.1,Puerto Rico,602.0,1200.0
+estate_56,10000000.0,1233063.0,Aguada,2,3,estate.status.1,Puerto Rico,602.0,6000.0
+estate_57,389000.0,1902739.0,Aguada,1,7,estate.status.0,Puerto Rico,602.0,1880.0
+estate_58,575000.0,1962620.0,Aguada,5,0,estate.status.1,Puerto Rico,602.0,2500.0
+estate_59,35000.0,1234597.0,Aguada,8,8,estate.status.0,Puerto Rico,602.0,
+estate_60,58000.0,1966337.0,Aguada,1,2,estate.status.1,Puerto Rico,602.0,
+estate_61,85000.0,1188097.0,Aguada,2,6,estate.status.0,Puerto Rico,602.0,
+estate_62,47000.0,1841588.0,Aguada,9,8,estate.status.0,Puerto Rico,602.0,
+estate_63,720000.0,1667516.0,Aguada,9,0,estate.status.1,Puerto Rico,602.0,2715.0
+estate_64,375000.0,166250.0,Aguada,3,2,estate.status.0,Puerto Rico,602.0,2775.0
+estate_65,50000.0,1946326.0,Aguada,6,2,estate.status.1,Puerto Rico,602.0,
+estate_66,3250000.0,1856959.0,Rincon,6,2,estate.status.0,Puerto Rico,602.0,
+estate_67,39500.0,1902841.0,Aguada,2,1,estate.status.1,Puerto Rico,602.0,
+estate_68,249500.0,1032552.0,Aguada,1,9,estate.status.0,Puerto Rico,602.0,
+estate_69,1399000.0,6714.0,Aguada,8,4,estate.status.1,Puerto Rico,602.0,5517.0
+estate_70,600000.0,1946165.0,Aguada,6,3,estate.status.1,Puerto Rico,602.0,2400.0
+estate_71,649000.0,1946165.0,Aguada,7,5,estate.status.1,Puerto Rico,602.0,
+estate_72,189000.0,1902894.0,Aguada,0,9,estate.status.1,Puerto Rico,602.0,951.0
+estate_73,150000.0,1902798.0,Aguada,2,0,estate.status.0,Puerto Rico,602.0,
+estate_74,74000.0,1966339.0,Aguada,7,1,estate.status.0,Puerto Rico,602.0,
+estate_75,65500.0,16882.0,Aguada,7,0,estate.status.1,Puerto Rico,602.0,
+estate_76,67500.0,1760196.0,Aguada,7,6,estate.status.0,Puerto Rico,602.0,
+estate_77,74000.0,1842584.0,Aguada,0,6,estate.status.0,Puerto Rico,602.0,
+estate_78,130000.0,1902763.0,Aguada,10,0,estate.status.0,Puerto Rico,602.0,
+estate_79,95000.0,1188098.0,Aguada,5,3,estate.status.1,Puerto Rico,602.0,
+estate_80,329000.0,939073.0,Rincon,7,2,estate.status.1,Puerto Rico,602.0,
+estate_81,130000.0,6711.0,Aguada,1,5,estate.status.1,Puerto Rico,602.0,
+estate_82,94770.0,166251.0,Aguada,10,8,estate.status.0,Puerto Rico,602.0,
+estate_83,150000.0,1902760.0,Aguada,4,7,estate.status.0,Puerto Rico,602.0,
+estate_84,165000.0,167086.0,Aguada,6,7,estate.status.1,Puerto Rico,602.0,
+estate_85,215000.0,595559.0,Aguadilla,9,5,estate.status.1,Puerto Rico,603.0,2070.0
+estate_86,63000.0,1856967.0,Aguadilla,5,0,estate.status.0,Puerto Rico,603.0,1184.0
+estate_87,215000.0,1268649.0,Aguadilla,6,2,estate.status.0,Puerto Rico,603.0,1900.0
+estate_88,115000.0,1962563.0,Aguadilla,5,5,estate.status.1,Puerto Rico,603.0,980.0
+estate_89,99000.0,1499349.0,Aguadilla,2,9,estate.status.1,Puerto Rico,603.0,1408.0
+estate_90,850000.0,792809.0,Aguadilla,3,6,estate.status.0,Puerto Rico,603.0,8460.0
+estate_91,140000.0,1868702.0,Aguadilla,4,4,estate.status.1,Puerto Rico,603.0,1116.0
+estate_92,499000.0,117065.0,Aguadilla,4,4,estate.status.1,Puerto Rico,603.0,3734.0
+estate_93,180000.0,846259.0,Aguadilla,10,4,estate.status.0,Puerto Rico,603.0,1500.0
+estate_94,225900.0,1946283.0,Aguadilla,9,2,estate.status.1,Puerto Rico,603.0,2618.0
+estate_95,260000.0,1136713.0,Aguadilla,4,0,estate.status.0,Puerto Rico,603.0,1760.0
+estate_96,31179.0,1987983.0,Aguadilla,10,5,estate.status.1,Puerto Rico,603.0,
+estate_97,500000.0,1902866.0,Aguadilla,10,10,estate.status.1,Puerto Rico,603.0,2950.0
+estate_98,225000.0,1838380.0,Aguada,0,9,estate.status.0,Puerto Rico,603.0,1565.0
+estate_99,28000.0,1236850.0,Aguadilla,4,4,estate.status.0,Puerto Rico,603.0,
+estate_100,425000.0,1946165.0,Aguadilla,6,7,estate.status.0,Puerto Rico,603.0,3468.0
+estate_101,300000.0,1258490.0,Aguadilla,5,8,estate.status.0,Puerto Rico,603.0,547.0
+estate_102,75000.0,1902896.0,Aguadilla,0,1,estate.status.0,Puerto Rico,603.0,
+estate_103,290000.0,117027.0,Aguadilla,1,2,estate.status.1,Puerto Rico,603.0,2280.0
+estate_104,550000.0,483647.0,Aguadilla,9,0,estate.status.0,Puerto Rico,603.0,4020.0
+estate_105,234900.0,1850808.0,Aguadilla,3,7,estate.status.1,Puerto Rico,603.0,2035.0
+estate_106,44720.0,1839304.0,Aguadilla,9,7,estate.status.0,Puerto Rico,603.0,
+estate_107,35000.0,1946284.0,Aguadilla,5,7,estate.status.1,Puerto Rico,603.0,
+estate_108,75000.0,1868632.0,Aguadilla,6,9,estate.status.0,Puerto Rico,603.0,
+estate_109,37000.0,1946165.0,Aguadilla,3,10,estate.status.1,Puerto Rico,603.0,
+estate_110,37359.0,913730.0,Aguadilla,10,9,estate.status.0,Puerto Rico,603.0,
+estate_111,739500.0,598237.0,Aguadilla,10,7,estate.status.0,Puerto Rico,603.0,
+estate_112,65000.0,595558.0,Aguadilla,7,5,estate.status.1,Puerto Rico,603.0,
+estate_113,56406.0,1667035.0,Aguadilla,8,9,estate.status.1,Puerto Rico,603.0,
+estate_114,620000.0,119241.0,Aguadilla,1,0,estate.status.1,Puerto Rico,603.0,3267.0
+estate_115,649900.0,1850840.0,Aguadilla,8,3,estate.status.1,Puerto Rico,603.0,3700.0
+estate_116,44995.0,595223.0,Aguadilla,1,0,estate.status.0,Puerto Rico,603.0,
+estate_117,37779.0,1563956.0,Aguadilla,9,7,estate.status.0,Puerto Rico,603.0,
+estate_118,60123.0,1838382.0,Aguadilla,7,5,estate.status.1,Puerto Rico,603.0,
+estate_119,38279.0,6248.0,Aguadilla,10,3,estate.status.0,Puerto Rico,603.0,
+estate_120,199900.0,1838381.0,Aguada,2,3,estate.status.0,Puerto Rico,603.0,
+estate_121,125000.0,822915.0,Aguadilla,3,3,estate.status.0,Puerto Rico,603.0,
+estate_122,200000.0,1857008.0,Aguadilla,8,4,estate.status.1,Puerto Rico,603.0,
+estate_123,150000.0,6707.0,Aguadilla,8,4,estate.status.1,Puerto Rico,603.0,
+estate_124,8000000.0,6475.0,Isabela,8,10,estate.status.0,Puerto Rico,603.0,
+estate_125,1000000.0,1850843.0,Aguadilla,0,6,estate.status.0,Puerto Rico,603.0,
+estate_126,695000.0,1902854.0,Aguadilla,8,4,estate.status.1,Puerto Rico,603.0,
+estate_127,98000.0,1850836.0,Maricao,9,10,estate.status.0,Puerto Rico,606.0,2156.0
+estate_128,55000.0,1857017.0,Maricao,8,4,estate.status.0,Puerto Rico,606.0,2156.0
+estate_129,75000.0,1856895.0,Maricao,6,0,estate.status.0,Puerto Rico,606.0,1563.0
+estate_130,80000.0,1897887.0,Maricao,9,10,estate.status.0,Puerto Rico,606.0,915.0
+estate_131,160000.0,1902838.0,Maricao,8,9,estate.status.1,Puerto Rico,606.0,
+estate_132,46900.0,1757054.0,Mayaguez,6,3,estate.status.1,Puerto Rico,680.0,982.0
+estate_133,125000.0,436480.0,Hormigueros,8,2,estate.status.0,Puerto Rico,660.0,2000.0
+estate_134,95000.0,595722.0,Guanica,2,2,estate.status.0,Puerto Rico,653.0,1393.0
+estate_135,330000.0,1902816.0,Cabo Rojo,4,0,estate.status.1,Puerto Rico,623.0,1620.0
+estate_136,115000.0,1394934.0,Mayaguez,8,4,estate.status.0,Puerto Rico,680.0,1760.0
+estate_137,285000.0,575006.0,Cabo Rojo,6,6,estate.status.0,Puerto Rico,623.0,1000.0
+estate_138,215000.0,1480314.0,Mayaguez,10,0,estate.status.0,Puerto Rico,680.0,2200.0
+estate_139,115000.0,962228.0,Cabo Rojo,9,1,estate.status.0,Puerto Rico,623.0,1205.0
+estate_140,140000.0,757729.0,Mayaguez,10,3,estate.status.1,Puerto Rico,680.0,1200.0
+estate_141,87000.0,13690.0,Mayaguez,0,7,estate.status.0,Puerto Rico,682.0,
+estate_142,250000.0,1071244.0,Cabo Rojo,9,9,estate.status.0,Puerto Rico,623.0,3052.0
+estate_143,70000.0,387673.0,San German,3,3,estate.status.0,Puerto Rico,683.0,894.0
+estate_144,190000.0,6946.0,Mayaguez,5,5,estate.status.1,Puerto Rico,680.0,1600.0
+estate_145,150000.0,598681.0,San German,7,6,estate.status.1,Puerto Rico,683.0,363.0
+estate_146,750000.0,1855338.0,Cabo Rojo,10,6,estate.status.0,Puerto Rico,623.0,4800.0
+estate_147,125000.0,939072.0,Mayaguez,9,7,estate.status.0,Puerto Rico,682.0,390.0
+estate_148,950000.0,1854848.0,Rincon,3,6,estate.status.1,Puerto Rico,677.0,3852.0
+estate_149,1200000.0,1181969.0,Aguada,2,7,estate.status.1,Puerto Rico,677.0,6000.0
+estate_150,495000.0,1446813.0,Lajas,3,6,estate.status.0,Puerto Rico,667.0,6500.0
+estate_151,90000.0,950033.0,Mayaguez,6,2,estate.status.1,Puerto Rico,682.0,778.0
+estate_152,395000.0,948184.0,Cabo Rojo,0,6,estate.status.1,Puerto Rico,623.0,2800.0
+estate_153,82000.0,1840559.0,Mayaguez,8,2,estate.status.1,Puerto Rico,680.0,471.0
+estate_154,389000.0,593379.0,Cabo Rojo,2,3,estate.status.1,Puerto Rico,623.0,1356.0
+estate_155,45000.0,1856894.0,Cabo Rojo,7,1,estate.status.0,Puerto Rico,623.0,
+estate_156,65000.0,49178.0,Cabo Rojo,4,6,estate.status.0,Puerto Rico,623.0,
+estate_157,80000.0,1855526.0,Cabo Rojo,9,1,estate.status.1,Puerto Rico,623.0,
+estate_158,120000.0,1897484.0,Cabo Rojo,6,4,estate.status.0,Puerto Rico,623.0,
+estate_159,70000.0,113181.0,Cabo Rojo,0,2,estate.status.0,Puerto Rico,623.0,
+estate_160,391000.0,10284.0,Hormigueros,5,10,estate.status.0,Puerto Rico,660.0,
+estate_161,160000.0,10282.0,Cabo Rojo,6,0,estate.status.0,Puerto Rico,623.0,
+estate_162,290000.0,10282.0,Cabo Rojo,2,3,estate.status.0,Puerto Rico,623.0,
+estate_163,835000.0,10282.0,Hormigueros,6,7,estate.status.0,Puerto Rico,660.0,
+estate_164,159000.0,1902890.0,Mayaguez,9,3,estate.status.0,Puerto Rico,680.0,
+estate_165,79000.0,1902821.0,Anasco,3,0,estate.status.0,Puerto Rico,610.0,
+estate_166,149900.0,6713.0,Anasco,2,0,estate.status.1,Puerto Rico,610.0,1687.0
+estate_167,106000.0,1966340.0,Anasco,8,2,estate.status.0,Puerto Rico,610.0,826.0
+estate_168,165000.0,560745.0,Anasco,2,9,estate.status.1,Puerto Rico,610.0,2327.0
+estate_169,499000.0,1307166.0,Anasco,4,6,estate.status.0,Puerto Rico,610.0,
+estate_170,140000.0,1667382.0,Anasco,7,4,estate.status.1,Puerto Rico,610.0,
+estate_171,450000.0,1793737.0,Isabela,3,3,estate.status.0,Puerto Rico,662.0,4000.0
+estate_172,485000.0,1446871.0,Isabela,6,8,estate.status.1,Puerto Rico,662.0,3066.0
+estate_173,1800000.0,1902806.0,Isabela,10,9,estate.status.1,Puerto Rico,662.0,10000.0
+estate_174,975000.0,1913925.0,Isabela,4,4,estate.status.0,Puerto Rico,662.0,3739.0
+estate_175,950000.0,6927.0,Rincon,3,6,estate.status.1,Puerto Rico,677.0,2450.0
+estate_176,349000.0,1966335.0,Rincon,9,10,estate.status.0,Puerto Rico,677.0,1688.0
+estate_177,39900.0,1862028.0,Arecibo,7,9,estate.status.0,Puerto Rico,612.0,878.0
+estate_178,29900.0,1862027.0,Arecibo,2,3,estate.status.1,Puerto Rico,612.0,878.0
+estate_179,475000.0,1427607.0,Arecibo,10,10,estate.status.1,Puerto Rico,612.0,10000.0
+estate_180,200000.0,1946165.0,Arecibo,4,9,estate.status.1,Puerto Rico,612.0,3413.0
+estate_181,84900.0,1840770.0,Arecibo,8,1,estate.status.1,Puerto Rico,612.0,
+estate_182,148000.0,1902831.0,Arecibo,10,8,estate.status.1,Puerto Rico,612.0,2058.0
+estate_183,39500.0,1946165.0,Arecibo,7,4,estate.status.0,Puerto Rico,612.0,800.0
+estate_184,220000.0,1856978.0,Arecibo,6,7,estate.status.1,Puerto Rico,612.0,2900.0
+estate_185,75000.0,1856974.0,Arecibo,5,3,estate.status.1,Puerto Rico,612.0,1100.0
+estate_186,110000.0,1856516.0,Arecibo,4,9,estate.status.1,Puerto Rico,612.0,1000.0
+estate_187,150000.0,1946210.0,Arecibo,8,9,estate.status.1,Puerto Rico,612.0,800.0
+estate_188,69900.0,1840775.0,Arecibo,5,6,estate.status.0,Puerto Rico,612.0,
+estate_189,79000.0,1855343.0,Arecibo,2,8,estate.status.0,Puerto Rico,612.0,2472.0
+estate_190,65000.0,1856972.0,Arecibo,4,6,estate.status.0,Puerto Rico,612.0,1044.0
+estate_191,179000.0,1855451.0,Arecibo,8,10,estate.status.1,Puerto Rico,612.0,2200.0
+estate_192,145000.0,1427895.0,Arecibo,0,9,estate.status.1,Puerto Rico,612.0,3500.0
+estate_193,79000.0,821104.0,Arecibo,5,3,estate.status.0,Puerto Rico,612.0,1262.0
+estate_194,360000.0,1567105.0,Arecibo,0,1,estate.status.0,Puerto Rico,612.0,6000.0
+estate_195,50000.0,1967771.0,Arecibo,1,6,estate.status.0,Puerto Rico,612.0,
+estate_196,134900.0,1840769.0,Arecibo,6,4,estate.status.0,Puerto Rico,612.0,1856.0
+estate_197,94600.0,1992381.0,Arecibo,2,0,estate.status.0,Puerto Rico,612.0,1009.0
+estate_198,59900.0,1840776.0,Arecibo,0,3,estate.status.1,Puerto Rico,612.0,
+estate_199,239000.0,1551669.0,Arecibo,9,4,estate.status.1,Puerto Rico,612.0,2715.0
+estate_200,279000.0,1902853.0,Arecibo,3,6,estate.status.1,Puerto Rico,612.0,2872.0
+estate_201,100000.0,1900756.0,Arecibo,6,10,estate.status.1,Puerto Rico,612.0,1028.0
+estate_202,89000.0,1856938.0,Arecibo,9,1,estate.status.0,Puerto Rico,612.0,
+estate_203,168000.0,1902837.0,Arecibo,8,2,estate.status.1,Puerto Rico,612.0,1600.0
+estate_204,150000.0,1509489.0,Arecibo,6,7,estate.status.1,Puerto Rico,612.0,1604.0
+estate_205,60000.0,1850825.0,Arecibo,7,0,estate.status.0,Puerto Rico,612.0,
+estate_206,140000.0,918510.0,Arecibo,1,0,estate.status.0,Puerto Rico,612.0,1500.0
+estate_207,70000.0,1855345.0,Arecibo,6,1,estate.status.0,Puerto Rico,612.0,680.0
+estate_208,80000.0,982996.0,Arecibo,7,6,estate.status.0,Puerto Rico,612.0,750.0
+estate_209,135000.0,1437193.0,Arecibo,9,2,estate.status.0,Puerto Rico,612.0,1500.0
+estate_210,215000.0,1449539.0,Arecibo,0,3,estate.status.1,Puerto Rico,612.0,2183.0
+estate_211,42900.0,1855937.0,Camuy,8,4,estate.status.0,Puerto Rico,612.0,
+estate_212,49900.0,1840772.0,Arecibo,8,9,estate.status.0,Puerto Rico,612.0,
+estate_213,138000.0,199310.0,Arecibo,3,6,estate.status.0,Puerto Rico,612.0,1000.0
+estate_214,289000.0,1856979.0,Arecibo,5,2,estate.status.1,Puerto Rico,612.0,2832.0
+estate_215,132000.0,1725570.0,Arecibo,4,6,estate.status.0,Puerto Rico,612.0,1000.0
+estate_216,197000.0,1856909.0,Arecibo,8,5,estate.status.0,Puerto Rico,612.0,1500.0
+estate_217,1200000.0,1946308.0,Arecibo,8,7,estate.status.0,Puerto Rico,612.0,
+estate_218,185000.0,869853.0,Manati,3,6,estate.status.1,Puerto Rico,674.0,1700.0
+estate_219,200000.0,1855347.0,Hatillo,4,0,estate.status.1,Puerto Rico,659.0,3400.0
+estate_220,210000.0,913609.0,Morovis,10,10,estate.status.1,Puerto Rico,687.0,2500.0
+estate_221,105000.0,1869494.0,Manati,4,8,estate.status.0,Puerto Rico,674.0,921.0
+estate_222,113600.0,1837500.0,Manati,0,0,estate.status.1,Puerto Rico,674.0,800.0
+estate_223,174900.0,1985068.0,Barceloneta,3,6,estate.status.0,Puerto Rico,617.0,1195.0
+estate_224,3000000.0,1836183.0,Quebradillas,6,6,estate.status.0,Puerto Rico,678.0,3000.0
+estate_225,134000.0,733378.0,Vega Baja,2,3,estate.status.0,Puerto Rico,693.0,895.0
+estate_226,245000.0,867517.0,Vega Baja,0,6,estate.status.1,Puerto Rico,693.0,2038.0
+estate_227,161000.0,435967.0,Caguas,5,9,estate.status.0,Puerto Rico,727.0,1100.0
+estate_228,225000.0,1881195.0,Vega Baja,9,7,estate.status.0,Puerto Rico,693.0,1217.0
+estate_229,290000.0,1868675.0,Manati,7,4,estate.status.1,Puerto Rico,674.0,2236.0
+estate_230,375000.0,1854739.0,Barceloneta,1,4,estate.status.1,Puerto Rico,617.0,2961.0
+estate_231,425000.0,1856906.0,Camuy,5,5,estate.status.1,Puerto Rico,627.0,2400.0
+estate_232,1100000.0,1120998.0,Quebradillas,5,1,estate.status.0,Puerto Rico,678.0,3000.0
+estate_233,418000.0,2402.0,Hatillo,1,4,estate.status.0,Puerto Rico,659.0,3650.0
+estate_234,365000.0,1902830.0,Morovis,7,0,estate.status.0,Puerto Rico,687.0,2366.0
+estate_235,55000.0,1902872.0,Hatillo,6,9,estate.status.1,Puerto Rico,659.0,
+estate_236,62000.0,1902871.0,Hatillo,6,4,estate.status.0,Puerto Rico,659.0,
+estate_237,350000.0,1902881.0,Hatillo,3,1,estate.status.0,Puerto Rico,659.0,
+estate_238,95000.0,151105.0,Quebradillas,4,7,estate.status.1,Puerto Rico,95000.0,1757.0
+estate_239,64900.0,1850837.0,Camuy,1,2,estate.status.0,Puerto Rico,627.0,
+estate_240,49900.0,1861976.0,Barceloneta,3,4,estate.status.0,Puerto Rico,617.0,1150.0
+estate_241,70000.0,1877370.0,Barceloneta,1,4,estate.status.0,Puerto Rico,617.0,
+estate_242,90000.0,1844124.0,Barceloneta,2,1,estate.status.0,Puerto Rico,617.0,955.0
+estate_243,111000.0,1985086.0,Barceloneta,0,3,estate.status.1,Puerto Rico,617.0,1015.0
+estate_244,114400.0,1855327.0,Barceloneta,6,3,estate.status.1,Puerto Rico,617.0,1105.0
+estate_245,113500.0,1967757.0,Barceloneta,7,0,estate.status.0,Puerto Rico,617.0,955.0
+estate_246,59200.0,594668.0,Dorado,0,0,estate.status.1,Puerto Rico,646.0,700.0
+estate_247,63800.0,13692.0,Toa Baja,1,6,estate.status.1,Puerto Rico,949.0,950.0
+estate_248,45000.0,1168757.0,Toa Alta,0,1,estate.status.1,Puerto Rico,953.0,1000.0
+estate_249,55000.0,1913914.0,Dorado,6,7,estate.status.1,Puerto Rico,646.0,800.0
+estate_250,100000.0,1547175.0,Vega Alta,2,3,estate.status.0,Puerto Rico,692.0,1400.0
+estate_251,80000.0,1584559.0,Corozal,4,5,estate.status.0,Puerto Rico,783.0,1500.0
+estate_252,55000.0,1913924.0,Naranjito,10,5,estate.status.1,Puerto Rico,719.0,1500.0
+estate_253,157500.0,377951.0,Toa Alta,10,7,estate.status.0,Puerto Rico,953.0,1650.0
+estate_254,2000000.0,780900.0,Dorado,10,3,estate.status.0,Puerto Rico,646.0,3500.0
+estate_255,11500000.0,974575.0,Dorado,1,3,estate.status.0,Puerto Rico,646.0,7000.0
+estate_256,3500000.0,595727.0,Dorado,0,5,estate.status.0,Puerto Rico,646.0,2500.0
+estate_257,270000.0,1879198.0,Toa Alta,1,3,estate.status.0,Puerto Rico,953.0,2400.0
+estate_258,5000000.0,388280.0,Dorado,4,10,estate.status.0,Puerto Rico,646.0,3500.0
+estate_259,25000.0,12674.0,Toa Alta,2,9,estate.status.0,Puerto Rico,953.0,
+estate_260,172000.0,1940307.0,Naranjito,9,3,estate.status.0,Puerto Rico,719.0,1880.0
+estate_261,65000.0,397849.0,Toa Alta,4,8,estate.status.1,Puerto Rico,953.0,2600.0
+estate_262,1325000.0,600545.0,Dorado,7,5,estate.status.1,Puerto Rico,646.0,2500.0
+estate_263,625000.0,5095.0,Vega Alta,8,1,estate.status.0,Puerto Rico,692.0,2096.0
+estate_264,465000.0,1609595.0,Dorado,0,1,estate.status.0,Puerto Rico,646.0,2200.0
+estate_265,575000.0,652522.0,Dorado,9,9,estate.status.1,Puerto Rico,646.0,1500.0
+estate_266,1100000.0,1484017.0,Dorado,10,10,estate.status.1,Puerto Rico,646.0,3500.0
+estate_267,550000.0,1837660.0,Dorado,4,5,estate.status.1,Puerto Rico,646.0,1800.0
+estate_268,895000.0,1947221.0,Dorado,8,6,estate.status.0,Puerto Rico,646.0,2490.0
+estate_269,495000.0,1946328.0,Vega Alta,9,4,estate.status.0,Puerto Rico,646.0,1564.0
+estate_270,635000.0,6119.0,Vega Alta,10,8,estate.status.1,Puerto Rico,692.0,2100.0
+estate_271,1125000.0,1854725.0,Dorado,6,3,estate.status.1,Puerto Rico,646.0,1172.0
+estate_272,97000.0,1988142.0,Cabo Rojo,3,4,estate.status.0,Puerto Rico,622.0,900.0
+estate_273,134000.0,1902722.0,Cabo Rojo,7,2,estate.status.0,Puerto Rico,622.0,900.0
+estate_274,365000.0,1139967.0,Cabo Rojo,1,4,estate.status.0,Puerto Rico,622.0,2800.0
+estate_275,260000.0,1645160.0,Cabo Rojo,0,8,estate.status.0,Puerto Rico,622.0,2214.0
+estate_276,75000.0,1856947.0,Boqueron,4,3,estate.status.1,Puerto Rico,622.0,
+estate_277,460000.0,1450082.0,Cabo Rojo,3,1,estate.status.1,Puerto Rico,622.0,3328.0
+estate_278,250000.0,268562.0,Cabo Rojo,0,1,estate.status.1,Puerto Rico,622.0,
+estate_279,1321000.0,1917469.0,Cabo Rojo,4,1,estate.status.1,Puerto Rico,622.0,
+estate_280,63000.0,1888053.0,Hormigueros,7,3,estate.status.0,Puerto Rico,660.0,1233.0
+estate_281,75000.0,1819530.0,Mayaguez,8,4,estate.status.0,Puerto Rico,680.0,1200.0
+estate_282,325000.0,1879192.0,Cabo Rojo,7,1,estate.status.0,Puerto Rico,623.0,4000.0
+estate_283,499900.0,2000888.0,Yauco,5,8,estate.status.1,Puerto Rico,698.0,
+estate_284,101800.0,1879216.0,Cabo Rojo,4,1,estate.status.1,Puerto Rico,623.0,1000.0
+estate_285,25000.0,962678.0,Cabo Rojo,6,3,estate.status.0,Puerto Rico,623.0,491.0
+estate_286,205000.0,1002452.0,Guanica,6,2,estate.status.0,Puerto Rico,653.0,976.0
+estate_287,135000.0,198778.0,Hormigueros,4,9,estate.status.0,Puerto Rico,660.0,1163.0
+estate_288,104000.0,1311508.0,Mayaguez,9,8,estate.status.0,Puerto Rico,682.0,1175.0
+estate_289,275000.0,1902773.0,Lajas,9,6,estate.status.1,Puerto Rico,667.0,1200.0
+estate_290,182000.0,1902859.0,Cabo Rojo,8,1,estate.status.0,Puerto Rico,623.0,
+estate_291,1400000.0,1902832.0,Cabo Rojo,3,2,estate.status.1,Puerto Rico,623.0,
+estate_292,155000.0,1902829.0,San German,1,8,estate.status.0,Puerto Rico,683.0,
+estate_293,115000.0,1009987.0,Cabo Rojo,9,6,estate.status.1,Puerto Rico,636.0,
+estate_294,100000.0,1193340.0,Cabo Rojo,1,4,estate.status.0,Puerto Rico,623.0,1044.0
+estate_295,75000.0,1104886.0,Cabo Rojo,1,8,estate.status.1,Puerto Rico,623.0,980.0
+estate_296,122000.0,521774.0,Cabo Rojo,9,6,estate.status.0,Puerto Rico,623.0,1400.0
+estate_297,150000.0,1837366.0,Cabo Rojo,8,4,estate.status.0,Puerto Rico,623.0,936.0
+estate_298,325000.0,1917857.0,Cabo Rojo,9,4,estate.status.0,Puerto Rico,623.0,3089.0
+estate_299,130000.0,560375.0,Cabo Rojo,3,7,estate.status.1,Puerto Rico,623.0,2064.0
