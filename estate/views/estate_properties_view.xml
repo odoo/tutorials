@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+
     <record id="estate_estate_action" model="ir.actions.act_window">
         <field name="name">Estate</field>
         <field name="res_model">estate.estate</field>
@@ -16,7 +17,6 @@
         <field name="arch" type="xml">
             <list string="Estate">
                 <field name="address"/>
-                <field name="status_id"/>
                 <field name="price"/>
             </list>
         </field>
@@ -27,10 +27,13 @@
         <field name="model">estate.estate</field>
         <field name="arch" type="xml">
             <form>
+                <header></header>
                 <sheet>
-                    <group>
-                        <field name="status_id"/>
-                    </group>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="address"/>
+                        </h1>
+                    </div>
                     <notebook>
                         <page name="general_data" string="General data">
                             <group>

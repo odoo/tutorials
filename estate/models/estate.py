@@ -19,10 +19,3 @@ class Estate(models.Model):
     def _compute_address(self):
         for record in self:
             record.address = f"{record.street}, {record.city_id.name}, {record.city_id.country_id.name}"
-
-
-class Status(models.Model):
-    _name = "estate.status"
-    _description = "This is the description."
-
-    name = fields.Char(required=True)

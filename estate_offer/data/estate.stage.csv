@@ -1,0 +1,4 @@
+id,name,reference,order
+estate.stage.to_publish,To publish,to_publish,1
+estate.stage.negotiation,Negotiation,negotiation,2
+estate.stage.sell,Sell,sell,3

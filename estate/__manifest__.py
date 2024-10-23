@@ -10,7 +10,6 @@
         'security/ir.model.access.csv',
         'views/estate_properties_view.xml',
         'views/estate_menu.xml',
-        'data/estate.status.csv',
         'data/res.city.csv',
         'data/estate.estate.csv',
     ],
