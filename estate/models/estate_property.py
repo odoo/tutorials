@@ -1,5 +1,8 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+from future.backports.email.policy import default
+
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -25,6 +28,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(
         string="State",
+        default='new',
         selection=[
             ('new', "New"),
             ('offer_received', "Offer Received"),
@@ -63,6 +67,23 @@ class EstateProperty(models.Model):
             self.garden_orientation = ''
 
     def action_cancel(self):
-        state = self.state
-        if state != 'cancelled':
-            self.state = 'cancelled'
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError(_("Property already cancelled!"))
+            elif record.state == 'sold':
+                raise UserError(_("A sold property cannot be cancelled!"))
+            else:
+                self.state = 'cancelled'
+
+        return True
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(_("Property already sold!"))
+            elif record.state == 'cancelled':
+                raise UserError(_("A cancelled property cannot be sold!"))
+            else:
+                self.state = 'sold'
+
+        return True
