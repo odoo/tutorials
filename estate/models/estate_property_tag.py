@@ -1,4 +1,5 @@
-from odoo import fields, models  # type: ignore
+from odoo import fields, models
+
 
 class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
@@ -16,4 +17,3 @@ class EstatePropertyTag(models.Model):
     ]
 
     name = fields.Char(required=True)
-    

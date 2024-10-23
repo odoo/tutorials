@@ -1,6 +1,7 @@
-from odoo import api, fields, models  
+from odoo import api, fields, models
 from datetime import timedelta, date
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -20,34 +21,34 @@ class EstatePropertyOffer(models.Model):
         ('accepted', 'Accepted'),
         ('refused', 'Refused')
     ],
-    string='Status',
-    copy=False
+    string = 'Status',
+    copy = False
     )
 
     partner_id = fields.Many2one(
         'res.partner',
-        required=True,
-        string="Partner"
+        required = True,
+        string = "Partner"
     )
 
     property_id = fields.Many2one(
         'estate.property',
-        required=True,
-        string="Property ID"
+        required = True,
+        string = "Property ID"
     )
 
-    property_type_id = fields.Many2one(related="property_id.property_type_id", store="True")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store = "True")
 
-    validity =  fields.Integer(
-        string="Validity(Days)",
-        default=7
+    validity = fields.Integer(
+        string = "Validity(Days)",
+        default = 7
     )
-    
+
     date_deadline=fields.Date(
-        string="Deadline",
-        compute="_compute_deadline",
-        inverse="_inverse_deadline",
-        store=True
+        string = "Deadline",
+        compute = "_compute_deadline",
+        inverse = "_inverse_deadline",
+        store = True
     )
 
     # Compute Methods
@@ -63,8 +64,8 @@ class EstatePropertyOffer(models.Model):
     # used the abs so the app wont crash when getting -ve number
     def _inverse_deadline(self):
         for record in self:
-            record.validity=  abs((record.date_deadline - record.create_date.date()).days)
-    
+            record.validity = abs((record.date_deadline - record.create_date.date()).days)
+
     #Action Button
     def action_accept_offer(self):
         for record in self:
@@ -72,24 +73,23 @@ class EstatePropertyOffer(models.Model):
                 if(record.partner_id != record.property_id.buyer_id):
                     raise UserError("This Property has already accepted an offer.")
             else:
-                record.status='accepted'
+                record.status = 'accepted'
                 record.property_id.buyer_id=record.partner_id
                 record.property_id.selling_price=record.price
         return True
 
     def action_refuse_offer(self):
         for record in self:
-            record.status='refused'
-            record.property_id.buyer_id=False
-            record.property_id.selling_price=False
+            if record.status == 'accepted':
+                record.property_id.buyer_id  =False
+                record.property_id.selling_price = False
+            record.status = 'refused'
         return True
-    
+
     @api.model
-    def create(self, vals):
-        record=super().create(vals)
-        if record.property_id:
-            record.property_id.state="offer_received"
-        if record.price < record.property_id.best_price:
-            raise ValidationError("The Offer must be higher than the best price.")
-        return record 
-        
+    def create(self, offer):
+        property_id = self.env["estate.property"].browse(offer["property_id"])
+        if offer["price"] < property_id.best_price:
+            raise UserError("Offer price must be higher than existing offer.")
+        property_id.state = "offer_received"
+        return super().create(offer)
