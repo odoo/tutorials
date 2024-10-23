@@ -5,7 +5,7 @@
     'Author': 'Alex',
     'summary': '',
     'description': '',
-    'depends': ['estate',],
+    'depends': ['estate'],
     'data': [
         'security/ir.model.access.csv',
         'views/estate_properties_view.xml',

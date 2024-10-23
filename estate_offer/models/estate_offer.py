@@ -42,6 +42,5 @@ class Offer(models.Model):
 
     @api.constrains("amount")
     def _check_amount_superior_estate_price(self):
-        print(self.estate_id.price)
         if self.amount <= self.estate_id.price:
             raise exceptions.UserError("The amount of the offer must be superior to the price of the estate.")
