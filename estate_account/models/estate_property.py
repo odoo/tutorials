@@ -69,8 +69,7 @@ class Property(models.Model):
                 return self.env['account.move']
 
         invoice_vals_list = []
-        invoice_item_sequence = 0
-        for record in self:
+        for invoice_item_sequence, record in enumerate(self):
             if record.state != 'sold':
                 raise UserError('You can only invoice sold properties.')
 
@@ -81,7 +80,6 @@ class Property(models.Model):
             invoice_vals['invoice_line_ids'].append(
                 fields.Command.create(record._prepare_invoice_line(sequence=invoice_item_sequence))
             )
-            invoice_item_sequence += 1
             invoice_vals_list.append(invoice_vals)
 
         if not grouped:
