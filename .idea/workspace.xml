@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85ac82b5-4276-4005-a33d-81ec2c8e3e16" name="Changes" comment="test">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/__manifest__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/__manifest__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/models/estate_property.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/security/ir.model.access.csv" beforeDir="false" afterPath="$PROJECT_DIR$/estate/security/ir.model.access.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/views/estate_menus.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_menus.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_types_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_types_views.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_views.xml" afterDir="false" />
-    </list>
+    <list default="true" id="85ac82b5-4276-4005-a33d-81ec2c8e3e16" name="Changes" comment="test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
