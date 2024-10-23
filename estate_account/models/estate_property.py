@@ -17,7 +17,7 @@ class EstateProperty(models.Model):
         }
         self.env["account.move"].create(
             {
-                "name": self.name + " invoice",  
+                "name": self.name + " invoice",
                 "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",
                 "invoice_line_ids": [

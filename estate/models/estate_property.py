@@ -39,7 +39,7 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         [
             ('new', 'New'),
-            ('offer received', 'Offer Received'),
+            ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('canceled', 'Canceled')
