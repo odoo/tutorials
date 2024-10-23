@@ -38,6 +38,9 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>

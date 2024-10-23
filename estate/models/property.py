@@ -80,7 +80,7 @@ class Property(models.Model):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price,
                                                                                              0.9 * record.expected_price,
-                                                                                             precision_digits=2) >= 0:
+                                                                                             precision_digits=2) < 0:
                 raise ValidationError("The selling price must not be below 90% of the expected price.")
 
     def action_sold(self):
