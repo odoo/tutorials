@@ -4,7 +4,6 @@
         <field name="name">Estate Poperty Offer</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">tree,form</field>
-       
     </record>
 
     <record id="estate_property_offer_tree_view" model="ir.ui.view">

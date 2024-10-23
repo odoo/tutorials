@@ -4,12 +4,13 @@ from odoo import  api, fields, models
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 
+
 class EstateModel(models.Model):
     _name = "estate.property"
     _description = "Real estate App"
     _rec_name = "name"
     _order = "id desc"
-    
+
     name = fields.Char(required = True)
     description = fields.Text()
     postcode = fields.Char()
@@ -44,7 +45,7 @@ class EstateModel(models.Model):
     offer_ids = fields.One2many('estate.property.offer','property_id', string="Offers")
     total_area = fields.Integer(compute = '_compute_total_area')
     best_offer_price = fields.Float(compute = '_compute_bestprice') 
-    
+
     _sql_constraints = [
         ("check_expected_price","CHECK(expected_price > 0)","Expected price must be greater than 0" ),
         ("Bedroom_check","CHECK(bedrooms < 4)","We only deal upto 3 BHK" ),
@@ -71,7 +72,6 @@ class EstateModel(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        
         if(self.garden == True):
             self.garden_area = 10
             self.garden_orientation = 'north'
@@ -86,6 +86,7 @@ class EstateModel(models.Model):
                 raise UserError("Cancelled Property can not be sold")
             else:
                 record.state = 'sold'
+        breakpoint()
         return True
 
     def action_cancel(self):
@@ -95,3 +96,9 @@ class EstateModel(models.Model):
             else:
                 record.state = 'cancelled'
         return True
+
+    # @api.ondelete(at_uninstall = False)
+    def unlink(self):
+        if self.state not in ['new', 'cancelled']:
+            raise UserError('You cant delete this property')
+        return super().unlink()

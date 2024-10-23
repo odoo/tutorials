@@ -5,12 +5,10 @@ from datetime import datetime
 from odoo.exceptions import UserError
 from odoo import api,fields, models
 
+
 class EstateOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offers"
-    _sql_constraints = [
-        ("offer_price_constraint","CHECK(price > 0)","Offer price should be greater than 0")
-    ]
     _order = "price desc"
 
     price = fields.Float()
@@ -25,6 +23,9 @@ class EstateOffer(models.Model):
     date_deadline = fields.Date(compute = '_compute_deadline', inverse = "_inverse_validity", store=True)
     property_type_id = fields.Many2one(related = 'property_id.property_type_id',store= True)
 
+    _sql_constraints = [
+        ("offer_price_constraint","CHECK(price > 0)","Offer price should be greater than 0")
+    ]
 
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):
@@ -71,4 +72,20 @@ class EstateOffer(models.Model):
                     record.property_id.selling_price = 0
                     record.property_id.buyer_id = False
                     break
+            
+            record.status = 'refused'
         return True
+
+    @api.model
+    def create(self, val):
+        property = self.env['estate.property'].browse(val['property_id'])
+
+        max_value = 0
+        if(property.offer_ids):
+            max_value = max(property.offer_ids.mapped("price"))
+
+        if(val['price'] <= max_value):
+            raise UserError('You cant create offer lower than current best offer')
+        
+        property.state = 'offer_received'
+        return super().create(val)
