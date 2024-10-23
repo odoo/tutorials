@@ -4,7 +4,7 @@
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form,kanban</field>
-        <field name="context">{'default_name': "Harshhhh", 'search_default_name': "Atishay"}</field>
+        <field name="context">{'default_name': "Harshhhh", 'search_default_state': True}</field>
         <field name="domain"></field>
         <!-- <field name="target">fullscreen</field> -->
         <field name="help" type="html">
@@ -20,7 +20,7 @@
         <field name="arch" type="xml">
             <tree string="Properties tree" 
                   sample="1" 
-                  decoration-success="state in ('offer received', 'offer_accepted')"
+                  decoration-success="state in ('offer_received', 'offer_accepted')"
                   decoration-bf="state == 'offer_accepted'"
                   decoration-muted="state=='sold'"
             >
@@ -114,7 +114,7 @@
                                             <field name="partner_id" string="Partner"/>
                                             <field name="validity" string="Validity (days)"/>
                                             <field name="date_deadline" string="Deadline"/>
-                                            <field name="status" readonly='1'/>                                        
+                                            <field name="status" readonly='1'/>
                                         </group>
                                     </form>
                                 </field>
@@ -145,8 +145,9 @@
                 <field name="facades"/>
                 <field name="property_type_id" string="Property Type" />
                 <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area', '&gt;=', self)]"/>
-                <filter name="state" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter name="state" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="bedrooms" domain="[('bedrooms', '&lt;=', '3')]"/>
+                <filter name="active" string="Not active" domain="[('active', '=', False)]"/>
                 <group string="Group By">
                     <filter name="postcode" string="postcode" context="{'group_by': 'postcode'}" />
                 </group>
@@ -169,7 +170,7 @@
                             <div>
                                 Expected Price : <field name="expected_price"/>
                             </div>
-                            <t t-if="record.state.raw_value == 'offer received'">
+                            <t t-if="record.state.raw_value == 'offer_received'">
                                 <div>
                                     Best Offer Price : <field name="best_offer_price" string="Best Offer"/>
                                 </div>

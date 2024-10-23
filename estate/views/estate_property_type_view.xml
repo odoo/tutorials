@@ -10,7 +10,7 @@
             </p>
         </field>
     </record>
-    
+
     <record id="estate_property_type_view_tree" model="ir.ui.view">
         <field name="name">estate.property.type.view.tree</field>
         <field name="model">estate.property.type</field>
