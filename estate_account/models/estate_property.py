@@ -1,5 +1,6 @@
 from odoo import Command, models  
 
+
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
@@ -9,7 +10,7 @@ class EstateProperty(models.Model):
         invoice_price = {
             "name": self.name,
             "quantity": 1,
-            "price_unit": 0.06*self.selling_price
+            "price_unit": 0.06 * self.selling_price
         }
 
         administrative_fees = {
@@ -20,7 +21,7 @@ class EstateProperty(models.Model):
 
         self.env['account.move'].create(
             {
-                "name": self.name+" Invoice",
+                "name": self.name + " Invoice",
                 "partner_id" : self.buyer_id.id,
                 "move_type": "out_invoice",
                 "invoice_line_ids": [

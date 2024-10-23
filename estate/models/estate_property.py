@@ -1,6 +1,7 @@
 from datetime import date, timedelta
-from odoo import api, fields, models  
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError 
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -56,40 +57,40 @@ class EstateProperty(models.Model):
 
     # ONE property can have only ONE property type
     # But ONE property type can be assigned to MANY properties
-    property_type_id=fields.Many2one(
+    property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type"
     )
 
     # ONE property can have only ONE buyer and seller
     # But ONE  buyer/seller can sell/buy MANY properties
-    seller_id=fields.Many2one(
+    seller_id = fields.Many2one(
         "res.users",
         string="Salesman",
         default=lambda self: self.env.user
     )
 
-    buyer_id=fields.Many2one(
+    buyer_id = fields.Many2one(
         "res.partner",
         string="Buyer"
     )
 
     # MANY tags can  se assigned to multiple properties and vice versa
-    tag_ids=fields.Many2many(
+    tag_ids = fields.Many2many(
         "estate.property.tag",
         string="Property Tags"
     )
 
-    # A property can have MANY offers 
+    # A property can have MANY offers
     # But ONE offer can only be applied to ONE property
     # For Every One2many there should be a Many2one but not vice versa
-    offer_ids=fields.One2many(
+    offer_ids = fields.One2many(
         "estate.property.offer",
         "property_id",
         string="Offers"
     )
 
-    @api.depends("living_area","garden_area")
+    @api.depends("living_area", "garden_area")
     def _total_area(self):
         for line in self:
             line.total_area = line.living_area + line.garden_area
@@ -102,8 +103,8 @@ class EstateProperty(models.Model):
     #Onchange Methods
     '''In many cases, both computed fields and onchanges may be used to achieve the
     same result. Always prefer computed fields since they are also triggered outside
-    of the context of a form view. Never ever use an onchange to add business logic 
-    to your model. This is a very bad idea since onchanges are not automatically 
+    of the context of a form view. Never ever use an onchange to add business logic
+    to your model. This is a very bad idea since onchanges are not automatically
     triggered when creating a record programmatically; they are only triggered in the form view.'''
 
     @api.onchange("garden")
@@ -117,36 +118,36 @@ class EstateProperty(models.Model):
     
     # Actions for button
     '''
-    The first important detail to note is that our method name isn’t prefixed with an underscore (_). 
+    The first important detail to note is that our method name isn’t prefixed with an underscore (_).
     This makes our method a public method, which can be called directly from the Odoo interface (through an RPC call).
-    Until now, all methods we created (compute, onchange) were called internally, so we used private methods prefixed 
+    Until now, all methods we created (compute, onchange) were called internally, so we used private methods prefixed
     by an underscore. You should always define your methods as private unless they need to be called from the user interface.
     '''
     def sold_button(self):
         for record in self:
-            if record.state=="canceled":
+            if record.state == "canceled":
                 raise UserError("Property marked as Canceled can not be Sold!")
             record.state = "sold"
+        breakpoint()
         return True
     
     def cancel_button(self):
         for record in self:
-            if record.state=="sold":
+            if record.state == "sold":
                 raise UserError("Property marked as Sold can not be Canceled!")
             record.state = "canceled"
         return True
     
-    @api.constrains("expected_price","selling_price")
+    @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
         for record in self:
-            if(record.selling_price < (0.9 * record.expected_price) and record.selling_price !=0):
+            if(record.selling_price < (0.9 * record.expected_price) and record.selling_price != 0):
                 raise ValidationError("The Selling Price can not be lower than 90% of the Expected Price.")
     
-    @api.ondelete(at_uninstall=False)
+    @api.ondelete(at_uninstall = False)
     def _unlink_new_cancel_delete(self):
         for record in self:
             if(record.state == "offer_received" or record.state == "offer_accepted" or record.state == "sold"):
             # if(record.state != 'new' or record.state != 'canceled'):
                 raise UserError("You can Only delete New and Canceled Property.")
         return True
-        

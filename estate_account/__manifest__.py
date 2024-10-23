@@ -11,6 +11,6 @@
     'data': [],
     # data files containing optionally loaded demonstration data
     'demo': [],
-    'installable':True,
-    'application':False
+    'installable': True,
+    'application': False
 }
