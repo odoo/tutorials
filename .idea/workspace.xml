@@ -8,8 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property_offer.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_offer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_offer_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_offer_views.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/models/estate_property_tag.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_tag.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/models/estate_property_type.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_type.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

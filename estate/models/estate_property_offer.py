@@ -1,6 +1,7 @@
 from datetime import timedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -21,6 +22,11 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string="Validity", default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline', string="Date Deadline")
     create_date = fields.Date(default=lambda self: fields.Datetime.now())
+
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)',
+         "The offer price should be greater than 0."),
+    ]
 
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
@@ -43,6 +49,9 @@ class EstatePropertyOffer(models.Model):
         elif self.property_id.buyer_id:
             raise UserError(_("Can't accept more than 1 offer!"))
         else:
+            if float_compare(self.price, 0.9 * self.property_id.expected_price, 5) == -1:
+                raise UserError(_("Selling price cannot be lower than 90% of the expected price!"))
+
             self.status = 'accepted'
             self.property_id.state = 'offer_accepted'
             self.property_id.selling_price = self.price
