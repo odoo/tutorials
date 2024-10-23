@@ -115,6 +115,6 @@ class EstateProperty(models.Model):
             self.garden_orientation = ""
 
     _sql_constrains = [
-        ("check_prices", "CHECK(expected_price > 0 AND selling_price >= 0)", 
+        ("check_prices", "CHECK(expected_price > 0 AND selling_price >= 0)",
          "The expected price should be > 0 and the selling price should be >= 0.")
     ]

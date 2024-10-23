@@ -25,7 +25,7 @@ class EstateProperty(models.Model):
                         "quantity": "1",
                         "price_unit": "100"
                     })
-                ] 
+                ]
             }
 
             self.env['account.move'].create(account_move_params)

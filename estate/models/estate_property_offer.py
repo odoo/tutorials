@@ -27,7 +27,7 @@ class EstatePropertyOffer(models.Model):
             raise UserError("Cannot create an offer lower than an existing one.")
         self.env["estate.property"].browse(vals["property_id"]).state = "received"
         return super().create(vals)
-        
+
     def action_estate_property_offer_accept(self):
         for record in self:
             if "accepted" in record.property_id.offer_ids.mapped("status"):
@@ -54,7 +54,7 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.buyer = ""
                 record.property_id.selling_price = 0
             record.status = "refused"
-    
+
     _sql_constraints = [
         ("check_offer_price", "CHECK(price > 0)",
          "The price should be > 0.")
