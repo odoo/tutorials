@@ -5,10 +5,11 @@
     'Author': 'Alex',
     'summary': '',
     'description': '',
-    'depends': ['estate'],
+    'depends': ['estate', 'mail'],
     'data': [
         'security/ir.model.access.csv',
-        'views/estate_properties_view.xml',
+        'data/estate.stage.csv',
+        'views/estate_properties_view.xml'
     ],
     'demo': [],
     'installable': True,

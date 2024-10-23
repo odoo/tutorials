@@ -5,32 +5,59 @@
         <field name="model">estate.estate</field>
         <field name="inherit_id" ref="estate.estate_estate_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//form" position="inside">
+            <xpath expr="//header" position="inside">
+                <field name="stage_id" widget="statusbar" options="{'clickable': 1}"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
                 <div name="button_box">
-                    <button icon="fa-dollar">
+                    <button icon="fa-dollar" invisible="not offers_allowed">
                         <field name="len_offers" widget="statinfo" string="Offers"/>
                     </button>
                 </div>
             </xpath>
             <xpath expr="//notebook" position="before">
                 <group>
-                    <field name="accept_offers"/>
-                    <field name="has_accepted_offer" invisible="not accept_offers"/>
+                    <field name="has_accepted_offer" invisible="not offers_allowed"/>
                 </group>
             </xpath>
             <xpath expr="//page[@name='rooms']" position="after">
-                <page name="Offers" invisible="not accept_offers">
+                <page name="Offers" invisible="not offers_allowed">
                     <field name="offer_ids">
                         <list editable="top" default_order="amount desc, write_date">
                             <field name="is_accepted"/>
                             <field name="user_id"/>
                             <field name="amount"/>
-                            <field name="create_date"/>
-                            <field name="write_date" decoration-warning="create_date != write_date"/>
+                            <field name="create_date" optional="hide"/>
+                            <field name="write_date" decoration-warning="create_date != write_date" optional="hide"/>
                         </list>
                     </field>
                 </page>
             </xpath>
+            <xpath expr="//sheet" position="after">
+                <chatter reload_on_post="True"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate.estate_estate_action" model="ir.actions.act_window">
+        <field name="name">Estate</field>
+        <field name="res_model">estate.estate</field>
+        <field name="view_mode">list,form,kanban</field>
+    </record>
+
+    <record id="estate_estate_kanban" model="ir.ui.view">
+        <field name="name">estate.estate.kanban</field>
+        <field name="model">estate.estate</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id">
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <field name="address"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>
