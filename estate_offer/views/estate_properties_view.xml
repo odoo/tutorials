@@ -5,9 +5,16 @@
         <field name="model">estate.estate</field>
         <field name="inherit_id" ref="estate.estate_estate_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <div name="button_box">
+                    <button icon="fa-dollar">
+                        <field name="len_offers" widget="statinfo" string="Offers"/>
+                    </button>
+                </div>
+            </xpath>
             <xpath expr="//notebook" position="before">
                 <group>
-                    <field name="accept_offers" />
+                    <field name="accept_offers"/>
                     <field name="has_accepted_offer" invisible="not accept_offers"/>
                 </group>
             </xpath>

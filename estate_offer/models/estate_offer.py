@@ -9,6 +9,12 @@ class Estate(models.Model):
     accept_offers = fields.Boolean(default=True)
     has_accepted_offer = fields.Boolean(compute="_compute_has_offer")
     offer_ids = fields.One2many("estate.offer", inverse_name="estate_id")
+    len_offers = fields.Integer()
+
+    @api.depends("offer_ids")
+    def _computed_len_offer(self):
+        for record in self:
+            record.len_offers = len(self.offer_ids)
 
     @api.depends("offer_ids")
     def _compute_has_offer(self):
