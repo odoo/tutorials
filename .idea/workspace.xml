@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85ac82b5-4276-4005-a33d-81ec2c8e3e16" name="Changes" comment="test" />
+    <list default="true" id="85ac82b5-4276-4005-a33d-81ec2c8e3e16" name="Changes" comment="test">
+      <change beforePath="$PROJECT_DIR$/estate/models/estate_property_offer.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_offer.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
