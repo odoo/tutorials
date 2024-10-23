@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'Estate Offer',
     'version': '1.8',
