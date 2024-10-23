@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class PropertyOffer(models.Model):
@@ -56,3 +57,18 @@ class PropertyOffer(models.Model):
                 record.property_id.set_accepted_offer(None)
             record.state = 'received'
         return True
+
+    @api.model_create_multi
+    def create(self, vals):
+        res = super(models.Model, self).create(vals)
+        for record in res:
+            if (record.property_id.state in ['canceled', 'sold']):
+                raise UserError('Cannot create new offers in Sold or Canceled property.')
+
+            best_offer = max(record.property_id.offer_ids.mapped('price')) if len(
+                record.property_id.offer_ids) > 0 else 0
+            if (record.price < best_offer):
+                raise UserError(f'The offer must be higher than {best_offer}')
+
+            record.property_id.offer_created()
+        return res

@@ -118,3 +118,13 @@ class Property(models.Model):
             for o in record.offer_ids:
                 if o.state == 'accepted' and (offer is None or o.id != offer.id):
                     o.action_reset(propagate=False)
+
+    def offer_created(self):
+        for record in self:
+            if record.state == 'new':
+                record.state = 'offer_received'
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_canceled(self):
+        if any((record.state not in ['canceled', 'new']) for record in self):
+            raise UserError("Can't delete a property with offers!")
