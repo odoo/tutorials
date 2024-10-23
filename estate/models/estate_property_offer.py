@@ -67,18 +67,10 @@ class EstatePpropertyOffer(models.Model):
             self.status = 'refused'
         return True
 
-    def group_and_sum_prices(self):
-        # Read group method to aggregate the sum of prices grouped by property_id
-        result = self.env['estate.property.offer'].read_group(
-            [('property_id', '!=', False)],  # Filter: property_id is not empty
-            ['property_id', 'price:sum'],    # Group by property_id, sum of price
-            ['property_id']                  # Group by field
-        )
-
     @api.model
     def create(self, vals_list):
         property_id = self.env['estate.property'].browse(vals_list['property_id'])
         if vals_list['price'] < property_id.best_offer_price:
             raise ValidationError("You can not create offer with a lower amount than an existing offer.")
-        property_id.state =  'offer received'
+        property_id.state =  'offer_received'
         return super(EstatePpropertyOffer, self).create(vals_list)
