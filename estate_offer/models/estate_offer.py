@@ -1,5 +1,3 @@
-from email.policy import default
-
 from odoo import api, exceptions, fields, models
 
 
@@ -46,4 +44,4 @@ class Offer(models.Model):
     def _check_amount_superior_estate_price(self):
         print(self.estate_id.price)
         if self.amount <= self.estate_id.price:
-            raise exceptions.UserError(f"The amount of the offer must be superior to the price of the estate.")
+            raise exceptions.UserError("The amount of the offer must be superior to the price of the estate.")
