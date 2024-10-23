@@ -9,6 +9,8 @@
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
         'views/estate_property_types_views.xml',
+        'views/estate_property_tag_views.xml',
+        'views/estate_property_offer_views.xml',
     ],
     'license': "LGPL-3",
     # data files containing optionally loaded demonstration data

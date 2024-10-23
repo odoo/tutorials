@@ -6,6 +6,7 @@
         </menuitem>
         <menuitem id='settings_menu' name="Settings">
             <menuitem id='property_types_menu_action' action="property_types_action"/>
+            <menuitem id='property_tag_menu_action' action="property_tag_action"/>
         </menuitem>
     </menuitem>
 </odoo>
