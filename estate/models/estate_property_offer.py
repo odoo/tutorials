@@ -44,7 +44,7 @@ class EstatePropertyOffer(models.Model):
         default=7
     )
 
-    date_deadline=fields.Date(
+    date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_deadline",
         inverse="_inverse_deadline",

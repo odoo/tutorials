@@ -1,12 +1,12 @@
 from datetime import date, timedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError, ValidationError 
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Application Ayve"
-    _order = "id desc" # default_order="id desc" provides ordering manually for different view forms, _order is used at globally
+    _order = "id desc"  # default_order="id desc" provides ordering manually for different view forms, _order is used at globally
     _sql_constraints = [
         (
             "check_SP_and_EP_not_negative",
@@ -147,12 +147,12 @@ class EstateProperty(models.Model):
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
         for record in self:
-            if(record.selling_price < (0.9 * record.expected_price) and record.selling_price != 0):
+            if (record.selling_price < (0.9 * record.expected_price) and record.selling_price != 0):
                 raise ValidationError("The Selling Price can not be lower than 90% of the Expected Price.")
 
-    @api.ondelete(at_uninstall = False)
+    @api.ondelete(at_uninstall=False)
     def _unlink_new_cancel_delete(self):
         for record in self:
-            if(record.state == "offer_received" or record.state == "offer_accepted" or record.state == "sold"):
+            if (record.state == "offer_received" or record.state == "offer_accepted" or record.state == "sold"):
                 raise UserError("You can Only delete New and Canceled Property.")
         return True

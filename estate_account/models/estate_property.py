@@ -22,12 +22,12 @@ class EstateProperty(models.Model):
             self.env['account.move'].check_access_rights('write')
             self.env['account.move'].check_access_rule('write')
         except AccessError:
-            raise UserError(("You don't have the access to perform this action!"))
+            raise UserError("You don't have the access to perform this action!")
 
         self.env['account.move'].sudo().create(
             {
                 "name": self.name + " Invoice",
-                "partner_id" : self.buyer_id.id,
+                "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",
                 "invoice_line_ids": [
                     Command.create(invoice_price),

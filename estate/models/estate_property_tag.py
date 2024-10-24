@@ -7,7 +7,6 @@ class EstatePropertyTag(models.Model):
     _order = "name"
     color = fields.Integer()
 
-    #constraint name, definition of constraint, a display warning
     _sql_constraints = [
         (
             "unique_property_tag",
