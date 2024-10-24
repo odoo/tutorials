@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
-
+    _order = "price desc"
     price = fields.Float("Price")
     status = fields.Selection(
         selection=[
@@ -17,6 +17,7 @@ class EstatePropertyOffer(models.Model):
         )
     partner_id = fields.Many2one("res.partner", string="Buyer")
     property_id = fields.Many2one("estate.property", string="Property")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     validity = fields.Integer("Validity (in days)", default="7")
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
@@ -60,6 +61,7 @@ class EstatePropertyOffer(models.Model):
                 raise UserError('Only one offer can be accepted per property.')
             else:
                 record.status = "accepted"
+                record.property_id.state = "offer_accepted"
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
         return True
