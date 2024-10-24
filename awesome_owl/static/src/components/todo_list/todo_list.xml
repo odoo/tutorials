@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_list">
+        <Card title="'To-Do List'">
+            <ul class="list-group list-group-flush">
+                <t t-foreach="Object.values(todos)" t-as="todo" t-key="todo.id">
+                    <TodoItem todo="todo" list="this"/>
+                </t>
+            </ul>
+            <div class="px-2 pt-1 d-flex flex-row">
+                <input type="text" class="form-control" placeholder="To-do..." t-ref="add_input"
+                       t-model.trim="addInput.text" t-on-keyup="onKeyUpInput"/>
+                <button class="btn btn-primary ms-1" t-on-click="onClickAdd">Add</button>
+            </div>
+        </Card>
+        </t>
+
+        </templates>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="d-inline-flex flex-column border m-2 rounded shadow">
+            <div class="d-flex flex-row bg-light rounded-top p-2 justify-content-center">
+                <h5 class="m-0"><t t-esc="props.title"/></h5>
+            </div>
+            <div class="d-flex flex-column pb-2 rounded-bottom">
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+
+</templates>

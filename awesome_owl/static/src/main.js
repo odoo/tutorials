@@ -1,8 +1,10 @@
-import { whenReady } from "@odoo/owl";
-import { mountComponent } from "@web/env";
-import { Playground } from "./playground";
+import {whenReady} from "@odoo/owl";
+import {mountComponent} from "@web/env";
+import {Playground} from "./components/playground/playground";
+import {templates} from "@web/core/assets";
 
 const config = {
+    templates,
     dev: true,
     name: "Owl Tutorial",
 };
