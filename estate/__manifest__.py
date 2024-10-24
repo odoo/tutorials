@@ -3,13 +3,14 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "Ayushmaan",
-    'category': 'Category',
+    'category': 'Real Estate/Brokerage',
     'description': """
     First Application
     """,
     # data files always loaded at installation
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         "data/estate.property.type.csv",
         'data/demo_data.xml',
         'views/res_users_views.xml',

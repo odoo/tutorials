@@ -21,34 +21,34 @@ class EstatePropertyOffer(models.Model):
         ('accepted', 'Accepted'),
         ('refused', 'Refused')
     ],
-    string = 'Status',
-    copy = False
+    string='Status',
+    copy=False
     )
 
     partner_id = fields.Many2one(
         'res.partner',
-        required = True,
-        string = "Partner"
+        required=True,
+        string="Partner"
     )
 
     property_id = fields.Many2one(
         'estate.property',
-        required = True,
-        string = "Property ID"
+        required=True,
+        string="Property ID"
     )
 
-    property_type_id = fields.Many2one(related="property_id.property_type_id", store = "True")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store="True")
 
     validity = fields.Integer(
-        string = "Validity(Days)",
-        default = 7
+        string="Validity(Days)",
+        default=7
     )
 
     date_deadline=fields.Date(
-        string = "Deadline",
-        compute = "_compute_deadline",
-        inverse = "_inverse_deadline",
-        store = True
+        string="Deadline",
+        compute="_compute_deadline",
+        inverse="_inverse_deadline",
+        store=True
     )
 
     # Compute Methods
@@ -74,14 +74,14 @@ class EstatePropertyOffer(models.Model):
                     raise UserError("This Property has already accepted an offer.")
             else:
                 record.status = 'accepted'
-                record.property_id.buyer_id=record.partner_id
-                record.property_id.selling_price=record.price
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.selling_price = record.price
         return True
 
     def action_refuse_offer(self):
         for record in self:
             if record.status == 'accepted':
-                record.property_id.buyer_id  =False
+                record.property_id.buyer_id = False
                 record.property_id.selling_price = False
             record.status = 'refused'
         return True

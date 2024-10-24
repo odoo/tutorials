@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data noupdate="1">
-            
             <!-- Demo Properties -->
         <record id="property_big_villa" model="estate.property">
             <field name="name">Bigg Villa</field>
@@ -20,7 +19,7 @@
             <field name="garden_orientation">south</field>
             <field name="property_type_id" ref="estate.pt2"/>
         </record>
-        
+
         <record id="property_trailer_home" model="estate.property">
             <field name="name">Trailer Home</field>
             <field name="state">canceled</field>
@@ -55,19 +54,17 @@
                         'price': 1500002,
                         'validity':14,
                     })
-    
-                ]" />
+                ]"/>
         </record>
-        
         <!-- Demo Offers -->
         <record id="offer_1" model="estate.property.offer">
-            <field name="partner_id" ref="base.res_partner_12"/> 
+            <field name="partner_id" ref="base.res_partner_12"/>
             <field name="property_id" ref="property_big_villa"/>
             <field name="price">100000</field>
             <field name="validity">14</field>
             <field name="date_deadline" eval="(datetime.now()+timedelta(days=14))" />
         </record>
-        
+
         <record id="offer_2" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"/>
             <field name="property_id" ref="property_big_villa"/>
@@ -83,7 +80,7 @@
             <field name="validity">14</field>
             <field name="date_deadline" eval="(datetime.now()+timedelta(days=14))" />
         </record>
-        
+
         <function model="estate.property.offer" name="action_refuse_offer">
             <value eval="[ref('offer_1')]" />
         </function>
@@ -91,11 +88,9 @@
         <function model="estate.property.offer" name="action_refuse_offer">
             <value eval="[ref('offer_2')]" />
         </function>
-        
+
         <function model="estate.property.offer" name="action_accept_offer">
             <value eval="[ref('offer_3')]" />
         </function>
-        <!-- action_refuse_offer -->
-        
     </data>
 </odoo>

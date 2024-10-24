@@ -28,7 +28,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     total_area = fields.Integer(compute="_total_area", store=True)
-    best_price=fields.Integer(compute="_compute_best_price", store=True)
+    best_price = fields.Integer(compute="_compute_best_price", store=True)
     garden_orientation = fields.Selection(
         [
             ('north', 'North'),
@@ -40,7 +40,7 @@ class EstateProperty(models.Model):
         help='Select One Orientation'
     )
     active = fields.Boolean(default=True)
-    
+
     state = fields.Selection(
     [
         ('new', 'New'),
@@ -60,6 +60,13 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type"
+    )
+
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company
     )
 
     # ONE property can have only ONE buyer and seller
@@ -116,7 +123,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
     
-    # Actions for button
     '''
     The first important detail to note is that our method name isn’t prefixed with an underscore (_).
     This makes our method a public method, which can be called directly from the Odoo interface (through an RPC call).
@@ -128,26 +134,25 @@ class EstateProperty(models.Model):
             if record.state == "canceled":
                 raise UserError("Property marked as Canceled can not be Sold!")
             record.state = "sold"
-        breakpoint()
+        # breakpoint()
         return True
-    
+
     def cancel_button(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("Property marked as Sold can not be Canceled!")
             record.state = "canceled"
         return True
-    
+
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
         for record in self:
             if(record.selling_price < (0.9 * record.expected_price) and record.selling_price != 0):
                 raise ValidationError("The Selling Price can not be lower than 90% of the Expected Price.")
-    
+
     @api.ondelete(at_uninstall = False)
     def _unlink_new_cancel_delete(self):
         for record in self:
             if(record.state == "offer_received" or record.state == "offer_accepted" or record.state == "sold"):
-            # if(record.state != 'new' or record.state != 'canceled'):
                 raise UserError("You can Only delete New and Canceled Property.")
         return True

@@ -1,12 +1,11 @@
 from odoo import Command, models  
+from odoo.exceptions import UserError, AccessError
 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def sold_button(self):
-        # print("inherited sold action")
-
         invoice_price = {
             "name": self.name,
             "quantity": 1,
@@ -19,7 +18,13 @@ class EstateProperty(models.Model):
             "price_unit": 100
         }
 
-        self.env['account.move'].create(
+        try:
+            self.env['account.move'].check_access_rights('write')
+            self.env['account.move'].check_access_rule('write')
+        except AccessError:
+            raise UserError(("You don't have the access to perform this action!"))
+
+        self.env['account.move'].sudo().create(
             {
                 "name": self.name + " Invoice",
                 "partner_id" : self.buyer_id.id,
