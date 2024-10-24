@@ -10,14 +10,13 @@ export class Playground extends Component {
 
 
     setup() {
-        this.state = useState({ value: 0 });
-        this.html_normal = "<div class='text-primary'>some content</div>";
-        this.html_markup = markup("<div class='text-primary'>some content</div>");
+        this.incrementSum = this.incrementSum.bind(this);
+        this.state = useState({ sum: 2 });
     }
 
-    increment() {
-        this.state.value++;
+    incrementSum() {
+        this.state.sum++;
     }
 
-    static components = { Card };
+    static components = { Counter, Card };
 }

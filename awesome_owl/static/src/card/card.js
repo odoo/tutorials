@@ -6,5 +6,5 @@ export class Card extends Component {
     static props = {
         title: { type: String },
         content: { type: String },
-    }
+    };
 }
