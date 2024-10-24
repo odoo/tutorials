@@ -42,7 +42,7 @@ class Estate(models.Model):
     @api.depends("offer_ids")
     def _compute_has_accepted_offer(self):
         for record in self:
-            record.has_accepted_offer = any([offer.is_accepted for offer in self.offer_ids])
+            record.has_accepted_offer = True if record.offer_ids.search([("is_accepted", "=", True)]) else False
 
     @api.constrains("offer_ids")
     def _check_unique_accepted_offer(self):
@@ -71,6 +71,7 @@ class Offer(models.Model):
             raise exceptions.UserError("The amount cannot be negative.")
         if self.amount <= self.estate_id.price:
             raise exceptions.UserError("The amount of the offer must be superior to the price of the estate.")
+
 
 class Stage(models.Model):
     _name = "estate.stage"
