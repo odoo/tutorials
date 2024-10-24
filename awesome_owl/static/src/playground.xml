@@ -2,8 +2,8 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <Card title="'card 1'" content="'content card 1'"/>
-        <Card title="'card 2'" content="'content card 2'"/>
+        <Card title="'card 1'" content="this.html_normal"/>
+        <Card title="'card 2'" content="this.html_markup"/>
     </t>
 
 </templates>
