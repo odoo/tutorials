@@ -1,3 +1,5 @@
+from odoo.exceptions import AccessError
+
 from odoo import fields, models, Command
 
 
@@ -6,6 +8,16 @@ class EstateProperty(models.Model):
 
     def action_set_sold_property(self):
         super().action_set_sold_property()
+
+        # Print to log for debugging
+        print(" reached ".center(100, '='))
+
+        # Explicit security check to ensure the user can update this property
+        try:
+            self.check_access_rights('write')
+            self.check_access_rule('write')
+        except AccessError:
+            raise AccessError("You do not have permission to update this property.")
 
         values = {
 
@@ -21,6 +33,6 @@ class EstateProperty(models.Model):
             ],
         }
 
-        accountMove = self.env["account.move"].create(values)
+        accountMove = self.env["account.move"].sudo().create(values)
         return accountMove
         

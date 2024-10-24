@@ -9,6 +9,13 @@ class EstateProperty(models.Model):
     _description = "Estate Property"
     _order = "id desc"
 
+    company_id = fields.Many2one(
+        comodel_name='res.company',
+        string='Company',
+        required=True,
+        default=lambda self: self.env.company
+    )
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -107,3 +114,5 @@ class EstateProperty(models.Model):
             if property.state not in ['new', 'cancelled']:
                 raise UserError('You cannot delete a property unless it is in "New" or "Cancelled" state.')
                 
+
+    

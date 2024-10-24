@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- id,name
+1,"Residential"
+2,"Commercial"
+3,"Industrial"
+4,"Land" (We can use csv file also insted of xml file!!) -->
+<odoo>
+    <record id="property_type_residential" model="estate.property.type">
+        <field name="name">Residential</field>
+        <field name="sequence">1</field>
+    </record>
+    
+    <record id="property_type_commercial" model="estate.property.type">
+        <field name="name">Commercial</field>
+        <field name="sequence">2</field>
+    </record>
+    
+    <record id="property_type_industrial" model="estate.property.type">
+        <field name="name">Industrial</field>
+        <field name="sequence">3</field>
+    </record>
+    
+    <record id="property_type_land" model="estate.property.type">
+        <field name="name">Land</field>
+        <field name="sequence">4</field>
+    </record>
+</odoo>

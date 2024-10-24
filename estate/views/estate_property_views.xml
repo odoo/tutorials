@@ -34,6 +34,7 @@
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state=='sold'">
                 <field name="name"/>
+                <field name="company_id" string="Comapny"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="best_price" string="Best Offer"/>
                 <field name="selling_price" string="Selling Price"/>
@@ -98,7 +99,8 @@
                 <sheet>
                     <h1><field name="name" options="{'no_label': True}"/></h1>
                     <group> 
-                        <group>  
+                        <group>
+                            <field name="company_id" string="Comapny"/>
                             <field name="property_type_id" string="Property Type" options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Availability Date"/>
