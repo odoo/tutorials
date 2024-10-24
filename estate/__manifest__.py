@@ -5,6 +5,7 @@
     "author": "Odoo SA",
     "category": "Accounting",
     "summary": "Helps manage real estate",
+    "icon": "/estate/static/description/icon.png",
     "description": """
     Description text
     """,
