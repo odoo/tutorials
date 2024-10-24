@@ -2,7 +2,7 @@
     'name': 'Estate Offer',
     'version': '1.8',
     'category': '',
-    'Author': 'Alex',
+    'Author': 'Odoo S.A.',
     'summary': '',
     'description': '',
     'depends': ['estate', 'mail'],
