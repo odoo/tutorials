@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="d-flex align-items-start h-100">
+            <Card toggle="false">
+                <t t-set-slot="header">
+                    *New*
+                </t>
+                <t t-set-slot="title">
+                    Counters Card
+                </t>
+                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
+                    <div class="d-flex align-items-center justify-content-evenly">
+                        <div>Sum of counters:</div>
+                        <div id="counter-div" class="counter-animated">
+                            <t t-esc="counterSum.value"/>
+                        </div>
+                    </div>
+            </Card>
+            <Card toggle="true">
+                <t t-set-slot="header">
+                    *New*
+                </t>
+                <t t-set-slot="title">
+                    Todo List
+                </t>
+                <TodoList/>
+            </Card>
         </div>
-    </t>
 
+    </t>
 </templates>

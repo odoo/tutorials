@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="oxp.TodoItem">
+        <li class="list-group-item">
+            <div t-att-class="props.todo.isDone ? 'text-muted opacity-50': '' ">
+                <input class="form-check-input me-2" type="checkbox" t-att-checked="props.todo.isDone" t-on-change="onChange"/>
+                <t t-esc="props.todo.id"/>:
+                <t t-esc="props.todo.desc"/>
+                <button class="btn btn-outline-danger btn-sm float-end" t-on-click="remove">Remove</button>
+            </div>
+
+        </li>
+    </t>
+</templates>

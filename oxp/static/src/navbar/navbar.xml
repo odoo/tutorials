@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="oxp.navbar">
+       <nav class="navbar bg-primary ps-3 fw-bol">
+           <a class="navbar-brand" href="#">OXP Tutorial</a>
+       </nav>
+
+    </t>
+</templates>

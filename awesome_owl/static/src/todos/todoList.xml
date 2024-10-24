@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoList2">
+        <div class="text-start">
+            <t t-foreach="todoList.todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo"/>
+            </t>
+            <input placeholder="Enter a new task" t-on-keyup="addTodo"/>
+        </div>
+    </t>
+
+</templates>

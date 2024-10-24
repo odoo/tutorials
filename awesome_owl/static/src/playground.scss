@@ -1,0 +1,30 @@
+.counter-animated {
+  font-size: 2rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.counter-animated.bigger {
+  transform: scale(4);
+  animation: colorChange 1.5s forwards;
+}
+
+@keyframes colorChange {
+  0% {
+    color: yellow;
+  }
+  15% {
+    color: orange; transform: scale(3);
+  }
+  30% {
+    color: red;transform: scale(4)
+  }
+  60% {
+    color: red; transform: scale(3)
+  }
+  85% {
+    color: orange; transform: scale(2)
+  }
+  100% {
+    color: black;
+  }
+}

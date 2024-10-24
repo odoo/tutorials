@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="oxp.TodoList">
+        <div class="card p-1 m-2 border" style="width: 18rem; min-width: 12rem;">
+            <div class="d-flex justify-content-between m-1 align-items-center">
+                <div class="h6 card-subtitle text-muted">
+                    <t t-esc="props.name"/>
+                </div>
+                <div class="btn fa fa-close" t-on-click="remove"></div>
+
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="New Task" t-att-id="'input-add-task-'+props.list_id" t-on-keyup="add_with_key"/>
+                <button class="btn btn-outline-secondary" type="button" t-att-id="'button-add-task-'+props.list_id" t-on-click="add_with_button">
+                    Add
+                </button>
+            </div>
+            <ul class="list-group">
+                <t t-foreach="list" t-as="todo" t-key="todo.id">
+                    <TodoItem todo="todo" toggle.bind="toggleTodo" remove.bind="removeTodo"/>
+                 </t>
+            </ul>
+        </div>
+    </t>
+</templates>

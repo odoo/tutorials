@@ -1,10 +1,10 @@
 <odoo>
     <data>
-          <template id="awesome_owl.playground" name="Awesome T-Shirt thank you">
+          <template id="oxp.home" name="OXP Tutorial">
             <html>
                 <head>
                     <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
-                    <t t-call-assets="awesome_owl.assets_playground"/>
+                    <t t-call-assets="oxp.assets_webclient"/>
                 </head>
 
                 <body>
@@ -13,5 +13,3 @@
           </template>
     </data>
 </odoo>
-
-<!--hello-->

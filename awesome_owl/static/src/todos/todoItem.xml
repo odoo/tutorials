@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <t t-set="todo" t-value="props.todo"/>
+        <li class="list-group-item d-flex justify-content-between m-2" t-att-id="'list_item_'+todo.id">
+            <div>
+                <input class="form-check-input me-1" type="checkbox"
+                       t-att-checked="todo.isDone" t-on-change="() => todo.markTodo()"/>
+                <label t-att-class="todo.isDone ? 'text-muted text-decoration-line-through' : ''">
+                    <t t-esc="todo.desc"/>
+                </label>
+            </div>
+            <span class="fa fa-remove" t-on-click="() => todo.remove()"/>
+        </li>
+    </t>
+</templates>
