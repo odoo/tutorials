@@ -42,7 +42,7 @@ class Estate(models.Model):
     @api.depends("offer_ids")
     def _compute_has_accepted_offer(self):
         for record in self:
-            record.has_accepted_offer = True if record.offer_ids.search([("is_accepted", "=", True)]) else False
+            record.has_accepted_offer = bool(record.offer_ids.search([("is_accepted", "=", True)]))
 
     @api.constrains("offer_ids")
     def _check_unique_accepted_offer(self):
