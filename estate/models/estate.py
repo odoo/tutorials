@@ -6,6 +6,7 @@ class Property(models.Model):
     _description = "This is the estate model."
 
     address = fields.Char(compute="_compute_address")
+    owner_id = fields.Many2one("res.users")
     status_id = fields.Many2one("estate.status")
     price = fields.Float()
     bed = fields.Integer()
