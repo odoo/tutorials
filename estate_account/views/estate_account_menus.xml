@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="estate_account_menu_root" name="Invoicing" web_icon="estate_account,static/description/icon.png">>
+        <menuitem id="estate_account_advertisements_level_menu" name="Customers">
+        </menuitem>
+        <menuitem id="estate_account_settings_level_menu" name="Vendors">
+        </menuitem>
+        <menuitem id="estate_account_settings_level_menu" name="Reporting">
+        </menuitem>
+        <menuitem id="estate_account_settings_level_menu" name="Configuration">
+        </menuitem>
+    </menuitem>
+</odoo>
