@@ -8,7 +8,6 @@
             <field name="postcode">12345</field>
             <field name="date_availability">2020-02-02</field>
             <field name="expected_price">160000</field>
-            
             <field name="bedrooms">6</field>
             <field name="living_area">100</field>
             <field name="facades">4</field>
@@ -22,7 +21,6 @@
                     <field name="price">10000</field>
                     <field name="validity">14</field>
                     <field name="partner_id" ref="base.res_partner_12"></field>
-                    
                 </record>
                 <record id="estate_offer_rec_2" model="estate.property.offers">
                     <field name="price">1500000</field>
@@ -54,6 +52,18 @@
             <field name="facades">4</field>
             <field name="garage">False</field>
             <field name="property_type_id" ref="estate.prop_type_residential" />
+            <field name="offer_ids" eval="[
+            Command.create({
+                'partner_id': ref('base.res_partner_12'),
+                'price': 100000,
+                'validity': 10
+            }),
+            Command.create({
+                'partner_id': ref('base.res_partner_2'),
+                'price': 150000,
+                'validity': 11
+            })
+        ]" />
         </record>
 
         <function model="estate.property.offers" name="action_refused">
@@ -65,7 +75,5 @@
         <function model="estate.property.offers" name="action_accepted">
             <value eval="[ref('estate_offer_rec_2')]"></value>
         </function>
-
-
     </data>
 </odoo>
