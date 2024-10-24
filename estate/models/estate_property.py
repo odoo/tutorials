@@ -42,7 +42,7 @@ class EstateProperty(models.Model):
     salesperson = fields.Many2one(
         'res.users',
         string='Salesman',
-        default=lambda self: self.env.user
+        
     )
 
     buyer = fields.Many2one(
@@ -61,6 +61,8 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_area", string="Total Area (sqm)")
 
     best_price = fields.Float(compute="_compute_best_price", store=True)
+
+    company_id = fields.Many2one('res.company',required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
@@ -109,7 +111,10 @@ class EstateProperty(models.Model):
             raise UserError("You cannot mark a canceled property as sold.")
         self.state = 'sold'
     
-
+    @api.ondelete(at_uninstall=False)
+    def unlink_property(self):
+        if any(record.state not in ('new', 'canceled') for record in self):
+            raise UserError('You cannot delete the records that are not in the "new" or "canceled" state.')
 
     
     

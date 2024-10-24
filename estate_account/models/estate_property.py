@@ -1,4 +1,4 @@
-from odoo import fields, models, Command
+from odoo import models, Command
 
 
 class EstateProperty(models.Model):
@@ -18,6 +18,8 @@ class EstateProperty(models.Model):
                 ),
             ],
         }
-
-        accountMove = self.env["account.move"].create(values)
+        print(" reached ".center(100, '='))
+        print(self.env["account.move"].check_access_rights('write'))
+        print(self.env["account.move"].check_access_rule('write'))
+        accountMove = self.env["account.move"].sudo().create(values)
         return accountMove
