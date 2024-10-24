@@ -1,0 +1,20 @@
+{
+    'name': 'Estate',
+    'version': '1.8',
+    'category': '',
+    'Author': 'Odoo S.A.',
+    'summary': '',
+    'description': 'This is the module for the training',
+    'depends': ['base', 'base_address_extended'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/estate_properties_view.xml',
+        'views/estate_menu.xml',
+        'data/res.city.csv',
+        'data/estate.property.csv',
+    ],
+    'demo': [],
+    'application': True,
+    'installable': True,
+    'license': 'LGPL-3',
+}
