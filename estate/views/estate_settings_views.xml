@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Property Type Views -->
+
+    <!-- List view -->
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">estate_property_type_list</field>
+        <field name="model">estate_property_type</field>
+        <field name="arch" type="xml">
+            <list string="Property Type" editable="bottom">
+                <field name="name" placeholder="Property Type"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Property Tag Views -->
+
+    <!-- List view -->
+    <record id="estate_property_tag_view_tree" model="ir.ui.view">
+        <field name="name">estate_property_tag_list</field>
+        <field name="model">estate_property_tag</field>
+        <field name="arch" type="xml">
+            <list string="Property Tag" editable="bottom">
+                <field name="name" placeholder="Property Tag"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Actions -->
+
+    <record id="estate_property_types_view" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate_property_type</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="estate_property_tags_view" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate_property_tag</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>
