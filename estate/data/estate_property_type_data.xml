@@ -1,0 +1,13 @@
+<odoo>
+    <record id="demo_type_1" model="estate.property.type">
+        <field name="name">House</field>
+    </record>
+
+    <record id="demo_type_2" model="estate.property.type">
+        <field name="name">Office</field>
+    </record>
+
+    <record id="demo_type_3" model="estate.property.type">
+        <field name="name">Villa</field>
+    </record>
+</odoo>
