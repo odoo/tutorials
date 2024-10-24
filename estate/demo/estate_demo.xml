@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Demo Estate Property Types -->
+        <record id="estate_property_type_1" model="estate_property_type">
+            <field name="name">Appartment</field>
+        </record>
+        <record id="estate_property_type_2" model="estate_property_type">
+            <field name="name">House</field>
+        </record>
+
+        <!-- Demo Estate Property Tags -->
+        <record id="estate_property_tag_1" model="estate_property_tag">
+            <field name="name">cosy</field>
+        </record>
+        <record id="estate_property_tag_2" model="estate_property_tag">
+            <field name="name">renovated</field>
+        </record>
+        <record id="estate_property_tag_3" model="estate_property_tag">
+            <field name="name">renovation needed</field>
+        </record>
+
+        <!-- Demo Estate Property Offers -->
+        <record id="estate_property_offer_1" model="estate_property_offer">
+            <field name="price">2000000</field>
+            <field name="partner_id" ref="base.res_partner_4"/>
+            <field name="validity">12</field>
+        </record>
+        <record id="estate_property_offer_2" model="estate_property_offer">
+            <field name="price">200000</field>
+            <field name="partner_id" ref="base.res_partner_3"/>
+            <field name="validity">10</field>
+        </record>
+        <record id="estate_property_offer_3" model="estate_property_offer">
+            <field name="price">220000</field>
+            <field name="partner_id" ref="base.res_partner_5"/>
+            <field name="validity">25</field>
+        </record>
+        <record id="estate_property_offer_4" model="estate_property_offer">
+            <field name="price">260000</field>
+            <field name="partner_id" ref="base.res_partner_4"/>
+            <field name="deadline" eval="(DateTime.today() + relativedelta(days=7)).strftime('%Y-%m-%d %H:%M')" />
+        </record>
+
+        <!-- Demo Estate Properties -->
+        <record id="estate_property_1" model="estate_property">
+            <field name="name">Beach House</field>
+            <field name="status">canceled</field>
+            <field name="description">A brand new house by the beach</field>
+            <field name="postcode">8300</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(months=3)).strftime('%Y-%m-%d %H:%M')" />
+            <field name="expected_price">2500000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">6</field>
+            <field name="living_area">1050</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">420</field>
+            <field name="garden_orientation">south</field>
+            <field name="type_id" ref="estate_property_type_2" />
+            <field name="salesperson" ref="base.user_demo"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_1'), ref('estate_property_tag_2')])]"/>
+            <field name="offer_ids" eval="[(6, 0, [ref('estate_property_offer_1')])]"/>
+        </record>
+        <record id="estate_property_2" model="estate_property">
+            <field name="name">City Apt</field>
+            <field name="status">offer_accepted</field>
+            <field name="description">A shitty appartment in Brussels</field>
+            <field name="postcode">1090</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(months=1)).strftime('%Y-%m-%d %H:%M')" />
+            <field name="expected_price">250000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">95</field>
+            <field name="facades">1</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="type_id" ref="estate_property_type_1"/>
+            <field name="salesperson" ref="base.user_admin"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_3')])]"/>
+            <field name="offer_ids" eval="[(6, 0, [ref('estate_property_offer_2'), ref('estate_property_offer_4'), ref('estate_property_offer_3')])]"/>
+        </record>
+
+        <!-- Mass cancel -->
+        <record id="model_estate_property_action_cancel" model="ir.actions.server">
+            <field name="name">Mass cancel</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="binding_model_id" ref="estate.model_estate_property"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_cancel()</field>
+        </record>
+    </data>
+</odoo>
