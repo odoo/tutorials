@@ -1,17 +1,15 @@
-from dataclasses import field
-
 from odoo import api, exceptions, fields, models
 
 
 class Estate(models.Model):
-    _name = "estate.estate"
-    _inherit = ["estate.estate", "mail.thread"]
+    _name = "estate.property"
+    _inherit = ["estate.property", "mail.thread"]
 
     offers_allowed = fields.Char(compute="_compute_offers_allowed")
     stage_reference = fields.Char(compute="_compute_stage_reference")
-    has_accepted_offer = fields.Boolean(compute="_compute_has_offer")
+    has_accepted_offer = fields.Boolean(compute="_compute_has_accepted_offer")
     offer_ids = fields.One2many("estate.offer", inverse_name="estate_id")
-    len_offers = fields.Integer(compute="_compute_len_offers")
+    offers_amount = fields.Integer(compute="_compute_offers_amount")
     stage_id = fields.Many2one("estate.stage", required=True)
 
     @api.depends("stage_id")
@@ -26,7 +24,8 @@ class Estate(models.Model):
     def create(self, vals):
         records = super().create(vals)
         for record in records:
-            record.stage_id = self.get_default_stage_id()
+            if not record.stage_id:
+                record.stage_id = self.get_default_stage_id()
         return records
 
     @api.model
@@ -36,12 +35,12 @@ class Estate(models.Model):
             record.stage_id = self.get_default_stage_id()
 
     @api.depends("offer_ids")
-    def _compute_len_offers(self):
+    def _compute_offers_amount(self):
         for record in self:
-            record.len_offers = len(self.offer_ids)
+            record.offers_amount = len(self.offer_ids)
 
     @api.depends("offer_ids")
-    def _compute_has_offer(self):
+    def _compute_has_accepted_offer(self):
         for record in self:
             record.has_accepted_offer = any([offer.is_accepted for offer in self.offer_ids])
 
@@ -54,7 +53,7 @@ class Estate(models.Model):
     def _compute_offers_allowed(self):
         for record in self:
             negotiation_stage = self.env['estate.stage'].search([("reference", "=", "negotiation")], limit=1)
-            record.offers_allowed = record.stage_id.order >= negotiation_stage.order
+            record.offers_allowed = record.stage_id.order >= negotiation_stage.order if record.stage_id else False
 
 
 class Offer(models.Model):
@@ -63,20 +62,15 @@ class Offer(models.Model):
 
     is_accepted = fields.Boolean(default=False, string="Accepted")
     amount = fields.Float(required=True)
-    estate_id = fields.Many2one("estate.estate", required=True, ondelete="cascade")
-    user_id = fields.Many2one("res.users", required=True, ondelete="cascade")
+    estate_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
+    buyer_id = fields.Many2one("res.users", required=True, ondelete="cascade")
 
     @api.constrains("amount")
-    def _check_amount_superior_zero(self):
-        minimal_value = 0
-        if self.amount < minimal_value:
-            raise exceptions.UserError(f"The amount of the offer must not be inferior to {minimal_value}")
-
-    @api.constrains("amount")
-    def _check_amount_superior_estate_price(self):
+    def _check_amount(self):
+        if self.amount < 0:
+            raise exceptions.UserError("The amount cannot be negative.")
         if self.amount <= self.estate_id.price:
             raise exceptions.UserError("The amount of the offer must be superior to the price of the estate.")
-
 
 class Stage(models.Model):
     _name = "estate.stage"
