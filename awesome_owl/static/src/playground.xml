@@ -3,7 +3,7 @@
 
     <t t-name="awesome_owl.playground">
         <Card title="'card 1'" content="this.html_normal"/>
-        <Card title="'card 2'" content="this.html_markup"/>
+        <Card wrong_title="'card 2'" content="this.html_markup"/>
     </t>
 
 </templates>
