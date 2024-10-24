@@ -47,12 +47,19 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends("validity")
     def _compute_deadline(self):
+        """
+        This function calculates the deadline based on the create date and validity period for each record.
+        """
         for record in self:
             record.deadline = (
                 record.create_date.date() if record.create_date else fields.Date.today()
             ) + relativedelta(days=record.validity)
 
     def _inverse_deadline(self):
+        """
+        This function calculates the number of days between a record's deadline and either its creation date
+        or the current date if the creation date is not available.
+        """
         for record in self:
             record.validity = int(
                 (
@@ -67,6 +74,10 @@ class EstatePropertyOffer(models.Model):
 
     @api.constrains("price")
     def _offer_price_constrain(self):
+        """
+        The function `_offer_price_constrain` checks if any offer price is higher than the property price
+        and raises a validation error if so.
+        """
         for offer in self.property_id.offer_ids:
             if offer.price > self.price:
                 raise ValidationError(
@@ -75,6 +86,10 @@ class EstatePropertyOffer(models.Model):
 
     @api.constrains("status")
     def _offer_validation_constrain(self):
+        """
+        The function `_offer_validation_constrain` validates and processes an offer within a property,
+        ensuring only one offer is accepted at a time.
+        """
         if self.status == "accepted":
             for offer in self.property_id.offer_ids:
                 if offer != self and offer.status == "accepted":
@@ -89,9 +104,17 @@ class EstatePropertyOffer(models.Model):
             self.property_id.status = "offer_accepted"
 
     def action_accept_offer(self):
+        """
+        The function `action_accept_offer` sets the status attribute to "accepted" and returns True.
+        :return: The method `action_accept_offer` is returning a boolean value `True`.
+        """
         self.status = "accepted"
         return True
 
     def action_reject_offer(self):
+        """
+        The function `action_reject_offer` sets the status attribute to "refused" and returns True.
+        :return: The method `action_reject_offer` is returning a boolean value `True`.
+        """
         self.status = "refused"
         return True

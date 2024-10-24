@@ -88,6 +88,9 @@ class EstateProperty(models.Model):
 
     @api.depends("living_area", "garden_area", "garden")
     def _compute_total_area(self):
+        """
+        This function calculates the total area by adding the living area and the garden area if it exists.
+        """
         for record in self:
             record.total_area = record.living_area + (
                 record.garden_area if record.garden else 0
@@ -95,6 +98,10 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids")
     def _compute_best_offer(self):
+        """
+        This Python function computes the best offer price for each record based on the maximum price
+        from a set of offer IDs.
+        """
         for record in self:
             record.best_offer = (
                 max(record.offer_ids.mapped("price"))
@@ -104,11 +111,19 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
+        """
+        The function `_onchange_garden` sets the `garden_area` to 10 and `garden_orientation` to
+        "north".
+        """
         self.garden_area = 10
         self.garden_orientation = "north"
 
     @api.onchange("offer_ids")
     def _onchange_offers(self):
+        """
+        The function `_onchange_offers` updates the status, buyer ID, best offer, and selling price
+        based on the number of offer IDs.
+        """
         if len(self.offer_ids) > 0 and "new":
             self.status = "offer_received"
         elif len(self.offer_ids) == 0:
@@ -118,6 +133,10 @@ class EstateProperty(models.Model):
             self.selling_price = 0
 
     def action_state(self):
+        """
+        The `action_state` function updates the status of a property based on the action provided in the
+        context.
+        """
         action = self.env.context.get("action")
         self.active = False
         match action:
@@ -149,6 +168,9 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=True)
     def ondelete(self):
+        """
+        This Python function prevents deletion of records with specific statuses.
+        """
         for record in self:
             if record.status not in ["new", "cancelled"]:
                 raise UserError(
