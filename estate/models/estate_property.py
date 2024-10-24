@@ -100,3 +100,9 @@ class EstateProperty(models.Model):
                 self.state = 'sold'
 
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def prevent_deletion(self):
+        for record in self:
+            if record.state != 'new' and record.state != 'cancelled':
+                raise UserError(_("You can only delete new or cancelled properties!"))
