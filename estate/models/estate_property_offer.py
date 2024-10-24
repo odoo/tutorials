@@ -7,6 +7,7 @@ from odoo.tools import float_compare
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Model representing the offers from partners to a specific property'
+    _order = 'price desc'
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -22,6 +23,7 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string="Validity", default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline', string="Date Deadline")
     create_date = fields.Date(default=lambda self: fields.Datetime.now())
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)',

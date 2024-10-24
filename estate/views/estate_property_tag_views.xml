@@ -10,7 +10,7 @@
         <field name="name">List View</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" editable="bottom">
                 <field name="name"/>
             </list>
         </field>
