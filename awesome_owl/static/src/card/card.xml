@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Card">
+        <div class="card text-center d-inline-block m-2 shadow" style="width: 18rem;">
+            <div class="card-header">
+                <t t-if="props.slots.header"><t t-slot="header"/></t>
+            </div>
+            <div class="card-body">
+                <t t-if="props.slots.title"><h5 class="card-title"><t t-slot="title"/></h5> </t>
+                <p class="card-text">
+                    <t t-slot="default"/>
+                </p>
+            </div>
+            <div class="card-footer text-muted">
+                <t t-if="props.slots.footer"><t t-slot="footer"/></t>
+            </div>
+        </div>
+    </t>
+</templates>
