@@ -70,7 +70,7 @@ class EstatePropertyOffer(models.Model):
         for offer in self.property_id.offer_ids:
             if offer.price > self.price:
                 raise ValidationError(
-                    "A higher offer has already been set at {}€.".format(offer.price)
+                    f"A higher offer has already been set at {offer.price}€."
                 )
 
     @api.constrains("status")
