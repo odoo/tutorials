@@ -130,3 +130,7 @@ dmypy.json
 
 # vscode stuff
 .vscode
+
+# js stuff
+package-lock.json
+jsconfig.json

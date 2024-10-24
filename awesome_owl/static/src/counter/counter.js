@@ -2,9 +2,8 @@
 
 import { Component, useState } from "@odoo/owl";
 
-
-export class Playground extends Component {
-    static template = "awesome_owl.playground";
+export class Counter extends Component {
+    static template = "awesome_owl.counter";
 
     setup() {
         this.state = useState({ value: 0 });
