@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -6,10 +6,14 @@ class EstatePropertyType(models.Model):
     _description = "Real estate property type"
     _order = "name asc"
 
+    name = fields.Char(string="Title", required=True, translate=True)
     property_ids = fields.One2many(
         "estate.property", inverse_name="property_type_id", string="Property"
     )
-    name = fields.Char(string="Title", required=True, translate=True)
+    offer_ids = fields.Many2many(related="property_ids.offer_ids")
+    offer_count = fields.Integer(
+        string="Number of offers", compute="_compute_offer_count"
+    )
     active = fields.Boolean(string="Active", default=True)
     sequence = fields.Integer(
         string="Sequence", default=1, help="Used to order types. Lower is better."
@@ -22,3 +26,7 @@ class EstatePropertyType(models.Model):
             "Tag already exists.",
         ),
     ]
+
+    @api.depends("offer_count")
+    def _compute_offer_count(self):
+        self.offer_count = len(self.offer_ids)

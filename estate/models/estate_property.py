@@ -14,9 +14,9 @@ class EstateProperty(models.Model):
     image = fields.Image("Image")
     tags = fields.Many2many("estate.property.tag", string="Tags")
     salesman_id = fields.Many2one(
-        "res.partner", string="Salesman", default=lambda self: self.env.user
+        "res.users", string="Salesman", default=lambda self: self.env.user.id
     )
-    buyer_id = fields.Many2one("res.users", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     postcode = fields.Char(string="Postcode", required=True)
     property_type_id = fields.Many2one(
         "estate.property.type", string="Property Type", required=True
@@ -30,7 +30,7 @@ class EstateProperty(models.Model):
     best_offer = fields.Float(
         string="Best Offer", compute="_compute_best_offer", store=True
     )
-    offers_id = fields.Many2many("estate.property.offer", string="Offers", copy=False)
+    offer_ids = fields.Many2many("estate.property.offer", string="Offers", copy=False)
     selling_price = fields.Float(string="Selling Price", readonly=True)
     active = fields.Boolean(string="Active", default=True)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
@@ -49,7 +49,7 @@ class EstateProperty(models.Model):
         ],
     )
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
-    state = fields.Selection(
+    status = fields.Selection(
         string="Status",
         selection=[
             ("new", "New"),
@@ -93,12 +93,12 @@ class EstateProperty(models.Model):
                 record.garden_area if record.garden else 0
             )
 
-    @api.depends("offers_id")
+    @api.depends("offer_ids")
     def _compute_best_offer(self):
         for record in self:
             record.best_offer = (
-                max(record.offers_id.mapped("price"))
-                if len(record.offers_id) > 0
+                max(record.offer_ids.mapped("price"))
+                if len(record.offer_ids) > 0
                 else 0
             )
 
@@ -107,12 +107,12 @@ class EstateProperty(models.Model):
         self.garden_area = 10
         self.garden_orientation = "north"
 
-    @api.onchange("offers_id")
+    @api.onchange("offer_ids")
     def _onchange_offers(self):
-        if len(self.offers_id) > 0 and "new":
-            self.state = "offer_received"
-        elif len(self.offers_id) == 0:
-            self.state = "new"
+        if len(self.offer_ids) > 0 and "new":
+            self.status = "offer_received"
+        elif len(self.offer_ids) == 0:
+            self.status = "new"
             self.buyer_id = None
             self._compute_best_offer()
             self.selling_price = 0
@@ -122,29 +122,35 @@ class EstateProperty(models.Model):
         self.active = False
         match action:
             case "sell":
-                if self.state != "cancelled" and self.selling_price > 0:
-                    self.state = "sold"
+                if self.status != "cancelled" and self.selling_price > 0:
+                    self.status = "sold"
                 elif float_is_zero(self.selling_price):
-                    raise ValidationError(
-                        "Selling price could not be found."
-                    )
+                    raise ValidationError("Selling price could not be found.")
                 else:
                     raise UserError(
                         "Can't sell a cancelled property. Try resetting to draft."
                     )
             case "cancel":
-                if self.state != "sold":
-                    self.state = "cancelled"
+                if self.status != "sold":
+                    self.status = "cancelled"
                 else:
                     raise UserError(
                         "Can't cancel a sold property. Try resetting to draft."
                     )
             case _:
-                self.state = "new"
+                self.status = "new"
                 self.buyer_id = None
                 self._compute_best_offer()
                 self.selling_price = 0
-                for offer in self.offers_id:
+                for offer in self.offer_ids:
                     offer.status = "pending"
                 self.active = True
         return True
+
+    @api.ondelete(at_uninstall=True)
+    def ondelete(self):
+        for record in self:
+            if record.status not in ["new", "cancelled"]:
+                raise UserError(
+                    "Can't delete this ad. Please cancel it or reset it to draft before removal."
+                )

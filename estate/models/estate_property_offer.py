@@ -8,13 +8,18 @@ class EstatePropertyOffer(models.Model):
     _description = "Real estate offers"
     _order = "price desc"
 
-    property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_id = fields.Many2one(
+        "estate.property", string="Property", required=True, ondelete="cascade"
+    )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
     price = fields.Float(string="Price", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     deadline = fields.Date(
         string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
     )
-    partner_id = fields.Many2one("res.users", string="Partner", copy=False)
+    partner_id = fields.Many2one("res.partner", string="Partner", copy=False)
     status = fields.Selection(
         string="Status",
         selection=[
@@ -44,9 +49,7 @@ class EstatePropertyOffer(models.Model):
     def _compute_deadline(self):
         for record in self:
             record.deadline = (
-                record.create_date.date()
-                if record.create_date
-                else fields.Date.today()
+                record.create_date.date() if record.create_date else fields.Date.today()
             ) + relativedelta(days=record.validity)
 
     def _inverse_deadline(self):
@@ -62,20 +65,28 @@ class EstatePropertyOffer(models.Model):
                 ).days
             )
 
-    # TODO: Manage dynamic changes
+    @api.constrains("price")
+    def _offer_price_constrain(self):
+        for offer in self.property_id.offer_ids:
+            if offer.price > self.price:
+                raise ValidationError(
+                    "A higher offer has already been set at {}€.".format(offer.price)
+                )
+
     @api.constrains("status")
     def _offer_validation_constrain(self):
         if self.status == "accepted":
-            for offer in self.property_id.offers_id:
+            for offer in self.property_id.offer_ids:
                 if offer != self and offer.status == "accepted":
                     raise ValidationError("Another offer has already been accepted.")
 
-            for order_to_refuse in self.property_id.offers_id:
+            for order_to_refuse in self.property_id.offer_ids:
                 if order_to_refuse != self:
                     order_to_refuse.status = "refused"
 
             self.property_id.selling_price = self.price
             self.property_id.buyer_id = self.partner_id
+            self.property_id.status = "offer_accepted"
 
     def action_accept_offer(self):
         self.status = "accepted"

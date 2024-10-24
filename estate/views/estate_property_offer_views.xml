@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="estate_property_offer_view_search" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.search</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <search string="Search Offers">
+                <field name="property_id"/>
+                <field name="property_type_id"/>
+            </search>
+        </field>
+    </record>
+
     <record id="estate_property_offer_view_form" model="ir.ui.view">
         <field name="name">estate.property.offer.view.form</field>
         <field name="model">estate.property.offer</field>
@@ -12,6 +23,7 @@
                         </h1>
                         <group class="col-6">
                             <field name="create_date"/>
+                            <field name="property_id"/>
                         </group>
                     </div>
                     <div class="row">
@@ -33,15 +45,23 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="List">
+            <list string="List" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'" decoration-bf="status in ['accepted','refused']">
+                <field name="property_id"/>
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="deadline"/>
-                <button name="action_accept_offer" type="object" icon="fa-check" invisible="partner_id.status in ['cancelled','sold'] or status == 'accepted'"/>
-                <button name="action_reject_offer" type="object" icon="fa-times" invisible="partner_id.status in ['cancelled','sold'] or status == 'refused'"/>
+                <button name="action_accept_offer" type="object" icon="fa-check" invisible="property_id.status in ['cancelled','sold'] or status == 'accepted'"/>
+                <button name="action_reject_offer" type="object" icon="fa-times" invisible="property_id.status in ['cancelled','sold'] or status == 'refused'"/>
                 <field name="status"/>
             </list>
         </field>
+    </record>
+
+    <record id="estate_property_offer_model_action" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 </odoo>

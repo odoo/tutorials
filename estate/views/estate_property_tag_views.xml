@@ -31,6 +31,7 @@
                                 <field name="name"/>
                             </h1>
                             <group>
+                                <field name="color" widget="color_picker"/>
                                 <field name="active"/>
                             </group>
                         </div>
@@ -44,7 +45,7 @@
         <field name="name">estate.property.tag.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="List">
+            <list string="List" editable="bottom">
                 <field name="name"/>
             </list>
         </field>

@@ -9,15 +9,15 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <field name="tags"/>
 
-                <filter string="Pending" name="pending" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter string="Pending" name="pending" domain="[('status', 'in', ['new', 'offer_received'])]"/>
                 <filter string="High Value" name="high_value" domain="[('expected_price', '&gt;', 1000000)]"/>
                 <filter string="Low Value" name="low_value" domain="[('expected_price', '&lt;', 1000000)]"/>
                 <separator/>
-                <filter string="Include archived" name="archived" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
+                <filter string="Include archived" name="archived" domain="[('active', 'in', [True, False])]"/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
 
                 <group expand="0" string="Group By">
@@ -34,21 +34,21 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_state" context="{'action': 'sell'}" type="object" string="SOLD" invisible="state in ['sold', 'cancelled']"/>
-                    <button name="action_state" context="{'action': 'cancel'}" type="object" string="CANCEL" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_state" context="{'action': 'sell'}" type="object" string="SOLD" invisible="status in ['sold', 'cancelled']"/>
+                    <button name="action_state" context="{'action': 'cancel'}" type="object" string="CANCEL" invisible="status in ['sold', 'cancelled']"/>
                     <button name="action_state" context="{'action': 'reset_draft'}" type="object" string="RESET TO DRAFT"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                    <widget name="web_ribbon" title="Sold" bg_color="bg-success" invisible="state != 'sold'"/>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="state != 'cancelled'"/>
+                    <widget name="web_ribbon" title="Sold" bg_color="bg-success" invisible="status != 'sold'"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="status != 'cancelled'"/>
                     <div class="row">
                         <div class="oe_title col-9">
                             <h1>
                                 <field name="name"/>
                             </h1>
                             <group>
-                                <field name="tags" widget="many2many_tags"/>
+                                <field name="tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 <field name="active"/>
                             </group>
                         </div>
@@ -59,7 +59,7 @@
 
                     <div class="row">
                         <group class="col-6">
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -91,7 +91,7 @@
                         </page>
                         <page string="Offers">
                             <div class="col-12">
-                                <field name="offers_id" widget="many2many_offers_id"/>
+                                <field name="offer_ids" widget="many2many_offer_ids" readonly="status not in ['new', 'offer_received']"/>
                             </div>
                         </page>
                         <page string="Other Info">
@@ -110,17 +110,17 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="List">
+            <list string="List" decoration-muted="status == 'sold'" decoration-success="status in ['offer_received','offer_accepted']" decoration-danger="status == 'cancelled'" decoration-bf="status in ['offer_accepted','cancelled']">
                 <field name="name"/>
-                <field name="description"/>
-                <field name="postcode"/>
+                <field name="description" optional="hide"/>
                 <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
-                <field name="state"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -129,5 +129,6 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_archived': True}</field>
     </record>
 </odoo>

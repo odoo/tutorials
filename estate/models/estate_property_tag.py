@@ -8,6 +8,7 @@ class EstatePropertyTag(models.Model):
 
     name = fields.Char(string="Title", required=True, translate=True)
     active = fields.Boolean(string="Active", default=True)
+    color = fields.Integer(string="Color", default=1)
 
     _sql_constraints = [
         (
