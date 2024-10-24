@@ -6,7 +6,8 @@
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
         <field name="date_availability">2020-02-02</field>
-        <field name="expected_price">1600000.0</field>
+        <field name="expected_price">1600.0</field>
+        <field name="selling_price">20000.0</field>
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
         <field name="facades">4</field>
@@ -23,8 +24,8 @@
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
         <field name="date_availability">1970-01-01</field>
-        <field name="expected_price">100000.0</field>
-        <field name="selling_price">120000.0</field>
+        <field name="expected_price">1000.0</field>
+        <field name="selling_price">12000.0</field>
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
@@ -38,8 +39,8 @@
         <field name="description">Flat in luxrious appartment.</field>
         <field name="postcode">54321</field>
         <field name="date_availability">2024-01-01</field>
-        <field name="expected_price">25000.0</field>
-        <field name="selling_price">24500.0</field>
+        <field name="expected_price">2500.0</field>
+        <field name="selling_price">35000.0</field>
         <field name="bedrooms">3</field>
         <field name="living_area">100</field>
         <field name="facades">6</field>
@@ -47,12 +48,12 @@
         <field name="property_type_id" ref="6"/>
         <field name="offer_ids" eval="[
             Command.create({
-                'price': 10000,
+                'price': 10000000,
                 'partner_id': ref('base.res_partner_2'),
                 'validity': 18,
             }),
             Command.create({
-                'price': 24200,
+                'price': 20000000,
                 'partner_id': ref('base.res_partner_12'),
                 'validity': 20,
             }),

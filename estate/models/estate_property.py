@@ -35,7 +35,7 @@ class EstateProperty(models.Model):
         string="Garden Orientation",
         help="Select One Orientation"
     )
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
         [
             ('new', 'New'),
@@ -84,6 +84,13 @@ class EstateProperty(models.Model):
     # store the best price of offers
     # if we use store=True then it saves the computed value in database too
     best_offer_price = fields.Integer(compute="_compute_bestPrice", store=True)
+
+    company_id = fields.Many2one(
+        'res.company',
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company
+    )
 
     @api.constrains('selling_price')
     def _check_selling_price(self):

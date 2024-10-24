@@ -30,7 +30,8 @@ class EstatePpropertyOffer(models.Model):
     # offer Many2one realtion with property
     property_id = fields.Many2one(
         'estate.property',
-        required=True
+        required=True,
+        ondelete='cascade'
     )
 
     property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)

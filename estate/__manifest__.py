@@ -3,12 +3,13 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "Harsh Chaudhari",
-    'category': 'Category',
+    'category': 'Real Estate/Brokerage',
     'description': """
     Real Estate description...
     """,
     # data files always loaded at installation
     'data': [
+        'security/security.xml',
         'data/estate.property.type.csv',
         'views/estate_property_offers_view.xml',
         'views/estate_property_type_view.xml',

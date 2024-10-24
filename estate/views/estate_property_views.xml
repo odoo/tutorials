@@ -78,6 +78,7 @@
                             <field name="expected_price"/>
                             <field name="best_offer_price" string="Best Offer"/>
                             <field name="selling_price"/>
+                            <field name="company_id"/>
                         </group>
                     </group>
                     <notebook>
