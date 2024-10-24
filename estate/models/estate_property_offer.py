@@ -66,11 +66,10 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = abs((record.date_deadline - record.create_date.date()).days)
 
-    #Action Button
     def action_accept_offer(self):
         for record in self:
-            if(record.property_id.buyer_id):
-                if(record.partner_id != record.property_id.buyer_id):
+            if (record.property_id.buyer_id):
+                if (record.partner_id != record.property_id.buyer_id):
                     raise UserError("This Property has already accepted an offer.")
             else:
                 record.status = 'accepted'

@@ -107,7 +107,6 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.mapped("offer_ids.price"), default=0)
 
-    #Onchange Methods
     '''In many cases, both computed fields and onchanges may be used to achieve the
     same result. Always prefer computed fields since they are also triggered outside
     of the context of a form view. Never ever use an onchange to add business logic
@@ -122,7 +121,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
-    
+
     '''
     The first important detail to note is that our method name isn’t prefixed with an underscore (_).
     This makes our method a public method, which can be called directly from the Odoo interface (through an RPC call).

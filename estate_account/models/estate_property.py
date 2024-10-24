@@ -1,4 +1,4 @@
-from odoo import Command, models  
+from odoo import Command, models
 from odoo.exceptions import UserError, AccessError
 
 
