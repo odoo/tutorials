@@ -1,4 +1,4 @@
-from odoo import Command, fields, models
+from odoo import Command, models
 
 
 class Property(models.Model):
@@ -21,4 +21,3 @@ class Property(models.Model):
             }
         )
         return super().action_sell()
-
