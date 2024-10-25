@@ -94,7 +94,6 @@
                             <field string= "Available From" name="date_availability"/>
                         </group>
                         <group>
-
                             <field string= "Expected Price" name="expected_price"/>
                             <field string= "Selling Price" name="selling_price"/>
                             <field name="best_offer_price" string="Best Offer"/>  
@@ -124,8 +123,8 @@
                                         <field name="validity"/>
                                         <field name="partner_id"/>
                                         <field name="status" column_invisible="True"/>
-                                        <button name="action_offer_accept" type='object' icon="fa-check" invisible="status"/>
-                                        <button name="action_offer_refuse" type='object' icon="fa-remove" invisible="status"/>
+                                        <button name="action_offer_accept" type='object' icon="fa-check" invisible="status" title="check"/>
+                                        <button name="action_offer_refuse" type='object' icon="fa-remove" invisible="status" title="refuse"/>
                                         <field name="date_deadline"/>
                                     </tree>
                                     <form>
@@ -164,9 +163,9 @@
                 <field string= "Bedrooms" name="bedrooms"/>
                 <field string= "Expected Price" name="expected_price"/>
                 <field string= "Facade" name="facades"/>
-                <field name="living_area" string="Living area" filter_domain="[('living_area','>=',self)]"/> 
-                <filter name="available" string="Available"  domain="['|',('state', '=', 'new') , ('state','=','offer_received')]"/>
-                <filter name ="Specious" domain="[('bedrooms','>','2')]"/>
+                <field name="living_area" string="Living area" filter_domain="[('living_area', '>=', self)]"/>
+                <filter name="available" string="Available"  domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter name ="Specious" domain="[('bedrooms', '>', '2')]"/>
                 <group expand="1" string="Group By">
                         <filter string="Postcode0.00" name="postcode" context="{'group_by':'postcode'}"/>
                         <filter string="Date availability Date" name="date_availability" date="date_availability"/>

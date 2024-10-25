@@ -8,7 +8,8 @@
     Description text
     """,
     'data': [
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'report/estate_property_inherit.xml'
     ],
     'demo': [],
     'application': False,

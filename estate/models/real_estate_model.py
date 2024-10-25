@@ -23,6 +23,7 @@ class EstateModel(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    company_id = fields.Many2one(comodel_name='res.company', default= lambda self : self.env.company, required=True)
     garden_orientation = fields.Selection(
         string = 'Garden Orientation',
         selection = [('north','North'),('south','South'), ('east','East'), ('west','West')],
@@ -86,7 +87,6 @@ class EstateModel(models.Model):
                 raise UserError("Cancelled Property can not be sold")
             else:
                 record.state = 'sold'
-        breakpoint()
         return True
 
     def action_cancel(self):
