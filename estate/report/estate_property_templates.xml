@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_estate_property">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>
+                            <span t-field="property.name"/>
+                        </h1>
+                        <div>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.seller_id"/>    
+                        </div>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price"/>
+                        </div>
+                        <div>
+                            <strong>Status: </strong>
+                            <span t-field="property.state"/>
+                        </div>
+                        <t t-call="estate.report_offers"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_res_users_properties">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="user">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>
+                            <strong>Salesman: </strong>
+                            <span t-field="user.name"/>
+                        </h1>
+                        <t t-if="user.property_ids">
+                            <t t-foreach="user.property_ids" t-as="property">
+                                <h1>
+                                    <span t-field="property.name"/>
+                                </h1>
+                                <div>
+                                    <strong>Expected Price: </strong>
+                                    <span t-field="property.expected_price"/>
+                                </div>
+                                <div>
+                                    <strong>Status: </strong>
+                                    <span t-field="property.state"/>
+                                </div>
+                                <t t-call="estate.report_offers"/>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <h4>
+                                <strong>
+                                    <span t-field="user.name"/> has no any properties posted yet.
+                                </strong>
+                            </h4>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_offers">
+        <t t-if="property.offer_ids">
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th>Price</th>
+                    <th>Partner</th>
+                    <th>Validity (days)</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                    <tr t-foreach="offers" t-as="offer">
+                        <td>
+                            <span t-field="offer.price"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.partner_id"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.validity"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.date_deadline"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.status"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <h4>
+                <strong>
+                    No offers have been made yet.
+                </strong>
+            </h4>
+        </t>
+    </template>
+</odoo>

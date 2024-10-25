@@ -9,6 +9,7 @@
     """,
     # data files always loaded at installation
     'data': [
+        'reports/estate_account_property_invoice.xml'
     ],
     # data files containing optionally loaded demonstration data
     'demo': [],
