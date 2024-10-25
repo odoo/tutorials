@@ -6,14 +6,17 @@
         <field name="name">estate_property_offer_list</field>
         <field name="model">estate_property_offer</field>
         <field name="arch" type="xml">
-            <list editable="top">
-                <field name="price"/>
-                <field name="partner_id"/>
-                <field name="validity"/>
-                <field name="deadline"/>
-                <button name="action_accept" type="object" string="Accept" icon="fa-check"/>
-                <button name="action_refuse" type="object" string="Refuse" icon="fa-times"/>
-                <field name="status"/>
+            <list editable="top" decoration-success="status=='accepted'"
+                decoration-danger="status=='refused'">
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="validity" />
+                <field name="deadline" />
+
+                <button name="action_accept" type="object" string="Accept" icon="fa-check" />
+                <button name="action_refuse" type="object" string="Refuse" icon="fa-times" />
+
+                <field name="property_type_id" optional="hide" />
             </list>
         </field>
     </record>
@@ -22,6 +25,7 @@
         <field name="name">Offers</field>
         <field name="res_model">estate_property_offer</field>
         <field name="view_mode">list</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
 </odoo>

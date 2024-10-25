@@ -13,40 +13,21 @@
         <!-- Demo Estate Property Tags -->
         <record id="estate_property_tag_1" model="estate_property_tag">
             <field name="name">cosy</field>
+            <field name="color">5</field>
         </record>
         <record id="estate_property_tag_2" model="estate_property_tag">
             <field name="name">renovated</field>
+            <field name="color">3</field>
         </record>
         <record id="estate_property_tag_3" model="estate_property_tag">
             <field name="name">renovation needed</field>
-        </record>
-
-        <!-- Demo Estate Property Offers -->
-        <record id="estate_property_offer_1" model="estate_property_offer">
-            <field name="price">2000000</field>
-            <field name="partner_id" ref="base.res_partner_4"/>
-            <field name="validity">12</field>
-        </record>
-        <record id="estate_property_offer_2" model="estate_property_offer">
-            <field name="price">200000</field>
-            <field name="partner_id" ref="base.res_partner_3"/>
-            <field name="validity">10</field>
-        </record>
-        <record id="estate_property_offer_3" model="estate_property_offer">
-            <field name="price">220000</field>
-            <field name="partner_id" ref="base.res_partner_5"/>
-            <field name="validity">25</field>
-        </record>
-        <record id="estate_property_offer_4" model="estate_property_offer">
-            <field name="price">260000</field>
-            <field name="partner_id" ref="base.res_partner_4"/>
-            <field name="deadline" eval="(DateTime.today() + relativedelta(days=7)).strftime('%Y-%m-%d %H:%M')" />
+            <field name="color">4</field>
         </record>
 
         <!-- Demo Estate Properties -->
         <record id="estate_property_1" model="estate_property">
             <field name="name">Beach House</field>
-            <field name="status">canceled</field>
+            <field name="status">new</field>
             <field name="description">A brand new house by the beach</field>
             <field name="postcode">8300</field>
             <field name="date_availability" eval="(DateTime.today() + relativedelta(months=3)).strftime('%Y-%m-%d %H:%M')" />
@@ -62,7 +43,6 @@
             <field name="type_id" ref="estate_property_type_2" />
             <field name="salesperson" ref="base.user_demo"/>
             <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_1'), ref('estate_property_tag_2')])]"/>
-            <field name="offer_ids" eval="[(6, 0, [ref('estate_property_offer_1')])]"/>
         </record>
         <record id="estate_property_2" model="estate_property">
             <field name="name">City Apt</field>
@@ -81,7 +61,50 @@
             <field name="type_id" ref="estate_property_type_1"/>
             <field name="salesperson" ref="base.user_admin"/>
             <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_3')])]"/>
-            <field name="offer_ids" eval="[(6, 0, [ref('estate_property_offer_2'), ref('estate_property_offer_4'), ref('estate_property_offer_3')])]"/>
+        </record>
+        <record id="estate_property_3" model="estate_property">
+            <field name="name">Small House</field>
+            <field name="status">new</field>
+            <field name="description">A small house in the centre of Brussels</field>
+            <field name="postcode">1000</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=5, months=3)).strftime('%Y-%m-%d %H:%M')" />
+            <field name="expected_price">450000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">120</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="type_id" ref="estate_property_type_2"/>
+            <field name="salesperson" ref="base.user_admin"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_1'), ref('estate_property_tag_3')])]"/>
+        </record>
+
+        <!-- Demo Estate Property Offers -->
+        <record id="estate_property_offer_1" model="estate_property_offer">
+            <field name="price">2000000</field>
+            <field name="partner_id" ref="base.res_partner_4"/>
+            <field name="validity">12</field>
+            <field name="property_id" ref="estate_property_1"/>
+        </record>
+        <record id="estate_property_offer_2" model="estate_property_offer">
+            <field name="price">200000</field>
+            <field name="partner_id" ref="base.res_partner_3"/>
+            <field name="validity">10</field>
+            <field name="property_id" ref="estate_property_2"/>
+        </record>
+        <record id="estate_property_offer_3" model="estate_property_offer">
+            <field name="price">220000</field>
+            <field name="partner_id" ref="base.res_partner_5"/>
+            <field name="validity">25</field>
+            <field name="property_id" ref="estate_property_2"/>
+        </record>
+        <record id="estate_property_offer_4" model="estate_property_offer">
+            <field name="price">260000</field>
+            <field name="partner_id" ref="base.res_partner_4"/>
+            <field name="deadline" eval="(DateTime.today() + relativedelta(days=7)).strftime('%Y-%m-%d %H:%M')" />
+            <field name="property_id" ref="estate_property_2"/>
         </record>
 
         <!-- Mass cancel -->

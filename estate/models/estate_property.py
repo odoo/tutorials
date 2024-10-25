@@ -70,7 +70,7 @@ class Estate_Property(models.Model):
         "res.users", default=(lambda self: self.env.user), string="Salesman"
     )
 
-    tag_ids = fields.Many2many("estate_property_tag", string="Property Tags")
+    tag_ids = fields.Many2many("estate_property_tag", string="Tags")
 
     offer_ids = fields.One2many("estate_property_offer", "property_id", string="Offers")
 
@@ -101,7 +101,10 @@ class Estate_Property(models.Model):
     @api.depends("offer_ids")
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max(record.offer_ids.mapped("price"))
+            if record.offer_ids:
+                record.best_offer = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_offer = .0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -121,6 +124,12 @@ class Estate_Property(models.Model):
                 raise exceptions.ValidationError(
                     r"Cannot sell for less than 90% of expected price."
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _delete_only_new_canceled(self):
+        for record in self:
+            if not (record.status == "new" or record.status == "canceled"):
+                raise exceptions.UserError("Sold properties / properties with pending offers cannot be deleted.")
 
     def action_sold(self):
         for record in self:

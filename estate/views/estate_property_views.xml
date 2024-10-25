@@ -11,11 +11,12 @@
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="living_area" />
+                <field name="living_area" filter_domain="[('living_area', '&gt;', self)]" />
                 <field name="facades" />
 
-                <filter name="status" string="Available"
-                    domain="['|', ('status', '=', 'new'), ('status', '=', 'offer_received')]" />
+                <filter name="availability" string="Available"
+                    domain="['|', ('status', '=', 'new'), ('status', '=', 'offer_received')]"
+                    help="Show only available properties" />
 
                 <filter name="postcode_group" string="Postcode" context="{'group_by': 'postcode'}" />
             </search>
@@ -31,8 +32,11 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" />
-                    <button name="action_cancel" type="object" string="Cancel" />
+                    <div invisible="(status == 'sold') or (status == 'canceled')">
+                        <button name="action_sold" type="object" string="Sold" />
+                        <button name="action_cancel" type="object" string="Cancel" />
+                    </div>
+
                     <field name="status" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold"
                         options="{'clickable': 1}" type="selection" />
@@ -44,14 +48,16 @@
                             <field name="name" string="Property" placeholder="Property Name"
                                 required="True" />
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags" />
+                        <field name="tag_ids" widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
                     </div>
 
                     <separator />
 
                     <group>
                         <group>
-                            <field name="type_id" />
+                            <field name="type_id" attributes="{'can_write': false}"
+                                options="{'no_create': true, 'no_open': true}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -73,14 +79,15 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
                             </group>
                         </page>
 
                         <page string="Offers">
-                            <field name="offer_ids" />
+                            <field name="offer_ids"
+                                readonly="(status == 'sold') or (status == 'canceled')" />
                         </page>
 
                         <page string="Other Info">
@@ -101,15 +108,19 @@
         <field name="name">estate_property_list</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
-            <list string="Estate Property List">
+            <list decoration-bf="status=='offer_accepted'" decoration-success="offer_ids"
+                decoration-muted="status=='sold'">
                 <field name="name" />
+                <field name="type_id" />
                 <field name="postcode" />
+                <field name="tag_ids" widget="many2many_tags"
+                    options="{'color_field': 'color'}" />
                 <field name="bedrooms" />
                 <field name="living_area" />
-                <field name="total_area" />
+                <field name="total_area" optional="hide" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="date_availability" optional="hide" />
             </list>
         </field>
     </record>
@@ -118,6 +129,7 @@
         <field name="name">Estate Properties</field>
         <field name="res_model">estate_property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_availability': True}</field>
     </record>
 
 </odoo>

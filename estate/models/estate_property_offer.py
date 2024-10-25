@@ -8,41 +8,33 @@ class Estate_Property_Offer(models.Model):
     _description = "Estate Property Offers"
     _order = "price desc"
 
-    price = fields.Float(
-        string="Price"
-    )
+    price = fields.Float(string="Price")
 
     status = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")],
         readonly=True,
         copy=False,
-        string="Status"
+        string="Status",
     )
 
-    partner_id = fields.Many2one(
-        'res.partner',
-        required=True,
-        string="Partner"
+    partner_id = fields.Many2one("res.partner", required=True, string="Partner")
+
+    property_id = fields.Many2one("estate_property", string="Property")
+
+    property_type_id = fields.Many2one(
+        "estate_property_type", related="property_id.type_id"
     )
 
-    property_id = fields.Many2one(
-        'estate_property',
-        string="Property"
-    )
+    validity = fields.Integer(default=7, string="Validity (days)")
 
-    validity = fields.Integer(
-        default=7,
-        string="Validity (days)"
-    )
-
-    deadline = fields.Date(
-        compute="_compute_deadline",
-        copy=False,
-        string="Deadline"
-    )
+    deadline = fields.Date(compute="_compute_deadline", copy=False, string="Deadline")
 
     _sql_constraints = [
-        ("check_positive_price", "CHECK(price > 0.0)", "Offer Price should be a positive number (higher than 0).")
+        (
+            "check_positive_price",
+            "CHECK(price > 0.0)",
+            "Offer Price should be a positive number (higher than 0).",
+        )
     ]
 
     @api.depends("validity")
@@ -56,10 +48,14 @@ class Estate_Property_Offer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if not any(offer_status == "accepted" for offer_status in record.property_id.offer_ids.mapped("status")):
+            if not any(
+                offer_status == "accepted"
+                for offer_status in record.property_id.offer_ids.mapped("status")
+            ):
                 # Set values in the Property itself
                 record.property_id.selling_price = record.price
                 record.property_id.buyer = record.partner_id
+                record.property_id.status = "offer_accepted"
 
                 record.status = "accepted"
             else:
@@ -72,5 +68,17 @@ class Estate_Property_Offer(models.Model):
                 # Set values in the Property itself
                 record.property_id.selling_price = 0.0
                 record.property_id.buyer = None
+                record.property_id.status = "offer_received"
             record.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        _property = self.env["estate_property"].browse(vals["property_id"])
+        if vals["price"] < _property["best_offer"]:
+            raise exceptions.ValidationError(
+                r"Cannot offer less than the best pending offer."
+            )
+        if _property["status"] == "new":
+            _property["status"] = "offer_received"
+        return super().create(vals)

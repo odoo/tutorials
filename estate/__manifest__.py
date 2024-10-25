@@ -6,6 +6,7 @@
     'depends': [
         'base_setup'
     ],
+    'license': "LGPL-3",
     'data': [
         'security/ir.model.access.csv',
 

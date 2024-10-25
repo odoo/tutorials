@@ -10,6 +10,16 @@
 
         <field name="arch" type="xml">
             <form string="Property Types">
+                <div class="oe_button_box" name="button_box">
+
+                    <button type="action" name="%(estate_property_offer_view)d"
+                        icon="fa-money" class="oe_stat_button" invisible="offer_count == 0">
+
+                        <field name="offer_count" widget="statinfo" />
+
+                    </button>
+
+                </div>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -40,7 +50,9 @@
         <field name="model">estate_property_type</field>
         <field name="arch" type="xml">
             <list string="Property Type">
+                <field name="sequence" widget="handle" />
                 <field name="name" />
+                <field name="offer_count" optional="hide" />
             </list>
         </field>
     </record>
