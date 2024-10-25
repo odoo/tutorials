@@ -7,6 +7,6 @@ class InheritedUser(models.Model):
     property_ids = fields.One2many(
         "estate_property",
         "salesperson",
-        domain=['|', ('status', '=', 'new'), ('status', '=', 'offer_received')],
-        string="Properties"
+        domain=["|", ("status", "=", "new"), ("status", "=", "offer_received")],
+        string="Properties",
     )
