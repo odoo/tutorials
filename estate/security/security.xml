@@ -33,7 +33,7 @@
         <field name="perm_create" eval="True" />
         <field name="perm_unlink" eval="True" />
         <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]" />
-        <field name="domain_force">[]</field>
+        <field name="domain_force">[(1,'=',1)]</field>
     </record>
 
    

@@ -9,6 +9,9 @@
     """,
     # data files always loaded at installation
     'data': [
+        "report/estate_property_templates.xml",
+        "report/estate_property_reports.xml",
+        "report/estate_property_offers_info.xml",
         'security/ir.model.access.csv',
         'security/security.xml',
         "data/estate.property.type.csv",

@@ -80,6 +80,7 @@
                     <button name="sold_button" class="oe_highlight" type="object" string="SOLD" invisible=" state =='sold' or state =='canceled'" />
                     <button name="cancel_button" type="object" string="CANCEL" invisible=" state =='sold' or state =='canceled'"/>
                     <button name="%(estate_property_tag_action)d" type="action" string="Tags"/>
+                    <button name="%(report_offer_templates_action)d" icon="fa-print" type="action" string="Print"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
                 </header>
                 <sheet>
