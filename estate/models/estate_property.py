@@ -54,21 +54,20 @@ class EstateProperty(models.Model):
 
     @api.constrains('selling_price', 'expected_price')
     def _check_prices_difference(self):
-        for record in self:
-            if record.buyer_id and float_compare(record.selling_price, 0.9 * record.expected_price, 5) == -1:
+        for estate in self:
+            if estate.buyer_id and float_compare(estate.selling_price, 0.9 * estate.expected_price, 5) == -1:
                 raise UserError(_("Selling price cannot be lower than 90% of the expected price!"))
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.garden_area + record.living_area
+        for estate in self:
+            estate.total_area = estate.garden_area + estate.living_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        for record in self:
-            prices = record.offer_ids.mapped('price')
-
-            record.best_price = max(prices) if len(prices) > 0 else 0
+        for estate in self:
+            prices = estate.offer_ids.mapped('price')
+            estate.best_price = max(prices, default=0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -80,29 +79,29 @@ class EstateProperty(models.Model):
             self.garden_orientation = ''
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'cancelled':
+        for estate in self:
+            if estate.state == 'cancelled':
                 raise UserError(_("Property already cancelled!"))
-            elif record.state == 'sold':
+            elif estate.state == 'sold':
                 raise UserError(_("A sold property cannot be cancelled!"))
             else:
-                self.state = 'cancelled'
+                estate.state = 'cancelled'
 
         return True
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'sold':
+        for estate in self:
+            if estate.state == 'sold':
                 raise UserError(_("Property already sold!"))
-            elif record.state == 'cancelled':
+            elif estate.state == 'cancelled':
                 raise UserError(_("A cancelled property cannot be sold!"))
             else:
-                self.state = 'sold'
+                estate.state = 'sold'
 
         return True
 
     @api.ondelete(at_uninstall=False)
     def prevent_deletion(self):
-        for record in self:
-            if record.state != 'new' and record.state != 'cancelled':
+        for estate in self:
+            if estate.state not in ['new', 'cancelled']:
                 raise UserError(_("You can only delete new or cancelled properties!"))
