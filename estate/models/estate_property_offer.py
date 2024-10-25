@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 from .helper import format_selection
@@ -36,23 +36,18 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             property_id = self.env['estate.property'].browse(vals['property_id'])
             if any(vals['price'] < offer.price for offer in property_id.offer_ids):
-                raise UserError('Offer price must be higher than existing offers.')
+                raise UserError(_('Offer price must be higher than existing offers.'))
             property_id.state = 'offer received'
         return super().create(vals_list)
 
     def action_accept(self):
         self.ensure_one()
         if self.property_id.state == 'sold':
-            raise UserError('The house was already sold.')
+            raise UserError(_('The house was already sold.'))
         self.status = 'accepted'
         self.property_id.state = 'offer accepted'
         self.property_id.buyer_id = self.partner_id
-        self.property_id.selling_price = self.price
-        return True
-
-    def action_refuse(self):
-        for offer in self:
-            if offer.status == 'accepted':
-                raise UserError('The offer was already accepted.')
-            offer.status = 'refused'
+        self.property_id.se.selling_price):
+            raise UserError(_('Customer or selling price was not set.'))
+'refused'
         return True

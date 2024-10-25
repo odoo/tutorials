@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 from odoo.fields import Many2many, One2many
@@ -68,24 +68,24 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_price_offer_reasonable(self):
         if float_compare(self.selling_price, 0.9 * self.expected_price, 3) <= 0:
-            raise ValidationError('The selling price must be at least 90% of the expected price.')
+            raise ValidationError(_('The selling price must be at least 90% of the expected price.'))
 
     @api.ondelete(at_uninstall=False)
     def _unlink_property_if_not_new_nor_canceled(self):
         self.ensure_one()
         if self.state not in ('new', 'canceled'):
-            raise UserError('Only new and canceled properties can be deleted.')
+            raise UserError(_('Only new and canceled properties can be deleted.'))
 
     def action_sold(self):
         self.ensure_one()
         if self.state == 'canceled':
-            raise UserError('Canceled properties cannot be sold.')
+            raise UserError(_('Canceled properties cannot be sold.'))
         self.state = 'sold'
         return True
 
     def action_cancel(self):
         self.ensure_one()
         if self.state == 'sold':
-            raise UserError('Sold properties cannot be canceled.')
+            raise UserError(_('Sold properties cannot be canceled.'))
         self.state = 'canceled'
         return True
