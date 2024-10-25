@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
+    </record>
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
+        <field name="implied_ids" eval="[ref('estate_group_user')]"/>
+    </record>
+
+    <record id="estate_property_record_rule_agent" model="ir.rule">
+        <field name="name">A description of the rule's role</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
+        <!-- <field name="perm_create" eval="True"/>
+        <field name="perm_read" eval="True"/> -->
+        <field name="domain_force">
+            ['|', ('seller_id', '=', user.id), ('seller_id', '=', False)]
+        </field>
+    </record>
+
+    <record id="estate_property_record_rule_manager" model="ir.rule">
+        <field name="name">A description of the rule's role</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]"/>
+        <field name="domain_force">
+            [(1, '=', 1)]
+        </field>
+    </record>
+</odoo>

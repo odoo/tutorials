@@ -1,4 +1,4 @@
-from odoo import models, Command
+from odoo import models, Command, fields
 
 
 class estateProperty(models.Model):
@@ -20,7 +20,7 @@ class estateProperty(models.Model):
             "price_unit": 100.00
         }
 
-        self.env["account.move"].create({
+        self.env["account.move"].sudo().create({
             "name": self.name + " Invoice",
             "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",
