@@ -18,6 +18,8 @@
         'views/estate_menus_view.xml',
         'security/ir.model.access.csv',
         'views/res_users_inherited_view.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml'
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
