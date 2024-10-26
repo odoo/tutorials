@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_users_properties">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="user">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="mb16" style="border-top: 1px solid #000; padding-top: 10px; text-align: left;">
+                            <strong t-field="user.company_id.name"/><br/>
+                            <span t-field="user.company_id.street"/><br/>
+                            <span t-field="user.company_id.city"/>, 
+                            <span t-field="user.company_id.state_id.name"/> 
+                            <span t-field="user.company_id.zip"/><br/>
+                            <span t-field="user.company_id.country_id.name"/>
+                        </div>
+
+                        <h2>User: <span t-field="user.name"/></h2>
+                        
+                        <h3>Real Estate Properties</h3>
+                        <t t-if="user.property_ids">
+                            <t t-foreach="user.property_ids" t-as="property">
+                                <div class="property">
+                                    <h4><span t-field="property.name"/></h4>
+                                    <div>
+                                        <strong>Salesman:</strong> <span t-field="property.salesperson.name"/><br/>
+                                        <strong>Expected Price:</strong> <span t-field="property.expected_price"/><br/>
+                                        <strong>Status:</strong> <span t-field="property.state"/>
+                                    </div>
+
+                                    <t t-call="estate.report_property_offers_table"/>
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <p>No properties available for this user.</p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

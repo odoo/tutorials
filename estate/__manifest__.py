@@ -7,10 +7,15 @@
     'data': [
         'security/estate_security.xml',
         'security/ir.model.access.csv',
+        'reports/report_estate_property_template.xml',
+        'reports/report_users_estate_properties_template.xml',
+        'reports/estate_property_reports.xml',
+        
         
         'views/res_users_views.xml',
         'views/estate_property_offers_views.xml',
         'views/estate_property_views.xml',
+
 
         'views/estate_property_type_views.xml',
         'views/estate_property_tags_views.xml',

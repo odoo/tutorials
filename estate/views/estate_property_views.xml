@@ -90,6 +90,13 @@
                 <header>
                     <button  name="action_sold" type="object" string="Sold" invisible="state == 'sold' or state == 'canceled'"/>
                     <button  name="action_cancel" type="object" string="Cancel" invisible="state == 'sold' or state == 'canceled'"/>
+                    <button string="Print"
+                            data-hotkey="q"
+                            name="%(estate.report_estate_property_offer)d"
+                            type="action"
+                            class="print btn-primary o_mail_send"
+                            invisible="state == 'new'">
+                    </button>
                     <field name="state" widget="statusbar" />
                 </header>
 

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_property_offers" >
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Company Information Header -->
+                        <div class="mb16" style="border-top: 1px solid #000; padding-top: 10px; text-align: left;" name="page_div">
+                            <strong t-field="property.company_id.name"/><br/>
+                            <span t-field="property.company_id.street"/><br/>
+                            <span t-field="property.company_id.city"/>, 
+                            <span t-field="property.company_id.state_id.name"/> 
+                            <span t-field="property.company_id.zip"/><br/>
+                            <span t-field="property.company_id.country_id.name"/>
+                        </div>
+
+                        <!-- Property Details -->
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div>
+                            <strong>Salesman:</strong>
+                            <span t-field="property.salesperson.name"/>
+                        </div>
+                        <div>
+                            <strong>Expected Price:</strong>
+                            <span t-field="property.expected_price"/>
+                        </div>
+                        <div name="status">
+                            <strong>Status:</strong>
+                            <span t-field="property.state"/>
+                        </div>
+
+                        <!-- Include Offers Table Sub-Template -->
+                        <t t-call="estate.report_property_offers_table"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="report_property_offers_table">
+        <t t-if="property.offer_ids">
+            <table class="table mt16">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity (days)</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="property.offer_ids" t-as="offer">
+                        <td>
+                            <span t-field="offer.price"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.partner_id.name"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.validity"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.date_deadline" t-options="{'format': 'dd/MM/yyyy'}"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.status"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <p>No offers available for this property.</p>
+        </t>
+    </template>
+</odoo>
