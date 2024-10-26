@@ -1,0 +1,33 @@
+<odoo>
+    <record id="action_offer_wizard" model="ir.actions.act_window">
+        <field name="name">Add offer</field>
+        <field name="res_model">offer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">action</field>
+        <field name="binding_view_types">tree,form</field>
+    </record>
+
+    <record id="form_view_offer_wizard" model="ir.ui.view">
+        <field name="name">offer.wizard</field>
+        <field name="model">offer.wizard</field>
+        <field name="arch" type="xml">    
+            <form>
+                <group>
+                    <group>
+                        <field name="price" string="Price"/>
+                        <field name="status" string="Status"/>
+                    </group>
+                    <group>
+                        <field name="partner_id"/>
+                    </group>
+                </group>
+                <footer>
+                        <button class="oe_highlight" name="action_offer_add" string="Add offer" type="object"/>
+                        <button title="Close" string="Close" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
