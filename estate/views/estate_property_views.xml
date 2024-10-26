@@ -24,6 +24,9 @@
                   decoration-bf="state == 'offer_accepted'"
                   decoration-muted="state=='sold'"
             >
+                <header>
+                    <button string="Add Offer" name="estate.estate_property_offer_to_anyflat_action" type="action" title="add offer to this selected properties."/>
+                </header>
                 <field name="name" string="Title"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="bedrooms"/>

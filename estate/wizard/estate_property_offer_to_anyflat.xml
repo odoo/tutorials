@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_offer_to_anyflat_action" model="ir.actions.act_window">
+        <field name="name">Add Offer To Anyflat</field>
+        <field name="res_model">estate.property.offer.to.anyflat</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">action</field>
+        <field name="binding_view_types">tree</field>
+    </record>
+
+    <record id="estate_propert_anyflat_view_form" model="ir.ui.view">
+        <field name="name">estate_propert_anyflat.view.form</field>
+        <field name="model">estate.property.offer.to.anyflat</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="status"/>
+                        <field name="buyer_id"/>
+                    </group>
+                    <footer>
+                        <button string="Make an offer" name="add_offer_to_selected_flats" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

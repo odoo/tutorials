@@ -9,6 +9,7 @@
     """,
     # data files always loaded at installation
     'data': [
+        'wizard/estate_property_offer_to_anyflat.xml',
         'security/security.xml',
         'data/estate.property.type.csv',
         'views/estate_property_offers_view.xml',
