@@ -12,6 +12,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree expand="1" default_order="expected_price desc, name desc" decoration-success="state == 'offer received' or state == 'offer accepted'" decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
+               <header>
+                  <button string="Add Offer" name="%(estate.action_add_offer)d" type="action" class="oe_highlight"/>
+               </header>
                <field name="name"/>
                <field name="bedrooms"/>
                <field name="expected_price" />

@@ -13,6 +13,7 @@
         'reports/estate_salesman_property_offer_report_template.xml',
         'reports/estate_property_reports.xml',
         'views/res_users_views.xml',
+        'wizards/add_offer.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
