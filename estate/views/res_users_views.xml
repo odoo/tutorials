@@ -7,17 +7,7 @@
         <field name="arch" type="xml">
             <page name="preferences" position="after">
                 <page name="estate" string="Real Estate Properties" readonly="true" >
-                    <field name="property_ids">
-                        <tree readonly="true">
-                            <field name="name"/>
-                            <field name="property_type_id"/>
-                            <field name="expected_price"/>
-                            <field name="best_offer" />
-                            <field name="selling_price" />
-                            <field name="data_availability"/>
-                            <field name="buyer_id"/>
-                        </tree>
-                    </field>
+                    <field name="property_ids"/>
                 </page>
             </page>
         </field>

@@ -20,6 +20,10 @@ class estateProperty(models.Model):
             "price_unit": 100.00
         }
 
+        # print(" reached ".center(100, '='))
+        # print(self.env["account.move"].check_access_rights('write'))
+        # print(self.env["account.move"].check_access_rule('write'))
+
         self.env["account.move"].sudo().create({
             "name": self.name + " Invoice",
             "partner_id": self.buyer_id.id,

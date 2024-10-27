@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="estate_salesman_property_offer_report_inherit_template" inherit_id="estate.estate_salesman_property_offer_report_template">
+        <xpath expr="//div//h6[2]" position="after">
+            <t t-if="property.state == 'offer received'">
+                <p>
+                    <b>
+                        !!! Offers are received for this Property. !!!
+                    </b>
+                </p>
+            </t>
+        </xpath>
+    </template>
+</odoo>

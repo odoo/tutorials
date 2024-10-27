@@ -39,52 +39,53 @@
                   </h2>
                   <group>
                      <group>
-                           <field name="property_type_id" options="{'no_create': true}" />
-                           <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
-                           <field name="postcode"/>
-                        </group>
-                        <group>
-                           <field name="expected_price"/>
-                           <field name="best_offer" />
-                           <field name="selling_price" />
-                        </group>
+                        <field name="property_type_id" options="{'no_create': true}" />
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                        <field name="postcode"/>
                      </group>
-                     <notebook>
-                        <page string="Description">
-                           <group>
-                              <group>
-                                 <field name="description"/>
-                                 <field name="data_availability"/>
-                                 <field name="bedrooms" string="Number of bedrooms"/>
-                                 <field name="living_area"/>
-                                 <field name="garage"/>
-                                 <field name="garden"/>
-                                 <field name="garden_area" invisible="not garden"/>
-                                 <field name="garden_orientation" invisible="not garden"/>
-                                 <field name="totalArea"/>
-                              </group>
-                           </group>
-                     </page>
-                     <page string="Sales Information">
+                     <group>
+                        <field name="expected_price"/>
+                        <field name="best_offer" />
+                        <field name="selling_price" />
+                        <field name="company_id" />
+                     </group>
+                  </group>
+                  <notebook>
+                     <page string="Description">
                         <group>
-                           <field name="seller_id"/>
-                           <field name="buyer_id"/>
+                           <group>
+                              <field name="description"/>
+                              <field name="data_availability"/>
+                              <field name="bedrooms" string="Number of bedrooms"/>
+                              <field name="living_area"/>
+                              <field name="garage"/>
+                              <field name="garden"/>
+                              <field name="garden_area" invisible="not garden"/>
+                              <field name="garden_orientation" invisible="not garden"/>
+                              <field name="totalArea"/>
+                           </group>
                         </group>
-                     </page>
-                     <page string="Offer">
-                           <field name="offer_ids" readonly="state == 'offer accepted' or state == 'sold' or state == 'cancelled'" >
-                              <tree editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'" >
-                                 <field name="partner_id"/>
-                                 <field name="price"/>
-                                 <field name="validity" />
-                                 <field name="date_deadline"  />
-                                 <button name="action_accept" type="object" icon="fa-check" invisible="status == 'accepted' or status == 'refused'" />
-                                 <button name="action_refuse" type="object" icon="fa-times" invisible="status == 'accepted' or status == 'refused'" />
-                                 <field name="status" />
-                              </tree>
-                           </field>
-                     </page>
-                  </notebook>
+                  </page>
+                  <page string="Sales Information">
+                     <group>
+                        <field name="seller_id"/>
+                        <field name="buyer_id"/>
+                     </group>
+                  </page>
+                  <page string="Offer">
+                        <field name="offer_ids" readonly="state == 'offer accepted' or state == 'sold' or state == 'cancelled'" >
+                           <tree editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'" >
+                              <field name="partner_id"/>
+                              <field name="price"/>
+                              <field name="validity" />
+                              <field name="date_deadline"  />
+                              <button name="action_accept" type="object" icon="fa-check" invisible="status == 'accepted' or status == 'refused'" />
+                              <button name="action_refuse" type="object" icon="fa-times" invisible="status == 'accepted' or status == 'refused'" />
+                              <field name="status" />
+                           </tree>
+                        </field>
+                  </page>
+               </notebook>
             </sheet>
             </form>
          </field>

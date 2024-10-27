@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="estate_property_offer_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>
+                            <b>
+                                Property Name:
+                            </b>
+                            <span t-field="property.name"/>
+                        </h1>
+                        <h6>
+                            <b>
+                                Salesman:
+                            </b>
+                            <span t-field="property.seller_id"/>
+                        </h6>
+                        <h6>
+                            <b>
+                                Expected Price:
+                            </b>
+                            <span t-field="property.expected_price"/>
+                        </h6>
+                        <h6>
+                            <b>
+                                State:
+                            </b>
+                            <span t-field="property.state"/>
+                        </h6>
+                        <t t-call="estate.print_offer_table"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

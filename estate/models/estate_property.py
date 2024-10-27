@@ -44,6 +44,7 @@ class estateProperty(models.Model):
         buyer_id = fields.Many2one('res.partner', 'Buyer')
         tag_ids = fields.Many2many(comodel_name='estate.property.tag', string='Tag', relation='property_join_tag', column1='property_id', column2='tag_id')
         offer_ids = fields.One2many('estate.property.offer', 'property_id')
+        company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
         _sql_constraints = [
                 ('check_selling_price', 'CHECK(selling_price >= 0)', 'A property selling price must be positive.'), 
