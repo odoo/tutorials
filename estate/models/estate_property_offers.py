@@ -17,6 +17,7 @@ class EstatePropertyOffers(models.Model):
     partner_id = fields.Many2one('res.partner', required=True) 
     property_id = fields.Many2one('estate.property', required=True,ondelete='cascade')
     property_type_id = fields.Many2one('estate.property.type',related='property_id.property_type_id', store= True)
+    
 
     validity = fields.Integer(default = 7)
     date_deadline = fields.Date(compute = "_compute_date_deadline", inverse="_inverse_date_deadline", store="True")
@@ -63,17 +64,18 @@ class EstatePropertyOffers(models.Model):
                 record.validity = 7
     
     def action_accepted(self):
-        self.status = "accepted"
-        self.property_id.buyer = self.partner_id
-        self.property_id.selling_price = self.price
-        self.property_id.state = 'offer accepted'
+        for record in self:
+            record.status = "accepted"
+            record.property_id.buyer = record.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.state = 'offer accepted'
 
     def action_refused(self):
-        if self.status == 'accepted':
-            self.status = "refused"
-            self.property_id.selling_price = False
-            self.property_id.buyer = False
-        else:
-            self.status = "refused"
+        for record in self:
+            if record.status == 'accepted':
+                record.status = "refused"
+                record.property_id.selling_price = False
+                record.property_id.buyer = False
+            else:
+                record.status = "refused"
 
-   
