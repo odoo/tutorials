@@ -1,15 +1,26 @@
 <odoo>
     <data>
-          <template id="awesome_owl.playground" name="Awesome T-Shirt thank you">
+        <template id="awesome_owl.playground" name="Awesome T-Shirt thank you">
             <html>
                 <head>
                     <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
                     <t t-call-assets="awesome_owl.assets_playground"/>
                 </head>
-
                 <body>
                 </body>
             </html>
-          </template>
+        </template>
+
+
+        <template id="awesome_owl.todo_list" name="Oh boyy!">
+            <html>
+                <head>
+                    <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                    <t t-call-assets="awesome_owl.assets_playground"/>
+                </head>
+                <body>
+                </body>
+            </html>
+        </template>
     </data>
 </odoo>
