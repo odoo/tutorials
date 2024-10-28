@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+	<t t-name="awesome_owl.todo.list">
+		<t t-foreach="todos" t-as="todo" t-key="todo.id">
+			<TodoItem todo="todo"/>
+		</t>
+	</t>
+
+    <t t-name="awesome_owl.todo.item">
+		<div>
+			<p t-att-class="{ 'text-muted': props.todo.isCompleted, 'text-decoration-line-through': props.todo.isCompleted }"> 
+				<t t-out="props.todo.id"/>:
+				<t t-out="props.todo.description"/>
+			</p>
+		</div>
+    </t>
+</templates>
