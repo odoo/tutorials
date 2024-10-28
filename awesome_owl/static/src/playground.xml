@@ -5,6 +5,7 @@
         <div class="p-3">
             hello world
         </div>
+        <Card name="'Card Title'" content="'Card content text'" action="this.link"/>
+        <Card name="'Card Title'" content="'Card content text'"/>
     </t>
-
 </templates>

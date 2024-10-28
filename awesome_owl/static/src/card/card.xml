@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <t t-esc="props.name"/>
+                </h5>
+                <p class="card-text">
+                    <t t-esc="props.content"/>
+                </p>
+                <t t-if="props.action != None">
+                    <div class="row">
+                        <Counter onChange.bind="incrementSum" decrement.bind="decrementSum"/>
+                        <Counter onChange.bind="incrementSum" decrement.bind="decrementSum"/>
+                        Sum: <t t-esc="state.sum"/>
+                    </div>
+                </t>
+                <p class="card-action">
+                    <t t-out="props.action"/>
+                </p>
+            </div>
+        </div>
+    </t>
+
+</templates>
