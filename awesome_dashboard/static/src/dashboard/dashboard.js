@@ -4,7 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
-import { Component, onWillStart } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { DashboardItem } from "../dashboard_item/dashboard_item";
 import { PieChart } from "../pie_chart/pie_chart";
 
@@ -13,10 +13,7 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        this.statService = useService("awesome_dashboard.statistics");
-        onWillStart(async () => {
-            this.stats = await this.statService.loadStatistics();
-        })
+        this.stats = useState(useService("awesome_dashboard.statistics"));
     }
 
     openCustomerKanban() {
