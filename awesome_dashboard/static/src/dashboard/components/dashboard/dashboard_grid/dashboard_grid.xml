@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.awesome_dashboard.dashboard_grid">
+        <div class="o_dash_grid">
+            <t t-foreach="props.grid.items" t-as="i" t-key="i.id">
+                <DashboardItem item="i"/>
+            </t>
+        </div>
+    </t>
+
+</templates>

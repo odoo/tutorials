@@ -1,0 +1,6 @@
+.o_dash_grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  grid-auto-rows: 430px;
+}
