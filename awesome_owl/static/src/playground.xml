@@ -2,10 +2,13 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="row p-3">
+            <Card name="'Card Title'" content="'Card content text'" action="this.link"/>
+            <Card name="'Card Title'" content="'Card content text'"/>
         </div>
-        <Card name="'Card Title'" content="'Card content text'" action="this.link"/>
-        <Card name="'Card Title'" content="'Card content text'"/>
+        <div class="row p-3">
+            <TodoList/>
+        </div>
     </t>
+
 </templates>

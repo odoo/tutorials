@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div class="card col-3 d-inline-block m-2" t-att-class="{ 'text-muted text-decoration-line-through': props.isCompleted }">
+            <div class="row">
+                <div class="col-3">
+                    <t t-esc="props.id"/>
+                </div>
+                <div class="col-9">
+                    <div class="grid" style="grid-template-columns: repeat(3, auto); display: grid;">
+                        <p t-esc="props.description" style="grid-column:0/4; grid-row: 0/2;"/>
+                        <input type="checkbox" t-att-checked="props.isCompleted" class="m-2" style="grid-column:3/4; justify-self: end; grid-row: 2/3;" t-on-change="() => props.toggleState(props.id)"/>
+                        <button class="btn fa fa-trash-o m-2" style="grid-column:3/4; justify-self: end; grid-row: 3/4; color: red;" t-on-click="() => props.remove(props.id)"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
