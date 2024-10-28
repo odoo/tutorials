@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+        <t t-set-slot="layout-buttons">
+            <button class="btn btn-primary" t-on-click="openCustomerKanban">
+                Customers
+            </button>
+            <button class="btn btn-primary" t-on-click="openLeads">
+                Leads
+            </button>
+        </t>
+        <DashboardItem>
+            Average amount of t-shirt by order this month
+            <h1 class="text-center text-success font-weight-bold">
+                <t t-esc="stats.average_quantity"/>
+            </h1>
+        </DashboardItem>
+        <DashboardItem size="2">
+            Average time for an order to go from 'new' to 'send' or 'cancelled'
+            <h1 class="text-center text-success font-weight-bold">
+                <t t-esc="stats.average_time"/>
+            </h1>
+        </DashboardItem>
+        <DashboardItem>
+            Number of new orders this month
+            <h1 class="text-center text-success font-weight-bold">
+                <t t-esc="stats.nb_new_orders"/>
+            </h1>
+        </DashboardItem>
+        <DashboardItem>
+            Number of cancelled orders this month
+            <h1 class="text-center text-success font-weight-bold">
+                <t t-esc="stats.nb_cancelled_orders"/>
+            </h1>
+        </DashboardItem>
+        <DashboardItem>
+            Total amount of new orders this month
+            <h1 class="text-center text-success font-weight-bold">
+                <t t-esc="stats.total_amount"/>
+            </h1>
+        </DashboardItem>
+        </Layout>
+    </t>
+
+</templates>
