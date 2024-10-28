@@ -4,22 +4,30 @@
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title">
-                    <t t-esc="props.name"/>
-                </h5>
-                <p class="card-text">
-                    <t t-esc="props.content"/>
-                </p>
-                <t t-if="props.action != None">
-                    <div class="row">
-                        <Counter increment.bind="incrementSum" decrement.bind="decrementSum"/>
-                        <Counter increment.bind="incrementSum" decrement.bind="decrementSum"/>
-                        Sum: <t t-esc="state.sum"/>
-                    </div>
+                <t t-if="props.slots.name">
+                    <h5 class="card-title">
+                        <t t-slot="name"/>
+                    </h5>
                 </t>
-                <p class="card-action">
-                    <t t-out="props.action"/>
-                </p>
+                <button class="btn fa fa-arrow-down m-2" t-on-click="toggleContent"/>
+
+                <div class="card-content" t-att-hidden="state.toggled">
+                    <p class="card-text">
+                        <t t-slot="default"/>
+                    </p>
+                    <t t-if="props.slots.counter">
+                        <div class="row">
+                            <Counter increment.bind="incrementSum" decrement.bind="decrementSum"/>
+                            <Counter increment.bind="incrementSum" decrement.bind="decrementSum"/>
+                        Sum: <t t-esc="state.sum"/>
+                        </div>
+                    </t>
+                    <t t-if="props.slots.action">
+                        <p class="card-action">
+                            <t t-slot="action"/>
+                        </p>
+                    </t>
+                </div>
             </div>
         </div>
     </t>

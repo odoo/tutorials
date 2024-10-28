@@ -3,8 +3,18 @@
 
     <t t-name="awesome_owl.playground">
         <div class="row p-3">
-            <Card name="'Card Title'" content="'Card content text'" action="this.link"/>
-            <Card name="'Card Title'" content="'Card content text'"/>
+            <Card toggled="true">
+                <t t-set-slot="name">Amazing</t>
+                Base content
+                <t t-set-slot="action">
+                    <a href='https://pierre.barracudapps.com'>Pierre LAMOTTE</a>
+                </t>
+            </Card>
+            <Card>
+                <t t-set-slot="name">Second Tile</t>
+                <t t-set-slot="counter">true</t>
+                This is another content with counters
+            </Card>
         </div>
         <div class="row p-3">
             <TodoList/>
