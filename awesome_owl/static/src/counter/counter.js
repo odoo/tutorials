@@ -4,7 +4,7 @@ import { Component, useState } from "@odoo/owl";
 
 export class Counter extends Component {
     static props = {
-        onChange: { type: Function },
+        increment: { type: Function },
         decrement: { type: Function }
     };
 
@@ -16,7 +16,7 @@ export class Counter extends Component {
 
     increment() {
         this.state.value++;
-        this.props.onChange();
+        this.props.increment();
     }
 
     decrement() {

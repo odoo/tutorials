@@ -12,8 +12,8 @@
                 </p>
                 <t t-if="props.action != None">
                     <div class="row">
-                        <Counter onChange.bind="incrementSum" decrement.bind="decrementSum"/>
-                        <Counter onChange.bind="incrementSum" decrement.bind="decrementSum"/>
+                        <Counter increment.bind="incrementSum" decrement.bind="decrementSum"/>
+                        <Counter increment.bind="incrementSum" decrement.bind="decrementSum"/>
                         Sum: <t t-esc="state.sum"/>
                     </div>
                 </t>
