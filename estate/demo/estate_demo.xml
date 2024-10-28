@@ -102,6 +102,7 @@
         </record>
         <record id="estate_property_offer_4" model="estate_property_offer">
             <field name="price">260000</field>
+            <field name="status">accepted</field>
             <field name="partner_id" ref="base.res_partner_4"/>
             <field name="deadline" eval="(DateTime.today() + relativedelta(days=7)).strftime('%Y-%m-%d %H:%M')" />
             <field name="property_id" ref="estate_property_2"/>

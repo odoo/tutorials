@@ -72,13 +72,14 @@ class Estate_Property_Offer(models.Model):
             record.status = "refused"
         return True
 
-    @api.model
-    def create(self, vals):
-        _property = self.env["estate_property"].browse(vals["property_id"])
-        if vals["price"] < _property["best_offer"]:
-            raise exceptions.ValidationError(
-                r"Cannot offer less than the best pending offer."
-            )
-        if _property["status"] == "new":
-            _property["status"] = "offer_received"
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for record in vals_list:
+            _property = self.env["estate_property"].browse(record["property_id"])
+            if record["price"] < _property["best_offer"]:
+                raise exceptions.ValidationError(
+                    r"Cannot offer less than the best pending offer."
+                )
+            if _property["status"] == "new":
+                _property["status"] = "offer_received"
+        return super().create(vals_list)
