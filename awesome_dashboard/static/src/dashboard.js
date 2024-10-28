@@ -5,6 +5,7 @@ import { rpc } from "@web/core/network/rpc";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
+import { memoize } from "@web/core/utils/functions";
 import { Component, onWillStart } from "@odoo/owl";
 import { DashboardItem } from "./dashboard_item";
 
@@ -15,9 +16,10 @@ class AwesomeDashboard extends Component {
         this.openCustomerKanban = this.openCustomerKanban.bind(this);
         this.openLeads = this.openLeads.bind(this);
         this.action = useService("action");
+        this.statService = useService("awesome_dashboard.statistics");
         onWillStart(async () => {
-            this.stats = await rpc("/awesome_dashboard/statistics");
-        });
+            this.stats = await this.statService.loadStatistics();
+        })
     }
 
     openCustomerKanban() {
@@ -39,3 +41,14 @@ class AwesomeDashboard extends Component {
 }
 
 registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("services").add("awesome_dashboard.statistics", {
+    async: ["loadStatistics"],
+    start(env) {
+        async function loadStatistics() {
+            return await rpc("/awesome_dashboard/statistics");
+        }
+        return {
+            loadStatistics: memoize(loadStatistics),
+        }
+    }
+});
