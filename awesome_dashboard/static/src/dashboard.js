@@ -1,10 +1,11 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
+import { rpc } from "@web/core/network/rpc";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 import { DashboardItem } from "./dashboard_item";
 
 class AwesomeDashboard extends Component {
@@ -14,6 +15,9 @@ class AwesomeDashboard extends Component {
         this.openCustomerKanban = this.openCustomerKanban.bind(this);
         this.openLeads = this.openLeads.bind(this);
         this.action = useService("action");
+        onWillStart(async () => {
+            this.stats = await rpc("/awesome_dashboard/statistics");
+        });
     }
 
     openCustomerKanban() {

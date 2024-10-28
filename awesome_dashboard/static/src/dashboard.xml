@@ -11,9 +11,36 @@
             Leads
         </button>
         </t>
-        <DashboardItem>some content</DashboardItem>
-        <DashboardItem size="2">i love milk</DashboardItem>
-        <DashboardItem>some content</DashboardItem>
+        <DashboardItem>
+        <h5 class="text-center">Average amount of t-shirt by order this month</h5>
+        <h2 class="text-center text-success font-weight-bold">
+        <t t-esc="stats.average_quantity"/>
+        </h2>
+        </DashboardItem>
+        <DashboardItem size="2">
+        <h5 class="text-center">Average time for an order to go from 'new' to 'send' or 'cancelled'</h5>
+        <h2 class="text-center text-success font-weight-bold">
+        <t t-esc="stats.average_time"/>
+        </h2>
+        </DashboardItem>
+        <DashboardItem>
+        <h5 class="text-center">Number of new orders this month</h5>
+        <h2 class="text-center text-success font-weight-bold">
+        <t t-esc="stats.nb_new_orders"/>
+        </h2>
+        </DashboardItem>
+        <DashboardItem>
+        <h5 class="text-center">Number of cancelled orders this month</h5>
+        <h2 class="text-center text-success font-weight-bold">
+        <t t-esc="stats.nb_cancelled_orders"/>
+        </h2>
+        </DashboardItem>
+        <DashboardItem>
+        <h5 class="text-center">Total amount of new orders this month</h5>
+        <h2 class="text-center text-success font-weight-bold">
+        <t t-esc="stats.total_amount"/>
+        </h2>
+        </DashboardItem>
         </Layout>
     </t>
 
