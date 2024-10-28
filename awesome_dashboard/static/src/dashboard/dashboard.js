@@ -7,7 +7,6 @@ import { Layout } from "@web/search/layout";
 import { Component, useState } from "@odoo/owl";
 import { DashboardItem } from "../dashboard_item/dashboard_item";
 import { PieChart } from "../pie_chart/pie_chart";
-import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -15,7 +14,7 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.stats = useState(useService("awesome_dashboard.statistics"));
-        this.items = items;
+        this.items = registry.category("awesome_dashboard").getAll();
     }
 
     openCustomerKanban() {
