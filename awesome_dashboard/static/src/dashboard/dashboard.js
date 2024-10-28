@@ -32,4 +32,4 @@ class AwesomeDashboard extends Component {
     static components = { Layout, DashboardItem, PieChart };
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);
