@@ -11,7 +11,9 @@
             Leads
         </button>
         </t>
-        some content
+        <DashboardItem>some content</DashboardItem>
+        <DashboardItem size="2">i love milk</DashboardItem>
+        <DashboardItem>some content</DashboardItem>
         </Layout>
     </t>
 

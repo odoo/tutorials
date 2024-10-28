@@ -5,6 +5,7 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { Component } from "@odoo/owl";
+import { DashboardItem } from "./dashboard_item";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -30,7 +31,7 @@ class AwesomeDashboard extends Component {
         })
     }
 
-    static components = { Layout };
+    static components = { Layout, DashboardItem };
 }
 
 registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
