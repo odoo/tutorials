@@ -5,8 +5,7 @@ export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
 
     static props = {
-        data: { type: Array, element: Number },
-        labels: { type: Array, element: String },
+        data: { type: Object, element: Number },
         options: { type: Object, optional: true },
     };
 
@@ -25,11 +24,10 @@ export class PieChart extends Component {
             this.chart = new Chart(this.canvasRef.el, {
                 type: "pie",
                 data: {
-                    datasets: [{ data: this.props.data }],
-                    labels: this.props.labels
+                    datasets: [{ data: Object.values(this.props.data) }],
+                    labels: Object.keys(this.props.data),
                 },
                 options: this.props.options,
-
             });
         });
     }
