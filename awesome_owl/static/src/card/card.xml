@@ -5,10 +5,9 @@
 			<div class="card-body">
 				<h5 class="card-title">
 					<t t-esc="props.title"/>
+					<button class="btn" t-on-click="minimizeContent">Toggle</button>
 				</h5>
-				<p class="card-text">
-					<t t-out="props.content"/>
-				</p>
+				<t t-slot="default" t-if="state.showContent"/>
 			</div>
 		</div>
 	</t>

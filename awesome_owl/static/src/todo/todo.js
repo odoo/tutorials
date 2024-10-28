@@ -63,7 +63,6 @@ export class TodoList extends Component {
     }
 
     toggleState(id) {
-        console.log(this.todos[id - 1]);
         this.todos[id - 1].isCompleted = !this.todos[id - 1].isCompleted;
     }
 }

@@ -5,7 +5,7 @@
 			<p class="me-3 mb-0">Counter:
 				<t t-out="state.value"></t>
 			</p>
-			<button class="btn btn-primary" t-on-click="increment">Increment</button>
+			<button class="btn btn-success" t-on-click="increment">Increment</button>
 		</div>
     </t>
 </templates>

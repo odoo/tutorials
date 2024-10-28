@@ -13,8 +13,10 @@
 
         <div class="container">
             <div class="row">
-                <Card title="'Card 1'" content="'Text'"/>
-                <Card title="'Card 2'" content="html"/>
+                <Card title="'Card 1'">
+                    <Counter onChange.bind="incrementSum"/>
+                </Card>
+                <Card title="'Card 2'"/>
             </div>
         </div>
 
