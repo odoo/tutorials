@@ -2,16 +2,19 @@
 <templates xml:space="preserve">
 
 	<t t-name="awesome_owl.todo.list">
+		<input t-ref="input" placeholder="Enter a new task." t-on-keyup="ev => addToDo(ev)"/>
 		<t t-foreach="todos" t-as="todo" t-key="todo.id">
-			<TodoItem todo="todo"/>
+			<TodoItem todo="todo" toggle_callback="toggleState" remove_callback="removeTodo"/>
 		</t>
 	</t>
 
     <t t-name="awesome_owl.todo.item">
 		<div>
 			<p t-att-class="{ 'text-muted': props.todo.isCompleted, 'text-decoration-line-through': props.todo.isCompleted }"> 
+				<input type="checkbox" t-on-change="onChange"/>
 				<t t-out="props.todo.id"/>:
 				<t t-out="props.todo.description"/>
+				<span class="fa fa-remove text-danger" t-on-click="onClick"/>
 			</p>
 		</div>
     </t>
