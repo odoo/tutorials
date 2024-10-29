@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todolist">
+        <input type="text" t-on-keyup="addTodo" placeholder="Add an item to the todo list" t-ref="user_input"/>
+        <t t-foreach="this.todos" t-as="i" t-key="i.id">
+            <TodoItem id="i['id']" description="i['description']" isCompleted="i['isCompleted']"/>
+        </t>
+    </t>
+</templates>

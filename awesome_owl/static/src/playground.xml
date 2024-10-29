@@ -5,14 +5,17 @@
         <div class="p-3">
             <Counter onChange.bind="incrementSum"/>
             <Counter onChange.bind="incrementSum"/>
+            <p>
+                Total: 
+                <t t-esc="this.state.total"/>
+            </p>
         </div>
-        <p>
-            Total: 
-            <t t-esc="this.state.total"/>
-        </p>
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <Card title="this.card_contents[0]['title']" content="this.card_contents[0]['content']" />
             <Card title="this.card_contents[1]['title']" content="this.card_contents[1]['content']" />
+        </div>
+        <div>
+            <TodoList />
         </div>
     </t>
 </templates>

@@ -5,11 +5,12 @@ import { Component, markup, useState } from "@odoo/owl";
 // Custom elements
 import { Card } from "./card/card";
 import { Counter } from "./counter/counter";
+import { TodoList } from "./todo/todolist";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
 
-    static components = { Card, Counter };
+    static components = { Card, Counter, TodoList };
 
     setup() {
         this.card_contents = [
