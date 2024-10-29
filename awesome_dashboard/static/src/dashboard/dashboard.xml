@@ -10,15 +10,29 @@
             <button class="btn btn-primary" t-on-click="openLeads">
                 Leads
             </button>
+            <button class="d-print-none btn lh-sm p-0 border-0 o-dropdown dropdown-toggle dropdown fa fa-cog" t-on-click="openSettingsDialog" />
         </t>
 
         <t t-foreach="items" t-as="item" t-key="item.id">
-            <DashboardItem size="item.size || 1">
-               <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
-               <t t-component="item.Component" t-props="itemProp" />
-            </DashboardItem>
+            <t t-if="config[item.id]">
+                <DashboardItem size="item.size || 1">
+                   <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
+                   <t t-component="item.Component" t-props="itemProp" />
+                </DashboardItem>
+            </t>
          </t>
         </Layout>
     </t>
 
+
+    <t t-name="awesome_dashboard.ConfigDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.show" t-on-change="() => { toggleState(item) }">
+                    <t t-esc="item.title"/>
+                </CheckBox>
+            </t>
+        </Dialog>
+    </t>
 </templates>

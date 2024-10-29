@@ -5,7 +5,7 @@ export class Card extends Component {
 
     static props = {
         title: { type: String },
-        slots: { type: Object },
+        slots: { type: Object, optional: true },
     };
 
     setup() {

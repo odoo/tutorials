@@ -7,6 +7,7 @@
             <h1>Card 2 content</h1>
             <Counter onChange="() => {}"/>
         </Card>
+        <Card title="'something'"/>
     </t>
 
 </templates>
