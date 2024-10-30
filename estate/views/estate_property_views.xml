@@ -33,6 +33,9 @@
                 decoration-success="state in ('offer_received', 'offer_accepted')"
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state=='sold'">
+                <header>
+                    <button name="estate.action_add_offer_wizard" type="action" string="Add Offer" class="oe_highlight"/>
+                </header>
                 <field name="name"/>
                 <field name="company_id" string="Comapny"/>
                 <field name="expected_price" string="Expected Price"/>

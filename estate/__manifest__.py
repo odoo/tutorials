@@ -17,6 +17,7 @@
         'reports/estate_property_templates.xml',
         'reports/estate_user_reports.xml',
 
+        'wizards/add_offer_wizard_view.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
