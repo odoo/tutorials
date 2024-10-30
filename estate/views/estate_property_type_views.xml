@@ -10,7 +10,6 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            
             <form string="Property Types">
                 <sheet>
                     <div name="button_box" position="inside">
@@ -22,7 +21,6 @@
                     <h1>
                         <field name="name" readonly="0" />
                     </h1>
-                   
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids" >
@@ -34,14 +32,12 @@
                                 </tree>
                             </field>
                         </page>
-                        
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-
-
+    
     <record id="view_estate_property_tree" model="ir.ui.view">
         <field name="name">estate.property.type.tree</field>
         <field name="model">estate.property.type</field>
@@ -50,7 +46,6 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name" string="Title" align="left" />
             </tree>
-
         </field>
     </record>
 </odoo>

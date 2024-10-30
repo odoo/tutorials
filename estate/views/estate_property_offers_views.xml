@@ -11,7 +11,6 @@
         <field name="name">estate.property.offers.view.tree</field>
         <field name="model">estate.property.offers</field>
         <field name="arch" type="xml">
-         
                 <tree >
                     <field name="price"></field>
                     <field name="partner_id"></field>
@@ -20,8 +19,7 @@
                     <button name="action_accepted" type="object" icon="fa-check" invisible="status != False"/>
                     <button name="action_refused" type="object" icon="fa-times" invisible="status != False"/>
                     <field name="status" optional='1'></field>
-                </tree>
-           
+                </tree> 
         </field>
      </record>
 </odoo>

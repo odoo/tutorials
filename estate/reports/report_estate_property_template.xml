@@ -32,14 +32,13 @@
                             <span t-field="property.state"/>
                         </div>
 
-                        <!-- Include Offers Table Sub-Template -->
+                        <!--Sub-Template -->
                         <t t-call="estate.report_property_offers_table"/>
                     </div>
                 </t>
             </t>
         </t>
     </template>
-
 
     <template id="report_property_offers_table">
         <t t-if="property.offer_ids">

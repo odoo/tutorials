@@ -15,9 +15,7 @@ class AddOfferWizard(models.TransientModel):
     def make_an_offer(self):
         active_ids = self.env.context.get('active_ids')
         all_properties = self.env['estate.property'].browse(active_ids)
-
         for property in all_properties:
-        
             offer = property.offer_ids.create(
                 {
                 'property_id':property.id,
@@ -25,7 +23,6 @@ class AddOfferWizard(models.TransientModel):
                 'partner_id' : self.partner_id.id,
                 'status': self.status}
             )
-
             if(offer):
                 if self.status == 'accepted':
                     offer.action_accepted()

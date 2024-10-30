@@ -10,8 +10,6 @@
             <field name="category_id" ref="base.module_category_real_estate_brokerage" />
             <field name="implied_ids" eval="[ref('estate_group_user')]"></field>
         </record>
-        
-    
     </data>
 
     <data noupdate="0">

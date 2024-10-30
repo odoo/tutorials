@@ -4,7 +4,7 @@
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form,kanban</field>
-        <field name="context">{'search_default_state': True }</field>
+        <field name="context">{'search_default_state': True}</field>
         <field name="target">current</field>
         <field name="help" type='html'>
             <p class='o_view_nocontent_smiling_face'>Create a property to start playing with Real Estate</p>
@@ -19,32 +19,23 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
-                            <!-- Property Name -->
                             <div>
                                 <strong><field name="name"/></strong>
                             </div>
-    
-                            <!-- Expected Price -->
                             <div>
                                 <span>Expected Price: </span><field name="expected_price"/>
                             </div>
                             <div>
                                 <span>State: </span><field name="state"/>
                             </div>
-
-                            <!-- Best Price -->
                             <div t-if="record.state.raw_value == 'offer received'">
                                 <span>Best Price: </span>
                                 <field name="best_price" />
                             </div>    
-    
-                            <!-- Selling Price -->
                             <div t-if = "record.state.raw_value == 'offer accepted'">
                                 <span>Selling Price: </span>
                                 <field name="selling_price" />
                             </div>
-                                
-                            <!-- Tags -->    
                             <div >
                                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             </div>
@@ -54,8 +45,6 @@
             </kanban>
         </field>
     </record>
-    
-
     <record id="view_estate_property_type_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
@@ -74,20 +63,14 @@
                 <field name="date_availability" string="Available From" align="left" optional="true"/>
                 <field name="property_type_id" />
                 <field name="state" ></field>
-                <groupby name="property_type_id">
-                    <button name="edit" type="edit" icon="fa-edit" title="Edit"/>
-                </groupby>
             </tree>
-
         </field>
     </record>
-
 
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            
             <form string="Properties">
                 <header>
                     <button  name="action_sold" type="object" string="Sold" invisible="state == 'sold' or state == 'canceled'"/>
@@ -101,22 +84,16 @@
                     </button>
                     <field name="state" widget="statusbar" />
                 </header>
-
-                <!-- Chatter -->
                 <div class="oe_chatter">
                     <field name="message_follower_ids" />
                      <field name="message_ids" />
                      <field name="activity_ids" />
                  </div>
-
                 <sheet>
-                    <field name="image" widget='image' class="oe_avatar" options='{"preview_image": "avatar_128"}'/>
-                    <!-- Property Title -->
+                    <field name="image" widget='image' class="oe_avatar" />
                     <h1>
                         <field name="name" readonly="0" />
                     </h1>
-
-
                     <div class = "row">
                         <div class="col-md-6">
                             <group >
@@ -124,25 +101,18 @@
                             </group>
                         </div>
                     </div>
-
-                    <!-- Top Section -->
                     <group>
-                        
                         <group>
                             <field name="property_type_id" options="{'no_open': 'false', 'no_create' : 'true'}" />
                             <field name="postcode" string="Postcode" />
                             <field name="expected_price" string="Expected Price" />
-                            
                         </group>
                         <group>
                             <field name="date_availability" string="Available From" />
                             <field name="selling_price" string="Selling Price" />
                             <field name="best_price" string="Best Offer" />
-
                         </group>
                     </group>
-
-                    <!-- Tab Section for Description -->
                     <notebook>
                         <page string="Description">
                             <group>
@@ -158,8 +128,6 @@
                                 <field name="active" />
                             </group>
                         </page>
-
-                        <!-- Tab Section for Offers -->
                         <page string="Offers">
                             <field name="offer_ids" readonly="state == 'offer accepted' or state == 'sold' or state == 'canceled'" >
                                 <tree editable="true" decoration-success="status=='accepted' " decoration-danger="status == 'refused'"> 
@@ -173,7 +141,6 @@
                                 </tree>
                             </field> 
                         </page>
-                        <!-- Tab Section for Other Info -->
                         <page string="Other Info">
                             <group>
                                 <field name="salesperson" />
@@ -198,7 +165,7 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades" string="Facades"/>
                 <field name="property_type_id" />
-                <filter string="Available" name= "state" domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter string="Available" name="state" domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                 </group>

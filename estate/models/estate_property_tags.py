@@ -8,8 +8,6 @@ class EstatePropertyTags(models.Model):
     
     name = fields.Char(required=True)
     color = fields.Integer() 
-
-    # Constraints
     _sql_constraints = [
         ('check_unique_name', 'UNIQUE(name)',
          'This property tag name already exists'),

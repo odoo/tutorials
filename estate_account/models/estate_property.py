@@ -7,7 +7,7 @@ class EstateProperty(models.Model):
     def action_sold(self):
         super().action_sold()
         values = {
-            # "partner_id": self.buyer.id,
+            "partner_id": self.buyer.id,
             "move_type": "out_invoice",
             "invoice_line_ids": [
                 Command.create(
@@ -18,10 +18,5 @@ class EstateProperty(models.Model):
                 ),
             ],
         }
-        print(self.env['account.move'])
         accountMove = self.env["account.move"].sudo().create(values)
         return accountMove
-
-        # print(" reached ".center(100, '='))
-        # print(self.env["account.move"].check_access_rights('write'))
-        # print(self.env["account.move"].check_access_rule('write'))

@@ -5,7 +5,6 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form" />
         <field name="arch" type="xml">
-            
             <xpath expr="//header" position="inside">
                 <button name="%(estate.action_report_res_users_estate_properties)d" type="action" string="Print Real Estate Properties"/> 
             </xpath>
@@ -21,6 +20,4 @@
             </xpath>
         </field>
     </record>
-
-    
 </odoo>

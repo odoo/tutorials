@@ -1,58 +1,112 @@
 <odoo>
-        <template id="estate_property_template" name="Property List">
-            <title>Available Properties</title>
-            <t t-call="website.layout">
-                <style>
-                    .property-image {
-                        width: 100%; /* Make the image take the full width of the card */
-                        height: 200px; /* Set a fixed height */
-                        object-fit: cover; /* Maintain aspect ratio and cover the area */
-                    }
-                </style>
-                <section class="container my-5">
-                    <h2 class="text-center mb-4">Available Properties</h2>
-                    <div class="row">
-                        <t t-foreach="properties" t-as="property">
-                            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                                <div class="card shadow border-light">
-                                    <t t-if="property.image"> 
-                                        <img t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" 
-                                             class="card-img-top property-image" 
-                                             alt="Property Image"/>
-                                    </t>
-                                    
-                                    
-                                    <div class="card-body">
-                                        <h5 class="card-title"><t t-esc="property.name"/></h5>
-                                        <p class="card-text"><strong>Salesman:</strong> <t t-esc="property.salesperson.name"/></p>
-                                        <p class="card-text"><strong>Expected Price:</strong> <t t-esc="property.expected_price"/> USD</p>
-                                        <p class="card-text"><strong>Status:</strong> <t t-esc="property.state"/></p>
-                                        <a t-att-href="'/property/' + str(property.id)" class="btn btn-primary">View Details</a>
-                                    </div>
+    <template id="estate_property_template" name="Property List">
+        <title>Available Properties</title>
+        <t t-call="website.layout">
+            <style>
+                .property-image {
+                    width: 100%; 
+                    height: 200px; 
+                    object-fit: cover; 
+                }    
+            </style>
+            <section class="container my-5">
+                <h2 class="text-center mb-4">Available Properties</h2>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                            <div class="card shadow border-light">
+                                <t t-if="property.image"> 
+                                    <img t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" 
+                                            class="card-img-top property-image" 
+                                            alt="Property Image"/>
+                                </t>
+                                <t t-else="">
+                                    <img src="https://via.placeholder.com/300x200.png?text=No+Image+Available" 
+                                            class="card-img-top property-image img-fluid" 
+                                            alt="No Image Available" />
+                                </t>
+                                
+                                <div class="card-body">
+                                    <h5 class="card-title"><t t-esc="property.name"/></h5>
+                                    <p class="card-text"><strong>Salesman:</strong> <t t-esc="property.salesperson.name"/></p>
+                                    <p class="card-text"><strong>Expected Price:</strong> <t t-esc="property.expected_price"/> USD</p>
+                                    <p class="card-text"><strong>Status:</strong> <t t-esc="property.state"/></p>
+                                    <a t-att-href="'/property/' + str(property.id)" class="btn btn-primary">View Details</a>
                                 </div>
                             </div>
-                        </t>
-                    </div>
-                    <div class="pagination">
-                        <t t-if="pager['page_previous']">
-                            <a t-att-href="pager['page_previous']['url']" class="btn btn-secondary">Previous</a>
-                        </t>
-                        <t t-if="pager.get('page_next')">
-                            <a t-att-href="pager['page_next']['url']" class="btn btn-secondary">Next</a>
-                        </t>
-                    </div>
-                    
-                </section>
-            </t>
-        </template>
+                        </div>
+                    </t>
+                </div>
+                <div class="pagination d-flex justify-content-between align-items-center">
+                    <t t-if="pager['page_previous']">
+                        <a t-att-href="pager['page_previous']['url']" class="btn btn-secondary">Previous</a>
+                    </t>
+                    <span>Page <t t-esc="pager['page']['num']"/> of <t t-esc="pager['page_count']"/></span>
+                    <t t-if="pager['page_next']">
+                        <a t-att-href="pager['page_next']['url']" class="btn btn-secondary">Next</a>
+                    </t>
+                </div>    
+            </section>
+        </t>
+    </template>
 
+    <template id="estate_property_detail_template" name="Property Detail">
+        <title><t t-esc="property.name"/> - Property Details</title>
+        <t t-call="website.layout">
+            <style>
+                .property-details-image {
+                    width: 100%; 
+                    height: 100%; 
+                    object-fit: cover;
+                }
+            </style>
+            <section class="container my-5">
+                <div class="row">
+                    <div class="col-md-6" >
+                        <t t-if="property.image">
+                            <img t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" 
+                                    class="img-fluid property-details-image " 
+                                    alt="Property Image"/>
+                        </t>
+                        <t t-else="">
+                            <img src="https://via.placeholder.com/300x200.png?text=No+Image+Available" 
+                                    class="img-fluid property-details-image " 
+                                    alt="No Image Available" />
+                        </t>
+                    </div>
+                    <div class="col-md-6">
+                        <h1 class="property-title mt-3"><t t-esc="property.name"/></h1>
+                        <h5 class="property-price text-success">$<t t-esc="property.expected_price"/></h5>
+                        <p class="property-description"><t t-esc="property.description"/></p>
+                        <div class="property-info">    
+                            <p><strong>Available From:</strong> <t t-esc="property.date_availability"/></p>
+                            <p><strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/></p>
+                            <p><strong>Living Area:</strong> <t t-esc="property.living_area"/> sqm</p>
+                            <p> <strong>Garages:</strong> <t t-esc="property.garage"/> <t t-if="property.garage">Yes</t><t t-else="">No</t> </p>
+                            <t t-if="property.garden">
+                                <p><strong>Garden Area:</strong> <t t-esc="property.garden_area"/> sqm</p>
+                                <p><strong>Garden Orientation:</strong> <t t-esc="property.garden_orientation"/></p>
+                            </t>
+                            <p><strong>State:</strong> <t t-esc="property.state"/></p>
+                        </div>    
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h3>Contact Information</h3>
+                        <p><strong>Salesman:</strong> <t t-esc="property.salesperson.name"/></p>
+                        <p> <strong>Buyer:</strong> <t t-esc="property.buyer.name" if="property.buyer">N/A</t></p>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
     <data noupdate="0">
         <record id="property_menu" model="website.menu">
             <field name="name">Property</field>
             <field name="url">/property</field>
             <field name='parent_id' ref="website.main_menu"/>
-            <field name="sequence" eval="50"/> 
+            <field name="sequence" type="int">1</field>
         </record>
-    </data>
-    
+    </data>  
 </odoo>

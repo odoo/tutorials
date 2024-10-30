@@ -17,11 +17,8 @@ class EstatePropertyOffers(models.Model):
     partner_id = fields.Many2one('res.partner', required=True) 
     property_id = fields.Many2one('estate.property', required=True,ondelete='cascade')
     property_type_id = fields.Many2one('estate.property.type',related='property_id.property_type_id', store= True)
-    
-
     validity = fields.Integer(default = 7)
     date_deadline = fields.Date(compute = "_compute_date_deadline", inverse="_inverse_date_deadline", store="True")
-    
     
     @api.model_create_multi
     def create(self, vals_list):
@@ -34,7 +31,6 @@ class EstatePropertyOffers(models.Model):
                 self.env['estate.property'].browse(vals['property_id']).state = 'offer received'
                 return offer
 
-    # Constraints
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)',
          'An offer price must be strictly positive'),
@@ -45,8 +41,6 @@ class EstatePropertyOffers(models.Model):
         for record in self:
             if record.property_id.selling_price > 0:
                 raise ValidationError('You cannot accept multiple offers')
-            
-    
     # Methods
     @api.depends('validity')
     def _compute_date_deadline(self):

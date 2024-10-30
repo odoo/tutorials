@@ -4,7 +4,7 @@
     'depends': ['base','account','estate'],
     'author': "srap",
     'data': [
-        'report/estate_property_report_template.xml'
+        'reports/estate_property_report_template.xml'
     ],
     'application': True
 }
