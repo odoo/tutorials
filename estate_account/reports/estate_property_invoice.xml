@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate_property_invoiced" inherit_id="estate.report_offers_table">
+        <xpath expr="//div" position="inside">
+            <strong>!!! Invoice has alreadybeen created !!!</strong>
+        </xpath>
+    </template>
+</odoo>

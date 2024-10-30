@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="report_property_offers_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="prop">
+                    <t t-call="web.external_layout">
+                        <div class="o_company_1_layout">
+                            <div class="company-info" style="text-align: left; margin-bottom: 20px;">
+                                <img t-att-src="'/web/image/res.company/' + str(prop.company_id.id) + '/logo'" alt="Company Logo" style="width: 150px;"/>
+                                <h2>YourCompany</h2>
+                                <p>250 Executive Park Blvd, Suite 3400</p>
+                                <p>San Francisco, CA 94134</p>
+                                <p>United States</p>
+                            </div>
+                            <t t-call="estate.report_offers_table"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_property_offers_res_user_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <t t-set="props" t-value="doc.property_ids"/>
+                        <div class="o_company_1_layout">
+                            <div class="company-info" style="text-align: left; margin-bottom: 20px;">
+                                <img t-att-src="'/web/image/res.company/' + str(doc.company_id.id) + '/logo'" alt="Company Logo" style="width: 150px;"/>
+                                <h2>YourCompany</h2>
+                                <p>250 Executive Park Blvd, Suite 3400</p>
+                                <p>San Francisco, CA 94134</p>
+                                <p>United States</p>
+                            </div>
+                            <t t-foreach="props" t-as="prop">
+                                <t t-call="estate.report_offers_table"/>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

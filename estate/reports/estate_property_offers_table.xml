@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="report_offers_table">
+            <div class="property-details" style="margin-top: 20px;">
+                <p><strong>Salesman:</strong> <span t-field="prop.seller_id.name"/></p>
+                <p><strong>Expected Price:</strong> <span t-field="prop.expected_price"/></p>
+                <p><strong>Status:</strong> <span t-field="prop.state"/></p>
+            </div>
+
+            <t t-if="prop.offer_ids">
+                <table class="table table-bordered" style="width: 100%; margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th>Price</th>
+                            <th>Partner</th>
+                            <th>Validity (days)</th>
+                            <th>Deadline</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="prop.offer_ids" t-as="offer">
+                            <tr>
+                                <td><span t-field="offer.price"/></td>
+                                <td><span t-field="offer.partner_id.name"/></td>
+                                <td><span t-field="offer.validity"/></td>
+                                <td><span t-field="offer.date_deadline"/></td>
+                                <td><span t-field="offer.status"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+            <t t-else="">
+                <p>No offers have been made yet!!!</p>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
-from odoo import api, exceptions, fields, models  #type: ignore
-from odoo.exceptions import UserError #type: ignore
+from odoo.exceptions import UserError
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -58,7 +58,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = False 
 
     total_area = fields.Float(compute="_compute_total_area", string="Total Area")
-    # @api.depends('living_area', 'garden_area')
+    @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
@@ -68,18 +68,6 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
-
-    # def _inverse_best_price(self):
-    #     for record in self:
-    #         for offer in record.offer_ids:
-    #             offer.price = record.best_price
-    #         if not record.offer_ids:
-    #             self.env['estate.property.offer'].create({
-    #                 'property_id': record.id,
-    #                 'price': record.best_price,
-    #                 'partner_id': self.env.user.partner_id.id,  # Default to current user
-    #                 'status': 'pending'  # Example default status
-    #             })
 
     active = fields.Boolean(default=True)
     state = fields.Selection([
@@ -113,6 +101,3 @@ class EstateProperty(models.Model):
         for property in self:
             if property.state not in ['new', 'cancelled']:
                 raise UserError('You cannot delete a property unless it is in "New" or "Cancelled" state.')
-                
-
-    

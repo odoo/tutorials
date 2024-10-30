@@ -6,7 +6,7 @@
     'category': 'Real Estate',
     'description': 'Module to create an invoice when a property is sold',
     'data': [
-        # Views and actions will go here
+        'reports/estate_property_invoice.xml'
     ],
     'installable': True,
     'application': False,
