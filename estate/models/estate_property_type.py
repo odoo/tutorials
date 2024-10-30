@@ -1,15 +1,15 @@
-from odoo import api, fields, models #type: ignore
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
-    _order = "sequence, name"  # Default order by sequence then name
+    _order = "sequence, name"
     sequence = fields.Integer(string="Sequence", default=10)
 
     _sql_constraints = [
         ('unique_type_name', 'UNIQUE(name)', 'Property type name must be unique.'),
         ]
-    
+
     _description = 'Property Type'
 
     name = fields.Char(required=True)
@@ -26,4 +26,3 @@ class EstatePropertyType(models.Model):
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
-            

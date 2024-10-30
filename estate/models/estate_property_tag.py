@@ -1,4 +1,4 @@
-from odoo import fields, models #type: ignore 
+from odoo import fields, models
 
 
 class EstatePropertyTag(models.Model):

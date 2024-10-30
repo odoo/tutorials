@@ -23,10 +23,10 @@
         'views/estate_property_tag_views.xml',
         'views/res_users_inherit_view.xml',
 
-        'data/master_data.xml', 
+        'data/master_data.xml',
     ],
     'demo': ['demo/demo_data.xml'],
-    'icon':'/estate/static/logo.png',
+    'icon': '/estate/static/logo.png',
     'installable': True,
     'application': True,
 }

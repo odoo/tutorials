@@ -1,13 +1,13 @@
 from datetime import timedelta
 
-from odoo.exceptions import UserError #type: ignore
-from odoo import api, fields, models #type: ignore
+from odoo.exceptions import UserError
+from odoo import api, fields, models
 
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Property Offer'
-    _order = "price desc" 
+    _order = "price desc"
 
     price = fields.Float(required=True)
     _sql_constraints = [
@@ -41,7 +41,7 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(related='property_id.property_type_id', store=True, string="Property Type")
     created_date = fields.Date(default=fields.Date.context_today, string="Created Date")
     validity = fields.Integer(default=7, string="Validity (Days)")
-    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline Date", store="True") #inverse="_inverse_date_deadline"
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline Date", store="True")
 
     @api.depends('created_date', 'validity')
     def _compute_date_deadline(self):
@@ -58,24 +58,23 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.validity = 0
 
-    # @api.onchange('created_date')
-    # def _onchange_created_date(self):
-    #     if self.created_date:
-    #         # Recalculate the deadline based on the current validity
-    #         self.date_deadline = self.created_date + timedelta(days=self.validity)
+    @api.onchange('created_date')
+    def _onchange_created_date(self):
+        if self.created_date:
+            # Recalculate the deadline based on the current validity
+            self.date_deadline = self.created_date + timedelta(days=self.validity)
 
-    # @api.onchange('validity')
-    # def _onchange_validity(self):
-    #     if self.created_date:
-    #         # Recalculate the deadline based on the current created date
-    #         self.date_deadline = self.created_date + timedelta(days=self.validity)
+    @api.onchange('validity')
+    def _onchange_validity(self):
+        if self.created_date:
+            # Recalculate the deadline based on the current created date
+            self.date_deadline = self.created_date + timedelta(days=self.validity)
 
-    # @api.onchange('date_deadline')
-    # def _onchange_date_deadline(self):
-    #     if self.created_date and self.date_deadline:
-    #         # Recalculate validity based on the created date and new deadline
-    #         self.validity = (self.date_deadline - self.created_date).days
-
+    @api.onchange('date_deadline')
+    def _onchange_date_deadline(self):
+        if self.created_date and self.date_deadline:
+            # Recalculate validity based on the created date and new deadline
+            self.validity = (self.date_deadline - self.created_date).days
 
     @api.model
     def create(self, vals):
@@ -83,6 +82,5 @@ class EstatePropertyOffer(models.Model):
         if property and property.best_price:
             if vals.get('price', 0) <= property.best_price:
                 raise UserError('Offer price must be higher than the best offer price for this property.')
-        property.state = "offer_received" 
-        return super(EstatePropertyOffer, self).create(vals)
-     
+        property.state = "offer_received"
+        return super().create(vals)
