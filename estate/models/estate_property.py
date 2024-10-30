@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from odoo.exceptions import UserError, ValidationError
 
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Model"
@@ -63,6 +64,8 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price", store=True)
 
     company_id = fields.Many2one('res.company',required=True, default=lambda self: self.env.company)
+
+    image = fields.Image(string="Property Image", max_width=1024, max_height=1024)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',

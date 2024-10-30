@@ -89,7 +89,6 @@
         <field name="arch" type="xml">
             
             <form string="Properties">
-
                 <header>
                     <button  name="action_sold" type="object" string="Sold" invisible="state == 'sold' or state == 'canceled'"/>
                     <button  name="action_cancel" type="object" string="Cancel" invisible="state == 'sold' or state == 'canceled'"/>
@@ -111,6 +110,7 @@
                  </div>
 
                 <sheet>
+                    <field name="image" widget='image' class="oe_avatar" options='{"preview_image": "avatar_128"}'/>
                     <!-- Property Title -->
                     <h1>
                         <field name="name" readonly="0" />
@@ -127,10 +127,12 @@
 
                     <!-- Top Section -->
                     <group>
+                        
                         <group>
                             <field name="property_type_id" options="{'no_open': 'false', 'no_create' : 'true'}" />
                             <field name="postcode" string="Postcode" />
                             <field name="expected_price" string="Expected Price" />
+                            
                         </group>
                         <group>
                             <field name="date_availability" string="Available From" />

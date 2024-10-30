@@ -36,8 +36,6 @@
             </field>
         </record>
 
-        
-
         <record id="estate_prop_rec_2" model="estate.property">
             <field name="name">Trailer home</field>
             <field name="state">canceled</field>

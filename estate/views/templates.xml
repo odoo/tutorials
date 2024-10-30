@@ -1,0 +1,58 @@
+<odoo>
+        <template id="estate_property_template" name="Property List">
+            <title>Available Properties</title>
+            <t t-call="website.layout">
+                <style>
+                    .property-image {
+                        width: 100%; /* Make the image take the full width of the card */
+                        height: 200px; /* Set a fixed height */
+                        object-fit: cover; /* Maintain aspect ratio and cover the area */
+                    }
+                </style>
+                <section class="container my-5">
+                    <h2 class="text-center mb-4">Available Properties</h2>
+                    <div class="row">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                                <div class="card shadow border-light">
+                                    <t t-if="property.image"> 
+                                        <img t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" 
+                                             class="card-img-top property-image" 
+                                             alt="Property Image"/>
+                                    </t>
+                                    
+                                    
+                                    <div class="card-body">
+                                        <h5 class="card-title"><t t-esc="property.name"/></h5>
+                                        <p class="card-text"><strong>Salesman:</strong> <t t-esc="property.salesperson.name"/></p>
+                                        <p class="card-text"><strong>Expected Price:</strong> <t t-esc="property.expected_price"/> USD</p>
+                                        <p class="card-text"><strong>Status:</strong> <t t-esc="property.state"/></p>
+                                        <a t-att-href="'/property/' + str(property.id)" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="pagination">
+                        <t t-if="pager['page_previous']">
+                            <a t-att-href="pager['page_previous']['url']" class="btn btn-secondary">Previous</a>
+                        </t>
+                        <t t-if="pager.get('page_next')">
+                            <a t-att-href="pager['page_next']['url']" class="btn btn-secondary">Next</a>
+                        </t>
+                    </div>
+                    
+                </section>
+            </t>
+        </template>
+
+    <data noupdate="0">
+        <record id="property_menu" model="website.menu">
+            <field name="name">Property</field>
+            <field name="url">/property</field>
+            <field name='parent_id' ref="website.main_menu"/>
+            <field name="sequence" eval="50"/> 
+        </record>
+    </data>
+    
+</odoo>

@@ -8,8 +8,7 @@
                             <p>!!!Invoice has already been created!!!</p>
                         </strong>
                     </div>
-                </t>
-               
+                </t>   
             </xpath>           
     </template>    
 </odoo>
