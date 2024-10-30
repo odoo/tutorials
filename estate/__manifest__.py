@@ -9,6 +9,7 @@
         'security/security_groups.xml',
         'security/ir.model.access.csv',
         'security/security_rules.xml',
+        'wizard/offer_wizard_view.xml',
         'report/estate_property_offer_subtemplate.xml',
         'report/estate_property_offer_template.xml',
         'report/estate_property_offer_res_user_template.xml',
@@ -17,7 +18,6 @@
         'views/estate_property_tags_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_views.xml',
-        'wizard/offer_wizard_view.xml',
         'views/inherited_view.xml',
         'views/estate_menus.xml'
     ],

@@ -1,5 +1,5 @@
 <odoo>
-    <record id="action_offer_wizard" model="ir.actions.act_window">
+    <record id="estate_offer_wizard" model="ir.actions.act_window">
         <field name="name">Add offer</field>
         <field name="res_model">offer.wizard</field>
         <field name="view_mode">form</field>
