@@ -1,10 +1,10 @@
-from odoo import fields, models, api 
+from odoo import fields, models, api
 from datetime import datetime, timedelta
 from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
-    
+
     _name = "estate.property"
     _description = "Estate Property Model"
     _order = "id desc"
@@ -43,7 +43,7 @@ class EstateProperty(models.Model):
     salesperson = fields.Many2one(
         'res.users',
         string='Salesman',
-        
+
     )
     buyer = fields.Many2one(
         'res.partner',
@@ -62,7 +62,7 @@ class EstateProperty(models.Model):
 
     best_price = fields.Float(compute="_compute_best_price", store=True)
 
-    company_id = fields.Many2one('res.company',required=True, default=lambda self: self.env.company)
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
     image = fields.Image(string="Property Image", attachment=True)
 
@@ -84,7 +84,6 @@ class EstateProperty(models.Model):
     def _compute_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
-            
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
@@ -93,7 +92,7 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
                 record.best_price = 0.0
-    
+
     @api.onchange('garden_area', 'garden_orientation', 'garden')
     def _onchange_garden(self):
         for record in self:
@@ -109,19 +108,14 @@ class EstateProperty(models.Model):
             if record.state == 'sold':
                 raise UserError("You cannot mark a sold property as canceled.")
             record.state = 'canceled'
-        
+
     def action_sold(self):
         for record in self:
             if record.state == 'canceled':
                 raise UserError("You cannot mark a canceled property as sold.")
             record.state = 'sold'
-    
+
     @api.ondelete(at_uninstall=False)
     def unlink_property(self):
         if any(record.state not in ('new', 'canceled') for record in self):
             raise UserError('You cannot delete the records that are not in the "new" or "canceled" state.')
-
-
-        
-
-    

@@ -1,4 +1,4 @@
-from odoo import models,fields,Command
+from odoo import models, fields
 
 
 class AddOfferWizard(models.TransientModel):
@@ -18,12 +18,12 @@ class AddOfferWizard(models.TransientModel):
         for property in all_properties:
             offer = property.offer_ids.create(
                 {
-                'property_id':property.id,
-                'price' : self.price, 
-                'partner_id' : self.partner_id.id,
+                'property_id': property.id,
+                'price': self.price,
+                'partner_id': self.partner_id.id,
                 'status': self.status}
             )
-            if(offer):
+            if offer:
                 if self.status == 'accepted':
                     offer.action_accepted()
                 elif self.status == 'refused':

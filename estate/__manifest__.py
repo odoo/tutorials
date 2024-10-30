@@ -1,12 +1,12 @@
 {
     'name': "estate",
     'version': '1.0',
-    'depends': ['base', 'mail','website'],
+    'depends': ['base', 'mail', 'website'],
     'author': "srap",
     'category': 'Real Estate/Brokerage',
     'data': [
         'security/estate_security.xml',
-        'security/ir.model.access.csv', 
+        'security/ir.model.access.csv',
         'wizard/add_offer_wizard_view.xml',
         'reports/report_estate_property_template.xml',
         'reports/report_users_estate_properties_template.xml',
