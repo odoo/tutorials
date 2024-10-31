@@ -15,3 +15,4 @@ class OwlPlayground(http.Controller):
         Renders the owl playground page
         """
         return request.render('awesome_owl.todo_list')
+        
