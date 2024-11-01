@@ -1,7 +1,7 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['website'],
     'author': "Harsh Chaudhari",
     'category': 'Real Estate/Brokerage',
     'description': """
@@ -9,6 +9,8 @@
     """,
     # data files always loaded at installation
     'data': [
+        'views/estate_property_website_data.xml',
+        'views/estate_property_website_template.xml',
         'wizard/estate_property_offer_to_anyflat.xml',
         'security/security.xml',
         'data/estate.property.type.csv',

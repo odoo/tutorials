@@ -92,6 +92,8 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.company
     )
 
+    image = fields.Image()
+
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:

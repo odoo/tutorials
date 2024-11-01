@@ -16,6 +16,7 @@
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
         <field name="property_type_id" ref="5"/>
+        <field name="image" type="base64" file="estate/static/img/big_villa.jpeg"/>
     </record>
 
     <record id="property_trailer_home_id" model="estate.property">
@@ -31,6 +32,7 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
         <field name="property_type_id" ref="5"/>
+        <field name="image" type="base64" file="estate/static/img/trailer_home.jpeg"/>
     </record>
 
     <record id="property_atishay_sky_id" model="estate.property">
@@ -58,6 +60,7 @@
                 'validity': 20,
             }),
         ]"/>
+        <field name="image" type="base64" file="estate/static/img/atishay_sky.jpg"/>
     </record>
 </data>
 </odoo>

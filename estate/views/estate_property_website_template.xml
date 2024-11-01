@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="properties_template" name="Properties Template">
+        <t t-call="website.layout">
+            <div style="display: flex; flex-wrap: wrap; gap: 50px; justify-content: center; margin: 50px auto;">
+                <t t-foreach="properties" t-as="property">
+                    <div>
+                        <a t-att-href="'/properties/details/%d' % property.id">
+                            <img t-attf-src="data:image/*;base64,#{property.image}" style="width: 500px; height: 300px; object-fit: cover; border-radius: 15px;"/>
+                            <h3 style="color: #2c3e50;">
+                                <span t-field="property.name"/>
+                            </h3>
+                            <h5 style="color: #34495e;">
+                                Expected Price : 
+                                <span t-field="property.expected_price" />
+                            </h5>
+                        </a>
+                    </div>
+                </t>
+            </div>
+            <t t-call="website.pager"/>
+        </t>
+    </template>
+
+    <template id="property_template" name="Property Template">
+        <t t-call="website.layout">
+            <div style="max-width: 600px; margin: 50px auto; border: 2px solid #ddd; border-radius: 10px; padding: 25px;">
+                <!-- Property Image -->
+                <div style="padding-bottom: 10px;">
+                    <img t-attf-src="data:image/*;base64,#{property.image}" style="width: 100%; height: auto; max-height: 300px; object-fit: cover; border-radius: 10px;"/>
+                </div>
+    
+                <!-- Property Details -->
+                <h3 style="color: #2c3e50; font-weight: bold; margin-bottom: 15px; text-align: center;">
+                    <span t-field="property.name"/>
+                </h3>
+                <div style="color: #555">
+                    <h5 style="color: #34495e; font-weight: 600; margin-bottom: 10px;">
+                        Expected Price: 
+                        <span t-field="property.expected_price" style="font-weight: normal;"/>
+                    </h5>
+                    <h5 style="color: #34495e; font-weight: 600; margin-bottom: 10px;">
+                        Postcode: 
+                        <span t-field="property.postcode" style="font-weight: normal;"/>
+                    </h5>
+                    <h5 style="color: #34495e; font-weight: 600; margin-bottom: 10px;">
+                        Date Availability: 
+                        <span t-field="property.date_availability" style="font-weight: normal;"/>
+                    </h5>
+                    <h5 style="color: #34495e; font-weight: 600; margin-bottom: 10px;">
+                        Bedrooms: 
+                        <span t-field="property.bedrooms" style="font-weight: normal;"/>
+                    </h5>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
