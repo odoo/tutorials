@@ -1,5 +1,5 @@
 <odoo>
-<data>
+<data noupdate='1'>
     <record id = "id" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="state">new</field>
@@ -10,6 +10,7 @@
         <field name="bedrooms">2</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
+        <field name="image" type="base64" file="estate/static/src/img/bigvilla.webp"/>
         <field name="garage">True</field>
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
@@ -27,6 +28,7 @@
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
+        <field name="image" type="base64" file="estate/static/src/img/trailerhome.jpg"/>
         <field name="garage">False</field>
         <field name="property_type_id" ref="estate.1"/>
     </record>
@@ -41,13 +43,14 @@
         <field name="bedrooms">2</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
+        <field name="image" type="base64" file="estate/static/src/img/penthouse.jpg"/>
         <field name="garage">False</field>
         <field name="property_type_id" ref="estate.1"/>
         <field name="offer_ids" eval="[
             Command.create({'partner_id': ref('base.res_partner_12') , 'price':12345567, 'validity':10}),
             Command.create({'partner_id': ref('base.res_partner_12') , 'price':123455678, 'validity':11}),
             Command.create({'partner_id': ref('base.res_partner_12') , 'price':123455679, 'validity':12})]"/>
-    </record> 
+    </record>
 
     <record id="offer2" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"/>

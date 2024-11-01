@@ -24,6 +24,7 @@ class EstateModel(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     company_id = fields.Many2one(comodel_name='res.company', default= lambda self : self.env.company, required=True)
+    image = fields.Image()
     garden_orientation = fields.Selection(
         string = 'Garden Orientation',
         selection = [('north','North'),('south','South'), ('east','East'), ('west','West')],
@@ -38,7 +39,6 @@ class EstateModel(models.Model):
         default = 'new',
         copy = False
     )
-
     property_type_id = fields.Many2one("estate.property.type", string = "Property Type")
     tag_id = fields.Many2many('estate.property.tags')
     buyer_id = fields.Many2one('res.partner', string = "Buyer")

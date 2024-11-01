@@ -86,6 +86,7 @@
                 <sheet>
                 <h1>
                     <field name="name"/>
+                    <field name="image" widget="image" class="oe_avatar"/>
                 </h1>
                 <group>
                     <field name="tag_id" widget="many2many_tags" options="{'color_field':'color'}" context="{'default_tag_id': 'Hello'}"/>

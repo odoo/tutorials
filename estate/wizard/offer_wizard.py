@@ -21,4 +21,3 @@ class offerWizard(models.TransientModel):
             p = {'price':self.price, 'status':self.status, 'partner_id':self.partner_id.id, 'property_id': prop.id}
             self.env['estate.property.offer'].browse(prop).create(p)
         return True
-

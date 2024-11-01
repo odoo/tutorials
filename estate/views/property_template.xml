@@ -1,0 +1,42 @@
+<odoo>
+    <template id="estate_property_template">
+        <t t-call="website.layout">
+            <title>Property</title>
+            <div style="margin: 2rem; display:flex; flex-direction: row; flex-wrap: wrap;">
+                <t t-foreach="properties" t-as="property">
+                    <a t-attf-href="/estate/property/{{property.id}}">
+                        <div class="card" style="width:25rem; margin:2rem">  
+                            <t t-if="property.image">
+                                    <img class="card-img-top" t-attf-src="data:image/*;base64,#{property.image}"/>
+                            </t>
+                            <div class="card-body">  
+                                <h5 class="card-title" t-field="property.name"></h5>  
+                                <p class="card-text" t-field="property.description"></p>  
+                            </div> 
+                        </div>
+                    </a>  
+                </t>
+            </div>
+            <div style="margin-left: auto; margin-right:auto">
+                <t t-call="website.pager"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="estate_single_property_template">
+        <t t-call="website.layout">
+            <title>Property</title>
+            <div style="max-width:1000px; margin:2rem; display:flex; justify-content: space-between;">
+                <img class="card-img-top" style="width: 70%; height: auto;"  t-attf-src="data:image/*;base64,#{property.image}"/>
+                <div style="padding: 10px;">
+                    <h1 style="font-size: 22px; margin-bottom: 5px;" t-field="property.name"></h1>
+                    <p style="font-size: 18px; color: #333; margin: 5px 0;">Expected Price: <span t-field="property.expected_price"></span> </p>
+                    <p style="font-size: 18px; color: #333; margin: 5px 0;">Bedrooms: <span t-field="property.bedrooms"></span> </p>
+                    <p style="font-size: 18px; color: #333; margin: 5px 0;">Living area: <span t-field="property.living_area"></span> </p>
+                    <p style="font-size: 18px; color: #333; margin: 5px 0;">Description: <span t-field="property.description"></span> </p>
+                    <p style="font-size: 18px; color: #333; margin: 5px 0;">Property Type: <span t-field="property.property_type_id.name"></span> </p>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
