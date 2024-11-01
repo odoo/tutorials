@@ -97,7 +97,7 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
-            if record.selling_price != 0.0 and record.selling_price < 0.9 * self.expected_price:
+            if record.selling_price != 0.0 and record.selling_price < 0.9 * record.expected_price:
                 raise ValidationError("selling price cannot be lower than 90% of the expected price.")
 
     # function for compute the total area

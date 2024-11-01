@@ -5,9 +5,9 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_property_sold(self):
-        print('create invoiceeeeeeeeee!!!')
-        print(" reached ".center(100, '='))
-        print(self.env.user)
+        # print('create invoiceeeeeeeeee!!!')
+        # print(" reached ".center(100, '='))
+        # print(self.env.user)
         # print(self.env.user.has_group())
         # self.env['estate.property'].check_access_rights("unlink")
         self.env['account.move'].check_access_rights("write")

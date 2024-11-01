@@ -12,17 +12,17 @@ class WebsitePropertiesController(http.Controller):
         per_page = 6
 
         pager = request.website.pager(
-            url='/properties', 
-            total=total_count, 
+            url='/properties',
+            total=total_count,
             page=page,
-            step=per_page, 
+            step=per_page,
             scope=3,
             url_args=None
         )
 
         # Fetch the properties for the current page
         properties = request.env['estate.property'].sudo().search(domain, offset=pager['offset'], limit=per_page, order='expected_price asc')
-        
+
         values = {
             'properties': properties,
             'pager': pager,
@@ -35,4 +35,3 @@ class WebsitePropertiesController(http.Controller):
             'property': request.env['estate.property'].sudo().browse(id)
         }
         return request.render('estate.property_template', values)
- 

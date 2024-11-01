@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class AnyFlatProperty(models.TransientModel):
     _name = 'estate.property.offer.to.anyflat'
     _description = "add offer to multiple properties"
@@ -18,7 +19,7 @@ class AnyFlatProperty(models.TransientModel):
 
     def add_offer_to_selected_flats(self):
         property_ids = self.env.context['active_ids']
-        properties =  self.env['estate.property'].browse(property_ids)
+        properties = self.env['estate.property'].browse(property_ids)
         for property in properties:
             self.env['estate.property.offer'].create(
                 {
