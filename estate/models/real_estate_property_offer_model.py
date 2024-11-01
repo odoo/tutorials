@@ -74,7 +74,7 @@ class EstateOffer(models.Model):
 
     @api.model
     def create(self, val):
-        property = self.env['estate.property'].browse(val['property_id'])=
+        property = self.env['estate.property'].browse(val['property_id'])
         max_value = 0
         if property.offer_ids:
             max_value = max(property.offer_ids.mapped("price"))
