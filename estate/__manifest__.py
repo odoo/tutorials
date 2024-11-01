@@ -1,7 +1,7 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base','web', 'website'],
+    'depends': ['base', 'web', 'website'], 
     'author': "Rajat",
     'category': 'Real Estate/Brokerage',
     'description': """ Description text""",

@@ -1,7 +1,7 @@
 {
     'name': "Real Estate Account",
     'version': '1.0',
-    'depends': ['estate','account'],
+    'depends': ['estate', 'account'],
     'author': "Rajat",
     'category': 'Category',
     'description': """

@@ -1,6 +1,6 @@
 <odoo>
 <data noupdate='1'>
-    <record id = "id" model="estate.property">
+    <record id="id" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
@@ -18,7 +18,7 @@
         <field name="property_type_id" ref="estate.1"/>
     </record>
 
-    <record id = "id2" model="estate.property">
+    <record id="id2" model="estate.property">
         <field name="name">Trailer home</field>
         <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
