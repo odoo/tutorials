@@ -33,4 +33,4 @@ class EstateProperty(models.Model):
                 ]
             }
         )
-        return self.action_property_cancel()
+        return super().action_property_sold()
