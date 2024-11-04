@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClickerSystrayItem">
+        <div class="o_nav_entry">
+            <Dropdown>
+                <button>
+                    Clicks: <ClickerValue/>
+                </button>
+
+                <t t-set-slot="content">
+                    <DropdownItem>
+                        <button class=" btn btn-secondary ms-1" t-on-click="() => clicker.increment(99)">
+                            Increment <i class="fa fa-plus"></i>
+                        </button>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <button class=" btn btn-secondary ms-1" t-on-click="openClientAction">
+                            Open Clicker Menu
+                        </button>
+                    </DropdownItem>
+                    <DropdownItem t-foreach="clicker.bots" t-as="bot" t-key="bot.name">
+                        <span>
+                             <t t-esc="bot.number"/>
+                            x
+                            <t t-esc="bot.name"/>
+                            (lvl:<t t-esc="bot.power"/>)
+                            =
+                            <t t-esc="bot.currentProduction"/>
+                            <i class="fa fa-mouse-pointer fa-fw"></i>/s
+                        </span>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <span>
+                             Total production = <t t-esc="clicker.total_production"/>
+                            <i class="fa fa-mouse-pointer fa-fw"></i>/s
+                        </span>
+                    </DropdownItem>
+
+                </t>
+            </Dropdown>
+        </div>
+    </t>
+</templates>

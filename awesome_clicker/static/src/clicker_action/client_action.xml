@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClickerClientAction">
+        <div class="m-2">
+            <div class="d-flex align-items-center ms-2">
+                Clicks: <ClickerValue/>
+                <button class="btn btn-primary ms-2" t-on-click="() => clicker.increment(9)">
+                    Increment
+                </button>
+            </div>
+
+            <h4 class="m-2">Click bots - Level: <t t-esc="clicker.level"/>
+                - Production:
+                <t t-esc="clicker.total_production"/>
+                <i class="fa fa-mouse-pointer fa-fw"></i>/s </h4>
+            <div class="d-flex align-items-center justify-content-center ms-2">
+                <t t-foreach="clicker.bots" t-as="bot" t-key="bot.name">
+                    <t t-if="clicker.level >= bot.min_level">
+                        <div class="card text-center m-1" style="width:33%">
+                            <div class="card-header">
+                            <t t-esc="bot.name"/>
+                                <i class="fa fa-sm fa-android"/>
+                                x
+                                <t t-esc="bot.number"/>
+                                <div class="text-muted">
+                                (Generates <t t-esc="bot.currentProduction"/>
+                                    <i class="fa fa-mouse-pointer fa-fw"></i>/s)
+                            </div>
+                        </div>
+
+                            <div class="card-body">
+                            <button class="btn ms-2"
+                                    t-att-class="clicker.clicks >=bot.price ? 'btn-primary' : 'btn-secondary ms-2 disabled'"
+                                    t-on-click="() => this.clicker.buyBot(bot.name)">
+                                Buy for <t t-esc="bot.price"/>
+                                clicks
+                            </button>
+                                <button class="btn ms-2 mt-2"
+                                        t-att-class="(clicker.clicks >=bot.power_upgrade_cost &amp;&amp; bot.number > 0 ) ? 'btn-primary' : 'btn-secondary ms-2 disabled'"
+                                        t-on-click="() => this.clicker.empowerBot(bot.name)">
+                                Empower for <t t-esc="bot.power_upgrade_cost"/>
+                                    clicks
+                            </button>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="card text-center m-1" style="width:33%">
+                            <div class="card-header">
+                            <t t-esc="bot.name"/>
+                                <i class="fa fa-sm fa-android"/>
+                                x
+                                <t t-esc="bot.number"/>
+                                <div class="text-muted">
+                                Reach level <t t-esc="bot.min_level"/>
+                                    to unlock
+                            </div>
+                        </div>
+
+                            <div class="card-body ">
+                            <button class="btn btn-secondary ms-2 disabled'" style="width:50%">
+                                Locked
+                            </button>
+                                <button class="btn ms-2 mt-2 invisible"
+                                        t-att-class="(clicker.clicks >=bot.power_upgrade_cost &amp;&amp; bot.number>1) ? 'btn-primary' : 'btn-secondary ms-2 disabled'"
+                                        t-on-click="() => this.clicker.empowerBot(bot.name)">
+                                Empower for <t t-esc="bot.power_upgrade_cost"/>
+                                    clicks
+                            </button>
+
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
