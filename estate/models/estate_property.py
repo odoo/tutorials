@@ -9,6 +9,8 @@ class EstateProperty(models.Model):
     _description = "Estate Property"
     _order = "id desc"
 
+    image = fields.Image("Property Image", attachment=True)
+
     company_id = fields.Many2one(
         comodel_name='res.company',
         string='Company',

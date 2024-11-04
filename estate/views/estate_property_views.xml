@@ -101,7 +101,8 @@
                 </header>
                 <sheet>
                     <h1><field name="name" options="{'no_label': True}"/></h1>
-                    <group> 
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <group>
                         <group>
                             <field name="company_id" string="Comapny"/>
                             <field name="property_type_id" string="Property Type" options="{'no_create': True, 'no_open': True}"/>
@@ -145,7 +146,6 @@
                                 <tree create="true" domain="[('property_id.state', '!=', 'offer_accepted'), ('property_id.state', '!=', 'sold'), ('property_id.state', '!=', 'canceled')]"
                                     decoration-success="status == 'accepted'"
                                     decoration-danger="status == 'refused'">
-
                                     <field name="partner_id"/>
                                     <field name="price"/>
                                     <field name="created_date"/>

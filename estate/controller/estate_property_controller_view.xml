@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_controller">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1 class="my-4">Available Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <img t-if="property.image" t-att-src="image_data_uri(property.image)" class="card-img-top" alt="Property Image" style="object-fit: cover; height: 200px;"/>
+                                <div class="card-body d-flex flex-column"> 
+                                    <h5 class="card-title"><t t-esc="property.name"/></h5>
+                                    <p class="card-text flex-grow-1">
+                                        <strong>Expected Price:</strong> <t t-esc="property.expected_price"/> <br/>
+                                        <strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/> <br/>
+                                        <strong>Living Area:</strong> <t t-esc="property.living_area"/> m²
+                                    </p>
+                                    <a t-att-href="'/property/' + str(property.id)" class="btn btn-primary">View Property</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-between my-4">
+                    <t t-if="pager['page_previous']">
+                        <a t-att-href="pager['page_previous']['url']" class="btn btn-secondary">Previous</a>
+                    </t>
+                    <span class="btn btn-light disabled">Page <t t-esc="pager['page']['num']"/> of <t t-esc="pager['page_count']"/></span>
+                    <t t-if="pager['page_next']">
+                        <a t-att-href="pager['page_next']['url']" class="btn btn-secondary">Next</a>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_card">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="property-image">
+                            <img t-if="property.image" 
+                                 t-att-src="image_data_uri(property.image)" 
+                                 class="img-fluid rounded" 
+                                 alt="Property Image" 
+                                 style="object-fit: cover; height: 400px;"/>
+                        </div>
+                        <div class="mt-3 text-center">
+                            <h2 class="text-success">Your Dream Home Awaits!</h2>
+                            <p class="lead">Don’t miss the chance to make this beautiful property yours. Act now!</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-between">
+                        <div>
+                            <h1 class="property-title"><t t-esc="property.name"/></h1>
+                            <div class="property-price mb-3">
+                                <h4><strong>Expected Price: <t t-esc="property.expected_price"/></strong></h4>
+                            </div>
+                            <div class="property-description">
+                                <p><strong>Description:</strong> <t t-esc="property.description"/></p>
+                            </div>
+                            <div class="property-details">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Postcode:</strong> <t t-esc="property.postcode"/></li>
+                                    <li class="list-group-item"><strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/></li>
+                                    <li class="list-group-item"><strong>Living Area:</strong> <t t-esc="property.living_area"/> m²</li>
+                                    <li class="list-group-item"><strong>Facades:</strong> <t t-esc="property.facades"/></li>
+                                    <li class="list-group-item"><strong>Garage:</strong> <t t-esc="property.garage and 'Yes' or 'No'"/></li>
+                                    <li class="list-group-item"><strong>Garden:</strong> <t t-esc="property.garden and 'Yes' or 'No'"/></li>
+                                    <li class="list-group-item" t-if="property.garden"><strong>Garden Area:</strong> <t t-esc="property.garden_area"/> m²</li>
+                                </ul>
+                            </div>
+                            <div class="mt-2 text-center">
+                                <t t-if="property.offer_ids.filtered(lambda o: o.status == 'accepted')">
+                                    <div class="alert alert-warning mt-3">
+                                        <strong>Sold Soon!</strong>
+                                        <br/>This property has an accepted offer.
+                                    </div>
+                                </t>
+                                <t t-if="not property.offer_ids.filtered(lambda o: o.status == 'accepted')">
+                                    <div class="alert alert-info mt-3">
+                                        <strong>Make Your Move!</strong>
+                                        <br/>This property is available for offers.
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="text-center mt-4">
+                    <a t-att-href="'/properties'" class="btn btn-secondary">
+                        Back to Properties
+                    </a>
+                    <a t-att-href="'/property/' + str(property.id) + '/offer'" class="btn btn-primary mx-2">
+                        Make an Offer
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">50</field>
+    </record>
+
+</odoo>

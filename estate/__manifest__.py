@@ -1,7 +1,7 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base', 'website'],
     'author': "rame_odoo",
     'category': 'Real Estate/Brokerage',
     'description': """
@@ -10,19 +10,21 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
-        'views/estate_menus.xml',
 
         'reports/estate_property_offers_table.xml',
         'reports/estate_property_reports.xml',
         'reports/estate_property_templates.xml',
         'reports/estate_user_reports.xml',
 
+        'controller/estate_property_controller_view.xml',
         'wizards/add_offer_wizard_view.xml',
+
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/res_users_inherit_view.xml',
+        'views/estate_menus.xml',
 
         'data/master_data.xml',
     ],
