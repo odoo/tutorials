@@ -42,7 +42,7 @@ class EstatePropertyOffers(models.Model):
         for record in self:
             if record.property_id.selling_price > 0:
                 raise ValidationError('You cannot accept multiple offers')
-    
+
     # Methods
     @api.depends('validity')
     def _compute_date_deadline(self):
