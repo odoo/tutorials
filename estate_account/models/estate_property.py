@@ -35,4 +35,3 @@ class estateProperty(models.Model):
         })
 
         return supper_call
-        

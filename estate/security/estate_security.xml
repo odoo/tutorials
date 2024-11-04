@@ -9,8 +9,8 @@
     <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
-        <field name="implied_ids" eval="[ref('estate_group_user')]"/>
-        <field name="users" eval="[ref('base.user_admin')]"/>
+        <field name="implied_ids" eval="[(4, ref('estate.estate_group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
     </record>
 
     <record id="estate_property_record_rule_agent" model="ir.rule">
@@ -30,4 +30,5 @@
             [(1, '=', 1)]
         </field>
     </record>
+
 </odoo>

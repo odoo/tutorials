@@ -38,6 +38,7 @@ class estateProperty(models.Model):
         number = fields.Integer(related='property_type_id.number')
         totalArea = fields.Integer(compute='_compute_total_area', store="true")
         best_offer = fields.Float(compute='_compute_best_offer')
+        property_image = fields.Binary()
 
         property_type_id = fields.Many2one(comodel_name='estate.property.type', string='Property Type', domain="[('number', '>=', 0)]", ondelete='cascade')
         seller_id = fields.Many2one('res.users', 'Salesman', default=lambda self: self.env.user)
@@ -45,6 +46,7 @@ class estateProperty(models.Model):
         tag_ids = fields.Many2many(comodel_name='estate.property.tag', string='Tag', relation='property_join_tag', column1='property_id', column2='tag_id')
         offer_ids = fields.One2many('estate.property.offer', 'property_id')
         company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
+
 
         _sql_constraints = [
                 ('check_selling_price', 'CHECK(selling_price >= 0)', 'A property selling price must be positive.'), 

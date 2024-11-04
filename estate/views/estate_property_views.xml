@@ -36,6 +36,7 @@
                   <field name="state" widget="statusbar" />
                </header>
                <sheet>
+                  <field name="property_image" widget="image" class="oe_avatar"/>
                   <h2>
                      Name:
                      <field name="name"/>

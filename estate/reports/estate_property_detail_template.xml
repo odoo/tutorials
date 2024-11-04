@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="estate_property_detail_template" name="Property Detail">
+        <title><t t-esc="property.name"/></title>
+        <t t-call="website.layout">
+            <style>
+                .property-container {
+                    max-width: 800px;
+                    margin: auto;
+                }
+                .property-card {
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+                .property-image {
+                    width: 100%;
+                    height: 300px;
+                    object-fit: cover;
+                    border-bottom: 1px solid #ddd;
+                }
+                .property-details {
+                    padding: 20px;
+                }
+                .property-details h5 {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    margin-bottom: 15px;
+                    color: #333;
+                }
+                .property-details p {
+                    margin: 5px 0;
+                    font-size: 1rem;
+                    color: #555;
+                }
+                .property-details strong {
+                    color: #000;
+                }
+            </style>
+            <section class="container my-5 property-container">
+                <h2 class="text-center mb-4">
+                    <t t-esc="property.name"/> - Details
+                </h2>
+                <div class="property-card">
+                    <t t-if="property.property_image">
+                        <img t-attf-src="data:image/*;base64,#{property.property_image}" alt="Property Image" class="property-image"/>
+                    </t>
+                    <div class="property-details">
+                        <h5><t t-esc="property.name"/></h5>
+                        <p><strong>Salesman:</strong> <t t-esc="property.seller_id.name"/></p>
+                        <p><strong>State:</strong> <t t-esc="property.state"/></p>
+                        <p><strong>Expected Price:</strong> <t t-esc="property.expected_price"/> </p>
+                        <p><strong>Postcode:</strong> <t t-esc="property.postcode"/> </p>
+                        <p><strong>Date Availability:</strong> <t t-esc="property.data_availability"/> </p>
+                        <p><strong>Number of Bedrooms:</strong> <t t-esc="property.bedrooms"/> </p>
+                        <p><strong>Living Area:</strong> <t t-esc="property.garden_area"/> </p>
+                        <p><strong>Garden Area:</strong> <t t-esc="property.garden_area"/> </p>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+</odoo>

@@ -19,6 +19,3 @@ class addOffer(models.TransientModel):
                 'partner_id': self.partner_id.id,
                 'property_id': property.id
             })
-
-        
-
