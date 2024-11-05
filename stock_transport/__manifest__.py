@@ -1,7 +1,7 @@
 {
     'name': "stock_transport",
     'version': '1.0',
-    'depends': ['stock_picking_batch', 'fleet','stock_delivery'],
+    'depends': ['stock_picking_batch', 'fleet', 'stock_delivery'],
     'author': "odoo",
     'data': [
         'security/ir.model.access.csv',
