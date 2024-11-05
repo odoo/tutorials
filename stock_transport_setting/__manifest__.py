@@ -1,7 +1,7 @@
 {
     'name': "Stock Transport Settings",
     'version': '1.0',
-    'depends': ['stock_picking_batch'],
+    'depends': ['stock'],
     'author': "Harsh Chaudhari",
     'category': 'Stock Transport Settings',
     'description': """
