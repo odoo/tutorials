@@ -9,9 +9,40 @@
                 <field name="dock_id"/>
                 <field name="vehicle_id" placeholder="Third party provider"/>
                 <field name="category_id"/>
-                <field name="weight" widget="progressbar" invisible="not category_id"/>
-                <field name="volume" widget="progressbar" invisible="not category_id"/>
+                <field name="weight_percentage" widget="progressbar" invisible="not category_id"/>
+                <field name="volume_percentage" widget="progressbar" invisible="not category_id"/>
             </xpath>
         </field>
     </record>
+
+    <record id="stock_picking_batch.stock_picking_batch_action" model="ir.actions.act_window">
+        <field name="view_mode">tree,kanban,graph,gantt,form</field>
+    </record>
+
+    <record id="stock_picking_batch_view_graph" model="ir.ui.view">
+        <field name="name">stock.picking.batch.view.graph</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="arch" type="xml">
+            <graph string="Batch Transfer Graph View" type="bar">
+                <field name="scheduled_date" interval="day"></field>
+                <field name="category_id"></field>
+                <field name="number_of_transfer" type="measure"></field>
+            </graph>
+        </field>
+    </record>
+
+    <record id="stock_picking_batch_view_gantt" model="ir.ui.view">
+        <field name="name">stock.picking.batch.view.gantt</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="arch" type="xml">
+            <gantt color="id" string="Gantt View" date_start="scheduled_date" date_stop="scheduled_date" 
+            default_group_by="dock_id,vehicle_id" 
+            default_scale="week"
+            decoration-info="state == 'draft'"
+            >
+                <field name="state"></field>
+            </gantt>
+        </field>
+    </record>
+
 </odoo>
