@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="stock.vpicktree"/>
         <field name="arch" type="xml">
             <xpath expr="//tree//field[@name='scheduled_date']" position="after">
-                <field name="volume"/>
+                <field name="volume" optional="hide"/>
             </xpath>
         </field>
     </record>

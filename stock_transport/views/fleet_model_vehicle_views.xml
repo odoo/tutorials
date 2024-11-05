@@ -7,7 +7,7 @@
     <field name="arch" type="xml">
         <xpath expr="//tree" position="inside">
             <field name="max_weight" string="Max Weight(Kg)"/>
-            <field name="max_volume" string="Max Volume (m&#179;)"/>
+            <field name="max_volume" string="Max Volume (m³)"/>
         </xpath>
     </field>
    </record>

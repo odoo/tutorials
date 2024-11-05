@@ -6,12 +6,49 @@
         <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='scheduled_date']" position="after">
-                <field name="dock_id"/>
+                <field name="dock_id" required="True"/>
                 <field name="vehicle_id" placeholder="Third Party Provider"/>
-                <field name="category_id" placeholder="Semi Truck"/>
+                <field name="category_id" invisible="not vehicle_id"/>
                 <field name="weight" widget="progressbar" invisible="category_id == False"/>
                 <field name="volume" widget="progressbar" invisible="category_id == False"/>
             </xpath>
         </field>
+    </record>
+
+    <record id="stock_picking_batch_view_graph" model="ir.ui.view">
+        <field name="name">stock.picking.batch.view.graph</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="arch" type="xml">
+            <graph string="Inventory Batch" type="bar" >
+                <field name="scheduled_date" interval="day" string="Date"/>
+                <field name="category_id" string="Vehicle Category"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="stock_picking_batch_view_gantt" model="ir.ui.view">
+        <field name="name">stock.picking.batch.view.gantt</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="arch" type="xml">
+            <gantt string="Schedule" 
+            date_start="scheduled_date" 
+            date_stop="scheduled_date" 
+            default_group_by="dock_id,vehicle_id" 
+            decoration-info="state == 'draft'"
+            default_scale="week"
+            color="vehicle_id"
+            precision="{'week': 'day:full', 'month': 'day:full'}"
+            sample="1"
+            scales="week,month"
+            >
+                <field name="state" />
+            </gantt>
+        </field>
+    </record>
+
+    <record id="stock_picking_batch.stock_picking_batch_action" model="ir.actions.act_window">
+        <field name="name">Batch Transfers</field>
+        <field name="res_model">stock.picking.batch</field>
+        <field name="view_mode">tree,form,kanban,graph,gantt</field>
     </record>
 </odoo>

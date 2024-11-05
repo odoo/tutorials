@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from datetime import timedelta
 
 
 class StockPickingBatch(models.Model):
@@ -6,11 +7,23 @@ class StockPickingBatch(models.Model):
 
     dock_id = fields.Many2one('stock.transport.dock', string="Dock")
     vehicle_id = fields.Many2one('fleet.vehicle',string="Vehicle")
-    category_id = fields.Many2one('fleet.vehicle.model.category',string="Vehicle Category", compute="_compute_vehicle_category")
-    weight = fields.Float(compute="_compute_weight")
-    volume = fields.Float(compute="_compute_volume")
+    category_id = fields.Many2one('fleet.vehicle.model.category',string="Vehicle Category", compute="_compute_vehicle_category", store=True)
+    weight = fields.Float(compute="_compute_weight", store=True)
+    volume = fields.Float(compute="_compute_volume", store=True)
+    transfer_count = fields.Integer(compute="_compute_transfers", store=True)
 
-    @api.depends('picking_ids.shipping_weight')
+    @api.depends('category_id')
+    def _compute_display_name(self):
+        for record in self:
+            name = f"{record.name} {record.category_id.display_name}"
+            record.display_name = name
+
+    @api.depends('picking_ids')
+    def _compute_transfers(self):
+        for records in self:
+            records.transfer_count = len(records.picking_ids)
+
+    @api.depends('picking_ids.shipping_weight', 'category_id.max_weight')
     def _compute_weight(self):
         for records in self:
             if records.category_id.max_weight != 0:
@@ -31,5 +44,4 @@ class StockPickingBatch(models.Model):
         for records in self:
             if records.vehicle_id:
                 records.category_id = records.vehicle_id.category_id
-            else:
-                records.category_id = False
+
