@@ -1,0 +1,13 @@
+<odoo>
+    <record id="fleet_vehicle_model_category_inherit_fleet" model="ir.ui.view">
+        <field name="name">fleet_vehicle.model.category.view.tree.inherit</field>
+        <field name="model">fleet.vehicle.model.category</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_model_category_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="max_weight" string="Max Weight (Kg)"/>
+                <field name="max_volume" string="Max Volume m3"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

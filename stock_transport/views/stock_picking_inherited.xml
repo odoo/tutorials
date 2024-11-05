@@ -1,0 +1,12 @@
+<odoo>
+    <record id="stock_picking_tree_view_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.view.tree.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="volume" string="Volume"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

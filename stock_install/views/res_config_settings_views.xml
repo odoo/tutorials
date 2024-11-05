@@ -1,0 +1,15 @@
+<odoo>
+    <record id="res_config_settings_inherit" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name='priority'>35</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='shipping_setting_container']" position="inside">
+                <setting id="stock_transport" help="Transport management: organize packs in your fleet, or carriers">
+                    <field name="module_stock_transport" string="Dispatch Management System"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
