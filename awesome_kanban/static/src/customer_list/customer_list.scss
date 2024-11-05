@@ -1,0 +1,8 @@
+.o_div_border{
+  border: 1px solid lightgray;
+}
+.o_list_item_hover{
+  &:hover{
+    background-color: lightgray;
+  }
+}

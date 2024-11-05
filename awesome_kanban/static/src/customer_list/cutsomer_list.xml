@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="awesome_kanban.CustomerList">
+        <div class ="o_div_border m-2" style="width: 15%; min-width: 200px; max-width: 300px;">
+            <div class="m-2">
+                Customer with active orders
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" t-on-change="onCheckbox"/>
+                <input placeholder="Search for a customer" t-model="state.searchName"/>
+                <Pager offset="pager.offset" limit="pager.limit" total="pager.total" onUpdate.bind="onUpdatePager"/>
+            </div>
+            <ul class="list-group">
+                <t t-foreach="displayedPartners" t-as="partner" t-key="partner.id">
+                    <li class="list-group-item o_list_item_hover cursor-pointer"
+                        t-on-click="() => props.selectCustomer(partner.id, partner.display_name)">
+                        <t t-esc="partner.display_name"/>
+                    </li>
+                </t>
+            </ul>
+        </div>
+    </t>
+</templates>
