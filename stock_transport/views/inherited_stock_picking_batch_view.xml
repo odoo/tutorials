@@ -2,7 +2,6 @@
 <odoo>
     <record id="stock_picking_batch.stock_picking_batch_action" model="ir.actions.act_window">
         <field name="view_mode">tree,kanban,graph,form,gantt</field>
-        <field name="context">{'group_by': ['scheduled_date:day', 'vehicle_category_id']}</field>
     </record>
 
     <record id="stock_picking_batch_form_view" model="ir.ui.view">
@@ -55,7 +54,7 @@
         <field name="model">stock.picking.batch</field>
         <field name="arch" type="xml">
             <gantt date_start="scheduled_date" date_stop="scheduled_date" default_scale="week"
-                decoration-info="state == 'draft'" default_group_by="dock_id,vehicle_id" color="vehicle_id">
+                decoration-info="state == 'draft'" default_group_by="dock_id,vehicle_id" color="vehicle_id" precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full', 'year': 'day:full'}">
                 <field name="state"/>
                 <field name="weight"/>
                 <field name="volume"/>

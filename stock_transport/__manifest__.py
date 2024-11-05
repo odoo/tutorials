@@ -7,7 +7,7 @@
         A module to extend fleet management with additional functionalities.
     """,
     'author': 'rame_odoo',
-    'depends': ['fleet', 'delivery_stock_picking_batch', ],
+    'depends': ['fleet', 'delivery_stock_picking_batch'],
     'data': [
 
         "security/ir.model.access.csv",
