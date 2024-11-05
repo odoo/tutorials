@@ -14,4 +14,40 @@
             </xpath>
         </field>
     </record>
+
+    <record id="stock_picking_batch.stock_picking_batch_action" model="ir.actions.act_window">
+        <field name="view_mode">tree,kanban,form,graph,gantt</field>
+    </record>
+
+    <record id="view_stock_picking_batch_graph" model="ir.ui.view">
+        <field name="name">stock.picking.batch.graph</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="arch" type="xml">
+            <graph string="Stock Picking Batch Graph" type="bar">
+                <field name="weight"/>
+                <field name="scheduled_date" interval="day"/>
+                <field name="vehicle_category_id"/>
+                <field name="volume" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="stock_picking_batch_view_gantt" model="ir.ui.view">
+        <field name="name">stock.picking.batch.view.gantt</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="arch" type="xml">
+            <gantt string="Stock Picking Batch Gantt" 
+                date_start="scheduled_date" 
+                date_stop="scheduled_date" 
+                default_group_by="dock_id,vehicle_id"
+                default_scale="week"
+                color='id'
+                decoration-success="state == 'done'"
+                decoration-info="state == 'draft'"
+                decoration-warning="state == 'in_progress'"
+            >
+                <field name="state" invisible='1'/>
+            </gantt>
+        </field>
+    </record>
 </odoo>
