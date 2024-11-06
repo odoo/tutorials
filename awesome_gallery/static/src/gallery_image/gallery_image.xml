@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_gallery.GalleryImage" owl="1">
+        <div t-att-class="props.className" t-on-click="onClick">
+            <img t-if="props.image[props.imageField]" class="img-thumbnail"
+                 t-att-src="props.image[props.imageField]"
+                 t-att-data-tooltip="props.image[props.tooltipField]"/>
+            <div t-else="" class="p-5 bg-white border" t-att-tooltip="props.image[props.tooltipField]"/>
+        </div>
+    </t>
+</templates>

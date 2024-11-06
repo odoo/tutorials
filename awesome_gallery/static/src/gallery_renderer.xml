@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_gallery.Renderer" owl="1">
+        <div class="row">
+            <t t-foreach="props.images" t-as="image" t-key="image.id">
+                 <GalleryImage image="image" className="'col-3'" onClick.bind="onImageClick"
+                               imageField="props.imageField" tooltipField="props.tooltipField" />
+             </t>
+        </div>
+    </t>
+</templates>

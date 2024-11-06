@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_gallery.View" owl="1">
+        <Layout display="props.display" className="'h-100 overflow-auto'">
+            <t t-component="props.Renderer" images="model.images"
+               imageField="model.imageField" tooltipField="model.tooltipField"/>
+        </Layout>
+    </t>
+</templates>

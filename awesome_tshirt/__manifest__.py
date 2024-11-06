@@ -14,7 +14,7 @@
         Note that this is just a toy app intended to learn the javascript
         framework.
     """,
-
+    'licence': 'LGPL-3',
     'author': "Odoo",
     'website': "https://www.odoo.com/",
 
@@ -22,7 +22,6 @@
     'version': '0.1',
     'application': True,
     'installable': True,
-
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'web', 'mail', 'awesome_gallery'],

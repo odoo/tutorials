@@ -107,11 +107,19 @@
         </field>
     </record>
 
+    <record id="orders_gallery_view" model="ir.ui.view">
+      <field name="name">awesome_tshirt.orders.gallery</field>
+      <field name="model">awesome_tshirt.order</field>
+      <field name="arch" type="xml">
+        <gallery image_field="image_url" tooltip_field="customer_id"/>
+      </field>
+    </record>
+
     <!-- actions -->
     <record model="ir.actions.act_window" id="orders">
       <field name="name">T-shirt Orders</field>
       <field name="res_model">awesome_tshirt.order</field>
-      <field name="view_mode">kanban,tree,form</field>
+      <field name="view_mode">kanban,tree,form,gallery</field>
     </record>
 
     <record model="ir.actions.client" id="dashboard">
@@ -120,7 +128,7 @@
     </record>
 
     <!-- menu items -->
-    <menuitem name="Awesome T-Shirts" id="awesome_tshirt.menu_root" groups="base.group_user" web_icon="awesome_tshirt,static/description/icon.png"/>
+    <menuitem name="Awesome T-Shirts" id="awesome_tshirt.menu_root" groups="base.group_user" web_icon="awesome_tshirt,static/description/icon.png" action="awesome_tshirt.orders"/>
     <menuitem name="Dashboard" id="awesome_tshirt.dashboard_menu" parent="awesome_tshirt.menu_root" action="awesome_tshirt.dashboard" sequence="1"/>
     <menuitem name="T-shirt Orders" id="awesome_tshirt.order" parent="awesome_tshirt.menu_root" action="awesome_tshirt.orders" sequence="2"/>
 

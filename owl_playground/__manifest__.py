@@ -9,6 +9,8 @@
         Play with Owl in this playground module
     """,
 
+    'licence': 'LGPL-3',
+
     'author': "Odoo",
     'website': "https://www.odoo.com",
 
