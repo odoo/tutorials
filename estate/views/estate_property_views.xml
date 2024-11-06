@@ -21,6 +21,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Real Estate" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state in ('offer_accepted')" decoration-muted="state in ('sold')" sample="1">
+                <header>
+                    <button string="Add Offer" name="estate.estate_property_offer_wizard_action" type="action" title="Add offer to property"/>
+                </header>
                 <field name="name"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="property_type_id"/>
@@ -86,6 +89,7 @@
                 <sheet>
                     <h1>
                         <field name="name" />
+                        <field name="image" widget="image" class="oe_avatar"/>
                     </h1>
                     <group>
                         <field name="tag_ids" string="Tags" widget="many2many_tags" options="{'color_field': 'color'}"/>

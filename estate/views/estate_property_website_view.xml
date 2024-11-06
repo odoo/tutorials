@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate_property_website_template" name="Estate Property Website Template">
+    <t t-call="website.layout">
+        <!-- Container for properties -->
+        <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin: 40px auto; padding: 10px; max-width: 1200px;">
+
+            <!-- Iterate through each property -->
+            <t t-foreach="properties" t-as="property">
+                <div style="width: calc(33% - 30px); background: #fff; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); overflow: hidden;">
+                    <a t-att-href="'/properties/details/%d' % property.id" style="display: block;">
+                        
+                        <!-- Property image -->
+                        <div style="position: relative; overflow: hidden; width: 100%; height: 200px;">
+                            <img t-attf-src="data:image/*;base64,#{property.image}" style="width: 100%; height: 100%; object-fit: cover;"/>
+                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"></div>
+                        </div>
+
+                        <!-- Property details -->
+                        <div style="padding: 20px; text-align: center;">
+                            <h3 style="color: #34395e; font-size: 20px; font-weight: 600; margin-bottom: 10px;">
+                                <span t-field="property.name"/>
+                            </h3>
+                            <h5 style="color: #6c757d; font-size: 16px; margin-bottom: 15px;">
+                                <span>Expected Price: </span>
+                                <span t-field="property.expected_price"/>
+                            </h5>
+                        </div>
+                    </a>
+                </div>
+            </t>
+
+        </div>
+
+        <div class="d-flex justify-content-center mb-3">
+            <t t-call="website.pager"/>
+        </div>
+        
+    </t>
+    </template>
+
+    <template id="property_template" name="Property Template">
+        <t t-call="website.layout">
+            <div style="max-width: 600px; margin: 50px auto; border: 2px solid #ecf0f1; border-radius: 12px; padding: 25px; background-color: #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                <!-- Image Section -->
+                <div>
+                    <img t-attf-src="data:image/*;base64,#{property.image}" style="width: 100%; height: auto; max-height: 350px; object-fit: cover; border-radius: 10px;"/>
+                </div>
+                
+                <!-- Property Name -->
+                <h3 style="color: #2c3e50; font-weight: 700; margin: 20px 0; text-align: center; font-size: 24px; text-transform: uppercase;">
+                    <span t-field="property.name"/>
+                </h3>
+    
+                <!-- Property Details Section -->
+                <div style="color: #7f8c8d;">
+                    <h5 style="color: #34495e; font-weight: 600; margin: 15px 0; font-size: 18px;">
+                        Expected Price: <span t-field="property.expected_price" style="font-weight: 400; font-size: 18px; color: #e74c3c;"/>
+                    </h5>
+                    
+                    <h5 style="color: #34495e; font-weight: 600; margin: 15px 0; font-size: 18px;">
+                        Postcode: <span t-field="property.postcode" style="font-weight: 400; font-size: 18px; color: #2c3e50;"/>
+                    </h5>
+                    
+                    <h5 style="color: #34495e; font-weight: 600; margin: 15px 0; font-size: 18px;">
+                        Date Availability: <span t-field="property.date_availability" style="font-weight: 400; font-size: 18px; color: #2c3e50;"/>
+                    </h5>
+                    
+                    <h5 style="color: #34495e; font-weight: 600; margin: 15px 0; font-size: 18px;">
+                        Bedrooms: <span t-field="property.bedrooms" style="font-weight: 400; font-size: 18px; color: #2c3e50;"/>
+                    </h5>
+                </div>
+    
+            </div>
+        </t>
+    </template>
+    
+
+</odoo>
