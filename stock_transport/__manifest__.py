@@ -9,6 +9,7 @@
     """,
     # data files always loaded at installation
     'data': [
+        'secutity/stock_transport_security.xml',
         'secutity/ir.model.access.csv',
         'views/fleet_category_view.xml',
         'views/stock_picking_batch_form_view.xml',

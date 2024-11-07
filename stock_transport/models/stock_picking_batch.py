@@ -6,28 +6,31 @@ class StockPickingBatch(models.Model):
 
     dock_id = fields.Many2one(
         'dock',
+        groups="stock_transport.group_stock_transport_admin"
     )
 
     vehicle_id = fields.Many2one(
-        'fleet.vehicle',
+        'fleet.vehicle', 
+        groups="stock_transport.group_stock_transport_admin"
     )
 
     vehicle_category_id = fields.Many2one(
         'fleet.vehicle.model.category',
         compute='_compute_vehicle_category',
         string="Vehicle Category",
-        store=True
+        store=True, 
+        groups="stock_transport.group_stock_transport_admin"
     )
 
-    weight_progress = fields.Float(compute='_compute_total_weight', default=0)
-    volume_progress = fields.Float(compute='_compute_total_volume', default=0)
+    weight_progress = fields.Float(compute='_compute_total_weight', default=0, groups="stock_transport.group_stock_transport_admin")
+    volume_progress = fields.Float(compute='_compute_total_volume', default=0, groups="stock_transport.group_stock_transport_admin")
 
-    weight = fields.Float(compute="_compute_weight_and_volume", store=True)
-    volume = fields.Float(compute="_compute_weight_and_volume", store=True)
-    transfers = fields.Integer(compute="_compute_transfers_and_lines", store=True)
-    lines = fields.Integer(compute="_compute_transfers_and_lines", store=True)
+    weight = fields.Float(compute="_compute_weight_and_volume", store=True, groups="stock_transport.group_stock_transport_admin")
+    volume = fields.Float(compute="_compute_weight_and_volume", store=True, groups="stock_transport.group_stock_transport_admin")
+    transfers = fields.Integer(compute="_compute_transfers_and_lines", store=True, groups="stock_transport.group_stock_transport_admin")
+    lines = fields.Integer(compute="_compute_transfers_and_lines", store=True, groups="stock_transport.group_stock_transport_admin")
 
-    @api.depends('vehicle_id')
+    @api.depends('vehicle_id', 'vehicle_id.category_id')
     def _compute_vehicle_category(self):
         for record in self:
             record.vehicle_category_id = record.vehicle_id.category_id.id
@@ -73,9 +76,3 @@ class StockPickingBatch(models.Model):
                 total_volume = total_volume + picking_id.volume
             record.weight = total_weight
             record.volume = total_volume
-
-    def _compute_display_name(self):
-        res = super()._compute_display_name()
-        for record in self:
-            record.display_name = f"{record.name}: {record.weight}(kg), {record.volume}(m³)"
-        return res

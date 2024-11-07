@@ -4,8 +4,8 @@ from odoo import api, fields, models
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    weight = fields.Float(compute='_compute_weight', default=0, string="Weight for shipping", store=True)
-    volume = fields.Float(compute='_compute_volume', default=0, string="Volume", store=True)
+    weight = fields.Float(compute='_compute_weight', default=0, string="Weight for shipping", store=True, groups="stock_transport.group_stock_transport_admin")
+    volume = fields.Float(compute='_compute_volume', default=0, string="Volume", store=True, groups="stock_transport.group_stock_transport_admin")
 
     @api.depends('move_ids', 'move_ids.quantity', 'move_ids.product_id.weight')
     def _compute_weight(self):

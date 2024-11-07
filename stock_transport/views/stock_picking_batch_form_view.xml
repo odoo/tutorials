@@ -8,9 +8,12 @@
             <xpath expr="//field[@name='scheduled_date']" position="after">
                 <field name="dock_id"/>
                 <field name="vehicle_id" placeholder="Opel GJ45XC1234"/>
-                <field name="vehicle_category_id"/>
+                <field name="vehicle_category_id" invisible="not vehicle_id"/>
                 <field name="weight_progress" widget="progressbar" invisible="not vehicle_category_id"/>
                 <field name="volume_progress" widget="progressbar" invisible="not vehicle_category_id"/>
+            </xpath>
+            <xpath expr="//button[@name='action_open_label_layout']" position="attributes">
+                <attribute name="groups">stock_transport.group_stock_transport_admin</attribute>
             </xpath>
         </field>
     </record>
@@ -24,7 +27,6 @@
         <field name="model">stock.picking.batch</field>
         <field name="arch" type="xml">
             <graph string="Stock Picking Batch Graph" type="bar">
-                <field name="weight"/>
                 <field name="scheduled_date" interval="day"/>
                 <field name="vehicle_category_id"/>
                 <field name="volume" type="measure"/>
