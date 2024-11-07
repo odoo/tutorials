@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class fleetVehicleModeCategoryInherited(models.Model):
+class FleetVehicleModeCategory(models.Model):
     _inherit = 'fleet.vehicle.model.category'
 
     max_weight = fields.Float()
@@ -9,5 +9,5 @@ class fleetVehicleModeCategoryInherited(models.Model):
 
     def _compute_display_name(self):
         for record in self:
-            computed_name = '{} ({}Kg, {}m3)'.format(record.name, record.max_weight, record.max_volume)
+            computed_name = f"{record.name}: {record.max_weight}Kg, {record.max_volume}m3"
             record.display_name = computed_name

@@ -3,23 +3,18 @@ from odoo import api, fields, models
 from datetime import date
 
 
-class stockPickingBatchInherited(models.Model):
+class StockPickingBatch(models.Model):
     _inherit = 'stock.picking.batch'
-    _rec_name = 'name'
 
-    dock_id = fields.Many2one('dock')
-    vehicle_id = fields.Many2one('fleet.vehicle')
-    vehicle_category_id = fields.Many2one('fleet.vehicle.model.category', compute='_compute_category', store=True)
-    weight = fields.Float(compute="_compute_weight")
-    volume = fields.Float(compute="_compute_volume")
-    total_weight = fields.Float(compute="_compute_total_weight_volume", store=True)
-    total_volume = fields.Float(compute="_compute_total_weight_volume", store=True)
-    transfer = fields.Integer(compute='_compute_transfer', store=True)
-    lines = fields.Integer(compute='_compute_lines', store=True)
-
-    def _compute_display_name(self):
-        for record in self:
-            record.display_name = "{}: {}Kg, {}m3".format(record.name, record.weight, record.volume)
+    dock_id = fields.Many2one('dock.dock', groups="stock_transport.stock_transport_group_user_admin")
+    vehicle_id = fields.Many2one('fleet.vehicle', groups="stock_transport.stock_transport_group_user_admin")
+    vehicle_category_id = fields.Many2one('fleet.vehicle.model.category', compute='_compute_category', store=True, groups="stock_transport.stock_transport_group_user_admin")
+    weight = fields.Float(compute="_compute_weight", groups="stock_transport.stock_transport_group_user_admin")
+    volume = fields.Float(compute="_compute_volume", groups="stock_transport.stock_transport_group_user_admin")
+    total_weight = fields.Float(compute="_compute_total_weight_volume", store=True, groups="stock_transport.stock_transport_group_user_admin")
+    total_volume = fields.Float(compute="_compute_total_weight_volume", store=True, groups="stock_transport.stock_transport_group_user_admin")
+    transfer = fields.Integer(compute='_compute_transfer', store=True, groups="stock_transport.stock_transport_group_user_admin")
+    lines = fields.Integer(compute='_compute_lines', store=True, groups="stock_transport.stock_transport_group_user_admin")
 
     @api.depends('vehicle_id', 'vehicle_id.category_id')
     def _compute_category(self):
@@ -48,10 +43,7 @@ class stockPickingBatchInherited(models.Model):
                 for move in pick.move_ids:
                     qty = move.quantity
                     weight = weight + (move.product_id.weight)*qty
-            if not max_weight == 0:
-                record.weight = (weight/max_weight)*100
-            else:
-                record.weight = 0
+            record.weight = (weight/max_weight)*100 if max_weight else 0
 
     @api.depends('picking_ids', 'picking_ids.move_ids', 'picking_ids.move_ids.product_id', 'picking_ids.move_ids.product_id.volume')
     def _compute_volume(self):
@@ -61,25 +53,16 @@ class stockPickingBatchInherited(models.Model):
             for pick in record.picking_ids:
                 for move in pick.move_ids:
                     qty = move.quantity
-                    volume = volume + (move.product_id.volume)*qty
-            if not max_volume == 0:
-                record.volume = (volume/max_volume)*100
-            else:
-                record.volume = 0
+                    volume = volume + (move.product_id.volume)*qty 
+                record.volume = (volume/max_volume)*100 if max_volume else 0
 
     @api.depends('picking_ids')
     def _compute_transfer(self):
         for record in self:
-            transfers = 0
-            for pick in record.picking_ids:
-                transfers = transfers + 1
-            record.transfer = transfers
+            record.transfer = len(record.picking_ids)
+
 
     @api.depends('picking_ids', 'picking_ids.move_ids')
     def _compute_lines(self):
         for record in self:
-            lines = 0
-            for pick in record.picking_ids:
-                for move in pick.move_ids:
-                    lines = lines + 1
-            record.lines = lines
+            record.lines = len(record.picking_ids.move_ids)

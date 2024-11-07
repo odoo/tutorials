@@ -2,7 +2,7 @@ from odoo import http
 from odoo.http import request
 
 
-class estateController(http.Controller):
+class EstateController(http.Controller):
     @http.route(['/estate/properties', '/estate/properties/page/<int:page>'], auth='public', website=True)
     def properties(self, page=1, **kwargs):
         domain = [('state', '!=', 'cancelled'), ('state', '!=', 'sold'), ('active', '=', True)]

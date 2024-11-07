@@ -1,0 +1,6 @@
+<odoo>
+    <record id="stock_transport_group_user_admin" model="res.groups">
+        <field name="name">stock.transport.group.user.admin</field>
+        <field name="users" eval="[Command.link(ref('base.user_admin'))]"/>
+    </record>
+</odoo>

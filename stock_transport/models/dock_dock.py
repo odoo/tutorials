@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class dock(models.Model):
-    _name='dock'
+class Dock(models.Model):
+    _name='dock.dock'
 
     name = fields.Char(required=True)

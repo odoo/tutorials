@@ -1,0 +1,52 @@
+<odoo>
+    <record id="stock_picking_batch_form" model="ir.ui.view">
+        <field name="name">stock.picking.batch.view.form.inherit.stock.transport</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='scheduled_date']" position="after">
+                <field name="dock_id" string="Dock"/>
+                <field name="vehicle_id" string="Vehicle" placeholder="Third Party Provider"/>
+                <field name="vehicle_category_id" string="Vehicle Category" invisible="not vehicle_id"/>
+                <field name="weight" widget="progressbar" string="Weight" invisible="not vehicle_id"/>
+                <field name="volume" widget="progressbar" string="Volume" invisible="not vehicle_id"/>
+            </xpath>
+            <xpath expr="//button[@name='action_open_label_layout']" position="attributes">
+                <attribute name="groups">stock_transport.stock_transport_group_user_admin</attribute>
+            </xpath>
+        </field>
+    </record>
+
+     <record id="stock_batch_picking_view_graph" model="ir.ui.view">
+        <field name="name">stock.picking.batch.view.graph</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <field name="scheduled_date" interval="day"/>
+                <field name="vehicle_category_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="stock_batch_picking_view_gantt" model="ir.ui.view">
+        <field name="name">stock.picking.batch.view.gantt</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="arch" type="xml">
+            <gantt
+                date_start="create_date" 
+                date_stop="scheduled_date" 
+                default_group_by="dock_id,vehicle_id"
+                thumbnails="{'vehicle_id': 'image_128'}"
+                color="vehicle_id"
+                decoration-info="state == 'draft'"
+                decoration-success="state=='in_progress'"
+                default_scale='week'>
+                <field name="state"/>
+            </gantt>
+        </field>
+    </record>
+
+    <record id="stock_picking_batch.stock_picking_batch_action" model="ir.actions.act_window">
+        <field name="view_mode">tree,kanban,form,graph,gantt</field>
+    </record>
+</odoo>

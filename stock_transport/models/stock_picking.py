@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 
 
-class stockPickingInherited(models.Model):
+class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
     volume = fields.Float(compute='_compute_volume')
@@ -14,4 +14,3 @@ class stockPickingInherited(models.Model):
                 qty = move.quantity
                 volume = volume + (move.product_id.volume)*qty
             record.volume = volume
-
