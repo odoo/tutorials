@@ -3,6 +3,7 @@ from odoo import fields, models, api
 
 class stockPickingBatch(models.Model):
     _inherit = 'stock.picking.batch'
+    _rec_name = 'name'
 
     weight_percentage = fields.Float(compute="_compute_weight_percentage", string='Weight')
     volume_percentage = fields.Float(compute="_compute_volume_percentage", string='Volume')
@@ -14,14 +15,9 @@ class stockPickingBatch(models.Model):
 
     dock_id = fields.Many2one(comodel_name='dock', string="Dock")
     vehicle_id = fields.Many2one(comodel_name='fleet.vehicle', string="Vehicle")
-    category_id = fields.Many2one(comodel_name='fleet.vehicle.model.category', string='Category', compute='_compute_category', store="True")
+    category_id = fields.Many2one(comodel_name='fleet.vehicle.model.category', string='Category', compute='_compute_category', store=True)
 
-    def _compute_display_name(self):
-        super()._compute_display_name()
-        for record in self:
-            record.display_name = f"{record.name}: {record.weight} kg, {record.volume} m3"
-
-    @api.depends('vehicle_id')
+    @api.depends('vehicle_id', 'vehicle_id.category_id')
     def _compute_category(self):
         for record in self:
             record.category_id = record.vehicle_id.category_id.id
@@ -82,5 +78,3 @@ class stockPickingBatch(models.Model):
             for picking_line in record.picking_ids:
                     total_lines = total_lines + len(picking_line.move_ids)
             record.number_of_line = total_lines
-
-

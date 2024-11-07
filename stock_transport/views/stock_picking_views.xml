@@ -7,7 +7,7 @@
         <field name="mode">extension</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='scheduled_date']" position="after">
-                <field name="volume"/>
+                <field name="volume" groups="stock_transport.group_stock_transport_admin"/>
             </xpath>
         </field>
     </record>

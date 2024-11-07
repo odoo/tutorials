@@ -6,11 +6,14 @@
         <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='scheduled_date']" position="after">
-                <field name="dock_id"/>
-                <field name="vehicle_id" placeholder="Third party provider"/>
-                <field name="category_id"/>
-                <field name="weight_percentage" widget="progressbar" invisible="not category_id"/>
-                <field name="volume_percentage" widget="progressbar" invisible="not category_id"/>
+                <field name="dock_id" groups="stock_transport.group_stock_transport_admin"/>
+                <field name="vehicle_id" placeholder="Third party provider" groups="stock_transport.group_stock_transport_admin"/>
+                <field name="category_id" invisible="not vehicle_id" groups="stock_transport.group_stock_transport_admin"/>
+                <field name="weight_percentage" widget="progressbar" invisible="not category_id" groups="stock_transport.group_stock_transport_admin"/>
+                <field name="volume_percentage" widget="progressbar" invisible="not category_id" groups="stock_transport.group_stock_transport_admin"/>
+            </xpath>
+            <xpath expr="//button[@name='action_open_label_layout']" position="attributes">
+                <attribute name="groups">stock_transport.group_stock_transport_admin</attribute>
             </xpath>
         </field>
     </record>

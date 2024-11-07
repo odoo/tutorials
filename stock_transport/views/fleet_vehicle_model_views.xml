@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="fleet.fleet_vehicle_model_category_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
-                <field name="max_weight"></field>
-                <field name="max_volume"></field>
+                <field name="max_weight" groups="stock_transport.group_stock_transport_admin"></field>
+                <field name="max_volume" groups="stock_transport.group_stock_transport_admin"></field>
             </xpath>
         </field>
     </record>
@@ -18,10 +18,10 @@
         <field name="inherit_id" ref="fleet.fleet_vehicle_model_category_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
-                <field name="max_weight"></field>
+                <field name="max_weight" groups="stock_transport.group_stock_transport_admin"></field>
             </xpath>
             <xpath expr="//field[@name='sequence']" position="after">
-                <field name="max_volume"></field>
+                <field name="max_volume" groups="stock_transport.group_stock_transport_admin"></field>
             </xpath>
         </field>
     </record>
