@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kit_sub_product_wizard_action" model="ir.actions.act_window">
+        <field name="name">Sub Products</field>
+        <field name="res_model">kit.sub.product.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'active_id': active_id}</field>
+    </record>
+
+    <record id="add_warranty_wizard_view_form" model="ir.ui.view">
+        <field name="name">Add Warranty</field>
+        <field name="model">kit.sub.product.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                        <field name="sub_product_lines_id">
+                            <tree editable="bottom" create="0">
+                                <field name="product_id" editable="0"/>
+                                <field name="quantity"/>
+                                <field name="price"/>
+                            </tree>
+                        </field>
+                    <footer>
+                        <button name="action_confirm" type="object" string="Confirm"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

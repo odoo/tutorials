@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_invoice_document" inherit_id="account.report_invoice_document">
+        <xpath expr="//tbody[@class='invoice_tbody']//t[3]" position="replace">
+            <t t-set="lines" t-value="o.invoice_line_ids.filtered(lambda l: any(line.order_id.print_sub_products_in_report for line in l.sale_line_ids) or not any(line.parent_id for line in l.sale_line_ids)).sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+        </xpath>
+    </template>
+</odoo>
