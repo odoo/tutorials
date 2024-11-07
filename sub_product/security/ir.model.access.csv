@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_sub_products,access_sub_products,model_sub_products,base.group_user,1,1,1,1
+access_sub_products_line,access_sub_products_line,model_sub_products_line,base.group_user,1,1,1,1
