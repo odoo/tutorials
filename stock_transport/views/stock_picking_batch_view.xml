@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="stock_picking_batch_form_view_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.batch.form.view</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='scheduled_date']" position="after">
+                <field name="dock_id"/>
+                <field name="vehicle_id" placeholder="Opel GJ45XC1234"/>
+                <field name="vehicle_category_id"/>
+                <field name="weight_bar" string="Weight" widget="progressbar" invisible="not vehicle_category_id"/>
+                <field name="volume_bar" string="Volume" widget="progressbar" invisible="not vehicle_category_id"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
