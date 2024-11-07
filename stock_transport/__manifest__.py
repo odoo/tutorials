@@ -4,6 +4,7 @@
     'depends': ['stock_picking_batch', 'fleet', 'stock_delivery'],
     'author': "odoo",
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/fleet_model_vehicle_views.xml',
         'views/stock_picking_views.xml',
