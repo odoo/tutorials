@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_kit_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.inherit.sale.projectform</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="sale.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <field name="invoice_policy" position="after">
+                <field name="is_kit"/>
+                <field name="sub_product_ids" widget="many2many_tags" invisible="not is_kit"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

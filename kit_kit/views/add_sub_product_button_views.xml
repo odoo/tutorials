@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_order_sub_product_button_view_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.sub.product.button.view.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//tree" position="inside">
+                <field name="parent_id" column_invisible="1"></field>
+            </xpath>
+
+            <field name="product_template_id" position="attributes">
+                <attribute name="readonly">parent_id</attribute>
+            </field>
+
+            <xpath expr="//tree//field[@name='name']" position="attributes">
+                <attribute name="readonly">parent_id</attribute>
+            </xpath>
+
+            <xpath expr="//tree//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">parent_id</attribute>
+            </xpath>
+
+            <xpath expr="//tree//field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">parent_id</attribute>
+            </xpath>
+
+            <xpath expr="//tree//field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">parent_id</attribute>
+            </xpath>
+
+            <!-- Add Sub Product Button to main Product -->
+            <xpath expr="//field[@name='product_template_id']" position="after">
+                <field name="is_kit" column_invisible='1'/>
+                <button string="Add" name="%(kit_kit.sub_products_wizard_action)d" type="action" class="oe_highlight" invisible="not is_kit or state == 'sale'" title="Add Sub Products" context="{'product_name': name}"/>
+            </xpath>
+
+            <xpath expr="//group[@name='order_details']" position="inside">
+                <field name="print_in_report"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
