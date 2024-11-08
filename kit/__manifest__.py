@@ -10,4 +10,5 @@
         'reports/report_invoice_template.xml',
         'views/sale_order_views.xml',
     ],
+    'auto_install':True
 }

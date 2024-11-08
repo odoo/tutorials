@@ -19,10 +19,11 @@
                                 <field name="product_id" editable="0"/>
                                 <field name="quantity"/>
                                 <field name="price"/>
+                                <field name="sale_order_line_id" column_invisible="true"/>
                             </tree>
                         </field>
                     <footer>
-                        <button name="action_confirm" type="object" string="Confirm"/>
+                        <button name="action_confirm" type="object" string="Confirm" class="btn-primary"/>
                         <button special="cancel" string="Cancel"/>
                     </footer>
                 </sheet>
