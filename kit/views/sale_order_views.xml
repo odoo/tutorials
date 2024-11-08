@@ -37,8 +37,13 @@
             </xpath>
             <field name="product_template_id" position="after">
                 <field name="is_kit" column_invisible="1"/>
-                <button name="%(kit.kit_sub_product_wizard_action)d" type="action" string="Sub Products" invisible="not is_kit or state != 'draft' or parent_id" />
+                <button name="%(kit.kit_sub_product_wizard_action)d" type="action" string="Sub Products" invisible="not is_kit or state == 'sale' or parent_id" context="{'product_name': name}"/>
             </field>
+            
+            <!-- <field name="product_template_id" position="after">
+                <field name="is_kit" column_invisible="1"/>
+                <button name="action_wizard_of_sub_product" type="object" string="Sub Products" invisible="not is_kit or state != 'draft' or parent_id" />
+            </field> -->
             <xpath expr="//group[@name='order_details']" position="inside">
                 <field name="print_sub_products_in_report"/>
             </xpath>

@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="kit_sub_product_wizard_action" model="ir.actions.act_window">
-        <field name="name">Sub Products</field>
+        <field name="name">Add Sub Products</field>
         <field name="res_model">kit.sub.product.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
-        <field name="context">{'active_id': active_id}</field>
+        <field name="context">{'active_id': active_id, 'default_name': context.get('product_name')}</field>
     </record>
 
-    <record id="add_warranty_wizard_view_form" model="ir.ui.view">
-        <field name="name">Add Warranty</field>
+    <record id="kit_sub_product_wizard_form" model="ir.ui.view">
+        <field name="name">kit.sub.product.wizard.form</field>
         <field name="model">kit.sub.product.wizard</field>
         <field name="arch" type="xml">
-            <form string="">
+            <form>
                 <sheet>
+                    <header>
+                        <h2>
+                            Product : 
+                            <field name="name" readonly='1'/>
+                        </h2>
+                    </header>
+                    <h3>Sub Products</h3>
                         <field name="sub_product_lines_id">
-                            <tree editable="bottom" create="0">
-                                <field name="product_id" editable="0"/>
+                            <tree editable="bottom" create="0" delete="0">
+                                <field name="product_id" readonly="1"/>
                                 <field name="quantity"/>
                                 <field name="price"/>
-                                <field name="sale_order_line_id" column_invisible="true"/>
+                                <field name="sale_order_line_id" column_invisible="1"/>
                             </tree>
                         </field>
                     <footer>
