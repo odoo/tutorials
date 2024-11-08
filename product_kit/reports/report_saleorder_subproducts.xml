@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="sale_order_portal_content_preview_inherit" name="Preview" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//tbody[hasclass('sale_tbody')]//tr" position="attributes">
+            <attribute name="t-if" separator=" " add="(not line.parent_id) or (line.order_id.include_sub_products_in_report)"></attribute>
+        </xpath>
+    </template>
+
+    <template id="sale_order_report_subproducts_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//tbody[@class='sale_tbody']//tr" position="attributes">
+            <attribute name="t-if" separator=" " add="(not line.parent_id) or (line.order_id.include_sub_products_in_report)"></attribute>
+        </xpath>
+    </template>
+
+    <template id="invoice_report_subproducts_inherit" inherit_id="account.report_invoice_document">
+        <xpath expr="//tbody[@class='invoice_tbody']//tr" position="attributes">
+            <attribute name="t-if" separator=" " add="(not line.sale_line_ids.parent_id) or any(sale_line.order_id.include_sub_products_in_report for sale_line in line.sale_line_ids)"></attribute>
+        </xpath>
+    </template>
+
+</odoo>
