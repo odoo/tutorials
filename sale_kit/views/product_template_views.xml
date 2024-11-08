@@ -1,0 +1,14 @@
+<odoo>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.form.view.inherit.sale.kit</field>
+        <field name="model">product.template</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_tooltip']" position="after">
+                <field name="is_kit" string="Is kit"/>
+                <field name="sub_products_ids" string="Sub products" widget="many2many_tags" invisible="not is_kit"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

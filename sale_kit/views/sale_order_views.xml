@@ -1,0 +1,55 @@
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.view.form.inherit.sale.kit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_template_id']" position="after">
+                <field name="is_kit" column_invisible='1'/>
+                <field name="parent_sale_order_line_id" column_invisible='1'/>
+                <button name="sale_kit.action_subproducts" type="action" string="Add subproduct" title="Add subproducts" invisible="not is_kit or state=='sale'" context="{'product_name': name}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="subproduct_print" string="Print in report ?"/>
+            </xpath>
+
+            <xpath expr="//field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly" separator=" " add="or parent_sale_order_line_id" />
+            </xpath>
+
+            <xpath expr="//tree//field[@name='product_id']" position="attributes">
+                <attribute name="readonly" separator=" " add="or parent_sale_order_line_id" />
+            </xpath>
+
+            <xpath expr="//tree//field[@name='name']" position="attributes">
+                <attribute name="readonly">parent_sale_order_line_id</attribute>
+            </xpath>
+
+            <xpath expr="//tree//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly" separator=" " add="or parent_sale_order_line_id" />
+            </xpath>
+
+            <xpath expr="//tree//field[@name='customer_lead']" position="attributes">
+                <attribute name="readonly" separator=" " add="or parent_sale_order_line_id" />
+            </xpath>
+
+            <xpath expr="//tree//field[@name='price_unit']" position="attributes">
+                <attribute name="readonly" separator=" " add="or parent_sale_order_line_id" />
+            </xpath>
+
+            <xpath expr="//tree//field[@name='tax_id']" position="attributes">
+                <attribute name="readonly" separator=" " add="or parent_sale_order_line_id" />
+            </xpath>
+
+            <xpath expr="//tree//field[@name='price_subtotal']" position="attributes">
+                <attribute name="readonly">parent_sale_order_line_id</attribute>
+            </xpath>
+
+            <xpath expr="//tree//field[@name='price_total']" position="attributes">
+                <attribute name="readonly">parent_sale_order_line_id</attribute>
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,7 @@
+<odoo>
+    <template id="sale_order_portal_content" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//tbody[hasclass('sale_tbody')]//tr[1]" position="attributes">
+            <attribute name="t-if">(not line.parent_sale_order_line_id) or (line.order_id.subproduct_print)</attribute>
+        </xpath>
+    </template>
+</odoo>
