@@ -40,8 +40,8 @@ class StockPickingBatch(models.Model):
             for pick in record.picking_ids:
                 for move in pick.move_ids:
                     qty = move.quantity
-                    weight = weight + (move.product_id.weight)*qty
-            record.weight = (weight/max_weight) * 100 if max_weight else 0
+                    weight = weight + (move.product_id.weight) * qty
+            record.weight = (weight / max_weight) * 100 if max_weight else 0
 
     @api.depends('picking_ids', 'picking_ids.move_ids', 'picking_ids.move_ids.product_id', 'picking_ids.move_ids.product_id.volume')
     def _compute_volume(self):
@@ -52,7 +52,7 @@ class StockPickingBatch(models.Model):
                 for move in pick.move_ids:
                     qty = move.quantity
                     volume = volume + (move.product_id.volume) * qty
-                record.volume = (volume/max_volume) * 100 if max_volume else 0
+                record.volume = (volume / max_volume) * 100 if max_volume else 0
 
     @api.depends('picking_ids')
     def _compute_transfer(self):
