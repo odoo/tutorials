@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="kit_wizard_action" model="ir.actions.act_window">
-        <field name="name"></field>
+        <field name="name">Add SubProducts</field>
         <field name="res_model">kit.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
@@ -14,15 +14,15 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <h2>
-                        Product : 
+                    <h3> 
+                        Product: 
                         <field name="name" readonly='1'/>
-                    </h2>
+                    </h3>
                 </header>
                 <sheet>
-                    <h3>
+                    <h4>
                         Sub Products
-                    </h3>
+                    </h4>
                     <field name="wizard_product_ids">
                         <tree editable="bottom" create='0'>
                             <field name="product_id" readonly='1'/>

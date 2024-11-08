@@ -10,12 +10,40 @@
                         name="product_kit.kit_wizard_action" 
                         type="action" 
                         class="oe_highlight" 
-                        invisible="not is_kit or state == 'sale'"
+                        invisible="not is_kit or state == 'sale' or parent_id"
                         context="{'product_name': name}"/>
                 <field name="is_kit" column_invisible='1'/>
+                <field name="parent_id" column_invisible='1'/>
             </xpath>
             <xpath expr="//group[@name='order_details']" position="inside">
-                <field name="print_in_report"/>
+                <field name="is_print_sub_products"/>
+            </xpath>
+            <xpath expr="//tree//field[@name='product_id']" position="attributes">
+                <attribute name="readonly">parent_id != False</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly">parent_id != False</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='name']" position="attributes">
+                <attribute name="readonly">parent_id != False</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">parent_id != False</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">parent_id != False</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">parent_id != False</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='price_subtotal']" position="attributes">
+                <attribute name="readonly">parent_id != False</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='customer_lead']" position="attributes">
+                <attribute name="readonly">parent_id != False</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='price_total']" position="attributes">
+                <attribute name="readonly">parent_id != False</attribute>
             </xpath>
         </field>
     </record>

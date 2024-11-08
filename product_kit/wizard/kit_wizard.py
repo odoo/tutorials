@@ -16,15 +16,10 @@ class WarrantyProduct(models.TransientModel):
     def default_get(self, fields):
         res = super().default_get(fields)
         vals_list = []
-        sale_order_line_id = self.env.context['active_id']
 
-        sale_order_ln = self.env['sale.order.line'].browse(sale_order_line_id)
-        sub_products = sale_order_ln.product_template_id.sub_products_ids
+        sub_products = self.env['sale.order.line'].browse(self.env.context['active_id']).product_template_id.sub_products_ids
+        existing_sale_order_lines = self.env['sale.order.line'].search([('parent_id','=', self.env.context['active_id'])])
 
-        # checking if we have already sub-products of the crrently selected main-product
-        existing_sale_order_lines = self.env['sale.order.line'].search([('parent_id','=', sale_order_line_id)])
-
-        # if we have already sub-products added then we have to copy the quantity and price values from old order lines(existing_sale_order_lines).
         if existing_sale_order_lines:
             for so_line in existing_sale_order_lines:
                 curr_product = self.env['product.wizard'].create(
@@ -32,7 +27,7 @@ class WarrantyProduct(models.TransientModel):
                         'product_id': so_line.product_id.id,
                         'price': so_line.secondary_price_unit,
                         'quantity': so_line.product_uom_qty,
-                        'sale_order_line_id': sale_order_line_id,
+                        'sale_order_line_id': self.env.context['active_id'],
                     }
                 )
                 vals_list.append(Command.link(curr_product.id))
@@ -42,29 +37,26 @@ class WarrantyProduct(models.TransientModel):
                     {
                         'product_id': product.id,
                         'price': product.lst_price,
-                        'sale_order_line_id': sale_order_line_id,
+                        'sale_order_line_id': self.env.context['active_id'],
                     }
                 )
                 vals_list.append(Command.link(curr_product.id))
-
+    
         res['wizard_product_ids'] = vals_list
         return res
 
     def add_sub_products_to_sale_order_line(self):
-        sale_order_line_id = self.env.context['active_id']
+        sale_order_ln = self.env['sale.order.line'].browse(self.env.context['active_id'])
+        existing_sale_order_line = self.env['sale.order.line'].search([('parent_id','=', self.env.context['active_id'])])
+        total_amt = sale_order_ln.product_id.lst_price * sale_order_ln.product_uom_qty
 
-        # checking if we have already sub-products of the crrently selected main-product.
-        existing_sub_products = self.env['sale.order.line'].search([('parent_id','=', sale_order_line_id)])
-
-        # if we have already sub-products added then we have to delete the old sale order lines of them and create new order lines.
-        if existing_sub_products:
-            self.env['sale.order.line'].search([('parent_id','=', sale_order_line_id)]).unlink()
-
-        sale_order_ln = self.env['sale.order.line'].browse(sale_order_line_id)
-        total_amt = sale_order_ln.product_template_id.list_price
-
-        for record in self:
-            for kit_product in record.wizard_product_ids:
+        if existing_sale_order_line:
+            existing_sub_products_dict = {line.product_id.id: line for line in existing_sale_order_line}
+            for kit_product in self.wizard_product_ids:
+                total_amt = total_amt + (kit_product.price * kit_product.quantity)
+                existing_sub_products_dict.get(kit_product.product_id.id).write({'price_unit': 0, 'secondary_price_unit': kit_product.price, 'product_uom_qty': kit_product.quantity})
+        else:
+            for kit_product in self.wizard_product_ids:
                 total_amt = total_amt + (kit_product.price * kit_product.quantity)
                 self.env['sale.order.line'].create(
                     {
@@ -77,5 +69,4 @@ class WarrantyProduct(models.TransientModel):
                         'parent_id': kit_product.sale_order_line_id.id,
                     }
                 )
-
-        sale_order_ln.write({'price_unit': total_amt})
+        sale_order_ln.write({'price_subtotal': total_amt})

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_invoice_document" name="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
+        <xpath expr="//tbody//tr" position="attributes">
+            <attribute name="t-if" separator=" " add="(line.sale_line_ids.order_id.is_print_sub_products) or (not line.sale_line_ids.parent_id)"/>
+        </xpath>
+    </template>
+</odoo>
