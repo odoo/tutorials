@@ -5,9 +5,40 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="print_in_report"/>
+            </xpath>
             <xpath expr="//field[@name='product_template_id']" position="after">
-                <field name="is_kit" column_invisible="1"/>
-                <button string="Sub Product" name="%(sub_product.action_sub_products)d" type="action" class="oe_highlight" invisible="state == 'sale' or not is_kit"/>
+                <field name="is_kit" optional='hide'/>
+                <field name="sale_order_line_id" optional='hide' readonly="sale_order_line_id"/>
+                <button string="Sub Product" name="sub_product.action_sub_products" type="action" class="oe_highlight" invisible="state == 'sale' or not is_kit" context="{'product_name': name}" />
+            </xpath>
+            <xpath expr="//tree//field[@name='product_id']" position="attributes">
+                <attribute name="readonly">sale_order_line_id</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly">sale_order_line_id</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='name']" position="attributes">
+                <attribute name="readonly">sale_order_line_id</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">sale_order_line_id</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='customer_lead']" position="attributes">
+                <attribute name="readonly">sale_order_line_id</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">sale_order_line_id</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">sale_order_line_id</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='price_subtotal']" position="attributes">
+                <attribute name="readonly">sale_order_line_id</attribute>
+            </xpath>
+            <xpath expr="//tree//field[@name='price_total']" position="attributes">
+                <attribute name="readonly">sale_order_line_id</attribute>
             </xpath>
         </field>
     </record>

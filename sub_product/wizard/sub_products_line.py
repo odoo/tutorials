@@ -9,11 +9,4 @@ class SubProuctsLine(models.TransientModel):
     product_id = fields.Many2one('product.product')
     product_name = fields.Char(related='product_id.name')
     quantity = fields.Integer()
-    # price = fields.Float(compute="_compute_price", readonly=False, store=True)
     price = fields.Float(readonly=False, store=True)
-
-    # @api.depends('product_id.lst_price')
-    # def _compute_price(self):
-    #     for record in self:
-    #         if not record.price:
-    #             record.price = record.product_id.lst_price

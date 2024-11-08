@@ -5,9 +5,10 @@
     'description': "This module will help to add sub-product in product.",
     'data': [
         'security/ir.model.access.csv',
+        'report/ir_actions_report_templates.xml',
         'wizard/sub_products_views.xml',
         'views/product_views.xml',
-        'views/sale_order_views.xml'
+        'views/sale_order_views.xml',
     ],
     'demo': [
 
