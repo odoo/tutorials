@@ -16,10 +16,10 @@ class SubproductWizard(models.TransientModel):
         sale_order = self.env['sale.order'].browse(sale_order_line.order_id.id)
         subproducts_list = []
         for line in sale_order.order_line:
-            if line.parent_sale_order_line_id.id==active_id and (line.product_id.id in sale_order_line.product_id.sub_products_ids.ids):
+            if line.parent_sale_order_line_id.id == active_id and (line.product_id.id in sale_order_line.product_id.sub_products_ids.ids):
                 subproducts_list.append(Command.create({'product_id': line.product_id.id, 'quantity': line.product_uom_qty, 'price': line.subproduct_price}))
 
-        if len(subproducts_list)==(len(sale_order_line.product_id.sub_products_ids)):
+        if len(subproducts_list) == (len(sale_order_line.product_id.sub_products_ids)):
             values['subproduct_ids'] = subproducts_list
             return values
 
@@ -29,7 +29,7 @@ class SubproductWizard(models.TransientModel):
 
         product = sale_order_line.product_id.sub_products_ids
         for prop in product:
-            if prop.id not in added_subproducts: 
+            if prop.id not in added_subproducts:
                 subproducts_list.append(Command.create({'product_id': prop.id, 'quantity': 0, 'price': prop.list_price}))
         values['subproduct_ids'] = subproducts_list
         return values
@@ -46,11 +46,11 @@ class SubproductWizard(models.TransientModel):
                 if sub_product.product_id.id in sub_products_line.mapped('product_id.id'):
                     line = sub_product_line_dict.get(sub_product.product_id.id)
                     line.write({
-                                'product_uom_qty':sub_product.quantity,
+                                'product_uom_qty': sub_product.quantity,
                                 'price_unit': 0,
                                 'subproduct_price': sub_product.price
                             })
-                    total_price = total_price + sub_product.price*sub_product.quantity
+                    total_price = total_price + sub_product.price * sub_product.quantity
                 else:
                     self.env['sale.order.line'].create({
                         'order_id': sale_order_line.order_id.id,
@@ -59,11 +59,11 @@ class SubproductWizard(models.TransientModel):
                         'product_uom_qty': sub_product.quantity,
                         'price_unit': 0,
                         'subproduct_price': sub_product.price,
-                        'product_uom':sub_product.product_id.uom_id.id,
+                        'product_uom': sub_product.product_id.uom_id.id,
                         'parent_sale_order_line_id': sale_order_line.id
                     })
                     total_price = total_price + sub_product.price * sub_product.quantity
 
             sale_order_line.write({
-                'price_unit': sale_order_line.product_id.list_price*sale_order_line.product_uom_qty + total_price
+                'price_unit': sale_order_line.product_id.list_price * sale_order_line.product_uom_qty + total_price
             })

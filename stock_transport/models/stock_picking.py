@@ -12,5 +12,5 @@ class StockPicking(models.Model):
             volume = 0
             for move in record.move_ids:
                 qty = move.quantity
-                volume = volume + (move.product_id.volume)*qty
+                volume = volume + (move.product_id.volume) * qty
             record.volume = volume
