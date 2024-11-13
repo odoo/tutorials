@@ -10,5 +10,11 @@
         'reports/report_invoice_template.xml',
         'views/sale_order_views.xml',
     ],
-    'auto_install':True
+    'auto_install':True,
+    'assets': {
+        'web.assets_backend': [
+            'kit/static/src/css/kit_styles.css',
+            'kit/static/src/js/kit_sale_order_line_readonly.js',
+        ],
+    },
 }

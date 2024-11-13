@@ -64,7 +64,7 @@ class EstateProperty(models.Model):
 
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
-    image = fields.Image(string="Property Image", attachment=True)
+    image = fields.Image(string="Property Image")
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',

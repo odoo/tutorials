@@ -8,42 +8,17 @@
             <xpath expr="//tree" position="inside">
                 <field name="parent_id" column_invisible="1"></field>
             </xpath>
+            <xpath expr="//page[@name='order_lines']//field" position="attributes">
+                <attribute name="widget">kit_one2many</attribute>
+            </xpath>
             <xpath expr="//field[@name='order_line']//tree" position="attributes">
                 <attribute name="decoration-warning">parent_id</attribute>
-            </xpath>
-            <field name="product_template_id" position="attributes">
-                <attribute name="readonly">parent_id</attribute>
-            </field>
-            <xpath expr="//tree//field[@name='name']" position="attributes">
-                <attribute name="readonly">parent_id</attribute>
-            </xpath>
-            <xpath expr="//tree//field[@name='product_uom_qty']" position="attributes">
-                <attribute name="readonly" add="or parent_id"  separator=" "/>
-            </xpath>
-            <xpath expr="//tree//field[@name='price_unit']" position="attributes">
-                <attribute name="readonly" add="or parent_id"  separator=" "/>
-            </xpath>
-            <xpath expr="//tree//field[@name='tax_id']" position="attributes">
-                <attribute name="readonly" add="or parent_id"  separator=" "/>
-            </xpath>
-            <xpath expr="//tree//field[@name='price_subtotal']" position="attributes">
-                <attribute name="readonly">parent_id</attribute>
-            </xpath>
-            <xpath expr="//tree//field[@name='product_id']" position="attributes">
-                <attribute name="readonly" add="or parent_id"  separator=" "/>
-            </xpath>
-            <xpath expr="//tree//field[@name='customer_lead']" position="attributes">
-                <attribute name="readonly" add="or parent_id"  separator=" "/>
+                <attribute name="delete">0</attribute>
             </xpath>
             <field name="product_template_id" position="after">
                 <field name="is_kit" column_invisible="1"/>
-                <button name="%(kit.kit_sub_product_wizard_action)d" type="action" string="Sub Products" invisible="not is_kit or state == 'sale' or parent_id" context="{'product_name': name}"/>
-            </field>
-            
-            <!-- <field name="product_template_id" position="after">
-                <field name="is_kit" column_invisible="1"/>
                 <button name="action_wizard_of_sub_product" type="object" string="Sub Products" invisible="not is_kit or state != 'draft' or parent_id" />
-            </field> -->
+            </field>
             <xpath expr="//group[@name='order_details']" position="inside">
                 <field name="print_sub_products_in_report"/>
             </xpath>

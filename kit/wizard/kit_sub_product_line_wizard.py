@@ -3,6 +3,7 @@ from odoo import fields, models
 
 class KitSubProductLineWizard(models.TransientModel):
     _name = "kit.sub.product.line.wizard"
+    _description = 'This wizard is for sub product lines'
 
     sub_product_id = fields.Many2one('kit.sub.product.wizard')
     product_id = fields.Many2one('product.product')

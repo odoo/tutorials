@@ -3,8 +3,8 @@ from odoo import fields, models
 
 class KitSubProductWizard(models.TransientModel):
     _name = "kit.sub.product.wizard"
-
-    name= fields.Char()
+    _description = 'This wizard is for sub product in product'
+    
     sub_product_lines_id = fields.One2many('kit.sub.product.line.wizard', 'sub_product_id')
 
     def default_get(self, fields_list):
@@ -16,6 +16,7 @@ class KitSubProductWizard(models.TransientModel):
             existing_line = sale_order_line.order_id.order_line.filtered(
                 lambda line: line.product_id == sub_product and line.parent_id == sale_order_line
             )
+
             sub_product_lines.append((0, 0, {
                 'product_id': existing_line.product_id.id if existing_line else sub_product.id,
                 'quantity': existing_line.product_uom_qty if existing_line else 0,
@@ -40,7 +41,6 @@ class KitSubProductWizard(models.TransientModel):
                     'price_unit': 0
                 })
             else:
-                
                 sale_order_line.order_id.order_line.create({
                     'order_id': sale_order_line.order_id.id,
                     'product_id': line.product_id.id,
