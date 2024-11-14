@@ -3,6 +3,7 @@ from odoo.exceptions import UserError
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
+
 class EstatePropertyModel(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
@@ -30,7 +31,7 @@ class EstatePropertyModel(models.Model):
     total_area = fields.Float(compute="_compute_total", string="Total Area (sqm)")
     best_price = fields.Float(compute="_compute_best_price", string="Best Price")
 
-    @api.depends("living_area","garden_area")
+    @api.depends("living_area", "garden_area")
     def _compute_total(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
@@ -56,9 +57,8 @@ class EstatePropertyModel(models.Model):
             if record.state == "SOLD":
                 raise UserError("property is already sold")
             record.state = "SOLD"
-            
         return True
-    
+
     def action_cancel(self):
         for record in self:
             if record.state == "SOLD":
@@ -73,22 +73,15 @@ class EstatePropertyModel(models.Model):
             for offer in record.offer_ids:
                 offer.status = "REFUSED"
         return True
-    
+
     def update_on_accept(self, price, buyer):
         for record in self:
             record.selling_price = price
             record.buyer_id = buyer
         return True
+    
     def update_on_refuse_accepted(self):
         for record in self:
             record.selling_price = 0
             record.buyer_id = None
         return True
-    
-
-
-
-
-
-
-    
