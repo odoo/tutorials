@@ -19,14 +19,17 @@
                 <field name="garden" />
             </list>
         </field>
-    </record> 
+    </record>
 
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Test">
-
+                <header>
+                    <button name="onclick_sold" type="object" string="SOLD" />
+                    <button name="onclick_cancel" type="object" string="CANCEL" />
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" />

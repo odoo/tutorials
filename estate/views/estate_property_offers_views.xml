@@ -10,7 +10,17 @@
                 <field name="partner_id" />
                 <field name="date_deadline" />
                 <field name="validity" />
-                <field name="status"/>
+                <!-- Show the Accept button only if the parent property's state is 'draft' -->
+                <button name="action_confirm" string="Accept" type="object" icon="fa-check"
+                    invisible="property_state != 'offer_received'"
+                />
+
+                <!-- Show the Refuse button only if the parent property's state is 'draft' -->
+                <button name="action_cancel" string="Refuse" type="object" icon="fa-times"
+                    invisible="property_state != 'offer_received'"
+                />
+
+                <field name="status" />
             </list>
         </field>
     </record>
