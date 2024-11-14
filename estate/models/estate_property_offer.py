@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from datetime import timedelta, date
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOfferModel(models.Model):
@@ -25,6 +26,8 @@ class EstatePropertyOfferModel(models.Model):
 
     def action_accept_offer(self):
         for record in self:
+            if record.status == "ACCEPTED":
+                raise UserError('Offer is already accepted')
             record.property_id.refuse_all()
             record.status = "ACCEPTED"
             record.property_id.update_on_accept(record.price, record.partner_id)
@@ -33,5 +36,12 @@ class EstatePropertyOfferModel(models.Model):
         for record in self:
             if record.status == "ACCEPTED":
                 record.property_id.update_on_refuse_accepted()
+            else:
+                raise UserError('Offer is already refused')
             record.status = "REFUSED"
         return True
+
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)',
+         'The offer price must be strictly positive.'),
+    ]
