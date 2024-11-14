@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -13,7 +14,7 @@ class EstatePropertyModel(models.Model):
     postcode = fields.Char()
     date_availablility = fields.Date(default=date.today() + relativedelta(months=3), copy=False)
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True)
+    selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -47,3 +48,48 @@ class EstatePropertyModel(models.Model):
 
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'NORTH' if self.garden else None
+
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state == "CANCELLED":
+                raise UserError("Cancelled properties cannot be sold")
+            if record.state == "SOLD":
+                raise UserError("property is already sold")
+            record.state = "SOLD"
+            
+        return True
+    
+    def action_cancel(self):
+        for record in self:
+            if record.state == "SOLD":
+                raise UserError("Sold properties cannot be cancelled")
+            if record.state == "CANCELLED":
+                raise UserError("property is already cancelled")
+            record.state = "CANCELLED"
+        return True
+
+    def refuse_all(self):
+        for record in self:
+            for offer in record.offer_ids:
+                offer.status = "REFUSED"
+        return True
+    
+    def update_on_accept(self, price, buyer):
+        for record in self:
+            record.selling_price = price
+            record.buyer_id = buyer
+        return True
+    def update_on_refuse_accepted(self):
+        for record in self:
+            record.selling_price = 0
+            record.buyer_id = None
+        return True
+    
+
+
+
+
+
+
+    
