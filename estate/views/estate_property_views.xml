@@ -13,6 +13,7 @@
             <list string="Estate Property" >
                 <field name="title" string="Title"/>
                 <field name="postcode" string="Postcode"/>
+                <field name="estate_property_type_id" string="Property Type"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area(sqm)"/>
                 <field name="expected_price" string="Expected Price"/>
@@ -38,6 +39,8 @@
                     <group>
                     
                         <group>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="estate_property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availablility" string="Availabe From"/>
 
@@ -65,7 +68,19 @@
                             </group>
                         </page>
 
-                        
+                        <page string="Offers">
+                            <field name="offer_ids">
+                            </field>
+                        </page>
+
+                        <page string="Other Info">
+                            <group>
+                                <group>
+                                    <field name="sales_person_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
+                            </group>
+                        </page>
                         
                     </notebook>
                 </sheet>
