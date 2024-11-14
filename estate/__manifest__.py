@@ -6,5 +6,8 @@
     'description': """
     Real estate tutorial application
     """,
-    
+    'data': [
+        'security/ir.model.access.csv',
+        
+    ],
 }
