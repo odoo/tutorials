@@ -79,7 +79,7 @@ class EstatePropertyModel(models.Model):
             record.selling_price = price
             record.buyer_id = buyer
         return True
-    
+
     def update_on_refuse_accepted(self):
         for record in self:
             record.selling_price = 0
