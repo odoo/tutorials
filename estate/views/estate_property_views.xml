@@ -30,6 +30,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                
                 <sheet>
                     <div class="oe_title">
                         <h1 class="mb32">
@@ -47,6 +48,7 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -63,6 +65,7 @@
                                     <field name="garden"/>
                                     <field name="garden_area" string="Garden Area (sqm)"/>
                                     <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                     <field name="state"/>
                                 </group>
                             </group>
