@@ -57,30 +57,26 @@ class EstateProperty(models.Model):
     partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tags", string="Tags")
     offer_ids = fields.One2many(
-        "estate.property.offers", "property_id", string="Offers"
+        "estate.property.offers", "property_id", string="Offers",
     )
     best_price = fields.Float(compute="_compute_best_price")
 
-    @api.depends("total_area")
+    @api.depends("living_area","garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends("state")
-    def _update_state_on_offer_received(self):
+    @api.onchange("offer_ids")
+    def _change_state_to_offer_received(self):
         for record in self:
-            if len(record.offer_ids) > 1:
-                record.state = "offer_received"
-            else:
-                record.state = "new"
+            if record.state == "new":
+                if len(record.offer_ids) > 0:
+                    record.state = "offer_received"
 
-    @api.depends("best_price")
+    @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_price = 0.0
+            record.best_price = max(record.offer_ids.mapped("price"),default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):

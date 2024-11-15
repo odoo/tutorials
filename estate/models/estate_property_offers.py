@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offers"
     _description = "Real Estate Property offer"
+    _order ="price desc"
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -18,12 +19,16 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property")
 
     date_deadline = fields.Date(
-        compute="_compute_date_by_validity", inverse="_compute_validity_by_date"
+        default=(datetime.now() + timedelta(days=7)).date(),
+        compute="_compute_date_by_validity",
+        inverse="_compute_validity_by_date",
+        store=True,
     )
     validity = fields.Integer(
         default=7,
         inverse="_compute_date_by_validity",
         compute="_compute_validity_by_date",
+        store=True,
     )
     property_state = fields.Selection(
         related="property_id.state", string="Property State"
@@ -36,20 +41,24 @@ class EstatePropertyOffer(models.Model):
     @api.depends("date_deadline")
     def _compute_validity_by_date(self):
         for record in self:
-            if record.date_deadline:
-                record.validity = (record.date_deadline - datetime.today().date()).days
+            if record.create_date and record.date_deadline:
+                record.validity = (
+                    record.date_deadline - record.create_date.date()
+                ).days
             else:
-                record.validity = 0
+                record.validity = (record.date_deadline - datetime.today().date()).days
 
     @api.depends("validity")
     def _compute_date_by_validity(self):
         for record in self:
-            if record.validity is not None:
-                record.date_deadline = datetime.today().date() + timedelta(
-                    days=record.validity
-                )
+            if record.create_date and record.validity:
+                record.date_deadline = (
+                    record.create_date + timedelta(days=record.validity)
+                ).date()
             else:
-                record.date_deadline = False
+                record.date_deadline = (
+                    datetime.today() + timedelta(days=record.validity)
+                ).date()
 
     def action_confirm(self):
         for record in self:

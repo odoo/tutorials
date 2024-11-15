@@ -4,12 +4,13 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list default_order="id desc">
                 <field name="name" />
                 <field name="state" />
                 <field name="propery_type_id" />
                 <field name="postcode" />
                 <field name="date_availability" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
                 <field name="total_area" />
@@ -27,20 +28,27 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <header>
-                    <button name="onclick_sold" type="object" string="SOLD" />
-                    <button name="onclick_cancel" type="object" string="CANCEL" />
+                    <button name="onclick_sold" type="object" string="SOLD"
+                        invisible="state in ['sold','cancelled']"
+                    />
+                    <button name="onclick_cancel" type="object" string="CANCEL"
+                        invisible="state in ['sold','cancelled']"
+                    />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <h1>
                         <field name="name" />
                     </h1>
-                    <field name="tag_ids" widget="many2many_tags" />
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <group>
                         <field name="state" />
                     </group>
                     <group>
                         <group>
-                            <field name="propery_type_id" />
+                            <field name="propery_type_id"
+                                options="{'no_create': True, 'no_create_edit': True}" />
                         </group>
                         <group>
                             <field name="expected_price" />
@@ -83,18 +91,18 @@
                                 <field name="garden" />
                             </group>
                             <group>
-                                <field name="garden_area" />
+                                <field invisible="not garden" name="garden_area" />
+                            </group>
+                            <group>
+                                <field invisible="not garden" name="garden_orientation" />
                             </group>
                             <group>
                                 <field name="total_area" />
                             </group>
-                            <group>
-                                <field name="garden_orientation" />
-                            </group>
                         </page>
-
                         <page string="Offers">
-                            <field name="offer_ids" />
+                            <field name="offer_ids"
+                                readonly="state in ['offer_accepted', 'sold', 'cancelled']" />
                         </page>
                         <page string="User Info">
                             <group>
@@ -126,7 +134,6 @@
                 <field name="facades" />
                 <filter name="available"
                     domain="['|', ('active', '=', True), ('state', 'in', ['new', 'offer_received'])]" />
-
                 <filter name="postcode" string="pincode" context="{'group_by':'postcode'}" />
             </search>
         </field>

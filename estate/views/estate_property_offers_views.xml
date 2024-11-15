@@ -1,5 +1,4 @@
 <odoo>
-
     <!-- Define a List View for Estate Properties -->
     <record id="view_estate_property_offers_tree" model="ir.ui.view">
         <field name="name">estate.property.offers.tree</field>
@@ -10,16 +9,12 @@
                 <field name="partner_id" />
                 <field name="date_deadline" />
                 <field name="validity" />
-                <!-- Show the Accept button only if the parent property's state is 'draft' -->
                 <button name="action_confirm" string="Accept" type="object" icon="fa-check"
-                    invisible="property_state != 'offer_received'"
+                    invisible="property_state != 'offer_received' or status in ['accepted','refused']"
                 />
-
-                <!-- Show the Refuse button only if the parent property's state is 'draft' -->
                 <button name="action_cancel" string="Refuse" type="object" icon="fa-times"
-                    invisible="property_state != 'offer_received'"
+                    invisible="property_state != 'offer_received' or status in ['refused','accepted']"
                 />
-
                 <field name="status" />
             </list>
         </field>
@@ -42,5 +37,4 @@
             </form>
         </field>
     </record>
-
 </odoo>

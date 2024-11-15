@@ -5,8 +5,9 @@
         <field name="name">estate.property.types.tree</field>
         <field name="model">estate.property.types</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="name"/>
+            <list default_order="sequence,name">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
             </list>
         </field>
     </record>
@@ -19,8 +20,19 @@
             <form string="Test">
                 <sheet>
                     <h1>
-                        <field name="name"/>
+                        <field name="name" />
                     </h1>
+                    <notebook>
+                        <page name="Properties">
+                            <field name="property_ids" readonly="1">
+                                <list>
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -33,7 +45,7 @@
         <field name="type">search</field>
         <field name="arch" type="xml">
             <search string="Search Properties">
-                <field name="name"/>
+                <field name="name" />
             </search>
         </field>
     </record>
