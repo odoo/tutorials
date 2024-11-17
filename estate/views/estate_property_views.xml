@@ -105,8 +105,8 @@
             <field name="living_area" string="Living Area (sqm)"/>
             <field name="facades"/>
             <filter name="available" string='Available' domain="['|',
-                                                ('state', '=', 'NEW'),
-                                                ('state', '=', 'OFFER_RECEIVED')]"/>
+                                                ('state', '=', 'new'),
+                                                ('state', '=', 'offer_recieved')]"/>
             <group expand="1" string="Group By">
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
                 

@@ -1,8 +1,8 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from odoo.tools.float_utils import float_is_zero
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 
 class EstatePropertyModel(models.Model):
@@ -22,8 +22,8 @@ class EstatePropertyModel(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection([('EAST', 'East'), ('WEST', 'West'), ('SOUTH', 'South'), ('NORTH', 'North')])
-    state = fields.Selection([("NEW", "New"), ("OFFER_RECEIVED", "Offer Received"), ("OFFER_ACCEPTED", "Offer Accepted"), ("SOLD", "Sold"), ("CANCELLED", "Cancelled")], required=True, copy=False, default="NEW")
+    garden_orientation = fields.Selection([('east', 'East'), ('west', 'West'), ('south', 'South'), ('north', 'North')])
+    state = fields.Selection([("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], required=True, copy=False, default="new")
     estate_property_type_id = fields.Many2one("estate.property.type", string="Property Type", required=True)
     sales_person_id = fields.Many2one("res.users", string="Sales Person", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -49,53 +49,35 @@ class EstatePropertyModel(models.Model):
     def _onchange_garden(self):
 
         self.garden_area = 10 if self.garden else 0
-        self.garden_orientation = 'NORTH' if self.garden else None
+        self.garden_orientation = 'north' if self.garden else None
 
     def action_set_sold(self):
         for record in self:
-            if record.state == "CANCELLED":
-                raise UserError("Cancelled properties cannot be sold")
-            if record.state == "SOLD":
-                raise UserError("property is already sold")
-            record.state = "SOLD"
+            if record.state == "cancelled":
+                raise UserError(_("Cancelled properties cannot be sold"))
+            if record.state == "sold":
+                raise UserError(_("property is already sold"))
+            record.state = "sold"
         return True
 
     def action_cancel(self):
         for record in self:
-            if record.state == "SOLD":
-                raise UserError("Sold properties cannot be cancelled")
-            if record.state == "CANCELLED":
-                raise UserError("property is already cancelled")
-            record.state = "CANCELLED"
-        return True
-
-    def refuse_all(self):
-        for record in self:
-            for offer in record.offer_ids:
-                offer.status = "REFUSED"
-        return True
-
-    def update_on_accept(self, price, buyer):
-        for record in self:
-            record.selling_price = price
-            record.buyer_id = buyer
-        return True
-
-    def update_on_refuse_accepted(self):
-        for record in self:
-            record.selling_price = 0
-            record.buyer_id = None
+            if record.state == "sold":
+                raise UserError(_("Sold properties cannot be cancelled"))
+            if record.state == "cancelled":
+                raise UserError(_("property is already cancelled"))
+            record.state = "cancelled"
         return True
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
-         'The expected price must be strictly positive.'),
+         _('The expected price must be strictly positive.')),
         ('check_selling_price', 'CHECK(selling_price >= 0)',
-         'The selling price must be positive.')
+         _('The selling price must be positive.'))
     ]
 
-    @api.constrains('selling_price', 'selling_price')
+    @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
-            if not float_is_zero(record.selling_price, 0) and record.selling_price < record.expected_price * 0.9:
-                raise ValidationError("The selling price must be at least 90% of the expected price")
+            if not float_is_zero(record.selling_price, 1) and float_compare(record.selling_price, record.expected_price * 0.9, 1) < 0 :
+                raise ValidationError(_("The selling price must be at least 90% of the expected price"))
