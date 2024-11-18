@@ -4,20 +4,24 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list default_order="id desc">
+            <list default_order="id desc" decoration-bf="state=='offer_accepted'"
+                decoration-success="state in ['offer_received','offer_accepted']"
+                decoration-muted="state=='sold'">
                 <field name="name" />
-                <field name="state" />
-                <field name="propery_type_id" />
+                <field name="property_type_id" />
                 <field name="postcode" />
-                <field name="date_availability" />
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
-                <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="total_area" />
-                <field name="facades" />
-                <field name="garage" />
-                <field name="garden_orientation" />
-                <field name="garden" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" optional="hidden" />
+                <field name="total_area" optional="hidden" />
+                <field name="facades" optional="hidden" />
+                <field name="garage" optional="hidden" />
+                <field name="garden_orientation" optional="hidden" />
+                <field name="garden" optional="hidden" />
+                <field name="state" optional="hidden" />
             </list>
         </field>
     </record>
@@ -42,12 +46,10 @@
                         <field name="name" />
                     </h1>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
-                    <group>
-                        <field name="state" />
-                    </group>
+                    <field name="active" invisible="True" />
                     <group>
                         <group>
-                            <field name="propery_type_id"
+                            <field name="property_type_id"
                                 options="{'no_create': True, 'no_create_edit': True}" />
                         </group>
                         <group>
@@ -119,8 +121,7 @@
     </record>
 
     <!-- Define a Search, GroupBy, and Filter View for Estate Properties -->
-    <record
-        id="view_estate_property_search" model="ir.ui.view">
+    <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="type">search</field>
@@ -130,10 +131,14 @@
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="living_area" />
                 <field name="facades" />
-                <filter name="available"
-                    domain="['|', ('active', '=', True), ('state', 'in', ['new', 'offer_received'])]" />
+                <field name="living_area" string="Living Area"
+                    filter_domain="[('living_area', '>=', self)]" />
+
+                <filter name="available" string="Available" help="show only available properties"
+                    domain="[('active', '=', True), ('state', 'in', ['new', 'offer_received'])]" />
+
+                <filter name="archived" domain="[('active', '=', False)]" />
                 <filter name="postcode" string="pincode" context="{'group_by':'postcode'}" />
             </search>
         </field>

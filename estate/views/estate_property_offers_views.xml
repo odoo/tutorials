@@ -4,18 +4,18 @@
         <field name="name">estate.property.offers.tree</field>
         <field name="model">estate.property.offers</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="bottom" decoration-success="status=='accepted'"
+                decoration-danger="status=='refused'">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="date_deadline" />
                 <field name="validity" />
-                <button name="action_confirm" string="Accept" type="object" icon="fa-check"
+                <button name="action_confirm" title="accept" type="object" icon="fa-check"
                     invisible="property_state != 'offer_received' or status in ['accepted','refused']"
                 />
-                <button name="action_cancel" string="Refuse" type="object" icon="fa-times"
+                <button name="action_cancel" title="refuse" type="object" icon="fa-times"
                     invisible="property_state != 'offer_received' or status in ['refused','accepted']"
                 />
-                <field name="status" />
             </list>
         </field>
     </record>

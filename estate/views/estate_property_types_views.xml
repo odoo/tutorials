@@ -19,6 +19,21 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_real_estate_smart_button_property_offers)d"
+                            type="action" icon="fa-bars" string="offers"
+                            invisible="offer_counts == 0"
+                        >
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_counts" />
+                                </span>
+                                <span class="o_stat_text">
+                                    Offers
+                                </span>
+                            </div>
+                        </button>
+                    </div>
                     <h1>
                         <field name="name" />
                     </h1>

@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError, ValidationError, AccessError
 from odoo.tools import float_compare
 
 
@@ -47,7 +47,7 @@ class EstateProperty(models.Model):
         default="new",
     )
     total_area = fields.Float(compute="_compute_total_area", string="total area(sqm)")
-    propery_type_id = fields.Many2one("estate.property.types", required=True)
+    property_type_id = fields.Many2one("estate.property.types", required=True)
     user_id = fields.Many2one(
         "res.users",
         string="Salesperson",
@@ -57,11 +57,13 @@ class EstateProperty(models.Model):
     partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tags", string="Tags")
     offer_ids = fields.One2many(
-        "estate.property.offers", "property_id", string="Offers",
+        "estate.property.offers",
+        "property_id",
+        string="Offers",
     )
     best_price = fields.Float(compute="_compute_best_price")
 
-    @api.depends("living_area","garden_area")
+    @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
@@ -76,7 +78,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"),default=0)
+            record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -120,3 +122,10 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "Selling price is too low! It must be at least 90% of the expected price."
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_deletion_of_record_while_state_is_not_new_cancelled(self):
+        if any(record.state not in ["new", "cancelled"] for record in self):
+            raise AccessError(
+                "You can only delete property if it is in new or cancelled state!"
+            )

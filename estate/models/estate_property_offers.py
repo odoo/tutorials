@@ -1,11 +1,15 @@
 from odoo import models, fields, api
 from datetime import datetime, timedelta
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offers"
     _description = "Real Estate Property offer"
-    _order ="price desc"
+    _order = "price desc"
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "Price cannot be less than 0"),
+    ]
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -17,7 +21,6 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner")
     property_id = fields.Many2one("estate.property")
-
     date_deadline = fields.Date(
         default=(datetime.now() + timedelta(days=7)).date(),
         compute="_compute_date_by_validity",
@@ -33,10 +36,9 @@ class EstatePropertyOffer(models.Model):
     property_state = fields.Selection(
         related="property_id.state", string="Property State"
     )
-
-    _sql_constraints = [
-        ("check_price", "CHECK(price > 0)", "Price cannot be less than 0"),
-    ]
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True, depends=["property_id"]
+    )
 
     @api.depends("date_deadline")
     def _compute_validity_by_date(self):
@@ -70,3 +72,19 @@ class EstatePropertyOffer(models.Model):
     def action_cancel(self):
         for record in self:
             record.status = "refused"
+
+    @api.model
+    def create(self, vals):
+        if not isinstance(vals, dict):
+            raise ValidationError("Unexpected input to create method.")
+
+        property_id = vals.get("property_id")
+        if property_id:
+            property = self.env["estate.property"].browse(property_id)
+            max_price = max(property.offer_ids.mapped("price"), default=0)
+            if vals["price"] <= max_price:
+                raise ValidationError(
+                    f"The offer price should be greater than the current maximum offer price ({max_price})."
+                )
+
+        return super(EstatePropertyOffer, self).create(vals)
