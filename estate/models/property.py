@@ -3,10 +3,6 @@ from dateutil.relativedelta import relativedelta
 from odoo import fields, models
 
 
-def _default_date_availability(args):
-    return fields.Date.today() + relativedelta(months=3)
-
-
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate Property"
@@ -14,8 +10,8 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy=False,
-                                    default=_default_date_availability,
-                                    string='Available from')
+                                    default=lambda self: fields.Date.today() + relativedelta(months=3),
+                                    string='Available From')
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -31,3 +27,8 @@ class EstateProperty(models.Model):
                              selection=[('New', 'New'), ('Offer Received', 'Offer Received'),
                                         ('Offer Accepted', 'Offer Accepted'), ('Sold', 'Sold'),
                                         ('Cancelled', 'Cancelled')])
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")

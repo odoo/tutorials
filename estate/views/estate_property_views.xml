@@ -10,6 +10,7 @@
         <menuitem id="estate_first_level_menu" name="Advertisements">
             <menuitem id="estate_model_menu_action" action="estate_property_model_action"/>
         </menuitem>
+        <menuitem id="estate_settings_menu" name="Settings"/>
     </menuitem>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -40,9 +41,12 @@
                             <field name="name"/>
                         </h1>
                     </div>
-
+                    <group>
+                        <field name="tag_ids" widget="many2many_tags" nolabel="1"/>
+                    </group>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -71,8 +75,16 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
                     </notebook>
-
                 </sheet>
             </form>
         </field>
