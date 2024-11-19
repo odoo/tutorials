@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from datetime import timedelta, date
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -36,3 +37,25 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - record.create_date.date()).days
     
     #endregion
+
+        #region actions
+    def action_set_accepted(self):
+        for record in self:
+            try:
+                record.property_id.action_offer_accepted(self)
+                record.status = 'accepted'
+            except UserError as e:
+                raise e
+            
+    def action_set_refused(self):
+        for record in self:
+            record.status = 'refused'
+
+    def action_reset(self):
+        for record in self:
+            if record.status == 'accepted':
+                record.property_id.action_set_new()
+            record.status = False
+
+    #endregion
+

@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from datetime import timedelta
 
 class EstateProperty(models.Model):
@@ -65,5 +66,33 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else False
         self.garden_orientation = 'n' if self.garden else False
+
+    #endregion
+
+    #region actions
+    def action_set_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties can not be cancelled!")
+            record.state = 'cancelled'
+    
+    def action_set_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancelled properties can not be sold!")
+            record.state = 'sold'
+
+    def action_set_new(self):
+        for record in self:
+            record.state = 'new'
+            self.selling_price = False
+            self.partner_id = False
+
+    def action_offer_accepted(self, offer):
+        if self.state == 'offer_accepted':
+            raise UserError("this property has already an accepted offer!!")
+        self.state = 'offer_accepted'
+        self.selling_price = offer.price
+        self.partner_id = offer.partner_id
 
     #endregion
