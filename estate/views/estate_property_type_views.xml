@@ -11,6 +11,7 @@
         <field name="arch" type="xml">
             <list string="Estate Property Type" >
                 <field name="name" string="Title"/>
+                <field name="sequence" widget="handle"/>
             </list>
         </field>
     </record>
@@ -24,7 +25,27 @@
                         <h1 class="mb32">
                             <field name="name" class="mb16"/>
                         </h1>
+                        
                     </div>
+                    <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="action"
+                                name="%(estate.estate_property_offer_action)d"
+                                icon="fa-money">
+                                <field name="offer_count" class="o_stat_value" widget="statinfo" string="Offers"/>
+                            </button>
+                    </div>
+                    
+                    <notebook>
+                        
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="title"/>
+                                    <field name="expected_price"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

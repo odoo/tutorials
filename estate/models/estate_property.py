@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_is_zero, float_compare
 class EstatePropertyModel(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     title = fields.Char(required=True)
     active = fields.Boolean(default=True)
@@ -51,6 +52,13 @@ class EstatePropertyModel(models.Model):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'north' if self.garden else None
 
+    @api.onchange("offer_ids")
+    def _onchange_offer(self):
+        if (self.offer_ids == False or len(self.offer_ids) == 0) and self.state == 'offer_received':
+            self.state = "new"
+        if self.offer_ids != False and len(self.offer_ids) > 0  and self.state == 'new':
+            self.state = "offer_received"
+
     def action_set_sold(self):
         for record in self:
             if record.state == "cancelled":
@@ -81,3 +89,9 @@ class EstatePropertyModel(models.Model):
         for record in self:
             if not float_is_zero(record.selling_price, 1) and float_compare(record.selling_price, record.expected_price * 0.9, 1) < 0 :
                 raise ValidationError(_("The selling price must be at least 90% of the expected price"))
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_is_new_or_cancelled(self):
+        if any(property.state != 'new' and property.state != 'cancelled' for property in self):
+            raise UserError('Only "new" and "cancelled properties can be deleted"')
+
