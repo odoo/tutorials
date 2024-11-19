@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, _
 
 
 class EstatePropertyTagModel(models.Model):
@@ -11,5 +11,5 @@ class EstatePropertyTagModel(models.Model):
 
     _sql_constraints = [
         ('check_unique_name', 'unique(name)',
-         'Tag name must be unique.'),
+         _('Tag name must be unique.')),
     ]

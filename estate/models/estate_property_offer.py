@@ -52,7 +52,7 @@ class EstatePropertyOfferModel(models.Model):
         property = self.env['estate.property'].browse(vals['property_id'])
 
         if property.offer_ids and len(property.offer_ids) > 0 and any(offer.price > vals['price'] for offer in property.offer_ids):
-            raise UserError("Can't place an offer with less price than existing offers")
+            raise UserError(_("Can't place an offer with less price than existing offers"))
         return super().create(vals)
 
     _sql_constraints = [

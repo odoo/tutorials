@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 
 
 class EstatePropertyTypeModel(models.Model):
@@ -13,7 +13,7 @@ class EstatePropertyTypeModel(models.Model):
     sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
     _sql_constraints = [
         ('check_unique_name', 'unique(name)',
-         'Type name must be unique.'),
+         _('Type name must be unique.')),
     ]
 
     @api.depends("offer_ids")
