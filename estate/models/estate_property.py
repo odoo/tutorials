@@ -6,7 +6,8 @@ from datetime import timedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property data model"
-
+    _order = "id desc"
+    
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -68,6 +69,13 @@ class EstateProperty(models.Model):
         self.garden_area = 10 if self.garden else False
         self.garden_orientation = 'n' if self.garden else False
 
+    @api.onchange('property_offer_ids')
+    def _onchange_property_offer_ids(self):
+        if len(self.property_offer_ids) > 0:
+            self.action_offer_received()
+        else:
+            self.action_set_new()
+
     #endregion
 
     #region actions
@@ -95,6 +103,9 @@ class EstateProperty(models.Model):
         self.state = 'offer_accepted'
         self.selling_price = offer.price
         self.partner_id = offer.partner_id
+
+    def action_offer_received(self):
+        self.state = 'offer_received'
 
     #endregion
 

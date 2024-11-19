@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = ''
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection([
@@ -18,6 +19,7 @@ class EstatePropertyOffer(models.Model):
     # Relations
     partner_id = fields.Many2one(comodel_name='res.partner', required=True)
     property_id = fields.Many2one(comodel_name='estate.property', required=True)
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
 
     # computed 
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
@@ -54,7 +56,7 @@ class EstatePropertyOffer(models.Model):
     def action_reset(self):
         for record in self:
             if record.status == 'accepted':
-                record.property_id.action_set_new()
+                record.property_id.action_offer_received()
             record.status = False
 
     #endregion
