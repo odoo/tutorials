@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="act_estate_property_test" model="ir.actions.act_window">
+        <field name="name">Property</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">ep.view.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Estate property">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living area (sqm)"/>
+                <field name="expected_price" string="Expected price"/>
+                <field name="selling_price" string="Selling price"/>
+                <field name="date_availability" string="Available from"/>
+            </list>
+        </field>
+    </record>
+    <!--Form view is currently screwed up, using the default instead-->
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">ep.view.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate property">
+                <sheet>
+                    <!-- IDK how to style the title to look title-ish from here -->
+                    <field name="name" string="Title"/>
+                    <group>
+                        <group>
+                            <field name="postcode" string="Postcode"/>
+                            <field name="date_availability" string="Available from"/>
+                        </group>
+                        <group>
+                            <field name="expected_price" string="Expected price"/>
+                            <field name="selling_price" string="Selling price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" string="Description"/>
+                                <field name="bedrooms" string="Bedrooms"/>
+                                <field name="living_area" string="Living area (sqm)"/>
+                                <field name="facades" string="Facade"/>
+                            </group>
+                            <group>
+                                <field name="garage" string="Garage"/>
+                                <field name="garden" string="Garden"/>
+                                <field name="garden_area" string="Garden area (sqm)"/>
+                                <field name="garden_orientation" string="Garden orientation"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="estate_propety_search_view" model="ir.ui.view">
+        <field name="name">ep.view.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="expected_price" string="Expected price"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living area (sqm)"/>
+                <field name="facades" string="Facade"/>
+                <!--Figure out how domains work and fix this, should be if date_available <= *today*-->
+                <filter name="is_available" string="Available" domain="[('date_availability', '&lt;=', 'datetime.date.today()')]"/>
+                <!--Add group by postcode when caught up-->
+                <group expand="1" string="Group By">
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                </group>
+            </search>
+        </field>
+   </record>
+</odoo>

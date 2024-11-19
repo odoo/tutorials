@@ -1,0 +1,1 @@
+~/repositories/odoo/odoo-bin --addons-path="~/repositories/odoo/addons/,~/repositories/enterprise/,~/repositories/tutorials" -d rd-demo -u estate
