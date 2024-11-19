@@ -9,7 +9,7 @@ class EstatePropertyType(models.Model):
     name = fields.Char(required=True, string="Property Type")
 
     _sql_constraints = [
-        ("check_property_type", "UNIQUE(name)", "Property type must be unique"),
+        ("check_property_type", "UNIQUE(name)", "Property type must be unique."),
     ]
 
     offer_ids = fields.One2many("estate.property.offers", "property_type_id")
@@ -17,7 +17,7 @@ class EstatePropertyType(models.Model):
     property_ids = fields.One2many("estate.property", "property_type_id")
 
     sequence = fields.Integer(
-        "Sequence", default=1, help="Used to order stages. Lower is better."
+        "Sequence", default=1, help="Used to order property types. Lower values are higher priority."
     )
 
     offer_counts = fields.Integer(compute="_compute_offers_by_property_types")

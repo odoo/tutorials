@@ -5,10 +5,11 @@ from odoo.exceptions import ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offers"
-    _description = "Real Estate Property offer"
+    _description = "Real Estate Property Offer"
     _order = "price desc"
+    
     _sql_constraints = [
-        ("check_price", "CHECK(price > 0)", "Price cannot be less than 0"),
+        ("check_price", "CHECK(price > 0)", "Price cannot be less than or equal to 0."),
     ]
 
     price = fields.Float(required=True)
@@ -73,18 +74,19 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
 
-    @api.model
-    def create(self, vals):
-        if not isinstance(vals, dict):
+    @api.model_create_multi
+    def create(self, vals_list):
+        if not isinstance(vals_list, list):
             raise ValidationError("Unexpected input to create method.")
 
-        property_id = vals.get("property_id")
-        if property_id:
-            property = self.env["estate.property"].browse(property_id)
-            max_price = max(property.offer_ids.mapped("price"), default=0)
-            if vals["price"] <= max_price:
-                raise ValidationError(
-                    f"The offer price should be greater than the current maximum offer price ({max_price})."
-                )
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            if property_id:
+                property = self.env["estate.property"].browse(property_id)
+                max_price = max(property.offer_ids.mapped("price"), default=0)
+                if vals["price"] <= max_price:
+                    raise ValidationError(
+                        f"The offer price must be greater than the current maximum offer price of {max_price}."
+                    )
 
-        return super(EstatePropertyOffer, self).create(vals)
+        return super(EstatePropertyOffer, self).create(vals_list)

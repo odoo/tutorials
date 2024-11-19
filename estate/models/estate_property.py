@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
 
     name = fields.Char(required=True, string="Name")
-    postcode = fields.Char(string="pincode")
+    postcode = fields.Char(string="Pincode")
     date_availability = fields.Date(
         string="Available from",
         default=lambda self: (datetime.now() + relativedelta(months=3)).date(),
@@ -21,12 +21,12 @@ class EstateProperty(models.Model):
 
     description = fields.Char()
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer(string="living area(sqm)")
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
     active = fields.Boolean(default=True)
-    garden_area = fields.Integer(string="garden area(sqm)")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         [
             ("north", "North"),
@@ -46,7 +46,7 @@ class EstateProperty(models.Model):
         required=True,
         default="new",
     )
-    total_area = fields.Float(compute="_compute_total_area", string="total area(sqm)")
+    total_area = fields.Float(compute="_compute_total_area", string="Total Area (sqm)")
     property_type_id = fields.Many2one("estate.property.types", required=True)
     user_id = fields.Many2one(
         "res.users",
@@ -91,20 +91,20 @@ class EstateProperty(models.Model):
             if record.state not in ["cancelled"]:
                 record.state = "sold"
             else:
-                raise UserError("cancelled can not be sell")
+                raise UserError("A cancelled property cannot be sold.")
 
     def onclick_cancel(self):
         for record in self:
             if record.state not in ["sold"]:
                 record.state = "cancelled"
             else:
-                raise UserError("sold can not be cancel")
+                raise UserError("A sold property cannot be cancelled.")
 
     _sql_constraints = [
         (
             "check_expected_price_cust",
             "CHECK(expected_price > 0)",
-            "expected price cannot be less than 0",
+            "Expected price cannot be less than 0.",
         ),
     ]
 
@@ -124,8 +124,8 @@ class EstateProperty(models.Model):
                 )
 
     @api.ondelete(at_uninstall=False)
-    def _prevent_deletion_of_record_while_state_is_not_new_cancelled(self):
+    def _prevent_deletion_of_record_while_state_is_not_new_or_cancelled(self):
         if any(record.state not in ["new", "cancelled"] for record in self):
             raise AccessError(
-                "You can only delete property if it is in new or cancelled state!"
+                "You can only delete a property if it is in the 'new' or 'cancelled' state."
             )
