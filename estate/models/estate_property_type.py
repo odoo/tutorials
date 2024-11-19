@@ -6,3 +6,10 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(required=True)
     
+        #region Constraint
+    _sql_constraints = [
+        ('check_name', 'UNIQUE(name)',
+         'The property type names MUST be unique.'),
+    ]
+
+    #endregion

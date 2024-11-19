@@ -1,5 +1,6 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 from datetime import timedelta
 
 class EstateProperty(models.Model):
@@ -94,5 +95,24 @@ class EstateProperty(models.Model):
         self.state = 'offer_accepted'
         self.selling_price = offer.price
         self.partner_id = offer.partner_id
+
+    #endregion
+
+    #region Constraint
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)',
+         'The expected price of a property MUST be postive.'),
+         ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price of a property MUST be postive.'),
+    ]
+
+    @api.constrains('expected_price','selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=3):
+                continue
+
+            if float_compare(value1=record.selling_price, value2=(0.9*record.expected_price),precision_digits=3) == -1:
+                raise ValidationError("Selling price must be at least 90% of the expected price!")
 
     #endregion

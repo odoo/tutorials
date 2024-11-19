@@ -59,3 +59,11 @@ class EstatePropertyOffer(models.Model):
 
     #endregion
 
+        #region Constraint
+    _sql_constraints = [
+        ('check_price', 'CHECK(price >= 0)',
+         'The price of an offer MUST be postive.'),
+         
+    ]
+
+    #endregion
