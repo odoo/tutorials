@@ -46,8 +46,12 @@
                     <h1>
                         <field name="name" string="Ttile"/>
                     </h1>
+                    <div class='mb-3'>
+                        <field name="property_tag_ids" widget="many2many_tags"/>
+                    </div>
                     <group>
                         <group>
+                            <field name="property_type_id" string="Property Type"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Availabe From"/>
                         </group>
@@ -57,7 +61,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page tring="Description">
+                        <page string="Description">
                             <group>
                                 <field name="description" string="Description"/>
                                 <field name="bedrooms" string="Bedrooms"/>
@@ -67,6 +71,15 @@
                                 <field name="garden" string="Garden"/>
                                 <field name="garden_area" string="Garden Area"/>
                                 <field name="garden_orientation" string="Garden Orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name='property_offer_ids' />
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="user_id" />
+                                <field name="partner_id" />
                             </group>
                         </page>
                     </notebook>
