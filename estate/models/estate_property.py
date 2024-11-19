@@ -41,4 +41,14 @@ class EstateProperty(models.Model):
         selection=[('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
     
     active = fields.Boolean('Active', default=True)
+
+    property_type_id = fields.Many2one('estate.property.type', 'Property Type')
+
+    buyer_id = fields.Many2one('res.partner', 'Buyer', copy=False)
+
+    salesperson_id = fields.Many2one('res.users', 'Salesperson', default=lambda self: self.env.user)
+
+    tag_ids = fields.Many2many('estate.property.tag')
+
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
     
