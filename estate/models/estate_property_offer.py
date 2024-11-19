@@ -40,7 +40,7 @@ class EstatePropertyOffer(models.Model):
     
     #endregion
 
-        #region actions
+    #region actions
     def action_set_accepted(self):
         for record in self:
             try:
@@ -61,11 +61,19 @@ class EstatePropertyOffer(models.Model):
 
     #endregion
 
-        #region Constraint
+    #region Constraint
     _sql_constraints = [
         ('check_price', 'CHECK(price >= 0)',
          'The price of an offer MUST be postive.'),
          
     ]
 
+    #endregion
+
+    #region CRUD
+    @api.model
+    def create(self, vals_list):
+        self.env['estate.property'].browse(vals_list['property_id']).action_offer_received()
+        return super().create(vals_list)
+    
     #endregion

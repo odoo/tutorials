@@ -69,13 +69,6 @@ class EstateProperty(models.Model):
         self.garden_area = 10 if self.garden else False
         self.garden_orientation = 'n' if self.garden else False
 
-    @api.onchange('property_offer_ids')
-    def _onchange_property_offer_ids(self):
-        if len(self.property_offer_ids) > 0:
-            self.action_offer_received()
-        else:
-            self.action_set_new()
-
     #endregion
 
     #region actions
@@ -125,5 +118,14 @@ class EstateProperty(models.Model):
 
             if float_compare(value1=record.selling_price, value2=(0.9*record.expected_price),precision_digits=3) == -1:
                 raise ValidationError("Selling price must be at least 90% of the expected price!")
+
+    #endregion
+
+    #region CRUD
+    @api.ondelete(at_uninstall=True)
+    def prevent_delete(self):
+        for record in self:
+            if record.state not in ('new','cancelled'):
+                raise UserError("Cann't be deleted")
 
     #endregion
