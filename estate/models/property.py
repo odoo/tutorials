@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -23,7 +24,7 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         selection=[('North', 'North'), ('South', 'South'), ('East', 'East'), ('West', 'West')])
     active: bool = fields.Boolean(default=True)
-    state = fields.Selection(copy=False, default='New', required=True,
+    state = fields.Selection(copy=False, default='New', required=True, string='Status',
                              selection=[('New', 'New'), ('Offer Received', 'Offer Received'),
                                         ('Offer Accepted', 'Offer Accepted'), ('Sold', 'Sold'),
                                         ('Cancelled', 'Cancelled')])
@@ -35,10 +36,10 @@ class EstateProperty(models.Model):
     total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price', string="Best Offer")
 
-    @api.depends("garden_area", "living_area")
+    @api.depends( "living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
-            self.total_area = record.garden_area + record.living_area
+            self.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -53,3 +54,30 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state == 'Cancelled':
+                raise UserError("Cancelled properties cannot be sold.")
+            record.state = 'Sold'
+        return True
+
+    def action_set_cancelled(self):
+        for record in self:
+            if record.state == 'Sold':
+                raise UserError("Sold properties cannot be cancelled.")
+            record.state = 'Cancelled'
+        return True
+
+    def accept_offer(self, accepted_offer):
+        if self.state == 'Offer Accepted':
+            raise UserError("An offer has already been accepted.")
+        self.state = 'Offer Accepted'
+        self.buyer_id = accepted_offer.partner_id
+        self.selling_price = accepted_offer.price
+        accepted_offer.status = 'Accepted'
+
+        # Refuse other offers
+        for offer in self.offer_ids:
+            if offer != accepted_offer:
+                offer.status = 'Refused'

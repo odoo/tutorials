@@ -35,6 +35,10 @@
 
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_set_sold" type="object" string="Sold"/>
+                    <button name="action_set_cancelled" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -46,6 +50,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -73,7 +78,6 @@
                                 </group>
                                 <group>
                                     <field name="active"/>
-                                    <field name="state"/>
                                 </group>
                             </group>
                         </page>
