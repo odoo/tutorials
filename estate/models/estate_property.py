@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 from datetime import date, timedelta
 
 class EstateProperty(models.Model):
@@ -52,3 +52,25 @@ class EstateProperty(models.Model):
 
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     
+    total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
+
+    best_price = fields.Float(string="Best Price", compute="_compute_best_price")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = min(record.offer_ids.mapped('price'), default=0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
