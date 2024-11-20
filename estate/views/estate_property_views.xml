@@ -1,12 +1,12 @@
 <odoo>
     <!-- Define a List View for Estate Properties -->
-    <record id="view_estate_property_tree" model="ir.ui.view">
-        <field name="name">estate.property.tree</field>
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list default_order="id desc" decoration-bf="state=='offer_accepted'"
+            <list default_order="id desc" decoration-bf="state == 'offer_accepted'"
                 decoration-success="state in ['offer_received','offer_accepted']"
-                decoration-muted="state=='sold'">
+                decoration-muted="state =='sold'">
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="postcode" />
@@ -27,7 +27,7 @@
     </record>
 
     <record id="view_estate_property_form" model="ir.ui.view">
-        <field name="name">estate.property.tree</field>
+        <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Test">
@@ -141,6 +141,41 @@
                 <filter name="archived" domain="[('active', '=', False)]" />
                 <filter name="postcode" string="pincode" context="{'group_by':'postcode'}" />
             </search>
+        </field>
+    </record>
+
+
+    <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="False"
+                default_order="expected_price">
+                <field name="state" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <h4>
+                                <field name="name" />
+                            </h4>
+                            <group> Expected price: <field name="expected_price" />
+                            </group>
+                            <group>
+                                <div t-if="record.state.raw_value == 'offer_received'"> Best price: <field
+                                        name="best_price" />
+                                </div>
+                            </group>
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
+                                <group> Selling price: <field name="selling_price" />
+                                </group>
+                            </div>
+                            <field name="tag_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>

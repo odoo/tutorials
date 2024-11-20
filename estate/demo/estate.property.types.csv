@@ -1,0 +1,7 @@
+"id","name","sequence"
+"estate_property_type_residential","Residential","1"
+"estate_property_type_commercial","Commercial","2"
+"estate_property_type_land","Land","3"
+"estate_property_type_industrial","Industrial","4"
+"estate_property_type_villa","Villa","5"
+"estate_property_type_apartment","Apartment","6"

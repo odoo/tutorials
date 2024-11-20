@@ -1,18 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
-
     <!-- Define the Root Menu -->
-    <menuitem id="real_estate_menu_app" name="Real Estate"/>
+    <menuitem
+        id="real_estate_menu_app"
+        name="Real Estate"
+    />
 
     <!-- Properties Menu -->
-    <menuitem id="real_estate_menu_advertiesments" parent="real_estate_menu_app" name="Advertiesments"/>
-    <menuitem id="real_estate_menu_advertiesments_properties" parent="real_estate_menu_advertiesments" action="action_real_estate_menu_advertiesments_properties" name="Properties"/>
+    <menuitem
+        id="real_estate_menu_advertiesments"
+        name="Advertiesments"
+        parent="real_estate_menu_app"
+    />
+    <menuitem
+        id="real_estate_menu_advertiesments_properties"
+        name="Properties"
+        parent="real_estate_menu_advertiesments"
+        action="action_estate_menu_advertiesments_properties"
+    />
 
     <!-- Setting Menu -->
-    <menuitem id="real_estate_menu_setting" parent="real_estate_menu_app"  name="Settings"/>
-    <menuitem id="real_estate_menu_setting_property_type" parent="real_estate_menu_setting" action="action_real_estate_menu_setting_property_type" name="Properties Types"/>
-    <menuitem id="real_estate_menu_setting_property_tags" parent="real_estate_menu_setting" action="action_real_estate_menu_setting_property_tags" name="Properties Tags"/>
-
-
+    <menuitem
+        id="real_estate_menu_setting"
+        parent="real_estate_menu_app"
+        name="Settings"
+    />
+    <menuitem
+        id="real_estate_menu_setting_property_type"
+        parent="real_estate_menu_setting"
+        action="action_estate_settings_property_types"
+        name="Properties Types"
+    />
+    <menuitem
+        id="real_estate_menu_setting_property_tags"
+        parent="real_estate_menu_setting"
+        action="action_estate_settings_property_tags"
+        name="Properties Tags"
+    />
 </odoo>

@@ -1,23 +1,31 @@
 <odoo>
     <!-- action on real estate property menu -->
-    <record id="action_real_estate_menu_advertiesments_properties" model="ir.actions.act_window">
+    <record id="action_estate_menu_advertiesments_properties" model="ir.actions.act_window">
         <field name="name">Real Estate Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
 
     <!-- action on real estate property types menu -->
-    <record id="action_real_estate_menu_setting_property_type" model="ir.actions.act_window">
+    <record id="action_estate_settings_property_types" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.types</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <!-- action on real estate property tags menu -->
-    <record id="action_real_estate_menu_setting_property_tags" model="ir.actions.act_window">
+    <record id="action_estate_settings_property_tags" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
         <field name="res_model">estate.property.tags</field>
         <field name="view_mode">list</field>
+    </record>
+
+    <!-- stat button -->
+    <record id="open_related_offers" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offers</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

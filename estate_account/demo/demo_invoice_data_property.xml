@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+        <record id="account_move_100" model="account.move">
+            <field name="move_type">out_invoice</field>
+            <field name="partner_id" ref="base.res_partner_5" />
+            <field name="property_id" ref="estate.estate_property_luxury_mountain_view_villa" />
+            <field name="invoice_line_ids"
+                eval="[
+                    Command.create({'name': 'Property selling price', 'quantity': 1, 'price_unit': 48050000}),
+                 Command.create({'name': '6% of the selling price', 'quantity': 1, 'price_unit': 48050000 * 0.06}),
+                 Command.create({'name': 'Administrative price', 'quantity': 1, 'price_unit': 100}),
+                ]"
+            />
+
+        </record>
+
+        <record id="account_move_200" model="account.move">
+            <field name="move_type">in_invoice</field>
+            <field name="partner_id" ref="base.res_partner_18" />
+            <field name="property_id" ref="estate.estate_property_land_for_sale" />
+            <field name="invoice_line_ids"
+                eval="[
+                 Command.create({'name': 'Property purchase price', 'quantity': 1, 'price_unit': 2655000}),
+                 Command.create({'name': '6% of the purchase price', 'quantity': 1, 'price_unit': 2655000 * 0.06}),
+                 Command.create({'name': 'Administrative cost', 'quantity': 1, 'price_unit': 100}),
+                ]"
+            />
+        </record>
+
+        <record id="account_move_300" model="account.move">
+            <field name="move_type">in_invoice</field>
+            <field name="partner_id" ref="base.res_partner_12" />
+            <field name="property_id" ref="estate.estate_property_industrial_warehouse" />
+            <field name="invoice_line_ids"
+                eval="[
+                 Command.create({'name': 'Property purchase price', 'quantity': 1, 'price_unit': 10550000}),
+                 Command.create({'name': '6% of the purchase price', 'quantity': 1, 'price_unit': 10550000 * 0.06}),
+                 Command.create({'name': 'Administrative cost', 'quantity': 1, 'price_unit': 100}),
+                ]"
+            />
+        </record>
+    </data>
+</odoo>

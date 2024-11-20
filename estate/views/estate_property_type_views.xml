@@ -1,7 +1,6 @@
 <odoo>
-
     <!-- Define a List View for Estate Properties -->
-    <record id="view_estate_property_types_tree" model="ir.ui.view">
+    <record id="view_estate_property_type_tree" model="ir.ui.view">
         <field name="name">estate.property.types.tree</field>
         <field name="model">estate.property.types</field>
         <field name="arch" type="xml">
@@ -13,14 +12,14 @@
     </record>
 
     <!-- Define a Form View for Estate Properties -->
-    <record id="view_estate_property_types_form" model="ir.ui.view">
+    <record id="view_estate_property_type_form" model="ir.ui.view">
         <field name="name">estate.property.types.tree</field>
         <field name="model">estate.property.types</field>
         <field name="arch" type="xml">
             <form string="Test">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="%(action_real_estate_smart_button_property_offers)d"
+                        <button name="%(open_related_offers)d"
                             type="action" icon="fa-bars" string="offers"
                             invisible="offer_counts == 0"
                         >
@@ -54,7 +53,7 @@
     </record>
 
     <!-- Define a Search, GroupBy, and Filter View for Estate Properties -->
-    <record id="view_estate_property_types_search" model="ir.ui.view">
+    <record id="view_estate_property_type_search" model="ir.ui.view">
         <field name="name">estate.property.types.search</field>
         <field name="model">estate.property.types</field>
         <field name="type">search</field>

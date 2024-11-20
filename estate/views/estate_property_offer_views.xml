@@ -1,7 +1,7 @@
 <odoo>
     <!-- Define a List View for Estate Properties -->
-    <record id="view_estate_property_offers_tree" model="ir.ui.view">
-        <field name="name">estate.property.offers.tree</field>
+    <record id="view_estate_property_offer_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offers</field>
         <field name="arch" type="xml">
             <list editable="bottom" decoration-success="status=='accepted'"
@@ -21,8 +21,8 @@
     </record>
 
     <!-- Define a Form View for Estate Properties -->
-    <record id="view_estate_property_offers_form" model="ir.ui.view">
-        <field name="name">estate.property.offers.tree</field>
+    <record id="view_estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offers</field>
         <field name="arch" type="xml">
             <form string="Test">

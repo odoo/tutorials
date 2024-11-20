@@ -6,8 +6,11 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
                 <div class="oe_button_box" name="button_box">
-                    <button name="%(action_real_estate_account_smart_button_invoices)d"
-                        type="action" icon="fa-bars" string="offers"
+                    <button
+                        name="%(open_related_invoices)d"
+                        type="action"
+                        icon="fa-bars"
+                        string="offers"
                         invisible="invoice_count == 0"
                     >
                         <div class="o_stat_info">

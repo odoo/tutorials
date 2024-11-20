@@ -1,0 +1,210 @@
+<odoo>
+    <data>
+        <record id="estate_property_big_villa" model="estate.property">
+            <field name="name">Big Villa</field>
+            <field name="state">offer_received</field>
+            <field name="description">A nice and big villa</field>
+            <field name="postcode">12345</field>
+            <field name="date_availability">2020-02-02</field>
+            <field name="expected_price">1600000.00</field>
+            <field name="selling_price">0.00</field>
+            <field name="bedrooms">6</field>
+            <field name="living_area">100</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">100000</field>
+            <field name="garden_orientation">south</field>
+            <field name="property_type_id" ref="estate_property_type_villa" />
+        </record>
+
+        <record id="estate_property_trailer_home" model="estate.property">
+            <field name="name">Trailer home</field>
+            <field name="state">cancelled</field>
+            <field name="description">Home in a trailer park</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability">1970-01-01</field>
+            <field name="expected_price">100000.00</field>
+            <field name="selling_price">91000.00</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation" />
+            <field name="property_type_id" ref="estate_property_type_apartment" />
+        </record>
+
+        <record id="estate_property_my_home" model="estate.property">
+            <field name="name">My home</field>
+            <field name="state">offer_received</field>
+            <field name="description">Home in a my park</field>
+            <field name="postcode">123456</field>
+            <field name="date_availability" eval="datetime.now()" />
+            <field name="expected_price">110000.00</field>
+            <field name="selling_price">0.00</field>
+            <field name="bedrooms">15</field>
+            <field name="living_area">10000</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation" />
+            <field name="property_type_id" ref="estate_property_type_residential" />
+            <field name="offer_ids"
+                eval="[
+                    Command.create({
+                        'price': 200000,
+                        'status': 'refused',
+                        'partner_id': ref('base.res_partner_12'),
+                        'validity': 17
+                    }),
+                    Command.create({
+                        'price': 210000,
+                        'partner_id': ref('base.res_partner_18'),
+                        'validity': 5
+                    }),
+                    Command.create({
+                        'price': 2000000,
+                        'partner_id': ref('base.res_partner_5'),
+                        'validity': 20
+                    })
+                ]"
+            />
+        </record>
+
+
+        <record id="estate_property_modern_villa" model="estate.property">
+            <field name="name">Modern Villa</field>
+            <field name="state">offer_received</field>
+            <field name="description">A sleek, modern villa with spacious living rooms.</field>
+            <field name="postcode">67890</field>
+            <field name="date_availability">2024-01-01</field>
+            <field name="expected_price">2500000.00</field>
+            <field name="selling_price">0.00</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">350</field>
+            <field name="facades">3</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">500</field>
+            <field name="garden_orientation">north</field>
+            <field name="property_type_id" ref="estate_property_type_villa" />
+            <field name="tag_ids"
+                eval="[(6, 0, [ref('tag_modern'), ref('tag_luxury'), ref('tag_spacious')])]" />
+        </record>
+
+        <record id="estate_property_commercial_office" model="estate.property">
+            <field name="name">Commercial Office</field>
+            <field name="state">new</field>
+            <field name="description">A large commercial office space in the city center.</field>
+            <field name="postcode">11223</field>
+            <field name="date_availability">2024-06-01</field>
+            <field name="expected_price">1500000.00</field>
+            <field name="selling_price">0.00</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">1000</field>
+            <field name="facades">2</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation" />
+            <field name="property_type_id" ref="estate_property_type_commercial" />
+            <field name="tag_ids" eval="[(6, 0, [ref('tag_city_center'), ref('tag_spacious')])]" />
+        </record>
+
+        <record id="estate_property_residential_apartment" model="estate.property">
+            <field name="name">Residential Apartment</field>
+            <field name="state">offer_accepted</field>
+            <field name="description">A modern residential apartment in a high-rise building.</field>
+            <field name="postcode">34567</field>
+            <field name="date_availability">2024-03-15</field>
+            <field name="expected_price">500000.00</field>
+            <field name="selling_price">510000.00</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">80</field>
+            <field name="facades">1</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation" />
+            <field name="property_type_id" ref="estate_property_type_residential" />
+            <field name="offer_ids"
+                eval="[
+                            Command.create({
+                                'price': 510000,
+                                'status': 'accepted',
+                                'partner_id': ref('base.res_partner_5'),
+                                'validity': 30
+                            }),
+                            Command.create({
+                                'price': 505000,
+                                'status': 'refused',
+                                'partner_id': ref('base.res_partner_3'),
+                                'validity': 15
+                            })
+                        ]"
+            />
+            <field name="tag_ids" eval="[(6, 0, [ref('tag_modern'), ref('tag_economical')])]" />
+        </record>
+
+        <record id="estate_property_land_for_sale" model="estate.property">
+            <field name="name">Land for Sale</field>
+            <field name="state">sold</field>
+            <field name="description">A plot of land ready for development.</field>
+            <field name="postcode">45678</field>
+            <field name="date_availability">2024-07-01</field>
+            <field name="expected_price">300000.00</field>
+            <field name="selling_price">2655000.00</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">0</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation" />
+            <field name="property_type_id" ref="estate_property_type_land" />
+            <field name="tag_ids" eval="[(6, 0, [ref('tag_green'), ref('tag_waterfront')])]" />
+        </record>
+
+        <record id="estate_property_industrial_warehouse" model="estate.property">
+            <field name="name">Industrial Warehouse</field>
+            <field name="state">sold</field>
+            <field name="description">An industrial warehouse with large storage capacity.</field>
+            <field name="postcode">98765</field>
+            <field name="date_availability">2024-04-10</field>
+            <field name="expected_price">1000000.00</field>
+            <field name="selling_price">10550000.00</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">2000</field>
+            <field name="facades">2</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation" />
+            <field name="property_type_id" ref="estate_property_type_industrial" />
+            <field name="tag_ids" eval="[(6, 0, [ref('tag_spacious')])]" />
+        </record>
+
+        <record id="estate_property_luxury_mountain_view_villa" model="estate.property">
+            <field name="name">Luxury Mountain View Villa</field>
+            <field name="state">sold</field>
+            <field name="description">A luxurious villa with a spectacular mountain view.</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability">2024-08-01</field>
+            <field name="expected_price">5000000.00</field>
+            <field name="selling_price">48050000.00</field>
+            <field name="bedrooms">7</field>
+            <field name="living_area">800</field>
+            <field name="facades">5</field>
+            <field name="garage">True</field>
+            <field name="active">false</field>
+            <field name="garden_area">2000</field>
+            <field name="garden_orientation">west</field>
+            <field name="property_type_id" ref="estate_property_type_villa" />
+            <field name="tag_ids" eval="[(6, 0, [ref('tag_luxury'), ref('tag_mountain_view')])]" />
+        </record>
+    </data>
+</odoo>
+        

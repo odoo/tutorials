@@ -111,17 +111,18 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
-            if (
-                float_compare(
-                    record.selling_price,
-                    record.expected_price * 90 / 100,
-                    precision_digits=2,
-                )
-                == -1
-            ):
-                raise ValidationError(
-                    "Selling price is too low! It must be at least 90% of the expected price."
-                )
+            if record.state not in ["new","offer_received"]:
+                if (
+                    float_compare(
+                        record.selling_price,
+                        record.expected_price * 90 / 100,
+                        precision_digits=2,
+                    )
+                    == -1
+                ):
+                    raise ValidationError(
+                        "Selling price is too low! It must be at least 90% of the expected price."
+                    )
 
     @api.ondelete(at_uninstall=False)
     def _prevent_deletion_of_record_while_state_is_not_new_or_cancelled(self):

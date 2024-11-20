@@ -1,8 +1,8 @@
 <odoo>
 
     <!-- Define a List View for Estate Properties -->
-    <record id="view_estate_property_tags_tree" model="ir.ui.view">
-        <field name="name">estate.property.tags.tree</field>
+    <record id="view_estate_property_tag_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.list</field>
         <field name="model">estate.property.tags</field>
         <field name="arch" type="xml">
             <list default_order="name" editable="bottom">
@@ -13,8 +13,8 @@
     </record>
 
     <!-- Define a Search, GroupBy, and Filter View for Estate Properties -->
-    <record id="view_estate_property_tags_search" model="ir.ui.view">
-        <field name="name">estate.property.tags.search</field>
+    <record id="view_estate_property_tag_search" model="ir.ui.view">
+        <field name="name">estate.property.tag.search</field>
         <field name="model">estate.property.tags</field>
         <field name="type">search</field>
         <field name="arch" type="xml">

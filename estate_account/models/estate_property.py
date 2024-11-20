@@ -1,7 +1,7 @@
 from odoo import models, Command, api, fields
 
 
-class EstatePropertyInherited(models.Model):
+class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     invoice_ids = fields.One2many("account.move", "property_id", string="Invoices")
@@ -46,7 +46,3 @@ class EstatePropertyInherited(models.Model):
             }
         )
         return True
-
-    def temp_action(self):
-        print("test temp_action")
-        pass

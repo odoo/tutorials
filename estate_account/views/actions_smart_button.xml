@@ -1,8 +1,8 @@
 <odoo>
-    <record id="action_real_estate_account_smart_button_invoices" model="ir.actions.act_window">
+    <record id="open_related_invoices" model="ir.actions.act_window">
         <field name="name">Invoices</field>
         <field name="res_model">account.move</field>
         <field name="domain">[('property_id', '=', active_id)]</field>
-        <field name="view_mode">list,form</field> 
-    </record>    
+        <field name="view_mode">list,form</field>
+    </record>
 </odoo>
