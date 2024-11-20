@@ -3,7 +3,7 @@
     <record id="view_user_form" model="ir.ui.view">
         <field name="name">Estate Property in User Form</field>
         <field name="model">res.users</field>
-        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="inherit_id" ref="base.view_users_form" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Real Estate Properties" name="real_estate_properties">
@@ -13,4 +13,5 @@
             </xpath>
         </field>
     </record>
+    
 </odoo>

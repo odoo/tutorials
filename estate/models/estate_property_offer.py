@@ -21,12 +21,10 @@ class EstatePropertyOfferModel(models.Model):
         for record in self:
             creation_date = record.create_date or fields.Datetime.now()
             record.date_deadline = creation_date + timedelta(days=record.validity)
-        return True
 
     def _inverse_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - date.today()).days
-        return True
 
     def action_accept_offer(self):
         for record in self:
@@ -47,15 +45,19 @@ class EstatePropertyOfferModel(models.Model):
         self.property_id.update({'selling_price':0, 'buyer_id':False, 'state':'new'})
         return True
     
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
-        property = self.env['estate.property'].browse(vals['property_id'])
-
-        if property.offer_ids and len(property.offer_ids) > 0 and any(offer.price > vals['price'] for offer in property.offer_ids):
-            raise UserError(_("Can't place an offer with less price than existing offers"))
+        properties = {property.id: property for property in self.env['estate.property'].browse([val['property_id'] for val in vals])}
+        
+        for val in vals:
+            #TODO: batch the query
+            #property = self.env['estate.property'].browse(val['property_id'])
+            property = properties.get(val['property_id'],self.env['estate.property'])
+            if property.offer_ids and property.offer_ids.filtered(lambda offer: offer.price > val['price']):
+                raise UserError(_("Can't place an offer with less price than existing offers"))
         return super().create(vals)
 
     _sql_constraints = [
         ('check_price', 'CHECK(price > 0)',
-         _('The offer price must be strictly positive.')),
+         ('The offer price must be strictly positive.')),
     ]

@@ -9,6 +9,7 @@ class EstatePropertyModel(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _rec_name = "title"
 
     title = fields.Char(required=True)
     active = fields.Boolean(default=True)
@@ -40,15 +41,13 @@ class EstatePropertyModel(models.Model):
 
     @api.depends("offer_ids.price", "expected_price")
     def _compute_best_price(self):
+        self.best_price = 0
         for record in self:
-            if len(record.offer_ids) == 0:
-                record.best_price = 0
-            else:
+            if len(record.offer_ids) != 0:
                 record.best_price = max(offer.price for offer in record.offer_ids)
 
     @api.onchange("garden")
     def _onchange_garden(self):
-
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'north' if self.garden else None
 
@@ -65,7 +64,7 @@ class EstatePropertyModel(models.Model):
                 raise UserError(_("Cancelled properties cannot be sold"))
             if record.state == "sold":
                 raise UserError(_("property is already sold"))
-            record.state = "sold"
+        self.state = "sold"
         return True
 
     def action_cancel(self):
@@ -74,14 +73,14 @@ class EstatePropertyModel(models.Model):
                 raise UserError(_("Sold properties cannot be cancelled"))
             if record.state == "cancelled":
                 raise UserError(_("property is already cancelled"))
-            record.state = "cancelled"
+        self.state = "cancelled"
         return True
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
-         _('The expected price must be strictly positive.')),
+         'The expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)',
-         _('The selling price must be positive.'))
+         'The selling price must be positive.')
     ]
 
     @api.constrains('selling_price')
