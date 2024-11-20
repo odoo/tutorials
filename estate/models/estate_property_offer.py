@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # licence
 
 from odoo import api
@@ -27,6 +26,11 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', string="Buyer", required=True)
     # Computed
     date_deadline = fields.Date("Deadline date", compute='_compute_deadline', inverse='_inverse_deadline')
+    # Constrains
+    _sql_constraints = [
+        ('check_price_positive', 'CHECK(price >= 0)',
+         'The offer price must be strictly positive.'),
+    ]
 
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):

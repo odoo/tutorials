@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
 # licence
 
 from odoo import api
 from odoo import fields
 from odoo import models
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -57,6 +58,19 @@ class EstateProperty(models.Model):
     # Computed
     area_total = fields.Float("Total area", compute='_compute_area_total')
     best_offer = fields.Float("Best offer", compute='_compute_best_offer')
+    # Constraints
+    _sql_constraints = [
+        ('check_name_unique', 'UNIQUE(name)',
+         'The property title must be unique'),
+        ('check_price_positive', 'CHECK(expected_price >= 0)',
+         'The expected price must be strictly positive.'),
+    ]
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_price_good(self):
+        for record in self:
+            if (not float_is_zero(record.selling_price, precision_digits=3)) and (record.selling_price < record.expected_price * 0.9):
+                raise ValidationError("The offer price is unaccetably low!")
 
     def _compute_area_total(self):
         for record in self:

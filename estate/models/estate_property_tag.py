@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # licence
 
 from odoo import fields
@@ -11,3 +10,8 @@ class EstatePropertyTag(models.Model):
 
     name = fields.Char("Tag", required=True, translate=True)
     description = fields.Text("Tag description")
+    # Constraints
+    _sql_constraints = [
+        ('check_name_unique', 'UNIQUE(name)',
+         'The property type name must be unique'),
+    ]
