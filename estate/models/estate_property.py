@@ -66,6 +66,13 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0)
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if (not float_is_zero(record.selling_price, precision_digits=2) and
+                    float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0):
+                raise ValidationError(self.env._("The selling price must be at least 90% of the expected price."))
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -75,12 +82,11 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
+    @api.ondelete(at_uninstall=False)
+    def prevent_delete(self):
         for record in self:
-            if (not float_is_zero(record.selling_price, precision_digits=2) and
-                    float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0):
-                raise ValidationError(self.env._("The selling price must be at least 90% of the expected price."))
+            if record.state not in ('new', 'cancelled'):
+                raise UserError(self.env._("Only new and cancelled properties can be deleted."))
 
     def action_set_sold(self):
         for record in self:
@@ -108,3 +114,9 @@ class EstateProperty(models.Model):
         for offer in self.offer_ids:
             if offer != accepted_offer:
                 offer.status = 'refused'
+
+    def check_new_offer(self, offer_price):
+        self.state = 'offer_received'
+        if offer_price < min(self.offer_ids.mapped('price'), default=0):
+            raise UserError(self.env._("The offer price is less than the others."))
+        return True

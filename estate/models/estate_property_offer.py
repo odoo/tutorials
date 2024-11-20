@@ -37,6 +37,11 @@ class EstatePropertyOffer(models.Model):
             create_date = record.create_date or today()
             record.validity = (record.date_deadline - create_date.date()).days
 
+    @api.model
+    def create(self, vals_list):
+        self.env['estate.property'].browse(vals_list['property_id']).check_new_offer(vals_list['price'])
+        return super().create(vals_list)
+
     def action_accept(self):
         for record in self:
             self.property_id.accept_offer(record)
