@@ -5,7 +5,6 @@
     'summary': 'Estate module',
     'category': 'Tutorials/Estate',
     'application': True,
-    'installable': True,
     'license': 'AGPL-3',
     'data': [
         'security/ir.model.access.csv',
