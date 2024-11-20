@@ -26,3 +26,9 @@ class EstateProperty(models.Model):
     state = fields.Selection(string='State', selection=[('new', 'New'), ('recieved', 'Offer Received'),
                                                         ('accepted', 'Offer Accepted'), ('sold', 'Sold'),
                                                         ('cancelled', 'Cancelled')], required=True, copy=False, default='new')
+    # Relational
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    salesperson_id = fields.Many2one("res.users", string="Salesperson") #, default=self.env.user) # <-- apparently this is not how it works
