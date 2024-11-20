@@ -27,12 +27,12 @@
 
     <record id="estate_property_tag_view_search" model="ir.ui.view">
         <field name="name">estate.property.tag.search</field>
-            <field name="model">estate.property.tag</field>
-            <field name="arch" type="xml">
-                <search string="Search Tags">
-                    <field name="name"/>
-                </search>
-            </field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <search string="Search Tags">
+                <field name="name"/>
+            </search>
+        </field>
     </record>
 
     <record id="estate_property_tag_action" model="ir.actions.act_window">

@@ -8,6 +8,8 @@
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="status"/>
+                <button name="action_accept" title="Accept" type="object" icon="fa-check"/>
+                <button name="action_refuse" title="Refuse" type="object" icon="fa-times"/>
             </list>
         </field>
     </record>

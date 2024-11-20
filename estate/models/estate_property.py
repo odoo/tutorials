@@ -1,57 +1,78 @@
 from odoo import fields, models, api
-from datetime import date, timedelta
+from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
 
-    name = fields.Char('Title', required=True)
-    
-    description = fields.Text('Description')
-    
-    postcode = fields.Char('Postcode')
-    
-    date_availability = fields.Date('Available From', copy=False, default=date.today() + timedelta(days=90))
-    
-    expected_price = fields.Float('Expected Price', required=True)
-    
-    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
-    
-    bedrooms = fields.Integer('Bedrooms', default=2)
-    
-    living_area = fields.Integer('Living Area (sqm)')
-    
-    facades = fields.Integer('Facades')
-    
-    garage = fields.Boolean('Garage')
-    
-    garden = fields.Boolean('Garden')
-    
-    garden_area = fields.Integer('Garden Area (sqm)')
-    
+    name = fields.Char("Title", required=True)
+
+    description = fields.Text("Description")
+
+    postcode = fields.Char("Postcode")
+
+    date_availability = fields.Date(
+        "Available From",
+        copy=False,
+        default=lambda self: fields.Date.today() + relativedelta(months=3),
+    )
+
+    expected_price = fields.Float("Expected Price", required=True)
+
+    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
+
+    bedrooms = fields.Integer("Bedrooms", default=2)
+
+    living_area = fields.Integer("Living Area (sqm)")
+
+    facades = fields.Integer("Facades")
+
+    garage = fields.Boolean("Garage")
+
+    garden = fields.Boolean("Garden")
+
+    garden_area = fields.Integer("Garden Area (sqm)")
+
     garden_orientation = fields.Selection(
-        string='Garden Orientation',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    
+        string="Garden Orientation",
+        selection=[
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
+        ],
+    )
+
     state = fields.Selection(
-        string='Status',
+        string="Status",
         required=True,
         copy=False,
-        default='new',
-        selection=[('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
-    
-    active = fields.Boolean('Active', default=True)
+        default="new",
+        selection=[
+            ("new", "New"),
+            ("received", "Offer Received"),
+            ("accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+    )
 
-    property_type_id = fields.Many2one('estate.property.type', 'Property Type')
+    active = fields.Boolean("Active", default=True)
 
-    buyer_id = fields.Many2one('res.partner', 'Buyer', copy=False)
+    property_type_id = fields.Many2one("estate.property.type", "Property Type")
 
-    salesperson_id = fields.Many2one('res.users', 'Salesperson', default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", "Buyer", copy=False)
 
-    tag_ids = fields.Many2many('estate.property.tag')
+    salesperson_id = fields.Many2one(
+        "res.users", "Salesperson", default=lambda self: self.env.user
+    )
 
-    offer_ids = fields.One2many('estate.property.offer', 'property_id')
-    
+    tag_ids = fields.Many2many("estate.property.tag")
+
+    offer_ids = fields.One2many("estate.property.offer", "property_id")
+
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
 
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
@@ -64,13 +85,29 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = min(record.offer_ids.mapped('price'), default=0)
+            record.best_price = min(record.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = 'north'
+            self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = ''
+            self.garden_orientation = ""
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled properties cannot be sold!")
+            else:
+                record.state = "sold"
+            return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold properties cannot be cancelled!")
+            else:
+                record.state = "cancelled"
+            return True
