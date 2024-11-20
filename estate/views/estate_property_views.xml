@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="estate_property_model_action" model="ir.actions.act_window">
+    <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
     <menuitem id="estate_menu_root" name="Real Estate">
         <menuitem id="estate_first_level_menu" name="Advertisements">
-            <menuitem id="estate_model_menu_action" action="estate_property_model_action"/>
+            <menuitem id="estate_model_menu_action" action="estate_property_action"/>
         </menuitem>
         <menuitem id="estate_settings_menu" name="Settings"/>
     </menuitem>
@@ -17,14 +18,18 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-bf="state == 'offer_accepted'"
+                  decoration-success="state in ['offer_accepted', 'offer_received']"
+                  decoration-muted="state == 'sold'">
                 <field name="name"/>
-                <field name="postcode" width="100px"/>
+                <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -36,8 +41,11 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_set_sold" type="object" string="Sold"/>
-                    <button name="action_set_cancelled" type="object" string="Cancel"/>
+                    <button name="action_set_sold" type="object" string="Sold"
+                            invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_set_cancelled" type="object" string="Cancel"
+                            invisible="state in ['sold', 'cancelled']"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -50,8 +58,7 @@
                     </group>
                     <group>
                         <group>
-                            <field name="state"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -72,8 +79,8 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                     <field name="total_area"/>
                                 </group>
                                 <group>
@@ -82,7 +89,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -105,11 +112,11 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
-                <filter  name="available" string="Available" domain="[('state', 'in', ('new','offer_received'))]"/>
+                <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <group expand="1" string="Group By">
-                    <filter name="group_by_postcode" string="Postcode"  context="{'group_by':'postcode'}"/>
+                    <filter name="group_by_postcode" string="Postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
