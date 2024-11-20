@@ -8,6 +8,8 @@
                 <field name="partner_id" string="Buyer"/>
                 <field name="price" string="Offered price"/>
                 <field name="state" string="Status"/>
+                <field name="validity" string="Validity"/>
+                <field name="date_deadline" string="Deadline"/>
             </list>
         </field>
     </record>
@@ -21,6 +23,8 @@
                         <!--field name="property_id" string="Property"/-->
                         <field name="partner_id" string="Buyer"/>
                         <field name="price" string="Offered price"/>
+                        <field name="validity" string="Validity"/>
+                        <field name="date_deadline" string="Deadline"/>
                         <field name="state" string="Status"/>
                     </group>
                 </sheet>
