@@ -3,7 +3,19 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            Counters
+            <Counter onIncrement.bind="onIncrement"/>
+            <Counter onIncrement.bind="onIncrement"/>
+            <div>
+                Sum:
+                <span t-esc="sum.value"/>
+            </div>
+        </div>
+
+        <div>
+            <Card title="'AAAAAAAAAAAA'" body="card1_body"/>
+            <Card title="'A wise Man'" body="card2_body"/>
+
         </div>
     </t>
 
