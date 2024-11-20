@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_type_view_search" model="ir.ui.view">
+        <field name="name">estate.property.type.view.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Types">
+                <field name="name"/>
+
+                <separator/>
+                <filter string="Include archived" name="archived" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Active" name="active" domain="['|', ('active', '=', True), ('active', '=', False)]" context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property Type">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                    <xpath expr="//div[@name='button_box']" position="inside">
+                        <button class="oe_stat_button" icon="fa-dollar" type="action" name="%(estate.estate_property_offer_model_action)d" string="Offers"/>
+                    </xpath>
+                    <div class="row">
+                        <div class="oe_title col-9">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                            <group>
+                                <field name="active"/>
+                            </group>
+                        </div>
+                        <notebook>
+                            <page string="Properties">
+                                <field name="property_ids">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="List">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_type_model_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
