@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class InheritedResUsers(models.Model):
     _inherit = 'res.users'
 

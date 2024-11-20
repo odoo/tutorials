@@ -5,7 +5,7 @@
     'author': "Abdelrahman Mahmoud (amah)",
     'category': 'Training',
 
-    'data' :[
+    'data': [
         'security/ir.model.access.csv',
 
         # views
