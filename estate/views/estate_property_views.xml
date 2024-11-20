@@ -52,8 +52,6 @@
                 <header>
                     <button name="action_set_cancelled" type="object" string="Cancel" invisible="state in ('cancelled','sold')"/>
                     <button name="action_set_sold" type="object" string="Sold" invisible="state != 'offer_accepted'"/>
-                    <!-- TODO: remove this only for testing -->
-                    <button name="action_set_new" type="object" string="Rest to New" invisible="state == 'new'"/>
 
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>

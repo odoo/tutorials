@@ -1,13 +1,20 @@
+from datetime import timedelta
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare, float_is_zero, float_round
-from datetime import timedelta
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property data model"
     _order = "id desc"
-    
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)',
+        'The expected price of a property MUST be postive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+        'The selling price of a property MUST be postive.'),
+    ]
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -22,10 +29,10 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[('n', 'North'), 
-                   ('s', 'South'),
-                   ('e', 'East'),
-                   ('w', 'West'),
-                   ],
+                    ('s', 'South'),
+                    ('e', 'East'),
+                    ('w', 'West'),
+                ],
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(selection=[
@@ -71,45 +78,7 @@ class EstateProperty(models.Model):
 
     #endregion
 
-    #region actions
-    def action_set_cancelled(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError("Sold properties can not be cancelled!")
-            record.state = 'cancelled'
-    
-    def action_set_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise UserError("Cancelled properties can not be sold!")
-            record.state = 'sold'
-
-    def action_set_new(self):
-        for record in self:
-            record.state = 'new'
-            self.selling_price = False
-            self.partner_id = False
-
-    def action_offer_accepted(self, offer):
-        if self.state == 'offer_accepted':
-            raise UserError("this property has already an accepted offer!!")
-        self.state = 'offer_accepted'
-        self.selling_price = offer.price
-        self.partner_id = offer.partner_id
-
-    def action_offer_received(self):
-        self.state = 'offer_received'
-
-    #endregion
-
     #region Constraint
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >= 0)',
-         'The expected price of a property MUST be postive.'),
-         ('check_selling_price', 'CHECK(selling_price >= 0)',
-         'The selling price of a property MUST be postive.'),
-    ]
-
     @api.constrains('expected_price','selling_price')
     def _check_selling_price(self):
         for record in self:
@@ -127,5 +96,30 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ('new','cancelled'):
                 raise UserError("Cann't be deleted")
+
+    #endregion
+
+    #region actions
+    def action_set_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties can not be cancelled!")
+            record.state = 'cancelled'
+    
+    def action_set_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancelled properties can not be sold!")
+            record.state = 'sold'
+
+    def action_set_offer_accepted(self, offer):
+        if self.state == 'offer_accepted':
+            raise UserError("this property has already an accepted offer!!")
+        self.state = 'offer_accepted'
+        self.selling_price = offer.price
+        self.partner_id = offer.partner_id
+
+    def action_set_offer_received(self):
+        self.state = 'offer_received'
 
     #endregion

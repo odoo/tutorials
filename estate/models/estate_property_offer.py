@@ -1,12 +1,18 @@
+from datetime import timedelta
+
 from odoo import models, fields, api
-from datetime import timedelta, date
 from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = ''
     _order = "price desc"
-
+    _sql_constraints = [
+        ('check_price', 'CHECK(price >= 0)',
+         'The price of an offer MUST be postive.'),
+         
+    ]
+    
     price = fields.Float()
     status = fields.Selection([
         ('accepted','Accepted'),
@@ -40,11 +46,19 @@ class EstatePropertyOffer(models.Model):
     
     #endregion
 
+    #region CRUD
+    @api.model
+    def create(self, vals_list):
+        self.env['estate.property'].browse(vals_list['property_id']).action_set_offer_received()
+        return super().create(vals_list)
+    
+    #endregion
+
     #region actions
     def action_set_accepted(self):
         for record in self:
             try:
-                record.property_id.action_offer_accepted(self)
+                record.property_id.action_set_offer_accepted(self)
                 record.status = 'accepted'
             except UserError as e:
                 raise e
@@ -53,27 +67,4 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
 
-    def action_reset(self):
-        for record in self:
-            if record.status == 'accepted':
-                record.property_id.action_offer_received()
-            record.status = False
-
-    #endregion
-
-    #region Constraint
-    _sql_constraints = [
-        ('check_price', 'CHECK(price >= 0)',
-         'The price of an offer MUST be postive.'),
-         
-    ]
-
-    #endregion
-
-    #region CRUD
-    @api.model
-    def create(self, vals_list):
-        self.env['estate.property'].browse(vals_list['property_id']).action_offer_received()
-        return super().create(vals_list)
-    
     #endregion
