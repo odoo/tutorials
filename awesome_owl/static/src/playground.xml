@@ -2,8 +2,22 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="row p-3">
+            <Card toggled="true">
+                <t t-set-slot="name">Amazing</t>
+                Base content
+                <t t-set-slot="action">
+                    <a href='https://pierre.barracudapps.com'>Pierre LAMOTTE</a>
+                </t>
+            </Card>
+            <Card>
+                <t t-set-slot="name">Second Tile</t>
+                <t t-set-slot="counter">true</t>
+                This is another content with counters
+            </Card>
+        </div>
+        <div class="row p-3">
+            <TodoList/>
         </div>
     </t>
 
