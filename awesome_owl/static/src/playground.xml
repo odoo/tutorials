@@ -17,6 +17,10 @@
             <Card title="'A wise Man'" body="card2_body"/>
 
         </div>
+
+        <div>
+            <TodoList />
+        </div>
     </t>
 
 </templates>
