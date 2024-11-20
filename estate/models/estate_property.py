@@ -10,6 +10,7 @@ class EstatePropertyModel(models.Model):
     _description = "Estate Property"
     _order = "id desc"
     _rec_name = "title"
+    _inherit = ['mail.thread']
 
     title = fields.Char(required=True)
     active = fields.Boolean(default=True)
