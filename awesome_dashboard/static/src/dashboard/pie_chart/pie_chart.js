@@ -1,5 +1,6 @@
 import { Component, onWillStart, useEffect, useRef } from "@odoo/owl";
 import { loadJS } from '@web/core/assets';
+import { _t } from "@web/core/l10n/translation";
 
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
@@ -34,7 +35,7 @@ export class PieChart extends Component {
             data: {
                 labels: Object.keys(data),
                 datasets: [{
-                    label: '# of shirts',
+                    label: _t('# of shirts'),
                     data: Object.values(data),
                 }]
             }
