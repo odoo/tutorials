@@ -7,11 +7,14 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="fa fa-cog bg-transparent ms-1 border-0" t-on-click="openDialog"></button>
+            </t>
 
             <div class="d-flex flex-row flex-wrap gap-2">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <t t-set="item_value" t-value="item.props ? item.props(data) : {'data': data}"/>
-                    <AwesomeDashboardItem size="2">
+                    <AwesomeDashboardItem t-if="!this.disableItems.items.includes(item.id)" size="2">
+                        <t t-set="item_value" t-value="item.props ? item.props(data) : {'data': data}"/>
                         <t t-component="item.Component" t-props="item_value"/>
                     </AwesomeDashboardItem> 
                 </t>

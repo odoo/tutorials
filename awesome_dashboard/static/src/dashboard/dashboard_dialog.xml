@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboardDialog">
+        <Dialog title="'Dashboard items configuration'">
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.checked" onChange="(ev) => this.toggle(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="confirm">
+                    Done
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
