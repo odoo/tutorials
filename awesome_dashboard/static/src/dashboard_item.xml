@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboardItem">
+        <div class="card" t-attf-style="width: {{18*props.size}}rem;">
+            <div class="card-body">
+                <h5 class="card-title"><t t-slot="title"/></h5>
+                <p class="card-text">
+                    <t t-slot="default"/>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>

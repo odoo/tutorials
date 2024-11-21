@@ -2,7 +2,25 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+
+            <t t-foreach="data" t-as="item" t-key="item">
+                <div t-if="item != 'orders_by_size'">
+                    <AwesomeDashboardItem size="2">
+                        <t t-set-slot="title">
+                            <span t-esc="item"/>
+                        </t>
+                        <t t-esc="item_value"/>
+                    </AwesomeDashboardItem> 
+                </div>
+            </t>
+
+
+        </Layout>
     </t>
 
 </templates>
