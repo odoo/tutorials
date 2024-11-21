@@ -8,17 +8,14 @@
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
 
-            <t t-foreach="data" t-as="item" t-key="item">
-                <div t-if="item != 'orders_by_size'">
+            <div class="d-flex flex-row flex-wrap gap-2">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <t t-set="item_value" t-value="item.props ? item.props(data) : {'data': data}"/>
                     <AwesomeDashboardItem size="2">
-                        <t t-set-slot="title">
-                            <span t-esc="item"/>
-                        </t>
-                        <t t-esc="item_value"/>
+                        <t t-component="item.Component" t-props="item_value"/>
                     </AwesomeDashboardItem> 
-                </div>
-            </t>
-
+                </t>
+            </div>
 
         </Layout>
     </t>
