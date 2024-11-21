@@ -3,6 +3,7 @@
 from odoo import api
 from odoo import fields
 from odoo import models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -56,3 +57,11 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.state = 'refused'
         return True
+
+    @api.model
+    def create(self, vals):
+        if (self.env['estate.property'].browse(vals['property_id']).state == 'new' and
+            vals['price'] < self.env['estate.property'].browse(vals['property_id']).best_offer):
+            raise UserError(self.env._("A better priced offer already exists."))
+        setattr(self.env['estate.property'].browse(vals['property_id']), 'state', 'recieved')
+        return super().create(vals)
