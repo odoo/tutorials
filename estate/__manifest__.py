@@ -14,6 +14,8 @@
         'views/ep_offer_views.xml',
         'views/ep_type_views.xml',
 
+        'views/res_users_views.xml',
+
         'views/estate_menu_views.xml',
     ],
     'application': True
