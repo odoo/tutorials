@@ -1,0 +1,30 @@
+<odoo>
+    <template id="report_company_information">
+        <t t-set="company" t-value="company or property.user_id.company_id" />
+        <div class="company-info" style="margin-bottom:50px;">
+            <div>
+                <img
+                    t-if="company.logo"
+                    class="o_company_logo_big"
+                    t-att-src="image_data_uri(company.logo)"
+                    alt="Company Logo"
+                />
+            </div>
+            <hr />
+            <div>
+                <strong t-field="company.name" />
+            </div>
+            <div>
+                <span t-field="company.street" />
+            </div>
+            <div>
+                <span t-field="company.city" />
+                <span t-field="company.state_id.code" />
+                <span t-field="company.zip" />
+            </div>
+            <div>
+                <span t-field="company.country_id.name" />
+            </div>
+        </div>
+    </template>
+</odoo>

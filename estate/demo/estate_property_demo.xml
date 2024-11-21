@@ -14,6 +14,7 @@
             <field name="garage">True</field>
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
+            <field name="user_id" ref="base.user_admin" />
             <field name="garden_orientation">south</field>
             <field name="property_type_id" ref="estate_property_type_villa" />
         </record>
@@ -32,6 +33,7 @@
             <field name="garage">False</field>
             <field name="garden">False</field>
             <field name="garden_area">0</field>
+            <field name="user_id" ref="base.user_admin" />
             <field name="garden_orientation" />
             <field name="property_type_id" ref="estate_property_type_apartment" />
         </record>
@@ -47,6 +49,7 @@
             <field name="bedrooms">15</field>
             <field name="living_area">10000</field>
             <field name="facades">4</field>
+            <field name="user_id" ref="base.user_admin" />
             <field name="garage">False</field>
             <field name="garden">False</field>
             <field name="garden_area">0</field>
@@ -86,6 +89,7 @@
             <field name="bedrooms">5</field>
             <field name="living_area">350</field>
             <field name="facades">3</field>
+            <field name="user_id" ref="base.user_admin" />
             <field name="garage">True</field>
             <field name="garden">True</field>
             <field name="garden_area">500</field>
@@ -105,6 +109,7 @@
             <field name="selling_price">0.00</field>
             <field name="bedrooms">0</field>
             <field name="living_area">1000</field>
+            <field name="user_id" ref="base.user_admin" />
             <field name="facades">2</field>
             <field name="garage">False</field>
             <field name="garden">False</field>
@@ -126,6 +131,7 @@
             <field name="living_area">80</field>
             <field name="facades">1</field>
             <field name="garage">True</field>
+            <field name="user_id" ref="base.user_admin" />
             <field name="garden">False</field>
             <field name="garden_area">0</field>
             <field name="garden_orientation" />
@@ -160,6 +166,7 @@
             <field name="bedrooms">0</field>
             <field name="living_area">0</field>
             <field name="facades">4</field>
+            <field name="user_id" ref="base.user_admin" />
             <field name="garage">False</field>
             <field name="garden">False</field>
             <field name="garden_area">0</field>
@@ -179,6 +186,7 @@
             <field name="bedrooms">0</field>
             <field name="living_area">2000</field>
             <field name="facades">2</field>
+            <field name="user_id" ref="base.user_admin" />
             <field name="garage">False</field>
             <field name="garden">False</field>
             <field name="garden_area">0</field>
@@ -200,6 +208,7 @@
             <field name="facades">5</field>
             <field name="garage">True</field>
             <field name="active">false</field>
+            <field name="user_id" ref="base.user_admin" />
             <field name="garden_area">2000</field>
             <field name="garden_orientation">west</field>
             <field name="property_type_id" ref="estate_property_type_villa" />

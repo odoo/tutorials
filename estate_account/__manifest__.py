@@ -7,6 +7,7 @@
         part of technical training
     """,
     "data": [
+        "report/estate_estate_property_templates.xml",
         "views/actions_smart_button.xml",
         "views/estate_property_views.xml",
     ],

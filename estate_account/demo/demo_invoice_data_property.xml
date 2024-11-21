@@ -6,16 +6,15 @@
             <field name="property_id" ref="estate.estate_property_luxury_mountain_view_villa" />
             <field name="invoice_line_ids"
                 eval="[
-                    Command.create({'name': 'Property selling price', 'quantity': 1, 'price_unit': 48050000}),
+                 Command.create({'name': 'Property selling price', 'quantity': 1, 'price_unit': 48050000}),
                  Command.create({'name': '6% of the selling price', 'quantity': 1, 'price_unit': 48050000 * 0.06}),
                  Command.create({'name': 'Administrative price', 'quantity': 1, 'price_unit': 100}),
                 ]"
             />
-
         </record>
 
         <record id="account_move_200" model="account.move">
-            <field name="move_type">in_invoice</field>
+            <field name="move_type">out_invoice</field>
             <field name="partner_id" ref="base.res_partner_18" />
             <field name="property_id" ref="estate.estate_property_land_for_sale" />
             <field name="invoice_line_ids"
@@ -28,7 +27,7 @@
         </record>
 
         <record id="account_move_300" model="account.move">
-            <field name="move_type">in_invoice</field>
+            <field name="move_type">out_invoice</field>
             <field name="partner_id" ref="base.res_partner_12" />
             <field name="property_id" ref="estate.estate_property_industrial_warehouse" />
             <field name="invoice_line_ids"

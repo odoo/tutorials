@@ -83,6 +83,8 @@ class EstatePropertyOffer(models.Model):
             property_id = vals.get("property_id")
             if property_id:
                 property = self.env["estate.property"].browse(property_id)
+                if property.state == "new":
+                    property.state = "offer_received"
                 max_price = max(property.offer_ids.mapped("price"), default=0)
                 if vals["price"] <= max_price:
                     raise ValidationError(

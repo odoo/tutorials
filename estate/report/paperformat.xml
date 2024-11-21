@@ -1,0 +1,12 @@
+<odoo>
+    <record id="paperformat_euro_lowmargin" model="report.paperformat">
+        <field name="name">Euro Paper with Low Margin</field>
+        <field name="default" eval="False" />
+        <field name="format">A4</field> <!-- Predefined format -->
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+    </record>
+</odoo>

@@ -132,14 +132,29 @@
                 <field name="expected_price" />
                 <field name="bedrooms" />
                 <field name="facades" />
-                <field name="living_area" string="Living Area"
-                    filter_domain="[('living_area', '>=', self)]" />
+                <field
+                    name="living_area"
+                    string="Living Area"
+                    filter_domain="[('living_area', '>=', self)]"
+                />
 
-                <filter name="available" string="Available" help="show only available properties"
-                    domain="[('active', '=', True), ('state', 'in', ['new', 'offer_received'])]" />
+                <filter
+                    name="available"
+                    string="Available"
+                    help="show only available properties"
+                    domain="[('active', '=', True), ('state', 'in', ['new', 'offer_received'])]"
+                />
 
-                <filter name="archived" domain="[('active', '=', False)]" />
+                <filter
+                    name="all"
+                    string="All Properties"
+                    help="show all properties"
+                    domain="[('active', 'in', [True, False])]"
+                />
+
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]" />
                 <filter name="postcode" string="pincode" context="{'group_by':'postcode'}" />
+                <filter name="state" string="State" context="{'group_by':'state'}" />
             </search>
         </field>
     </record>

@@ -68,13 +68,6 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.onchange("offer_ids")
-    def _change_state_to_offer_received(self):
-        for record in self:
-            if record.state == "new":
-                if len(record.offer_ids) > 0:
-                    record.state = "offer_received"
-
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
@@ -111,7 +104,7 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
-            if record.state not in ["new","offer_received"]:
+            if record.state not in ["new", "offer_received"]:
                 if (
                     float_compare(
                         record.selling_price,
