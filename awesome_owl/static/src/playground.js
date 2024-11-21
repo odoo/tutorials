@@ -8,8 +8,6 @@ import { TodoList } from "./todo_list/todo_list";
 export class Playground extends Component {
     static template = "awesome_owl.playground";
     setup() {
-        this.card1_body = "<div class='text-primary'>some content</div>";
-        this.card2_body = markup("<div class='text-primary'>some content</div>");
         this.sum = useState({ value: 0 });
     }
 
