@@ -5,4 +5,5 @@
     'category': 'Training',
 
     'application': True,
+    'license': 'AGPL-3',
 }
