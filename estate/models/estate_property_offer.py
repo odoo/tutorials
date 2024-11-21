@@ -4,23 +4,34 @@ from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate.property.offer"
+    _name = 'estate.property.offer'
     _description = "Estate Property Offer"
+    _order = 'price desc'
+    _sql_constraints = [
+        (
+            'check_price_positive',
+            'CHECK(price > 0)',
+            "An offer price must be strictly positive.",
+        )
+    ]
 
     price = fields.Float("Price")
     status = fields.Selection(
-        [("accepted", "Accepted"), ("refused", "Refused")], copy=False
+        [('accepted', "Accepted"), ('refused', "Refused")], copy=False
     )
-    partner_id = fields.Many2one("res.partner", "Partner", required=True)
-    property_id = fields.Many2one("estate.property", "Property", required=True)
+    partner_id = fields.Many2one('res.partner', "Partner", required=True)
+    property_id = fields.Many2one('estate.property', "Property", required=True)
     validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date(
         string="Deadline",
-        compute="_compute_date_deadline",
-        inverse="_inverse_date_deadline",
+        compute='_compute_date_deadline',
+        inverse='_inverse_date_deadline',
+    )
+    property_type_id = fields.Many2one(
+        related='property_id.property_type_id', store=True
     )
 
-    @api.depends("validity")
+    @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for record in self:
             if record.create_date:
@@ -37,24 +48,19 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         for record in self:
-            if record.status == "accepted":
+            if record.status == 'accepted':
                 record.property_id.selling_price = None
                 record.property_id.buyer_id = None
-            record.status = "refused"
+            record.status = 'refused'
 
     def action_accept(self):
         for record in self:
             if record.property_id.selling_price:
-                raise UserError("There is already an accepted offer for this property.")
+                raise UserError(
+                    self.env._("There is already an accepted offer for this property.")
+                )
             else:
-                record.status = "accepted"
+                record.status = 'accepted'
+                record.property_id.state = 'accepted'
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
-
-    _sql_constraints = [
-        (
-            "check_price_positive",
-            "CHECK(price > 0)",
-            "An offer price must be strictly positive.",
-        )
-    ]
