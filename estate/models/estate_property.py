@@ -11,6 +11,7 @@ from odoo.tools.float_utils import float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate property"
+    _order = "id desc"
 
     name = fields.Char("Title", required=True, translate=True)
     description = fields.Text("Property description")
@@ -30,7 +31,7 @@ class EstateProperty(models.Model):
             ('north', "North"),
             ('south', "South"),
             ('east', "East"),
-            ('west', "West")
+            ('west', "West"),
             ],
         default=None,
         )
@@ -43,7 +44,7 @@ class EstateProperty(models.Model):
             ('recieved', "Offer Received"),
             ('accepted', "Offer Accepted"),
             ('sold', "Sold"),
-            ('cancelled', "Cancelled")
+            ('cancelled', "Cancelled"),
             ],
         required=True,
         copy=False,
@@ -70,7 +71,7 @@ class EstateProperty(models.Model):
     def _check_price_good(self):
         for record in self:
             if (not float_is_zero(record.selling_price, precision_digits=3)) and (record.selling_price < record.expected_price * 0.9):
-                raise ValidationError("The offer price is unaccetably low!")
+                raise ValidationError(self.env._("The offer price is unaccetably low!"))
 
     def _compute_area_total(self):
         for record in self:
@@ -79,11 +80,7 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self:
-            best = 0
-            for offer in record.offer_ids:
-                if offer.price > best:
-                    best = offer.price
-            record.best_offer = best
+            record.best_offer = 0 if not record.offer_ids else max(offer.price for offer in record.offer_ids)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -99,7 +96,7 @@ class EstateProperty(models.Model):
             if record.state != 'cancelled':
                 record.state = 'sold'
             else:
-                raise UserError("The property is already cancelled.")
+                raise UserError(self.env._("The property is already cancelled."))
         return True
 
     def action_set_cancelled(self):
@@ -107,5 +104,5 @@ class EstateProperty(models.Model):
             if record.state != 'sold':
                 record.state = 'cancelled'
             else:
-                raise UserError("The property is already sold.")
+                raise UserError(self.env._("The property is already sold."))
         return True

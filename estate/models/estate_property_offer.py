@@ -8,6 +8,7 @@ from odoo import models
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Property offers"
+    _order = "price desc"
 
     name = fields.Char("Name", required=False, default="- no name -")
     price = fields.Float("Offer price", required=True)
@@ -17,13 +18,14 @@ class EstatePropertyOffer(models.Model):
         string="Status",
         selection=[
             ('accepted', "Accepted"),
-            ('refused', "Refused")
+            ('refused', "Refused"),
             ],
         default=None,
         )
     # Relational
     property_id = fields.Many2one('estate.property', string="Property", required=True)
     partner_id = fields.Many2one('res.partner', string="Buyer", required=True)
+    property_type_id = fields.Many2one(related='property_id.property_type_id')
     # Computed
     date_deadline = fields.Date("Deadline date", compute='_compute_deadline', inverse='_inverse_deadline')
     # Constrains
@@ -35,7 +37,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):
         for record in self:
-            record.date_deadline = fields.Date.add((record.create_date or fields.Date.today()), days=record.validity)
+            record.date_deadline = fields.Date.add(record.create_date or fields.Date.today(), days=record.validity)
 
     def _inverse_deadline(self):
         for record in self:

@@ -10,6 +10,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property type">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
@@ -19,11 +20,22 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property type">
+                <header>
+                    <button name="estate.action_estate_property_offer" type="action" string="Offers"/>
+                </header>
                 <sheet>
                     <h1><field name="name" placeholder="New property type"/></h1>
-                    <group>
-                        <field name="description" placeholder="Enter description here..."/>
-                    </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
