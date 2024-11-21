@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_list">
+        <input text="text" t-ref="todoInput" placeholder="Add a todo" t-on-keyup="addTodo" t-model.trim="state.newTodo"
+               class="mb-3"/>
+        <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+            <TodoItem todo="todo" toggleState="() => toggleTodoState(todo.id)"
+                      onRemoveTodo="() => removeTodo(todo.id)"/>
+        </t>
+    </t>
+
+</templates>
