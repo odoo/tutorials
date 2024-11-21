@@ -3,11 +3,13 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboardItem">
-        <div class="card" t-attf-style="width: {{18*props.size}}rem;">
-            <div class="card-body">
-                <p class="card-text">
-                    <t t-slot="default"/>
-                </p>
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card" t-attf-style="width: {{18*props.size}}rem; max-width: 100%;">
+                <div class="card-body">
+                    <p class="card-text">
+                        <t t-slot="default"/>
+                    </p>
+                </div>
             </div>
         </div>
     </t>
