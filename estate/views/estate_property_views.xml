@@ -24,6 +24,10 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form string="Properties">
+                    <header>
+                        <button name='action_set_sold' type='object' string='Sold'/>
+                        <button name='action_set_canceled' type='object' string='Canceled'/>
+                    </header>
                     <sheet>
                         <h1>
                             <field name="name" default="eg. House Sunset Drive"/>
@@ -60,7 +64,9 @@
                                     <list>
                                         <field name="price"/>
                                         <field name="partner_id"/>
-                                        <field name="status"/>
+                                        <button name="action_accept" type="object" icon="fa-check"/>
+                                        <button name="action_refuse" type="object" icon="fa-times"/>
+                                        <field name="status"/>                                    
                                     </list>
                                 </field>
                             </page>
