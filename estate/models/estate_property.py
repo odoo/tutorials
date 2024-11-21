@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -19,7 +17,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(default=fields.Date.today() + timedelta(days=90), copy=False)
+    date_availability = fields.Date(default=lambda _self: fields.Date.add(fields.Date.today(), months=3), copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(copy=False, readonly=True)
     bedrooms = fields.Integer(default=2)
@@ -29,20 +27,22 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        selection=[('n', 'North'),
-                    ('s', 'South'),
-                    ('e', 'East'),
-                    ('w', 'West'),
-                ],
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West'),
+        ],
     )
     active = fields.Boolean(default=True)
-    state = fields.Selection(selection=[
-        ('new', 'New'),
-        ('offer_received', 'Offer Received'),
-        ('offer_accepted', 'Offer Accepted'),
-        ('sold', 'Sold'),
-        ('cancelled', 'Cancelled'),
-    ],
+    state = fields.Selection(
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled'),
+        ],
         default='new',
         copy=False
     )
@@ -51,7 +51,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one(comodel_name="estate.property.type")
     property_tag_ids = fields.Many2many(comodel_name='estate.property.tag')
     property_offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
-    user_id = fields.Many2one(comodel_name='res.users', string='Salesperson', default=lambda self: self.env.uid)
+    user_id = fields.Many2one(comodel_name='res.users', string='Salesperson', default=lambda self: self.env.user)
     partner_id = fields.Many2one(comodel_name='res.partner', string='Buyer', copy=False)
 
     # computed
@@ -67,7 +67,7 @@ class EstateProperty(models.Model):
     @api.depends('property_offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.property_offer_ids.mapped('price') or [0])
+            record.best_price = max(record.property_offer_ids.mapped('price'), default=0)
 
     # endregion
 
@@ -87,7 +87,7 @@ class EstateProperty(models.Model):
                 continue
 
             if float_compare(value1=record.selling_price, value2=(0.9 * record.expected_price), precision_digits=3) == -1:
-                raise ValidationError("Selling price must be at least 90% of the expected price!")
+                raise ValidationError(self.env._("Selling price must be at least 90% of the expected price!"))
 
     # endregion
 
@@ -96,7 +96,7 @@ class EstateProperty(models.Model):
     def prevent_delete(self):
         for record in self:
             if record.state not in ('new', 'cancelled'):
-                raise UserError("Cann't be deleted")
+                raise UserError(self.env._("you Cann't delete a property that is not new or cancelled!"))
 
     # endregion
 
@@ -104,18 +104,18 @@ class EstateProperty(models.Model):
     def action_set_cancelled(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold properties can not be cancelled!")
+                raise UserError(self.env._("Sold properties can not be cancelled!"))
             record.state = 'cancelled'
 
     def action_set_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cancelled properties can not be sold!")
+                raise UserError(self.env._("Cancelled properties can not be sold!"))
             record.state = 'sold'
 
     def action_set_offer_accepted(self, offer):
         if self.state == 'offer_accepted':
-            raise UserError("this property has already an accepted offer!!")
+            raise UserError(self.env._("this property has already an accepted offer!!"))
         self.state = 'offer_accepted'
         self.selling_price = offer.price
         self.partner_id = offer.partner_id

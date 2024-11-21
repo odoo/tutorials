@@ -13,10 +13,11 @@ class EstatePropertyOffer(models.Model):
     ]
 
     price = fields.Float()
-    status = fields.Selection([
+    status = fields.Selection(
+        selection=[
         ('accepted', 'Accepted'),
         ('refused', 'Refused'),
-    ],
+        ],
         copy=False,
     )
     validity = fields.Integer(string="Validity (Days)", default=7)
@@ -33,15 +34,13 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
-            if not record.create_date:
-                record.create_date = fields.Date.today()
-            record.date_deadline = record.create_date + timedelta(days=record.validity)
+            if record.create_date:
+                record.date_deadline = record.create_date + timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
-            if not record.create_date:
-                record.create_date = fields.Date.today()
-            record.validity = (record.date_deadline - record.create_date.date()).days
+            if record.create_date:
+                record.validity = (record.date_deadline - record.create_date.date()).days
 
     # endregion
 

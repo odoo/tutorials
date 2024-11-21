@@ -2,7 +2,6 @@
     'name': "Real Estate",
     'version': '1.0',
     'depends': ['base'],
-    'author': "Abdelrahman Mahmoud (amah)",
     'category': 'Training',
 
     'data': [
@@ -20,6 +19,5 @@
         'views/estate_menus.xml',
 
     ],
-    'installable': True,
     'application': True,
 }
