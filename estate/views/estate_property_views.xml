@@ -130,7 +130,7 @@
             <kanban default_group_by="property_type_id" records_draggable="0">
                 <field name="state"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div>
                             <field name="name" class="fs-5 fw-bold"/>
 
