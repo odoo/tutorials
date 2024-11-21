@@ -64,8 +64,8 @@
                                     <list>
                                         <field name="price"/>
                                         <field name="partner_id"/>
-                                        <button name="action_accept" type="object" icon="fa-check"/>
-                                        <button name="action_refuse" type="object" icon="fa-times"/>
+                                        <button name="action_accept" type="object" string= "Accept" icon="fa-check"/>
+                                        <button name="action_refuse" type="object" string= "Refuse" icon="fa-times"/>
                                         <field name="status"/>                                    
                                     </list>
                                 </field>
