@@ -64,3 +64,21 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.state = 'accepted'
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
+
+    @api.model_create_multi
+    def create(self, vals):
+        estate = self.env['estate.property'].browse(vals['property_id'])
+
+        if estate is None:
+            raise UserError(self.env._("The property does not exist."))
+
+        current_offers = self.env['estate.property.offer'].browse(
+            estate.offer_ids.mapped('id')
+        )
+
+        if any(x.price > vals['price'] for x in current_offers):
+            raise UserError(self.env._("There are already offer/s with higher price."))
+
+        if estate.state == 'new':
+            estate.state = 'received'
+        return super().create(vals)

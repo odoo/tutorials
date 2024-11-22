@@ -143,3 +143,13 @@ class EstateProperty(models.Model):
                         "Selling price of a property must not be less than 90 percent of the expected price."
                     )
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_correct_states(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError(
+                    self.env._(
+                        "Only records with status New and Cancelled may be deleted."
+                    )
+                )
