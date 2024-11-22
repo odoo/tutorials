@@ -53,6 +53,7 @@ class EstateProperty(models.Model):
     property_offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
     user_id = fields.Many2one(comodel_name='res.users', string='Salesperson', default=lambda self: self.env.user)
     partner_id = fields.Many2one(comodel_name='res.partner', string='Buyer', copy=False)
+    company_id = fields.Many2one(comodel_name='res.company', string='Company', default=lambda self: self.env.company)
 
     # computed
     total_area = fields.Integer(compute="_compute_total_area")

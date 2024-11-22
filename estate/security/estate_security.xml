@@ -13,4 +13,26 @@
             ]
         </field>
     </record>
+    <record id="estate_property_rule_manager" model="ir.rule">
+        <field name="name">do not make limis to managers.</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
+        <field name="domain_force">
+            [
+                (1, '=', 1),
+            ]
+        </field>
+    </record>
+
+    <record id="estate_property_rule_company" model="ir.rule">
+        <field name="name">Estate Property multi-company</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="domain_force">
+            [
+                '|', 
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+            ]
+        </field>
+    </record>
 </odoo>
