@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate Properties"
+    _order = 'id desc'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -44,7 +45,7 @@ class EstateProperty(models.Model):
         default='new'
     )
 
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type", options="{'no_create':True}")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     salesperson_id = fields.Many2one('res.users', string="Sales Person", default=lambda self: self.env.user)
     property_tag_ids = fields.Many2many('estate.property.tag')
@@ -85,17 +86,17 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         for record in self:
-            if record.state != 'canceled':
+            if record.state != 'cancelled':
                 record.state = 'sold'
             else:
-                raise UserError("Sold properties cannot be canceled.")
+                raise UserError("Sold properties cannot be cancelled.")
         return True
 
-    def action_set_canceled(self):
+    def action_set_cancelled(self):
         for record in self:
             if record.state != 'sold':
-                record.state = 'canceled'
+                record.state = 'cancelled'
             else:
-                raise UserError("Sold properties cannot be canceled.")
+                raise UserError("Sold properties cannot be cancelled.")
         return True
 

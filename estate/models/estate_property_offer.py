@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Property Offer"
+    _order = 'price desc'
 
     name = fields.Char(required=True)
     price = fields.Float()
@@ -13,6 +14,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
+    property_type_id = fields.Many2one(related='property_id.property_type_id')
 
     _sql_constraints = [
         ('offer_price_check', 'CHECK(price > 0)',
@@ -32,6 +34,7 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             record.status = 'accepted'
+            record.property_id.state = 'offer_accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
         return True
