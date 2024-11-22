@@ -1,0 +1,29 @@
+<odoo>
+    <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
+        <field name="name">Real Estate Brokerage</field>
+    </record>
+
+    <!-- Create the Agent Group and Assign it to the Real Estate Brokerage Category -->
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+    </record>
+
+    <!-- Define Manager Group -->
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]" />
+    </record>
+
+    <record id="estate_property_agent_rule" model="ir.rule">
+        <field name="name">Agent Access on Properties</field>
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]" />
+        <field name="domain_force">["|",('user_id', '=', user.id),('user_id', '=', False)]</field>
+        <field name="perm_read" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_unlink" eval="0" />
+    </record>
+</odoo>

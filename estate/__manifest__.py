@@ -1,6 +1,7 @@
 {
-    "name": "Real Estate",
     "version": "1.0",
+    "name": "Real Estate",
+    "category": "Real Estate/Brokerage",
     "depends": ["base"],
     "author": "djip-odoo",
     "description": """
@@ -24,6 +25,7 @@
         "views/estate_property_offer_views.xml",
         "views/res_users_views.xml",
         # security
+        "security/security.xml",
         "security/ir.model.access.csv",
     ],
     "demo": [
