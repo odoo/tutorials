@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -50,7 +51,10 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            self.env['estate.property'].browse(vals['property_id']).action_set_offer_received()
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if property.state not in ('new', 'offer_received'):
+                raise UserError(self.env._("You cannot create an offer for a property that is not available!"))
+            property.action_set_offer_received()
         return super().create(vals_list)
 
     # endregion
