@@ -5,7 +5,7 @@ from odoo import models, fields, api
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
-    _description = ''
+    _description = 'offers for a property'
     _order = "price desc"
     _sql_constraints = [
         ('check_price', 'CHECK(price >= 0)',
@@ -47,9 +47,10 @@ class EstatePropertyOffer(models.Model):
     # endregion
 
     # region CRUD
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
-        self.env['estate.property'].browse(vals_list['property_id']).action_set_offer_received()
+        for vals in vals_list:
+            self.env['estate.property'].browse(vals['property_id']).action_set_offer_received()
         return super().create(vals_list)
 
     # endregion
