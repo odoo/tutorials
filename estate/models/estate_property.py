@@ -1,17 +1,23 @@
-# licence
-
 from odoo import api
 from odoo import fields
 from odoo import models
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_is_zero
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate property"
     _order = "id desc"
+    # Constraints
+    _sql_constraints = [
+        ('check_name_unique', 'UNIQUE(name)',
+         'The property title must be unique'),
+        ('check_price_positive', 'CHECK(expected_price > 0)',
+         'The expected price must be strictly positive.'),
+    ]
 
     name = fields.Char("Title", required=True, translate=True)
     description = fields.Text("Property description")
@@ -32,7 +38,7 @@ class EstateProperty(models.Model):
             ('south', "South"),
             ('east', "East"),
             ('west', "West"),
-            ],
+        ],
         default=None,
         )
     # Reserved
@@ -45,7 +51,7 @@ class EstateProperty(models.Model):
             ('accepted', "Offer Accepted"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
-            ],
+        ],
         required=True,
         copy=False,
         default='new',
@@ -59,18 +65,11 @@ class EstateProperty(models.Model):
     # Computed
     area_total = fields.Float("Total area", compute='_compute_area_total')
     best_offer = fields.Float("Best offer", compute='_compute_best_offer')
-    # Constraints
-    _sql_constraints = [
-        ('check_name_unique', 'UNIQUE(name)',
-         'The property title must be unique'),
-        ('check_price_positive', 'CHECK(expected_price >= 0)',
-         'The expected price must be strictly positive.'),
-    ]
 
     @api.constrains('expected_price', 'selling_price')
     def _check_price_good(self):
         for record in self:
-            if (not float_is_zero(record.selling_price, precision_digits=3)) and (record.selling_price < record.expected_price * 0.9):
+            if (not float_is_zero(record.selling_price, precision_digits=3)) and (float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=3) < 0):
                 raise ValidationError(self.env._("The offer price is unaccetably low!"))
 
     def _compute_area_total(self):

@@ -1,5 +1,3 @@
-# licence
-
 from odoo import fields
 from odoo import models
 

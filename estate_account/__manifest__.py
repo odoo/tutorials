@@ -1,5 +1,3 @@
-# licence
-
 {
     'name': 'Real estate accounting link',
     'version': '0.0',
@@ -8,8 +6,6 @@
         'estate',
         'account',
     ],
-    'data': [
-
-    ],
-    'application': False
+    'application': False,
+    'license': 'AGPL-3'
 }

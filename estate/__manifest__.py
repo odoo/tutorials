@@ -1,5 +1,3 @@
-# licence
-
 {
     'name': 'Real estate',
     'version': '0.0',
@@ -18,5 +16,6 @@
 
         'views/estate_menu_views.xml',
     ],
-    'application': True
+    'application': True,
+    'license': 'AGPL-3'
 }

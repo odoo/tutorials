@@ -1,15 +1,19 @@
-# licence
-
 from odoo import api
 from odoo import fields
 from odoo import models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Property offers"
     _order = "price desc"
+    # Constrains
+    _sql_constraints = [
+        ('check_price_positive', 'CHECK(price > 0)',
+         'The offer price must be strictly positive.'),
+    ]
 
     name = fields.Char("Name", required=False, default="- no name -")
     price = fields.Float("Offer price", required=True)
@@ -20,7 +24,7 @@ class EstatePropertyOffer(models.Model):
         selection=[
             ('accepted', "Accepted"),
             ('refused', "Refused"),
-            ],
+        ],
         default=None,
         )
     # Relational
@@ -29,11 +33,6 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(related='property_id.property_type_id')
     # Computed
     date_deadline = fields.Date("Deadline date", compute='_compute_deadline', inverse='_inverse_deadline')
-    # Constrains
-    _sql_constraints = [
-        ('check_price_positive', 'CHECK(price >= 0)',
-         'The offer price must be strictly positive.'),
-    ]
 
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):
@@ -60,8 +59,8 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        if (self.env['estate.property'].browse(vals['property_id']).state == 'new' and
-            vals['price'] < self.env['estate.property'].browse(vals['property_id']).best_offer):
+        property = self.env['estate.property'].browse(vals['property_id'])
+        if property.state != 'new' and (float_compare(vals['price'], property.best_offer, precision_digits=3) < 0):
             raise UserError(self.env._("A better priced offer already exists."))
-        setattr(self.env['estate.property'].browse(vals['property_id']), 'state', 'recieved')
+        property.state = 'recieved'
         return super().create(vals)

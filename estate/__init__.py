@@ -1,3 +1,1 @@
-# license
-
 from . import models
