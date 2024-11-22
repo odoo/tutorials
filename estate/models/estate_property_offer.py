@@ -67,18 +67,17 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
-        estate = self.env['estate.property'].browse(vals['property_id'])
+        for val in vals:
+            estate = self.env['estate.property'].browse(val['property_id'])
 
-        if estate is None:
-            raise UserError(self.env._("The property does not exist."))
+            if estate is None:
+                raise UserError(self.env._("The property does not exist."))
 
-        current_offers = self.env['estate.property.offer'].browse(
-            estate.offer_ids.mapped('id')
-        )
+            if val['price'] < estate.best_price:
+                raise UserError(
+                    self.env._("There are already offer/s with higher price.")
+                )
 
-        if any(x.price > vals['price'] for x in current_offers):
-            raise UserError(self.env._("There are already offer/s with higher price."))
-
-        if estate.state == 'new':
-            estate.state = 'received'
-        return super().create(vals)
+            if estate.state == 'new':
+                estate.state = 'received'
+            super().create(val)

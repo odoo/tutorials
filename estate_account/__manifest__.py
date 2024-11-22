@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": "Estate Account",
     "summary": """
@@ -7,7 +6,7 @@
     "description": """
         Link module for invoicing real estate. 
     """,
-    "author": "Cemal Faruk Guney",
+    "author": "",
     "category": "Tutorials/Estate",
     "version": "0.1",
     "depends": ["base", "estate", "account"],

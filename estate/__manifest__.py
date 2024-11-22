@@ -7,7 +7,7 @@
     "description": """
         Tutorial starting module
     """,
-    "author": "Cemal Faruk Guney",
+    "author": "",
     "category": "Tutorials/Estate",
     "version": "0.1",
     "depends": ["base"],
