@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <t t-esc="props.title"/>
+                    <span t-att-class="{'fa fa-plus' : isMinimized.value, 'fa fa-minus' : !isMinimized.value}" role="button" t-on-click="cardMinMaximize"/>
+                </h5>                
+                <div t-if="!isMinimized.value">
+                    <p class="card-text"><t t-out="props.message"/></p>
+                    <t t-slot="default"/>
+                    <ul>
+                        <!-- default slot content -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
+
