@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 from dateutil.relativedelta import relativedelta
@@ -63,7 +63,7 @@ class EstateProperty(models.Model):
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) <= 0:
-                raise ValidationError("The selling price cannot be lower than 90 percent of the expected price.")
+                raise ValidationError(self.env._("The selling price cannot be lower than 90 percent of the expected price."))
 
 
     @api.depends('living_area', 'garden_area')
@@ -81,7 +81,7 @@ class EstateProperty(models.Model):
     def _prevent_property_deletion(self):
         for record in self:
             if record.state not in ('new', 'cancelled'):
-                raise UserError(_("Only new or cancelled properties can be deleted."))
+                raise UserError(self.env._("Only new or cancelled properties can be deleted."))
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -97,7 +97,7 @@ class EstateProperty(models.Model):
             if record.state != 'cancelled':
                 record.state = 'sold'
             else:
-                raise UserError(_("Sold properties cannot be cancelled."))
+                raise UserError(self.env._("Sold properties cannot be cancelled."))
         return True
 
     def action_set_cancelled(self):
@@ -105,5 +105,5 @@ class EstateProperty(models.Model):
             if record.state != 'sold':
                 record.state = 'cancelled'
             else:
-                raise UserError(_("Sold properties cannot be cancelled."))
+                raise UserError(self.env._("Sold properties cannot be cancelled."))
         return True

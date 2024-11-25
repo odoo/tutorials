@@ -23,4 +23,4 @@ class EstateProperty(models.Model):
                 ]
             }
             self.env['account.move'].create(invoice_values)
-        return super(EstateProperty, self).action_set_sold()
+        return super().action_set_sold()
