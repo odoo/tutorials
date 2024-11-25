@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo noupdate="1">
+    <record id="property_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">1600000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+    </record>
+    <record id="property_2" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="selling_price">120000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+    </record>
+    <record id="property_3" model="estate.property">
+        <field name="name">Demo home</field>
+        <field name="description">Home in a demo park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">2024-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="property_offer_ids" eval="[
+            Command.create({
+                'price': 95000,
+                'validity': 21,
+                'partner_id': ref('base.res_partner_2'),
+            }),
+        ]"/>
+    </record>
+</odoo>

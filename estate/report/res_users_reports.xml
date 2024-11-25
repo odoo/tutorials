@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="res_users_action_report" model="ir.actions.report">
+        <field name="name">Properties</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">estate.report_res_users_properties</field>
+        <field name="report_file">estate.res_users_templates</field>
+        <field name="print_report_name">'User Properties - %s' % (object.name or 'User').replace('/','')</field>
+        <field name="binding_model_id" ref="base.model_res_users"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
