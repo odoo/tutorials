@@ -4,11 +4,14 @@
     <record id="estate_group_user" model="res.groups">
         <field name="name">Agent</field>
         <field name="category_id" ref="base.module_category_training"/>
+        <field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>
+
     </record>
     
     <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_training"/>
         <field name="implied_ids" eval="[(6, 0, [ref('estate.estate_group_user')])]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
 </odoo>

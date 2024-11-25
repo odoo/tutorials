@@ -19,6 +19,13 @@
         # menu
         'views/estate_menus.xml',
 
+        # data
+        'data/estate.property.type.csv',
+
+    ],
+    'demo': [
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml',
     ],
     'application': True,
     'license': 'AGPL-3',
