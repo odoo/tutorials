@@ -21,12 +21,13 @@
                     <sheet>
                         <div name="button_box" class="oe_button_box">
                             <button
-                                    type="action"
-                                    name="estate.estate_property_offer_action"
-                                    class="oe_stat_button"
-                                    icon="fa-money"
-                                    string="Offers"
-                                />
+                                type="action"
+                                name="estate.estate_property_offer_action"
+                                class="oe_stat_button"
+                                icon="fa-money"
+                            >
+                                <field name="offer_count" string="Offers" widget="statinfo"/>
+                            </button>
                         </div>
                         <h1>
                             <field name="name"/>

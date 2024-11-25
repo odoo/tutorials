@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
                 <list
                     string="Properties"
-                    decoration-success="state == 'offer_received'"
-                    decoration-primary="state == 'offer_accepted'"
+                    decoration-success="state in ('offer_received', 'offer_accepted')"
+                    decoration-bf="state == 'offer_accepted'"
                     decoration-muted="state == 'sold'">
                     <field name="name"/>
                     <field name="property_type_id"/>
@@ -58,7 +58,7 @@
                         />
                         <group>
                             <group>
-                                <field name="property_type_id"/>
+                                <field name="property_type_id" options="{'no_create':True}"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
                             </group>
@@ -86,8 +86,7 @@
                                 <field 
                                     name="property_offer_ids"
                                     readonly="state in ('offer_accepted','sold','cancelled')"
-                                >
-                                </field>
+                                />
                             </page>
                             <page string="Other Info">
                                 <group>
