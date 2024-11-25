@@ -7,19 +7,11 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeadsViews">Leads</button>
             </t>
-            <!-- Previous implementation: leaving for tutorial review purposes -->
-            <!-- t t-foreach="data" t-as="item" t-key="item">
-                <div t-if="item != 'orders_by_size'">
-                    <AwesomeDashboardItem size="2">
-                        <t t-set-slot="title">
-                            <span t-esc="item"/>
-                        </t>
-                        <t t-esc="item_value"/>
-                    </AwesomeDashboardItem> 
-                </div>
-            </t-->
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="fa fa-cog" t-on-click="openOptionsDialog"></button>
+            </t>
             <t t-foreach="dashboardItems" t-as="item" t-key="item.id">
-                <AwesomeDashboardItem size="item.size || 1">
+                <AwesomeDashboardItem t-if="!this.uncheckedItems.dashboardItems.includes(item.id)" size="item.size || 1">
                     <t t-set="itemProp" t-value="item.props ? item.props(data) : {'data': data}"/>
                     <t t-component="item.Component" t-props="itemProp"/>
                 </AwesomeDashboardItem>
