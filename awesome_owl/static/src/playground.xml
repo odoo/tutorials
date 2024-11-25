@@ -3,8 +3,21 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <h3>Playground</h3>
+            <p>Sum of counters: <t t-esc="counter_sum.value"/></p>
+        </div>
+        <div>
+            <Card title="'Card 1'" message="this.message_1">
+                <Counter onIncrement.bind="onCounterIncrement"/>
+            </Card>
+            <Card title="'Card 2'" message="this.message_2">
+                <Counter onIncrement.bind="onCounterIncrement"/>
+            </Card>
+        </div>
+        <div>
+            <TodoList/>
         </div>
     </t>
 
 </templates>
+
