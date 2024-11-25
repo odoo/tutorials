@@ -8,6 +8,7 @@ from odoo.tools import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _check_company_auto = True
 
     name = fields.Char(required=True, string="Name")
     postcode = fields.Char(string="Pincode")
@@ -53,6 +54,7 @@ class EstateProperty(models.Model):
         string="Salesperson",
         index=True,
         default=lambda self: self.env.user,
+        check_company=True
     )
     partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tags", string="Tags")
@@ -62,6 +64,13 @@ class EstateProperty(models.Model):
         string="Offers",
     )
     best_price = fields.Float(compute="_compute_best_price")
+    
+    company_id = fields.Many2one(
+        'res.company',
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company,
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

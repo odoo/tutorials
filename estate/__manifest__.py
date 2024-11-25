@@ -8,6 +8,9 @@
         part of technical training
     """,
     "data": [
+        # security
+        "security/security.xml",
+        "security/ir.model.access.csv",
         # reports
         "report/paperformat.xml",
         "report/company_details_templates.xml",
@@ -24,11 +27,10 @@
         "views/estate_property_tag_views.xml",
         "views/estate_property_offer_views.xml",
         "views/res_users_views.xml",
-        # security
-        "security/security.xml",
-        "security/ir.model.access.csv",
     ],
     "demo": [
+        "demo/demo_res_company.xml",
+        "demo/demo_res_users.xml",
         "demo/estate.property.types.csv",
         "demo/estate.property.tags.csv",
         "demo/estate_property_demo.xml",

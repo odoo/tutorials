@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+estate.manager_access_estate_property_invoice,manager_access_estate_property_name_invoice,account.model_account_move,estate.group_estate_user_manager,0,0,0,0
+estate.agent_access_estate_property_invoice,agent_access_estate_property_name_invoice,account.model_account_move,estate.group_estate_user_agent,0,0,0,0

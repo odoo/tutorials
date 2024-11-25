@@ -23,6 +23,7 @@
         id="real_estate_menu_setting"
         parent="real_estate_menu_app"
         name="Settings"
+        groups="estate.group_estate_user_manager"
     />
     <menuitem
         id="real_estate_menu_setting_property_type"

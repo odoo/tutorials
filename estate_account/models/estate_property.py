@@ -15,19 +15,14 @@ class EstateProperty(models.Model):
 
     def onclick_sold(self):
         super().onclick_sold()
-        invoice = self.env["account.move"].create(
+        # print(" reached ".center(100, '='))
+        self.check_access('write')
+        invoice = self.env["account.move"].sudo().create(
             {
                 "partner_id": self.partner_id.id,
                 "move_type": "out_invoice",
                 "property_id": self.id,
                 "invoice_line_ids": [
-                    Command.create(
-                        {
-                            "name": "Property selling price",
-                            "quantity": 1,
-                            "price_unit": self.selling_price,
-                        }
-                    ),
                     Command.create(
                         {
                             "name": "6% of the selling price",
@@ -45,4 +40,5 @@ class EstateProperty(models.Model):
                 ],
             }
         )
-        return True
+        
+        return invoice
