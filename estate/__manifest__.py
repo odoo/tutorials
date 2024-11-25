@@ -16,6 +16,12 @@
         'views/estate_property_tag_views.xml',
         'views/res_users_views.xml',
 
+        # reports
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
+        'report/res_users_templates.xml',
+        'report/res_users_reports.xml',
+
         # menu
         'views/estate_menus.xml',
 
