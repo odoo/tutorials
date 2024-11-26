@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_gallery.gallery_controller">
+        <Layout className="'h-100'" display="props.display">
+            <t t-set-slot="layout-actions">
+                <SearchBar autofocus="firstLoad"/>
+            </t>
+            <div class="container">
+                <div class="row row-cols-4">
+                    <div t-foreach="model.images" t-as="image" t-key="image.id" class="col p-2" t-on-click="() => this.onImageClick(image.id)">
+                        <img t-att-src="image.url" t-att-data-tooltip="image.name" width="150px"/>
+                    </div>
+                </div>
+            </div>
+        </Layout>
+    </t>
+
+</templates>
