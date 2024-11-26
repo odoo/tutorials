@@ -15,6 +15,11 @@
         'views/res_users_views.xml',
 
         'views/estate_menu_views.xml',
+
+        "data/master_data.xml",
+    ],
+    'demo': [
+        'demo/demo_data.xml',
     ],
     'application': True,
     'license': 'AGPL-3'
