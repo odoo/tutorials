@@ -92,10 +92,12 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         for record in self:
-            if record.state != 'cancelled':
-                record.state = 'sold'
-            else:
+            if record.state == 'cancelled':
                 raise UserError(self.env._("The property is already cancelled."))
+            elif not record.buyer_id:  # Checking for buyer_id to be set instead of going through the offers in search of an accepted one
+                raise UserError(self.env._("The property does not have any accepted offers."))
+            else:
+                record.state = 'sold'
         return True
 
     def action_set_cancelled(self):

@@ -62,5 +62,7 @@ class EstatePropertyOffer(models.Model):
         property = self.env['estate.property'].browse(vals['property_id'])
         if property.state != 'new' and (float_compare(vals['price'], property.best_offer, precision_digits=3) < 0):
             raise UserError(self.env._("A better priced offer already exists."))
+        elif property.state in ('sold', 'cancelled'):
+            raise UserError(self.env._("Cannot add offer to a property that is already sold or cancelled."))
         property.state = 'recieved'
         return super().create(vals)
