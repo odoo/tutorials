@@ -5,6 +5,8 @@ from odoo.exceptions import UserError, ValidationError
 class estate_property(models.Model):
     _name = "estate.property"  
     _description = "real estate property"
+    _order = "id desc"
+    
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
     description = fields.Text() 
@@ -33,9 +35,10 @@ class estate_property(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")   
     best_offer = fields.Float(compute="_compute_best_offer")
 
+    sequence = fields.Integer(string="Sequence", default=1) 
+
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >= 0 AND selling_price >= 0 AND offer_ids.price > 0)',
-         'The expected price and selling price should be greater than equal to zero.')
+        ('check_expected_price', 'CHECK(expected_price >= 0 AND selling_price >= 0)', 'The expected price and selling price should be greater than equal to zero.')
     ]
 
     @api.depends('living_area', 'garden_area')
@@ -87,11 +90,23 @@ class estate_property(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if float_is_zero(record.selling_price, precision_rounding=record.env.company.currency_id.rounding):
+            if float_is_zero(record.selling_price, precision_rounding=2):
                 continue
             min_price = 0.9 * record.expected_price
-            if float_compare(record.selling_price, min_price, precision_rounding=record.env.company.currency_id.rounding) < 0:
+            print("min price : ", min_price)
+            if float_compare(record.selling_price, min_price, precision_rounding=2) < 0:
                 raise ValidationError(
-                    _("The selling price (%.2f) cannot be lower than 90%% of the expected price (%.2f).")
+                    ("The selling price (%.2f) cannot be lower than 90%% of the expected price (%.2f).")
                     % (record.selling_price, min_price)
                 )
+            
+
+    @api.ondelete(at_uninstall=False)
+    def _check_deletion_state(self):
+        for record in self:
+            if record.state not in ['New', 'Cancelled']:
+                raise UserError("You cannot delete a property unless its state is 'New' or 'Cancelled'.")
+
+
+
+
