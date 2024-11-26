@@ -31,10 +31,16 @@
             ('include', 'web._assets_helpers'),
             'web/static/src/scss/pre_variables.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
-            'web/static/lib/bootstrap/scss/_maps.scss',
-            ('include', 'web._assets_bootstrap'),
-            ('include', 'web._assets_core'),
+            'web/static/lib/bootstrap/scss/_maps.scss', # add this
+            ('include', 'web._assets_bootstrap'),# add this
+            ('include', 'web._assets_core'),# add this
+            # required for fa icons
             'web/static/src/libs/fontawesome/css/font-awesome.css',
+
+            # include base files from framework
+            ('include', 'web._assets_core'),
+
+
             'awesome_owl/static/src/**/*',
         ],
     },
