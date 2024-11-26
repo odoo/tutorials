@@ -1,6 +1,6 @@
 <odoo>
     <template id="report_company_information">
-        <t t-set="company" t-value="company or property.user_id.company_id" />
+        <t t-set="company" t-value="company" />
         <div class="company-info" style="margin-bottom:50px;">
             <div>
                 <img

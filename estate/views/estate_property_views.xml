@@ -4,9 +4,16 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list default_order="id desc" decoration-bf="state == 'offer_accepted'"
+            <list string="Estate Properties"
+                default_order="id desc"
+                decoration-bf="state == 'offer_accepted'"
                 decoration-success="state in ['offer_received','offer_accepted']"
-                decoration-muted="state =='sold'">
+                decoration-muted="state == 'sold'"
+                sample="1"
+            >
+                <header>
+                    <button name="%(action_add_offfer_wizard)d" type="action" string="Add Offer" />
+                </header>
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="postcode" />
@@ -27,6 +34,7 @@
         </field>
     </record>
 
+
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -45,8 +53,13 @@
                 <sheet>
                     <h1>
                         <field name="name" />
+                        <div class="text-end">
+                            <field name="image" widget="image"
+                                style="max-width: 100px; max-height: 100px;" />
+                        </div>
                     </h1>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                    <field name="tag_ids" widget="many2many_tags"
+                        options="{'color_field': 'color'}" />
                     <field name="active" invisible="True" />
                     <group>
                         <group>
@@ -81,7 +94,7 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="bedrooms" />
+                                <field name="description" />
                             </group>
                             <group>
                                 <field name="facades" />
@@ -90,7 +103,7 @@
                                 <field name="garage" />
                             </group>
                             <group>
-                                <field name="description" />
+                                <field name="bedrooms" />
                             </group>
                             <group>
                                 <field name="living_area" />
@@ -98,11 +111,11 @@
                             <group>
                                 <field name="garden" />
                             </group>
-                            <group>
-                                <field invisible="not garden" name="garden_area" />
+                            <group invisible="not garden">
+                                <field name="garden_area" />
                             </group>
-                            <group>
-                                <field invisible="not garden" name="garden_orientation" />
+                            <group invisible="not garden">
+                                <field name="garden_orientation" />
                             </group>
                             <group>
                                 <field name="total_area" />
@@ -122,6 +135,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>
@@ -167,32 +181,36 @@
 
 
     <record id="view_estate_property_kanban" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+        <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" records_draggable="False"
+            <kanban sample="1" default_group_by="property_type_id" records_draggable="False"
                 default_order="expected_price">
                 <field name="state" />
                 <templates>
                     <t t-name="kanban-box">
-                        <div>
-                            <h4>
-                                <field name="name" />
-                            </h4>
-                            <group> Expected price: <field name="expected_price" />
-                            </group>
-                            <group>
-                                <div t-if="record.state.raw_value == 'offer_received'"> Best price: <field
-                                        name="best_price" />
-                                </div>
-                            </group>
-                            <div t-if="record.state.raw_value == 'offer_accepted'">
-                                <group> Selling price: <field name="selling_price" />
+                        <div style="display:flex;justify-content:space-between;">
+                            <div>
+                                <h3>
+                                    <field name="name" />
+                                </h3>
+                                <group> Expected price: <field name="expected_price" />
                                 </group>
+                                <group>
+                                    <div t-if="record.state.raw_value == 'offer_received'"> Best
+                                        price: <field
+                                            name="best_price" />
+                                    </div>
+                                </group>
+                                <div t-if="record.state.raw_value == 'offer_accepted'">
+                                    <group> Selling price: <field name="selling_price" />
+                                    </group>
+                                </div>
+                                <field name="tag_ids" widget="many2many_tags"
+                                    options="{'color_field': 'color'}" />
                             </div>
-                            <field name="tag_ids" widget="many2many_tags"
-                                options="{'color_field': 'color'}" />
-
+                            <field name="image" widget="image"
+                                style="max-width: 100px; max-height: 100px;" />
                         </div>
                     </t>
                 </templates>

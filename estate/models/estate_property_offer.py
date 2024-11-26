@@ -21,7 +21,7 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
     partner_id = fields.Many2one("res.partner", string="Partner")
-    property_id = fields.Many2one("estate.property")
+    property_id = fields.Many2one("estate.property", required=True, index=True)
     date_deadline = fields.Date(
         default=(datetime.now() + timedelta(days=7)).date(),
         compute="_compute_date_by_validity",

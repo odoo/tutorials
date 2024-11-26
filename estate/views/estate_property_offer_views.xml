@@ -8,8 +8,8 @@
                 decoration-danger="status=='refused'">
                 <field name="price" />
                 <field name="partner_id" />
-                <field name="date_deadline" />
                 <field name="validity" />
+                <field name="date_deadline" />
                 <button name="action_confirm" title="accept" type="object" icon="fa-check"
                     invisible="property_state != 'offer_received' or status in ['accepted','refused']"
                 />

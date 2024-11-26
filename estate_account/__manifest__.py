@@ -13,7 +13,6 @@
         # "views/estate_property_views.xml",
     ],
     "demo": [
-        "demo/demo_journal_for_company.xml",
         "demo/demo_invoice_data_property.xml",
     ],
     "installable": True,

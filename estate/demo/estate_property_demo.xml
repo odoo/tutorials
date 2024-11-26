@@ -18,6 +18,7 @@
             <field name="company_id" ref="base.main_company" />
             <field name="garden_orientation">south</field>
             <field name="property_type_id" ref="estate_property_type_villa" />
+            <field name="image" type="base64" file="estate/static/images/img_9.jpeg" />
         </record>
 
         <record id="estate_property_trailer_home" model="estate.property">
@@ -38,6 +39,7 @@
             <field name="company_id" ref="base.main_company" />
             <field name="garden_orientation" />
             <field name="property_type_id" ref="estate_property_type_apartment" />
+            <field name="image" type="base64" file="estate/static/images/img_8.jpeg" />
         </record>
 
         <record id="estate_property_my_home" model="estate.property">
@@ -51,8 +53,8 @@
             <field name="bedrooms">15</field>
             <field name="living_area">10000</field>
             <field name="facades">4</field>
-            <field name="user_id" ref="estate.estate_agent_user_1" />
-            <field name="company_id" ref="base.main_company" />
+            <field name="user_id" ref="estate.estate_agent_user_2" />
+            <field name="company_id" ref="estate_company_2" />
             <field name="garage">False</field>
             <field name="garden">False</field>
             <field name="garden_area">0</field>
@@ -78,6 +80,7 @@
                     })
                 ]"
             />
+            <field name="image" type="base64" file="estate/static/images/img_7.jpeg" />
         </record>
 
 
@@ -101,6 +104,7 @@
             <field name="property_type_id" ref="estate_property_type_villa" />
             <field name="tag_ids"
                 eval="[(6, 0, [ref('tag_modern'), ref('tag_luxury'), ref('tag_spacious')])]" />
+            <field name="image" type="base64" file="estate/static/images/img_6.jpg" />
         </record>
 
         <record id="estate_property_commercial_office" model="estate.property">
@@ -122,6 +126,7 @@
             <field name="garden_orientation" />
             <field name="property_type_id" ref="estate_property_type_commercial" />
             <field name="tag_ids" eval="[(6, 0, [ref('tag_city_center'), ref('tag_spacious')])]" />
+            <field name="image" type="base64" file="estate/static/images/img_5.jpeg" />
         </record>
 
         <record id="estate_property_residential_apartment" model="estate.property">
@@ -160,6 +165,7 @@
                         ]"
             />
             <field name="tag_ids" eval="[(6, 0, [ref('tag_modern'), ref('tag_economical')])]" />
+            <field name="image" type="base64" file="estate/static/images/img_4.jpeg" />
         </record>
 
         <record id="estate_property_land_for_sale" model="estate.property">
@@ -173,8 +179,8 @@
             <field name="bedrooms">0</field>
             <field name="living_area">0</field>
             <field name="facades">4</field>
-            <field name="user_id" ref="estate.estate_agent_user_2" />
-            <field name="company_id" ref="estate_company_2" />
+            <field name="user_id" ref="estate.estate_agent_user_1" />
+            <field name="company_id" ref="base.main_company" />
             <field name="partner_id" ref="base.res_partner_18" />
             <field name="garage">False</field>
             <field name="garden">False</field>
@@ -182,11 +188,12 @@
             <field name="garden_orientation" />
             <field name="property_type_id" ref="estate_property_type_land" />
             <field name="tag_ids" eval="[(6, 0, [ref('tag_green'), ref('tag_waterfront')])]" />
+            <field name="image" type="base64" file="estate/static/images/img_1.jpeg" />
         </record>
 
         <record id="estate_property_industrial_warehouse" model="estate.property">
             <field name="name">Industrial Warehouse</field>
-            <field name="state">sold</field>
+            <field name="state">offer_received</field>
             <field name="description">An industrial warehouse with large storage capacity.</field>
             <field name="postcode">98765</field>
             <field name="date_availability">2024-04-10</field>
@@ -204,6 +211,7 @@
             <field name="garden_orientation" />
             <field name="property_type_id" ref="estate_property_type_industrial" />
             <field name="tag_ids" eval="[(6, 0, [ref('tag_spacious')])]" />
+            <field name="image" type="base64" file="estate/static/images/img_2.jpeg" />
         </record>
 
         <record id="estate_property_luxury_mountain_view_villa" model="estate.property">
@@ -219,14 +227,14 @@
             <field name="facades">5</field>
             <field name="garage">True</field>
             <field name="active">false</field>
-            <field name="user_id" ref="estate.estate_agent_user_2" />
-            <field name="company_id" ref="estate_company_2" />
+            <field name="user_id" ref="estate.estate_agent_user_1" />
+            <field name="company_id" ref="base.main_company" />
             <field name="partner_id" ref="base.res_partner_4" />
             <field name="garden_area">2000</field>
             <field name="garden_orientation">west</field>
             <field name="property_type_id" ref="estate_property_type_villa" />
             <field name="tag_ids" eval="[(6, 0, [ref('tag_luxury'), ref('tag_mountain_view')])]" />
+            <field name="image" type="base64" file="estate/static/images/img_3.jpeg" />
         </record>
     </data>
 </odoo>
-        

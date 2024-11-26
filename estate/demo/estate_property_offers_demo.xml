@@ -33,7 +33,7 @@
                 eval="(datetime.now() + timedelta(days=20)).strftime('%Y-%m-%d')" />
         </record>
         <record id="offer_1_modern_villa" model="estate.property.offers">
-            <field name="price">25000000</field>            
+            <field name="price">25000000</field>
             <field name="partner_id" ref="base.res_partner_1" />
             <field name="property_id" ref="estate_property_modern_villa" />
             <field name="validity">30</field>
@@ -92,14 +92,12 @@
         </record>
         <record id="offer_1_industrial_warehouse" model="estate.property.offers">
             <field name="price">10550000</field>
-            <field name="status">accepted</field>
             <field name="partner_id" ref="base.res_partner_12" />
             <field name="property_id" ref="estate_property_industrial_warehouse" />
             <field name="validity">30</field>
         </record>
         <record id="offer_2_industrial_warehouse" model="estate.property.offers">
             <field name="price">11050000</field>
-            <field name="status">refused</field>
             <field name="partner_id" ref="base.res_partner_3" />
             <field name="property_id" ref="estate_property_industrial_warehouse" />
             <field name="validity">15</field>

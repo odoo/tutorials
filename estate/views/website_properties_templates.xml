@@ -1,0 +1,54 @@
+<odoo>
+    <template id="property_list_template" name="Active Properties">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h1 class="text-center mb-4">Available Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4 d-flex">
+                            <div class="card flex-fill">
+                                <div class="card-body d-flex flex-column">
+                                    <img
+                                        t-att-src="'/web/image/estate.property/' + str(property.get('id')) + '/image'"
+                                        class="card-img-top"
+                                        style="height: 300px; width: 100%; object-fit: cover;"
+                                        alt="Property Image" />
+                                    <h5 class="card-title">
+                                        <t t-esc="property.get('name')" />
+                                    </h5>
+                                    <p class="card-text">Price: <t
+                                            t-esc="property.get('expected_price')" /> USD</p>
+                                    <p class="card-text">
+                                        <t t-esc="property.get('description')" />
+                                    </p>
+                                    <a t-att-href="'/property/' + str(property.get('id'))"
+                                        class="btn btn-primary mt-auto">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="pagination d-flex justify-content-center mt-4">
+                    <a
+                        class="btn btn-secondary me-2"
+                        t-att-href="('/active_properties?page=' + str(current_page - 1)) if current_page > 1 else '#'"
+                    >
+                        Previous
+                    </a>
+
+                    <t t-foreach="range(1, total_pages + 1)" t-as="page_num">
+                        <a t-att-href="'/active_properties?page=' + str(page_num)"
+                            t-att-class="'btn btn-light mx-1 ' + ('active' if page_num == current_page else '')"
+                            t-att-disabled="True if page_num == current_page else False">
+                            <t t-esc="page_num" />
+                        </a>
+                    </t>
+                    <a
+                        t-att-href="('/active_properties?page=' + str(current_page + 1)) if total_pages > current_page else '#'"
+                        class="btn btn-secondary"
+                    >Next</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -4,9 +4,9 @@
         <field name="default" eval="False" />
         <field name="format">A4</field> <!-- Predefined format -->
         <field name="orientation">Portrait</field>
-        <field name="margin_top">10</field>
-        <field name="margin_bottom">10</field>
-        <field name="margin_left">10</field>
-        <field name="margin_right">10</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
     </record>
 </odoo>
