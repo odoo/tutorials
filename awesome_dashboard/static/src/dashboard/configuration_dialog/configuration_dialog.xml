@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+
+
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <style>
+    .conf-div {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        padding: 5px
+    }
+    .item-span {
+        display: flex-wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin: 5px
+    }
+    .title {
+        font-weight: bold;
+        font-size: 12pt
+    }
+
+        </style>
+        <Dialog size="'lg'" modalRef="modalRef" withBodyPadding="false">
+            <t t-set-slot="header">
+                <p class="title">Dashboard item configuration</p>
+            </t>
+            <div class="conf-div">
+                <span class="item-span">Which cards do you wish to see?</span>
+            </div>
+            <t t-foreach="props.items" t-as="i" t-key="i.id">
+                <div class="conf-div">
+                    <span class="item-span">
+                        <input type="checkbox" class="me-2" t-model="this.state.config[i.id]" />
+                        <t t-out='i.description' />
+                    </span>
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" type="button" t-on-click="onCloseClicked">Done</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
