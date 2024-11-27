@@ -13,12 +13,13 @@ class EstatePropertyOffer(models.Model):
     ]
 
     price = fields.Float()
-    status = fields.Selection(copy=False,
-                              selection=[
-                                  ('accepted', "Accepted"),
-                                  ('refused', "Refused"),
-                              ]
-                              )
+    status = fields.Selection(
+        copy=False,
+        selection=[
+            ('accepted', "Accepted"),
+            ('refused', "Refused"),
+        ]
+    )
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
     property_id = fields.Many2one('estate.property', string="Property", required=True)
     property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
@@ -38,11 +39,11 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - create_date.date()).days
 
     @api.model_create_multi
-    def create(self, values):
-        for record in values:
-            self.env['estate.property'].browse(record['property_id']).check_new_offer(record['price'])
+    def create(self, vals_list):
+        for vals in vals_list:
+            self.env['estate.property'].browse(vals['property_id']).check_new_offer(vals['price'])
 
-        return super(EstatePropertyOffer, self).create(values)
+        return super().create(vals_list)
 
     def action_accept(self):
         for record in self:
