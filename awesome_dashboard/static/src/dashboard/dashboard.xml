@@ -14,12 +14,10 @@
             </t>
             <div class="d-flex flex-wrap">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <t t-if="this.config[item.id]">
-                        <DashboardItem size="item.size || 1">
-                            <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
-                            <t t-component="item.Component" t-props="itemProp" />
-                        </DashboardItem>
-                    </t>
+                    <DashboardItem size="item.size || 1" t-if="this.state.config[item.id]">
+                        <t t-set="itemProp" t-value="item.props ? item.props(this.state.statistics) : {'data': this.state.statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
                 </t>
             </div>
         </Layout>

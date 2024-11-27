@@ -68,10 +68,3 @@ const dashboard_items = [
 for (const item of dashboard_items) {
   registry.category("awesome_dashboard").add(item.id, item);
 }
-
-const dashboard_config = dashboard_items.reduce((acc, item) => {
-  acc[item.id] = true;
-  return acc;
-}, {});
-
-localStorage.setItem("dashboard_config", JSON.stringify(dashboard_config));
