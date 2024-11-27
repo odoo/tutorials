@@ -1,6 +1,7 @@
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import tagged
+from odoo.tests import Form
 
 @tagged('post_install', '-at_install')
 class EstatePropertyTestCase(TransactionCase):
@@ -51,3 +52,22 @@ class EstatePropertyTestCase(TransactionCase):
         offers[0].action_accept()
         self.property.action_set_sold()
         self.assertEqual(self.property.state, 'sold')
+
+    def test_garden_set_to_true(self):
+        """Test that checking the 'Garden' field on the form updates garden-related values."""
+        with Form(self.property) as property_form:
+            property_form.garden = True
+        self.assertRecordValues(self.property, [
+            {'garden_area': 10, 'garden_orientation': 'south'}
+        ])
+
+    def test_garden_set_to_false(self):
+        """Test that unchecking the 'Garden' field on the form resets garden-related values."""
+        self.property.garden = True
+        self.property.garden_area = 1
+        self.property.garden_orientation = 'north'
+        with Form(self.property) as property_form:
+            property_form.garden = False
+        self.assertRecordValues(self.property, [
+            {'garden_area': 0, 'garden_orientation': None}
+        ])
