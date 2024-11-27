@@ -8,6 +8,8 @@
     'license': 'AGPL-3',
     'data': [
         'security/ir.model.access.csv',
+        'security/estate.security.xml',
+
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
