@@ -12,6 +12,11 @@
     "version": "0.1",
     "depends": ["base"],
     "application": True,
+    "demo": [
+        "demo/estate.property.type.csv",
+        "demo/estate_property_demo.xml",
+        "demo/estate_property_offer_demo.xml",
+    ],
     "data": [
         "security/ir.model.access.csv",
         "views/estate_property_tag_views.xml",

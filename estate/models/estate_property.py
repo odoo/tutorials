@@ -108,7 +108,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = ""
+            self.garden_orientation = None
 
     def action_sold(self):
         for record in self:
