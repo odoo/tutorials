@@ -8,7 +8,7 @@
         Tutorial starting module
     """,
     "author": "",
-    "category": "Tutorials/Estate",
+    "category": "Real Estate/Brokerage",
     "version": "0.1",
     "depends": ["base"],
     "application": True,
@@ -18,7 +18,9 @@
         "demo/estate_property_offer_demo.xml",
     ],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
+        "security/ir_rule.xml",
         "views/estate_property_tag_views.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
