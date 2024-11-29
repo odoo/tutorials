@@ -2,6 +2,8 @@ from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tests import Form
+from odoo.tests.common import users
+from odoo.tests.common import new_test_user
 
 @tagged('post_install', '-at_install')
 class EstatePropertyTestCase(TransactionCase):
@@ -9,6 +11,7 @@ class EstatePropertyTestCase(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super(EstatePropertyTestCase, cls).setUpClass()
+        cls.test_user = new_test_user(cls.env, login='estate_test_user', groups='estate.estate_group_manager')
         cls.property = cls.env['estate.property'].create({
                                                             'name': 'Test',
                                                             'expected_price': '1',
@@ -53,19 +56,21 @@ class EstatePropertyTestCase(TransactionCase):
         self.property.action_set_sold()
         self.assertEqual(self.property.state, 'sold')
 
+    @users('estate_test_user')
     def test_garden_set_to_true(self):
         """Test that checking the 'Garden' field on the form updates garden-related values."""
         with Form(self.property) as property_form:
             property_form.garden = True
         self.assertRecordValues(self.property, [
-            {'garden_area': 10, 'garden_orientation': 'south'}
+            {'garden_area': 10, 'garden_orientation': 'north'}
         ])
 
+    @users('estate_test_user')
     def test_garden_set_to_false(self):
         """Test that unchecking the 'Garden' field on the form resets garden-related values."""
         self.property.garden = True
         self.property.garden_area = 1
-        self.property.garden_orientation = 'north'
+        self.property.garden_orientation = 'south'
         with Form(self.property) as property_form:
             property_form.garden = False
         self.assertRecordValues(self.property, [

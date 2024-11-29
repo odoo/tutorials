@@ -6,6 +6,7 @@
     ],
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
 
         'views/estate_property_views.xml',
         'views/ep_tag_views.xml',
@@ -22,5 +23,6 @@
         'demo/demo_data.xml',
     ],
     'application': True,
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
+    'category': 'Real Estate/Brokerage',
 }
