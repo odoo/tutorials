@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Awesome Dashboard",
 
@@ -24,7 +23,11 @@
     'assets': {
         'web.assets_backend': [
             'awesome_dashboard/static/src/**/*',
+            ('remove', 'awesome_dashboard/static/src/dashboard/**/*'),
         ],
+        'awesome_dashboard.dashboard': [
+            'awesome_dashboard/static/src/dashboard/**/*'
+        ]
     },
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
 }
