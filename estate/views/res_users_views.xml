@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+
 
         <record id="res_users_view_form" model="ir.ui.view">
             <field name="name">res.users.view.form.inherit.estate</field>
             <field name="model">res.users</field>
             <field name="inherit_id" ref="base.view_users_form"/>
             <field name="arch" type="xml">
-                <notebook position="inside">
-                    <page string="Real Estate Properties">
+                <xpath expr="/form/*/notebook" position="inside">
+                      <page string="Yeaaa" >
+                          <div>Mother fucker</div>
+                    </page>
+                </xpath>
+
+                        <notebook position="inside">
+
+                    <page string="Real Estate Properties" groups="estate.estate_group_user" >
                         <field name="property_ids"/>
                     </page>
                 </notebook>
+
             </field>
+
         </record>
 
-    </data>
+
 </odoo>

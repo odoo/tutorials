@@ -38,6 +38,7 @@ class EstateProperty(models.Model):
             ('west', "West"),
         ]
     )
+
     active = fields.Boolean(default=True)
     state = fields.Selection(copy=False, default='new', required=True, string="Status",
                              selection=[
@@ -73,6 +74,7 @@ class EstateProperty(models.Model):
                     float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0):
                 raise ValidationError(self.env._("The selling price must be at least 90% of the expected price."))
 
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -92,6 +94,10 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(self.env._("Cancelled properties cannot be sold."))
+
+            if not any(offer.status == 'accepted' for offer in record.offer_ids):
+                raise UserError(self.env._("Properties without accepted offer cannot be sold"))
+
             record.state = 'sold'
         return True
 
