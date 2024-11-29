@@ -11,6 +11,9 @@
     "version": "0.1",
     "depends": ["base", "estate", "account"],
     "application": True,
-    "data": [],
+    "data": [
+        "report/estate_account_report_templates.xml",
+        "report/estate_account_reports.xml",
+    ],
     "license": "AGPL-3",
 }

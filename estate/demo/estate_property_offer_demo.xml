@@ -35,10 +35,29 @@
         <function model="estate.property.offer" name="action_refuse">
             <value eval="[ref('estate_property_offer_3')]"/>
         </function>
+
+        <record id="estate_property_offer_4" model="estate.property.offer">
+            <field name="price">100000</field>
+            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="validity">14</field>
+            <field name="property_id" ref="estate_property_2"/>
+            <field name="date_deadline" eval="datetime.now() + timedelta(days=14)"></field>
+        </record>
+
+        <record id="estate_property_offer_5" model="estate.property.offer">
+            <field name="price">120000</field>
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="validity">14</field>
+            <field name="property_id" ref="estate_property_2"/>
+            <field name="date_deadline" eval="datetime.now() + timedelta(days=14)"></field>
+        </record>
+
+        <record id="estate_property_offer_6" model="estate.property.offer">
+            <field name="price">120001</field>
+            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="validity">14</field>
+            <field name="property_id" ref="estate_property_2"/>
+            <field name="date_deadline" eval="datetime.now() + timedelta(days=14)"></field>
+        </record>
     </data>
 </odoo>
-
-
-<!-- {'xml_id': 'estate.estate_property_offer_1', 'values': {'price': 10000.0, 'partner_id': 10, 'validity': 14, 'property_id': 1, 'date_deadline': datetime.datetime(2024, 12, 12, 8, 6, 33, 735513), 'status': 'accepted', 'property_type_id': 1}, 'noupdate': False}
-[{'xml_id': 'estate.estate_property_offer_1', 'values': {...}, 'noupdate': False}]
-records NOne -->

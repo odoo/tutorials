@@ -27,6 +27,8 @@
         "views/estate_property_views.xml",
         "views/estate_salesperson_views.xml",
         "views/estate_menus.xml",
+        "report/estate_property_reports.xml",
+        "report/estate_property_templates.xml",
     ],
     "license": "AGPL-3",
 }

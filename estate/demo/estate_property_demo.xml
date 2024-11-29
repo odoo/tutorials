@@ -3,7 +3,7 @@
         <record id="estate_property_1" model="estate.property">
             <field name="name">Big Villa</field>
             <field name="property_type_id" ref="property_type_1"></field>
-            <field name="state">new</field>
+            <field name="state">received</field>
             <field name="description">A nice and big villa</field>
             <field name="postcode">12345</field>
             <field name="date_availability">1970-01-01</field>
@@ -22,7 +22,7 @@
         <record id="estate_property_2" model="estate.property">
             <field name="name">trailer home</field>
             <field name="property_type_id" ref="property_type_1"></field>
-            <field name="state">cancelled</field>
+            <field name="state">received</field>
             <field name="description">Home in a trailer park</field>
             <field name="postcode">54321</field>
             <field name="date_availability">1970-01-01</field>
@@ -32,6 +32,7 @@
             <field name="living_area">10</field>
             <field name="facades">4</field>
             <field name="garage">False</field>
+            <field name="salesperson_id"></field>
             <field name="company_id" ref="base.main_company"></field>
         </record>
 
@@ -50,6 +51,7 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
+            <field name="salesperson_id"></field>
             <field name="offer_ids" eval="[
                 Command.create({
                     'price': 1500000,

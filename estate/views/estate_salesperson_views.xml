@@ -8,11 +8,10 @@
             <field name="arch" type="xml">
                 <notebook position="inside">
                     <page string="Real Estate Properties">
-                        <!-- <field name="property_ids" /> -->
+                        <field name="property_ids" />
                     </page>
                 </notebook>
             </field>
         </record>
-
     </data>
 </odoo>

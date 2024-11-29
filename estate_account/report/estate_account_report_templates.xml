@@ -1,0 +1,13 @@
+<odoo>
+
+    <template id="report_property_offers" inherit_id="estate.report_property_offers">
+        <xpath expr='//div[hasclass("property_status")]' position="after">
+            <t t-if="property.state == 'sold'">
+                <span>
+                    <strong>!!! Incoice has already been created !!!</strong>
+                </span>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
