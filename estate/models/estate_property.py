@@ -116,6 +116,8 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            if len(record.offer_ids) == 0:
+                raise UserError(self.env._("Properties without offers cannot be sold!"))
             if record.state == 'cancelled':
                 raise UserError(self.env._("Cancelled properties cannot be sold!"))
             else:
