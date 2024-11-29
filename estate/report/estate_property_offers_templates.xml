@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="offers_table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <strong>Price</strong>
+                    </th>
+                    <th>
+                        <strong>Partner</strong>
+                    </th>
+                    <th>
+                        <strong>Validity (days)</strong>
+                    </th>
+                    <th>
+                        <strong>Deadline</strong>
+                    </th>
+                    <th>
+                        <strong>State</strong>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="doc.offer_ids" t-as="offer">
+                    <tr>
+                        <td>
+                            <span t-field="offer.price" />
+                        </td>
+                        <td>
+                            <span t-field="offer.partner_id.name" />
+                        </td>
+                        <td>
+                            <span t-field="offer.validity" />
+                        </td>
+                        <td>
+                            <span t-field="offer.date_deadline" />
+                        </td>
+                        <td>
+                            <span t-field="offer.status" />
+                        </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </template>
+</odoo>

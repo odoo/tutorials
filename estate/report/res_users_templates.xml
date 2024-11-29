@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_user_properties">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2>Properties for: <span t-field="doc.name" /></h2>
+                <t t-foreach="doc.property_ids" t-as="property">
+                    <div>
+                        <h3>
+                            <t t-field="property.name" />
+                        </h3>
+                        <p>Expected Price: <t t-field="property.expected_price" /> €</p>
+                        <p>Status: <t t-field="property.state" /></p>
+                        <t t-call="estate.offers_table" />
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>
