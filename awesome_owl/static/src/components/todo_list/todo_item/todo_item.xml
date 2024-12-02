@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <li class="list-group-item">
+            <div class="d-flex flex-row justify-content-between">
+                <div t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}"><t t-esc="props.todo.description"/> </div>
+                <div class="ms-2 d-flex flex-row align-items-center">
+                    <a href="#" class="mx-1"
+                       t-att-class="{'text-success': !props.todo.isCompleted, 'text-warning': props.todo.isCompleted}"
+                       t-on-click.prevent="toggle">
+                        <i
+                                class="fa fa-check"
+                                aria-hidden="true"
+                                t-if="!props.todo.isCompleted"
+                        />
+                        <i
+                                class="fa fa-times"
+                                aria-hidden="true"
+                                t-else=""
+                        />
+                    </a>
+                    <a href="#" class="mx-1 text-danger" t-on-click.prevent="delete"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </div>
+
+            </div>
+        </li>
+    </t>
+
+</templates>

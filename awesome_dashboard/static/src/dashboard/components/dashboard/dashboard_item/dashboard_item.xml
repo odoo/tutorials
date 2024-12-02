@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.dashboard.dashboard_item">
+        <div class="d-flex flex-column"
+             t-att-style="'grid-column-start: ' + (props.item.loc.pos.x + 1) + '; grid-column-end: ' + (props.item.loc.pos.x + props.item.loc.size.x + 1) + '; grid-row-start: ' + (props.item.loc.pos.y + 1) + '; grid-row-end: ' + (props.item.loc.pos.y + props.item.loc.size.y + 1) + ';'">
+            <Card title="props.item.item.title">
+                <div class="d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+                    <span class="display-1 text-success" t-if="props.item.item.type == 'stat'"><strong><t t-esc="stats[props.item.item.stat]"/></strong></span>
+                    <PieChart t-if="props.item.item.type == 'chart'" stats="stats[props.item.item.stat]"/>
+                </div>
+            </Card>
+        </div>
+    </t>
+
+</templates>

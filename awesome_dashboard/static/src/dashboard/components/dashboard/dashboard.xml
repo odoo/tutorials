@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.awesome_dashboard">
+        <Layout display="{controlPanel: {}}" className="'o_dashboard h-100 d-flex flex-column p-2'">
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="openCustomers" type="button" class="btn btn-primary"
+                        title="Customers">Customers</button>
+                <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Leads">Leads</button>
+            </t>
+            <DashboardGrid grid="gridManager"/>
+        </Layout>
+    </t>
+
+</templates>

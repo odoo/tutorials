@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.click_value">
+        <span t-att-data-tooltip="props.clicks"><t t-esc="hNum()"/>
+            <i class="fa fa-mouse-pointer ms-1" aria-hidden="true"></i></span>
+    </t>
+
+</templates>
