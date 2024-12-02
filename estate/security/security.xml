@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[Command.link(ref('estate_group_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="multi_company_agency_rule">
+        <field name="name">Estate Property multi-company</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="domain_force">[
+        '|', ('company_id', '=', False),
+             ('company_id', 'in', company_ids)
+    ]</field>
+    </record>
+</odoo>

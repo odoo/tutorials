@@ -1,0 +1,11 @@
+<odoo>
+    <record id="rule_id" model="ir.rule">
+        <field name="name">Agents only see the properties without a salesperson or for which they are the salesperson.</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
+        <field name="domain_force">[
+        '|', ('salesperson_id', '=', user.id),
+             ('salesperson_id', '=', False)
+        ]</field>
+    </record>
+</odoo>

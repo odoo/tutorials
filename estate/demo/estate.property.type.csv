@@ -1,0 +1,5 @@
+"id","name","property_ids:id","sequence","offer_ids:id","offer_count"
+property_type_1,"Residential",,"6",,"0"
+property_type_2,"Commercial",,"1",,"0"
+property_type_3,"Industrial",,"3",,"0"
+property_type_4,"Land",,"16",,"0"
