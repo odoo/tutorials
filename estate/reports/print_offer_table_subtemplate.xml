@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="print_offer_table">
+        <t t-if="len(property.offer_ids) > 0">
+            <table class="table mt16">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity (days)</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="property.offer_ids" t-as="offers">
+                        <td>
+                            <span t-field="offers.price"/>
+                        </td>
+                        <td>
+                            <span t-field="offers.partner_id"/>
+                        </td>
+                        <td>
+                            <span t-field="offers.validity"/>
+                        </td>
+                        <td>
+                            <span t-field="offers.date_deadline"/>
+                        </td>
+                        <td>
+                            <span t-field="offers.status"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <p>
+                No offer exists for property!!!
+            </p>
+        </t>
+    </template>
+</odoo>
