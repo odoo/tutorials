@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
+    <t t-name="awesome_owl.playground" owl="1">
         <div class="p-3">
             hello world
+            <Counter />
+            <Card>
+                <t t-set-slot="title">awesome card</t>
+                awesome text
+            </Card>
         </div>
     </t>
 
