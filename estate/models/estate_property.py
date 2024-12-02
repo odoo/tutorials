@@ -27,7 +27,7 @@ class estate_property(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    salesman = fields.Many2one("res.users", string='Salesperson', default=lambda self: self.env.user)
+    salesman_id = fields.Many2one("res.users", string='Salesperson', default=lambda self: self.env.user)
     buyer = fields.Many2one("res.partner", copy=False)
     property_type_id = fields.Many2one("estate.property.type")
     tag_ids = fields.Many2many("estate.property.tag")
@@ -36,6 +36,7 @@ class estate_property(models.Model):
     best_offer = fields.Float(compute="_compute_best_offer")
 
     sequence = fields.Integer(string="Sequence", default=1) 
+    company_id = fields.Integer(default=lambda self: self.env.user.company_id)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price >= 0 AND selling_price >= 0)', 'The expected price and selling price should be greater than equal to zero.')
