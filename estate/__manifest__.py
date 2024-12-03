@@ -4,7 +4,7 @@
     'author' : "DhruvKumar Nagar",
     "description": "Real estate module for all your property needs!",
     'depends': [
-        'base',
+        'base','sale'
     ],
     'installable': True,
     'application': True,
@@ -15,6 +15,7 @@
         'security/record_rules.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+        'wizard/estate_property_offer_wizard_view.xml',
         'report/estate_property_offers_templates.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',

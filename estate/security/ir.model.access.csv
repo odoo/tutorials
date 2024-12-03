@@ -5,4 +5,5 @@ access_estate_offer_user,res.real.estate.manager,model_estate_property_offer,est
 access_estate_type_user,res.real.estate.type.user,model_estate_property_type,estate_group_user,1,0,0,0
 access_estate_tag_user,res.real.estate.tag.user,model_estate_property_tag,estate_group_user,1,0,0,0
 access_estate_property_user,res.real.estate.property.user,model_estate_property,estate_group_user,1,1,1,0
-access_estate_offer_user,res.real.estate.manager,model_estate_property_offer,estate_group_user,1,0,0,0
+access_estate_offer_user,res.real.estate.manager,model_estate_property_offer,estate_group_user,1,1,1,1
+access_estate_offer_wizard_user,res.real.estate.offer.wizard.manager,model_estate_property_offer_wizard,estate_group_manager,1,1,1,1
