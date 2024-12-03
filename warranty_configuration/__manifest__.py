@@ -9,8 +9,7 @@
     """,
     "data": [
         "security/ir.model.access.csv",
-        "wizards/so_add_warranty_wizard.xml",
-      
+        "wizards/add_warranty_wizard_view.xml",
         "views/sales_management_menu.xml",
         "views/warranty_configuration_views.xml",
         "views/product_views.xml",

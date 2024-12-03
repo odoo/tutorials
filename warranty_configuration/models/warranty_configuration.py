@@ -9,6 +9,6 @@ class WarrantyConfiguration(models.Model):
         required=True,
         string="Name",
     )
-    product_id = fields.Many2one("product.product", string="Product")
+    product_id = fields.Many2one("product.product", string="Product", index=True)
     year = fields.Integer(default=0, required=True)
     percentage = fields.Float(default=0.0, digits=(5, 2), required=True)
