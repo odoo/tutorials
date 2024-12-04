@@ -3,9 +3,11 @@ from odoo.http import Controller, request, route
 
 class EstatePropertyControllers(Controller):
     @route("/active_properties", auth="public", website=True)
-    def list_active_properties(self, page=1):
+    def list_active_properties(self, page=1, **kw):
         page = int(page)
         limit = 3
+        # if kw.get("size"):
+        #     limit = int(kw.get("size"))
         offset = (page - 1) * limit
 
         properties = (
@@ -17,11 +19,12 @@ class EstatePropertyControllers(Controller):
                     ("active", "=", True),
                     ("state", "in", ["new", "offer_received"]),
                 ],
-                fields=["name", "expected_price", "description"],
+                fields=["name", "expected_price", "description", "image"],
                 limit=limit,
                 offset=offset,
             )
         )
+
         total_properties = (
             request.env["estate.property"]
             .sudo()
@@ -41,7 +44,7 @@ class EstatePropertyControllers(Controller):
         )
 
     @route("/property/<int:property_id>", auth="public", website=True)
-    def property_detail(self, property_id, **kw):
+    def property_detail(self, property_id):
         property = request.env["estate.property"].sudo().browse(property_id)
         if property.exists():
             # print("*-*-" * 100)

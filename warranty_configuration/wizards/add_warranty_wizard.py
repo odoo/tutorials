@@ -1,4 +1,4 @@
-from odoo import models, fields, api, Command
+from odoo import models, fields, api
 
 
 class AddWarrantyWizard(models.TransientModel):
@@ -6,54 +6,49 @@ class AddWarrantyWizard(models.TransientModel):
     _description = "Wizard to Add Warranty"
 
     order_id = fields.Many2one("sale.order", string="Sale Order")
-    product_ids = fields.Many2many("product.product")
+
     warranty_lines_ids = fields.One2many(
         comodel_name="add.warranty.line.wizard",
-        inverse_name="wizard_id",
-        store=True,
+        inverse_name="warranty_id",
         string="Warranty Lines",
     )
-
-    def action_add_warranty(self):
-        print("-*- " * 100)
-
-        new_order_line_list = []
-        # Iterate through the warranty lines in the wizard
-        for record in self:
-            print(record.order_id)
-            warranty_product_ids = record.warranty_lines_ids.mapped("product_id.id")
-            print("Warranty product IDs:", warranty_product_ids)
-
-            # # Iterate over order lines to find matching products
-            # for ol in record.order_id.order_line:
-            #     new_order_line_list.append(ol)
-            #     print(
-            #         f"Checking Order Line Product: {ol.product_id.id} in Warranty Lines"
-            #     )
-
-            #     if ol.product_id.id in warranty_product_ids:
-            #         print(f"Match found: {ol}")
-
-        print(new_order_line_list)
-        print("hello from warranty !")
-        print("-*- " * 100)
-
-        return new_order_line_list
 
     @api.model
     def default_get(self, fields):
         res = super(AddWarrantyWizard, self).default_get(fields)
         order_id = self.env.context.get("active_id")
+
         sale_order = self.env["sale.order"].browse(order_id)
 
-        warranty_products = sale_order.order_line.mapped("product_id").filtered(
-            lambda p: p.warranty
-        )
-
-        warranty_line_vals = []
-        for product in warranty_products:
-            warranty_line_vals.append(Command.create({"product_id": product.id}))
-        print(warranty_products)
-        res["product_ids"] = [Command.set(warranty_products)]
+        res["warranty_lines_ids"] = [
+            [
+                0,
+                0,
+                {
+                    "sale_order_line_id": line.id,
+                },
+            ]
+            for line in sale_order.order_line.filtered(
+                lambda x: x.product_template_id.warranty
+            )
+        ]
+        res["order_id"] = order_id
 
         return res
+
+    def action_add_warranty(self):
+        new_order_line_list = [
+            {
+                "order_id": line.sale_order_line_id.order_id.id,
+                "name": str(line.warranty_config_id.name) + "/" + str(line.end_date),
+                "price_unit": line.sale_order_line_id.price_subtotal
+                * (line.warranty_config_id.percentage / 100),
+                "product_id": line.warranty_config_id.product_id.id,
+                "parent_sale_order_line_id": line.sale_order_line_id.id,
+                "sequence": line.sale_order_line_id.sequence,
+            }
+            for line in self.warranty_lines_ids.filtered(
+                lambda x: x.warranty_config_id.name
+            )
+        ]
+        self.env["sale.order.line"].create(new_order_line_list)

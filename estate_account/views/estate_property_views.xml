@@ -12,6 +12,7 @@
                         icon="fa-bars"
                         string="offers"
                         invisible="invoice_count == 0"
+                        groups="base.group_system"
                     >
                         <div class="o_stat_info">
                             <span class="o_stat_value">

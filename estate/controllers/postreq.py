@@ -35,9 +35,10 @@ class WebsiteContactForm(http.Controller):
         cors="*",
     )
     def submit_contact_form_ext(self, **post):
-        print("post:", post)
+        # print("post:", post)
         if not post:
             try:
+                ## request.httprequest.data is raw data format (binary data)
                 post = json.loads(request.httprequest.data.decode("utf-8"))
             except Exception as e:
                 _logger.error(f"Fallback JSON Parsing Error: {e}")
