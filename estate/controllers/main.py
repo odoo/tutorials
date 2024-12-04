@@ -17,11 +17,12 @@ class EstatePropertyControllers(Controller):
                     ("active", "=", True),
                     ("state", "in", ["new", "offer_received"]),
                 ],
-                fields=["name", "expected_price", "description"],
+                fields=["name", "expected_price", "description", "image"],
                 limit=limit,
                 offset=offset,
             )
         )
+
         total_properties = (
             request.env["estate.property"]
             .sudo()

@@ -8,11 +8,20 @@
                         <div class="col-md-4 mb-4 d-flex">
                             <div class="card flex-fill">
                                 <div class="card-body d-flex flex-column">
-                                    <img
-                                        t-att-src="'/web/image/estate.property/' + str(property.get('id')) + '/image'"
-                                        class="card-img-top"
-                                        style="height: 300px; width: 100%; object-fit: cover;"
-                                        alt="Property Image" />
+                                    <t t-if="property.get('image')">
+                                        <img
+                                            t-att-src="image_data_uri(property.get('image'))"
+                                            class="card-img-top"
+                                            style="height: 300px; width: 100%; object-fit: cover;"
+                                            alt="Property Image" />
+                                    </t>
+                                    <t t-else="">
+                                        <img
+                                            t-att-src="'/web/image/estate.property/' + str(property.get('id')) + '/image'"
+                                            class="card-img-top"
+                                            style="height: 300px; width: 100%; object-fit: cover;"
+                                            alt="Property Image" />
+                                    </t>
                                     <h5 class="card-title">
                                         <t t-esc="property.get('name')" />
                                     </h5>

@@ -7,6 +7,7 @@
                 <sheet>
                     <field name="warranty_lines_ids">
                         <list create="false" no_open="1"  editable="top" >
+                            <field name="sale_order_line_id" optional="hide" />
                             <field name="product_id" readonly="1" />
                             <field name="warranty_config_id" />
                             <field name="end_date" readonly="1" />
