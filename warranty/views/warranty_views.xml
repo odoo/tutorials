@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Warranty List View  -->
+    <record id="warranty_list_view" model="ir.ui.view">
+        <field name="name">warranty.list</field>
+        <field name="model">warranty</field>
+        <field name="arch" type="xml">
+            <list string="warranty list">
+                <field name="name" string="Name" />
+                <field name="product_ids" string="Product" />
+                <field name="percentage" string="Percentage" />
+            </list>
+        </field>
+    </record>
+
+    <record id="is_warranty_available_button" model="ir.ui.view">
+        <field name="name">product.template.is.warranty.available</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <field name="product_tag_ids" position="after">
+                <field name="is_warranty_available"
+                    string="Is Warranty Available" />
+            </field>
+        </field>
+    </record>
+
+    <record id="add_warranty_button_cust" model="ir.ui.view">
+        <field name="name">sale.order.add.warranty.button.cust</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <group name="note_group" position="before">
+                <button name="add_warranty_to_product" type="object" class="btn btn-secondary"
+                    string="Add Warranty" />
+            </group>
+        </field>
+    </record>
+</odoo> 
