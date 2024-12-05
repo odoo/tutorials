@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="real_estate.tag_eco_passive" model="real.estate.tag">
+        <field name="name">Eco Passive</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="real_estate.tag_modern" model="real.estate.tag">
+        <field name="name">Modern</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="real_estate.tag_renovated" model="real.estate.tag">
+        <field name="name">Renovated</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="real_estate.tag_rural" model="real.estate.tag">
+        <field name="name">Rural</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="real_estate.tag_suburban" model="real.estate.tag">
+        <field name="name">Suburban</field>
+        <field name="color">5</field>
+    </record>
+
+    <record id="real_estate.tag_urban" model="real.estate.tag">
+        <field name="name">Urban</field>
+        <field name="color">6</field>
+    </record>
+
+    <record id="real_estate.tag_waterfront" model="real.estate.tag">
+        <field name="name">Waterfront</field>
+        <field name="color">7</field>
+    </record>
+
+</odoo>

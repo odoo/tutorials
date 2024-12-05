@@ -41,4 +41,5 @@ class RealEstateProperty(models.Model):
     offer_ids = fields.One2many(
         string="Offers", comodel_name='real.estate.offer', inverse_name='property_id'
     )
+    tag_ids = fields.Many2many(string="Tags", comodel_name='real.estate.tag')
     active = fields.Boolean(string="Active", default=True)
