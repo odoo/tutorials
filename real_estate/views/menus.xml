@@ -18,6 +18,11 @@
                 name="Property Types"
                 action="real_estate.view_property_types_action"
             />
+            <menuitem
+                id="real_estate.tags_menu"
+                name="Tags"
+                action="real_estate.view_tags_action"
+            />
         </menuitem>
     </menuitem>
 
