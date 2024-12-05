@@ -29,6 +29,7 @@
                 <field name="has_garage" optional="hide"/>
                 <field name="has_garden" optional="hide"/>
                 <field name="garden_area" optional="hide"/>
+                <field name="total_area" optional="hide"/>
             </list>
         </field>
     </record>
@@ -53,6 +54,7 @@
                         <group string="Listing Information">
                             <field name="type_id"/>
                             <field name="selling_price"/>
+                            <field name="best_offer_amount"/>
                             <field name="availability_date"/>
                             <field name="active"/>
                         </group>
@@ -62,6 +64,7 @@
                             <field name="has_garage"/>
                             <field name="has_garden"/>
                             <field name="garden_area"/>
+                            <field name="total_area"/>
                             <field
                                 name="tag_ids"
                                 widget="many2many_tags"

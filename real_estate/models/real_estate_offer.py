@@ -1,4 +1,5 @@
-from odoo import fields, models
+from odoo import api, fields, models
+from odoo.tools import date_utils
 
 
 class RealEstateOffer(models.Model):
@@ -11,6 +12,7 @@ class RealEstateOffer(models.Model):
     validity = fields.Integer(
         string="Validity", help="The number of days before the offer expires.", default=7
     )
+    expiry_date = fields.Date(string="Expiry Date", compute='_compute_expiry_date')
     state = fields.Selection(
         string="State",
         selection=[
@@ -24,3 +26,8 @@ class RealEstateOffer(models.Model):
     property_id = fields.Many2one(
         string="Property", comodel_name='real.estate.property', required=True
     )
+
+    @api.depends('date', 'validity')
+    def _compute_expiry_date(self):
+        for offer in self:
+            offer.expiry_date = date_utils.add(offer.date, days=offer.validity)
