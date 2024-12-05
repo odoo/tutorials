@@ -10,6 +10,7 @@
                 <field name="buyer_id"/>
                 <field name="date"/>
                 <field name="validity"/>
+                <field name="expiry_date"/>
                 <field name="state"/>
             </list>
         </field>
@@ -30,6 +31,7 @@
                         <group>
                             <field name="date"/>
                             <field name="validity"/>
+                            <field name="expiry_date"/>
                         </group>
                     </group>
                 </sheet>
