@@ -39,3 +39,6 @@ class RealEstateProperty(models.Model):
     address_id = fields.Many2one(string="Address", comodel_name='res.partner', required=True)
     seller_id = fields.Many2one(string="Seller", comodel_name='res.partner', required=True)
     salesperson_id = fields.Many2one(string="Salesperson", comodel_name='res.users')
+    offer_ids = fields.One2many(
+        string="Offers", comodel_name='real.estate.offer', inverse_name='property_id'
+    )
