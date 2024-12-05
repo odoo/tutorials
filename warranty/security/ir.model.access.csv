@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 
-access_warranty_manager,res.warranty.managar,model_warranty,base.group_user,1,1,1,1
-access_warranty_wizard_manager,res.warranty.wizard.managar,model_warranty_product_wizard,base.group_user,1,1,1,1
+access_warranty_manager,res.warranty.managar,model_warranty_configuration,base.group_user,1,1,1,1
+access_warranty_wizard_manager,res.warranty.wizard.managar,model_add_warranty_wizard,base.group_user,1,1,1,1
+access_warranty_wizard_line_manager,res.warranty.wizard.line.managar,model_add_warranty_line_wizard,base.group_user,1,1,1,1

@@ -1,1 +1,1 @@
-from . import warranty
+from . import warranty_configuration

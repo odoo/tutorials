@@ -3,11 +3,11 @@
     <!-- Warranty List View  -->
     <record id="warranty_list_view" model="ir.ui.view">
         <field name="name">warranty.list</field>
-        <field name="model">warranty</field>
+        <field name="model">warranty.configuration</field>
         <field name="arch" type="xml">
             <list string="warranty list">
                 <field name="name" string="Name" />
-                <field name="product_ids" string="Product" />
+                <field name="product_id" string="Product" />
                 <field name="percentage" string="Percentage" />
             </list>
         </field>
@@ -31,9 +31,10 @@
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
             <group name="note_group" position="before">
-                <button name="add_warranty_to_product" type="object" class="btn btn-secondary"
+                <button name="%(action_open_warranty_wizard)d" type="action" class="btn-primary "
                     string="Add Warranty" />
             </group>
         </field>
     </record>
+
 </odoo> 

@@ -10,8 +10,8 @@
 
     'data': [
         'security/ir.model.access.csv',
+        'wizard/warranty_wizard_view.xml',
         'views/warranty_views.xml',
         'views/warranty_menu.xml',
-        'wizard/warranty_wizard_view.xml'
     ]
 }

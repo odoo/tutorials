@@ -1,20 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <odoo>
-    <record id="view_warranty_product_wizard" model="ir.ui.view">
-        <field name="name">warranty.product.wizard.form</field>
-        <field name="model">warranty.product.wizard</field>
+    <record id="view_add_warranty_wizard" model="ir.ui.view">
+        <field name="name">add.warranty.wizard.form</field>
+        <field name="model">add.warranty.wizard</field>
         <field name="arch" type="xml">
-            <form string="Warranty Products">
-                <group>
-                    <field name="product_ids" widget="many2many_tags" />
-                </group>
+            <form string="Add Warranty" editable="false">
+                <sheet>
+                    <field name="warranty_line_ids">
+                        <list create="false" no_open="1" editable="top">
+                            <field name="sale_order_line_id" optional="hide" />
+                            <field name="product_id" readonly="1" />
+                            <field name="warranty_config_id" />
+                            <field name="end_date" readonly="1" />
+                        </list>
+                    </field>
+                </sheet>
                 <footer>
-                    <button string="Add" type="object" name="action_display_products"
+                    <button string="Add" name="action_add_warranty" type="object"
                         class="btn-primary" />
-                    <button string="Cancel" class="btn-default" special="cancel" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
                 </footer>
             </form>
         </field>
+    </record>
+
+    <record id="action_open_warranty_wizard" model="ir.actions.act_window">
+        <field name="name">Add Warranty</field>
+        <field name="res_model">add.warranty.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_add_warranty_wizard" />
+        <field name="target">new</field>
     </record>
 </odoo>
