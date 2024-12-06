@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
-<list string="Tests">
-    <field name="name"/>
-    <field name="description"/>
-</list>
-
-</odoo>
