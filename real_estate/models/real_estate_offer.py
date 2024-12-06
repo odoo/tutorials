@@ -12,7 +12,9 @@ class RealEstateOffer(models.Model):
     validity = fields.Integer(
         string="Validity", help="The number of days before the offer expires.", default=7
     )
-    expiry_date = fields.Date(string="Expiry Date", compute='_compute_expiry_date')
+    expiry_date = fields.Date(
+        string="Expiry Date", compute='_compute_expiry_date', inverse='_inverse_expiry_date'
+    )
     state = fields.Selection(
         string="State",
         selection=[
@@ -31,3 +33,7 @@ class RealEstateOffer(models.Model):
     def _compute_expiry_date(self):
         for offer in self:
             offer.expiry_date = date_utils.add(offer.date, days=offer.validity)
+
+    def _inverse_expiry_date(self):
+        for offer in self:
+            offer.validity = date_utils.relativedelta(dt1=offer.expiry_date, dt2=offer.date).days
