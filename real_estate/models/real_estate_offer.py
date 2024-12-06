@@ -8,6 +8,7 @@ class RealEstateOffer(models.Model):
 
     amount = fields.Float(string="Amount", required=True)
     buyer_id = fields.Many2one(string="Buyer", comodel_name='res.partner', required=True)
+    phone = fields.Char(string="Phone", related='buyer_id.phone')
     date = fields.Date(string="Date", required=True)
     validity = fields.Integer(
         string="Validity", help="The number of days before the offer expires.", default=7
