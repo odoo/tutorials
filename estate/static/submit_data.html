@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit Data</title>
+    <script>
+      async function submitForm(event) {
+        event.preventDefault(); // Prevent form from refreshing the page
+
+        // Get form data
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+
+        try {
+          // Send a POST request to the Odoo controller
+          const response = await fetch(
+            "http://localhost:8069/ext_website/contact_form/submit",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ name, email }),
+            }
+          );
+
+          // Parse the JSON response
+          const result = await response.text();
+          console.log(result);
+
+          // Handle the response
+          // if (result.status === "success") {
+          alert(result);
+          // } else {
+          //   alert(`Error: ${result.message}`);
+          // }
+        } catch (error) {
+          console.error("Error submitting data:", error);
+          alert("An error occurred while submitting the data.");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Submit Data</h1>
+    <form onsubmit="submitForm(event)">
+      <label for="name">Name:</label>
+      <input type="text" id="name" value="abc" name="name" required />
+      <br /><br />
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        value="abc@mail.com"
+        name="email"
+        required
+      />
+      <br /><br />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
