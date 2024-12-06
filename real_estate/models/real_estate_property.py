@@ -38,6 +38,7 @@ class RealEstateProperty(models.Model):
     )
     total_area = fields.Integer(string="Total Area", compute='_compute_total_area')
     address_id = fields.Many2one(string="Address", comodel_name='res.partner', required=True)
+    street = fields.Char(string="Street", related='address_id.street', stored=True)
     seller_id = fields.Many2one(string="Seller", comodel_name='res.partner', required=True)
     salesperson_id = fields.Many2one(string="Salesperson", comodel_name='res.users')
     offer_ids = fields.One2many(
