@@ -8,6 +8,7 @@
             <list>
                 <field name="amount"/>
                 <field name="buyer_id"/>
+                <field name="phone"/>
                 <field name="date"/>
                 <field name="validity"/>
                 <field name="expiry_date"/>
