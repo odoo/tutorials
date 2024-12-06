@@ -1,7 +1,11 @@
 from odoo import models, fields
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "Real Estate Property"
+    _name = "test_model"
+    _description = "Test Model"
+    name = fields.Char(name ='table')
 
-# more to understand
+    
+    
+
+
