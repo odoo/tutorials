@@ -6,7 +6,7 @@ class estate_property_offer_wizard(models.TransientModel):
 
     price = fields.Float()
     validity = fields.Integer(default=7)
-    buyer = fields.Many2one("res.partner", copy=False)
+    buyer_id = fields.Many2one("res.partner", copy=False)
     
     def make_an_offer(self):
         properties = self.env['estate.property'].browse(self._context.get("records", []))
@@ -15,7 +15,7 @@ class estate_property_offer_wizard(models.TransientModel):
                 'price': self.price,
                 'property_id': property.id,
                 'validity': self.validity,
-                'partner_id': self.buyer.id,
+                'partner_id': self.buyer_id.id,
             })
 
         return {'type': 'ir.actions.act_window_close'}

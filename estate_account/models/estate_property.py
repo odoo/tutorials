@@ -15,7 +15,7 @@ class EstateProperty(models.Model):
 
 
         move_values = {
-            'partner_id': self.buyer.id,  
+            'partner_id': self.buyer_id.id,  
             'move_type': 'out_invoice',
             'property_id':self.id,
             'invoice_line_ids': [

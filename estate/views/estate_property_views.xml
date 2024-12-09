@@ -205,7 +205,7 @@
                         <page string="Other Info">
                             <group>
                                 <field name="salesman_id" class="mb16" />
-                                <field name="buyer" class="mb16" />
+                                <field name="buyer_id" class="mb16" />
                             </group>
                         </page>
                     </notebook>

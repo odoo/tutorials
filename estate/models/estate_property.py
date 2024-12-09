@@ -28,7 +28,7 @@ class estate_property(models.Model):
     garden_orientation = fields.Selection(
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
     salesman_id = fields.Many2one("res.users", string='Salesperson', default=lambda self: self.env.user)
-    buyer = fields.Many2one("res.partner", copy=False)
+    buyer_id = fields.Many2one("res.partner", copy=False)
     property_type_id = fields.Many2one("estate.property.type")
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string= "Offers")
@@ -99,7 +99,7 @@ class estate_property(models.Model):
                     ("The selling price (%.2f) cannot be lower than 90%% of the expected price (%.2f).")
                     % (record.selling_price, min_price)
                 )
-            
+
 
     @api.ondelete(at_uninstall=False)
     def _check_deletion_state(self):

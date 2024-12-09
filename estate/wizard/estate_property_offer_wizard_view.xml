@@ -10,7 +10,7 @@
                     <group>
                         <field name="price"></field>
                         <field name="validity"></field>
-                        <field name="buyer"></field>
+                        <field name="buyer_id"></field>
                     </group>
                 </sheet>
                 <footer>
