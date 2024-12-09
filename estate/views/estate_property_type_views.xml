@@ -5,4 +5,56 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
+    <record id="estate_property__type_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="sequence" widget="handle"></field>
+                <field name="name" string="Title"/>
+            </list>
+        </field>
+    </record>
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <h1 class="mb32">
+                                <field name="name" class="mb16"/>
+                            </h1>
+                        </group>
+                        <group>
+                            <button class="oe_stat_button" type="action" name="%(estate.estate_offers_model_action)d">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="offer_count"/>
+                                    </span>
+                                    <span class="o_stat_text">
+                                        Offers
+                                    </span>
+                                </div>
+                            </button>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Properties">
+                            <group>
+                                <field name="property_ids">
+                                    <list string="Channel">
+                                        <field name="name" string="Title"/>
+                                        <field name="expected_price"/>
+                                        <field name="state" string="Status"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>
