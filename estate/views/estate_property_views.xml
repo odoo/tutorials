@@ -5,13 +5,14 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
-                <field name="name"/>
-                <field name="price"/>
+                <field name="name" string="Title"/>
                 <field name="state"/>
                 <field name="postcode"/>
-                <field name="bedroom"/>
-                <field name="livingarea"/>
-            
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/> 
+                <field name="date_availability"/>
             </list>
         </field>
     </record>
@@ -23,24 +24,52 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="name"/>
-                            <field name="price"/>
+                            <field name="name" string="Title"/>
+                            <field name ="expected_price"/>
+                            <field name="selling_price"/>
                         </group>
                         <group>
-                            <field name="state"/>
+                            
                             <field name="postcode"/>
+                            <field name="date_availability" string="Available From"/>
+                            <field name ="state"/>
+                            
                         </group>
-                    </group>
+                    </group>    
                     <notebook>
                         <page string="Description">
-                            <field name="description"/>
+                        <group>
+                            <field name="description" string="Description"/>
+                            <field name="bedrooms" string="Bedrooms"/>
+                            <field name="living_area" string="Living Area(sqm)"/>
+                            <field name="facades" string="Facades"/>
+                            <field name="garage" string="Garage"/> 
+                            <field name="garden" string="Garden"/>
+                            <field name="garden_area" string="Garden Area(sqm)"/>
+                            <field name="garden_orientation" string="Garden Orientation"/>
+                        </group>
+                            
                         </page>
-                        <page string="Notes">
-                            <field name="notes"/>
+                        <page>
+                        <field name="description"/> 
                         </page>
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name"/>
+                <field name="postcode"/>
+                <filter name="available" string="Available" domain="[('state', 'in', ['New', 'Offer Received'])]"/>
+                <group expand="1" string="Group By">
+                    <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
         </field>
     </record>
     <record id="estate_property_action" model="ir.actions.act_window">
@@ -49,4 +78,5 @@
         <field name="view_mode">list,form</field>
 
     </record>
+   
 </odoo>

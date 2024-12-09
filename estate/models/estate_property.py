@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(copy=False, default=lambda self: date.today() + timedelta(days=90))
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
+    selling_price = fields.Float(copy=False)
     bedrooms = fields.Integer(default=2)
     active = fields.Boolean(default=True)
     living_area = fields.Integer(string="Living Area (sqm)")
@@ -33,7 +33,6 @@ class EstateProperty(models.Model):
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
     ], required=True, copy=False, default='new')    
-    
 
 
 
