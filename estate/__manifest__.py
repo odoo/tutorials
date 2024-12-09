@@ -4,7 +4,7 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'author': "Aditi Patel",
+    'author': "Odoo IN",
     'category': 'Real Estate',
     'summary': "Realistic business advertisements",
     'description': "our ultimate real estate spotlight! Effortlessly showcase properties and attract buyers with sleek, engaging ads that sell.",
@@ -15,9 +15,11 @@
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_tag_views.xml',
     ],
     'license': "LGPL-3",
     'application': True,
     'installable': True,
-    'auto_install': False
+    'auto_install': True,
 }
