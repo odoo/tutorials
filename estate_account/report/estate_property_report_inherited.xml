@@ -1,0 +1,10 @@
+<odoo>
+    <template id="estate_property_report_inherited"
+        inherit_id="estate.estate_property_report_template">
+        <xpath expr="//div[contains(@id, 'target')]" position="after">
+            <h5>
+                <strong>!!! Invoice has already been created !!!</strong>
+            </h5>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,18 @@
+<odoo>
+    <!-- Rule for Real Estate Agents -->
+    <record id="estate_agent_rule" model="ir.rule">
+        <field name="name">Agent: Access their own properties</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="domain_force">['|', ('salesman_id', '=', False), ('salesman_id', '=',
+            user.id)]</field>
+        <field name="groups" eval="[(4, ref('estate_group_user'))]" />
+    </record>
+
+    <!-- Rule for Real Estate Managers -->
+    <record id="estate_manager_rule" model="ir.rule">
+        <field name="name">Manager: Access all properties</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('estate_group_manager'))]" />
+    </record>
+</odoo>
