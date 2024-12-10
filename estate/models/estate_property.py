@@ -1,5 +1,5 @@
 from odoo import models, fields
-from datetime import timedelta, date
+from datetime import date,timedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -14,6 +14,7 @@ class EstateProperty(models.Model):
         copy=False
         )
     expected_price = fields.Float(required=True, string="Expected Price")
+    postcode = fields.Integer(required=True, string="Postcode")
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
@@ -42,4 +43,19 @@ class EstateProperty(models.Model):
         required=True,
         default="new",
         copy=False,
+    )
+    property_type_id = fields.Many2one(
+        "estate.property.type", string="Property Type"
+    )
+    salesperson_id = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user       
+    )
+    buyer_id = fields.Many2one(
+        "res.partner", string="Buyer", copy=False
+    )
+    tags_ids = fields.Many2many(
+        "estate.property.tag", string=" PropertyTags"
+    )
+    offer_ids = fields.One2many(
+        "estate.property.offer", "property_id",string="Offers"
     )
