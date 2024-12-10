@@ -3,69 +3,18 @@
 <odoo>
 
     <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Prioperty Type</field>
-        <field name="res_model">estate.property.tag</field>
+        <field name="name">Property Type</field>
+        <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="estate_property_list_view" model="ir.ui.view">
+    <record id="estate_property_type_list_view" model="ir.ui.view">
         <field name="name">estate.property.view</field>
-        <field name="model">estate.property.type</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Property Type">
                 <field name="property_type_id"/>
             </list>
-        </field>
-    </record>
-
-    <record id="estate_property_from_view" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <form string="Description">
-                <sheet>
-                <h1><field name="name"/></h1>
-                    <group>
-                        <group>
-                            <field name="postcode"/>
-                            <field name="available_from"/>
-                        </group>
-                        <group>
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Description">
-                            <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
-                                <field name="property_type_id"/>
-                                <field name="tag_ids"  widget="many2many_tags"/>
-                            </group>
-                        </page>
-                        <page string="Other Info">
-                            <group>
-                                <field name="salesman_id"/>
-                                <field name="buyer_id"/>
-                            </group>
-                        </page>
-                        <page string="Offers">
-                            <group>
-                                <field name="price"/>
-                                <field name="partener_id"/>
-                                <field name="status"/>
-                            </group>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
         </field>
     </record>
 
