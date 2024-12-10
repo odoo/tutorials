@@ -34,8 +34,8 @@ class Estate(models.Model):
     state = fields.Selection(
         [
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -60,17 +60,17 @@ class Estate(models.Model):
             "A property selling price must be positive",
         ),
     ]
-    _order="id desc"
+    _order = "id desc"
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-            for record in self:
-                # Only check when the offer is accepted
-                if record.selling_price != 0:
-                    if record.selling_price < (0.9 * record.expected_price):
-                        raise UserError(
-                            "The selling price must be at least 90% of the expected price."
-                        )
+        for record in self:
+            # Only check when the offer is accepted
+            if record.selling_price != 0:
+                if record.selling_price < (0.9 * record.expected_price):
+                    raise UserError(
+                        "The selling price must be at least 90% of the expected price."
+                    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -93,6 +93,14 @@ class Estate(models.Model):
         else:
             self.garden_area = 0
 
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_property(self):
+        for record in self:
+            if record.state != "new" or record.state != "cancelled":
+                raise UserError(
+                    "You cannot delete a property that is not in New or Cancelled state."
+                )
+
     def action_change_state(self):
         param_value = self.env.context.get("param_name", "default_value")
 
@@ -108,9 +116,9 @@ class Estate(models.Model):
             if param_value == "new":
                 record.state = "new"
             elif param_value == "offer_received":
-                record.state = "offer received"
+                record.state = "offer_received"
             elif param_value == "offer_accepted":
-                record.state = "offer accepted"
+                record.state = "offer_accepted"
             elif param_value == "sold":
                 record.state = "sold"
             elif param_value == "cancelled":

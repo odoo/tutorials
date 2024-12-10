@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from datetime import timedelta
 from odoo.exceptions import UserError
 
@@ -31,6 +31,26 @@ class EstateOffer(models.Model):
     ]
     _order = "price desc"
 
+    @api.model
+    def create(self, vals):
+        property_id = vals.get("property_id")
+        new_amount = vals.get("price")
+
+        existing_offer = self.search(
+            [("property_id", "=", property_id), ("price", ">", new_amount)], limit=1
+        )
+
+        if existing_offer:
+            raise UserError(
+                "You cannot create an offer with a lower amount than an existing offer."
+            )
+
+        property_record = self.env["estate.property"].browse(property_id)
+        if property_record:
+            property_record.write({"state": "offer_received"})
+
+        return super(EstateOffer, self).create(vals)
+
     def _date_deadline(self):
         for record in self:
             record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
@@ -45,12 +65,12 @@ class EstateOffer(models.Model):
         for record in self:
             if (
                 param_value == "accepted"
-                and record.property_id.state == "offer accepted"
+                and record.property_id.state == "offer_accepted"
             ):
                 raise UserError("One offer is already accepted for this property.")
             if param_value == "accepted":
                 record.status = "accepted"
-                record.property_id.state = "offer accepted"
+                record.property_id.state = "offer_accepted"
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
             elif param_value == "refused":

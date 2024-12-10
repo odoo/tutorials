@@ -7,7 +7,7 @@
         <field name="context">{}</field>
         <field name="domain">[('property_id', '=', active_id)]</field>
     </record>
-     <record id="estate_property__offers_view_tree" model="ir.ui.view">
+    <record id="estate_property__offers_view_tree" model="ir.ui.view">
         <field name="name">estate.property.offers.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
