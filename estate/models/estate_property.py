@@ -1,16 +1,13 @@
-from odoo import models, fields
-from datetime import date,timedelta
-
+from odoo import api,models,fields
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
         string="Available From",
-        default=date.today() + timedelta(days=90),
+        default=fields.Date.add(fields.date.today(),days=90),
         copy=False
         )
     expected_price = fields.Float(required=True, string="Expected Price")
@@ -57,5 +54,23 @@ class EstateProperty(models.Model):
         "estate.property.tag", string=" PropertyTags"
     )
     offer_ids = fields.One2many(
-        "estate.property.offer", "property_id",string="Offers"
+        "estate.property.offer",inverse_name="property_id",string="Offers"
     )
+    total_area=fields.Float(compute="_compute_total_area",string="Total Area")
+    @api.depends("living_area","garden_area")
+    def _compute_total_area(self):
+        for property in self:
+            property.total_area=property.living_area+property.garden_area
+    best_price=fields.Float(compute="_compute_best_price",string="Best Price")
+    @api.depends("offer_ids")
+    def _compute_best_price(self):
+        for property in self:
+            property.best_price=max(property.offer_ids.mapped("price"))
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
