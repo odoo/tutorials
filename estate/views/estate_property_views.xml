@@ -11,7 +11,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
-                <field name="selling_price"/> 
+                <field name="selling_price"/>
                 <field name="date_availability"/>
             </list>
         </field>
@@ -24,34 +24,50 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="name" string="Title"/>
+                            <field name="title" string="Title"/>
+                            <field name="Tag" widget="many2many_tags" placeholder="cozy and renovated"/>
+                            <field name="name" string="Product Type"/>
                             <field name ="expected_price"/>
                             <field name="selling_price"/>
                         </group>
                         <group>
-                            
+
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                             <field name ="state"/>
-                            
+                            <field name="best_offers" string="Best Offers"/>
+
                         </group>
-                    </group>    
+                    </group>
                     <notebook>
                         <page string="Description">
-                        <group>
-                            <field name="description" string="Description"/>
-                            <field name="bedrooms" string="Bedrooms"/>
-                            <field name="living_area" string="Living Area(sqm)"/>
-                            <field name="facades" string="Facades"/>
-                            <field name="garage" string="Garage"/> 
-                            <field name="garden" string="Garden"/>
-                            <field name="garden_area" string="Garden Area(sqm)"/>
-                            <field name="garden_orientation" string="Garden Orientation"/>
-                        </group>
-                            
+                            <group>
+                                <field name="description" string="Description"/>
+                                <field name="bedrooms" string="Bedrooms"/>
+                                <field name="living_area" string="Living Area(sqm)"/>
+                                <field name="facades" string="Facades"/>
+                                <field name="garage" string="Garage"/>
+                                <field name="garden" string="Garden"/>
+                                <field name="garden_area" string="Garden Area(sqm)"/>
+                                <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="total_area" string="Total Area(sqm)"/>
+                            </group>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="salesperson"/>
+                                <field name ="buyer"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="price"/>
+                                <field name ="partners"/>
+                                <field name ="status"/>
+                            </group>
                         </page>
                         <page>
-                        <field name="description"/> 
+                            <field name="description"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -76,7 +92,5 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
-
     </record>
-   
 </odoo>

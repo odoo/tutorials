@@ -1,14 +1,13 @@
 <odoo>
 <record id="view_estate_property_form" model="ir.ui.view">
     <field name="name">estate.property.form</field>
-    <field name="model">estate.property.prop</field>
+    <field name="model">estate.property.best</field>
     <field name="arch" type="xml">
         <form string="Estate Property">
             <sheet>
                 <group>
-                    <field name="living_area"/>
-                    <field name="garden_area"/>
-                    <field name="total_area" readonly="1"/>
+                    <field name="offer_ids"/>
+                    <field name="best_price" readonly="1"/>
                 </group>
             </sheet>
         </form>

@@ -32,11 +32,17 @@ class EstateProperty(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
-    ], required=True, copy=False, default='new')    
-
-
-
-    
-    
-
-
+    ], required=True, copy=False, default='new')
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type") 
+    buyer_id = fields.Many2one('res.partner', string="Buyer")
+    seller_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
+    name = fields.Char(string="Tag", required=True)
+    status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], string="Status")
+    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
+    salesperson = fields.Char(string = "Salesperson", required=True)
+    buyer = fields.Char(string = "Buyers", required=True)
+    price = fields.Float(string="Price")
+    partners = fields.Char(string = "Partner", required=True)
+    Tag = fields.Many2one('estate.property.tag' , string="Tags") 
+    total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area", store=True)
+    best_offers = fields.Float(string="Best Offers")
