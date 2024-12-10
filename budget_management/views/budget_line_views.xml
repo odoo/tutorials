@@ -1,0 +1,18 @@
+<odoo>
+    <record id="view_budget_management_budget_line_tree" model="ir.ui.view">
+        <field name="name">budget.line.tree</field>
+        <field name="model">budget.management.budget.lines</field>
+        <field name="arch" type="xml">
+            <list string="Budget Lines"
+                default_order="id desc"
+                sample="1"
+                editable="bottom"
+            >
+                <field string="Budget" name="name" />
+                <field string="Analytic Account" name="analytic_account_id" />
+                <field string="Budget Amount" name="budget_amount" />
+                <field string="Archived Amount" name="achieved_amount" />
+            </list>
+        </field>
+    </record>
+</odoo>
