@@ -36,6 +36,7 @@ class AwesomeDashboard extends Component {
   updateUserSettings() {
     this.state.config = JSON.parse(user.settings.dashboard_config);
   }
+  sDSA;
 
   showCustomers() {
     this.action.doAction("base.action_partner_form");
