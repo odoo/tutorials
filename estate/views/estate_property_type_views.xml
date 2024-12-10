@@ -24,6 +24,17 @@
                 <sheet>
                     <h1><field name="name"/></h1>
                     <br/>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list edit="0" delete="0" create="0" open_form_view="0">
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
