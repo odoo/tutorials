@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.tools import date_utils
 
 
 class RealEstateProperty(models.Model):
@@ -27,6 +28,7 @@ class RealEstateProperty(models.Model):
         string="Selling Price", help="The selling price excluding taxes.", required=True
     )
     availability_date = fields.Date(string="Availability Date")
+    stalled = fields.Boolean(string="Stalled", compute='_compute_stalled', search='_search_stalled')
     floor_area = fields.Integer(
         string="Floor Area", help="The floor area in square meters excluding the garden."
     )
@@ -43,13 +45,55 @@ class RealEstateProperty(models.Model):
     offer_ids = fields.One2many(
         string="Offers", comodel_name='real.estate.offer', inverse_name='property_id'
     )
+    is_priority = fields.Boolean(
+        string="Priority", compute='_compute_is_priority', search='_search_is_priority'
+    )
     best_offer_amount = fields.Float(string="Best Offer", compute='_compute_best_offer_amount')
     tag_ids = fields.Many2many(string="Tags", comodel_name='real.estate.tag')
+
+    @api.depends('availability_date')
+    def _compute_stalled(self):
+        for property in self:
+            property.stalled = property.availability_date < fields.Date.today()
+
+    def _search_stalled(self, operator, value):
+        if (operator == '=' and value is True) or (operator == '!=' and value is False):
+            return [('availability_date', '<', fields.Date.today())]
+        elif (operator == '=' and value is False) or (operator == '!=' and value is True):
+            return [('availability_date', '>=', fields.Date.today())]
+        else:
+            raise NotImplementedError()
 
     @api.depends('floor_area', 'garden_area')
     def _compute_total_area(self):
         for property in self:
             property.total_area = property.floor_area + property.garden_area
+
+    @api.depends('offer_ids.expiry_date')
+    def _compute_is_priority(self):
+        for property in self:
+            is_priority = False
+            for offer in property.offer_ids:
+                if offer.expiry_date <= fields.Date.today() + date_utils.relativedelta(days=2):
+                    is_priority = True
+                    break
+            property.is_priority = is_priority
+
+    def _search_is_priority(self, operator, value):
+        if (operator == '=' and value is True) or (operator == '!=' and value is False):
+            return [(
+                'offer_ids.expiry_date',
+                '<=',
+                fields.Date.today() + date_utils.relativedelta(days=2),
+            )]
+        elif (operator == '=' and value is False) or (operator == '!=' and value is True):
+            return [(
+                'offer_ids.expiry_date',
+                '>',
+                fields.Date.today() + date_utils.relativedelta(days=2),
+            )]
+        else:
+            raise NotImplementedError()
 
     @api.depends('offer_ids.amount')
     def _compute_best_offer_amount(self):

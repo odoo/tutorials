@@ -13,7 +13,10 @@ class RealEstateOffer(models.Model):
         string="Validity", help="The number of days before the offer expires.", default=7
     )
     expiry_date = fields.Date(
-        string="Expiry Date", compute='_compute_expiry_date', inverse='_inverse_expiry_date'
+        string="Expiry Date",
+        compute='_compute_expiry_date',
+        inverse='_inverse_expiry_date',
+        store=True,
     )
     state = fields.Selection(
         string="State",
