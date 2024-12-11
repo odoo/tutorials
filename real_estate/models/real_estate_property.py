@@ -36,7 +36,7 @@ class RealEstateProperty(models.Model):
     garden_area = fields.Integer(
         string="Garden Area", help="The garden area excluding the building."
     )
-    total_area = fields.Integer(string="Total Area", compute='_compute_total_area')
+    total_area = fields.Integer(string="Total Area", compute='_compute_total_area', store=True)
     address_id = fields.Many2one(string="Address", comodel_name='res.partner', required=True)
     seller_id = fields.Many2one(string="Seller", comodel_name='res.partner', required=True)
     salesperson_id = fields.Many2one(string="Salesperson", comodel_name='res.users')
