@@ -4,7 +4,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -29,15 +29,25 @@
         <field name="arch" type="xml">
             <form string="Properties">
                  <sheet>
-                        <h1><field name="name"/></h1>
-                        <group><group>
+                    <header>
+                        <button name="action_sold" type="object" string="Sold"/>
+                        <button name="action_cancel" type="object" string="Cancel"/>
+                    </header>
+                    <h1><field name="name"/></h1>
+                    <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <group>
+                            <field name="property_type_id"/>
+                            <field name="state"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
-                        </group></group>
+                        </group>
+                    </group>
                    
                     <notebook>
                         <page string="Description">
@@ -50,6 +60,19 @@
                             <field name="garden"/>
                             <field name="garden_area"/>
                             <field name="garden_orientation"/>
+                            <field name="total_area"/>
+                            </group>
+                        </page>
+                        <page string = "Offers">
+                            <group>
+                            <field name = "offers_id"/>
+                            
+                            </group>
+                        </page>
+                        <page string = "Other Info">
+                            <group>
+                            <field name = "partner_id"/>
+                            <field name = "user_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -70,8 +93,8 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
-                <filter string="New" name="new" domain="[('state', '=', 'new')]"/>
-                <filter string="Offer Recieved" name="offer_received" domain="[('state', '=', 'offer_received')]"/>
+                <filter string="Available" name="available" 
+                domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
                     <group string="Group By">
                         <filter string="Postcode" name="postcode" 
                         context="{'group_by':'postcode', }"/>
