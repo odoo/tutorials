@@ -13,6 +13,7 @@
                                 optional="hide" />
                             <field name="date_end" invisible="True" />
                             <field name="periods" widget="radio" />
+                            <field name="analytic_account_ids"  widget="many2many_tags" />
                         </group>
                     </sheet>
                     <footer>

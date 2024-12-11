@@ -1,14 +1,16 @@
 from odoo import models, fields, api
-from datetime import date
+from odoo.exceptions import ValidationError, UserError
 
 
 class Budget(models.Model):
     _name = "budget.budget"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _description = " "
 
     name = fields.Char(compute="_compute_budget_name", store=True, readonly=True)
     active = fields.Boolean(default=True)
     is_favorite = fields.Boolean(default=False)
+    color = fields.Integer(string="Color Index")
     state = fields.Selection(
         selection=[
             ("draft", "Draft"),
@@ -41,9 +43,15 @@ class Budget(models.Model):
         string="Company",
         default=lambda self: self.env.company,
     )
-    
     budget_line_ids = fields.One2many(
         comodel_name="budget.management.budget.lines", inverse_name="budget_id"
+    )
+    warnings = fields.Text(readonly=True)
+    currency_id = fields.Many2one(
+        comodel_name="res.currency",
+        string="Currency",
+        required=True,
+        default=lambda self: self.env.company.currency_id,
     )
 
     @api.depends("date_start", "date_end")
@@ -61,13 +69,40 @@ class Budget(models.Model):
             if record.state != "draft":
                 record.state = "draft"
 
+    def onclick_confirmed(self):
+        for record in self:
+            if record.state == "draft":
+                record.state = "confirmed"
+
     def onclick_revise(self):
         for record in self:
-            if record.state in ["confirmed", "draft"]:
-                record.revision_id = lambda self: self.env.user
+            if record.state != "confirmed":
+                raise UserError("Only confirmed budgets can be revised.")
+            if record.state in ["confirmed"]:
+                record.revision_id = self.env.user
                 record.state = "revised"
+                # new_budget = record.copy({"revision_id": self.id, "state": "draft"})
+                # record.message_post(
+                #     body=f'Revised into <a href="#id={new_budget.id}&model=budget.budget">{new_budget.name}</a>.'
+                # )
 
     def onclick_done(self):
         for record in self:
             if record.state in ["confirmed", "revised"]:
                 record.state = "done"
+
+    @api.constrains("date_start", "date_end")
+    def _check_period_overlap(self):
+        for record in self:
+            overlapping_budgets = self.search(
+                [
+                    ("id", "!=", record.id),
+                    ("date_start", "<=", record.date_start),
+                    ("date_end", ">=", record.date_end),
+                    ("company_id", "=", record.company_id.id),
+                ]
+            )
+            if overlapping_budgets:
+                raise ValidationError(
+                    "Cannot create overlapping budgets for the same period and company."
+                )

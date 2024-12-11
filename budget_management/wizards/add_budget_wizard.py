@@ -19,6 +19,10 @@ class AddBudgetWizard(models.TransientModel):
         default="monthly",
     )
 
+    analytic_account_ids = fields.Many2many(
+        "account.analytic.account", string="Analytic Account"
+    )
+
     # analytic_account = fields.Many2many(comodel_name="account.analytic.account")
     def action_add_budget(self):
         """Creates budget records based on the selected periods."""
@@ -42,6 +46,7 @@ class AddBudgetWizard(models.TransientModel):
                     "name": f"Budget {current_date.strftime('%Y-%m')} to {end_date.strftime('%Y-%m')}",
                     "date_start": current_date,
                     "date_end": end_date,
+                    # "budget_line_ids": self.analytic_account_ids,
                 }
             )
 

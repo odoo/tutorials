@@ -8,11 +8,53 @@
                 sample="1"
                 editable="bottom"
             >
+                <field name="currency_id" column_invisible="True" />
                 <field string="Budget" name="name" />
+                <field name="budget_id" column_invisible="True" />
                 <field string="Analytic Account" name="analytic_account_id" />
                 <field string="Budget Amount" name="budget_amount" />
-                <field string="Archived Amount" name="achieved_amount" />
+                <field string="Achived Amount" name="achieved_amount" />
             </list>
         </field>
     </record>
+
+    <record id="view_budget_management_budget_line_graph" model="ir.ui.view">
+        <field name="name">budget.management.budget.lines.graph</field>
+        <field name="model">budget.management.budget.lines</field>
+        <field name="arch" type="xml">
+            <graph string="Budget Lines" type="bar" stacked="1">
+                <field name="name" type="row" />
+                <field name="budget_amount" type="measure" operator="+" />
+                <field name="achieved_amount" type="measure" operator="+" />
+                <field name="over_budget" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_budget_management_budget_line_pivot" model="ir.ui.view">
+        <field name="name">budget.management.budget.lines.pivot</field>
+        <field name="model">budget.management.budget.lines</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget Lines">
+                <field name="name" type="row" />
+            </pivot>
+        </field>
+    </record>
+
+    <!-- <record id="view_budget_management_budget_line_gantt" model="ir.ui.view">
+        <field name="name">budget.management.budget.lines.gantt</field>
+        <field name="model">budget.management.budget.lines</field>
+        <field name="arch" type="xml">
+            <gantt string="Budget Lines" date_start="start_date" date_stop="end_date">
+                <field name="name" />
+
+                <field name="user_id" widget="many2one_avatar_user" />
+
+                <field name="achieved_percentage" widget="progressbar"
+                    options="{'color_field': 'progress_color'}" />
+                <field name="analytic_account_id" />
+            </gantt>
+        </field>
+    </record> -->
+
 </odoo>

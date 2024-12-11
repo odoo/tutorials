@@ -5,6 +5,7 @@
         <field name="arch" type="xml">
             <kanban sample="1"
                 can_open="0"
+                highlight_color="color"
                 type="action"
                 action="%(action_budget_management_budget_line)d"
                 on_create="budget_management.open_create_multiple_budget"
@@ -19,6 +20,11 @@
                                             name="action_budget_management_menu_budget" type="open">
                                             Configuration</a>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div role="menuitem" aria-haspopup="true" class="col-6">
+                                    <field name="color" widget="kanban_color_picker" />
                                 </div>
                             </div>
                         </div>
@@ -60,18 +66,26 @@
         </field>
     </record>
 
-
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">budget.budget.form</field>
         <field name="model">budget.budget</field>
         <field name="arch" type="xml">
+
             <form string="Test">
+                <field name="state" invisible="True" />
+                <div class="alert alert-warning" role="alert" name="warnings"
+                    invisible="not warnings">
+                    <field name="warnings" class="o_field_html" />
+                </div>
                 <header>
                     <button name="onclick_reset_to_draft" type="object" string="Reset to Draft"
                         invisible="state in ['draft']"
                     />
+                    <button name="onclick_confirmed" type="object" string="Confirm"
+                        invisible="state in ['revised','done','confirmed']"
+                    />
                     <button name="onclick_revise" type="object" string="Revise"
-                        invisible="state in ['revise','done']"
+                        invisible="state in ['revised','done']"
                     />
                     <button name="onclick_done" type="object" string="Done"
                         invisible="state in ['done']"
@@ -83,6 +97,7 @@
                     <h1>
                         <field name="name" />
                     </h1>
+                    <field name="currency_id" invisible="True" />
                     <field name="active" invisible="True" />
                     <group>
                         <group>
@@ -110,12 +125,22 @@
                     <notebook>
                         <page name="Budget Lines">
                             <field name="budget_line_ids">
-                                <list>
-                                    <field name="name" string="Analytic Account" />
-                                    <field name="budget_amount" string="Budget Amount" />
-                                    <field name="achieved_amount" string="Archived Amount" />
-                                    <field name="achieved_percentage" string="Archived (%)"
+                                <list no_open="1"
+                                    editable="bottom"
+                                    create="state in ['draft']"
+                                >
+                                    <field name="currency_id" column_invisible="True" />
+                                    <field name="analytic_account_id" string="Analytic Account"
+                                        readonly="state not in ['draft']" />
+                                    <field name="budget_amount" string="Budget Amount"
+                                        readonly="state not in ['draft']" />
+                                    <field name="achieved_amount" string="Achived Amount" />
+                                    <field name="achieved_percentage" string="Achived (%)"
                                         widget="progressbar" options="{'max_value': 100}" />
+                                    <button name="%(action_open_account_analytic_lines_list)d"
+                                        type="action"
+                                        string="View"
+                                    />
                                 </list>
                             </field>
                         </page>
@@ -125,5 +150,4 @@
             </form>
         </field>
     </record>
-
 </odoo>
