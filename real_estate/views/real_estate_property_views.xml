@@ -119,7 +119,10 @@
                     domain="[('state', 'in', ['new', 'offer_received'])]"
                 />
                 <separator/>
+                <filter name="filter_priority" string="Priority" domain="[('is_priority', '=', True)]"/>
+                <separator/>
                 <filter name="filter_availability" date="availability_date"/>
+                <filter name="filter_stalled" string="Stalled" domain="[('stalled', '=', True)]"/>
                 <separator/>
                 <filter name="filter_garage" string="Garage" domain="[('has_garage', '=', True)]"/>
                 <filter name="filter_garden" string="Garden" domain="[('has_garden', '=', True)]"/>
