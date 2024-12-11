@@ -8,7 +8,7 @@
                 <group>
                     <field name="living_area"/>
                     <field name="garden_area"/>
-                    <field name="total_area" readonly="1"/>
+                    <field name="total_area"/>
                 </group>
             </sheet>
         </form>

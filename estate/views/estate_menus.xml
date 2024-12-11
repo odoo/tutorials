@@ -1,11 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
-    <menuitem id="estate_menu_root" name="Estate"/>
-    <menuitem id="estate_properties_menu" name="Advertisements" parent= "estate_menu_root" action="estate_property_action"/>
-    <menuitem id="estate_properties_menu_2" name="Settings" parent= "estate_menu_root" action="estate_property_action"/>
-      <menuitem id="estate_property_type_menu" name="Property Types" parent="estate_properties_menu_2" action="estate_property_action"/>
-       <menuitem id="estate_property_type_submenu" name="Property Types" parent="estate_property_type_menu" action="estate_property_type_action"/>  
-      <menuitem id="estate_property_tag_menu" name="Property Tags" parent="estate_properties_menu_2" action="estate_property_action"/>
-       <menuitem id="estate_property_tag_submenu" name="Tags" parent="estate_property_tag_menu" action="estate_property_tag_action"/>
+
+<menuitem id="estate_menu_root" name="Estate"/>
+    <menuitem id="estate_properties_menu" name="Advertisement" parent="estate_menu_root" action="estate_property_action"/>
+      <menuitem id="estate_properties_menu_two" name="Settings" parent="estate_menu_root" action="estate_property_action"/>
+        <menuitem id="estate_property_type_menu" name="Property Types" parent="estate_properties_menu_two" action="estate_property_action"/>
+          <menuitem id="estate_property_tag_menu" name="Property Tags" parent="estate_properties_menu_two" action="estate_property_action"/>  
 </odoo>
