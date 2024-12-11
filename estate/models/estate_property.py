@@ -5,7 +5,8 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
-
+    _order = 'id desc'
+    
     name = fields.Char(required=True, string='Title', trim=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -24,7 +25,7 @@ class EstateProperty(models.Model):
             ('east', 'East'),
             ('west', 'West'),
             ])
-    total_area = fields.Integer(compute='_compute_total_area', string="Total Area (sqm)")
+    total_area = fields.Integer(compute='_compute_total_area', string="Total Area (sqm)", search='_search_total_area')
     state = fields.Selection(selection=[
         ('new', 'New'),
         ('received', 'Offer Received'),
@@ -60,10 +61,25 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area =  record.living_area + record.garden_area
     
+    def _search_total_area(self, operator, value):
+        if operator in ('=', '!=', '<', '<=', '>', '>='):
+        # Use raw SQL to evaluate the sum in the database
+            query = """
+                SELECT id
+                FROM estate_property
+                WHERE (living_area + garden_area) {} %s
+            """.format(operator)
+            self.env.cr.execute(query, (value,))
+            record_ids = [row[0] for row in self.env.cr.fetchall()]
+            return [('id', 'in', record_ids)]
+        else:
+            # Unsupported operators like 'ilike' are not suitable for numeric sums
+            return [('id', '=', False)]
+    
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max((offer.price for offer in record.offer_ids), default=0.0 if not record.offer_ids else None)
+            record.best_price = max((record.offer_ids.mapped(('price'))), default=0.0 if not record.offer_ids else None)
 
     @api.onchange("garden")
     def _onchange_graden(self):
@@ -75,13 +91,12 @@ class EstateProperty(models.Model):
             if record.state == 'sold':
                 raise UserError('Sold property cannot be cancelled.')
             record.state = 'cancelled'
-            return True
+        return True
 
     def action_property_sold(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError('Cancelled property cannot be sold.')
             record.state = 'sold'
-            return True
-    
-    
+        return True
+            

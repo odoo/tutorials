@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Real Estate Property Offer'
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection(selection=[
@@ -30,7 +31,7 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = fields.Date.subtract(record.date_deadline - fields.Date.to_date(record.create_date)).days
-            
+
     def action_offer_accepted(self):
         for record in self:
             record.status = 'accepted'
@@ -41,9 +42,9 @@ class EstatePropertyOffer(models.Model):
             for offer in record.property_id.offer_ids:
                 if offer.id != record.id:
                     offer.status = 'refused'
-            return True
+        return True
 
     def action_offer_refused(self):
         for record in self:
             record.status = 'refused'
-            return True
+        return True

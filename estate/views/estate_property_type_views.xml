@@ -11,7 +11,8 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="property_types">
-                <field name="name"></field>
+                <field name="sequence" widget='handle'/>
+                <field name="name" ></field>
             </list>
         </field>
     </record>
@@ -27,7 +28,7 @@
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
-                                <list edit="0" delete="0" create="0" open_form_view="0">
+                                <list create="False" edit="False" delete="False">
                                     <field name="name" />
                                     <field name="expected_price" />
                                     <field name="state" />

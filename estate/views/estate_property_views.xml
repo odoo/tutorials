@@ -30,6 +30,8 @@
                 <header>
                     <button string="Sold" name="action_property_sold" type="object"/>
                     <button string="Cancel" name="action_property_cancel" type="object"/>
+                    <field name="state" widget="statusbar" options="{'clickable': False}"/>
+
                 </header>
                 <sheet>
                     <h1><field name="name"/></h1>
@@ -39,7 +41,6 @@
                     <br/>
                     <group>
                         <group>
-                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -95,6 +96,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Properties">
+                <field name="total_area"/>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
