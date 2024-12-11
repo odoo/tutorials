@@ -1,6 +1,6 @@
 from odoo import api, models, fields
 from datetime import date,timedelta
-
+from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
@@ -40,7 +40,7 @@ class EstateProperty(models.Model):
         required=True
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.users", string="Buyer")
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer Id")
@@ -66,3 +66,30 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+    status = fields.Selection(
+        string='Status',
+        selection=[
+            ('new', 'New'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled')
+            ],
+        default='new',
+        required=True
+    )
+
+    def sold_property(self):
+        for record in self:
+            if record.status == 'new':
+                record.status = 'sold'
+            else:
+                raise UserError("A cancelled property cannot be sold")
+        return True    
+    
+    def cancel_property(self):
+        for record in self:
+            if record.status == 'new':
+                record.status = 'canceled'
+            else:
+                raise UserError("A sold property cannot be cancelled")
+            return True     
+        

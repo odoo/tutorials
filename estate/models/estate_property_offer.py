@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
         string='Status',
         selection=[
             ('accepted', 'Accepted'),
-            ('refussed', 'Refused')
+            ('refused', 'Refused')
         ],
         copy=False
     )
@@ -30,3 +30,20 @@ class EstatePropertyOffer(models.Model):
     def _inverse_dead(self):
         for record in self:
             record.validity = fields.Date.subtract(record.date_deadline-fields.Date.to_date(record.create_date)).days
+
+    def accept_icon(self):
+        for record in self:
+            record.status= 'accepted'
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+            for offer in record.property_id.offer_ids:
+                if offer.id != record.id:
+                    offer.status= 'refused'
+        return True
+
+    def refuse_icon(self):
+        for record in self:
+            record.status = 'refused'
+            record.property_id.buyer_id = ''
+            record.property_id.selling_price = ''
+        return True
