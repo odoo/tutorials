@@ -1,7 +1,9 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from datetime import date, timedelta
 
-class estateProperty(models.Model):
+
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property table"
 
@@ -18,14 +20,24 @@ class estateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        selection = [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-
-    active = fields.Boolean(default = False)
+        selection = [
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+            ]
+        )
+    active = fields.Boolean()
     state = fields.Selection(
-        selection = [('new', 'New'), ('offer_received', 'Offer Received'),
-        ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
-        required = True, copy = False, default = 'new')
-
+        selection = [
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+            ],
+        required = True, copy = False, default = 'new'
+        )
     property_type_id = fields.Many2one('estate.property.type', string = 'Property Type', )
     partner_id = fields.Many2one('res.partner', string = 'Buyer')
     user_id = fields.Many2one('res.users', string = 'Salesman', default = lambda self: self.env.user)
@@ -39,16 +51,43 @@ class estateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
+    # @api.onchange("living_area", "garden_area")
+    # def _compute_total(record):
+    #     record.total_area = record.living_area + record.garden_area
+
     @api.depends("offers_id")
     def _compute_best(self):
         for record in self:
-            record.best_price = max((offer.price for offer in record.offers_id),default = 0)
+            record.best_price = max(record.offers_id.mapped('price'),default = 0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'north' if self.garden else None
+        # return {
+        #     'warning': {'title': "Warning", 'message': "What is this?", 'type': 'notification'},
+        #     }
+        
+    # @api.onchange("garden","garage")
+    # def _onchange_garden_garage(self):
+    #     if self.garden and self.garage:
+    #         self.garden_area = 100
+    #         self.garden_orientation = 'north'
+
+    # @api.onchange("property_type_id.name")
+    # def _onchange_pt(self):
+    #     if self.property_type_id == 'Apartment':
+    #         self.garden = 'False'
+
+    # @api.onchange("offers_id")
+    # def _onchange_oid(self):
+    #     if self.offers_id.price > 100000:
+    #         self.state = 'sold'
+
+    # @api.onchange("tag_ids")
+    # def _onchange_tags(self):
+    #     if self.tag_ids == '2BHK':
+    #         self.property_type_id = 'Apartment'
 
     @api.depends('state')
     def action_sold(self):

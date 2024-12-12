@@ -1,7 +1,8 @@
-from odoo import models, fields, api
+from odoo import models, fields, api # type: ignore
 from datetime import date, timedelta
 
-class estatePropertyOffer(models.Model):
+
+class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Offers'
 
@@ -20,3 +21,17 @@ class estatePropertyOffer(models.Model):
     def _compute_validity(self):
         for record in self:
             record.validity = (record.date_deadline - date.today()).days
+
+    def action_accept(self):
+        for record in self:
+            for offer in record.property_id.offers_id:
+                offer.status = 'refused'
+            record.status = 'accepted'
+            record.property_id.state = 'offer_accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.partner_id = record.partner_id
+
+    def action_refuse(self):
+        for record in self:
+            record.status = 'refused'
+            record.property_id.state = 'new'
