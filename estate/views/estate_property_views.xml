@@ -28,41 +28,42 @@
         <field name="arch" type="xml">
             <form string="My Property">
                 <header>
-                    <button string="Sold" name="action_property_sold" type="object"/>
-                    <button string="Cancel" name="action_property_cancel" type="object"/>
-                    <field name="state" widget="statusbar" options="{'clickable': False}"/>
-
+                    <button string="Sold" name="action_property_sold" type="object" />
+                    <button string="Cancel" name="action_property_cancel" type="object" />
+                    <field name="state" widget="statusbar" options="{'clickable': False}" />
                 </header>
                 <sheet>
-                    <h1><field name="name"/></h1>
-                    <field name="tag_ids" widget="many2many_tags"/>
-                    <br/>
-                    <br/>
-                    <br/>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                    <field name="tag_ids" widget="many2many_tags" />
+                    <br />
+                    <br />
+                    <br />
                     <group>
                         <group>
-                            <field name="property_type_id"/>
-                            <field name="postcode"/>
-                            <field name="date_availability"/>
+                            <field name="property_type_id" />
+                            <field name="postcode" />
+                            <field name="date_availability" />
                         </group>
                         <group>
-                            <field name="expected_price"/>
-                            <field name="best_price"/>
-                            <field name="selling_price"/>
+                            <field name="expected_price" />
+                            <field name="best_price" />
+                            <field name="selling_price" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
-                                <field name="total_area"/>
+                                <field name="description" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
+                                <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
@@ -72,20 +73,23 @@
                                     <field name="partner_id"></field>
                                     <field name="validity"></field>
                                     <field name="date_deadline"></field>
-                                    <button name="action_offer_accepted" type="object" icon="fa-check" title="Accept Offer" invisible="status == 'accepted' or status == 'refused'"/>
-                                    <button name="action_offer_refused" type="object" icon="fa-times" title="Refuse Offer" invisible="status == 'accepted' or status == 'refused'"/>
+                                    <button name="action_offer_accepted" type="object"
+                                        icon="fa-check" title="Accept Offer"
+                                        invisible="status == 'accepted' or status == 'refused'" />
+                                    <button name="action_offer_refused" type="object"
+                                        icon="fa-times" title="Refuse Offer"
+                                        invisible="status == 'accepted' or status == 'refused'" />
                                     <field name="status"></field>
                                 </list>
                             </field>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesperson_id"/>
-                                <field name="buyer_id"/>
+                                <field name="salesperson_id" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
-
                 </sheet>
             </form>
         </field>
@@ -96,16 +100,18 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Properties">
-                <field name="total_area"/>
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="expected_price"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="facades"/>
-                <filter string="availability" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'received')]"/>
+                <field name="total_area" />
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
+                <filter string="availability" name="available"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'received')]" />
                 <group>
-                    <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
+                    <filter string="Postcode" name="group_by_postcode"
+                        context="{'group_by': 'postcode'}" />
                 </group>
             </search>
         </field>

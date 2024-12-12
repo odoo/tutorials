@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'

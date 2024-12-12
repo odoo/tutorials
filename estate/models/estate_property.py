@@ -1,12 +1,13 @@
-import sys
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+
+
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
     _order = 'id desc'
-    
+
     name = fields.Char(required=True, string='Title', trim=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -59,7 +60,13 @@ class EstateProperty(models.Model):
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
-            record.total_area =  record.living_area + record.garden_area
+                # previous_value = record.total_area
+                record.total_area =  record.living_area + record.garden_area
+                # print(
+                #     f"Triggered _compute_total_area for record {record.id}: "
+                #     f"living_area={record.living_area}, garden_area={record.garden_area}, "
+                #     f"total_area={record.total_area} (was {previous_value})"
+                # )
     
     def _search_total_area(self, operator, value):
         if operator in ('=', '!=', '<', '<=', '>', '>='):
@@ -75,16 +82,17 @@ class EstateProperty(models.Model):
         else:
             # Unsupported operators like 'ilike' are not suitable for numeric sums
             return [('id', '=', False)]
-    
+
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max((record.offer_ids.mapped(('price'))), default=0.0 if not record.offer_ids else None)
+            record.best_price = max((record.offer_ids.mapped('price')), default=0.0 if not record.offer_ids else None)
 
     @api.onchange("garden")
     def _onchange_graden(self):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'north'if self.garden else None
+        print("onchnage fields")
 
     def action_property_cancel(self):
         for record in self:
@@ -99,4 +107,3 @@ class EstateProperty(models.Model):
                 raise UserError('Cancelled property cannot be sold.')
             record.state = 'sold'
         return True
-            
