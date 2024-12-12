@@ -2,7 +2,7 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
-class Estate(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Table"
 
@@ -96,7 +96,7 @@ class Estate(models.Model):
     @api.ondelete(at_uninstall=False)
     def _ondelete_property(self):
         for record in self:
-            if record.state != "new" or record.state != "cancelled":
+            if record.state != "new" and record.state != "cancelled":
                 raise UserError(
                     "You cannot delete a property that is not in New or Cancelled state."
                 )

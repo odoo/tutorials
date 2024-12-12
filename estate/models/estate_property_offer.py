@@ -3,7 +3,7 @@ from datetime import timedelta
 from odoo.exceptions import UserError
 
 
-class EstateOffer(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property offer Table"
 
@@ -49,7 +49,7 @@ class EstateOffer(models.Model):
         if property_record:
             property_record.write({"state": "offer_received"})
 
-        return super(EstateOffer, self).create(vals)
+        return super(EstatePropertyOffer, self).create(vals)
 
     def _date_deadline(self):
         for record in self:
