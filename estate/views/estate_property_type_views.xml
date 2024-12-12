@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <odoo>
    <record id="view_estate_property_type" model="ir.ui.view">
         <field name="name">estate.property.type.list</field>
@@ -9,6 +10,7 @@
             </list>
         </field>
     </record>
+
     <record id="view_property_type_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
@@ -20,6 +22,7 @@
             </form>
         </field>
     </record>
+
     <record id="action_property_type" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>

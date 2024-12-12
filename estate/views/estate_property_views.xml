@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
-
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
+
     <record id="view_estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -22,6 +22,7 @@
             </list>
         </field>
     </record>
+
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -40,13 +41,14 @@
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>  
-                        </group>
+                    </group>
                         <group>
                             <field name="expected_price"/>
                             <field name="best_price"/>
                             <field name="selling_price" readonly="1"/>
                         </group>
                     </group>
+
                     <notebook>
                         <page string="Description">price = fields.Float(required=True)
                            <group>
@@ -59,7 +61,7 @@
                             <field name="garden_area"/>
                             <field name="garden_orientation"/>
                             <field name="total_area" />
-                           </group> 
+                           </group>
                         </page>
                         <page string="Offers">
                            <field name="offer_ids">
@@ -81,10 +83,12 @@
                           </group>
                         </page>
                     </notebook>
+
                 </sheet>
             </form>
         </field>
     </record>
+    
     <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -92,7 +96,7 @@
             <search string="Properties">
                 <field name="name"/>
                 <field name="postcode"/>
-                <filter name="available" domain="['|', ('state', '=', 'New'), ('state', '=', 'Offer Received')]" 
+                <filter name="available" domain="['|', ('state', '=', 'New'), ('state', '=', 'Offer Received')]"
                         string="Available"/>
                 <group expand="1" string="Group By">
                     <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
