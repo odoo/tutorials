@@ -19,7 +19,9 @@
     'installable': True,
     'depends': ['base', 'web'],
 
-    'data': [],
+    'data': [
+            'security/ir.model.access.csv',
+            ],
 
     'license': 'AGPL-3'
 }
