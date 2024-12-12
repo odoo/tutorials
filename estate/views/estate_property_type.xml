@@ -9,11 +9,11 @@
     </record>
 
     <record id="estate_property_type_list_view" model="ir.ui.view">
-        <field name="name">estate.property.view</field>
-        <field name="model">estate.property</field>
+        <field name="name">estate.property.type.view</field>
+        <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Type">
-                <field name="property_type_id"/>
+                <field name="name"/>
             </list>
         </field>
     </record>

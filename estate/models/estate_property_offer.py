@@ -1,6 +1,7 @@
 from odoo import api, models, fields
 from datetime import date
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
