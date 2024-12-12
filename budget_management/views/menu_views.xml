@@ -1,0 +1,14 @@
+<odoo>
+    <!-- Define the Root Menu -->
+    <menuitem
+        id="budget_management_menu"
+        name="Budget"
+    />
+
+    <menuitem
+        id="budget_management_menu_budget"
+        name="Budgets"
+        parent="budget_management_menu"
+        action="action_budget_management_menu_budget"
+    />
+</odoo>
