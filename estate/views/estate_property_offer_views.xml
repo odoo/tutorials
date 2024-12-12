@@ -3,18 +3,40 @@
         <field name="name">estate.property.offers</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form>
+            <form string='Offers'>
+            <header>
+                <button name="action_accept" type="object" string="Accept"
+                        icon="fa-check" data-visible= "[('state', '!=', 'new')]}"/>
+                <button name="action_refuse" type="object" string="Refuse"
+                        icon="fa-times" data-visible= "[('state', '!=', 'new')]}"/>
+            </header>
                 <sheet>
                     <group>
-                        <field name="property_type_id"/>
+                        <field name="property_type_id" readonly="1"/>
                         <field name="buyer_id"/>
                         <field name="seller_id"/>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="status"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
                     </group>
-                    <group>
-                        <field name="name"/>
-                    </group>
+                 
                 </sheet>
             </form>
         </field>
     </record>
+    <record id="view_estate_property_offer_list" model="ir.ui.view">
+    <field name="name">estate.property.offer.list</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+        <list string="Offers">
+            <field name="price"/>
+            <field name="partner_id"/>
+            <field name="status"/>
+            <field name="validity"/>
+            <field name="date_deadline"/>
+        </list>
+    </field>
+</record>
 </odoo>
