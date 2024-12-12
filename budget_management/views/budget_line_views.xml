@@ -6,11 +6,10 @@
             <list string="Budget Lines"
                 default_order="id desc"
                 sample="1"
-                editable="bottom"
+                create="0"
             >
                 <field name="currency_id" column_invisible="True" />
                 <field string="Budget" name="name" />
-                <field name="budget_id" column_invisible="True" />
                 <field string="Analytic Account" name="analytic_account_id" />
                 <field string="Budget Amount" name="budget_amount" />
                 <field string="Achived Amount" name="achieved_amount" />
@@ -18,18 +17,6 @@
         </field>
     </record>
 
-    <record id="view_budget_management_budget_line_graph" model="ir.ui.view">
-        <field name="name">budget.management.budget.lines.graph</field>
-        <field name="model">budget.management.budget.lines</field>
-        <field name="arch" type="xml">
-            <graph string="Budget Lines" type="bar" stacked="1">
-                <field name="name" type="row" />
-                <field name="budget_amount" type="measure" operator="+" />
-                <field name="achieved_amount" type="measure" operator="+" />
-                <field name="over_budget" />
-            </graph>
-        </field>
-    </record>
 
     <record id="view_budget_management_budget_line_pivot" model="ir.ui.view">
         <field name="name">budget.management.budget.lines.pivot</field>
@@ -57,4 +44,22 @@
         </field>
     </record> -->
 
+    <!-- <record id="view_budget_management_budget_line_graph" model="ir.ui.view">
+        <field name="name">budget.management.budget.lines.graph</field>
+        <field name="model">budget.management.budget.lines</field>
+        <field name="arch" type="xml">
+            <graph type="bar" stacked="1">
+                <field name="name" type="row" />
+                <field name="budget_amount" type="measure" />
+                <field name="achieved_amount" />
+                <field name="over_budget" type="measure" />
+            </graph>
+        </field>
+    </record> -->
+
+    <!-- <record id="budget_management_bar_view_graph" model="ir.actions.act_window.view">
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="budget_management.view_budget_management_budget_line_graph" />
+        <field name="act_window_id" ref="budget_management.action_budget_management_budget_line" />
+    </record> -->
 </odoo>
