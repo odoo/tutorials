@@ -50,19 +50,23 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.validity = 7
     def action_accept(self):
-        for record in self:
-            if record.property_id.state == 'sold':
-                raise UserError("You cannot accept an offer for a sold property.")
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
-            record.property_id.state = 'sold'
-            record.property_id.offer_ids.filtered(lambda o: o.id != record.id).write({'state': 'refused'})
-            record.state = 'accepted'
+        if self.property_id.state == 'sold':
+            raise UserError("Cannot accept offers for sold properties.")
+        existing_offer = self.search([
+            ('property_id', '=', self.property_id.id),
+            ('status', '=', 'accepted')
+        ])
+        if existing_offer:
+            raise UserError("Only one offer can be accepted per property.")
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.env.user.partner_id
 
     def action_refuse(self):
-        for record in self:
-            record.state = 'refused'          
-_sql_constraints = [
+        if self.status == 'accepted':
+            raise UserError("Accepted offers cannot be refused.")
+        self.status = 'refused'        
+    _sql_constraints = [
         ('offer_price_positive', 'CHECK(price > 0)',
          'The offer price must be strictly positive.')
     ]   

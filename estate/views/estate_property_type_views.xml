@@ -8,11 +8,21 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Property Type">
                 <sheet>
                     <group>
                         <field name="name"/>
                     </group>
+                     <group string="Properties">
+                    <field name="property_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </group>
                 </sheet>
             </form>
         </field>
@@ -27,20 +37,5 @@
         </field>
     </record> 
     
-     <record id="view_estate_property_form" model="ir.ui.view">
-        <field name="name">estate.property.type</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="property_type_id"/>
-                        <field name="buyer_id"/>
-                        <field name= "seller_id"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+     
 </odoo>    
