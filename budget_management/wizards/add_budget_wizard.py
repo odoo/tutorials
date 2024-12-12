@@ -1,10 +1,11 @@
-from odoo import models, fields
+from odoo import models, fields, Command
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 
 
 class AddBudgetWizard(models.TransientModel):
     _name = "add.budget.wizard"
+    _description = " "
 
     date_start = fields.Date(required=True, string="Start Date")
     date_end = fields.Date(
@@ -20,16 +21,14 @@ class AddBudgetWizard(models.TransientModel):
     )
 
     analytic_account_ids = fields.Many2many(
-        "account.analytic.account", string="Analytic Account"
+        "account.analytic.account", string="Analytic Account", required=True
     )
 
-    # analytic_account = fields.Many2many(comodel_name="account.analytic.account")
     def action_add_budget(self):
         """Creates budget records based on the selected periods."""
         if self.date_start >= self.date_end:
             raise ValueError("Start Date must be before Expiration Date.")
 
-        # Calculate the periods and create budgets
         current_date = self.date_start
         budget_entries = []
 
@@ -43,16 +42,28 @@ class AddBudgetWizard(models.TransientModel):
 
             budget_entries.append(
                 {
-                    "name": f"Budget {current_date.strftime('%Y-%m')} to {end_date.strftime('%Y-%m')}",
+                    "name": (
+                        f"Budget - {current_date.strftime('%B-%Y')}"
+                        if self.periods == "monthly"
+                        else f"Budget - {current_date.strftime('%d %B, %Y')} to {end_date.strftime('%d %B, %Y')}"
+                    ),
                     "date_start": current_date,
                     "date_end": end_date,
-                    # "budget_line_ids": self.analytic_account_ids,
+                    "budget_line_ids": [
+                        Command.create(
+                            {"name": "budget line", "analytic_account_id": account.id}
+                        )
+                        for account in self.analytic_account_ids
+                    ],
                 }
             )
 
             current_date = next_date
-        print(budget_entries)
+
         self.env["budget.budget"].create(budget_entries)
 
-        # Return a window close action
-        return {"type": "ir.actions.act_window_close"}
+        return {
+            "type": "ir.actions.client",
+            "tag": "reload",
+            "message": "Budgets have been successfully created.",
+        }

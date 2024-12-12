@@ -79,7 +79,7 @@
                 </div>
                 <header>
                     <button name="onclick_reset_to_draft" type="object" string="Reset to Draft"
-                        invisible="state in ['draft']"
+                        invisible="state in ['draft','revised','done']"
                     />
                     <button name="onclick_confirmed" type="object" string="Confirm"
                         invisible="state in ['revised','done','confirmed']"
@@ -88,7 +88,7 @@
                         invisible="state in ['revised','done']"
                     />
                     <button name="onclick_done" type="object" string="Done"
-                        invisible="state in ['done']"
+                        invisible="state in ['done','revised']"
                     />
                     <field name="state" widget="statusbar"
                         statusbar_visible="draft,confirmed,revised,done" />
@@ -130,6 +130,8 @@
                                     create="state in ['draft']"
                                 >
                                     <field name="currency_id" column_invisible="True" />
+                                    <field name="name" string="Budget"
+                                        readonly="state not in ['draft']" />
                                     <field name="analytic_account_id" string="Analytic Account"
                                         readonly="state not in ['draft']" />
                                     <field name="budget_amount" string="Budget Amount"
@@ -137,8 +139,8 @@
                                     <field name="achieved_amount" string="Achived Amount" />
                                     <field name="achieved_percentage" string="Achived (%)"
                                         widget="progressbar" options="{'max_value': 100}" />
-                                    <button name="%(action_open_account_analytic_lines_list)d"
-                                        type="action"
+                                    <button name="open_analytic_lines_action"
+                                        type="object"
                                         string="View"
                                     />
                                 </list>
