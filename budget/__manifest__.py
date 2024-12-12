@@ -11,8 +11,8 @@
         'security/ir.model.access.csv',
         'views/budget_line_view.xml',
         'views/budget_menu_view.xml',
+        'wizard/budget_wizard_view.xml',
         'views/budget_views.xml',
-        'wizard/budget_wizard_view.xml'
     ],
     'installable': True,
     'application': True,

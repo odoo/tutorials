@@ -1,11 +1,10 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError, UserError
 
-
 class Budget(models.Model):
     _name = "budget.budget"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    _description = " "
+    _description = "Budget Management"
 
     name = fields.Char(compute="_compute_budget_name", store=True, readonly=True)
     active = fields.Boolean(default=True)
@@ -27,12 +26,12 @@ class Budget(models.Model):
         tracking=True,
     )
     responsible = fields.Many2one(
-        comodel_name="res.users",  # Assuming you want a link to Odoo users
+        comodel_name="res.users",
         string="Responsible",
         tracking=True,
     )
     revision_id = fields.Many2one(
-        comodel_name="res.users",  # Assuming you want a link to Odoo users
+        comodel_name="budget.budget",  # This should point to the same budget model
         tracking=True,
         readonly=True,
     )
@@ -64,29 +63,6 @@ class Budget(models.Model):
             else:
                 record.name = "Unknown Budget"
 
-    def onclick_reset_to_draft(self):
-        for record in self:
-            if record.state != "draft":
-                record.state = "draft"
-
-    def onclick_confirmed(self):
-        for record in self:
-            if record.state == "draft":
-                record.state = "confirmed"
-
-    def onclick_revise(self):
-        for record in self:
-            if record.state != "confirmed":
-                raise UserError("Only confirmed budgets can be revised.")
-            if record.state in ["confirmed"]:
-                record.revision_id = self.env.user
-                record.state = "revised"
-
-    def onclick_done(self):
-        for record in self:
-            if record.state in ["confirmed", "revised"]:
-                record.state = "done"
-
     @api.constrains("date_start", "date_end")
     def _check_period_overlap(self):
         for record in self:
@@ -102,3 +78,59 @@ class Budget(models.Model):
                 raise ValidationError(
                     "Cannot create overlapping budgets for the same period and company."
                 )
+
+    def onclick_reset_to_draft(self):
+        for record in self:
+            if record.state != "draft":
+                record.state = "draft"
+
+    def onclick_confirmed(self):
+        for record in self:
+            if record.state == "draft":
+                record.state = "confirmed"
+
+    def onclick_revise(self):
+        for record in self:
+            if record.state != "confirmed":
+                raise UserError("Only confirmed budgets can be revised.")
+
+            # Archive the current record and set its state to 'revised'
+            record.sudo().write({
+                'state': 'revised',
+                'active': False,  # Archive the original record
+                'revision_id': record.id,  # Set the revision_id to refer to the original budget
+            })
+
+            # Create a duplicate budget (this will be the revised budget)
+            duplicate = record.copy()
+
+            # Manually copy related budget lines to the new budget (duplicate)
+            for line in record.budget_line_ids:
+                self.env["budget.management.budget.lines"].create({
+                    'name': line.name,
+                    'budget_id': duplicate.id,  # Link to the duplicated budget
+                    'budget_amount': line.budget_amount,
+                    'analytic_account_id': line.analytic_account_id.id,
+                    # Add any other necessary fields here
+                })
+
+            # Update the duplicate record's state and fields
+            duplicate.sudo().write({
+                'state': 'draft',  # Set the duplicate budget's state to draft
+                'active': True,  # Set the new record as active
+                'responsible': self.env.user.id,  # Set the current user as responsible for the revised budget
+                'revision_id': record.id,  # Set the revision_id to point to the original budget (parent budget)
+                'name': f"{record.name} (Revised)",  # Adjust the name for clarity
+            })
+
+            # Log a message for traceability
+            record.message_post(
+                body="The budget has been revised. A new draft budget has been created.",
+                message_type="notification",
+            )
+
+
+    def onclick_done(self):
+        for record in self:
+            if record.state in ["confirmed", "revised"]:
+                record.state = "done"

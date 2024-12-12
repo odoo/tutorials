@@ -33,4 +33,12 @@
         parent="budget_management_menu"
         action="action_budget_management_menu_budget"
     />
+
+    <record id="action_open_account_analytic_lines_list" model="ir.actions.act_window">
+        <field name="name">Analytic Lines</field>
+        <field name="res_model">account.analytic.line</field>
+        <field name="view_mode">list</field>
+        <field name="context">{'default_budget_line_id': active_id}</field>
+        <field name="domain">[('budget_line_id', '=', context.get('default_budget_line_id'))]</field>
+    </record>
 </odoo>

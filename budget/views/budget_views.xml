@@ -65,18 +65,26 @@
         </field>
     </record>
 
-
-    <record id="view_budget_management_form" model="ir.ui.view">
+    <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">budget.budget.form</field>
         <field name="model">budget.budget</field>
         <field name="arch" type="xml">
+
             <form string="Test">
+                <field name="state" invisible="True" />
+                <div class="alert alert-warning" role="alert" name="warnings"
+                    invisible="not warnings">
+                    <field name="warnings" class="o_field_html" />
+                </div>
                 <header>
                     <button name="onclick_reset_to_draft" type="object" string="Reset to Draft"
                         invisible="state in ['draft']"
                     />
+                    <button name="onclick_confirmed" type="object" string="Confirm"
+                        invisible="state in ['revised','done','confirmed']"
+                    />
                     <button name="onclick_revise" type="object" string="Revise"
-                        invisible="state in ['revise','done']"
+                        invisible="state in ['revised','done']"
                     />
                     <button name="onclick_done" type="object" string="Done"
                         invisible="state in ['done']"
@@ -88,6 +96,7 @@
                     <h1>
                         <field name="name" />
                     </h1>
+                    <field name="currency_id" invisible="True" />
                     <field name="active" invisible="True" />
                     <group>
                         <group>
@@ -115,12 +124,22 @@
                     <notebook>
                         <page name="Budget Lines">
                             <field name="budget_line_ids">
-                                <list>
-                                    <field name="name" string="Analytic Account" />
-                                    <field name="budget_amount" string="Budget Amount" />
-                                    <field name="achieved_amount" string="Archived Amount" />
-                                    <field name="achieved_percentage" string="Archived (%)"
+                                <list no_open="1"
+                                    editable="bottom"
+                                    create="state in ['draft']"
+                                >
+                                    <field name="currency_id" column_invisible="True" />
+                                    <field name="analytic_account_id" string="Analytic Account"
+                                        readonly="state not in ['draft']" />
+                                    <field name="budget_amount" string="Budget Amount"
+                                        readonly="state not in ['draft']" />
+                                    <field name="achieved_amount" string="Achived Amount" />
+                                    <field name="achieved_percentage" string="Achived (%)"
                                         widget="progressbar" options="{'max_value': 100}" />
+                                    <button name="%(action_open_account_analytic_lines_list)d"
+                                        type="action"
+                                        string="View"
+                                    />
                                 </list>
                             </field>
                         </page>
@@ -130,53 +149,4 @@
             </form>
         </field>
     </record>
-
-    <record id="view_budget_lines_graph" model="ir.ui.view">
-        <field name="name">budget.lines.graph</field>
-        <field name="model">budget.management.budget.lines</field>
-        <field name="arch" type="xml">
-            <graph string="Budget Line Analysis" type="bar">
-                <field name="budget_id" type="row" />
-                <field name="achieved_percentage" type="measure" />
-                <field name="analytic_account_id" type="col" />
-            </graph>
-        </field>
-    </record>
-
-    <record id="view_budget_lines_pivot" model="ir.ui.view">
-        <field name="name">budget.lines.pivot</field>
-        <field name="model">budget.management.budget.lines</field>
-        <field name="arch" type="xml">
-            <pivot string="Budget Line Pivot">
-                <field name="budget_id" type="row" />
-                <field name="analytic_account_id" type="col" />
-                <field name="budget_amount" type="measure" />
-                <field name="achieved_amount" type="measure" />
-                <field name="achieved_percentage" type="measure" />
-            </pivot>
-        </field>
-    </record>
-
-    <record id="view_budget_lines_gantt" model="ir.ui.view">
-        <field name="name">budget.lines.gantt</field>
-        <field name="model">budget.management.budget.lines</field>
-        <field name="arch" type="xml">
-            <gantt string="Budget Lines Timeline" date_start="date_start" date_stop="date_end">
-                <field name="name" />
-                <field name="budget_amount" sum="Total Budget" />
-            </gantt>
-        </field>
-    </record>
-
-    <record id="action_budget_lines" model="ir.actions.act_window">
-        <field name="name">Budget Lines</field>
-        <field name="res_model">budget.management.budget.lines</field>
-        <field name="view_mode">graph,pivot,gantt</field>
-        <field name="context">{}</field>
-    </record>
-
-    <menuitem id="menu_budget_lines" name="Budget Lines"
-        parent="budget_management_menu" action="action_budget_lines" />
-
-
 </odoo>

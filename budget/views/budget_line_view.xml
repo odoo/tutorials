@@ -8,11 +8,61 @@
                 sample="1"
                 editable="bottom"
             >
+                <field name="currency_id" column_invisible="True" />
                 <field string="Budget" name="name" />
+                <field name="budget_id" column_invisible="True" />
                 <field string="Analytic Account" name="analytic_account_id" />
                 <field string="Budget Amount" name="budget_amount" />
-                <field string="Archived Amount" name="achieved_amount" />
+                <field string="Achived Amount" name="achieved_amount" />
             </list>
         </field>
     </record>
+
+    <record id="view_budget_lines_graph" model="ir.ui.view">
+        <field name="name">budget.lines.graph</field>
+        <field name="model">budget.management.budget.lines</field>
+        <field name="arch" type="xml">
+            <graph string="Budget Line Analysis" type="bar">
+                <field name="budget_id" type="row" />
+                <field name="achieved_percentage" type="measure" />
+                <field name="analytic_account_id" type="col" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_budget_lines_pivot" model="ir.ui.view">
+        <field name="name">budget.lines.pivot</field>
+        <field name="model">budget.management.budget.lines</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget Line Pivot">
+                <field name="budget_id" type="row" />
+                <field name="analytic_account_id" type="col" />
+                <field name="budget_amount" type="measure" />
+                <field name="achieved_amount" type="measure" />
+                <field name="achieved_percentage" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_budget_lines_gantt" model="ir.ui.view">
+        <field name="name">budget.lines.gantt</field>
+        <field name="model">budget.management.budget.lines</field>
+        <field name="arch" type="xml">
+            <gantt string="Budget Lines Timeline" date_start="date_start" date_stop="date_end">
+                <field name="name" />
+                <field name="budget_amount" sum="Total Budget" />
+            </gantt>
+        </field>
+    </record>
+
+    <record id="action_budget_lines" model="ir.actions.act_window">
+        <field name="name">Budget Lines</field>
+        <field name="res_model">budget.management.budget.lines</field>
+        <field name="view_mode">graph,pivot,gantt</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="menu_budget_lines" name="Budget Lines"
+        parent="budget_management_menu" action="action_budget_lines" />
+
 </odoo>
