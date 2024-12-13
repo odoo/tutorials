@@ -10,6 +10,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = 'id desc'
     name = fields.Char(required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -31,12 +32,14 @@ class EstateProperty(models.Model):
             ('east', "East"),
             ('west', "West")
         ]
-    )    
-    state = fields.Selection([
+    )
+    state = fields.Selection(selection=[
         ('new', 'New'),
+        ('received', 'Offer Received'),
+        ('accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
-        ('refused', 'Refused')
-    ], string="Status",required=True, default='new')
+        ('cancelled', 'Cancelled'),
+    ], default='new', string="Status", copy=False)    
     property_type_id = fields.Many2one('estate.property.type', string="Property Type") 
     buyer_id = fields.Many2one('res.partner', string="Buyer")
     seller_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)

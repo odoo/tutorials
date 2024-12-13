@@ -27,18 +27,18 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
-                <sheet>
-                 <header>
+                <header>
                     <button name="action_cancel" type="object" string="Cancel"
                             class="btn btn-secondary" data-visible="[(state != 'sold')]"/>
                     <button name="action_sold" type="object" string="Sold"
                             class="btn btn-primary"  data-visible="[(state != 'cancelled')]" />
-                </header> 
+                         <field name="state" widget="statusbar" options="{'clickable': False}" />    
+                </header>   
+                <sheet>
                     <group>
                         <group>
-                            <field name="name" string="Title"/>
+                            <field name="name" string="Property Types"/>
                             <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="name" string="Property Type"/>
                             <field name ="expected_price"/>
                             <field name="selling_price"/>
                         </group>
@@ -46,8 +46,7 @@
 
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
-                            <field name ="state"/>
-                             <field name="best_offers" string="Best Offers"/> 
+                            <field name="best_offers" string="Best Offers"/> 
                             
 
                         </group>
@@ -72,6 +71,7 @@
                                 <field name ="buyer"/>
                             </group>
                         </page>
+                        
                         <page string="Offers">
                             <group>
                                 <field name="price"/>
@@ -79,8 +79,9 @@
                                 <field name ="status"/>
                                 <field name= "validity" string="Validity(days)"/>
                                 <field name= "date_deadline" string="Deadline"/>
-                            </group>
+                            </group>  
                         </page>
+                        
                         <page>
                             <field name="description"/>
                         </page>

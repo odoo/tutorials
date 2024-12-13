@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
  <odoo>
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
@@ -25,7 +26,8 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                 <field name="tag_ids"/>
+                <field name="tag_ids"/>
+            
             </list>
         </field>
     </record>
