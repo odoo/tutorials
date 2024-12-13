@@ -13,23 +13,22 @@ class EstateProperty(models.Model):
         tracking=True,
         default=lambda self: self.env.user,
     )
-    buyer_id = fields.Many2one("res.users", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     name = fields.Char("Name", required=True)
-    description = fields.Text("Description", required=True)
-    postcode = fields.Char("PostCode", required=True)
-    date_availability = fields.Date("Availability Date", required=True, copy=False)
+    description = fields.Text("Description")
+    postcode = fields.Char("PostCode")
+    date_availability = fields.Date("Availability Date", copy=False)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     expected_price = fields.Float("Expected Price", required=True)
-    bedrooms = fields.Integer("Bedrooms", required=True, default=2)
-    living_area = fields.Integer("Living Area", required=True)
-    facades = fields.Integer("Facades", required=True)
-    garage = fields.Boolean("Garage", required=True)
-    garden = fields.Boolean("Garden", required=True)
-    garden_area = fields.Integer("Garden Area", required=True)
+    bedrooms = fields.Integer("Bedrooms", default=2)
+    living_area = fields.Integer("Living Area")
+    facades = fields.Integer("Facades")
+    garage = fields.Boolean("Garage")
+    garden = fields.Boolean("Garden")
+    garden_area = fields.Integer("Garden Area")
     garden_orientation = fields.Selection(
         [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
-        "Garden Orientation",
-        required=True,
+        "Garden Orientation"
     )
     state = fields.Selection(
         [
