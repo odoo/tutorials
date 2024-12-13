@@ -35,11 +35,7 @@
         <field name="model">budget.management.budget.lines</field>
         <field name="arch" type="xml">
             <pivot string="Budget Line Pivot">
-                <field name="budget_id" type="row" />
-                <field name="analytic_account_id" type="col" />
-                <field name="budget_amount" type="measure" />
-                <field name="achieved_amount" type="measure" />
-                <field name="achieved_percentage" type="measure" />
+                <field name="analytic_account_id" type="row" />
             </pivot>
         </field>
     </record>

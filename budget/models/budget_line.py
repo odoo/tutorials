@@ -52,6 +52,10 @@ class BudgetLine(models.Model):
         readonly=True,
     )
 
+    # Add these fields for the Gantt view
+    date_start = fields.Date(string="Start Date", required=True)
+    date_end = fields.Date(string="End Date", required=True)
+
     @api.depends("analytic_line_ids.amount")
     def _compute_achieved_amount(self):
         for record in self:
@@ -67,7 +71,7 @@ class BudgetLine(models.Model):
                 record.budget_id.on_over_budget == "warning"
                 and record.achieved_amount > record.budget_amount
             ):
-                record.budget_id.warnings = "Achived amount is more than your budget!"
+                record.budget_id.warnings = "Achieved amount is more than your budget!"
             else:
                 record.budget_id.warnings = False
 
@@ -76,7 +80,6 @@ class BudgetLine(models.Model):
         for record in self:
             if record.budget_amount < 0:
                 raise ValidationError("Budget amount cannot be negative.")
-
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -91,7 +94,7 @@ class BudgetLine(models.Model):
                 if budget_id:
                     active_budget = self.env["budget.budget"].browse(budget_id)
                     break
-        
+
         if not active_budget:
             raise UserError("No budget found in context or record.")
 
