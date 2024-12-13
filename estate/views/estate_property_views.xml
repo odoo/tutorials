@@ -12,8 +12,16 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name"></field>
+                <field name="name" decoration-bf="amount &gt; 0"></field>
+                <field name="name" decoration-it="amount &gt; 0"></field>
+                <field name="name" decoration-danger="amount &gt; 0"></field>
+                <field name="name" decoration-info="amount &gt; 0"></field>
+                <field name="name" decoration-muted="amount &gt; 0"></field>
+                <field name="name" decoration-primary="amount &gt; 0"></field>
+                <field name="name" decoration-success="amount &gt; 0"></field>
+                <field name="name" decoration-warning="amount &gt; 0"></field>
                 <field name="postcode"></field>
-                <field name="bedrooms"></field>
+                <field name="bedrooms" options="{'type': 'number', 'step': 1}"></field>
                 <field name="living_area"></field>
                 <field name="expected_price"></field>
                 <field name="selling_price"></field>
@@ -47,7 +55,7 @@
                             <field name="date_availability" />
                         </group>
                         <group>
-                            <field name="expected_price" />
+                            <field name="expected_price" options="{'type': 'number', 'step': 0.1}"/>
                             <field name="best_price" />
                             <field name="selling_price" />
                         </group>

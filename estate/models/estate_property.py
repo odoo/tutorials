@@ -52,22 +52,16 @@ class EstateProperty(models.Model):
         for record in self:
             if float_is_zero(record.selling_price, precision_rounding=0.01):
                 continue
-
             min_offer_price = record.expected_price * 0.9
             if float_compare(record.selling_price, min_offer_price, precision_digits=3) < 0:
                 raise ValidationError(f"The selling price ({record.selling_price}) cannot be lower than 90% of the expected price ({min_offer_price})! You must reduce expected price if you want to accept this offer.")
 
+    # multiple fields can use it
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
-                # previous_value = record.total_area
                 record.total_area =  record.living_area + record.garden_area
-                # print(
-                #     f"Triggered _compute_total_area for record {record.id}: "
-                #     f"living_area={record.living_area}, garden_area={record.garden_area}, "
-                #     f"total_area={record.total_area} (was {previous_value})"
-                # )
-    
+
     def _search_total_area(self, operator, value):
         if operator in ('=', '!=', '<', '<=', '>', '>='):
         # Use raw SQL to evaluate the sum in the database
@@ -92,7 +86,6 @@ class EstateProperty(models.Model):
     def _onchange_graden(self):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'north'if self.garden else None
-        print("onchnage fields")
 
     def action_property_cancel(self):
         for record in self:
