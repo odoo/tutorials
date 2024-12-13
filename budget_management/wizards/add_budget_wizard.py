@@ -51,9 +51,9 @@ class AddBudgetWizard(models.TransientModel):
                     "date_end": end_date,
                     "budget_line_ids": [
                         Command.create(
-                            {"name": "budget line", "analytic_account_id": account.id}
+                            {"name": "budget line "+str(x+1), "analytic_account_id": account.id}
                         )
-                        for account in self.analytic_account_ids
+                        for x,account in enumerate(self.analytic_account_ids)
                     ],
                 }
             )

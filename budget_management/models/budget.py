@@ -148,10 +148,12 @@ class Budget(models.Model):
 
     @api.depends("budget_line_ids.over_budget")
     def _check_over_budget(self):
+        # print("* "*100)
         for record in self:
+            # print(list(ob > 0 for ob in record.budget_line_ids.mapped("over_budget")))
             if (
                 record.on_over_budget == "warning"
-                and any(ob > 0 for ob in record.budget_line_ids.mapped("over_budget")) > 0
+                and any(ob > 0 for ob in record.budget_line_ids.mapped("over_budget"))
             ):
                 record.warnings = "Achieved amount exceeds the budget!"
             else:

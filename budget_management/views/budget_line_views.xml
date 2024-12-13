@@ -17,49 +17,65 @@
         </field>
     </record>
 
-
     <record id="view_budget_management_budget_line_pivot" model="ir.ui.view">
         <field name="name">budget.management.budget.lines.pivot</field>
         <field name="model">budget.management.budget.lines</field>
         <field name="arch" type="xml">
             <pivot string="Budget Lines">
-                <field name="name" type="row" />
+                <field name="analytic_account_id" type="row" />
+                <field name="count_analytic_lines" string="Count" type="measure" />
             </pivot>
         </field>
     </record>
 
-    <!-- <record id="view_budget_management_budget_line_gantt" model="ir.ui.view">
+    <record id="view_budget_management_budget_line_gantt" model="ir.ui.view">
         <field name="name">budget.management.budget.lines.gantt</field>
         <field name="model">budget.management.budget.lines</field>
         <field name="arch" type="xml">
-            <gantt string="Budget Lines" date_start="start_date" date_stop="end_date">
-                <field name="name" />
+            <gantt string="Budget Lines"
+                display_mode="sparse"
+                color="analytic_account_id"
+                create="false"
+                delete="false"
+                default_range="month"
+                progress_bar="analytic_account_id"
+                decoration-info="True"
+                date_start="start_date"
+                date_stop="end_date">
 
-                <field name="user_id" widget="many2one_avatar_user" />
-
-                <field name="achieved_percentage" widget="progressbar"
-                    options="{'color_field': 'progress_color'}" />
                 <field name="analytic_account_id" />
+                <field name="budget_amount" />
+                <field name="user_id" />
+                <templates>
+                    <div t-name="gantt-popover">
+                        <div>
+                            <span>
+                                <h6>analytic account: </h6>
+                                <span t-esc="analytic_account_id" />
+
+                                <h6 class="pt-2">budget amount: </h6>
+                                <span t-esc="budget_amount" />
+
+                                <h6 class="pt-2">Responsible: </h6>
+                                <span t-esc="user_id" />
+                            </span>
+                        </div>
+                    </div>
+                </templates>
             </gantt>
         </field>
-    </record> -->
+    </record>
 
-    <!-- <record id="view_budget_management_budget_line_graph" model="ir.ui.view">
+    <record id="view_budget_management_budget_line_graph" model="ir.ui.view">
         <field name="name">budget.management.budget.lines.graph</field>
         <field name="model">budget.management.budget.lines</field>
         <field name="arch" type="xml">
-            <graph type="bar" stacked="1">
+            <graph type="bar" stacked="0">
                 <field name="name" type="row" />
                 <field name="budget_amount" type="measure" />
-                <field name="achieved_amount" />
+                <field name="achieved_amount" type="measure" />
                 <field name="over_budget" type="measure" />
             </graph>
         </field>
-    </record> -->
-
-    <!-- <record id="budget_management_bar_view_graph" model="ir.actions.act_window.view">
-        <field name="view_mode">graph</field>
-        <field name="view_id" ref="budget_management.view_budget_management_budget_line_graph" />
-        <field name="act_window_id" ref="budget_management.action_budget_management_budget_line" />
-    </record> -->
+    </record>
 </odoo>
