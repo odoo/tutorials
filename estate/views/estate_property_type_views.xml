@@ -1,38 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 
 <odoo>
-    <record id = "estate_property_type_action" model = "ir.actions.act_window">
-        <field name = "name">Property Types</field>
-        <field name = "res_model">estate.property.type</field>
-        <field name = "view_mode">list,form</field>
+    <record id = 'estate_property_type_action' model = 'ir.actions.act_window'>
+        <field name = 'name'>Property Types</field>
+        <field name = 'res_model'>estate.property.type</field>
+        <field name = 'view_mode'>list,form</field>
     </record>
 
-     <record id="estate_property_type_view_list" model="ir.ui.view">
-        <field name="name">estate.property.type.list</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <list string="Property Types" >
-                <field name="name"/>
+     <record id='estate_property_type_view_list' model='ir.ui.view'>
+        <field name='name'>estate.property.type.list</field>
+        <field name='model'>estate.property.type</field>
+        <field name='arch' type='xml'>
+            <list string='Property Types' >
+                <field name='name'/>
+                <field name = 'sequence' widget = 'handle'/>
             </list>
         </field>
     </record>
 
-    <record id = "estate_property_type_view_form" model = "ir.ui.view">
-        <field name = "name">estate.property.type.form</field>
-        <field name = "model">estate.property.type</field>
-        <field name = "arch" type = "xml">
-            <form string = "Property Types">
-                <field name = "name"/>
+    <record id = 'estate_property_type_view_form' model = 'ir.ui.view'>
+        <field name = 'name'>estate.property.type.form</field>
+        <field name = 'model'>estate.property.type</field>
+        <field name = 'arch' type = 'xml'>
+            <form string = 'Property Types'>
+                <h1><field name = 'name'/></h1>
+                <notebook>
+                    <page string = 'Properties'>
+                        <field name = 'property_ids'>
+                            <list>
+                                <field name = 'name'/>
+                                <field name = 'expected_price'/>
+                                <field name = 'state'/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>
 
-    <record id = "estate_property_type_view_search" model = "ir.ui.view">
-        <field name = "name">estate.property.type.search</field>
-        <field name = "model">estate.property.type</field>
-        <field name = "arch" type = "xml">
-            <search string = "Property Types">
-                <field name = "name"/>
+    <record id = 'estate_property_type_view_search' model = 'ir.ui.view'>
+        <field name = 'name'>estate.property.type.search</field>
+        <field name = 'model'>estate.property.type</field>
+        <field name = 'arch' type = 'xml'>
+            <search string = 'Property Types'>
+                <field name = 'name'/>
             </search>
         </field>
     </record>

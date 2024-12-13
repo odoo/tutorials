@@ -1,11 +1,13 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.tools import float_compare, float_is_zero
 from datetime import date, timedelta
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "Estate property table"
+    _name = 'estate.property'
+    _description = 'Estate property table'
+    _order = 'id desc'
 
     name = fields.Char(string = 'Title', required = True)
     description = fields.Text()
@@ -36,67 +38,61 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
             ],
-        required = True, copy = False, default = 'new'
+        string = 'Status', required = True, copy = False, default = 'new'
         )
     property_type_id = fields.Many2one('estate.property.type', string = 'Property Type', )
     partner_id = fields.Many2one('res.partner', string = 'Buyer')
     user_id = fields.Many2one('res.users', string = 'Salesman', default = lambda self: self.env.user)
     tag_ids = fields.Many2many('estate.property.tags', string = 'Tags')
-    offers_id = fields.One2many('estate.property.offer', 'property_id', string = 'Offers')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string = 'Offers')
     total_area = fields.Float(compute = '_compute_total')
     best_price = fields.Float(compute = '_compute_best')
 
-    @api.depends("living_area", "garden_area")
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'The expected price should be strictly positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The expected price should be positive'),
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
+                raise UserError('The selling price should be higher than 90%\0 of the expected price')
+
+    @api.depends('living_area', 'garden_area')
     def _compute_total(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+            
 
-    # @api.onchange("living_area", "garden_area")
-    # def _compute_total(record):
-    #     record.total_area = record.living_area + record.garden_area
-
-    @api.depends("offers_id")
+    @api.depends('offer_ids')
     def _compute_best(self):
         for record in self:
-            record.best_price = max(record.offers_id.mapped('price'),default = 0)
+            record.best_price = max(record.offer_ids.mapped('price'),default = 0)
 
-    @api.onchange("garden")
+    @api.onchange('garden')
     def _onchange_garden(self):
+        print(self)
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'north' if self.garden else None
-        # return {
-        #     'warning': {'title': "Warning", 'message': "What is this?", 'type': 'notification'},
-        #     }
-        
-    # @api.onchange("garden","garage")
-    # def _onchange_garden_garage(self):
-    #     if self.garden and self.garage:
-    #         self.garden_area = 100
-    #         self.garden_orientation = 'north'
 
-    # @api.onchange("property_type_id.name")
-    # def _onchange_pt(self):
-    #     if self.property_type_id == 'Apartment':
-    #         self.garden = 'False'
+    @api.onchange('offer_ids')
+    def _onchange_offers(self):
+        if self.offer_ids:
+            self.state = 'offer_received'
+        else:
+            self.state = 'new'
 
-    # @api.onchange("offers_id")
-    # def _onchange_oid(self):
-    #     if self.offers_id.price > 100000:
-    #         self.state = 'sold'
-
-    # @api.onchange("tag_ids")
-    # def _onchange_tags(self):
-    #     if self.tag_ids == '2BHK':
-    #         self.property_type_id = 'Apartment'
-
-    @api.depends('state')
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError('Cancelled properties cannot be sold')
             record.state = 'sold'
 
-    @api.depends('state')
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
