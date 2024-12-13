@@ -1,6 +1,7 @@
 from odoo import api, models, fields
 from datetime import date,timedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -28,7 +29,7 @@ class EstateProperty(models.Model):
             ('west', 'West')
             ],
     )
-    active = fields.Boolean(string="Active", default=False)
+    active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(
         string='State',
         selection=[
@@ -58,6 +59,19 @@ class EstateProperty(models.Model):
         required=True
     )
     best_price = fields.Float(compute="_compute_best_offer")
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'A property expected price must be strictly positive'),
+        ('check_selling_price', 'CHECK(selling_price > 0)', 'A property Selling price must be positive'),
+    ]
+
+    @api.constrains('expected_price', 'selling_price')
+    def _not_lower_than_ninty_percent(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=0.01):
+                continue
+            if float_compare(record.selling_price, record.expected_price*0.9, precision_rounding=0.01) == -1:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

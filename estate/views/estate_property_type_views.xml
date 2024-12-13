@@ -9,7 +9,7 @@
     </record>
 
     <record id="estate_property_type_list_view" model="ir.ui.view">
-        <field name="name">estate.property.type.view</field>
+        <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Type">
