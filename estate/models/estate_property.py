@@ -2,21 +2,24 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields
+from datetime import timedelta
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property details"
 
-    name = fields.Char(string='Name of the property', required=True, default='Property Name')
-    description = fields.Text(string='Description of the property')
+    name = fields.Char(string='Name', required=True)
+    description = fields.Text(string='Description')
     
     postcode = fields.Char(string='Postal code')
     
-    date_availability = fields.Date(string='Availability date')
-    expected_price = fields.Float(string='Expected price', required=True, default=0.0)
-    selling_price = fields.Float(string='Selling Price')
+    date_availability = fields.Date(string='Availability Date', copy=False,
+                                    default=fields.Date.today()+timedelta(days=90))
+
+    expected_price = fields.Float(string='Expected Price', required=True, default=0.0)
+    selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
     
-    bedrooms = fields.Integer(string='Number of bedrooms')
+    bedrooms = fields.Integer(string='Number of bedrooms', default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -25,4 +28,11 @@ class Property(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'),
                                             ('east', 'East'), ('west', 'West')])
+
+    active = fields.Boolean(default=True)
     
+    state = fields.Selection([('new', 'New'), ('offer received', 'Offer Received'),
+                              ('offer accpeted', 'Offer Accepted'), ('cancelled', 'Cancelled')],
+                               default="new",
+                               required=True,
+                               copy=False)
