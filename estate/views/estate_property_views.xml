@@ -32,7 +32,9 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="property_tag_ids" widget="many2many_tags"/>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -55,6 +57,15 @@
                                 <field name="state"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="property_buyer_id"/>
+                                <field name="property_seller_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -68,6 +79,7 @@
         <field name="arch" type="xml">
             <list string="Properties list">
                 <field name="name" string="Title" widget="text"/>
+                <field name="property_type_id" string="Type"/>
                 <field name="postcode" string="Postcode" widget="text"/>
                 <field name="bedrooms" string="Bedrooms" widget="text"/>
                 <field name="living_area" string="Living Area (sqm)" widget="text"/>
