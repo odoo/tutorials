@@ -29,7 +29,7 @@ class EstateProperty(models.Model):
             ('west', 'West')
             ]
         )
-    active = fields.Boolean()
+    active = fields.Boolean(default = True)
     state = fields.Selection(
         selection = [
             ('new', 'New'),
@@ -80,12 +80,18 @@ class EstateProperty(models.Model):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'north' if self.garden else None
 
-    @api.onchange('offer_ids')
-    def _onchange_offers(self):
-        if self.offer_ids:
-            self.state = 'offer_received'
-        else:
-            self.state = 'new'
+    # @api.onchange('offer_ids')
+    # def _onchange_offers(self):
+    #     if self.offer_ids:
+    #         self.state = 'offer_received'
+    #     else:
+    #         self.state = 'new'
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_prohibited(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError('Only new and cancelled properties can be deleted')
 
     def action_sold(self):
         for record in self:

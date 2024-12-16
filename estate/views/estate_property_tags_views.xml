@@ -11,7 +11,7 @@
         <field name = 'name'>Property Tags List</field>
         <field name = 'model'>estate.property.tags</field>
         <field name = 'arch' type = 'xml'>
-            <list string = 'Property Tags'>
+            <list string = 'Property Tags' editable = 'bottom'>
                 <field name = 'name'/>
             </list>
         </field>
