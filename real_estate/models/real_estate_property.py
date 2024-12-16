@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools import date_utils
 
 
@@ -103,3 +104,36 @@ class RealEstateProperty(models.Model):
                 property.best_offer_amount = max(property.offer_ids.mapped('amount'))
             else:
                 property.best_offer_amount = 0
+
+    @api.onchange('active')
+    def _onchange_active_block_if_existing_offers(self):
+        if not self.active:
+            existing_offers = self.env['real.estate.offer'].search(
+                [('property_id', '=', self._origin.id), ('state', '=', 'waiting')]
+            )
+            if existing_offers:
+                raise UserError(
+                    _("You cannot change the active state of a property that has pending offers.")
+                )
+
+    @api.onchange('has_garden')
+    def _onchange_has_garden_set_garden_area_to_zero_if_unchecked(self):
+        if not self.has_garden:
+            self.garden_area = 0
+
+    @api.onchange('garden_area')
+    def _onchange_garden_area_uncheck_garden_if_zero(self):
+        if self.garden_area and not self.has_garden:
+            self.has_garden = True
+
+    @api.onchange('garden_area')
+    def _onchange_garden_area_display_warning_if_zero_and_checked(self):
+        if not self.garden_area and self.has_garden:
+            return {
+                'warning': {
+                    'title': _("Warning"),
+                    'message': _(
+                        "The garden area was set to zero, but the garden checkbox is checked."
+                    ),
+                }
+            }
