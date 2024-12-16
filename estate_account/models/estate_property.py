@@ -38,6 +38,6 @@ class InheritedModel(models.Model):
                         ),
                     ],
                 }
-                self.env["account.move"].create(values)
+                self.env["account.move"].sudo().create(values)
         else:
             return super().action_change_state()
