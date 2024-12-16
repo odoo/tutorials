@@ -4,6 +4,8 @@ from odoo import api,models, fields
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
+
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -32,6 +34,12 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        related="property_id.property_type_id",
+        store=True,
+        string="Property Type",
+    )
 
     _sql_constraints = [
         ('check_offer_price_positive', 'CHECK(price > 0)', 'The offer price must be strictly positive.'),
@@ -52,6 +60,7 @@ class EstatePropertyOffer(models.Model):
     def action_offer_accepted(self):
         for record in self:
             record.status = 'accepted'
+            record.property_id.state = 'offer_accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
 
@@ -64,3 +73,4 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
             return True
+

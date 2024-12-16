@@ -5,8 +5,8 @@
         <field name="name">estate.property.tag.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Property Types">
-                <field name="name"/>
+            <list string="Property Types" editable="bottom">
+                <field name="name" string = "Tags"/>
             </list>
         </field>
     </record>
@@ -16,9 +16,9 @@
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <form string="Property Tags">
-                    <group>
-                        <field name="name"/>
-                    </group>
+                <group>
+                    <field name="name"/>
+                </group>
             </form>
         </field>
     </record>
@@ -29,3 +29,4 @@
         <field name="view_mode">list,form</field>
     </record>
 </odoo>
+

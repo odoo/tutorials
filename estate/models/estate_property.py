@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text(string="Description")
@@ -64,7 +65,7 @@ class EstateProperty(models.Model):
     best_price=fields.Float(compute="_compute_best_price",string="Best Price")
 
 
-    _sql_constraints = [
+    _sql_constraints = [    
         ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
         ('check_selling_price_non_negative', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
     ]
@@ -82,7 +83,6 @@ class EstateProperty(models.Model):
         for property in self:
             property.total_area=property.living_area+property.garden_area
            
-
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for property in self:
