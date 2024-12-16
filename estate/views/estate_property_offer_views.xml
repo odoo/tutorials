@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+<record id="estate_property_offer_action" model="ir.actions.act_window">
+    <field name="name">Offers</field>
+    <field name="res_model">estate.property.offer</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('property_type_id', '=', active_id)]</field>
+</record>
+
+
     <record id="estate_property_offer_view_form" model="ir.ui.view">
         <field name="name">estate.property.offers</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string='Offers'>
-            <header>
-                <button name="action_accept" type="object" string="Accept"
-                        icon="fa-check" data-visible= "[('state', '!=', 'new')]}"/>
-                <button name="action_refuse" type="object" string="Refuse"
-                        icon="fa-times" data-visible= "[('state', '!=', 'new')]}"/>
-            </header>
+          
                 <sheet>
                     <group>
                         <field name="property_type_id" readonly="1"/>
                         <field name="buyer_id"/>
                         <field name="seller_id"/>
                         <field name="price"/>
-                        <field name="partner_id"/>
+                        <field name="partner_id" required="1"/>
                         <field name="status"/>
                         <field name="validity"/>
                         <field name="date_deadline"/>
@@ -31,9 +34,10 @@
     <field name="name">estate.property.offer.list</field>
     <field name="model">estate.property.offer</field>
     <field name="arch" type="xml">
-        <list string="Offers">
+        <list string="Offers" editable="bottom" decoration-danger="state == 'refused'" decoration-success="state == 'accepted'">
             <field name="price"/>
             <field name="partner_id"/>
+            <field name="property_type_id"/>
             <field name="status"/>
             <field name="validity"/>
             <field name="date_deadline"/>

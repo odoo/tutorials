@@ -9,13 +9,15 @@ class EstatePropertyOffer(models.Model):
     _description = 'Real Estate Property Offer'
     _order = 'price desc'
     price = fields.Float()
-    status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], string="Status")
+    state= fields.Selection([('new', 'New'),('accepted', 'Accepted'), ('refused', 'Refused')], string= "Status" ,default='new')
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
     property_id = fields.Many2one('estate.property', string="Property", required=True)
+    status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], string="Status")
     property_type_id = fields.Many2one(
         related='property_id.property_type_id', 
         string="Property Type", 
-        readonly=True
+        readonly=True,
+        store=True
     )
     buyer_id = fields.Many2one(
         'res.partner', 
@@ -33,6 +35,8 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         store=True
     )
+    def action_offer_accepted(self):
+        pass
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -49,26 +53,49 @@ class EstatePropertyOffer(models.Model):
                 record.validity = max(delta, 0)
             else:
                 record.validity = 7
-    def action_accept(self):
-        if self.property_id.state == 'sold':
-            raise UserError("Cannot accept offers for sold properties.")
-        existing_offer = self.search([
-            ('property_id', '=', self.property_id.id),
-            ('status', '=', 'accepted')
-        ])
-        if existing_offer:
-            raise UserError("Only one offer can be accepted per property.")
-        self.status = 'accepted'
-        self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.env.user.partner_id
 
-    def action_refuse(self):
-        if self.status == 'accepted':
-            raise UserError("Accepted offers cannot be refused.")
-        self.status = 'refused'        
+    def action_offer_accepted(self):
+        for record in self:
+            record.status = 'accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+
+            # set status 'refused' in the other offers of that particular property
+            for offer in record.property_id.offer_ids:
+                if offer.id != record.id:
+                    offer.status = 'refused'
+        return True
+
+    def action_offer_refused(self):
+        for record in self:
+            record.status = 'refused'
+        return True
+
     _sql_constraints = [
         ('offer_price_positive', 'CHECK(price > 0)',
          'The offer price must be strictly positive.')
-    ]   
+    ]
+
+    
+    @api.model
+    def create(self, vals):
+        # Ensure property_id exists in vals
+        property_id = self.env['estate.property'].browse(vals.get('property_id'))
+        if not property_id:
+            raise UserError("The property associated with this offer does not exist.")
+
+        # Check if the new offer amount is lower than any existing offers
+        existing_offers = self.search([('property_id', '=', property_id.id)])
+        for offer in existing_offers:
+            if vals.get('price', 0.0) <= offer.price:
+                raise UserError(
+                    "You cannot create an offer with a price lower than an existing offer."
+                )
+
+        # Update the property's state to 'Offer Received'
+        property_id.state = 'offer_received'
+
+        # Create the offer as usual
+        return super(EstatePropertyOffer, self).create(vals)   
 
 

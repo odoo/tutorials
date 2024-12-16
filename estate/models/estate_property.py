@@ -35,21 +35,22 @@ class EstateProperty(models.Model):
     )
     state = fields.Selection(selection=[
         ('new', 'New'),
-        ('received', 'Offer Received'),
-        ('accepted', 'Offer Accepted'),
+         ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled'),
     ], default='new', string="Status", copy=False)    
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type") 
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type",required=True,
+    options={'no_create': True, 'no_edit': True}) 
     buyer_id = fields.Many2one('res.partner', string="Buyer")
-    seller_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
+    seller_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user,required=False)
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], string="Status")
-    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
+    partner_id = fields.Many2one('res.partner', string="Partner",required=True, ondelete='restrict')
     salesperson = fields.Char(string = "Salesperson", required=True)
     buyer = fields.Char(string = "Buyers", required=True)
     price = fields.Float(string="Price")
     partners = fields.Char(string = "Partner", required=True)
-    tag = fields.Many2one('estate.property.tag' , string="Tags") 
+    tag_ids = fields.Many2one('estate.property.tag' , string="Tags") 
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area", store=True,copy=False)
     best_offers = fields.Float(string="Best Offers")
     offer_ids = fields.One2many(
@@ -69,6 +70,10 @@ class EstateProperty(models.Model):
     )
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price", store=True)
+    offer_received = fields.Boolean(string="Offer Received", compute="_compute_offer_received", store=True)
+    offer_accepted = fields.Boolean(string="Offer Accepted", compute="_compute_offer_accepted", store=True)
+
+
     
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -125,5 +130,30 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
-        
+def action_sold(self):
+        self.state = 'sold'
+
+def action_cancel(self):
+        self.state = 'canceled'  
+
+
+@api.depends('state')
+def _compute_offer_received(self):
+        for record in self:
+            record.offer_received = record.state == 'offer_received'
+
+@api.depends('state')
+def _compute_offer_accepted(self):
+        for record in self:
+            record.offer_accepted = record.state == 'offer_accepted' 
+
+@api.ondelete(at_uninstall=False)
+def _check_state_on_delete(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError(
+                    "You cannot delete a property unless it is in 'New' or 'Cancelled' state."
+                )
+
+
                              
