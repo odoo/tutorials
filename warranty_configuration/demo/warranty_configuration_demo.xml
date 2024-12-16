@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="warranty_configuration_product1" model="warranty.configuration">
+        <field name="name">Warranty - 1 year</field>
+        <field name="product_id" ref="warranty_configuration.product_warranty_basic" />
+        <field name="year">1</field>
+        <field name="percentage">10.0</field>
+    </record>
+
+    <record id="warranty_configuration_product2" model="warranty.configuration">
+        <field name="name">Warranty - 2 year</field>
+        <field name="product_id" ref="warranty_configuration.product_warranty_premium" />
+        <field name="year">2</field>
+        <field name="percentage">15.0</field>
+    </record>
+
+    <record id="warranty_configuration_product3" model="warranty.configuration">
+        <field name="name">Warranty - 3 year</field>
+        <field name="product_id" ref="warranty_configuration.product_warranty_extended" />
+        <field name="year">3</field>
+        <field name="percentage">20.0</field>
+    </record>
+</odoo>
