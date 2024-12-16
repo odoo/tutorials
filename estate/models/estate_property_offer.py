@@ -5,6 +5,7 @@ from datetime import date
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Price", required=True)
     status = fields.Selection(
@@ -18,7 +19,8 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partener", required=True)
     property_id = fields.Many2one("estate.property", string="Property Id", required=True)
     validity = fields.Integer(string="Validity", default=7)
-    date_deadline = fields.Date(compute="_compute_total", inverse="_inverse_dead", string="Deadline")
+    date_deadline = fields.Date(compute="_compute_total", inverse="_inverse_date_deadline", string="Deadline")
+    property_type_id = fields.Many2one('estate.property.type', related="property_id.property_type_id", string="Property Type", store=True)
 
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', 'A Offer price must be strictly positive'),
@@ -32,7 +34,7 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.date_deadline = fields.Date.add(date.today(), days=record.validity)
 
-    def _inverse_dead(self):
+    def _inverse_date_deadline(self):
         for record in self:
             record.validity = fields.Date.subtract(record.date_deadline-fields.Date.to_date(record.create_date)).days
 
@@ -41,6 +43,7 @@ class EstatePropertyOffer(models.Model):
             record.status= 'accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
+            record.property_id.status = 'offer accepted'
             for offer in record.property_id.offer_ids:
                 if offer.id != record.id:
                     offer.status= 'refused'
@@ -49,6 +52,4 @@ class EstatePropertyOffer(models.Model):
     def refuse_icon(self):
         for record in self:
             record.status = 'refused'
-            record.property_id.buyer_id = ''
-            record.property_id.selling_price = ''
         return True
