@@ -56,7 +56,16 @@ class EstateProperty(models.Model):
             if float_compare(record.selling_price, min_offer_price, precision_digits=3) < 0:
                 raise ValidationError(f"The selling price ({record.selling_price}) cannot be lower than 90% of the expected price ({min_offer_price})! You must reduce expected price if you want to accept this offer.")
 
-    # multiple fields can use it
+    @api.onchange("garden")
+    def _onchange_graden(self):
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'north'if self.garden else None
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max((record.offer_ids.mapped('price')), default=0.0 if not record.offer_ids else None)
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -77,15 +86,11 @@ class EstateProperty(models.Model):
             # Unsupported operators like 'ilike' are not suitable for numeric sums
             return [('id', '=', False)]
 
-    @api.depends('offer_ids.price')
-    def _compute_best_price(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_cannot_deleted(self):
         for record in self:
-            record.best_price = max((record.offer_ids.mapped('price')), default=0.0 if not record.offer_ids else None)
-
-    @api.onchange("garden")
-    def _onchange_graden(self):
-        self.garden_area = 10 if self.garden else 0
-        self.garden_orientation = 'north'if self.garden else None
+            if record.state != 'new' and record.state != 'cancelled':
+                raise UserError("Only new and cancelled properties can be deleted.")
 
     def action_property_cancel(self):
         for record in self:
@@ -100,3 +105,4 @@ class EstateProperty(models.Model):
                 raise UserError('Cancelled property cannot be sold.')
             record.state = 'sold'
         return True
+
