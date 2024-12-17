@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_add_budget_wizard" model="ir.ui.view">
+            <field name="name">add.budget.wizard.form</field>
+            <field name="model">add.budget.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Add Offer">
+                    <sheet>
+                        <group>
+                            <field name="date_start" string="Planned Date" widget="daterange"
+                                options="{'end_date_field': 'date_end', 'always_range': '1'}"
+                                optional="hide" />
+                            <field name="date_end" invisible="True" />
+                            <field name="periods" widget="radio" />
+                            <field name="analytic_account_ids" widget="many2many_tags" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Create" name="action_add_budget" type="object"
+                            class="btn-primary" default_focus="1" />
+                        <button string="Discard" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="open_create_multiple_budget" model="ir.actions.act_window">
+            <field name="name">Create Multiple Budgets</field>
+            <field name="res_model">add.budget.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_add_budget_wizard" />
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
