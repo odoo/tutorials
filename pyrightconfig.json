@@ -1,2 +1,5 @@
 {
+    "extraPaths": [
+        "/home/dpro/workspaces/odoo"
+    ]
 }
