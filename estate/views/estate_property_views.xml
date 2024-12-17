@@ -5,4 +5,8 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
+    <!-- </record id="estate_property_view_tree" model="ir.actions.act_window">
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
+    <record> -->
 </odoo>
