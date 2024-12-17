@@ -3,6 +3,7 @@
 
 from odoo import models, fields, api
 from datetime import timedelta
+from odoo.exceptions import UserError
 
 class Property(models.Model):
     _name = "estate.property"
@@ -34,7 +35,8 @@ class Property(models.Model):
     active = fields.Boolean(default=True)
     
     state = fields.Selection([('new', 'New'), ('offer received', 'Offer Received'),
-                              ('offer accepted', 'Offer Accepted'), ('cancelled', 'Cancelled')],
+                              ('offer accepted', 'Offer Accepted'), ('cancelled', 'Cancelled'),
+                              ('sold', 'Sold')],
                                default="new",
                                required=True,
                                copy=False)
@@ -80,7 +82,7 @@ class Property(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'))
+            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -90,3 +92,18 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def action_cancel_the_property(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties cannot be cancelled.")
+            record.state = 'cancelled'
+        return True
+
+    def action_sell_the_property(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancelled properties cannot be sold.")
+            else:
+                record.state = 'sold'
+        return True

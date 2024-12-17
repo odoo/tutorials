@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
+    <!-- Estate/Property/Tags Menu -->
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name">Tags</field>
         <field name="res_model">estate.property.tag</field>
