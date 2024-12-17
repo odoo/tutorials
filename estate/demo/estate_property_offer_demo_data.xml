@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_offer_id1" model="estate.property.offer">
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="estate.estate_property_id1"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+    </record>
+     <record id="estate_property_offer_id2" model="estate.property.offer">
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="estate.estate_property_id1"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+    </record>
+     <record id="estate_property_offer_id3" model="estate.property.offer">
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="estate.estate_property_id1"/>
+        <field name="partner_id" ref="base.res_partner_2"/>
+    </record>
+</odoo>

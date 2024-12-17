@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="res_users_view_form" model="ir.ui.view">
+        <field name="name">Users</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <notebook>
+                <page name="name" string="Real State Properties">
+                    <field name="property_ids" string=" ">
+                        <list string="Channel">
+                            <field name="name" string="Title"/>
+                            <field name="property_type_id"/>
+                            <field name="postcode"/>
+                            <field name="tag_ids"/>
+                            <field name="bedrooms" />
+                            <field name="living_area" />
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                        </list>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>
