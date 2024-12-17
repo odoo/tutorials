@@ -8,3 +8,7 @@ class PropertyTag(models.Model):
     _description = "Add different tags to a property like cozy, spacious, etc."
 
     name = fields.Char(string="Name", required=True)
+
+    _sql_constraints = [
+        ('unique_tag_name', 'UNIQUE(name)', 'Tag with this name already exists, try another name.')
+    ]

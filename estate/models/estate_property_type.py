@@ -8,3 +8,7 @@ class PropertyType(models.Model):
     _description = "Used to describe the type of the property i.e House, Apartment, etc."
 
     name = fields.Char(string="Name", required=True)
+
+    _sql_constraints = [
+        ('unique_type_name', 'UNIQUE(name)', 'Type with this name already exists, try another name.')
+    ]

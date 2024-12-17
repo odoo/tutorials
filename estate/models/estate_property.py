@@ -3,7 +3,7 @@
 
 from odoo import models, fields, api
 from datetime import timedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 class Property(models.Model):
     _name = "estate.property"
@@ -17,7 +17,7 @@ class Property(models.Model):
     date_availability = fields.Date(string='Availability Date', copy=False,
                                     default=fields.Date.today()+timedelta(days=90))
 
-    expected_price = fields.Float(string='Expected Price', required=True, default=0.0)
+    expected_price = fields.Float(string='Expected Price', required=True, default=1.0)
     selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
     best_price = fields.Float(string='Best Offer', readonly=True, copy=False,
                               compute="_compute_best_offer")
@@ -43,6 +43,11 @@ class Property(models.Model):
 
     total_area = fields.Integer(string='Total Area (sqm)', compute="_compute_total_area",
                                 readonly=True, copy=False)
+
+    _sql_constraints = [
+        ('check_epxected_price', 'CHECK(expected_price > 0)', 'The expected price should be greater than 0.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price should be greater than or equal to 0.')
+    ]
     
     property_type_id = fields.Many2one(
         'estate.property.type',
@@ -92,18 +97,36 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+    
+    @api.constrains('expected_price')
+    def _check_expected_price(self):
+        for record in self:
+            if record.expected_price <= 0:
+                raise ValidationError('The expected price must be greater than zero.')
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price < 0:
+                raise ValidationError('The selling price should be positive.')
+
+    @api.constrains('selling_price')
+    def _check_selling_price_expected(self):
+        for record in self:
+            if record.selling_price < record.expected_price * 0.9 and (not (record.selling_price == 0)) :
+                raise ValidationError('The selling price should never be lower than 90 percent of the expected price.')
 
     def action_cancel_the_property(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold properties cannot be cancelled.")
+                raise UserError(_('Sold properties cannot be cancelled.'))
             record.state = 'cancelled'
         return True
 
     def action_sell_the_property(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cancelled properties cannot be sold.")
+                raise UserError(_('Cancelled properties cannot be sold.'))
             else:
                 record.state = 'sold'
         return True
