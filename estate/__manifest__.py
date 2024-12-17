@@ -7,5 +7,9 @@
     'summary': "Realistic business advertisements",
     'application': True,
     'installable': True,
-    'auto_install': False
+    'auto_install': False,
+    'data': [
+        'security/ir.model.access.csv'
+    ]
+
 }
