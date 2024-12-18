@@ -3,6 +3,7 @@
     'depends': ['base'],
     'application': True,
     'installable': True,
+    'license': 'LGPL-3',
     'data': [
         "views/estate_property_views.xml",
         "views/estate_property_type_views.xml",

@@ -3,51 +3,56 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-    </record> 
+    </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
-                <field colspan="4"  name="name" string="Title" />
+                <field colspan="4" name="name" string="Title" />
                 <field name="postcode" colspan="2" />
-                <field name="bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability" string="Available From"/>
+                <field name="bedrooms" />
+                <field name="living_area" string="Living Area (sqm)" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" string="Available From" />
             </list>
         </field>
     </record>
 
-    <record id="estate_property_view_form" model="ir.ui.view"> 
+    <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
-        <field name="arch" type="xml"> 
-
+        <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_set_state_sold" type="object" string="Sold" />
+                    <button name="action_set_state_cancelled" type="object" string="Cancel" />
+                </header>
                 <sheet>
                     <hgroup>
-                        <label for="name"/>
+                        <label for="name" />
                         <h1>
-                            <field name="name" string="Title" placeholder="e.g. Standard Appartments" />
+                            <field name="name" string="Title"
+                                placeholder="e.g. Standard Appartments" />
                         </h1>
                         <label for="property_tags_ids" />
-                        <br/>
+                        <br />
                         <field name="property_tags_ids" widget="many2many_tags" />
                     </hgroup>
-                    <br/>
+                    <br />
                     <group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="state" string="State" />
+                            <field name="property_type_id" />
                             <field name="postcode" />
-                            <field name="date_availability" string="Available From"/>
+                            <field name="date_availability" string="Available From" />
                         </group>
                         <group>
                             <field name="expected_price" />
                             <field name="best_offer" />
-                            <field name="selling_price"/>
+                            <field name="selling_price" />
 
                         </group>
                     </group>
@@ -82,17 +87,18 @@
 
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
-        <field name="model">estate.property</field> 
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Properties">
                 <field name="name" string="Title" />
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="living_area" string="Living Area (sqm)" />
                 <field name="facades" />
 
-                <filter string="Available" name="state"  domain="['|', ('state', '=', 'new'),  ('state', '=', 'received')]" />
+                <filter string="Available" name="state"
+                    domain="['|', ('state', '=', 'new'),  ('state', '=', 'received')]" />
                 <filter name="postcode" context="{'group_by': 'postcode'}" />
             </search>
         </field>

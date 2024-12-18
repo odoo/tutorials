@@ -1,4 +1,5 @@
 from odoo import api, models, fields
+from odoo.exceptions import UserError
 from odoo.tools.date_utils import relativedelta
 
 class EstateProperty(models.Model):
@@ -34,8 +35,8 @@ class EstateProperty(models.Model):
     property_tags_ids = fields.Many2many("estate.property.tag", string="Property Categories")
     offer_ids = fields.One2many("estate.property.offer", string="Offers", inverse_name="property_id")
 
-    total_area = fields.Integer(compute="_compute_total_area", readonly=True)
-    best_offer = fields.Integer(compute="_compute_best_offer", readonly=True) 
+    total_area = fields.Integer(compute="_compute_total_area")
+    best_offer = fields.Integer(compute="_compute_best_offer")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -45,9 +46,30 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max(record.mapped('offer_ids.price')) if len(record.offer_ids) > 0 else 0
+            record.best_offer = max(record.offer_ids.mapped('price'), default=0) 
 
     @api.onchange("garden")
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = "north" if self.garden else ""
+
+    # Actions
+    def action_set_state_sold(self):
+        self.ensure_one()
+
+        if self.state == "cancelled": 
+            raise UserError("Cannot sell a cancelled property")
+        
+        self.state = "sold"
+
+        return True
+
+    def action_set_state_cancelled(self):
+        self.ensure_one()
+
+        if self.state == "sold": 
+            raise UserError("Cannot cancel a sold property")
+
+        self.state = "cancelled"
+
+        return True
