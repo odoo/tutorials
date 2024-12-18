@@ -37,9 +37,13 @@
                 <field name="name" widget="text"/>
                 <notebook>
                     <page string="Properties">
+                    <field name="property_ids">
                         <list>
-                            <field name="property_ids"/>
+                            <field name="name" widget="text"/>
+                            <field name="bedrooms" widget="text"/>
+                            <field name="living_area" widget="text"/>
                         </list>
+                    </field>
                     </page>
                 </notebook>
             </form>
