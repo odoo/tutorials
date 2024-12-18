@@ -1,5 +1,5 @@
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import date_utils
 
 
@@ -109,6 +109,12 @@ class RealEstateProperty(models.Model):
                 property.best_offer_amount = max(property.offer_ids.mapped('amount'))
             else:
                 property.best_offer_amount = 0
+
+    @api.constrains('availability_date')
+    def _check_availability_date_under_1_year(self):
+        for property in self.filtered('availability_date'):
+            if property.availability_date > fields.Date.today() + date_utils.relativedelta(years=1):
+                raise ValidationError(_("The availability date must be in less than one year."))
 
     @api.onchange('active')
     def _onchange_active_block_if_existing_offers(self):

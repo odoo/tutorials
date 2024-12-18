@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 from odoo.tools import date_utils
 
 
@@ -44,3 +45,21 @@ class RealEstateOffer(models.Model):
     def _inverse_expiry_date(self):
         for offer in self:
             offer.validity = date_utils.relativedelta(dt1=offer.expiry_date, dt2=offer.date).days
+
+    @api.constrains('amount')
+    def _check_amount_higher_than_previous_offers(self):
+        for offer in self:
+            same_buyer_offers = offer.property_id.offer_ids.filtered(
+                lambda o: o.buyer_id == offer.buyer_id
+            )
+            if offer.amount < max(same_buyer_offers.mapped('amount')):
+                raise ValidationError(_(
+                    "The amount of the new offer must be higher than the amount of the previous "
+                    "offers."
+                ))
+
+    @api.constrains('state')
+    def _check_state_is_accepted_for_only_one_offer(self):
+        for offer in self.filtered(lambda o: o.state == 'accepted'):
+            if len(offer.property_id.offer_ids.filtered(lambda o: o.state == 'accepted')) > 1:
+                raise ValidationError(_("Only one offer can be accepted for a property."))
