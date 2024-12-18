@@ -6,6 +6,11 @@ from odoo.tools import date_utils
 class RealEstateProperty(models.Model):
     _name = 'real.estate.property'
     _description = "Real Estate Property"
+    _sql_constraints = [(
+        'positive_price',
+        'CHECK (selling_price > 0)',
+        "The selling price must be strictly positive.",
+    )]
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
