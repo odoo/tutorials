@@ -55,6 +55,9 @@
                                 <field name="garden_orientation" string="Garden Orientation"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
                         <page string="Other info">
                             <group>
                                 <field name="salesperson" string="Salesman"/>
