@@ -29,6 +29,8 @@
             <form string="My new house">
                 <sheet>
                     <h1><field name="name" placeholder="e.g. My New House"/></h1>
+                    <field name="tags_ids" widget="many2many_tags"/>
+                    <separator/>
                     <group>
                         <group>
                             <field name="property_type_id" string="Property Type"/>
@@ -50,7 +52,13 @@
                                 <field name="garage" string="Garage"/>
                                 <field name="garden" string="Garden"/>
                                 <field name="garden_area" string="Garden Area(sqm)"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_orientation" string="Garden Orientation"/>
+                            </group>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="salesperson" string="Salesman"/>
+                                <field name="buyer" string="Buyer"/>
                             </group>
                         </page>
                     </notebook>
