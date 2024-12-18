@@ -26,3 +26,9 @@ class EstateProperty(models.Model):
             string="state",
             selection=[('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')]
     )
+    
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    salesperson_id = fields.Many2one("res.users", string="Salesperson")
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    property_tags_ids = fields.Many2many("estate.property.tag", string="Property Categories")
+    offer_ids = fields.One2many("estate.property.offer", string="Offers", inverse_name="property_id")

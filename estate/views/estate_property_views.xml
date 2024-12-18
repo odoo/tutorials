@@ -33,9 +33,14 @@
                         <h1>
                             <field name="name" string="Title" placeholder="e.g. Standard Appartments" />
                         </h1>
+                        <label for="property_tags_ids" />
+                        <br/>
+                        <field name="property_tags_ids" widget="many2many_tags" />
                     </hgroup>
+                    <br/>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode" />
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -57,6 +62,21 @@
                                 <field name="garden_orientation" />
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list editable="bottom">
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="status" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="salesperson_id" />
+                                <field name="buyer_id" />
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -75,7 +95,7 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades" />
 
-                <filter string="Available" name="state"  domain="['|',('state', '=', 'new'),  ('state', '=', 'received')]" />
+                <filter string="Available" name="state"  domain="['|', ('state', '=', 'new'),  ('state', '=', 'received')]" />
                 <filter name="postcode" context="{'group_by': 'postcode'}" />
             </search>
         </field>
