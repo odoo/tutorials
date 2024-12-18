@@ -12,6 +12,7 @@
             <list string="Properties">
                 <field name="name" string="Title"/>
                 <field name="postcode" string="Postcode"/>
+                <field name="property_type_id" string="Property Type"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price" string="Expected Price"/>
@@ -29,8 +30,11 @@
                     <h1>
                         <field name="name" string="Title"/>
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
+                    <br/><br/>
                     <group>
                         <group>
+                            <field name="property_type_id" string="Property Type"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -52,6 +56,15 @@
                                 <field name="garden_orientation" string="Garden Orientation"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman_id" string="Salesman"/>
+                                <field name="buyer_id" string="Buyer"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -61,15 +74,17 @@
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search>
+            <search string="Search">
                 <field name="name" string="Title"/>
                 <field name="postcode" string="Postcode"/>
+                <field name="property_type_id" string="Property Type"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades" string="Facades"/>
-                <filter string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
-                <filter string="Postcode" context="{'group_by': 'postcode'}"/>
+                <filter string="Available" name="available_filter" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter string="Postcode" name="postcode_group_by" context="{'group_by': 'postcode'}"/>
+                <filter string="Property type" name="property_type_group_by" context="{'group_by': 'property_type_id'}"/>
             </search>
         </field>
     </record>
