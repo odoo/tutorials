@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from datetime import timedelta
 from odoo.exceptions import UserError, ValidationError
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property details"
+    _order = "id desc"
 
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
@@ -110,7 +111,7 @@ class Property(models.Model):
             if record.selling_price < 0:
                 raise ValidationError('The selling price should be positive.')
 
-    @api.constrains('selling_price')
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price_expected(self):
         for record in self:
             if record.selling_price < record.expected_price * 0.9 and (not (record.selling_price == 0)) :

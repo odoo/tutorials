@@ -8,6 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Manage different offers from buyers for a specific property."
+    _order = "price desc"
 
     price = fields.Float(string="Price", required=True, default=1.0)
 
@@ -33,6 +34,11 @@ class PropertyOffer(models.Model):
         'estate.property',
         string='Property',
         required=True
+    )
+
+    property_type_id = fields.Many2one(
+        related='property_id.property_type_id',
+        store=True
     )
 
     @api.depends("validity", "create_date")
