@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.tools.date_utils import date
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -28,3 +29,23 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    def action_accept_offer(self):
+        self.ensure_one()
+        other_records = self.search([("id", "!=", str(self.id))])
+        for rec in other_records:
+            if rec.status == "accepted":
+                raise UserError("Cannot have more than one accepted offer.")
+        self.status = "accepted"
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.selling_price = self.price
+        return True
+
+    def action_refuse_offer(self):
+        self.ensure_one()
+        old_status = self.status
+        self.status = "refused"
+        if old_status == "accepted":
+            self.property_id.buyer_id = ""
+            self.property_id.selling_price = 0
+        return True
