@@ -5,6 +5,9 @@ from odoo.tools import date_utils
 class RealEstateOffer(models.Model):
     _name = 'real.estate.offer'
     _description = "Real Estate Offer"
+    _sql_constraints = [
+        ('positive_amount', 'CHECK (amount > 0)', "The amount must be strictly positive.")
+    ]
 
     amount = fields.Float(string="Amount", required=True)
     buyer_id = fields.Many2one(string="Buyer", comodel_name='res.partner', required=True)
