@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, models, fields
 from odoo.tools.date_utils import relativedelta
 
 class EstateProperty(models.Model):
@@ -15,6 +15,7 @@ class EstateProperty(models.Model):
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
+
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
@@ -32,3 +33,21 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     property_tags_ids = fields.Many2many("estate.property.tag", string="Property Categories")
     offer_ids = fields.One2many("estate.property.offer", string="Offers", inverse_name="property_id")
+
+    total_area = fields.Integer(compute="_compute_total_area", readonly=True)
+    best_offer = fields.Integer(compute="_compute_best_offer", readonly=True) 
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_offer = max(record.mapped('offer_ids.price')) if len(record.offer_ids) > 0 else 0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = "north" if self.garden else ""
