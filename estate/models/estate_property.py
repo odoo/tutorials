@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-from odoo import models, fields
+from odoo import fields, models
 
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "Real Estate Property Options"
     
     
@@ -31,3 +28,9 @@ class EstateProperty(models.Model):
         default="new",
         selection=[("new", "New"), ("offer_received", "Offer received"), ("offer_accepted", "Offer accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")]
     )
+
+    property_type_id = fields.Many2one(comodel_name="estate.property.type")
+    user_id = fields.Many2one(comodel_name='res.users', string='Salesperson', default=lambda self: self.env.user)
+    partner_id = fields.Many2one(comodel_name='res.partner', string='Buyer', copy=False)
+    property_tag_ids = fields.Many2many(comodel_name='estate.property.tag')
+    property_offer_ids = fields.One2many('estate.property.offer','property_id')
