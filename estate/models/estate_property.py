@@ -72,8 +72,8 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        self.garden_area = 10 if self.garden else False
-        self.garden_orientation = 'n' if self.garden else False
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'north' if self.garden else ""
 
     def action_set_cancelled(self):
         for record in self:
