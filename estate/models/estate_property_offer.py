@@ -41,6 +41,23 @@ class PropertyOffer(models.Model):
         store=True
     )
 
+    @api.model_create_multi
+    def create(self, vals):
+        for record in vals:
+            if record.get('property_id'):
+                curr_prop = self.env['estate.property'].browse(record['property_id'])
+                
+                if curr_prop.offer_ids:
+                    max_offer = max(curr_prop.offer_ids, key=lambda offer: offer.price)
+                
+                    if record['price'] < max_offer.price:
+                        raise UserError(f"The offer must be higher then {max_offer.price}")
+
+                else:
+                    curr_prop.set_property_state()
+        
+        return super().create(vals)
+
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
         for record in self:

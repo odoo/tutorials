@@ -80,6 +80,13 @@ class Property(models.Model):
         copy=False
     )
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError('Only new and cancelled properties can be deleted.')
+
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -131,3 +138,10 @@ class Property(models.Model):
             else:
                 record.state = 'sold'
         return True
+
+    def set_property_state(self):
+        """
+        Set the state of a property to 'offer recieved'.
+        Will be called when an offer is created for a property.
+        """
+        self.state = 'offer received'
