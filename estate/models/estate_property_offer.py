@@ -1,5 +1,7 @@
-from datetime import timedelta, date
+from datetime import timedelta
 from odoo import api, fields, models
+from odoo.exceptions import UserError
+
 
 
 class EstatePropertyType(models.Model):
@@ -19,6 +21,18 @@ class EstatePropertyType(models.Model):
 
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
 
+    def action_accept(self):
+        for record in self:
+            try:
+                record.property_id.action_process_accept(self)
+                record.status = 'accepted'
+            except UserError as e:
+                raise e
+
+    def action_refuse(self):
+        for record in self:
+            record.status = 'refused'
+
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -28,8 +42,6 @@ class EstatePropertyType(models.Model):
 
     def _inverse_date_deadline(self):
         for record in self:
-            if not record.create_date:
-                record.create_date = fields.Date.today()
             record.validity = (record.date_deadline - record.create_date.date()).days
 
 
