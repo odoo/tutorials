@@ -20,7 +20,6 @@ class EstatePropertyType(models.Model):
 
 
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
-    
 
 
     _sql_constraints = [
@@ -31,11 +30,8 @@ class EstatePropertyType(models.Model):
 
     def action_accept(self):
         for record in self:
-            try:
-                record.property_id.action_process_accept(self)
-                record.status = 'accepted'
-            except UserError as e:
-                raise e
+            record.property_id.action_process_accept(record)
+            record.status = 'accepted'
 
     def action_refuse(self):
         for record in self:
