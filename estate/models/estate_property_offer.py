@@ -6,6 +6,14 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
+    _sql_constraints = [
+        (
+            "price",
+            "CHECK(price > 0)",
+            "The price must be strictly positive.",
+        )
+    ]
 
     price = fields.Float()
     status = fields.Selection(
@@ -17,14 +25,11 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
-
-    _sql_constraints = [
-        (
-            "price",
-            "CHECK(price > 0)",
-            "The price must be strictly positive.",
-        )
-    ]
+    property_type_id = fields.Many2one(
+        comodel_name="estate.property.type",
+        related="property_id.property_type_id",
+        store=True,
+    )
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -49,6 +54,7 @@ class EstatePropertyOffer(models.Model):
         self.status = "accepted"
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
+        self.property_id.state = "offer_accepted"
         return True
 
     def action_refuse_offer(self):
@@ -58,4 +64,5 @@ class EstatePropertyOffer(models.Model):
         if old_status == "accepted":
             self.property_id.buyer_id = ""
             self.property_id.selling_price = 0
+            self.property_id.state = "offer_received"
         return True
