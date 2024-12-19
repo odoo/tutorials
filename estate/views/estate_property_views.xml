@@ -51,6 +51,10 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <sheet>
+                    <header>
+                        <button name="action_set_cancelled" type="object" string="Cancel"/>
+                        <button name="action_set_sold" type="object" string="Sold"/>
+                    </header>
                     <group>
                         <h1>
                             <field name="name" string="Title" placeholder="Property Title"/>

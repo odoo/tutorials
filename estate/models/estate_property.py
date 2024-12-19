@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from datetime import timedelta
+from odoo.exceptions import UserError
 
 
 
@@ -57,3 +57,22 @@ class EstateProperty(models.Model):
         self.garden_area = 10 if self.garden else False
         self.garden_orientation = 'n' if self.garden else False
 
+    def action_set_cancelled(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled Items cannot be sold.")
+            record.state = "sold"        
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold Items cannot be cancelled.")
+            record.state = "cancelled"        
+
+
+    def action_process_accept(self, offer):
+        if self.state == 'offer_accepted':
+            raise UserError("this property has already an accepted offer!!")
+        self.state = 'offer_accepted'
+        self.selling_price = offer.price
+        self.partner_id = offer.partner_id
