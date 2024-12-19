@@ -14,6 +14,8 @@
             <list string="Offers">
                 <field name="price" string="Price" width="120px"/>
                 <field name="partner_id" string="Partner" width="170px"/>
+                <field name="validity" />
+                <field name="date_deadline" string="Deadline"/>
                 <field name="status" string="Satatus" width="120px"/>
             </list>
         </field>
@@ -27,6 +29,8 @@
                 <group>
                     <field name="price" string="Price" />
                     <field name="partner_id" string="Partner" />
+                        <field name="validity" />
+                        <field name="date_deadline" string="Deadline"/>
                     <field name="status" string="Satatus" width="120px" />
                 </group>
             </form>
