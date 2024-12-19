@@ -1,13 +1,14 @@
 from odoo import fields,models
+from datetime import timedelta
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "real estate property"
+    _name = 'estate.property'
+    _description = 'real estate property'
 
     name= fields.Char(required=True) 
     description=fields.Text()
     postcode=fields.Char()
-    date_availability=fields.Date(copy= False,default=fields.Date.add(fields.Date.today(),month=3))
+    date_availability=fields.Date(copy= False,default=lambda self: fields.Date.today() + timedelta(days=90))
     expected_price=fields.Float(required=True)
     selling_price=fields.Float(readonly=True, copy= False)
     bedrooms=fields.Integer(default=2)
@@ -36,4 +37,8 @@ class EstateProperty(models.Model):
         ],
         default='new', required=True
     )
-    
+    property_type_id=fields.Many2one('estate.property.type', string='real estate property type')
+    partner_id = fields.Many2one('res.partner', string='Partner', copy= False)
+    user_id = fields.Many2one('res.users', string="Users", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many('estate.property.tag', string='Tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id',string='Offer')
