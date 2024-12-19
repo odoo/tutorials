@@ -1,0 +1,43 @@
+<odoo>
+    <template id="report_property_offers">
+    <t t-foreach="docs" t-as="doc">
+            <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2>Property Offers Report</h2>        
+                <p><strong>Property Name:</strong> <t t-esc="doc.name"/></p>
+                <p><strong>Expected Price:</strong> <t t-esc="doc.expected_price"/></p>
+
+                <t t-if="doc.offer_ids">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Buyer</th>
+                                <th>Offer Price</th>
+                                <th>Validity (Days)</th>
+                                <th>create_date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.offer_ids" t-as="offer">
+                                <tr>
+                                    <td><t t-esc="offer.partner_id.name"/></td>
+                                    <td><t t-esc="offer.price"/></td>
+                                    <td><t t-esc="offer.validity"/></td>
+                                    <td><t t-esc="offer.create_date"/></td>
+                                    <td><t t-esc="offer.state"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+                <t t-else="">
+                    <p>No offers yet for this property.</p>
+                </t>
+            </div>
+        </t>
+        </t>
+        </t>
+    </template>
+</odoo>
