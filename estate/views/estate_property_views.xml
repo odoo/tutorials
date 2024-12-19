@@ -3,8 +3,36 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
-        <field name="search_view_id" ref="estate_property_view_search"/>
+        <field name="view_mode">kanban,list,form</field>
+        <!-- <field name="search_view_id" ref="estate_property_view_search"/> -->
+    </record>
+    <record id='estate_property_view_kanban' model='ir.ui.view'>
+        <field name='name'>estate.property.kanban</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <kanban default_group_by="property_type_id" records_draggable='False'>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <b>
+                                <field name="name" />
+                                <field name="state" invisible='True' />
+                            </b>
+                            <div>Expected Price: <field name="expected_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_received'"> Best Price: <field
+                                    name="best_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
+                                    name="selling_price" />
+                            </div>
+                            <field name="tag_ids" widget="many2many_tags" />
+                        </div>
+
+                    </t>
+                </templates>
+            </kanban>
+        </field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -16,8 +44,8 @@
               decoration-muted="state == 'sold'">
                 <field name="name" string="Title"/>
                 <field name="state"/>
-                <field name="offer_received"/>
-                <field name="offer_accepted"/>
+                <field name="property_type_id" options="{'no_create': True, 'no_edit': True}" required="1" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -36,7 +64,7 @@
                     <button name="action_cancel" type="object" string="Cancel"
                             class="btn btn-secondary" invisible="state != 'sold'"/>
                     <button name="action_sold" type="object" string="Sold"
-                            class="btn btn-primary" invisible="state != 'available'"/>
+                            class="btn btn-primary" invisible="state in('sold', 'cancelled')"/>
                          <field name="state"  widget="statusbar" options="{'clickable': False}" />    
                 </header>   
                 <sheet>
@@ -45,9 +73,6 @@
                       <field name="state" invisible="1"/>
                     </h1>
                      <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
-                    <br />
-                    <br />
-                    <br />
                     <group>
                         <group>
                             <field name="property_type_id" options="{'no_create': True, 'no_edit': True}" required="1" />
@@ -55,12 +80,9 @@
                             <field name="selling_price"/>
                         </group>
                         <group>
-
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                             <field name="best_offers" string="Best Offers"/> 
-                            
-
                         </group>
                     </group>
                     <notebook>
@@ -79,8 +101,8 @@
                         </page>
                         <page string="Other info">
                             <group>
-                                <field name="salesperson"/>
-                                <field name ="buyer"/>
+                                <field name="seller_id"/>
+                                <field name ="buyer_id"/>
                             </group>
                         </page>
                         <page string="Offers">

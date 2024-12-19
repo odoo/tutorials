@@ -1,16 +1,15 @@
-from odoo import models, fields
-from datetime import timedelta, date
 from odoo import models, fields, api
+from datetime import timedelta, date
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
-
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = 'id desc'
+
     name = fields.Char(required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -35,22 +34,18 @@ class EstateProperty(models.Model):
     )
     state = fields.Selection(selection=[
         ('new', 'New'),
-         ('offer_received', 'Offer Received'),
+        ('offer_received', 'Offer Received'),
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled'),
     ], default='new', string="Status", copy=False)    
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type",required=True,
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type",
     options={'no_create': True, 'no_edit': True}) 
-    buyer_id = fields.Many2one('res.partner', string="Buyer")
+    buyer_id = fields.Many2one('res.partner', string="Buyer",copy=False)
     seller_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user,required=False)
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], string="Status")
-    partner_id = fields.Many2one('res.partner', string="Partner",required=True, ondelete='restrict')
-    salesperson = fields.Char(string = "Salesperson", required=True)
-    buyer = fields.Char(string = "Buyers", required=True)
+    partner_id = fields.Many2one('res.partner', string="Partner", ondelete='restrict')
     price = fields.Float(string="Price")
-    partners = fields.Char(string = "Partner", required=True)
-    tag_ids = fields.Many2one('estate.property.tag' , string="Tags") 
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area", store=True,copy=False)
     best_offers = fields.Float(string="Best Offers")
     offer_ids = fields.One2many(
@@ -85,12 +80,14 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
     
     def action_cancel(self):
+        self.state = 'canceled'  
         for record in self:
             if record.state == 'sold':
                 raise UserError("A sold property cannot be cancelled.")
             record.state = 'cancelled'
 
     def action_sold(self):
+        self.state = 'sold'
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("A cancelled property cannot be sold.")
@@ -130,30 +127,22 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
-def action_sold(self):
-        self.state = 'sold'
-
-def action_cancel(self):
-        self.state = 'canceled'  
-
-
-@api.depends('state')
-def _compute_offer_received(self):
+   
+    @api.depends('state')
+    def _compute_offer_received(self):
         for record in self:
             record.offer_received = record.state == 'offer_received'
 
-@api.depends('state')
-def _compute_offer_accepted(self):
+    @api.depends('state')
+    def _compute_offer_accepted(self):
         for record in self:
             record.offer_accepted = record.state == 'offer_accepted' 
 
-@api.ondelete(at_uninstall=False)
-def _check_state_on_delete(self):
+    @api.ondelete(at_uninstall=False)
+    def _check_state_on_delete(self):
         for record in self:
             if record.state not in ('new', 'cancelled'):
                 raise UserError(
                     "You cannot delete a property unless it is in 'New' or 'Cancelled' state."
                 )
-
-
-                             
+                            

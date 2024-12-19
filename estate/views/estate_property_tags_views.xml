@@ -13,7 +13,6 @@
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="tag_ids" widget="many2many_tags" />
                     </group>
                 </sheet>
             </form>
@@ -25,9 +24,7 @@
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <list editable="bottom"> 
-                <field name="name"/>
-                <field name="tag_ids"/>
-            
+                <field name="name"/>    
             </list>
         </field>
     </record>

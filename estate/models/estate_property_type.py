@@ -4,7 +4,7 @@ class EstatePropertyType(models.Model):
     _description = 'Real Estate Property Type'
     _order = "sequence,name"
 
-    sequence = fields.Integer(default=10)
+    sequence = fields.Integer()
     name = fields.Char(string="Type Name", required=True)
     property_ids = fields.One2many('estate.property', 'property_type_id', string="Properties")
     offer_ids = fields.One2many('estate.property.offer', 'property_type_id', string="Offers")
@@ -14,7 +14,6 @@ class EstatePropertyType(models.Model):
         ('unique_type_name', 'UNIQUE(name)',
          'The property type name must be unique.')
     ]
-
 
     @api.depends('offer_ids')
     def _compute_offer_count(self):
