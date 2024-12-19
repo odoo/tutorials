@@ -20,6 +20,14 @@ class EstatePropertyType(models.Model):
 
 
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
+    
+
+
+    _sql_constraints = [
+        ('check_price', 'CHECK(price >= 0)',
+         'Offer prices MUST be postive.'),
+
+    ]
 
     def action_accept(self):
         for record in self:
