@@ -1,10 +1,7 @@
-from odoo import api, models, fields
+from odoo import api, models, fields, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import LazyTranslate
 from odoo.tools.date_utils import relativedelta
 from odoo.tools.float_utils import float_compare, float_is_zero
-
-_lt = LazyTranslate(__name__)
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -74,7 +71,7 @@ class EstateProperty(models.Model):
         self.ensure_one()
 
         if self.state == "cancelled": 
-            raise UserError(_lt("Cannot sell a cancelled property"))
+            raise UserError(_("Cannot sell a cancelled property"))
         
         self.state = "sold"
 
@@ -84,7 +81,7 @@ class EstateProperty(models.Model):
         self.ensure_one()
 
         if self.state == "sold": 
-            raise UserError(_lt("Cannot cancel a sold property"))
+            raise UserError(_("Cannot cancel a sold property"))
 
         self.state = "cancelled"
 
@@ -99,12 +96,11 @@ class EstateProperty(models.Model):
             return
 
         if(float_compare(self.selling_price, self.expected_price * 0.9, precision_digits=4) < 0):
-            raise ValidationError(_lt("The selling price must be at least 90% of the expected price"))
+            raise ValidationError(_("The selling price must be at least 90% of the expected price"))
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_not_new_or_cancelled(self):
-        for record in self:
-            if record.state in ('received', 'accepted', 'sold'):
-                raise UserError(_lt("Cannot delete a property which is not in new or cancelled state"))
+        if self.filtered(lambda rec: rec.state in ('received', 'accepted', 'sold')):
+            raise UserError(_("Cannot delete a property which is not in new or cancelled state"))
     
 

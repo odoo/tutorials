@@ -54,7 +54,7 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list: list[api.ValuesType]) -> Self:
         for vals in vals_list:
-            property = self.env["estate.property"].browse(vals["property_id"])
+            property = self.env["estate.property"].browse(vals["property_id"]).exists()
             if property.state == "new":
                 property.state = "received"
         return super().create(vals_list)
