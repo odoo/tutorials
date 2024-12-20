@@ -16,7 +16,7 @@ class EstateProperty(models.Model):
     facades=fields.Integer()
     garage=fields.Boolean()
     garden=fields.Boolean()
-    garden_area=fields.Integer()
+    garden_area=fields.Integer(default=0)
     garden_orientation=fields.Selection(
         selection=[
             ('north','North'),
@@ -55,3 +55,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'))
 
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        self.garden_area=10 if self.garden else 0
+        self.garden_orientation='north' if self.garden else ""

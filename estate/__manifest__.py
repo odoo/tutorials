@@ -16,6 +16,6 @@
     ],
     'installable': True,
     'application': True,
-    'category': "Real Estate/Brokerage",
-    'license': "LGPL-3", 
+    'category': 'Real Estate/Brokerage',
+    'license': 'LGPL-3', 
 }

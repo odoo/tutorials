@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- action window for managing Property -->
+    <!-- action window for managing property -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
@@ -60,9 +60,8 @@
                                 <field name="facades" class="mb16"/>
                                 <field name="garage" class="mb16"/>
                                 <field name="garden" class="mb16"/>
-                                <field name="garden_area" string="Garden Area (sqm)" class="mb16"
-                                    invisible="not garden"/>
-                                <field name="garden_orientation" class="mb16" invisible="not garden"/>
+                                <field name="garden_area" string="Garden Area (sqm)" class="mb16"/>
+                                <field name="garden_orientation" class="mb16"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
