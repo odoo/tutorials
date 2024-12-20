@@ -37,7 +37,7 @@ class EstatePropertyType(models.Model):
         for record in self:
             record.status = 'refused'
 
-    @api.depends('validity')
+    @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for record in self:
             if not record.create_date:
