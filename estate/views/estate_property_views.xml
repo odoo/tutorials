@@ -30,6 +30,7 @@
                 <header>
                     <button name="action_sold" string="SOLD" type="object" />
                     <button name="action_cancel" string="CANCEL" type="object" />
+                    <field name="state" widget="statusbar" status_visible="NEW,OFFER RECEIVED,OFFER ACCEPTED,SOLD"/>
                 </header>
                 <sheet>
                     <h1><field name="name" placeholder="e.g. My New House"/></h1>
