@@ -88,7 +88,7 @@
             <kanban class="o_kanban_mobile" default_group_by="property_type_id" records_draggable="False">
                 <field name="state"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div t-attf-class="oe_kanban_content oe_kanban_global_click">
                             <div class="o_kanban_record_top mb16">
                                 <div class="o_kanban_record_headings mt4">
