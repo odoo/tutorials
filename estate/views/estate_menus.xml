@@ -2,9 +2,9 @@
 
 <odoo>
     <menuitem id="menu_estate_root" name="Estate" />
-       <menuitem id = "menu_estate_first_level" name = "Advertisements" parent="menu_estate_root"/>
+       <menuitem id="menu_estate_first_level" name="Advertisements" parent="menu_estate_root"/>
        <menuitem id="menu_estate_property" name="Properties" parent="menu_estate_first_level" action="action_estate_property" />
-    <menuitem id ="menu_estate_second_level" name="Settings" parent="menu_estate_root"/>
-       <menuitem id ="menu_estate_property_type" name="Properties Types" parent="menu_estate_second_level" action="action_property_type"/>
-       <menuitem id ="menu_estate_property_tag" name="Properties Tag" parent="menu_estate_second_level" action="action_property_tag"/>
+    <menuitem id="menu_estate_second_level" name="Settings" parent="menu_estate_root"/>
+       <menuitem id="menu_estate_property_type" name="Properties Types" parent="menu_estate_second_level" action="action_property_type"/>
+       <menuitem id="menu_estate_property_tag" name="Properties Tag" parent="menu_estate_second_level" action="action_estate_property_tag"/>
 </odoo>

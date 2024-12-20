@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="offer_1" model="estate.property.offer">
+        <field name="property_id" ref="estate.property_big_villa" />
+        <field name="partner_id" ref="base.res_partner_12" />
+        <field name="price">100000</field>
+        <field name="validity">14</field>
+        <field name="date_deadline"
+            eval="(DateTime.today() + relativedelta(months=1)).strftime('%Y-%m-%d %H:%M')"></field>
+    </record>
+
+    <record id="offer_2" model="estate.property.offer">
+        <field name="property_id" ref="estate.property_big_villa" />
+        <field name="partner_id" ref="base.res_partner_12" />
+        <field name="price">150000</field>
+        <field name="validity">14</field>
+        <field name="date_deadline"
+            eval="(DateTime.today() + relativedelta(months=1)).strftime('%Y-%m-%d %H:%M')"></field>
+    </record>
+
+    <record id="offer_3" model="estate.property.offer">
+        <field name="property_id" ref="estate.property_big_villa" />
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="price">150001</field>
+        <field name="validity">14</field>
+        <field name="date_deadline"
+            eval="(DateTime.today() + relativedelta(months=1)).strftime('%Y-%m-%d %H:%M')"></field>
+    </record>
+
+    <function model="estate.property.offer" name="action_offer_accepted">
+        <value eval="[ref('offer_2')]" />
+    </function>
+</odoo>

@@ -1,5 +1,5 @@
-from odoo import api,models,fields
-from odoo.exceptions import UserError,ValidationError
+from odoo import api, fields, models
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools.float_utils import float_compare
 
 
@@ -12,9 +12,9 @@ class EstateProperty(models.Model):
     description = fields.Text(string="Description")
     date_availability = fields.Date(
         string="Available From",
-        default=fields.Date.add(fields.date.today(),days=90),
-        copy=False
-        )
+        default=fields.Date.add(fields.date.today(), days=90),
+        copy=False,
+    )
     expected_price = fields.Float(required=True, string="Expected Price")
     postcode = fields.Integer(required=True, string="Postcode")
     selling_price = fields.Float(readonly=True, copy=False)
@@ -30,8 +30,7 @@ class EstateProperty(models.Model):
             ("south", "South"),
             ("east", "East"),
             ("west", "West"),
-        ],
-        string="Garden Orientation",
+        ],string="Garden Orientation",
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -41,52 +40,58 @@ class EstateProperty(models.Model):
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
-        ],
-        required=True,
-        default="new",
-        copy=False,
+        ],required=True,default="new",copy=False,
     )
-    property_type_id = fields.Many2one(
-        "estate.property.type", string="Property Type"
-    )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user       
+        "res.users", string="Salesperson", default=lambda self: self.env.user
     )
-    buyer_id = fields.Many2one(
-        "res.partner", string="Buyer", copy=False
-    )
-    tags_ids = fields.Many2many(
-        "estate.property.tag", string=" PropertyTags"
-    )
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    tags_ids = fields.Many2many("estate.property.tag", string=" PropertyTags")
     offer_ids = fields.One2many(
-        "estate.property.offer",inverse_name="property_id",string="Offers"
+        "estate.property.offer", inverse_name="property_id", string="Offers"
     )
-    total_area=fields.Float(compute="_compute_total_area",string="Total Area")
-    best_price=fields.Float(compute="_compute_best_price",string="Best Price")
-
+    total_area = fields.Float(compute="_compute_total_area", string="Total Area")
+    best_price = fields.Float(compute="_compute_best_price", string="Best Price")
 
     _sql_constraints = [
-        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
-        ('check_selling_price_non_negative', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+        (
+            "check_expected_price_positive",
+            "CHECK(expected_price > 0)",
+            "The expected price must be strictly positive.",
+        ),
+        (
+            "check_selling_price_non_negative",
+            "CHECK(selling_price >= 0)",
+            "The selling price must be positive.",
+        ),
     ]
 
-    @api.constrains('selling_price', 'expected_price')
+    @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if float_compare(record.selling_price, 0.0, precision_digits=2) > 0:  # Only check if selling_price > 0
-                if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
-                    raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+            if float_compare(record.selling_price, 0.0, precision_digits=2) > 0:
+                if (
+                    float_compare(
+                        record.selling_price,
+                        0.9 * record.expected_price,
+                        precision_digits=2,
+                    )
+                    < 0
+                ):
+                    raise ValidationError(
+                        "The selling price cannot be lower than 90% of the expected price."
+                    )
 
-
-    @api.depends("living_area","garden_area")
+    @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for property in self:
-            property.total_area=property.living_area+property.garden_area
+            property.total_area = property.living_area + property.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for property in self:
-            property.best_price=max(property.offer_ids.mapped("price"),default=0)
+            property.best_price = max(property.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -97,16 +102,27 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        if not self.offer_ids:
+            self.state = "new"
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError("Only new or cancelled properties can be deleted.")
+
     def action_cancel(self):
         for record in self:
-            if record.state == 'sold':
+            if record.state == "sold":
                 raise UserError("A sold property cannot be cancelled.")
-            record.state = 'cancelled'
-            return True
+            record.state = "cancelled"
+        return True
 
     def action_sold(self):
         for record in self:
-            if record.state == 'cancelled':
+            if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold.")
-            record.state = 'sold'
-            return True
+            record.state = "sold"
+        return True
