@@ -58,12 +58,15 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         self.ensure_one()
-        other_records = self.search(
-            [("id", "!=", str(self.id)), ("property_id", "=", self.property_id.id)]
+        accepted_offers = self.search(
+            [
+                ("id", "!=", str(self.id)),
+                ("property_id", "=", self.property_id.id),
+                ("status", "=", "accepted"),
+            ]
         )
-        for rec in other_records:
-            if rec.status == "accepted":
-                raise UserError("Cannot have more than one accepted offer.")
+        if accepted_offers:
+            raise UserError("Cannot have more than one accepted offer.")
         self.status = "accepted"
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
@@ -72,10 +75,9 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_offer(self):
         self.ensure_one()
-        old_status = self.status
-        self.status = "refused"
-        if old_status == "accepted":
+        if self.status == "accepted":
             self.property_id.buyer_id = ""
             self.property_id.selling_price = 0
             self.property_id.state = "offer_received"
+        self.status = "refused"
         return True
