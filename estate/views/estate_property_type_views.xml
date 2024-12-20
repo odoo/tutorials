@@ -38,7 +38,7 @@
                     </h1>
                     <notebook>
                         <page string="Properties">
-                            <field name="properties_ids">
+                            <field name="property_ids">
                                 <list>
                                     <field name="name" string="Title" />
                                     <field name="expected_price" />

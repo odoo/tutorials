@@ -1,7 +1,10 @@
 from odoo import api, models, fields
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import LazyTranslate
 from odoo.tools.date_utils import relativedelta
 from odoo.tools.float_utils import float_compare, float_is_zero
+
+_lt = LazyTranslate(__name__)
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -14,6 +17,7 @@ class EstateProperty(models.Model):
         ('check_expected_price', 'CHECK(expected_price > 0)',
          'The expected price must be strictly positive')
     ]
+
 
 
     name = fields.Char(required=True )
@@ -69,7 +73,7 @@ class EstateProperty(models.Model):
         self.ensure_one()
 
         if self.state == "cancelled": 
-            raise UserError("Cannot sell a cancelled property")
+            raise UserError(_lt("Cannot sell a cancelled property"))
         
         self.state = "sold"
 
