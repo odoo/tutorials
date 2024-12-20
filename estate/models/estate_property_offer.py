@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 from odoo.tools.date_utils import date
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -38,6 +38,19 @@ class EstatePropertyOffer(models.Model):
             record.date_deadline = fields.Datetime.add(
                 create_date, days=record.validity
             )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        all_offers = self.search([])
+        for vals in vals_list:
+            self.env["estate.property"].browse(
+                vals["property_id"]
+            ).state = "offer_received"
+            if any(record.price > vals["price"] for record in all_offers):
+                raise ValidationError(
+                    "Cannot create an offer with a lower amount than an existing offer."
+                )
+        return super().create(vals_list)
 
     def _inverse_date_deadline(self):
         for record in self:
