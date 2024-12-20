@@ -86,6 +86,7 @@ class EstateProperty(models.Model):
 
 
     def action_process_accept(self, offer):
+        self.ensure_one()
         if self.state == 'offer_accepted':
             raise UserError("this property has already an accepted offer!!")
         self.state = 'offer_accepted'
