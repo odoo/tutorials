@@ -22,7 +22,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        string="Type",
+        string="Garden Orientation",
         selection=[
             ("north", "North"),
             ("south", "South"),
@@ -32,7 +32,7 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        string="Type",
+        string="State",
         selection=[
             ("new", "New"),
             ("offer received", "Offer Received"),
@@ -41,9 +41,7 @@ class EstateProperty(models.Model):
             ("canceled", "Canceled"),
         ],
     )
-    property_type_id = fields.Many2one(
-        "estate.property.type", string="Property Type", index=True
-    )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
@@ -62,7 +60,7 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             prices = record.offer_ids.mapped("price")
-            record.best_price = max(prices) if prices else 0
+            record.best_price = max(prices, default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):

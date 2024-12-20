@@ -1,7 +1,7 @@
 {
     "name": "Real Estate",
     "author": "Odoo",
-    "website": "https://www.odoo.com/",
+    "website": "https://www.odoo.com/page/realestate",
     "version": "0.1",
     "application": True,
     "installable": True,
@@ -14,4 +14,5 @@
         "views/estate_property_views.xml",
         "views/estate_menus.xml",
     ],
+    "license": "LGPL-3",
 }
