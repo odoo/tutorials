@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="template_res_user_properties">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Properties of <span t-field="user.name" />
+                        </h2>
+                        <t t-if="user.property_ids">
+                            <t t-foreach="user.property_ids" t-as="property">
+                                <h3>
+                                    <span t-field="property.name" />
+                                </h3>
+                                <p>Expected Price: <span t-field="property.expected_price" />
+                                </p>
+                                <p>Status: <span t-field="property.state" />
+                                </p>
+                                <t t-call="estate.template_estate_property_offer" />
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <p>No properties available for this user.</p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

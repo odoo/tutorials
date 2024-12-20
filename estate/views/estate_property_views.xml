@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': 1}</field>
     </record>
 
@@ -11,7 +11,8 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" decoration-success="state in ['received', 'accepted']" decoration-bf="state == 'accepted'" decoration-muted="state == 'sold'" >
+            <list string="Properties" decoration-success="state in ['received', 'accepted']"
+                decoration-bf="state == 'accepted'" decoration-muted="state == 'sold'">
                 <field name="name"></field>
                 <field name="property_type_id"></field>
                 <field name="postcode"></field>
@@ -31,26 +32,26 @@
         <field name="arch" type="xml">
             <form string="My Property">
                 <header>
-                    <button string="Sold" name="action_property_sold" type="object" invisible="state in ['sold', 'cancelled']"/>
-                    <button string="Cancel" name="action_property_cancel" type="object" invisible="state in ['sold', 'cancelled']"/>
-                    <field name="state" widget="statusbar" options="{'clickable': False}"/>
+                    <button string="Sold" name="action_property_sold" type="object"
+                        invisible="state in ['sold', 'cancelled']" />
+                    <button string="Cancel" name="action_property_cancel" type="object"
+                        invisible="state in ['sold', 'cancelled']" />
+                    <field name="state" widget="statusbar"  options="{'clickable': False}" statusbar_visible="new,received,accepted,sold"/>
                 </header>
                 <sheet>
                     <h1>
                         <field name="name" />
                     </h1>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                    <br />
-                    <br />
-                    <br />
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <group>
                         <group>
-                            <field name="property_type_id" options="{'no_create': true, 'no_open': true}" />
+                            <field name="property_type_id"
+                                options="{'no_create': true, 'no_open': true}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
                         <group>
-                            <field name="expected_price" options="{'type': 'number', 'step': 0.1}"/>
+                            <field name="expected_price" />
                             <field name="best_price" />
                             <field name="selling_price" />
                         </group>
@@ -64,14 +65,17 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" invisible="not garden"/>
-                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers" invisible="not id">
-                            <field name="offer_ids" readonly="state in ['accepted', 'sold', 'cancelled']">
-                                <list string="property_offers" editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'" >
+                            <field name="offer_ids"
+                                readonly="state in ['accepted', 'sold', 'cancelled']">
+                                <list string="property_offers" editable="bottom"
+                                    decoration-danger="status == 'refused'"
+                                    decoration-success="status == 'accepted'">
                                     <field name="price"></field>
                                     <field name="partner_id"></field>
                                     <field name="validity"></field>
@@ -94,6 +98,37 @@
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="false">
+                <field name="state" />
+                <field name="best_price" />
+                <field name="selling_price" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <b>
+                                <field name="name" />
+                            </b>
+                            <div>Expected Price: <field name="expected_price" /></div>
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'received'">Best Price: <field
+                                    name="best_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'accepted'">Selling Price: <field
+                                    name="selling_price" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
