@@ -41,15 +41,24 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        all_offers = self.search([])
+        offers_per_property = {}
         for vals in vals_list:
-            self.env["estate.property"].browse(
-                vals["property_id"]
-            ).state = "offer_received"
-            if any(record.price > vals["price"] for record in all_offers):
-                raise ValidationError(
-                    "Cannot create an offer with a lower amount than an existing offer."
+            if vals["property_id"] not in offers_per_property:
+                offers_per_property[vals["property_id"]] = self.search(
+                    [
+                        ("property_id", "=", vals["property_id"]),
+                    ]
                 )
+
+            property_offers = offers_per_property[vals["property_id"]]
+            property_model = self.env["estate.property"].browse(vals["property_id"])
+            if property_model.exists():
+                property_model.state = "offer_received"
+
+                if any(record.price > vals["price"] for record in property_offers):
+                    raise ValidationError(
+                        "Cannot create an offer with a lower amount than an existing offer."
+                    )
         return super().create(vals_list)
 
     def _inverse_date_deadline(self):
