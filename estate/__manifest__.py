@@ -10,6 +10,7 @@
         "views/estate_property_tags_views.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_menus.xml",
-        "security/ir.model.access.csv"
+        "security/ir.model.access.csv",
+        "views/res_users_views.xml"
     ]
 }

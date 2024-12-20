@@ -1,3 +1,4 @@
+from typing import Self
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.date_utils import date, relativedelta
@@ -38,6 +39,7 @@ class EstatePropertyOffer(models.Model):
             if record.search([("id", "!=", self.id), ("property_id", "=", self.property_id.id), ("status", "=", "accepted")]):
                 raise UserError("Another offer has already been accepted")
 
+            record.property_id.state = "accepted"
             record.status = "accepted"
             record.property_id.selling_price = self.price
 
@@ -48,3 +50,18 @@ class EstatePropertyOffer(models.Model):
             record.status = "refused"
             record.property_id.selling_price = 0
         return True
+    
+    @api.model_create_multi
+    def create(self, vals_list: list[api.ValuesType]) -> Self:
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals["property_id"])
+            if property.state == "new":
+                property.state = "received"
+        return super().create(vals_list)
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_reset_property_state_when_no_offer(self):
+        for record in self:
+            if len(record.property_id.offer_ids) == 1:
+                record.property_id.state = "new"
+

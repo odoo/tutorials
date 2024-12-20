@@ -40,7 +40,8 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
             string="state",
-            selection=[('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')]
+            selection=[('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+            default="new"
     )
     
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -83,7 +84,7 @@ class EstateProperty(models.Model):
         self.ensure_one()
 
         if self.state == "sold": 
-            raise UserError("Cannot cancel a sold property")
+            raise UserError(_lt("Cannot cancel a sold property"))
 
         self.state = "cancelled"
 
@@ -98,6 +99,12 @@ class EstateProperty(models.Model):
             return
 
         if(float_compare(self.selling_price, self.expected_price * 0.9, precision_digits=4) < 0):
-            raise ValidationError("The selling price must be at least 90% of the expected price")
+            raise ValidationError(_lt("The selling price must be at least 90% of the expected price"))
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        for record in self:
+            if record.state in ('received', 'accepted', 'sold'):
+                raise UserError(_lt("Cannot delete a property which is not in new or cancelled state"))
     
 
