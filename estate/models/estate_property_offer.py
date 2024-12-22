@@ -88,6 +88,7 @@ class PropertyOffer(models.Model):
             
             offer_prop.property_buyer_id = record.partner_id
             offer_prop.selling_price =record.price
+            offer_prop.state = 'offer accepted'
 
             record.status = 'accepted'
         return True
