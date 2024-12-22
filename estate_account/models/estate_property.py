@@ -7,7 +7,6 @@ class Property(models.Model):
     _inherit = "estate.property"
 
     def action_sell_the_property(self):
-        print("this is estate account")
 
         move_val = {
             'move_type': 'out_invoice',
@@ -36,5 +35,5 @@ class Property(models.Model):
 
         move = self.env['account.move'].create(move_val)
 
-        print(move)
         return super().action_sell_the_property()
+        
