@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-    _description = "Estate Property offer Table"
+    _description = "Estate Property offer"
 
     price = fields.Float("Price")
     status = fields.Selection(
@@ -33,6 +33,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
+        
         property_id = vals.get("property_id")
         new_amount = vals.get("price")
 

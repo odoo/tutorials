@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="estate_property_report_template">
+        <h2>
+            <span t-field="property.name"/>
+        </h2>
+        <div>
+            <strong>Salesman : </strong>
+            <span t-field="property.user_id"/>
+        </div>
+        <div>
+            <strong>Expected Price: </strong>
+            <span t-field="property.expected_price"/>
+        </div>
+        <div>
+            <strong>Status: </strong>
+            <span t-field="property.state"/>
+        </div>
+        <t t-if="property.state == 'sold'">
+                <div class="property-done-info">
+                    <h5><strong>!! Invoice has already been created !!</strong></h5>
+                </div>
+            </t>
+        <t t-call="estate.estate_property_offer_report_template"/>
+    </template>
+</odoo>

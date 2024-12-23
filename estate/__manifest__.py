@@ -13,8 +13,15 @@
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_users_views.xml",
+        "views/estate_property_offer_wizard_views.xml",
         "views/estate_menus.xml",
         "data/estate_property_type_data.xml",
+        "report/estate_property_main_template.xml",
+        "report/estate_property_templates.xml",
+        "report/estate_property_offer_templates.xml",
+        "report/estate_property_reports.xml",
+        "report/estate_property_users_templates.xml",
+        "report/estate_property_users_reports.xml"
     ],
     "demo": [
         "demo/estate_property_demo_data.xml",

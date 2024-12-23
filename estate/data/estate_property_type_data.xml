@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="estate_property_type_id1" model="estate.property.type">
+    <record id="estate_property_type_residential" model="estate.property.type">
         <field name="name">Residential</field>
     </record>
-    <record id="estate_property_type_id2" model="estate.property.type">
+    <record id="estate_property_type_commercial" model="estate.property.type">
         <field name="name">Commercial</field>
     </record>
-    <record id="estate_property_type_id3" model="estate.property.type">
+    <record id="estate_property_type_industrial" model="estate.property.type">
         <field name="name">Industrial</field>
     </record>
-    <record id="estate_property_type_id4" model="estate.property.type">
+    <record id="estate_property_type_land" model="estate.property.type">
         <field name="name">Land</field>
     </record>
 </odoo>
