@@ -4,8 +4,39 @@
     <record id='estate_property_action' model='ir.actions.act_window'>
         <field name='name'>Properties</field>
         <field name='res_model'>estate.property</field>
-        <field name='view_mode'>list,form</field>
+        <field name='view_mode'>list,form,kanban</field>
         <field name='context'>{'search_default_available': True, 'search_default_current':True}</field>
+    </record>
+
+    <record id='estate_property_view_kanban' model='ir.ui.view'>
+        <field name='name'>estate.property.kanban</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <kanban default_group_by="property_type_id" records_draggable='False'>
+                <field name="state" />
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <b><field name="name" /></b>
+                            <div>
+                                <data>Expected Price:</data>
+                                <field name="expected_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_received'">
+                                <data>Best Price:</data>
+                                <field name="best_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
+                                <data>Selling Price:</data>
+                                <field name="selling_price" />
+                            </div>
+                            <field name="tag_ids" widget="many2many_tags" />
+                        </div>
+
+                    </t>
+                </templates>
+            </kanban>
+        </field>
     </record>
 
     <record id='estate_property_view_list' model='ir.ui.view'>
@@ -16,15 +47,14 @@
                 decoration-success="state in ('offer_received', 'offer_accepted')"
                 decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name='name' />
+                <field name='property_type_id' />
                 <field name='postcode' />
-                <field name='tag_ids' widget='many2many_tags'
-                    options="{'color_field': 'color'}" />
+                <field name='tag_ids' widget='many2many_tags' options="{'color_field': 'color'}" />
                 <field name='bedrooms' />
                 <field name='living_area' />
                 <field name='expected_price' />
                 <field name='selling_price' />
                 <field name='date_availability' optional='1' />
-                <field name='garden' />
             </list>
         </field>
     </record>
@@ -41,7 +71,8 @@
                         <button name='action_cancel' type='object' string='Cancel'
                             invisible="state in('sold', 'cancelled')" />
                         <field name='state' widget='statusbar'
-                            statusbar_visible='new, offer_received, offer_accepted, sold' />
+                            statusbar_visible='new, offer_received, offer_accepted, sold'
+                            options="{'clickable': True}" />
                     </header>
                     <h1>
                         <field name='name' />
@@ -110,8 +141,7 @@
                 <filter string='Available' name='available'
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
                 <group string='Group By'>
-                    <filter string='Postcode' name='postcode'
-                        context="{'group_by':'postcode', }" />
+                    <filter string='Postcode' name='postcode' context="{'group_by':'postcode', }" />
                 </group>
             </search>
         </field>
