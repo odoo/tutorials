@@ -14,6 +14,7 @@
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
         "views/estate_property_offer_views.xml",
+        'views/res_users_views.xml',
         "views/estate_menues.xml",
     ],
     "description": "This module allows you to manage real estate properties, property types, tags, offers, and advertisements. It also includes tools for organizing and displaying data effectively.",

@@ -1,6 +1,6 @@
 from datetime import timedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyType(models.Model):
@@ -50,3 +50,17 @@ class EstatePropertyType(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+
+    @api.model_create_multi
+    def create(self, vals):
+        property_record = self.env['estate.property'].browse(vals['property_id'])
+        existing_offers = self.search([
+            ('property_id', '=', vals['property_id'])
+        ])
+        if any(offer.price >= vals['price'] for offer in existing_offers):
+            raise ValidationError(
+                "Error, You CANNOT create an offer with a lower price than an existing one."
+            )
+        property_record.state = 'offer_received'
+        return super().create(vals)

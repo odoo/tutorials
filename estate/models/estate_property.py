@@ -125,3 +125,10 @@ class EstateProperty(models.Model):
         self.state = "offer_accepted"
         self.selling_price = offer.price
         self.partner_id = offer.partner_id
+
+
+    @api.ondelete(at_uninstall=False)
+    def prevent_delete(self):
+        for record in self:
+            if record.state not in ('new','cancelled'):
+                raise UserError("Error, It CANNOT be deleted")
