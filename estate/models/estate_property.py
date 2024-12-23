@@ -67,6 +67,13 @@ class EstateProperty(models.Model):
     best_price = fields.Float(string="Best Price", compute="_compute_best_price", store=True)
     offer_received = fields.Boolean(string="Offer Received", compute="_compute_offer_received", store=True)
     offer_accepted = fields.Boolean(string="Offer Accepted", compute="_compute_offer_accepted", store=True)
+    user_id = fields.Many2one('res.users', string="Salesperson")
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company,
+    )
 
 
     
@@ -123,10 +130,10 @@ class EstateProperty(models.Model):
             if float_is_zero(record.selling_price, precision_rounding=0.01):
                 continue
             min_price = record.expected_price * 0.9
-            if float_compare(record.selling_price, min_price, precision_rounding=0.01) < 0:
-                raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price."
-                )
+            # if float_compare(record.selling_price, min_price, precision_rounding=0.01) < 0:
+            #     raise ValidationError(
+            #         "The selling price cannot be lower than 90% of the expected price."
+            #     )
    
     @api.depends('state')
     def _compute_offer_received(self):

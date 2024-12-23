@@ -5,7 +5,8 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            self.env['account.move'].create({
+            record.user_id.check_access("create")
+            self.env['account.move'].sudo().create({
                 'partner_id': record.partner_id.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [
@@ -21,3 +22,4 @@ class EstateProperty(models.Model):
                     })
                 ]})
             return super(EstateProperty, self).action_sold()
+        

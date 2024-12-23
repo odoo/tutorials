@@ -7,6 +7,7 @@
                 <h2>Property Offers Report</h2>        
                 <p><strong>Property Name:</strong> <t t-esc="doc.name"/></p>
                 <p><strong>Expected Price:</strong> <t t-esc="doc.expected_price"/></p>
+                <div id="status"></div>
 
                 <t t-if="doc.offer_ids">
                     <table class="table table-sm">

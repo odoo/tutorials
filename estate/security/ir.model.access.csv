@@ -3,3 +3,9 @@ estate.access_property_user,access_estate_property_user,model_estate_property,ba
 estate.access_estate_property_type,access_estate_property_type,estate.model_estate_property_type,base.group_user,1,1,1,1
 estate.access_estate_property_offer,access_estate_property_offer,estate.model_estate_property_offer,base.group_user,1,1,1,1
 estate.access_estate_property_tag,access_estate_property_tag,estate.model_estate_property_tag,base.group_user,1,1,1,1
+access_real_estate_manager,access_real_estate_manager,model_estate_property,estate_group_manager,1,1,1,0
+access_real_estate_agent,access_real_estate_agent,model_estate_property,estate_group_user,1,0,0,0
+access_type_read_only,access_type_read_only,model_estate_property_type,estate_group_user,1,0,0,0
+access_tag_read_only,access_tag_read_only,model_estate_property_tag,estate_group_user,1,0,0,0
+access_property_tag_manager,Property Tag - Manager,model_estate_property_tag,estate_group_manager,1,1,1,1
+access_property_type_manager,Property Type - Manager,model_estate_property_type,estate_group_manager,1,1,1,1
