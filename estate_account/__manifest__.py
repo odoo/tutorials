@@ -6,7 +6,7 @@
     "depends": ["estate", "account"],
     "description": "Manage account",
     "data": [
-        'views/estate_account_property_reports.xml',
+        'report/estate_account_property_reports.xml',
     ],
     "application": True,
     "installable": True,

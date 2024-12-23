@@ -1,6 +1,6 @@
 from odoo import api, models, fields
 from datetime import timedelta, date
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -62,20 +62,25 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
 
-    @api.model
-    def create(self, vals):
-        property_id, price = vals.get("property_id"), vals.get("price")
-        if property_id and price:
-            property = self.env["estate.property"].browse(property_id)
-            if property.exists():
-                if self.search(
-                    [("property_id", "=", property_id), ("price", ">", price)]
-                ):
-                    raise ValidationError(
-                        "The offer price cannot be lower than an existing offer."
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for vals in vals_list:
+            prop_id = vals["property_id"]
+            offer_price = vals["price"]
+            res = self.env["estate.property"].browse(prop_id)
+            if prop_id:
+                res.write({"state": "offer_received"})
+                if offer_price:
+                    existing_offers = self.search(
+                        [("property_id", "=", prop_id), ("price", ">", offer_price)],
+                        limit=1,
                     )
-                property.write({"state": "offer_received"})
-        return super().create(vals)
+                    if existing_offers:
+                        raise UserError(
+                            "An offer with the higher price already exists."
+                        )
+        return records
 
     def action_offer_accepted(self):
         for record in self:

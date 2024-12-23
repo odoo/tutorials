@@ -110,7 +110,7 @@
                 <field name="property_type_id"/>
 
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div>
                             <strong>
                                 <field name="name"/>
