@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
+        <field name="name">Real Estate/Brokerage</field>
+    </record>
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="comment">
+            The agents can manage the properties under their care, or properties
+            which are not specifically under the care of any agent.
+        </field>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="comment">
+            The managers can configure the system (manage available types and tags)
+            as well as oversee every property in the pipeline.
+        </field>
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]" />
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
+    </record>
+
+    <record id="estate_property_agents_rule" model="ir.rule">
+        <field name="name">limits agent to access all the properties</field>
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]" />
+        <field name="domain_force">['|', ('salesperson_id', '=', user.id), ('salesperson_id', '=',
+            1),('company_id', '=', user.company_id.id)]</field>
+    </record>
+</odoo>

@@ -31,5 +31,5 @@ class EstateProperty(models.Model):
                     ),
                 ],
             }
-            record.env["account.move"].create(account_move_values)
+            record.env["account.move"].sudo().create(account_move_values)
         return super().action_property_sold()

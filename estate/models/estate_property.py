@@ -63,6 +63,12 @@ class EstateProperty(models.Model):
         comodel_name="estate.property.offer", inverse_name="property_id"
     )
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+    company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Company",
+        default=lambda self: self.env.company,
+        required=True,
+    )
 
     _sql_constraints = [
         (

@@ -2,13 +2,14 @@
     "name": "Real Estate",
     "version": "1.0",
     "author": "Odoo IN",
-    "category": "Real Estate",
+    "category": "Real Estate/Brokerage",
     "summary": "Realistic business advertisements",
     "description": "our ultimate real estate spotlight! Effortlessly showcase properties and attract buyers with sleek, engaging ads that sell.",
     "depends": [
         "base",
     ],
     "data": [
+        "security/estate_security.xml",
         "security/ir.model.access.csv",
         "data/estate.property.type.csv",
         "views/estate_property_views.xml",
@@ -19,10 +20,8 @@
         "views/estate_menus.xml",
         "report/estate_property_offer_templates.xml",
         "report/estate_property_templates.xml",
-        "report/res_users_templates.xml",
         "report/res_users_property_templates.xml",
         "report/estate_property_reports.xml",
-        "report/res_users_reports.xml",
     ],
     "demo": [
         "demo/estate_property_demo.xml",
