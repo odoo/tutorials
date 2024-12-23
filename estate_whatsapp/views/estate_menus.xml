@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="estate_property_whatsapp" name="Configuration" parent="estate.estate_property_root">
+            <menuitem id="estate_property_configuration_menu_action" action="estate_whatsapp_model_action"/>
+        </menuitem>
+    </data>
+</odoo>
