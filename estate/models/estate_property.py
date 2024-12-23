@@ -26,7 +26,7 @@ class EstateProperty(models.Model):
             ('east','East'),
             ('west','West')
         ],
-        default='north', required=True
+        default='north'
     )
     active = fields.Boolean(default=True)
     state=fields.Selection(
@@ -46,6 +46,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer','property_id', string='Offer')
     total_area = fields.Float(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price', default=0.0)
+    _order = "id desc"
 
     _sql_constraints = [('check_expected_price', 'CHECK(expected_price>=0)', 'Property expected price must be positive.'),
                         ('check_selling_price', 'CHECK(selling_price>=0)', 'Property selling price must be positive.')]
