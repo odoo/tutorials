@@ -70,6 +70,10 @@ class EstateProperty(models.Model):
     def action_set_state_sold(self):
         self.ensure_one()
 
+        accepted_offers = self.offer_ids.filtered(lambda offer: offer.status == "accepted")
+        if len(accepted_offers) == 0:
+            raise UserError(_("Cannot sell a property with no accepted offers"))
+
         if self.state == "cancelled": 
             raise UserError(_("Cannot sell a cancelled property"))
         
@@ -79,6 +83,7 @@ class EstateProperty(models.Model):
 
     def action_set_state_cancelled(self):
         self.ensure_one()
+
 
         if self.state == "sold": 
             raise UserError(_("Cannot cancel a sold property"))

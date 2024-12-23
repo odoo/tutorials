@@ -1,5 +1,5 @@
 from typing import Self
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools.date_utils import date, relativedelta
 
@@ -55,6 +55,10 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list: list[api.ValuesType]) -> Self:
         for vals in vals_list:
             property = self.env["estate.property"].browse(vals["property_id"]).exists()
+
+            if property.state == "sold":
+                raise UserError(_("Cannot create an opportunity for a sold property"))
+
             if property.state == "new":
                 property.state = "received"
         return super().create(vals_list)

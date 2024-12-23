@@ -36,13 +36,13 @@
                             <field name="name" />
                         </b>
                         <br />
-                        <label> Expected Price: <field name="expected_price" string="Expected Price" />
+                        <label for="expected_price"> Expected Price: <field name="expected_price" string="Expected Price" />
                         </label>
                         <br />
-                        <label t-if="record.state.raw_value == 'received'"> Best Offer: <field
+                        <label for="best_offer" t-if="record.state.raw_value == 'received'"> Best Offer: <field
                                 name="best_offer" string="Best Offer" />
                         </label>
-                        <label t-if="record.state.raw_value == 'accepted'">
+                        <label for="selling_price" t-if="record.state.raw_value == 'accepted'">
                             Selling Price:
                             <field name="selling_price" string="Selling Price:" />
                         </label>
