@@ -18,6 +18,12 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        store=True,
+        string="Property Type",
+        related="property_id.property_type_id",
+    )
 
     _sql_constraints = [
         (
@@ -41,11 +47,14 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - record.create_date.date()).days
 
     def action_accept(self):
-        for record in self:
-            record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer = record.partner_id
+        self.ensure_one()
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer = self.partner_id
+        self.property_id.state = "offer accepted"
+        return True
 
     def action_refuse(self):
         for record in self:
             record.status = "refused"
+        return True
