@@ -6,6 +6,8 @@ from odoo.exceptions import UserError
 class EstatePropertyType(models.Model):
     _name = "estate.property.offer"
     _description = "Offers for real state properties"
+    _order = "price desc"
+
 
     validity = fields.Integer(string="Validity (Days)", default=7)
 
@@ -18,6 +20,11 @@ class EstatePropertyType(models.Model):
 
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
+    )
+    property_type_id = fields.Many2one(
+        comodel_name="estate.property.type",
+        related="property_id.property_type_id",
+        store=True,
     )
 
     _sql_constraints = [
