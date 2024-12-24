@@ -111,12 +111,16 @@ class EstateProperty(models.Model):
         if self.state == "cancelled":
             raise UserError("Cancelled Items cannot be sold.")
         self.state = "sold"
+        return True
+
 
     def action_set_sold(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("Sold Items cannot be cancelled.")
             record.state = "cancelled"
+        return True
+
 
     def action_process_accept(self, offer):
         self.ensure_one()
@@ -125,10 +129,11 @@ class EstateProperty(models.Model):
         self.state = "offer_accepted"
         self.selling_price = offer.price
         self.partner_id = offer.partner_id
+        return True
 
 
     @api.ondelete(at_uninstall=False)
-    def prevent_delete(self):
+    def _unlink_property(self):
         for record in self:
             if record.state not in ('new','cancelled'):
                 raise UserError("Error, It CANNOT be deleted")

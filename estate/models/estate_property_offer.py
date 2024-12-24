@@ -32,13 +32,16 @@ class EstatePropertyType(models.Model):
     ]
 
     def action_accept(self):
-        for record in self:
-            record.property_id.action_process_accept(record)
-            record.status = "accepted"
+        self.ensure_one()
+        self.property_id.action_process_accept(self)
+        self.status = "accepted"
+        return True
+
 
     def action_refuse(self):
-        for record in self:
-            record.status = "refused"
+        self.ensure_one()
+        self.status = "refused"
+        return True
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
