@@ -17,6 +17,6 @@ class EstatePropertyType(models.Model):
     ]
 
     @api.depends("offer_ids")
-    def _compute_total(self):
-        for record in offer_ids:
-            record.offer_count += 1
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)

@@ -1,5 +1,6 @@
-from odoo import api, models, fields
 from datetime import date
+from odoo import api, models, fields
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -16,7 +17,7 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False
     )
-    partner_id = fields.Many2one("res.partner", string="Partener", required=True)
+    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property Id", required=True)
     validity = fields.Integer(string="Validity", default=7)
     date_deadline = fields.Date(compute="_compute_total", inverse="_inverse_date_deadline", string="Deadline")
@@ -38,18 +39,27 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = fields.Date.subtract(record.date_deadline-fields.Date.to_date(record.create_date)).days
 
-    def accept_icon(self):
+    def accept_offer(self):
         for record in self:
             record.status= 'accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
-            record.property_id.status = 'offer accepted'
+            record.property_id.state = 'offer_accepted'
             for offer in record.property_id.offer_ids:
                 if offer.id != record.id:
                     offer.status= 'refused'
         return True
 
-    def refuse_icon(self):
+    def refuse_offer(self):
         for record in self:
             record.status = 'refused'
         return True
+
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            prop_id = val.get('property_id')
+            if prop_id:
+                property = self.env['estate.property'].browse(prop_id)
+                property.state = 'offer_received'
+        return super(EstatePropertyOffer, self).create(vals)
