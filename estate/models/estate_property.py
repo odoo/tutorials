@@ -153,3 +153,15 @@ class EstateProperty(models.Model):
                     "You cannot delete a property unless it is in 'New' or 'Cancelled' state."
                 )
                             
+    # def action_helper_message(self):
+    #     # Logic to determine when to show the helper
+    #     if not self.search([]):
+    #         return {
+    #             'type': 'ir.actions.client',
+    #             'tag': 'display_notification',
+    #             'params': {
+    #                 'title': 'No Properties Found',
+    #                 'message': 'Click the button to create your first property.',
+    #                 'type': 'warning',
+    #             }
+    #         }    

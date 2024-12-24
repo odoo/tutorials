@@ -20,16 +20,20 @@
                             </b>
                             <div>Expected Price: <field name="expected_price" />
                             </div>
-                            <div t-if="record.state.raw_value == 'offer_received'"> Best Price: <field
-                                    name="best_price" />
+                            <div t-if="record.state.raw_value == 'offer_received'"> Best Price: <field name="best_price" />
                             </div>
-                            <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
-                                    name="selling_price" />
+                            <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field name="selling_price" />
                             </div>
                             <field name="tag_ids" widget="many2many_tags" />
                         </div>
 
                     </t>
+                    <!-- <div class="o_kanban_view_content">
+                        <p>No properties available. Start by creating one!</p>
+                        <button type="action" class="btn btn-primary" name="%(estate_property_action)d">
+                Create Property
+                        </button>
+                    </div> -->
                 </templates>
             </kanban>
         </field>
@@ -39,9 +43,11 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" decoration-success="offer_received" 
-              decoration-info="offer_accepted" 
-              decoration-muted="state == 'sold'">
+            <list string="Properties" decoration-success="offer_received" decoration-info="offer_accepted" decoration-muted="state == 'sold'">
+
+                <header>
+                    <button name="%(action_add_offer_wizard)d" type="action" string="Add Offer" />
+                </header>
                 <field name="name" string="Title"/>
                 <field name="state"/>
                 <field name="property_type_id" options="{'no_create': True, 'no_edit': True}" required="1" />
@@ -55,24 +61,22 @@
             </list>
         </field>
     </record>
-     <record id="estate_property_view_form" model="ir.ui.view">
+    <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_cancel" type="object" string="Cancel"
-                            class="btn btn-secondary" invisible="state != 'sold'"/>
-                    <button name="action_sold" type="object" string="Sold"
-                            class="btn btn-primary" invisible="state in('sold', 'cancelled')"/>
-                         <field name="state"  widget="statusbar" options="{'clickable': False}" />    
-                </header>   
+                    <button name="action_cancel" type="object" string="Cancel" class="btn btn-secondary" invisible="state != 'sold'"/>
+                    <button name="action_sold" type="object" string="Sold" class="btn btn-primary" invisible="state in('sold', 'cancelled')"/>
+                    <field name="state" widget="statusbar" options="{'clickable': False}" />
+                </header>
                 <sheet>
-                  <h1>
+                    <h1>
                         <field name="name" />
-                      <field name="state" invisible="1"/>
+                        <field name="state" invisible="1"/>
                     </h1>
-                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <group>
                         <group>
                             <field name="property_type_id" options="{'no_create': True, 'no_edit': True}" required="1" />
@@ -82,7 +86,7 @@
                         <group>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
-                            <field name="best_offers" string="Best Offers"/> 
+                            <field name="best_offers" string="Best Offers"/>
                         </group>
                     </group>
                     <notebook>
@@ -93,10 +97,10 @@
                                 <field name="living_area" string="Living Area(sqm)"/>
                                 <field name="facades" string="Facades"/>
                                 <field name="garage" string="Garage"/>
-                                <field name="garden" string="Garden"  widget="boolean_toggle"/>
-                                <field name="garden_area" string="Garden Area(sqm)"  invisible="not garden"/>
+                                <field name="garden" string="Garden" widget="boolean_toggle"/>
+                                <field name="garden_area" string="Garden Area(sqm)" invisible="not garden"/>
                                 <field name="garden_orientation" string="Garden Orientation" invisible="not garden"/>
-                                <field name="total_area" string="Total Area(sqm)"/> 
+                                <field name="total_area" string="Total Area(sqm)"/>
                             </group>
                         </page>
                         <page string="Other info">
@@ -112,17 +116,13 @@
                                     <field name="partner_id"></field>
                                     <field name="validity"></field>
                                     <field name="date_deadline"></field>
-                                    <button name="action_offer_accepted" type="object"
-                                        icon="fa-check" string="Accept Offer"
-                                        invisible="state != 'new'" />
-                                    <button name="action_offer_refused" type="object"
-                                        icon="fa-times" string="Refuse Offer"
-                                        invisible="state != 'new'" />
+                                    <button name="action_offer_accepted" type="object" icon="fa-check" string="Accept Offer" invisible="state != 'new'" />
+                                    <button name="action_offer_refused" type="object" icon="fa-times" string="Refuse Offer" invisible="state != 'new'" />
                                     <field name="status"></field>
                                 </list>
                             </field>
                         </page>
-                        
+
                         <page>
                             <field name="description"/>
                         </page>
@@ -130,7 +130,7 @@
                 </sheet>
             </form>
         </field>
-    </record> 
+    </record>
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -138,13 +138,10 @@
             <search string="Search Properties">
                 <field name="name"/>
                 <field name="postcode"/>
-                <filter name="available" string="Available" domain="[('state', '=', 'new')]"  context="{'default_selected': True}"/>
+                <filter name="available" string="Available" domain="[('state', '=', 'new')]" context="{'default_selected': True}"/>
                 <group expand="1" string="Group By">
                     <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
-                    <filter name="filter_living_area" 
-                    string="Living Area" 
-                    domain="[('living_area', '>=', self)]" 
-                    context="{'group_by': 'living_area'}"/>
+                    <filter name="filter_living_area" string="Living Area" domain="[('living_area', '>=', self)]" context="{'group_by': 'living_area'}"/>
                 </group>
             </search>
         </field>

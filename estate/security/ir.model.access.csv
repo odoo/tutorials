@@ -9,3 +9,4 @@ access_type_read_only,access_type_read_only,model_estate_property_type,estate_gr
 access_tag_read_only,access_tag_read_only,model_estate_property_tag,estate_group_user,1,0,0,0
 access_property_tag_manager,Property Tag - Manager,model_estate_property_tag,estate_group_manager,1,1,1,1
 access_property_type_manager,Property Type - Manager,model_estate_property_type,estate_group_manager,1,1,1,1
+access_estate_property_offer_wizard,model_estate_property,model_estate_property_offer_wizard,base.group_user,1,1,1,1
