@@ -37,8 +37,8 @@ class EstateProperty(models.Model):
         string="State",
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
         ],
@@ -47,7 +47,7 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
-    salesperson = fields.Many2one(
+    salesperson_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
     tags_ids = fields.Many2many("estate.property.tag", string="Tags")
@@ -119,3 +119,9 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "The selling price cannot be lower than 90% of the expected price"
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "canceled"):
+                raise UserError("Only new or canceled properties can be deleted")
