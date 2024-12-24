@@ -1,6 +1,6 @@
-from odoo import models, fields, api
-from odoo.exceptions import UserError
 from datetime import date, timedelta
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -35,6 +35,9 @@ class EstatePropertyOffer(models.Model):
             "CHECK(price > 0)",
             "The offer price should be strictly positive",
         ),
+        # (
+        #     "check_price_highe"
+        # )
     ]
 
     @api.depends("validity")
@@ -71,12 +74,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.status == "accepted":
                 raise UserError("Accepted offers cannot be deleted.")
-    
-    def write(self, vals):
-        res = super(EstatePropertyOffer, self).write(vals)
-        if vals.get("status") == "accepted":
-            self.property_id.state = "sold"
-        return res
 
     def action_accept(self):
         for record in self:

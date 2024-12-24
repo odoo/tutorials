@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
     <template id="offers_template">
         <table class="table">
             <thead>
@@ -22,25 +23,26 @@
                 </tr>
             </thead>
             <tbody>
-                <t t-set="offers" t-value="property.mapped('offer_ids')" />
+                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
                 <tr t-foreach="offers" t-as="offer">
                     <td>
-                        <span t-field="offer.price" />
+                        <span t-field="offer.price"/>
                         <td>
-                            <span t-field="offer.partner_id" />
+                            <span t-field="offer.partner_id"/>
                         </td>
                         <td>
-                            <span t-field="offer.validity" />
+                            <span t-field="offer.validity"/>
                         </td>
                         <td>
-                            <span t-field="offer.date_deadline" />
+                            <span t-field="offer.date_deadline"/>
                         </td>
                         <td>
-                            <span t-field="offer.status" />
+                            <span t-field="offer.status"/>
                         </td>
                     </td>
                 </tr>
             </tbody>
         </table>
     </template>
+
 </odoo>

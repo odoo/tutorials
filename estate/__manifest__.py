@@ -2,12 +2,12 @@
     "name": "Real Estate",
     "version": "1.0",
     "depends": ["base"],
-    "author": "insh",
     "category": "Real Estate/Brokerage",
     "license": "LGPL-3",
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
+        "wizard/estate_bulk_offers_views.xml",
         "data/property_types_data.xml",
         "views/estate_property_views.xml",
         "views/estate_property_offer_views.xml",

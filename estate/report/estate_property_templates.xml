@@ -7,23 +7,23 @@
                 <t t-call="web.external_layout">
                     <div class="page">
                         <h1>
-                            <span t-field="property.name" />
+                            <span t-field="property.name"/>
                         </h1>
                         <div>
                             <b>Salesperson:</b>
-                            <span t-field="property.user_id" />
+                            <span t-field="property.user_id"/>
                         </div>
                         <div>
                             <b>Expected Price: </b>
-                            <span t-field="property.expected_price" />
+                            <span t-field="property.expected_price"/>
                         </div>
                         <div>
                             <b>State:</b>
-                            <span t-field="property.state" />
+                            <span t-field="property.state"/>
                         </div>
                         <div name="sold"></div>
                         <t t-if="not property.offer_ids">
-                            <br />
+                            <br/>
                             <b>NO offers available.</b>
                         </t>
                         <t t-else="">
@@ -33,7 +33,6 @@
                 </t>
             </t>
         </t>
-
     </template>
 
 </odoo>

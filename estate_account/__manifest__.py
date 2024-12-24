@@ -2,7 +2,6 @@
     "name": "Real Estate Accounting",
     "version": "1.0",
     "depends": ["estate", "account"],
-    "author": "insh",
     "category": "Real Estate/Brokerage",
     "license": "LGPL-3",
     "data": [

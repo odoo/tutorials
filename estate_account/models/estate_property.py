@@ -1,4 +1,4 @@
-from odoo import models, Command
+from odoo import Command, models
 
 
 class EstateProperty(models.Model):
@@ -7,7 +7,6 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            record.user_id.check_access("create")
             self.env["account.move"].sudo().create(
                 {
                     "partner_id": record.partner_id.id,

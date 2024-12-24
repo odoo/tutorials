@@ -1,7 +1,7 @@
-from odoo import models, fields, api
+from datetime import date, timedelta
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_is_zero
-from datetime import date, timedelta
 
 
 class EstateProperty(models.Model):
@@ -47,9 +47,7 @@ class EstateProperty(models.Model):
         default="new",
     )
     property_type_id = fields.Many2one(
-        "estate.property.type",
-        string="Property Type",
-        groups="base.group_user",
+        "estate.property.type", string="Property Type", groups="base.group_user"
     )
     partner_id = fields.Many2one("res.partner", string="Buyer")
     user_id = fields.Many2one(
@@ -79,7 +77,7 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if float_is_zero(record.selling_price, precision_digits=2):
+            if record.selling_price is None:
                 continue
             if (
                 float_compare(
@@ -93,15 +91,21 @@ class EstateProperty(models.Model):
                     "The selling price should be higher than 90%\0 of the expected price"
                 )
 
-    @api.depends("living_area", "garden_area")
-    def _compute_total(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_state_new_cancelled(self):
         for record in self:
-            record.total_area = record.living_area + record.garden_area
+            if record.state not in ("new", "cancelled"):
+                raise UserError("Only new and cancelled properties can be deleted")
 
     @api.depends("offer_ids")
     def _compute_best(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -114,20 +118,14 @@ class EstateProperty(models.Model):
         if not self.offer_ids:
             self.state = "new"
 
-    @api.ondelete(at_uninstall=False)
-    def _unlink_except_state_new_cancelled(self):
+    def action_cancel(self):
         for record in self:
-            if record.state not in ("new", "cancelled"):
-                raise UserError("Only new and cancelled properties can be deleted")
+            if record.state == "sold":
+                raise UserError("Sold properties cannot be cancelled")
+            record.state = "cancelled"
 
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cancelled properties cannot be sold")
             record.state = "sold"
-
-    def action_cancel(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("Sold properties cannot be cancelled")
-            record.state = "cancelled"

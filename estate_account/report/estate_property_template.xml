@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <template id="report_property_offers_sold" inherit_id="estate.report_property_offers">
         <xpath expr="//div[@name='sold']" position="inside">
             <t t-if="property.state=='sold'">
@@ -7,4 +8,5 @@
             </t>
         </xpath>
     </template>
+
 </odoo>

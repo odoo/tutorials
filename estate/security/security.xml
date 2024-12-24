@@ -6,19 +6,19 @@
     </record>
     <record id="estate_group_agent" model="res.groups">
         <field name="name">Real Estate Agent</field>
-        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
     </record>
     <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
-        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
-        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
     <record id="rule_id_1" model="ir.rule">
         <field name="name">Access Own properties</field>
-        <field name="model_id" ref="estate.model_estate_property" />
-        <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="True" />
-        <field name="groups" eval="[Command.link(ref('estate.estate_group_agent'))]" />
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_agent'))]"/>
         <field name="domain_force">[
             '|', ('user_id', '=', user.id),
             ('user_id', '=', False),

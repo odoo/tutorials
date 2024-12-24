@@ -1,18 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
-
 <odoo>
-    <record id='estate_property_tags_action' model='ir.actions.act_window'>
-        <field name='name'>Property Tags</field>
-        <field name='res_model'>estate.property.tags</field>
-        <field name='view_mode'>list,form</field>
-    </record>
 
     <record id='estate_property_tags_view_list' model='ir.ui.view'>
         <field name='name'>Property Tags List</field>
         <field name='model'>estate.property.tags</field>
         <field name='arch' type='xml'>
             <list string='Property Tags' editable='bottom'>
-                <field name='name' />
+                <field name='name'/>
             </list>
         </field>
     </record>
@@ -22,8 +16,15 @@
         <field name='model'>estate.property.tags</field>
         <field name='arch' type='xml'>
             <form string='Property Tags'>
-                <field name='name' />
+                <field name='name'/>
             </form>
         </field>
     </record>
+
+    <record id='estate_property_tags_action' model='ir.actions.act_window'>
+        <field name='name'>Property Tags</field>
+        <field name='res_model'>estate.property.tags</field>
+        <field name='view_mode'>list,form</field>
+    </record>
+    
 </odoo>

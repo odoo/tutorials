@@ -1,13 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
-
 <odoo>
+
     <menuitem id='menu_root' name='Real Estate'>
         <menuitem id='advertisements_menu' name='Advertisements'>
-            <menuitem id='estate_property_model_action' action='estate_property_action' />
+            <menuitem id='estate_property_model_action' action='estate_property_action'/>
         </menuitem>
-        <menuitem id='settings_menu' name='Settings' groups="estate.estate_group_manager">
-            <menuitem id='estate_property_type_model_action' action='estate_property_type_action' />
-            <menuitem id='estate_property_tags_model_action' action='estate_property_tags_action' />
+        <menuitem id='settings_menu' name='Settings' groups='estate.estate_group_manager'>
+            <menuitem id='estate_property_type_model_action' action='estate_property_type_action'/>
+            <menuitem id='estate_property_tags_model_action' action='estate_property_tags_action'/>
         </menuitem>
     </menuitem>
+
 </odoo>
