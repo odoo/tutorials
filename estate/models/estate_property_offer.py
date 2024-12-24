@@ -1,5 +1,6 @@
 from odoo import fields, api, models
 from datetime import timedelta
+from odoo.exceptions import ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -45,3 +46,16 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
+    
+    @api.model
+    def create(self, vals):
+        property_record=self.env['estate.property'].browse(vals['property_id'])
+        existing_offers=property_record.offer_ids
+        if existing_offers:  # Check if there are existing offers
+            max_price = max(offer.price for offer in existing_offers)  
+            if vals['price'] <= max_price:
+                raise ValidationError(
+                    f"The offer must be higher than {max_price}"
+                )      
+        property_record.state='offer_received'
+        return super(EstatePropertyOffer, self).create(vals)

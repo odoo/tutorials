@@ -4,7 +4,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_availible_property': True}</field>
     </record>
 
@@ -85,6 +85,23 @@
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <!-- kanban view -->
+    <record id="estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <field name="name"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
