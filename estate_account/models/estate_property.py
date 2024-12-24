@@ -1,4 +1,5 @@
 from odoo import models, Command
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -8,6 +9,11 @@ class EstateProperty(models.Model):
 
     def action_property_sold(self):
         for record in self:
+            record.check_access('create')
+
+            if not record.buyer_id:
+                raise UserError("The property must have a buyer before marking it as sold.")
+
             # create empty 'account.move' object for sold property
             account_move_values = {
                 "partner_id": record.buyer_id.id,
@@ -31,5 +37,5 @@ class EstateProperty(models.Model):
                     ),
                 ],
             }
-            record.env["account.move"].sudo().create(account_move_values)
+            record.env["account.move"].create(account_move_values)
         return super().action_property_sold()

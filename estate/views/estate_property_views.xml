@@ -1,11 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form,kanban</field>
-        <field name="context">{'search_default_available': 1}</field>
-    </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
@@ -13,6 +7,11 @@
         <field name="arch" type="xml">
             <list string="Properties" decoration-success="state in ['received', 'accepted']"
                 decoration-bf="state == 'accepted'" decoration-muted="state == 'sold'">
+                <header>
+                    <button type="action" name="%(estate.action_bulk_offers_wizard)d"
+                        string="Add offer"
+                        class="oe_highlight" />
+                </header>
                 <field name="name"></field>
                 <field name="property_type_id"></field>
                 <field name="postcode"></field>
@@ -36,7 +35,8 @@
                         invisible="state in ['sold', 'cancelled']" />
                     <button string="Cancel" name="action_property_cancel" type="object"
                         invisible="state in ['sold', 'cancelled']" />
-                    <field name="state" widget="statusbar"  options="{'clickable': False}" statusbar_visible="new,received,accepted,sold"/>
+                    <field name="state" widget="statusbar" options="{'clickable': False}"
+                        statusbar_visible="new,received,accepted,sold" />
                 </header>
                 <sheet>
                     <h1>
@@ -93,6 +93,7 @@
                             <group>
                                 <field name="salesperson_id" />
                                 <field name="buyer_id" />
+                                <field name="company_id" />
                             </group>
                         </page>
                     </notebook>
@@ -153,4 +154,12 @@
             </search>
         </field>
     </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="context">{'search_default_available': 1}</field>
+    </record>
+
 </odoo>

@@ -20,7 +20,6 @@
             The managers can configure the system (manage available types and tags)
             as well as oversee every property in the pipeline.
         </field>
-        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]" />
         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
     </record>
 
@@ -28,7 +27,18 @@
         <field name="name">limits agent to access all the properties</field>
         <field name="model_id" ref="estate.model_estate_property" />
         <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]" />
-        <field name="domain_force">['|', ('salesperson_id', '=', user.id), ('salesperson_id', '=',
-            1),('company_id', '=', user.company_id.id)]</field>
+        <field name="domain_force">[
+            '&amp;',
+            '|',
+            ('salesperson_id', '=', user.id),
+            ('salesperson_id', '=', False),
+            '|',
+            ('company_id', '=', False),
+            ('company_id', 'in', company_ids)
+            ]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="False" />
     </record>
 </odoo>
