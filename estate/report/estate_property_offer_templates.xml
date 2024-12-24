@@ -20,7 +20,7 @@
                             <span t-field="offer.price"/>
                         </td>
                         <td>
-                            <span t-field="offer.partner_id"/>
+                            <span t-field="offer.buyer_id"/>
                         </td>
                         <td>
                             <span t-field="offer.validity"/>

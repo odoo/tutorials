@@ -10,9 +10,8 @@ class EstateProperty(models.Model):
         for record in self:
             if not record.buyer_id:
                 raise ValueError("The property must have a partner assigned before creating an invoice.")
-            
             account_move = self.env['account.move'].sudo().create({
-                'partner_id': record.buyer_id.id,
+                'buyer_id': record.buyer_id.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [
                     Command.create({

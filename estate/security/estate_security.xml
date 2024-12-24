@@ -20,7 +20,6 @@
             The managers can configure the system (manage available types and tags)
             as well as oversee every property in the pipeline.
         </field>
-        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]" />
         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]" />
     </record>
 
@@ -28,22 +27,18 @@
         <field name="name">limits agent to access all the properties</field>
         <field name="model_id" ref="estate.model_estate_property" />
         <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]" />
-        <field name="domain_force">['|', ('salesman_id', '=', user.id), ('salesman_id', '=',
-            1),('company_id', '=', user.company_id.id)]</field>
-        <!-- <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="True" />
-        <field name="perm_create" eval="True" />
-        <field name="perm_unlink" eval="False" /> -->
-    </record>
-
-    <record id="estate_property_managers_rule" model="ir.rule">
-        <field name="name">Allow managers unrestricted access</field>
-        <field name="model_id" ref="estate.model_estate_property" />
-        <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]" />
-        <field name="domain_force">[]</field>
-        <!-- <field name="perm_read" eval="True" />
-        <field name="perm_write" eval="True" />
-        <field name="perm_create" eval="True" />
-        <field name="perm_unlink" eval="False" /> -->
+        <field name="domain_force">[
+            '&amp;',
+            '|',
+            ('salesman_id', '=', user.id),
+            ('salesman_id', '=', False),
+            '|',
+            ('company_id', '=', False),
+            ('company_id', 'in', company_ids)
+            ]</field>
+        <field name="perm_read" eval='1' />
+        <field name="perm_write" eval='0' />
+        <field name="perm_create" eval='0' />
+        <field name="perm_unlink" eval='0' />
     </record>
 </odoo>
