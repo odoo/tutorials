@@ -16,6 +16,7 @@
     <field name="garden">True</field>
     <field name="garden_area">100000</field>
     <field name="garden_orientation">south</field>
+    <field name="salesperson_id"></field>
   </record>
 
   <record id="property_trailer_home" model="estate.property">
@@ -33,6 +34,7 @@
     <field name="garage">False</field>
     <field name="garden">False</field>
     <field name="garden_area">0</field>
+    <field name="salesperson_id"></field>
   </record>
 
   <record id="property_luxury_villa" model="estate.property">
@@ -48,15 +50,11 @@
     <field name="garden">True</field>
     <field name="garden_area">500</field>
     <field name="garden_orientation">north</field>
+    <field name="salesperson_id"></field>
     <field name="offer_ids" eval="[
         Command.create({
             'partner_id': ref('base.res_partner_1'),
             'price': 1800000,
-            'validity': 14,
-        }),
-        Command.create({
-            'partner_id': ref('base.res_partner_2'),
-            'price': 1900000,
             'validity': 14,
         }),
     ]"/>

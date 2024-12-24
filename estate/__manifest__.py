@@ -2,14 +2,14 @@
     'name':'estate',
     'version': '1.0',
     'category': 'Real Estate/Brokerage',
-    'author' : 'shka',
-    'summary': 'use to buy and sell properties ',
+    'summary': 'use to buy and sell properties',
     'depends' : ['base'],
     'description': "buy and sell",
     'data':[
         'security/estate_security.xml',
         'security/ir.model.access.csv',
         'data/estate.property.type.csv',
+        'wizard/estate_property_offer_wizard_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
@@ -30,4 +30,3 @@
     'auto_install' : True,
     'license': 'LGPL-3',
 }
-
