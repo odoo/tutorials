@@ -1,7 +1,7 @@
 from odoo import Command, fields, models
 
 
-class InheritedModel(models.Model):
+class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_change_state(self):

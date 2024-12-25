@@ -18,7 +18,8 @@ class WarrantyWizard(models.TransientModel):
 
             warranty_lines = []
             for line in sale_order.order_line:
-                if line.product_template_id and line.product_template_id.is_warranty:
+                isWarrantyAvailable = self.env['sale.order.line'].search([('warranty_id', '=',line.id )])
+                if line.product_template_id and line.product_template_id.is_warranty and not isWarrantyAvailable:
                     warranty_lines.append((0, 0, {
                         'sale_order_line_id': line.id,
                         'product_id': line.product_template_id.id,
@@ -46,4 +47,4 @@ class WarrantyWizard(models.TransientModel):
                         "sequence": line.sale_order_line_id.sequence,  
                     })
 
-        res = self.env['sale.order.line'].create(new_order_line_list)
+        self.env['sale.order.line'].create(new_order_line_list)
