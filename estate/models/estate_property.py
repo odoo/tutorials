@@ -44,7 +44,7 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+        "res.users", string="Salesperson", default=lambda self: self.env.company,  domain="[('company_ids', 'in', company_id)]"
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tags_ids = fields.Many2many("estate.property.tag", string=" PropertyTags")
@@ -107,6 +107,10 @@ class EstateProperty(models.Model):
     def _onchange_offer_ids(self):
         if not self.offer_ids:
             self.state = "new"
+
+    @api.onchange('company_id')
+    def _onchange_company_id(self):
+        self.salesperson_id = False
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_not_new_or_cancelled(self):

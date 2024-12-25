@@ -77,7 +77,7 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesperson_id" />
+                                <field name="salesperson_id"/>
                                 <field name="buyer_id" />
                                 <field name="company_id" />
                             </group>
