@@ -4,7 +4,7 @@
     "category": "Estate/Brokerage",
     "summary": "create a estate property",
     "website": "https://www.odoo.com",
-    "depends": ["base"],
+    "depends": ["base","mail"],
     "installable": True,
     "application": True,
     "license": "LGPL-3",

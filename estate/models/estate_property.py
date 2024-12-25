@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = 'id desc'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(required=True)
     description = fields.Text(string="Description")
@@ -38,7 +39,7 @@ class EstateProperty(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled'),
-    ], default='new', string="Status", copy=False)    
+    ], default='new', string="Status", copy=False, tracking=True,  group_expand='_group_expand_states')    
     property_type_id = fields.Many2one('estate.property.type', string="Property Type",
     options={'no_create': True, 'no_edit': True}) 
     buyer_id = fields.Many2one('res.partner', string="Buyer",copy=False)
@@ -74,6 +75,7 @@ class EstateProperty(models.Model):
         required=True,
         default=lambda self: self.env.company,
     )
+
 
 
     
@@ -147,21 +149,21 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _check_state_on_delete(self):
-        for record in self:
-            if record.state not in ('new', 'cancelled'):
-                raise UserError(
-                    "You cannot delete a property unless it is in 'New' or 'Cancelled' state."
+         for record in self:
+             if record.state not in ('new', 'cancelled'):
+                 raise UserError(
+                     "You cannot delete a property unless it is in 'New' or 'Cancelled' state."
                 )
                             
-    # def action_helper_message(self):
-    #     # Logic to determine when to show the helper
-    #     if not self.search([]):
-    #         return {
-    #             'type': 'ir.actions.client',
-    #             'tag': 'display_notification',
-    #             'params': {
-    #                 'title': 'No Properties Found',
-    #                 'message': 'Click the button to create your first property.',
-    #                 'type': 'warning',
-    #             }
-    #         }    
+    def action_helper_message(self):
+         # Logic to determine when to show the helper
+         if not self.search([]):
+             return {
+                 'type': 'ir.actions.client',
+                 'tag': 'display_notification',
+                 'params': {
+                     'title': 'No Properties Found',
+                     'message': 'Click the button to create your first property.',
+                     'type': 'warning',
+                 }
+             }    

@@ -4,6 +4,11 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">kanban,list,form</field>
+        <field name ="help" type="html">
+            <div class="o_kanban_view_nocontent_smiling_face">
+                <p>No properties available. Start by creating one!</p>
+            </div>
+        </field>
         <!-- <field name="search_view_id" ref="estate_property_view_search"/> -->
     </record>
     <record id='estate_property_view_kanban' model='ir.ui.view'>
@@ -28,12 +33,6 @@
                         </div>
 
                     </t>
-                    <!-- <div class="o_kanban_view_content">
-                        <p>No properties available. Start by creating one!</p>
-                        <button type="action" class="btn btn-primary" name="%(estate_property_action)d">
-                Create Property
-                        </button>
-                    </div> -->
                 </templates>
             </kanban>
         </field>
@@ -58,6 +57,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" optional="hide" invisible="1"/>
+
             </list>
         </field>
     </record>
@@ -128,6 +128,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
