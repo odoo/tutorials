@@ -5,7 +5,7 @@
         <field name='name'>estate.property.type.list</field>
         <field name='model'>estate.property.type</field>
         <field name='arch' type='xml'>
-            <list string='Property Types'>
+            <list string='Property Types' editable='bottom' open_form_view='True'>
                 <field name='name'/>
                 <field name='sequence' widget='handle'/>
             </list>

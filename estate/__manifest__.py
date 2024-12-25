@@ -1,7 +1,7 @@
 {
     "name": "Real Estate",
     "version": "1.0",
-    "depends": ["base"],
+    "depends": ["base", "mail"],
     "category": "Real Estate/Brokerage",
     "license": "LGPL-3",
     "data": [

@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property table"
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
@@ -45,6 +46,8 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
+        tracking=True,
+        group_expand=True,
     )
     property_type_id = fields.Many2one(
         "estate.property.type", string="Property Type", groups="base.group_user"
@@ -77,7 +80,7 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if record.selling_price is None:
+            if float_is_zero(record.selling_price, precision_digits=2):
                 continue
             if (
                 float_compare(

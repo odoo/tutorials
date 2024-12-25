@@ -5,7 +5,7 @@
         <field name='name'>Property offer List</field>
         <field name='model'>estate.property.offer</field>
         <field name='arch' type='xml'>
-            <list string='Property offer' editable='bottom' decoration-success='status == "accepted"' decoration-danger='status == "refused"' open_form_view='True'>
+            <list string='Property offer' editable='bottom' open_form_view='True' decoration-success='status == "accepted"' decoration-danger='status == "refused"'>
                 <field name='price'/>
                 <field name='partner_id'/>
                 <field name='validity'/>

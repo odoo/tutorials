@@ -5,7 +5,7 @@
         <field name='name'>Property Tags List</field>
         <field name='model'>estate.property.tags</field>
         <field name='arch' type='xml'>
-            <list string='Property Tags' editable='bottom'>
+            <list string='Property Tags'  editable='bottom' open_form_view='True'>
                 <field name='name'/>
             </list>
         </field>
