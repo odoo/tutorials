@@ -93,11 +93,16 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_group_by="property_type_id" records_draggable="false">
+            <field name="state"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div>
-                            <field name="name"/>
+                            <h3><field name="name"/> </h3>
+                            <p>Expected Price: <field name="expected_price"/></p>
+                            <p t-if="record.state.raw_value==='offer_received' || record.state.raw_value==='offer_accepted' || record.state.raw_value==='sold'">Best Price: <field name="best_price"/></p>
+                            <p t-if="record.state.raw_value==='offer_accepted'">Selling Price: <field name="selling_price"/></p>
+                            <field name="tag_ids" widget="many2many_tags"/>       
                         </div>
                     </t>
                 </templates>
