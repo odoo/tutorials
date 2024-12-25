@@ -125,7 +125,7 @@
                 <field name="selling_price"/>
                 <field name="date_availability" string="Availible From"/>
                 <filter name="availible_property" string="Avalible Property" domain="[('state', 'in', ('offer_received','new'))]"/>
-                <group expand="1" string="Group By">
+                <group string="Group By">
                     <filter name="postcode" context="{'group_by': 'postcode'}"/>        
                 </group>
             </search>
