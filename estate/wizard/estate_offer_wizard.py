@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields
 
 class EstateOfferWizard(models.TransientModel):
     _name = 'estate.offer.wizard'

@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = "id desc"
 
     name = fields.Char(required=True, string="Name")
@@ -42,6 +43,7 @@ class EstateProperty(models.Model):
             ('cancelled', 'Cancelled')
             ],
         default='new',
+        tracking=True,
         required=True
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")

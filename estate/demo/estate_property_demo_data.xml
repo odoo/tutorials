@@ -42,11 +42,11 @@
             Command.clear(),
             Command.create({
                 'price': 90000,
-                'partner_id': ref('base.res_partner_1'),
+                'buyer_id': ref('base.res_partner_1'),
                 }),
             Command.create({
                 'price': 100000,
-                'partner_id': ref('base.res_partner_2'),
+                'buyer_id': ref('base.res_partner_2'),
                 }),
         ]" />
   </record>

@@ -1,5 +1,5 @@
 from datetime import date
-from odoo import api, models, fields
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -17,7 +17,7 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False
     )
-    buyer_id = fields.Many2one("res.partner", string="Partner", required=True)
+    buyer_id = fields.Many2one("res.partner", string="Partner")
     property_id = fields.Many2one("estate.property", string="Property Id", required=True)
     validity = fields.Integer(string="Validity", default=7)
     date_deadline = fields.Date(compute="_compute_total", inverse="_inverse_date_deadline", string="Deadline")
