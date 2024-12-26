@@ -49,6 +49,8 @@ class EstatePropertyOffer(models.Model):
     
     @api.model
     def create(self, vals):
+        if self.env.context.get('install_mode', False):
+            return super(EstatePropertyOffer, self).create(vals)
         property_record=self.env['estate.property'].browse(vals['property_id'])
         existing_offers=property_record.offer_ids
         if existing_offers:  # Check if there are existing offers

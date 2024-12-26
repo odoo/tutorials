@@ -7,6 +7,7 @@
         'base'
     ],
     'data':[
+        'security/security.xml',
         'data/estate_property_type_demo.xml',
         'data/estate_property_demo.xml', 
         'data/estate_property_offer_demo.xml',  

@@ -4,21 +4,21 @@
         <record id="estate_property_offer_1" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"/>
             <field name="property_id" ref="estate.estate_property_big_villa"/>
-            <field name="price">10000</field>
+            <field name="price">40000</field>
             <field name="validity">14</field>
         </record>
 
-        <record id="estate_property__offer_2" model="estate.property.offer">
+        <record id="estate_property_offer_2" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"/>
             <field name="property_id" ref="estate.estate_property_big_villa"/>
-            <field name="price">1500000</field>
+            <field name="price">50000</field>
             <field name="validity">14</field>
         </record>
 
-         <record id="estate_property__offer_3" model="estate.property.offer">
+         <record id="estate_property_offer_3" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_2"/>
             <field name="property_id" ref="estate.estate_property_big_villa"/>
-            <field name="price">1500001</field>
+            <field name="price">60000</field>
             <field name="validity">14</field>
         </record>
     </data>
