@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todolist">
+        <div class="todo-list">
+            <h3>Todo List</h3>
+            <div class="card shadow-sm mb-4">
+                <input t-ref= "todo_input" placeholder="Enter a new to-do item." t-on-keyup="addTodo"/>
+            </div>            
+            <div t-foreach="this.todos" t-as="todo" t-key="todo.id">
+                <TodoItem t-props="{'todo': todo}" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
+            </div>
+        </div>
+    </t>
+</templates>
