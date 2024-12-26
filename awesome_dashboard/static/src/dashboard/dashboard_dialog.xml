@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardDialog">
+        <Dialog title.translate="Dashboard items configuration">
+            <h4>Which cards do you wish to see ?</h4>
+            <t t-foreach="items" t-as="i" t-key="i.id">
+                <div style="display: flex">
+                    <CheckBox value="i.is_active" onChange.bind="(checked) => this.onChecked(checked, i)">
+                        <div style="margin-left: 5px">
+                            <t t-esc="i.description"/>
+                        </div>
+                    </CheckBox>
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="close_dialog">Apply</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
