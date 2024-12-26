@@ -56,5 +56,11 @@
         <field name="name">Estate Property Type</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <h3 class="o_view_nocontent_smiling_face">
+                Add property type, first!
+            </h3>
+            <h3>Use this menu to add property types.</h3>
+        </field>
     </record>
 </odoo>

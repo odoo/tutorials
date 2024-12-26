@@ -38,5 +38,11 @@
         <field name="name">Estate Property Tag</field>
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <h3 class="o_view_nocontent_smiling_face">
+                No tags found!
+            </h3>
+            <h3>Use this menu to add your tags.</h3>
+        </field>
     </record>
 </odoo>

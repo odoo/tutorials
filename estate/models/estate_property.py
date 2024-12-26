@@ -54,8 +54,16 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type", string="Property Type"
     )
+    company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Company (Location)",
+        default=lambda self: self.env.company,
+        required=True,
+    )
     salesperson_id = fields.Many2one(
-        comodel_name="res.users", string="Salesman", default=lambda self: self.env.user
+        comodel_name="res.users",
+        string="Salesman",
+        default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
@@ -63,11 +71,6 @@ class EstateProperty(models.Model):
         comodel_name="estate.property.offer", inverse_name="property_id"
     )
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
-    company_id = fields.Many2one(
-        comodel_name="res.company",
-        string="Company",
-        default=lambda self: self.env.company
-    )
 
     _sql_constraints = [
         (

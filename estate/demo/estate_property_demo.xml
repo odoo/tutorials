@@ -15,7 +15,6 @@
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
         <field name="salesperson_id"></field>
-        <field name="company_id"></field>
         <field name="property_type_id" ref="estate_property_type_1" />
     </record>
 
