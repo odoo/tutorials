@@ -128,3 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 pyrightconfig.json
+node_modules/
+package.json
+package-lock.json

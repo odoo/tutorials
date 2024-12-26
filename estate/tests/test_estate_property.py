@@ -51,7 +51,6 @@ class EstateTestCase(TransactionCase):
 
         with self.assertRaises(UserError):
             self.properties.action_set_state_sold()
-            self.fail("Should have failed")
     
     def test_can_sell_property_if_accepted_offer(self):
         self.assertRecordValues(self.property_with_offers, [
@@ -103,7 +102,6 @@ class EstateTestCase(TransactionCase):
                     ]
                 }
             ])
-            self.fail("Should have failed")
 
     def test_garden_resets_when_unchecked(self):
         estate_form = Form(self.env["estate.property"])
