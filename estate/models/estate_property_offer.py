@@ -38,10 +38,12 @@ class EstatePropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             if not record.create_date:
-                record.create_date = fields.Datetime.today()
-            record.date_deadline = fields.Datetime.add(
-                record.create_date, days=record.validity
-            )
+                today = fields.Datetime.today()
+                record.date_deadline = fields.Datetime.add(today, days=record.validity)
+            else:
+                record.date_deadline = fields.Datetime.add(
+                    record.create_date, days=record.validity
+                )
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -51,13 +53,13 @@ class EstatePropertyOffer(models.Model):
         self.ensure_one()
         self.status = "accepted"
         self.property_id.selling_price = self.price
-        self.property_id.buyer = self.partner_id
+        self.property_id.buyer_id = self.partner_id
         self.property_id.state = "offer_accepted"
         return True
 
     def action_refuse(self):
-        for record in self:
-            record.status = "refused"
+        self.ensure_one()
+        self.status = "refused"
         return True
 
     @api.model_create_multi
