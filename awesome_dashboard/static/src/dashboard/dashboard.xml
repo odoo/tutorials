@@ -1,0 +1,19 @@
+   
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <div class="o_cp_buttons" role="toolbar" aria-label="Control Panel Buttons" t-ref="buttons">
+                    <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                    <button class="btn btn-primary" style="margin-left: 0.5em" t-on-click="openLeads">Leads</button>
+                </div>
+            </t>
+            <t t-slot="content">
+                <DashboardItem>Item 1</DashboardItem>
+                <DashboardItem size="2">Item 2</DashboardItem>
+            </t>
+        </Layout>
+    </t>
+</templates>
+
