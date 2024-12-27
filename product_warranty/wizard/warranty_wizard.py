@@ -18,7 +18,7 @@ class WarrantyWizard(models.TransientModel):
 
             warranty_lines = []
             for line in sale_order.order_line:
-                isWarrantyAvailable = self.env['sale.order.line'].search([('warranty_id', '=',line.id )])
+                isWarrantyAvailable = self.env['sale.order.line'].search([('linked_line_id', '=',line.id )])
                 if line.product_template_id and line.product_template_id.is_warranty and not isWarrantyAvailable:
                     warranty_lines.append((0, 0, {
                         'sale_order_line_id': line.id,
@@ -43,7 +43,7 @@ class WarrantyWizard(models.TransientModel):
                         "product_id": line.warranty_config_id.product_id.product_variant_id.id,  
                         "price_unit": line.sale_order_line_id.price_subtotal
                                     * (line.warranty_config_id.percentage / 100),  
-                        "warranty_id": line.sale_order_line_id.id,  
+                        "linked_line_id": line.sale_order_line_id.id,
                         "sequence": line.sale_order_line_id.sequence,  
                     })
 
