@@ -6,6 +6,9 @@
     'depends': [
         'base','estate','account'
     ],
+    "data": [
+        'report/estate_property_reports.xml',
+    ],
     'installable': True,
     'application': True,
     'category': 'Real Estate/Brokerage',

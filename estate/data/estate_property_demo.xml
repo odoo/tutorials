@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo noupdate="1">
     <data>
         <record id="estate_property_big_villa" model="estate.property">
             <field name="name">Big Villa</field>

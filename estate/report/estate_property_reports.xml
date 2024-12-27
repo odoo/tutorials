@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_property_offers" model="ir.actions.report">
+        <field name="name">Print Property Offers</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.property_offers_template</field>
+        <field name="report_file">estate.property_offers_template</field>
+        <field name="print_report_name">'Property Offers - %s' % (object.name or 'Attendee').replace('/','')</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
