@@ -2,6 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo">
 
+        <input type="checkbox" t-on-change="toggleState" t-ref="todo_item_ref"/>
         <li t-att-class="{'text-decoration-line-through text-muted':props.todo.isCompleted}">
             <t t-esc="props.todo.description"/>
         </li>

@@ -3,10 +3,10 @@
     <t t-name="awesome_owl.todolist">
 
         <div>
-            <input type="text" placeholder="Enter a new task" t-on-keyup="addTodo"/>
+            <input type="text" placeholder="Enter a new task" t-on-keyup="addTodo" t-ref="todo_input"/>
             <ol>
                 <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
-                    <Todo todo="todo"/>
+                    <Todo todo="todo" toggleState.bind="toggleState"/>
                 </t>
             </ol>
         </div>
