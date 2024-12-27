@@ -45,12 +45,10 @@
             <field name="offer_ids" eval="[
                 Command.create({
                     'partner_id': ref('base.res_partner_2'),
-                    'property_id': ref('estate.estate_property_3'),
                     'price': 20000,
                 }),
                 Command.create({
                     'partner_id': ref('base.res_partner_12'),
-                    'property_id': ref('estate.estate_property_3'),
                     'price': 22000,
                 }),
             ]"/>
