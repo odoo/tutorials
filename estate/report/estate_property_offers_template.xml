@@ -5,13 +5,6 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page"> 
-                        <div>
-                            <img src='/web/binary/company_logo' class="float-right" style="max-height: 65px; margin-top:20px;"
-                                alt="Logo"/>
-                            <span t-field="res_company.partner_id"
-                                t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
-                        </div>
-                        <hr></hr>
                         <h2><span t-field="property.name"/></h2>
                         <p>Salesman: <span t-field="property.user_id"/></p>
                         <p>Expected Price: <span t-field="property.expected_price"/></p>

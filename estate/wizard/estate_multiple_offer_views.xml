@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>   
+    <!-- Form view when user click on 'Add offer' Button -->
+    <record id="estate_multiple_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.multiple.offer.form</field>
+        <field name="model">estate.multiple.offer</field>
+        <field name="arch" type="xml">
+            <form string="Multiple offer">
+                <group>
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                    <field name="validity"/>
+                </group>
+                <footer>
+                    <button name="action_make_offer" string="Make an Offer" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>    
+
+     <!-- Action window for multiple offer model -->
+    <record id="estate_multiple_offer_action" model="ir.actions.act_window">
+        <field name="name">Add Offer</field>
+        <field name="res_model">estate.multiple.offer</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="estate_multiple_offer_view_form"/>
+        <field name="target">new</field>
+        <field name="context">{
+            'default_property_ids': active_ids,
+        }</field>
+    </record>  
+</odoo>

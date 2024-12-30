@@ -5,6 +5,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'real estate property'
 
     name = fields.Char(required=True) 

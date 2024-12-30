@@ -4,11 +4,14 @@
     'author' : 'Dhruv Chauhan',
     'description': 'Real estate module for managing property listings and transactions!',
     'depends': [
-        'base'
+        'base',
+        'mail'
     ],
     'data':[
         'security/security.xml',
         'security/ir.model.access.csv',
+
+        'wizard/estate_multiple_offer_views.xml',
 
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
