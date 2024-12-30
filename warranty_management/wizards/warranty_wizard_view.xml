@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="add_warranty_form" model="ir.ui.view">
+        <field name="name">add.warranty.view.form</field>
+        <field name="model">add.warranty</field>
+        <field name="arch" type="xml">
+            <form string="Add Warranty">
+                    <field name="warranty_lines_ids">
+                        <list editable="bottom" create="false">
+                            <field name="product_id" readonly="true"/>
+                            <field name="warranty_id" />
+                            <field name="end_date" />
+                        </list>
+                    </field>
+                    <footer>
+                        <button string="Add" class="oe_highlight" type="object" name="action_add_warranty_in_order_line"/>
+                    </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,20 @@
+{
+    'name': 'Warranty Management',
+    'version': '1.0',
+    'category': 'Sales',
+    'summary': 'Manage warranties for products',
+    'depends': ['sale_management'],
+    'description': "Manage warranties for products",
+    'data': [
+        'security/ir.model.access.csv',
+        'wizards/warranty_wizard_view.xml',
+        'views/sale_order_views.xml',
+        'views/warranty_views.xml',
+        'views/product_views.xml',
+        'views/menu_views.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}

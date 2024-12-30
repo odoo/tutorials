@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_order_form_inherit_warranty" model="ir.ui.view">
+        <field name="name">sale.order.form.warranty.button</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='note_group']" position="before">
+                <div class="float-end d-flex gap-1 mb-2" style="float: right;">
+                    <button string="Add Warranty" type="object" name="action_open_warranty_wizard" class="oe_highlight" invisible="not has_warranty" />
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
