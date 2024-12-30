@@ -6,7 +6,6 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        
         for record in self:
             if not record.buyer_id:
                 raise ValueError("The property must have a partner assigned before creating an invoice.")

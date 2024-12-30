@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record id='add_warranty_wizard_form' model='ir.ui.view'>
+        <field name="name">add.warranty.wizard.form</field>
+        <field name="model">add.warranty.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Warranty">
+                <field name="product_ids">
+                    <list editable="bottom" create="0">
+                        <field name="product_id" readonly="1" force_save="1"/>
+                        <field name="year"/>
+                        <field name="end_date"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="apply_warranty" class="btn btn-primary" string="Add" type="object"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_add_warranty_wizard" model="ir.actions.act_window">
+        <field name="name">Add Warranty</field>
+        <field name="res_model">add.warranty.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
