@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="add_warranty_in_quotation_form" model="ir.ui.view">
+        <field name="name">product.warranty.wizard.view.form</field>
+        <field name="model">product.warranty.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Warranty">
+                <sheet>
+                    <field name="product_ids">
+                        <list editable="bottom" create="False">
+                            <field name="product_id" />
+                            <field name="year" />
+                            <field name="end_date" />
+                        </list>
+                    </field>
+                    <footer>
+                        <button string="Add" type="object" name="add_warranty" class="oe_highlight" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
+
