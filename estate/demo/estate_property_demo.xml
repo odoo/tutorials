@@ -48,17 +48,18 @@
         <field name="offer_ids"
             eval="[
                 Command.create({
-                    'price': 90000,
+                    'price': 60000,
                     'partner_id': ref('base.res_partner_12'),
                 }),
         ]" />
     </record>
 </odoo>
-<!-- Command.create({
-'price': 60000,
-'partner_id': ref('base.res_partner_1'),
+<!--
+Command.create({
+    'price': 70000,
+    'partner_id': ref('base.res_partner_1'),
 }),
 Command.create({
-'price': 70000,
-'partner_id': ref('base.res_partner_3'),
+    'price': 90000,
+    'partner_id': ref('base.res_partner_3'),
 }), -->

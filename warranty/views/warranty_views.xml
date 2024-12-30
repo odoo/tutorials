@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="warranty_list_view" model="ir.ui.view">
+        <field name="name">warranty.view.list</field>
+        <field name="model">warranty</field>
+        <field name="arch" type="xml">
+            <list string="Warranty List" editable="bottom" open_form_view="1">
+                <field name="name" />
+                <field name="duration" />
+                <field name="product_id" />
+                <field name="percentage" />
+            </list>
+        </field>
+    </record>
+
+    <record id="warranty_form_view" model="ir.ui.view">
+        <field name="name">warranty.view.form</field>
+        <field name="model">warranty</field>
+        <field name="arch" type="xml">
+            <form string="Warranty Form">
+                <sheet>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                    <group>
+                        <field name="duration" />
+                        <field name="percentage" />
+                        <field name="product_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="warranty_action" model="ir.actions.act_window">
+        <field name="name">Warranty</field>
+        <field name="res_model">warranty</field>
+        <field name="view_mode">form,list</field>
+        <field name="view_id" ref="warranty_list_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Click to create a new warranty.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_product_warranty"
+        name="Warranty Configuration"
+        action="warranty_action"
+        parent="sale.prod_config_main"
+    />
+</odoo>

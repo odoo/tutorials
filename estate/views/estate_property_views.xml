@@ -92,12 +92,14 @@
                         <page string="Other Info">
                             <group>
                                 <field name="company_id" />
-                                <field name="salesperson_id" domain="[('company_ids', '=', company_id)]"/>
+                                <field name="salesperson_id"
+                                    domain="[('company_ids', '=', company_id)]" />
                                 <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>

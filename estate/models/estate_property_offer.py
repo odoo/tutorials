@@ -7,6 +7,7 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
+    inherit = ['mail.thread', 'mail.activity.mixin']
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -81,6 +82,7 @@ class EstatePropertyOffer(models.Model):
                     datetime.today() + timedelta(days=record.validity)
                 ).date()
 
+    @api.model_create_multi
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days

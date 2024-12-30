@@ -1,0 +1,13 @@
+# Query: product.product
+# Including: warranty
+# Excluding: .po, .pot
+# ContextLines: 1
+
+2 results - 1 file
+
+tutorials/warranty/views/product_views.xml:
+  3      <record id="warranty_inherit_product_template_form_view" model="ir.ui.view">
+  4:         <field name="name">product.template.form.inherit</field>
+  5          <field name="model">product.template</field>
+  6:         <field name="inherit_id" ref="product.product_template_form_view" />
+  7          <field name="arch" type="xml">

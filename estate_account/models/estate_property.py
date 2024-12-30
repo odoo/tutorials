@@ -18,7 +18,7 @@ class EstateProperty(models.Model):
             account_move_values = {
                 "partner_id": record.buyer_id.id,
                 "move_type": "out_invoice",
-                "invoice_line_ids": [
+                "warranty_line_ids": [
                     # First invoice line: 6% of the selling price
                     Command.create(
                         {

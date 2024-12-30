@@ -8,8 +8,9 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(required=True, string="Title", trim=True)
+    name = fields.Char(required=True, string="Title", trim=True, tracking=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
