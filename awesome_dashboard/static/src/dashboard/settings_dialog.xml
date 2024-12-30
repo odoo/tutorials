@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.SettingsDialog">
+        <Dialog>
+             <t t-set-slot="header">
+                <h4>
+                    Dashboard items configuration
+                </h4>
+             </t>
+             <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox id="item.id" onChange.bind="(isChecked) => item.isVisible = isChecked" value="item.isVisible">
+                    <t t-esc="item.description" />
+                </CheckBox>
+             </t>
+             <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onApply">
+                  Done
+                </button>
+             </t>
+        </Dialog>
+    </t>
+</templates>
