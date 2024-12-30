@@ -5,8 +5,15 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _inherit=["mail.thread", "mail.activity.mixin"]
 
-    user_id = fields.Many2one("res.users", string="Salesperson", index=True, tracking=True, default=lambda self: self.env.user)
+    user_id = fields.Many2one(
+        "res.users",
+        string="Salesperson",
+        index=True,
+        tracking=True,
+        default=lambda self: self.env.user,
+    )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     name = fields.Char("Name", required=True)
     description = fields.Text("Description")
@@ -25,8 +32,16 @@ class EstateProperty(models.Model):
         "Garden Orientation",
     )
     state = fields.Selection(
-        [("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")],
-        default="new", group_expand=True)
+        [
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        default="new",
+        group_expand=True,
+    )
     active = fields.Boolean("Active", default=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     tag_ids = fields.Many2many("estate.property.tags", string="Tags")
@@ -39,10 +54,17 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price >= 0)", "A property expected price must be strictly positive"),
-        ("check_selling_price", "CHECK(selling_price >= 0)", "A property selling price must be positive"),
+        (
+            "check_expected_price",
+            "CHECK(expected_price >= 0)",
+            "A property expected price must be strictly positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "A property selling price must be positive",
+        ),
     ]
-    
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):

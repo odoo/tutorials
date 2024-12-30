@@ -4,7 +4,7 @@
     "category": "Real Estate/Brokerage",
     "summary": "Allow Users to Buy and Sell Property",
     "website": "https://www.odoo.com",
-    "depends": ["base"],
+    "depends": ["base", "mail"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
