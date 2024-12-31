@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>        
+        <record id="property_sold_email_template" model="mail.template">
+            <field name="name">Property Sold</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="email_from">{{ (object.user_id.email_formatted or user.email_formatted) }}</field>
+            <field name="partner_to" >{{ object.partner_id.id }}</field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="description">Email should be sent when property status changes to sold</field>
+            <field name="subject">Property {{ object.name }} sold</field>
+            <field name="body_html" type="html">
+                <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                    <p>Dear <t t-out="object.partner_id.name">Partner</t>,</p>
+                    <p>
+                        Congratulations on your new property! We are delighted to inform you that the property 
+                        <strong><t t-out="object.name">Property Name</t></strong> has been successfully sold to you.
+                    </p>
+                    <p>Thank you for choosing us. We wish you happiness and success in your new property!</p>
+                    <br/>
+                    <p>Best regards,</p>
+                    <p>
+                        <strong><t t-out="object.user_id.name">Sales Executive</t></strong><br/>
+                        Sales Executive<br/>
+                        <t t-out="object.company_id.name">{{ object.company_id.name }}</t><br/>
+                    </p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

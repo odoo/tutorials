@@ -1,4 +1,4 @@
-from odoo import fields,api,models
+from odoo import api, fields, models
 from datetime import timedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'real estate property'
+    _order = "id desc"
 
     name = fields.Char(required=True) 
     description = fields.Text()
@@ -26,8 +27,7 @@ class EstateProperty(models.Model):
             ('south','South'),
             ('east','East'),
             ('west','West')
-        ],
-        default='north'
+        ], default='north'
     )
     active = fields.Boolean(default=True)
     state=fields.Selection(
@@ -37,8 +37,7 @@ class EstateProperty(models.Model):
             ('offer_accepted','Offer Accepted'),
             ('sold','Sold'),
             ('cancelled','Cancelled')
-        ],
-        default='new', required=True
+        ], default='new', required=True
     )
     property_type_id =fields.Many2one('estate.property.type', string='real estate property type')
     partner_id = fields.Many2one('res.partner', string='Partner', copy=False) #Buyer
@@ -48,7 +47,6 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price', default=0.0)
     company_id=fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
-    _order = "id desc"
 
     _sql_constraints = [('check_expected_price', 'CHECK(expected_price>=0)', 'Property expected price must be positive.'),
                         ('check_selling_price', 'CHECK(selling_price>=0)', 'Property selling price must be positive.')]

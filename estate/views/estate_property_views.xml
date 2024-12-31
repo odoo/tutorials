@@ -83,9 +83,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <group>
                                 <field name="offer_ids" string="Offers" class="mb16" readonly="state in ('offer_accepted','cancelled','sold')"/>   
-                            </group>
                         </page>
                         <page string="Other Info">
                             <group>

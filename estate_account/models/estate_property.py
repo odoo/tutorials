@@ -1,4 +1,5 @@
 from odoo import fields, Command, models
+import base64
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
@@ -35,5 +36,20 @@ class EstateProperty(models.Model):
                             ),
                         ],
                     }
-            self.env["account.move"].sudo().create(invoice_vals)
+
+            invoice = self.env["account.move"].sudo().create(invoice_vals)
+            pdf_data = self.env['ir.actions.report']._render('account.report_invoice', invoice.id)[0]
+            attachment = self.env['ir.attachment'].create({
+                'name': f'Invoice {invoice.name}.pdf',
+                'type': 'binary',
+                'datas': base64.b64encode(pdf_data),
+                'res_model': 'account.move',
+                'res_id': invoice.id,
+            })
+            mail_template = self.env.ref('estate.property_sold_email_template')
+            mail_values = {
+                'attachment_ids': [(6, 0, [attachment.id])],  
+            }
+            mail_template.send_mail(record.id, force_send=True, email_values=mail_values)
+
         return super().action_set_sold()

@@ -11,6 +11,8 @@
         'security/security.xml',
         'security/ir.model.access.csv',
 
+        'data/mail_template_data.xml',
+
         'wizard/estate_multiple_offer_views.xml',
 
         'views/estate_property_views.xml',
