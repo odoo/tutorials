@@ -14,7 +14,7 @@
     'category': 'Tutorials/AwesomeKanban',
     'installable': True,
     'depends': ['web', 'crm'],
-    'demo': [
+    'data': [
         'views/views.xml',
     ],
     'assets': {
