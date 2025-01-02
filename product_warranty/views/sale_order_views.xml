@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_warranty_option_form_inherit" model="ir.ui.view">
+        <field name="name"></field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+           <group name="note_group" position="before">
+                <button name="%(action_open_warranty_wizard)d" type="action" class="btn-primary "
+                    string="Add Warranty" />
+            </group>
+        </field>
+    </record>
+
+</odoo>

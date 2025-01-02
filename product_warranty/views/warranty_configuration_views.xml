@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- action window for managing property types -->
+    <record id="warranty_configuration_action" model="ir.actions.act_window">
+        <field name="name">Warranty Configuration</field>
+        <field name="res_model">warranty.configuration</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+     <!-- Form view -->
+    <record id="warranty_configuration_form" model="ir.ui.view">
+        <field name="name">warranty.configuration.form</field>
+        <field name="model">warranty.configuration</field>
+        <field name="arch" type="xml">
+            <form string="warranty configuration form">       
+                <sheet>           
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <field name="year"/>
+                        <field name="warranty_product"/>
+                        <field name="percentage"/>
+                        <field name="end_date"/>
+                    </group>                                       
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+     <!-- List view -->
+    <record id="warranty_configuration_list" model="ir.ui.view">
+        <field name="name">warranty.configuration.list</field>
+        <field name="model">warranty.configuration</field>
+        <field name="arch" type="xml">
+            <list string="warranty configuration list">
+                <field name="name"/>
+                <field name="warranty_product"/>
+                <field name="percentage"/>  
+            </list>
+        </field>
+    </record>
+
+     <menuitem id="menu_warranty_config"
+              name="Warranty Configuration"
+              parent="sale.menu_sale_config"
+              action="warranty_configuration_action"/>
+</odoo>
