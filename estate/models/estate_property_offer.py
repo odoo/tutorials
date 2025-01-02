@@ -6,6 +6,7 @@ from datetime import datetime
 class EstatePropertyOffer(models.Model):
     _name= "estate.property.offer"
     _description= "offer going to apply on a property"
+    _order= "price desc"
     
     price= fields.Float(string="Price")
     status= fields.Selection(
@@ -62,6 +63,8 @@ class EstatePropertyOffer(models.Model):
             record.status= 'accepted'
             record.property_id.selling_price=record.price
             record.property_id.buyer= record.partner_id
+            record.property_id.state="offer_accepted"
+            # record.property_id.state='offer_accepted'
         return True
         
     #an accepted offer can be rejected by setting selling_price to 0.0 and then status=refused

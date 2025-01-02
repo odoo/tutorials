@@ -8,4 +8,16 @@
         <field name="view_mode">list,form,kanban</field> <!-- shows default list, form, kanban views-->
     </record>
 
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">Estate Property type List View</field> <!-- !need to ask the use of this name? -->
+        <field name="model">estate.property.type</field> <!--model name-->
+        <field name="arch" type="xml">
+            <list> 
+                <!--fields to show as a colomn in list view-->
+                <field name="name" string="namko"/>
+                <field name="sequence" widget="handle" /> <!-- widget=handle is used to reorder the sequence in list view-->
+            </list>
+        </field>
+    </record>
+
 </odoo>

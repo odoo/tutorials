@@ -11,7 +11,8 @@ class EstateProperty(models.Model):
     
     _name = "estate.property"
     _description = "Estate property"
-
+    _order= "id desc"
+    
     name = fields.Char('Name', required=True)
     description= fields.Text('Property Description')
     postcode= fields.Char("Postcode")
@@ -52,12 +53,14 @@ class EstateProperty(models.Model):
         required=True
     )
     
+    
+    
     #chapter 10: https://www.odoo.com/documentation/18.0/developer/tutorials/server_framework_101/10_constraints.html
     #=====================================================================================================
     
     _sql_constraints = [
-        ('expected_price_check', 'CHECK(expected_price>0.0)', 'Expected price must be positive'),
-        ('selling_price_check', 'CHECK(selling_price>0.0)', 'Selling price must be positive')
+        ('expected_price_check', 'CHECK(expected_price>=0.0)', 'Expected price must be positive'),
+        ('selling_price_check', 'CHECK(selling_price>0.0 or selling_price=null)', 'Selling price must be positive')
     ]
     
     @api.constrains('selling_price', 'expected_price') #python constraints

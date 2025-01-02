@@ -6,5 +6,16 @@
         <field name="res_model">estate.property.tag</field> <!--models reference models/estate_property_tag.py > _name-->
         <field name="view_mode">list,form,kanban</field> <!-- shows default list, form, kanban views-->
     </record>
+
+    <record id="estate_property_tag_view_list" model="ir.ui.view">
+        <field name="name">Estate Property List View</field> <!-- !need to ask the use of this name? -->
+        <field name="model">estate.property.tag</field> <!--model name-->
+        <field name="arch" type="xml">
+            <list editable="bottom"> 
+                <!--fields to show as a colomn in list view-->
+                <field name="name" string="namco"/>
+            </list>
+        </field>
+    </record>
 </odoo>
     

@@ -15,14 +15,16 @@
         <field name="name">Estate Property List View</field> <!-- !need to ask the use of this name? -->
         <field name="model">estate.property</field> <!--model name-->
         <field name="arch" type="xml">
-            <list> 
+            <list decoration-success="offer_ids.length >0 and state != 'sold'" decoration-bf="state=='offer_accepted'" decoration-muted="state == 'sold'"> 
                 <!--fields to show as a colomn in list view-->
                 <field name="name"/>
                 <field name="description"/>
-                <field name="bedrooms" decoration-danger="1"/>
+                <field name="bedrooms" />
                 <field name="garden"/>
                 <field name="garage" optional="hide"/>
                 <field name="garden_orientation"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/> 
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -34,19 +36,18 @@
         <field name="arch" type="xml">
            <form string="form_view">
                 <header>
-                    <button name="mark_property_sold" type="object" string="SOLD" /> <!-- action 'mark_property_sold' to be triggered on estate.property model-->
-                    <button name="mark_property_cancel" type= "object" string="CANCEL" /> <!-- action 'mark_property_cancel' to be triggered on estate.property model-->
+                    <button name="mark_property_sold" class="btn btn-primary" type="object" string="SOLD" invisible="state in ['sold', 'cancelled']" /> <!-- action 'mark_property_sold' to be triggered on estate.property model-->
+                    <button name="mark_property_cancel" type= "object" string="CANCEL" invisible="state in ['sold', 'cancelled']" /> <!-- action 'mark_property_cancel' to be triggered on estate.property model-->
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
+
                 </header>
 
                 <sheet> <!-- to make layout responsive -->
                     <group> <!--groups divides a single row in 2 columns-->
                         <field name="name" class='fs-1 fw-bolder'/> <!-- label is hidden -->
-                        <field name="tag_ids" class='mb-3' widget="many2many_tags" placeholder="e.g. renovated, cozy"/> <!-- this is a widget type tags-->
+                        <field name="tag_ids" class='mb-3' widget="many2many_tags" placeholder="e.g. renovated, cozy tags" options="{'color_field': 'color'}" /> <!-- this is a widget type tags||| options color_field refers to color field in the _tag model-->
                         <group>
-                            <field name="state"/>
-                        </group>
-                        <group>
-                            <field name="property_type_id" /> <!-- field takes two 2 columns by default 1 for label and 1 for input-->
+                            <field name="property_type_id" widget="many2one" options="{'no_create': true, 'no_create_edit': true}"/> <!-- field takes two 2 columns by default 1 for label and 1 for input-->
                         </group>
                         <group>
                             <field name="postcode" />
@@ -74,23 +75,24 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area" string="Garden Area(sqm)"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" string="Garden Area(sqm)" invisible="not garden" />
+                                    <field name="garden_orientation" invisible="not garden" />
                                     <field name="total_area"/>
                                 </group>
                             </group>
                         </page>
 
                         <page string="Offers"> <!-- tab=offer-->
-                            <field name="offer_ids"> <!--on field offer_ids in estate.property model -->
-                                <list delete="false"> <!-- show the list view -->
+                            <field name="offer_ids" readonly="state in ['cancelled', 'offer_accepted', 'sold']"> <!--on field offer_ids in estate.property model || hide the add a line if readonly is false-->
+                            <!--!Inline Views-->
+                                <list delete="false" create="true" editable="bottom" decoration-success="status=='accepted'" decoration-danger="status=='refused'"> <!-- show the list view -->
                                     <field name="price" /> <!--of field price, status, partner_id linked with respsective offer_ids comodel_name-->
                                     <field name="partner_id"/>
-                                    <field name="validity" />
+                                    <field name="validity" string="validity(days)"/>
                                     <field name="date_deadline" />
-                                    <button name="mark_offer_accept" type="object" icon="fa-check"/>
-                                    <button name="mark_offer_refuse" type="object" icon="fa-close"/>
-                                    <field name="status" />
+                                    <button name="mark_offer_accept" type="object" icon="fa-check" invisible="status in ['accepted', 'refused']" /> <!--if offer is set hide the button-->
+                                    <button name="mark_offer_refuse" type="object" icon="fa-close" invisible="status in ['accepted', 'refused']" />
+                                    <field name="status" optional="hide"/>
                                     
                                     <!-- <button type="action" name="%(estate.estate_property_type_action)d" string="My Action"/> --> <!--action on a button-->
 
