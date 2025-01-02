@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- DEFAULT VIEW -->
+    <!-- action definition with its id and model -->
+    <record id="estate_property_action" model="ir.actions.act_window"> <!--Id of the action-->
+        <field name="name">Properties</field> <!--name of action-->
+        <field name="res_model">estate.property</field> <!--models reference models/estate_property.py > _name-->
+        <field name="view_mode">list,form,kanban</field> <!-- shows default list, form, kanban views-->
+    </record>
+
+    <!-- ########################################################################### -->
+
+    <!--CUSTOM VIEW FOR LIST VIEW !overiding the default list view-->
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">Estate Property List View</field> <!-- !need to ask the use of this name? -->
+        <field name="model">estate.property</field> <!--model name-->
+        <field name="arch" type="xml">
+            <list> 
+                <!--fields to show as a colomn in list view-->
+                <field name="name"/>
+                <field name="description"/>
+                <field name="bedrooms" decoration-danger="1"/>
+                <field name="garden"/>
+                <field name="garage" optional="hide"/>
+                <field name="garden_orientation"/>
+            </list>
+        </field>
+    </record>
+
+    <!--CUSTOM VIEW FOR FORM VIEW !overiding the default form view-->
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">Estate Property Form View</field>
+        <field name="model">estate.property</field> 
+        <field name="arch" type="xml">
+           <form string="form_view">
+                <header>
+                    <button name="mark_property_sold" type="object" string="SOLD" /> <!-- action 'mark_property_sold' to be triggered on estate.property model-->
+                    <button name="mark_property_cancel" type= "object" string="CANCEL" /> <!-- action 'mark_property_cancel' to be triggered on estate.property model-->
+                </header>
+
+                <sheet> <!-- to make layout responsive -->
+                    <group> <!--groups divides a single row in 2 columns-->
+                        <field name="name" class='fs-1 fw-bolder'/> <!-- label is hidden -->
+                        <field name="tag_ids" class='mb-3' widget="many2many_tags" placeholder="e.g. renovated, cozy"/> <!-- this is a widget type tags-->
+                        <group>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="property_type_id" /> <!-- field takes two 2 columns by default 1 for label and 1 for input-->
+                        </group>
+                        <group>
+                            <field name="postcode" />
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                        </group>
+                        <group>
+                            <field name="best_price" />
+                        </group>
+                        <group>
+                            <field name="date_availability" string="Available From"/>
+                        </group>
+                        <group>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook> <!--tabbed section-->
+                        <page string="Description"> <!-- Description isTab name and what show in it-->
+                            <group>
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area" string="Garden Area(sqm)"/>
+                                    <field name="garden_orientation"/>
+                                    <field name="total_area"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Offers"> <!-- tab=offer-->
+                            <field name="offer_ids"> <!--on field offer_ids in estate.property model -->
+                                <list delete="false"> <!-- show the list view -->
+                                    <field name="price" /> <!--of field price, status, partner_id linked with respsective offer_ids comodel_name-->
+                                    <field name="partner_id"/>
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
+                                    <button name="mark_offer_accept" type="object" icon="fa-check"/>
+                                    <button name="mark_offer_refuse" type="object" icon="fa-close"/>
+                                    <field name="status" />
+                                    
+                                    <!-- <button type="action" name="%(estate.estate_property_type_action)d" string="My Action"/> --> <!--action on a button-->
+
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Other Info">
+                            <group>
+                                <group>
+                                    <field name="buyer" />
+                                    <field name="salesperson" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- SEARCH FOR ESTATE PROPERTIES -->
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">Estate Property search </field>
+        <field name="model">estate.property</field> <!--model name-->
+        <field name="arch" type="xml">
+            <search > <!-- below suggestion will be displayed for searching-->
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <!-- <separator/> -->
+                <filter string="Availaible" name="availaible" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+
+
+</odoo>

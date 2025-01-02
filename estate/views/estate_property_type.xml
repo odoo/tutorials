@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<odoo>
+
+     <!-- estate property type action-->
+    <record id="estate_property_type_action" model="ir.actions.act_window"> <!--Id of the action-->
+        <field name="name">Property Types</field> <!--name of action-->
+        <field name="res_model">estate.property.type</field> <!--models reference models/estate_property_type.py > _name-->
+        <field name="view_mode">list,form,kanban</field> <!-- shows default list, form, kanban views-->
+    </record>
+
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- where to show the action in view -->
+    <menuitem id="estate_property_menu_root" name="Estate Propery"> <!--module name to show in the root menu-->
+        <menuitem id="estate_property_first_level_menu" name="Advertiesments"> <!--first level menu name-->
+            <menuitem id="estate_property_model_menu_action" action="estate.estate_property_action"/> <!-- the action id to trigger-->
+        </menuitem>
+
+        <menuitem id="estate_property_type_first_level_menu" name="Settings">
+            <menuitem id="estate_property_type_model_menu_action" action="estate.estate_property_type_action" />
+            <menuitem id="estate_property_tag_model_menu_action" action="estate.estate_property_tag_action" />
+        </menuitem>
+
+    </menuitem>
+    
+</odoo>
