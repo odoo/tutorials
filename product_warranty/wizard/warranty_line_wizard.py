@@ -22,6 +22,7 @@ class WarrantyLineWizard(models.TransientModel):
                 record.warranty_config_id = None
                 record.end_date = None
 
+    # Store product id from sale_order_line_id
     @api.depends("sale_order_line_id")
     def _compute_product(self):
         for record in self:

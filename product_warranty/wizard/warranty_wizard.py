@@ -42,12 +42,12 @@ class WarrantyWizard(models.TransientModel):
                 if line.warranty_config_id:  
                     warranty_product_list.append({
                         "order_id": sale_order.id,
-                        "name": f"{line.warranty_config_id.name} / {line.end_date}",
+                        "name": f"{line.warranty_config_id.name}",
                         "product_id": line.warranty_config_id.warranty_product.product_variant_id.id,  
                         "price_unit": line.sale_order_line_id.price_subtotal
                                     * (line.warranty_config_id.percentage / 100),  
                         "linked_line_id": line.sale_order_line_id.id,
                         "sequence": line.sale_order_line_id.sequence,  
                     })
-        breakpoint()
+
         self.env['sale.order.line'].create(warranty_product_list)
