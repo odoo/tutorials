@@ -29,6 +29,7 @@ class BudgetLine(models.Model):
         compute="_compute_achieved_amount",
         help="Amount Billed/Invoiced.",
         readonly=True,
+        store=True
     )
     achieved_percentage = fields.Float(
         compute="_compute_percentage", string="Achieved (%)"
