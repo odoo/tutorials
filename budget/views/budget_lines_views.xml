@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_budget_line_list" model="ir.ui.view">
+        <field name="name">budget.line.list</field>
+        <field name="model">budget.lines</field>
+        <field name="arch" type="xml">
+            <list string="Budget Lines" default_order="id desc" create="0">
+                <field name="currency_id" column_invisible="1"/>
+                <field name="budget_id"/>
+                <field string="Analytic Account" name="analytic_account_id"/>
+                <field string="Budget Amount" name="planned_amount"/>
+                <field string="Achieved Amount" name="practical_amount"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_budget_line_pivot" model="ir.ui.view" >
+        <field name="name">budget.line.pivot</field>
+        <field name="model">budget.lines</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget Lines" sample="1">
+                <field name="analytic_account_id" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_budget_line_graph" model="ir.ui.view">
+        <field name="name">budget.line.graph</field>
+        <field name="model">budget.lines</field>
+        <field name="arch" type="xml">
+            <graph string="Budget Lines" sample="1" disable_linking="1" stacked="0">
+                <field name="analytic_account_id" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_budget_line_gantt" model="ir.ui.view">
+        <field name="name">budget.line.gantt</field>
+        <field name="model">budget.lines</field>
+        <field name="arch" type="xml">
+            <gantt string="Budgets" date_start="date_start" date_stop="end_date" default_group_by="budget_id">
+            </gantt>
+        </field>
+    </record>
+
+    <record id="action_budget_line" model="ir.actions.act_window" >
+        <field name="name">Budgets Analysis</field>
+        <field name="res_model">budget.lines</field>
+        <field name="view_mode">list,pivot,graph,gantt</field>
+        <field name="view_id" ref="budget.view_budget_line_list" />
+    </record>
+</odoo>
