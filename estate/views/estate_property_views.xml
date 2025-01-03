@@ -21,8 +21,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Channel" sample="1">
-                <field name="name" string="Title"/>
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Title" decoration-danger="expected_price &lt; 2500"/>
                 <field name="postcode" string="Postcode"/>
+                <field name="tag_ids" string="Property Tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living area(sqm)"/>
                 <field name="expected_price" string="Expected price"/>
@@ -39,28 +41,30 @@
         <field name="arch" type="xml">
             <form string="estate_property_form">
                 <header>
-                    <button name="action_sold" class="btn btn-primary" type="object" string="Sell"/>
-                    <button name="action_cancel" class="btn_secondary" type="object" string="Cancel"/>
+                    <button name="action_sold" class="btn btn_primary" invisible='status == "sold" or status == "canceled"' type="object" string="Sell"/>
+                    <button name="action_cancel" class="btn_secondary" invisible='status =="sold" or status == "canceled"' type="object" string="Cancel"/>
+                    <field name="status" readonly="1" widget="statusbar" nolabel="1"></field>
                 </header>
                 <sheet>
                     <group name="Basics">
                         <h1>
-                            <field name="name" label="Property Name" placeholder="Property Name"/>
+                            <field name="name" label="Property Name" placeholder="Property Name" />
                         </h1>
+
+                        <field name="tag_ids" widget="many2many_tags" placeholder="eg. Cozy, Quiet, Furnished, ..." options="{'color_field': 'color'}"/>
+
                     </group>
 
                     <group>
                         <group name="Basics_2">
-                            <field name="status" readonly="1"></field>
                             <field name="postcode"></field>
                             <field name="date_availability"></field>
-                            <field name="property_type_id"></field>
+                            <field name="property_type_id" options="{'no_create': True}"></field>
                         </group>
                         <group name="Basics_3">
                             <field name="expected_price"></field>
                             <field name="best_offer" readonly="1"></field>
                             <field name="selling_price"></field>
-                            <field name="tag_ids" widget="many2many_tags"/>
                         </group>
                     </group>
 
@@ -73,8 +77,8 @@
                                 <field name="garage"></field>
                                 <field name="facades"></field>
                                 <field name="garden"></field>
-                                <field name="garden_area"></field>
-                                <field name="garden_orientation"></field>
+                                <field name="garden_area" invisible="garden==False"></field>
+                                <field name="garden_orientation" invisible="garden==False"></field>
                                 <field name="total_area" readonly="1"></field>
                             </group>
                         </page>

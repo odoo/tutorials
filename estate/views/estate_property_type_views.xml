@@ -16,5 +16,31 @@
         </field>
     </record>
 
+
+    <!-- Estate property type form view -->
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate_property_type.view.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="estate_property_type_form">
+                <sheet>
+                    <h1>
+                        <field name="name" string="Name"/>
+                    </h1>
+                    <notebook>
+                        <page name="property_list_form" string="Property">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" String="Title"></field>
+                                    <field name="expected_price" string="Expected price"></field>
+                                    <field name="status" readonly="1" string="Status"></field>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>
     

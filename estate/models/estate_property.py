@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 class test_model(models.Model):
     _name = "estate.property"
     _description = "Sample model"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text("description")
@@ -30,23 +31,23 @@ class test_model(models.Model):
             ("west", "WEST"),
         ],
     )
+    sequence = fields.Integer("Sequence", default=1)
     active = fields.Boolean(default=True)
-    property_type_id = fields.Many2one("estate.property.type", ondelete="restrict")
+    property_type_id = fields.Many2one("estate.property.type", ondelete="cascade")
     salesman_id = fields.Many2one(
         "res.users", ondelete="restrict", default=lambda self: self.env.user
     )
     buyer_id = fields.Many2one("res.partner", ondelete="restrict", copy=False)
-    tag_ids = fields.Many2many("estate.property.tags", ondelete="restrict")
+    tag_ids = fields.Many2many("estate.property.tags")
     offer_ids = fields.One2many(
-        comodel_name="estate.property.offer",
-        inverse_name="property_id",
-        ondelete="cascade",
+        comodel_name="estate.property.offer", inverse_name="property_id"
     )
     total_area = fields.Integer(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
     status = fields.Selection(
         selection=[
             ("new", "New"),
+            ("offer_accepted", "Offer accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
         ],
@@ -90,7 +91,7 @@ class test_model(models.Model):
 
     def action_sold(self):
         for record in self:
-            if record.status == "new":
+            if record.status == "new" or record.status == "offer_accepted":
                 record.status = "sold"
             elif record.status == "canceled":
                 raise UserError("Canceled property can't be sold")

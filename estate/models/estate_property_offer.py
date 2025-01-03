@@ -8,9 +8,9 @@ from odoo.exceptions import ValidationError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
-
+    _order = "price desc"
     price = fields.Float()
-    property_id = fields.Many2one("estate.property", required=True)
+    property_id = fields.Many2one("estate.property", ondelete="restrict")
     partner_id = fields.Many2one("res.partner", required=True)
     status = fields.Selection(
         selection=[("accepted", "Accepted"), ("refused", "Refused")], copy=False
@@ -40,19 +40,38 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             record.status = "accepted"
-            record.property_id.selling_price = self.price
+            if record.property_id.status == "new":
+                record.property_id.status = "offer_accepted"
+                record.property_id.selling_price = self.price
+                record.property_id.buyer_id = record.partner_id
+            else:
+                if record.property_id.status == "sold":
+                    raise ValidationError("Property already sold")
+                else:
+                    raise ValidationError("Property canceled")
 
     def action_refuse(self):
         for record in self:
-            record.status = "refused"
-            record.property_id.selling_price = 0
+            if record.property_id.status == "new":
+                record.status = "refused"
+                record.property_id.selling_price = 0
+            else:
+                if (
+                    record.property_id.status == "sold"
+                    or record.property_id.status == "offer_accepted"
+                ):
+                    raise ValidationError("Property already sold")
+                else:
+                    raise ValidationError("Property canceled")
 
     @api.constrains("price", "status")
     def _check_accepted_offer_price(self):
         for record in self:
             if (
                 record.status == "accepted"
-                and float_compare(record.price, record.property_id.expected_price, 2)
+                and float_compare(
+                    record.price, record.property_id.expected_price * 0.9, 2
+                )
                 == -1
             ):
                 raise ValidationError(
