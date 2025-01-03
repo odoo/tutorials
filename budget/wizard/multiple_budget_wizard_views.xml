@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record id="multiple_budget_wizard_form_view" model="ir.ui.view">
+        <field name="name">multiple.budget.wizard.form</field>
+        <field name="model">multiple.budget.wizard</field>  
+        <field name="arch" type="xml">
+           <form string="Create Multiple Budget">
+                <sheet>
+                    <group>
+                        <label for="duration_start_date" string="From"/>
+                        <div class="o_row">
+                            <field name="duration_start_date" nolabel="1" class="oe_inline"/>
+                            <i class="fa fa-long-arrow-right mx-2" aria-label="to" title="to"/>
+                            <field name="duration_end_date" nolabel="1" class="oe_inline"/>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="periods" widget="radio"/>
+                        <field name="analytical_plan_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_budget_split" string="Create" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_multiple_budget_wizard" model="ir.actions.act_window">
+        <field name="name">Multiple Budget</field>
+        <field name="res_model">multiple.budget.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
