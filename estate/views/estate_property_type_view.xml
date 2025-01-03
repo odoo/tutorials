@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="test_property_type_action" model="ir.actions.act_window">
+        <field name="name">Test action</field>
+        <field name="res_model">test.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="test_property_type_list_view" model="ir.ui.view">
+
+        <field name="model">test.property.type</field>
+        <field name="name">test.property.type</field>
+
+        <field name="arch" type="xml" >
+            <list string="Tests" >
+                <field name="name"/>
+              
+
+            </list>
+        </field>
+        
+    </record>  
+
+
+    <record id="test_property_type_form_view" model="ir.ui.view">
+        <field name="name">test.property.type</field>
+        <field name="model">test.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <sheet>
+                    <group>
+                            <field name="name"/>
+                    </group>
+                   
+                    <notebook>
+                        <page string="Description">
+                             <group>
+                                 <field name="description"/>
+                             </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+   </record>
+
+
+        
+        
+        
+        
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+estate.access_test_property,access_test_property,estate.model_test_property,base.group_user,1,1,1,1
+estate.access_test_property_type,access_test_property_type,estate.model_test_property_type,base.group_user,1,1,1,1
+estate.access_test_property_tags,access_test_property_tags,estate.model_test_property_tags,base.group_user,1,1,1,1
+estate.access_test_property_offer,access_test_property_offer,estate.model_test_property_offer,base.group_user,1,1,1,1

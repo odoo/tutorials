@@ -1,0 +1,285 @@
+[
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "http",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "http",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "api",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "api",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "odoo.http",
+        "description": "odoo.http",
+        "isExtraImport": true,
+        "detail": "odoo.http",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "odoo.http",
+        "description": "odoo.http",
+        "isExtraImport": true,
+        "detail": "odoo.http",
+        "documentation": {}
+    },
+    {
+        "label": "route",
+        "importPath": "odoo.http",
+        "description": "odoo.http",
+        "isExtraImport": true,
+        "detail": "odoo.http",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "relativedelta",
+        "importPath": "dateutil.relativedelta",
+        "description": "dateutil.relativedelta",
+        "isExtraImport": true,
+        "detail": "dateutil.relativedelta",
+        "documentation": {}
+    },
+    {
+        "label": "relativedelta",
+        "importPath": "dateutil.relativedelta",
+        "description": "dateutil.relativedelta",
+        "isExtraImport": true,
+        "detail": "dateutil.relativedelta",
+        "documentation": {}
+    },
+    {
+        "label": "AwesomeDashboard",
+        "kind": 6,
+        "importPath": "awesome_dashboard.controllers.controllers",
+        "description": "awesome_dashboard.controllers.controllers",
+        "peekOfCode": "class AwesomeDashboard(http.Controller):\n    @http.route('/awesome_dashboard/statistics', type='json', auth='user')\n    def get_statistics(self):\n        \"\"\"\n        Returns a dict of statistics about the orders:\n            'average_quantity': the average number of t-shirts by order\n            'average_time': the average time (in hours) elapsed between the\n                moment an order is created, and the moment is it sent\n            'nb_cancelled_orders': the number of cancelled orders, this month\n            'nb_new_orders': the number of new orders, this month",
+        "detail": "awesome_dashboard.controllers.controllers",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "awesome_dashboard.controllers.controllers",
+        "description": "awesome_dashboard.controllers.controllers",
+        "peekOfCode": "logger = logging.getLogger(__name__)\nclass AwesomeDashboard(http.Controller):\n    @http.route('/awesome_dashboard/statistics', type='json', auth='user')\n    def get_statistics(self):\n        \"\"\"\n        Returns a dict of statistics about the orders:\n            'average_quantity': the average number of t-shirts by order\n            'average_time': the average time (in hours) elapsed between the\n                moment an order is created, and the moment is it sent\n            'nb_cancelled_orders': the number of cancelled orders, this month",
+        "detail": "awesome_dashboard.controllers.controllers",
+        "documentation": {}
+    },
+    {
+        "label": "ActWindowView",
+        "kind": 6,
+        "importPath": "awesome_gallery.models.ir_action",
+        "description": "awesome_gallery.models.ir_action",
+        "peekOfCode": "class ActWindowView(models.Model):\n    _inherit = 'ir.actions.act_window.view'\n    view_mode = fields.Selection(selection_add=[\n        ('gallery', \"Awesome Gallery\")\n    ],  ondelete={'gallery': 'cascade'})",
+        "detail": "awesome_gallery.models.ir_action",
+        "documentation": {}
+    },
+    {
+        "label": "View",
+        "kind": 6,
+        "importPath": "awesome_gallery.models.ir_ui_view",
+        "description": "awesome_gallery.models.ir_ui_view",
+        "peekOfCode": "class View(models.Model):\n    _inherit = 'ir.ui.view'\n    type = fields.Selection(selection_add=[('gallery', \"Awesome Gallery\")])",
+        "detail": "awesome_gallery.models.ir_ui_view",
+        "documentation": {}
+    },
+    {
+        "label": "OwlPlayground",
+        "kind": 6,
+        "importPath": "awesome_owl.controllers.controllers",
+        "description": "awesome_owl.controllers.controllers",
+        "peekOfCode": "class OwlPlayground(http.Controller):\n    @http.route(['/awesome_owl'], type='http', auth='public')\n    def show_playground(self):\n        \"\"\"\n        Renders the owl playground page\n        \"\"\"\n        return request.render('awesome_owl.playground')",
+        "detail": "awesome_owl.controllers.controllers",
+        "documentation": {}
+    },
+    {
+        "label": "TestProperty",
+        "kind": 6,
+        "importPath": "estate.models.test_property",
+        "description": "estate.models.test_property",
+        "peekOfCode": "class TestProperty(models.Model):\n    _name = \"test.property\"\n    _description = \"Test Model\"\n    name = fields.Char('name',required=True,default=\"My new House\")\n    description=fields.Text('description')\n    postcode=fields.Char()\n    date_availability=fields.Date('availability',default=(datetime.today() + relativedelta(months=3)).date(),copy=False)\n    expected_price=fields.Float(readonly=True)\n    best_price=fields.Float(readonly=True,compute=\"_compute_best_price\")\n    selling_price=fields.Float(readonly=True,copy=False)",
+        "detail": "estate.models.test_property",
+        "documentation": {}
+    },
+    {
+        "label": "test_property_offer",
+        "kind": 6,
+        "importPath": "estate.models.test_property_offer",
+        "description": "estate.models.test_property_offer",
+        "peekOfCode": "class test_property_offer(models.Model):\n    _name = \"test.property.offer\"\n    price = fields.Float('price',required=True)\n    status = fields.Selection([('Accepted','Accepted'),('Refused','Refused'),('Pennding','pennding')],default=\"Pennding\",copy=False)\n    buyer_id = fields.Many2one('res.partner',string='partner_id',required=True)   \n    property_id = fields.Many2one('test.property',required=True)\n    validity = fields.Integer(default=7)\n    date_deadline = fields.Date(compute='_compute_date_deadline',inverse='_inverse_date_deadline',default=datetime.today())\n    @api.depends('validity')\n    def _compute_date_deadline(self):",
+        "detail": "estate.models.test_property_offer",
+        "documentation": {}
+    },
+    {
+        "label": "TestPropertyTags",
+        "kind": 6,
+        "importPath": "estate.models.test_property_tags",
+        "description": "estate.models.test_property_tags",
+        "peekOfCode": "class TestPropertyTags(models.Model):\n    _name = \"test.property.tags\"\n    name = fields.Char('name')",
+        "detail": "estate.models.test_property_tags",
+        "documentation": {}
+    },
+    {
+        "label": "TestPropertyType",
+        "kind": 6,
+        "importPath": "estate.models.test_property_type",
+        "description": "estate.models.test_property_type",
+        "peekOfCode": "class TestPropertyType(models.Model):\n    _name = \"test.property.type\"\n    name = fields.Char('name')\n    description=fields.Char('description')",
+        "detail": "estate.models.test_property_type",
+        "documentation": {}
+    }
+]
