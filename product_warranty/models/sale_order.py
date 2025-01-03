@@ -14,4 +14,4 @@ class SaleOrder(models.Model):
         #  delete the warranty also for that deleted product. 
         #  each warranty have its corresponsding product id in linked_line_id
         linked_line_ids_to_delete = self.order_line.search([('linked_line_id', 'in', deleted_product_ids)])
-        self.order_line = [Command.unlink(linked_line_id) for linked_line_id in linked_line_ids_to_delete.ids]
+        self.order_line = [Command.delete(linked_line_id) for linked_line_id in linked_line_ids_to_delete.ids]

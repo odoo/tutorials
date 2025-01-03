@@ -1,0 +1,48 @@
+<odoo>
+    <record id="view_library_book_list" model="ir.ui.view">
+        <field name="name">library.book.list</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="author"/>
+                <field name="published_date"/>
+                <field name="price"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_library_book_form" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <header>
+                        <button name="action_with_ORM_functions" type="object" string="Using ORM Functions" class="btn-primary"/>
+                        <button name="action_with_command" type="object" string="Using Command" class="btn-primary"/>
+                    </header>
+                    <group>
+                        <field name="name"/>
+                         <field name="author"/>
+                        <field name="author_id"/>
+                        <field name="reader_ids"/>
+                        <field name="published_date"/>
+                        <field name="price"/>
+                    </group>
+                </sheet>
+            </form>
+            
+        </field>
+    </record>
+
+    <record id="action_library_book" model="ir.actions.act_window">
+        <field name="name">Books</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_library_root" name="Library">
+        <menuitem id="menu_library_books" name="Books" action="action_library_book"/>
+    </menuitem>
+</odoo>

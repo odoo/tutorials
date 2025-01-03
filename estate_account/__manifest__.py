@@ -6,7 +6,7 @@
     'depends': [
         'base','estate','account'
     ],
-    "data": [
+    'data': [
         'report/estate_property_reports.xml',
     ],
     'installable': True,
