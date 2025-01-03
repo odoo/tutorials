@@ -5,6 +5,13 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define New Property
+            </p><p>
+                Use options specified in form to list new property
+            </p>
+        </field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -30,11 +37,9 @@
         <field name="arch" type="xml">
             <form string="Property Details" > <!-- editable="bottom" --> 
                 <sheet>
-                    <!-- <group name="Name"> -->
-                        <h1><field name="name" label="Property Name" placeholder="Property Name"/></h1>
-                        <field name="property_tags_id" widget="many2many_tags" label="tags"></field>
+                    <h1><field name="name" label="Property Name" placeholder="Property Name"/></h1>
+                    <field name="property_tags_id" widget="many2many_tags" label="Tags"></field>
 
-                    <!-- </group> -->
                     <group>
                         <group>
                             <field name="property_type_id"></field>
@@ -43,25 +48,32 @@
                         </group>
                         <group>
                             <field name="expected_price" />
+                            <field name="best_price" />
                             <field name="selling_price" />
                             <!-- <field name="property_tags_id" widget="many2many_tags"></field> -->
                         </group>
                     </group>
                     <notebook>
                         <page name="Description" string="Description">
-                            <group name="Features">
-                                <field name="description"></field>
-                                <field name="bedrooms"></field>
-                                <field name="living_area"></field>
-                                <field name="garage"></field>
-                                <field name="facades"></field>
-                                <field name="garden"></field>
-                                <field name="garden_area"></field>
-                                <field name="garden_orientation"></field>
+                            <group>
+                                <group name="property_details"> 
+                                    <field name="description"></field>
+                                    <field name="living_area"></field>
+                                    <field name="bedrooms"></field>
+                                    <field name="facades"></field>
+                                </group>
+                                <group name="additional_features">
+                                    <field name="garage"></field>
+                                    <field name="garden"></field>
+                                    <field name="garden_area"></field>
+                                    <field name="garden_orientation"></field>
+                                    <field name="total_area"></field>
+                                </group>
                             </group>
                         </page>
+
                         <page name="Offers">
-                                <field name="offer_ids" />
+                            <field name="offer_ids" />
                         </page>
                         <page name="Other Info" string="Other Info">
                             <group>

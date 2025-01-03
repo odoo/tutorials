@@ -7,6 +7,7 @@
         <menuitem id="estate_settings_menu" name="Settings" >
             <menuitem id="estate_settings_property_types" name="Property Types" action="estate_property_types_action"/>
             <menuitem id="estate_settings_property_tags" name="Property Tags" action="estate_property_tags_action" />
+            <menuitem id="estate_settings_property_offers" name="Property Offers" action="estate_property_offer_action" />
         </menuitem>
     </menuitem>
 
