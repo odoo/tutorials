@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_budget_form">
+        <field name="name">budget.view.form</field>
+        <field name="model">budget</field>
+        <field name="arch" type="xml">
+            <form string="Budget">
+                <div class="alert alert-warning" role="alert" invisible="color!=3">
+                    <p>Warning: This budget is over.</p>
+                </div>
+                <header>
+                    <button string="Reset to Draft" name="action_budget_draft" invisible="state == 'draft'" type="object" class="btn-primary"/>
+                    <button string="Open" name="action_budget_confirm" invisible="state != 'draft'" type="object" class="btn-primary"/>
+                    <button string="Revise" name="create_revised_budget" invisible="state != 'confirmed'" type="object" class="btn-secondary"/>
+                    <button string="Done" name="action_budget_done" invisible="state != 'confirmed'" type="object" class="btn-secondary"/>
+                    <button string="Cancel Budget" name="action_budget_cancel" invisible="state != 'draft'" type="object" class="btn-secondary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet string="Budget">
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Budget 2023"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="user_id" readonly="state != 'draft'" domain="[('share', '=', False)]" widget="many2one_avatar" options="{'no_create': True}"/>
+                            <field name="parent_id" readonly="true" invisible="not parent_id"/>
+                        </group>
+                        <group>
+                            <label for="date_from" string="Period"/>
+                            <div class="o_row">
+                                <field name="date_from" nolabel="1" class="oe_inline" readonly="state != 'draft'"/>
+                                <i class="fa fa-long-arrow-right mx-2" aria-label="to" title="to"/>
+                                <field name="date_to" nolabel="1" class="oe_inline" readonly="state != 'draft'"/>
+                            </div>
+                            <field name="company_id" options="{'no_create': True, 'no_open': False}"/>
+                            <field name="on_over_budget"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Budget Lines" name="budget_lines">
+                            <field name="budget_line_ids" colspan="4" nolabel="1" readonly="state != 'draft'">
+                                <list string="Budget Lines" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="account_id" optional="show" string="Analytical Account"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="budget_amount" sum="Budget"/>
+                                    <field name="achieved_amount" column_invisible="parent.state =='draft'" decoration-danger="(is_above_budget)" sum="Achieved"/>
+                                    <field name="achieved_percentage" column_invisible="parent.state =='draft'" widget="progressbar" options="{'max_value': 100}"/>
+                                    <button type="object" name="action_open_budget_entries" string="View" icon="fa-arrow-circle-o-right" column_invisible="parent.state in ('draft','canceled')"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_budget_tree">
+        <field name="name">budget.view.list</field>
+        <field name="model">budget</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'" decoration-muted="state in ('done','canceled', 'revised')" string="Budget">
+                <header>
+                    <button display="always" class="btn btn-secondary" string="Generate" type="action" name="%(budget_management.budget_split_wizard_action)d"/>
+                    <button string="Budget Lines" type="object" name="action_open_budget_lines" class="btn btn-primary"/>
+                </header>
+                <field name="name" colspan="1" readonly="state == 'done'"/>
+                <field name="date_from" readonly="state == 'done'" optional="show"/>
+                <field name="date_to" readonly="state == 'done'" optional="show"/>
+                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" optional="hide"/>
+                <field name="user_id" options="{'no_create': True}"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_budget_kanban" model="ir.ui.view">
+        <field name="name">budget.kanban</field>
+        <field name="model">budget</field>
+        <field name="arch" type="xml">
+            <kanban highlight_color="color" class="o_kanban_mobile">
+                <templates>
+                    <t t-name="menu" groups="base.group_user">
+                        <div class="container">
+                            <div class="row">
+                                <div name="card_menu_view" class="col-6">
+                                    <h5 role="menuitem" class="o_kanban_card_manage_title">
+                                        <span>View</span>
+                                    </h5>
+                                    <div role="menuitem">
+                                        <a name="action_open_budget_lines" type="object">Budget Lines</a>
+                                    </div>
+                                    <!-- Cannot add color pallete as we are computing its value -->
+                                    <!-- <div role="menuitem">
+                                        <field name="color" widget="kanban_color_picker"/>
+                                    </div> -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </t>
+                    <t t-name="card">
+                        <div class="row mb4">
+                            <field name="is_favorite" widget="boolean_favorite" nolabel="1" readonly="0"/>
+
+                            <field name="name" class="fw-bold fs-5 col-8" readonly="state == 'done'"/>
+                            <div class="col-4">
+                                <field name="state" class="float-end" widget="label_selection" options="{'classes': {'draft': 'default', 'done': 'success'}}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10">
+                                <i class="fa fa-clock-o me-1" role="img" aria-label="Period" title="Period"/>
+                                <field name="date_from"/>
+ -
+                                <field name="date_to"/>
+                            </div>
+                            <div class="col-2">
+                                <field name="user_id" class="float-end" widget="many2one_avatar_user"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_budget_search" model="ir.ui.view">
+        <field name="name">budget.search</field>
+        <field name="model">budget</field>
+        <field name="arch" type="xml">
+            <search string="Budget">
+                <field name="name" string="Budget"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]" help="Draft Budgets"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="act_budget_view" model="ir.actions.act_window">
+        <field name="name">Budgets</field>
+        <field name="res_model">budget</field>
+        <field name="view_mode">list,kanban,form,activity</field>
+        <field name="view_id" ref="view_budget_tree"/>
+        <field name="search_view_id" ref="view_budget_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Click to create a new budget.
+            </p>
+            <p>
+                Use budgets to compare actual with expected revenues and costs
+            </p>
+        </field>
+    </record>
+</odoo>

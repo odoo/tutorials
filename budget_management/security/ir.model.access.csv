@@ -1,0 +1,4 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+budget_manager,access_budget,model_budget,base.group_user,1,1,1,1
+budget_line_manager,access_budget,model_budget_line,base.group_user,1,1,1,1
+access_budget_split_wizard,budget.split.wizard,model_budget_split_wizard,base.group_user,1,1,1,1

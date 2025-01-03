@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem web_icon="budget_management,static/description/icon.png" id="budget_root" name="Budget">
+        <menuitem id="budget_first_level_menu" action="act_budget_view"/>
+    </menuitem>
+</odoo>

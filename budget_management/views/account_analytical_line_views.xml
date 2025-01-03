@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_analytical_line_tree">
+        <field name="name">account.analytic.line</field>
+        <field name="model">account.analytic.line</field>
+        <field name="arch" type="xml">
+            <list string="Analytical Lines" editable="top">
+                <field name="account_id" readonly="True"/>
+                <field name="name"/>
+                <field name="amount"/>
+            </list>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="act_analytical_lines_view">
+        <field name="name">Analytical Lines</field>
+        <field name="res_model">account.analytic.line</field>
+        <field name="view_mode">list</field>
+        <field name="context"></field>
+    </record>
+
+</odoo>
