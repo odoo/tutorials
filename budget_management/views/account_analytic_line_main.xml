@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_analytic_line_main_view_list_changed" model="ir.ui.view">
+        <field name="name">account.analytic.line.main.view.list</field>
+        <field name="model">account.analytic.line.main</field>
+        <field name="arch" type="xml">
+            <form string="Analytic Lines">
+                <sheet>
+                    <group invisible="budget_line_id == False">
+                        <field name="budget_amount" />
+                        <field name="achieved_amount"></field>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom" open_view_form="0">
+                            <field name="date" />
+                            <field name="name" />
+                            <field name="currency_id" column_invisible="1" />
+                            <field name="amount" />
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

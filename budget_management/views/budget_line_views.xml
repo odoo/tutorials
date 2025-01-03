@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="budget_line_view_list" model="ir.ui.view">
+        <field name="name">budget.line.view.list</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <list string="Budget Lines">
+                <field name="budget_id" />
+                <field name="analytic_account_id" />
+                <field name="currency_id" column_invisible="1" />
+                <field name="budget_amount" />
+                <field name="achieved_amount" />
+            </list>
+        </field>
+    </record>
+
+    <record id="budget_line_view_graph" model="ir.ui.view">
+        <field name="name">budget.line.view.graph</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <graph string="Budget Lines" disable_linking="1">
+                <field name="budget_amount" type="measure" />
+                <field name="achieved_amount" type="measure" />
+                <field name="analytic_account_id" type="col" />
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="budget_line_pivot_view" model="ir.ui.view">
+        <field name="name">budget.line.view.pivot</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget Lines">
+                <field name="analytic_account_id" type="row" select="1" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="budget_line_view_gantt" model="ir.ui.view">
+        <field name="name">budget.line.view.gantt</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <gantt string="Budgets"
+                date_start="date_start"
+                date_stop="date_stop"
+                default_group_by="budget_id"
+                color="budget_id"
+                progress="achieved_percentage"
+                dynamic_range="1"
+                disable_drag_drop="False"
+                decoration-success="achieved_amount &lt; budget_amount"
+                thumbnails="{'responsible_id': 'avatar_128'}"
+                total_row="true"
+            ></gantt>
+        </field>
+    </record>
+
+    <record id="budget_line_action" model="ir.actions.act_window">
+        <field name="name">Budget Lines</field>
+        <field name="res_model">budget.line</field>
+        <field name="view_mode">list,graph,pivot,gantt</field>
+    </record>
+</odoo>

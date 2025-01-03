@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="budget_menu_root" name="Budget">
+        <menuitem id="budget_first_level_menu" name="Budgets" action="budget_budget_action" />
+        <menuitem id="budget_second_level_menu" name="Budget Lines" action="budget_line_action" />
+    </menuitem>
+</odoo>
