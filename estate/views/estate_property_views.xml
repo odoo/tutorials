@@ -5,14 +5,16 @@
     <record id="estate_property_action" model="ir.actions.act_window"> <!--Id of the action-->
         <field name="name">Properties</field> <!--name of action-->
         <field name="res_model">estate.property</field> <!--models reference models/estate_property.py > _name-->
-        <field name="view_mode">list,form,kanban</field> <!-- shows default list, form, kanban views-->
+        <field name="view_mode">list,form</field> <!-- shows default list, form, kanban views-->
+        <field name="context">{'search_default_availaible': True}</field> <!--making the availaible filter as default and filter value is True filter in search-->
+
     </record>
 
     <!-- ########################################################################### -->
 
     <!--CUSTOM VIEW FOR LIST VIEW !overiding the default list view-->
     <record id="estate_property_view_list" model="ir.ui.view">
-        <field name="name">Estate Property List View</field> <!-- !need to ask the use of this name? -->
+        <field name="name">Estate Property List View</field>
         <field name="model">estate.property</field> <!--model name-->
         <field name="arch" type="xml">
             <list decoration-success="offer_ids.length >0 and state != 'sold'" decoration-bf="state=='offer_accepted'" decoration-muted="state == 'sold'"> 
@@ -25,6 +27,7 @@
                 <field name="garden_orientation"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/> 
                 <field name="date_availability" optional="hide"/>
+                <field name="living_area" optional="hide"/>
             </list>
         </field>
     </record>
@@ -124,7 +127,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>', self)]" /> <!--if user search x all the record shown if living_area is greader than self-->
                 <field name="facades"/>
                 <!-- <separator/> -->
                 <filter string="Availaible" name="availaible" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>

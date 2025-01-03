@@ -18,19 +18,27 @@ class EstatePropertyOffer(models.Model):
         help="Status of the offer"
     )
     partner_id= fields.Many2one(comodel_name="res.partner", required=True) #jha many2one hai fk vha store hoga
-    property_id= fields.Many2one(comodel_name="estate.property", required=True) #! define the one2many field, including comodel & inverse_name in the foreign table as wel
+    property_id= fields.Many2one(comodel_name="estate.property", required=True, ondelete="cascade") #! define the one2many field, including comodel & inverse_name in the foreign table as wel
     
     validity= fields.Integer(string="Validity", default=7)
+    #! if we do no define the inverse the date_deadline field stays non editable, inverse property let user choose the date_deadline and doing so will update the validity time on save of the record.
+    date_deadline= fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline",help="today date + validity")
     
-    #=====================================================================================#
+    @api.model
+    def create(self, vals):
+        estate_property_ref = self.env['estate.property'].browse(vals['property_id'])
+        best_price= estate_property_ref.best_price
+            
+        if vals['price'] < best_price:
+            raise UserError(f"The offer must be higher than the {best_price}")
+        estate_property_ref.state='offer_received'
+        return super().create(vals)
+    
     
     _sql_constraints= [
         ('check_price','CHECK(price>0)','Price cannot be a negative value')
     ]
     
-    #=====================================================================================#
-    #! if we do no define the inverse the date_deadline field stays non editable, inverse property let user choose the date_deadline and doing so will update the validity time on save of the record.
-    date_deadline= fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline",help="today date + validity")
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self: #runs everytime in the list view
@@ -54,7 +62,8 @@ class EstatePropertyOffer(models.Model):
                 if(date_difference.days<0):
                     raise ValidationError(_("deadline can only be in future"))
                 record.validity=  date_difference.days
-                
+    
+    # called by button action
     def mark_offer_accept(self):
         for record in self:
             if(record.property_id.selling_price!=0.0):
@@ -67,7 +76,7 @@ class EstatePropertyOffer(models.Model):
             # record.property_id.state='offer_accepted'
         return True
         
-    #an accepted offer can be rejected by setting selling_price to 0.0 and then status=refused
+    #called by button action|| an accepted offer can be rejected by setting selling_price to 0.0 and then status=refused
     def mark_offer_refuse(self):
         for record in self:
             record.status= 'refused'

@@ -53,10 +53,24 @@ class EstateProperty(models.Model):
         required=True
     )
     
+    property_type_id= fields.Many2one(comodel_name="estate.property.type",string="Property Type")   
+    buyer= fields.Many2one(comodel_name="res.partner",string="Buyer", copy=False) #partner person can be     company, an individual or even a contact address.
+    tag_ids= fields.Many2many(comodel_name="estate.property.tag", string="Tags")
+    salesperson= fields.Many2one(comodel_name="res.users", string="Salesperson", default=lambda self: self.env.user) #default value is self.env.user is the current user’s record
+
+    offer_ids= fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id") #inverse_name refers to the foreign field of model
+    #? there will be always one2many mapping for all the many2one mapping in another table, always define the inverse_name(foriegn field) in the one2many mapping
+    #? inverse method is called when saving the record, while the compute method is called at each change of its dependencies.
+    total_area= fields.Integer(string="Total Area(sqm)", compute="_compute_total_area", help="Total Area is the sum of Living Area and Garden Area")
+    #? since the store!=True the above field is not going to store in the db
+
     
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_not_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("Only new and cancelled property can be deleted")
     
-    #chapter 10: https://www.odoo.com/documentation/18.0/developer/tutorials/server_framework_101/10_constraints.html
-    #=====================================================================================================
     
     _sql_constraints = [
         ('expected_price_check', 'CHECK(expected_price>=0.0)', 'Expected price must be positive'),
@@ -74,25 +88,15 @@ class EstateProperty(models.Model):
                 if(floatUtil.float_compare(value1=records.selling_price, value2=per_90_of_expected_price, precision_digits=2) == -1):
                     raise ValidationError(_("The selling price cannot be lower than 90% of the expected price"))
     
-    #=====================================================================================================
+    
+    # @api.onchange("offer_ids")
+    # def update_offer_state(self):
+    #     for record in self:
+    #         if(len(record.offer_ids)>0 and record.state=="new"):
+    #             record.state="offer_received"            
     
     
-    #chapter 7: https://www.odoo.com/documentation/18.0/developer/tutorials/server_framework_101/07_relations.html#one2many
-    property_type_id= fields.Many2one(comodel_name="estate.property.type",string="Property Type")   
-    buyer= fields.Many2one(comodel_name="res.partner",string="Buyer", copy=False) #partner person can be     company, an individual or even a contact address.
-    tag_ids= fields.Many2many(comodel_name="estate.property.tag", string="Tags")
-    salesperson= fields.Many2one(comodel_name="res.users", string="Salesperson", default=lambda self: self.env.user) #default value is self.env.user is the current user’s record
-
-    offer_ids= fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id") #inverse_name refers to the foreign field of model
-    #! there will be always one2many mapping for all the many2one mapping in another table, always define the inverse_name(foriegn field) in the one2many mapping
     
-    
-    #chapter 8: https://www.odoo.com/documentation/18.0/developer/tutorials/server_framework_101/08_compute_onchange.html#how-to-use-them
-    #! inverse method is called when saving the record, while the compute method is called at each change of its dependencies.
-    total_area= fields.Integer(string="Total Area(sqm)", compute="_compute_total_area", help="Total Area is the sum of Living Area and Garden Area")
-    '''
-        since the store!=True the above field is not going to store in the db
-    '''
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -133,3 +137,4 @@ class EstateProperty(models.Model):
                 raise UserError(_("Sold property cannot be cancelled."))
             record.state='cancelled'
         return True #a public method should always return something so that it can be called through XML-RPC. When in doubt, just return True.
+        

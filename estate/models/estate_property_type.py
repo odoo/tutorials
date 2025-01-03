@@ -15,3 +15,6 @@ class EstatePropertyType(models.Model):
         ('unique_name_check', 'UNIQUE(name)', 'Given Property type already exist please choose unique property type')
     ]
     
+    def get_all_property_offers_related(self):
+        pass
+    
