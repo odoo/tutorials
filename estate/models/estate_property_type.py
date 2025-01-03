@@ -7,4 +7,5 @@ class EstatePropertyType(models.Model):
     _description = "Property Types"
 
     name = fields.Char('Property Type', required=True)
+    number = fields.Integer('Numbers')
     

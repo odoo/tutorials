@@ -40,6 +40,12 @@
                 <field name="model">estate.property</field>
                 <field name="arch" type="xml">
                     <form string="estate_property_form">
+
+                    <header>
+                        <button class= "btn btn-primary"  name="sell_action" type="object" string="SOLD"/>
+                        <button class= "btn btn-primary"  name="cancel_action" type="object" string="CANCEL"/>
+                    </header>
+
                         <sheet>
                            <h1>   <field name="name" placeholder="Property Name"></field>
                            </h1>
@@ -50,7 +56,7 @@
 
                     <group>
                         <group>
-
+                            <field name="status_button"></field>
                             <field name="property_type_id"></field>
                             <field name="postcode"></field>
                             <field name="date_availability"></field>
@@ -59,6 +65,8 @@
 
                             <field name="expected_price"></field>
                             <field name="selling_price"></field>
+                            <field name="best_price"></field>
+                            
                         </group>
                         
                     </group>
@@ -75,7 +83,7 @@
                             <field name="garden"></field>
                             <field name="garden_area"></field>
                             <field name="garden_orientation"></field>
-                            <field name="state"></field>
+                              <field name="state"></field>
                             <field name="total_area"></field>
                             
                             
@@ -89,7 +97,12 @@
                                 <list sample="1">
                                     <field name="price" string="Title"/> 
                                     <field name="partner_id" /> 
-                                    <field name="status" /> 
+                                  
+                                    <field name="validity"></field>
+                                    <field name="date_deadline"></field>
+                                    <button name="tick_accept" string="Accept" states="draft" type="object" icon="fa-check"/>                    
+                                    <button name="cross_refuse" string="Refuse" states="draft" type="object" icon="fa-check"/>                    
+                                     <field name="status" />                      
                                     
                                 </list>
                             
