@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_budget_line_list" model="ir.ui.view">
+        <field name="name">budget.line.list</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <list string="Budget Lines" decoration-danger="is_above_budget">
+                <field name="budget_id"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="budget_analytic_id"/>
+                <field name="budget_amount"/>
+                <field name="achieved_amount"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_budget_line_form" model="ir.ui.view">
+        <field name="name">budget.line.form</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <form string="Budget Line">
+                    <field name="budget_analytic_id" readonly="1"/>
+                    <group>
+                        
+                <group>
+                    <field name="budget_amount" readonly="1"/>
+                </group>
+                <group>
+                    <field name="achieved_amount"/>
+                </group>
+                    </group>
+                    <field name="analytic_line_ids">
+                        <list editable="bottom">
+                        <field name="currency_id" column_invisible="1"/>
+                            <field name="name"/>
+                            <field name="amount"/>
+                        </list>
+                    </field>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_budget_line_pivot" model="ir.ui.view">
+        <field name="name">budget.line.pivot</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget Lines" display_quantity="1">
+                <field name="budget_id" type="row"/>
+                <field name="budget_analytic_id" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_budget_line_graph" model="ir.ui.view">
+        <field name="name">budget.line.graph</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <graph type="bar" stacked="1" sample="1" cumulated="1" cumulated_start="0">
+                <field name="budget_id" type="col"/>
+                <field name="budget_amount" type="measure"/>
+                <field name="achieved_percentage" invisible="1"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_budget_line_gantt" model="ir.ui.view">
+        <field name="name">budget.line.gantt</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <gantt string="Budget Lines" color="budget_id" progress="achieved_percentage" create="False" delete="False" edit="False" default_range="month" date_start="start_date" decoration-danger="is_above_budget" date_stop="end_date" default_group_by="budget_id" thumbnails="{'user_id': 'avatar_128'}">
+            </gantt>
+        </field>
+    </record>
+
+    <record id="action_budget_line" model="ir.actions.act_window">
+        <field name="name">Budget Lines</field>
+        <field name="res_model">budget.line</field>
+        <field name="view_mode">list,form,graph,gantt,pivot</field>
+    </record>
+
+</odoo>

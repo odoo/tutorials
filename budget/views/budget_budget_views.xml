@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_budget_budget_form" model="ir.ui.view">
+        <field name="name">budget.budget.form</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <form string="Budget">
+                <sheet>
+                    <header>
+                        <button string="Confirm" name="action_confirm" type="object" class="oe_highlight" invisible="state in ('confirmed', 'revised', 'done')"/>
+                        <button string="Reset to Draft" name="action_reset_to_draft" type="object" class="oe_highlight" invisible="state in ('draft', 'revised', 'done')"/>
+                        <button string="Revise" name="action_revised" type="object" invisible="state in ('draft', 'revised', 'done')"/>
+                        <button string="Done" name="action_done" type="object" invisible="state in ('draft', 'revised', 'done')"/>
+                        <field name='state' widget='statusbar'/>
+                    </header>
+                    <div class="alert alert-warning" role="alert" invisible="not over_budget or on_over_budget != 'warning'">
+                    Warning: Over Budget
+                    </div>
+                    <h5>Budget Name:</h5>
+                    <field name="name"/>
+                    <group>
+                        <group>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="date_from" string="Period" widget="daterange" options="{'end_date_field': 'date_to', 'always_range': '1'}"/>
+                            <field name="company_id"/>
+                            <field name="on_over_budget"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="revision_id"/>
+                        </group>
+                        <group>
+                            <field name="parent_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="budget_lines" string="Budget Lines">
+                            <field name="budget_line_ids" readonly="state in ('confirmed', 'revised', 'done')">
+                                <list decoration-danger="is_above_budget" editable="bottom">
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="budget_analytic_id"/>
+                                    <field name="budget_amount"/>
+                                    <field name="achieved_amount"/>
+                                    <field name="achieved_percentage" widget="progressbar"/>
+                                    <button name="open_analytic_account" type="object" string="View"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_budget_budget_kanban" model="ir.ui.view">
+        <field name="name">budget.budget.kanban</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <kanban highlight_color="color" default_order="is_favorite desc">
+                <header>
+                    <button name="%(action_multiple_budgets)d" type="action" string="Create Multiple Budgets" display="always"/>
+                </header>
+                <t t-name="menu">
+                    <a role="menuitem" type="open" class="dropdown-item">Configuration</a>
+                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                    <field name="color" widget="kanban_color_picker"/>
+                </t>
+                <templates>
+                    <t>
+                        <button string="Create Multiple Budgets" name="%(action_multiple_budgets)d" type="action" class="oe_highlight"/>
+                    </t>
+                    <t t-name="card">
+                        <div class="d-flex align-items-baseline">
+                            <field name="is_favorite" widget="boolean_favorite" nolabel="1"/>
+                            <div >
+                                <h4>
+                                    <field name="display_name"/>
+                                </h4>
+                                <div class="text-muted">
+                                    <span class="fa fa-clock-o me-2" title="Dates"/>
+                                    <field name="date_from"/>
+                                    <i class="fa fa-long-arrow-right mx-2" title="Arrow"/>
+                                    <field name="date_to"/>
+                                </div>
+                            </div>
+                        </div>
+                        <footer >
+                            <div class="d-flex ms-auto align-items-center">
+                                <field name="user_id" widget="many2one_avatar_user" class="me-1"/>
+                            </div>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_budget_budget" model="ir.actions.act_window">
+        <field name="name">Budgets</field>
+        <field name="res_model">budget.budget</field>
+        <field name="view_mode">kanban,form,list</field>
+    </record>
+
+</odoo>
