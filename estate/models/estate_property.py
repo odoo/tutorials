@@ -4,6 +4,7 @@ from datetime import timedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = 'id desc'
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
@@ -13,7 +14,7 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.today() + timedelta(days=90),
         copy=False
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
+    expected_price = fields.Float(string="Expected Price", default=0, required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area")
@@ -48,9 +49,10 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)    
     tag_ids = fields.Many2many('estate.property.tag', string="Tag Name")
-    offer_ids = fields.One2many('estate.property.offer', "property_id", ondelete='restrict')
+    offer_ids = fields.One2many('estate.property.offer', "property_id")
 
     best_price = fields.Float(string="Best Price", compute="_best_price", store=True)
+    sequence = fields.Integer('Sequence', default=0)
 
     @api.depends("offer_ids")
     def _best_price(self):
@@ -74,20 +76,33 @@ class EstateProperty(models.Model):
                 record.garden_orientation = 'north'  
             else:
                 record.garden_area = 0  
-                record.garden_orientation = ''
+                record.garden_orientation = False
 
     def action_to_sold(self):
         for record in self:
             if record.state == 'cancelled':
                 raise exceptions.UserError("Cancelled Property can not be sold")
-            elif record.state == 'new':
+            elif record.state == 'offer accepted':
                 self.state = 'sold'
 
     def action_to_cancel(self):
         for record in self:
-            if record.state == 'new':
+            if record.state == 'offer accepted':
                 record.state = 'cancelled'
+                
+    
+
+    _sql_constraints = [
+        ('expected_price_positive', 'CHECK(expected_price > 0)', 'Expected Price must be strictly positive!'),
+        ('selling_price_positive', 'CHECK(selling_price > 0)', 'Selling Price must be positive!'),
+    ]
+
+    @api.constrains('selling_price')
+    def _check_lower_selling_price(self):
+        for record in self:
+            lower_price = (record.expected_price * 9)/10
+            if record.selling_price <= lower_price:
+                raise exceptions.ValidationError("selling Price should be Higher than 90%")
 
 
-
-
+  
