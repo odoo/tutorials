@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sale</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='catalog_setting_container']" position="after">
+                <block title="Installment Process" id="installment_setting_container">
+                    <setting id="max_duration_setting" help="Define Max Duration.">
+                        <field name="max_duration" widget="integer" string="Max Duration" help="Define the maximum installment duration."/>
+                    </setting>
+
+                    <setting id="annual_rate_percentage_setting" help="Define Annual rate Percentage.">
+                        <field name="annual_rate_percentage" widget="float" string="Annual Rate Percentage" help="Define the annual rate percentage."/>
+                    </setting>
+
+                    <setting id="down_payment_percentage_setting" help="Define Down Payment Percentage.">
+                        <field name="down_payment_percentage" widget="float" string="Down Payment Percentage" help="Define the down payment percentage."/>
+                    </setting>
+
+                    <setting id="admin_expenses_percentage_setting" help="Define Administrative Expenses Percentage.">
+                        <field name="admin_expenses_percentage" widget="float" string="Administrative Expenses Percentage" help="Define the administrative expenses percentage."/>
+                    </setting>
+
+                    <setting id="delay_penalty_percentage_setting" help="Define Delay Penalty Percentage.">
+                        <field name="delay_penalty_percentage" widget="float" string="Delay Penalty Percentage" help="Define the delay penalty percentage."/>
+                    </setting>
+
+                    <setting id="delay_penalty_days_setting" help="Define Delay Penalty Days.">
+                        <field name="delay_penalty_days" widget="integer" string="Delay Penalty Days" help="Define the delay penalty process (in days)."/>
+                    </setting>
+                </block>
+
+                <block title="Needed Documents" id="needed_document_setting_container">
+                    <setting id="nid_required_setting">
+                        <field name="nid_required" widget="boolean" string="NID" help="Indicate if NID is required."/>
+                    </setting>
+                    <setting id="bank_statement_required_setting">
+                        <field name="bank_statement_required" widget="boolean" string="Bank Statement" help="Indicate if a bank statement is required."/>     
+                    </setting>
+                    <setting id="rental_contract_required_setting">
+                        <field name="rental_contract_required" widget="boolean" string="Rental Contract" help="Indicate if a rental contract is required."/>
+                    </setting>
+                    <setting id="salary_components_required_setting">
+                        <field name="salary_components_required" widget="boolean" string="Salary Components" help="Indicate if salary components are required."/>
+                    </setting>
+                    <setting id="bank_rate_letter_required_setting">
+                        <field name="bank_rate_letter_required" widget="boolean" string="Bank Rate Letter" help="Indicate if a bank rate letter is required."/>
+                    </setting>
+                    <setting id="ownership_contract_required_setting">
+                        <field name="ownership_contract_required" widget="boolean" string="Ownership Contract" help="Indicate if an ownership contract is required."/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

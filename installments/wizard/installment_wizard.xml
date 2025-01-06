@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Form view for the wizard -->
+    <record id="emi_wizard_form_view_form" model="ir.ui.view">
+        <field name="name">installment.wizard.form</field>
+        <field name="model">installment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add EMI">
+                <sheet>
+                    <group>
+                        <field name="so_amount" string="Total SO Amount"/>
+                        <field name="down_payment"/>
+                        <field name="remaining_amount"/>
+                        <field name="interest"/>
+                        <field name="monthly_installment_count" string="Number of Monthly Installment"/>
+                        <field name="monthly_installment_amount" string="Installment Amount"/>
+                    </group>       
+                </sheet>
+                <footer>
+                    <button string="Add Installment" type="object" name="action_add_warranty" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open the wizard -->
+    <record id="action_open_installment_wizard" model="ir.actions.act_window">
+        <field name="name">Installment Information</field>
+        <field name="res_model">installment.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="emi_wizard_form_view_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>
