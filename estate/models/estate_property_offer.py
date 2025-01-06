@@ -1,13 +1,22 @@
 from odoo import models,fields,api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError
 
+from odoo.tools import (
+
+    float_compare,
+   
+)
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers"
+    _order= "price desc"
 
     price = fields.Float('Property Price')
+    
     
 
     status = fields.Selection(
@@ -46,11 +55,17 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - datetime.today().date()).days
     
 
+    
+
+
+
+
 
     def tick_accept(self):
         for record in self:
             record.status='accepted'
-            record.property_id.best_price=record.price
+            record.property_id.state='offer_accepted'
+            record.property_id.selling_price=record.price
             record.property_id.partner_id=record.partner_id
 
         return True
@@ -65,5 +80,50 @@ class EstatePropertyOffer(models.Model):
             
         return True
 
+    _sql_constraints = [
+        (
+            "check_offer_price",
+            "CHECK(price > 0)",
+            "Offer price must be non-negative",
+        ),
+        
+    ]
+
+
+    # @api.constrains('price','status')
+    # def _check_offer_constraint(self):
+    #     for record in self:
+    #         if record.price < 0.90*record.property_id.expected_price and record.status=='accepted':
+    #              raise ValidationError("The selling price must be atleast 90 percentage of expected price")
+
+        
+    #     return True
+
+
+
+    @api.constrains('price','status')
+    def _check_offer_constraint(self):
+        for record in self:
+            if float_compare(record.price,record.property_id.expected_price*0.9,2)==-1 and record.status=='accepted':
+                 raise ValidationError("The selling price must be atleast 90 percentage of expected price")
+
+        
+        return True
     
+
+    property_type_id=fields.Many2one(related="property_id.property_type_id")
+
+         
+    # @api.model
+    # def create(self, vals):
+    #     offer_ref=self.env['estate.property.offer'].browse(vals['property_id'])
+
+    #     for record in self:
+    #         if offer_ref.price < record.property_id.best_price:
+    #             raise UserError("Can't delete this Record")
+
+
     
+
+
+    #     return super().create(vals)      

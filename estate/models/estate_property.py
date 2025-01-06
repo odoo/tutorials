@@ -3,10 +3,12 @@ from odoo import models,fields,api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Management Module"
+    _order= "id desc"
 
     name = fields.Char('Property Name', required=True)
     description=fields.Text('Description' )
@@ -94,6 +96,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status_button != 'cancelled':
                 record.status_button= 'sold'
+                record.state='sold'
             else:
                 raise UserError("CANCELLED properties can not be SOLD")
                 
@@ -104,15 +107,51 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status_button != 'sold':
                 record.status_button='cancelled'
+                record.state='cancelled'
             else:
                 raise UserError("SOLD properties can not be CANCELLED")
                 
             
         return True
-     
-
     
 
-            
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price must be strictly positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "Selling price must be non-negative",
+        ),
+    ]
+     
+    
+    
+    estate_id = fields.Many2one("estate.property.type")
+    
+    # @api.constrains('offer_ids')
+    # def _check_offer_received(self):
+    #     for record in self:
+    #         if record.offer_ids:
+    #             if record.state=='new':
+    #              record.state='offer_received'
+    #         else:
+    #             record.state='new'
+    
+        
+    #     return True
+    
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_state_new_cancelled(self):
+        for record in self:
+            if record.state == 'offer_accepted' or record.state=='sold' or record.state=='offer_received':
+                                raise UserError("Can't delete this Record")
+
+      
+     
 
     
