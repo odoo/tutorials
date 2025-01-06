@@ -21,6 +21,23 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         default=datetime.today(),
     )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )  #!This field is for stat button
+
+    #! used model create multi because @api.model is deprecated
+    @api.model_create_multi  # sets property state as offer received on creation also prevents creation of offers lower than current one
+    def create(self, vals_list):
+        if vals_list["property_id"]:
+            prop = self.env["estate.property"].browse(vals_list["property_id"])
+            if vals_list["price"] < prop.best_offer:
+                raise ValidationError("Offer price cannot be lower than best offer")
+            if prop.status == "new":
+                prop.status = "offer_received"
+            elif prop.status == "offer_accepted":
+                raise ValidationError("Offer already accepted for this property")
+
+        return super().create(vals_list)
 
     @api.depends("validity")
     def _compute_date_deadline(self):
@@ -40,7 +57,7 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             record.status = "accepted"
-            if record.property_id.status == "new":
+            if record.property_id.status == "offer_received":
                 record.property_id.status = "offer_accepted"
                 record.property_id.selling_price = self.price
                 record.property_id.buyer_id = record.partner_id
@@ -52,17 +69,15 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         for record in self:
-            if record.property_id.status == "new":
+            if record.property_id.status == "offer_received":
                 record.status = "refused"
                 record.property_id.selling_price = 0
+            elif record.property_id.status == "sold":
+                raise ValidationError("Property already sold")
+            elif record.property_id.status == "offer_accepted":
+                raise ValidationError("Offer already accepted")
             else:
-                if (
-                    record.property_id.status == "sold"
-                    or record.property_id.status == "offer_accepted"
-                ):
-                    raise ValidationError("Property already sold")
-                else:
-                    raise ValidationError("Property canceled")
+                raise ValidationError("Property canceled")
 
     @api.constrains("price", "status")
     def _check_accepted_offer_price(self):

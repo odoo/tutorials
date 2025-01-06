@@ -16,5 +16,17 @@
         </field>
     </record>
 
+    <!-- List view  -->
+    <record id="estate_property_tags_view_list" model="ir.ui.view">
+        <field name="name">estate.property.tags</field>
+        <field name="model">estate.property.tags</field>
+        <field name="arch" type="xml">
+            <list string="Channel" sample="1" editable="bottom">
+                <field name="name" string="Name"/>
+                <field name="color" string="Color"/>
+            </list>
+        </field>
+    </record>
+
 </odoo>
     

@@ -5,6 +5,7 @@
         <field name="name">Estate</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_availability': True}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Define new property
@@ -20,16 +21,17 @@
         <field name="name">estate.property</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channel" sample="1">
+            <list string="Channel" sample="1" decoration-muted="status == 'sold' " decoration-success="status=='offer_received' or status=='offer_accepted'" decoration-bf="status=='offer_accepted'">
                 <field name="sequence" widget="handle"/>
-                <field name="name" string="Title" decoration-danger="expected_price &lt; 2500"/>
+                <field name="name" string="Title"/>
+                <field name="property_type_id" string="Property Type"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="tag_ids" string="Property Tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living area(sqm)"/>
                 <field name="expected_price" string="Expected price"/>
                 <field name="selling_price" string="Selling price"/>
-                <field name="date_availability" string="Available from"></field>
+                <field name="date_availability" string="Availability date" type="date" optional="hide"></field>
             </list>
         </field>
     </record>
@@ -41,8 +43,9 @@
         <field name="arch" type="xml">
             <form string="estate_property_form">
                 <header>
-                    <button name="action_sold" class="btn btn_primary" invisible='status == "sold" or status == "canceled"' type="object" string="Sell"/>
-                    <button name="action_cancel" class="btn_secondary" invisible='status =="sold" or status == "canceled"' type="object" string="Cancel"/>
+                    <button name="action_sold" class="btn btn-primary" invisible='status != "offer_accepted" or status == "sold" or status == "canceled"' type="object" string="Sell"/>
+                    <button name="action_sold" class="btn btn-secondary" invisible='status == "offer_accepted" or status == "sold" or status == "canceled"' type="object" string="Sell"/>
+                    <button name="action_cancel" class="btn btn-secondary" invisible='status =="sold" or status == "canceled"' type="object" string="Cancel"/>
                     <field name="status" readonly="1" widget="statusbar" nolabel="1"></field>
                 </header>
                 <sheet>
@@ -85,7 +88,7 @@
 
                         <page name="Offers">
                             <group >
-                                <field name="offer_ids" nolabel="1" />
+                                <field name="offer_ids" nolabel="1" readonly="status=='sold' or status=='canceled' or status=='offer_accepted'"/>
                             </group>
                         </page>
 
@@ -102,14 +105,16 @@
     </record>
 
     <!-- search view -->
-    <record id="view_delivery_carrier_search" model="ir.ui.view">
+    <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate property search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Delivery Carrier">
                 <field name="name" string="Name"/>
                 <field name="description"/>
+                <field name="living_area" string="LivingArea" filter_domain="[('living_area', '>=', self)]" />
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <filter name="availability" string="Availability" domain="[('status','!=','sold'),('status','!=','canceled')]" help="Filter by availability date" />
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'search_default_group_by':True}"/>
                 </group>

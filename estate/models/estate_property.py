@@ -15,6 +15,7 @@ class test_model(models.Model):
     date_availability = fields.Date(
         copy=False, default=(datetime.today() + relativedelta(months=3)).date()
     )
+    user_id = fields.Many2one("res.users")
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer()
@@ -47,6 +48,7 @@ class test_model(models.Model):
     status = fields.Selection(
         selection=[
             ("new", "New"),
+            ("offer_received", "Offer received"),
             ("offer_accepted", "Offer accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
@@ -66,6 +68,16 @@ class test_model(models.Model):
             "Selling price must be non-negative",
         ),
     ]
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_new_canceled(self):
+        for record in self:
+            if (
+                record.status == "offer_received"
+                or record.status == "offer_accepted"
+                or record.status == "sold"
+            ):
+                raise UserError("Only new and canceled properties can be deleted")
 
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
@@ -87,11 +99,15 @@ class test_model(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = ""
+            self.garden_orientation = False
 
     def action_sold(self):
         for record in self:
-            if record.status == "new" or record.status == "offer_accepted":
+            if (
+                record.status == "new"
+                or record.status == "offer_accepted"
+                or record.status == "offer_received"
+            ):
                 record.status = "sold"
             elif record.status == "canceled":
                 raise UserError("Canceled property can't be sold")
@@ -100,7 +116,11 @@ class test_model(models.Model):
 
     def action_cancel(self):
         for record in self:
-            if record.status == "new":
+            if (
+                record.status == "new"
+                or record.status == "offer_accepted"
+                or record.status == "offer_received"
+            ):
                 record.status = "canceled"
             elif record.status == "sold":
                 raise UserError("Sold property can't be canceled")
