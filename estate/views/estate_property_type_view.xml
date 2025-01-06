@@ -2,25 +2,29 @@
 <odoo>
 
     <record id="test_property_type_action" model="ir.actions.act_window">
-        <field name="name">Test action</field>
+        <field name="name">property types</field>
         <field name="res_model">test.property.type</field>
         <field name="view_mode">list,form</field>
+
+
     </record>
 
-    <record id="test_property_type_list_view" model="ir.ui.view">
 
-        <field name="model">test.property.type</field>
+
+    <record id="test_property_type_list_view" model="ir.ui.view">
+       <field name="model">test.property.type</field>
         <field name="name">test.property.type</field>
 
-        <field name="arch" type="xml" >
-            <list string="Tests" >
+        <field name="arch" type="xml"  >
+            <list string="list of property types"  sample='1'>
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
-              
+               
+                
 
             </list>
         </field>
-        
-    </record>  
+    </record>
 
 
     <record id="test_property_type_form_view" model="ir.ui.view">
@@ -29,14 +33,27 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <sheet>
+                <div class="oe_button_box" name="button_box">
+
+                    <button name="estate.test_property_offer_action" type="action" class="oe_stat_button" icon="fa-money">
+                        <field name="offer_count" string=" Offers" widget="statinfo"/>
+                    </button>
+
+                   </div>
                     <group>
                             <field name="name"/>
                     </group>
                    
                     <notebook>
-                        <page string="Description">
+                        <page string="Propertys">
+
                              <group>
-                                 <field name="description"/>
+                                    <field name="propertys_id" string="">
+                                        <list>
+                                            <field name="name"/>
+                                            <field name="best_price"/>
+                                        </list>
+                                    </field>
                              </group>
                         </page>
                     </notebook>

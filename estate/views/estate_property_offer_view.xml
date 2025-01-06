@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="test_property_offer_action" model="ir.actions.act_window">
+        <field name="name">test.property.offer</field>
+        <field name="res_model">test.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+       
+            
+    </record>
 
      <record id="test_property_offer_list_view" model="ir.ui.view">
 
@@ -7,10 +15,13 @@
         <field name="name">test.property.offer</field>
 
         <field name="arch" type="xml"  >
-            <list string="offers"  >
+            <list editable='top' decoration-success="status == 'Accepted'" decoration-danger="status == 'Refused'" >
                 <field name="price"/>
-                <field name="status"/>
                 <field name="buyer_id"/>
+                <button name="property_accepted" string="accepted" type="object" icon="fa-check"/>
+                <button name="property_rejected" string="rejected"  type="object" icon="fa-times"/>
+                <field name="status"/>
+
                 <field name="property_id"/>
 
             </list>

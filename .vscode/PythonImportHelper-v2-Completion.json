@@ -18,6 +18,14 @@
         "documentation": {}
     },
     {
+        "label": "randint",
+        "importPath": "random",
+        "description": "random",
+        "isExtraImport": true,
+        "detail": "random",
+        "documentation": {}
+    },
+    {
         "label": "http",
         "importPath": "odoo",
         "description": "odoo",
@@ -139,6 +147,14 @@
     },
     {
         "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "api",
         "importPath": "odoo",
         "description": "odoo",
         "isExtraImport": true,
@@ -183,6 +199,38 @@
         "description": "datetime",
         "isExtraImport": true,
         "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "UserError",
+        "importPath": "odoo.exceptions",
+        "description": "odoo.exceptions",
+        "isExtraImport": true,
+        "detail": "odoo.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "odoo.exceptions",
+        "description": "odoo.exceptions",
+        "isExtraImport": true,
+        "detail": "odoo.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "UserError",
+        "importPath": "odoo.exceptions",
+        "description": "odoo.exceptions",
+        "isExtraImport": true,
+        "detail": "odoo.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "odoo.exceptions",
+        "description": "odoo.exceptions",
+        "isExtraImport": true,
+        "detail": "odoo.exceptions",
         "documentation": {}
     },
     {
@@ -251,7 +299,7 @@
         "kind": 6,
         "importPath": "estate.models.test_property",
         "description": "estate.models.test_property",
-        "peekOfCode": "class TestProperty(models.Model):\n    _name = \"test.property\"\n    _description = \"Test Model\"\n    name = fields.Char('name',required=True,default=\"My new House\")\n    description=fields.Text('description')\n    postcode=fields.Char()\n    date_availability=fields.Date('availability',default=(datetime.today() + relativedelta(months=3)).date(),copy=False)\n    expected_price=fields.Float(readonly=True)\n    best_price=fields.Float(readonly=True,compute=\"_compute_best_price\")\n    selling_price=fields.Float(readonly=True,copy=False)",
+        "peekOfCode": "class TestProperty(models.Model):\n    _name = \"test.property\"\n    _description = \"Test Model\"\n    _order = \"id desc\"\n    name = fields.Char('name',required=True,default=\"My new House\")\n    description=fields.Text('description')\n    postcode=fields.Char()\n    date_availability=fields.Date('availability',default=(datetime.today() + relativedelta(months=3)).date(),copy=False)\n    expected_price=fields.Float()\n    best_price=fields.Float(readonly=True,compute=\"_compute_best_price\")",
         "detail": "estate.models.test_property",
         "documentation": {}
     },
@@ -260,7 +308,7 @@
         "kind": 6,
         "importPath": "estate.models.test_property_offer",
         "description": "estate.models.test_property_offer",
-        "peekOfCode": "class test_property_offer(models.Model):\n    _name = \"test.property.offer\"\n    price = fields.Float('price',required=True)\n    status = fields.Selection([('Accepted','Accepted'),('Refused','Refused'),('Pennding','pennding')],default=\"Pennding\",copy=False)\n    buyer_id = fields.Many2one('res.partner',string='partner_id',required=True)   \n    property_id = fields.Many2one('test.property',required=True)\n    validity = fields.Integer(default=7)\n    date_deadline = fields.Date(compute='_compute_date_deadline',inverse='_inverse_date_deadline',default=datetime.today())\n    @api.depends('validity')\n    def _compute_date_deadline(self):",
+        "peekOfCode": "class test_property_offer(models.Model):\n    _name = \"test.property.offer\"\n    _order = \"price desc\"\n    price = fields.Float('price',required=True)\n    status = fields.Selection([('Accepted','Accepted'),('Refused','Refused'),('Pennding','pennding')],default=\"Pennding\",copy=False)\n    buyer_id = fields.Many2one('res.partner',string='partner_id',required=True)   \n    property_id = fields.Many2one('test.property',required=True,ondelete='cascade')\n    validity = fields.Integer(default=7)\n    date_deadline = fields.Date(compute='_compute_date_deadline',inverse='_inverse_date_deadline',default=datetime.today())\n    property_type_id = fields.Many2one(related='property_id.property_types_id',string=\"property_type\")",
         "detail": "estate.models.test_property_offer",
         "documentation": {}
     },
@@ -269,7 +317,7 @@
         "kind": 6,
         "importPath": "estate.models.test_property_tags",
         "description": "estate.models.test_property_tags",
-        "peekOfCode": "class TestPropertyTags(models.Model):\n    _name = \"test.property.tags\"\n    name = fields.Char('name')",
+        "peekOfCode": "class TestPropertyTags(models.Model):\n    _name = \"test.property.tags\"\n    _order = \"name\"\n    name = fields.Char('name')\n    color = fields.Integer(\n        'Color',\n        default=lambda self : self._default_color()\n    )\n    def _default_color(self):\n        return randint(1, 11)",
         "detail": "estate.models.test_property_tags",
         "documentation": {}
     },
@@ -278,7 +326,7 @@
         "kind": 6,
         "importPath": "estate.models.test_property_type",
         "description": "estate.models.test_property_type",
-        "peekOfCode": "class TestPropertyType(models.Model):\n    _name = \"test.property.type\"\n    name = fields.Char('name')\n    description=fields.Char('description')",
+        "peekOfCode": "class TestPropertyType(models.Model):\n    _name = \"test.property.type\"\n    _order = \"name\"\n    name = fields.Char('name')\n    propertys_id = fields.One2many(\"test.property\", \"property_types_id\")\n    sequence = fields.Integer('Sequence', default=1, help=\"Used to order type\")\n    offer_ids = fields.One2many('test.property.offer', 'property_type_id', string='offers')\n    offer_count = fields.Integer(readonly=True,compute=\"_compute_count_offer\")\n    @api.depends('offer_ids')\n    def _compute_count_offer(self):",
         "detail": "estate.models.test_property_type",
         "documentation": {}
     }

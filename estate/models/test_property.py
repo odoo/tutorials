@@ -1,20 +1,24 @@
 from odoo import fields, models , api
 from datetime import datetime
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 from dateutil.relativedelta import relativedelta
 
 class TestProperty(models.Model):
     _name = "test.property"
     _description = "Test Model"
+    _order = "id desc"
 
     name = fields.Char('name',required=True,default="My new House")
     description=fields.Text('description')
     postcode=fields.Char()
     date_availability=fields.Date('availability',default=(datetime.today() + relativedelta(months=3)).date(),copy=False)
-    expected_price=fields.Float(readonly=True)
+    expected_price=fields.Float()
     best_price=fields.Float(readonly=True,compute="_compute_best_price")
     selling_price=fields.Float(readonly=True,copy=False)
     bedrooms=fields.Integer('bedrooms',default=2)   
     active = fields.Boolean("Active", default=True)
+    
 
     garden_area = fields.Integer()
     living_area = fields.Integer()
@@ -25,7 +29,7 @@ class TestProperty(models.Model):
     garage=fields.Boolean()
     garden=fields.Boolean()
     garden_orientation=fields.Selection(selection = [('north', 'NORTH'), ('south', 'SOUTH'), ('east', 'EAST'), ('west', 'WEST')])
-    state = fields.Selection(
+    status = fields.Selection(
         [
             ("new", "New"),
             ("offer_received", "Offer Received"),
@@ -34,16 +38,16 @@ class TestProperty(models.Model):
             ("cancelled", "Cancelled")
         ],
         default="new",
-        string="Status",
+        string="state",
         required=True
     )
     property_types_id = fields.Many2one('test.property.type',ondelete='restrict')
     property_tags_id = fields.Many2many('test.property.tags')
     
-    partner_id = fields.Many2one("res.partner", string="Buyer")
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
     sales_person_id=fields.Many2one('res.users', ondelete='restrict',default=lambda self: self.env.user)
 
-    property_offers_id = fields.One2many('test.property.offer', 'property_id', string='offer')
+    property_offers_id = fields.One2many('test.property.offer', 'property_id', string='offer',)
 
 
 
@@ -77,7 +81,78 @@ class TestProperty(models.Model):
             self.garden_orientation = "north"
             return {'warning': {
                 'title': ("Warning"),
-                'message': ('you have checked garden button')}}
+                'message': ('you have checked garden button')
+                
+                }}
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+
+
+
+    def property_sold_action(self):
+        for record in self:
+            
+            if record.status == "sold":
+                raise UserError("property already soldout")
+            elif  record.status == "offer_accepted":
+                record.status = "sold"
+            elif  record.status != "cancelled":
+                raise UserError("Accepted any offer")
+            else:
+                raise UserError("Canceled property can't be sold")
+        return True
+
+    def property_cancle_action(self):
+        for record in self:
+
+            if record.status == "sold":
+                raise UserError("property already soldout")
+            else:
+                record.status = "cancelled"
+        return True
+
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price must be strictly positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "Selling price must be non-negative",
+        ),
+    ]
+
+
+
+    # @api.constrains('property_offers_id')
+    # def _check_offer(self):
+    #     for record in self:
+    #         if record.property_offers_id:
+    #             if record.status == "new":
+    #                 record.status = "offer_received"
+    #         else:
+    #             record.status = "new"
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_user_inactive(self):
+        for record in self:
+            if record.status == "sold" or  record.status == 'offer_accepted' or record.status == 'offer_received' :
+                raise UserError("Can't delete  this property!")
+
+
+    
+    # @api.model
+    # def create(self, vals):
+    #     for record in self:
+    #         record.env['gamification.badge'].browse(vals['badge_id']).check_granting()
+
+
+    #     return super(TestProperty,self).create(vals)
+
+
+
+
