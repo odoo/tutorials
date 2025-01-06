@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="inherited_res_users_view_form" model="ir.ui.view">
+        <field name="name">inherited.res.users.view.form</field>
+        <field name="model">res.users</field> <!-- using the res.users model -->
+        <field name="inherit_id" ref="base.view_users_form"/> <!-- what to extent the base.view_users_form-->
+
+        <field name="arch" type="xml">
+            <xpath expr="//notebook[@colspan='4']" position="inside"> <!-- matching expr=<page name="account_security" in base.view_users_form id and adding the element after that. -->
+                <!--to add below content-->
+                <page string="Real Estate Property" name="real_estate_property">
+                    <field name="property_ids">
+                        <list>
+                            <field name="name" />
+                            <field name="property_type_id">
+                                <field name="name"></field>
+                            </field>
+                            <field name="postcode" />
+                            <field name="tag_ids" class='mb-3' widget="many2many_tags" options="{'color_field': 'color'}" /> <!-- this is a widget type tags||| options color_field refers to color field in the _tag model-->
+
+                            <field name="bedrooms" />
+                            <field name="living_area" />
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

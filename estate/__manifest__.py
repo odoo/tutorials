@@ -9,7 +9,7 @@
         'views/estate_property_tag.xml',
         'views/estate_property_views.xml',#actions defs & views to be shown
         'views/estate_menus.xml', #estate root-menu, first level menu, action menu to be shown/ above because id refers to estate_property_views' id
-        # 'views/inherited_res_users.xml'
+        'views/estate_property_res_user_view_form.xml'
     ],
     'license':'LGPL-3'
 }
