@@ -1,9 +1,10 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import timedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate properties"
+    _order = "id desc"
 
     name = fields.Char("Name", readonly=False, required=True)
     description = fields.Text("Description", readonly=False)
@@ -29,7 +30,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = ''
+            self.garden_orientation = False
 
     garden_area = fields.Integer("Garden Area", readonly=False)
     
@@ -58,7 +59,8 @@ class EstateProperty(models.Model):
         ],
         default="new",
         string="Status",
-        required=True
+        required=True,
+        readonly=True
     )
 
     seller_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
@@ -78,4 +80,35 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
                 record.best_price = 0.0
-    
+
+    def action_mark_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError('A Cancelled Property Cannot Be Sold')
+            else:
+                record.state = 'sold'
+
+    def action_mark_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError('A Sold Property Cannot Be Cancelled')
+            else:
+                record.state = 'cancelled'
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price should be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price should be strictly positive.')
+    ]
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price < 0.9 * record.expected_price:
+                exceptions.ValidationError(r'The selling price is lower than the 90% of expected price.')
+
+    @api.constrains('offer_ids')
+    def _check_offers(self):
+        for record in self:
+            if record.offer_ids:
+                if record.state == 'new':
+                    record.state = 'offer_received'

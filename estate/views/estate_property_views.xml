@@ -5,6 +5,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
+        <field name="context">{'search_default_available': True}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Define New Property
@@ -18,15 +19,16 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" > <!-- editable="bottom" --> 
+            <list string="Properties" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'"> <!-- editable="bottom" --> 
                 <field name="name"></field>
                 <field name="postcode"></field>
                 <field name="property_type_id"></field>
+                <field name="property_tags_id" widget="many2many_tags" options="{'color_field': 'color'}"></field>
                 <field name="bedrooms"></field>
                 <field name="living_area"></field>
                 <field name="expected_price"></field>
                 <field name="selling_price"></field>
-                <field name="date_availability"></field>
+                <field name="date_availability" optional="hide"></field>
             </list>
         </field>
     </record>
@@ -36,13 +38,24 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Details" > <!-- editable="bottom" --> 
+                <header>
+                    <button name="action_mark_sold" type="object" string="Mark Sold" invisible='not selling_price' class='btn btn-primary' />
+                    <button name="action_mark_cancel" type="object" string="Cancel" invisible='not selling_price' class='btn btn-secondary' />
+                    <field name="state" widget="statusbar" />
+                </header>
                 <sheet>
                     <h1><field name="name" label="Property Name" placeholder="Property Name"/></h1>
-                    <field name="property_tags_id" widget="many2many_tags" label="Tags"></field>
-
                     <group>
                         <group>
-                            <field name="property_type_id"></field>
+                            <field name="state" />
+                        </group>
+                        <group>
+                            <field name="property_tags_id" widget="many2many_tags" options="{'can_create': false, 'can_write': false, 'color_field': 'color'}" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="property_type_id" widget="selection" placeholder="Select a property type" options="{'no_create': true, 'no_open': true}"></field>
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -65,15 +78,15 @@
                                 <group name="additional_features">
                                     <field name="garage"></field>
                                     <field name="garden"></field>
-                                    <field name="garden_area"></field>
-                                    <field name="garden_orientation"></field>
+                                    <field name="garden_area" invisible="not garden"></field>
+                                    <field name="garden_orientation" invisible="not garden"></field>
                                     <field name="total_area"></field>
                                 </group>
                             </group>
                         </page>
 
                         <page name="Offers">
-                            <field name="offer_ids" />
+                            <field name="offer_ids" readonly="state in ['sold', 'offer_accepted', 'cancelled']" />
                         </page>
                         <page name="Other Info" string="Other Info">
                             <group>
@@ -102,7 +115,9 @@
                 <field name="property_type_id" string="Type" />
 
                 <filter string="Archived" name="active" domain="[('active', '=', False)]"/>
-                <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"></filter>
+
+                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]"/>
 
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
