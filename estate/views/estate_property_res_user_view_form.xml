@@ -10,7 +10,7 @@
                 <!--to add below content-->
                 <page string="Real Estate Property" name="real_estate_property">
                     <field name="property_ids">
-                        <list>
+                        <list >
                             <field name="name" />
                             <field name="property_type_id">
                                 <field name="name"></field>

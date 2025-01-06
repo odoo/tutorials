@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- where to show the action in view -->
+    <menuitem id="estate_account_menu_root" name="Estate Account"> <!--module name to show in the root menu-->
+        <menuitem id="estate_account_first_level_menu" name="Invoicing"> <!--first level menu name-->
+            <menuitem id="estate_account_model_menu_action" action="estate_account_action"/> <!-- the action id to trigger-->
+        </menuitem>
+    </menuitem>
+    
+</odoo>

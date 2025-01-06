@@ -20,6 +20,7 @@ class EstateProperty(models.Model):
     
     expected_price=fields.Float("Expected price", required=True)
     selling_price=fields.Float(string="Selling price", readonly=False, copy=False)
+    best_price= fields.Float(string="Best Offer", compute="_compute_best_price", help="takes the biggest prices offered for this property")
     
     bedrooms= fields.Integer("Bedrooms", default=2)
     living_area= fields.Integer("Living Area(sqm)")
@@ -39,7 +40,7 @@ class EstateProperty(models.Model):
     )
     
     # below active and state field is a reserved fields
-    active= fields.Boolean(string="Active", default=True)
+    active= fields.Boolean(string="Active", default=True) #available
     state= fields.Selection(
         string='Status',
         default='new', #need to define the value not a label 
@@ -102,8 +103,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area= record.living_area + record.garden_area
      
-        
-    best_price= fields.Float(string="Best Offer", compute="_compute_best_price", help="takes the biggest prices offered for this property")
+     
     @api.depends('offer_ids.price')
     def _compute_best_price(self): #getting the max price from the offered price
         for record in self:
