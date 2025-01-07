@@ -100,15 +100,25 @@ class EstateProperty(models.Model):
         ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price should be strictly positive.')
     ]
 
-    @api.constrains('expected_price', 'selling_price')
+    @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
             if record.selling_price < 0.9 * record.expected_price:
-                exceptions.ValidationError(r'The selling price is lower than the 90% of expected price.')
+                raise exceptions.ValidationError("The selling price is lower than the 90% of expected price.")
 
-    @api.constrains('offer_ids')
-    def _check_offers(self):
+    # @api.constrains('offer_ids')
+    # def _check_offers(self):
+    #     for record in self:
+    #         if record.offer_ids:
+    #             if record.state == 'new':
+    #                 record.state = 'offer_received'
+    #         else:
+    #             if record.state != 'cancelled':
+    #                 record.state = 'new'
+
+
+    @api.ondelete(at_uninstall=False)
+    def on_delete(self):
         for record in self:
-            if record.offer_ids:
-                if record.state == 'new':
-                    record.state = 'offer_received'
+            if record.state not in ['new', 'cancelled']:
+                raise exceptions.UserError('Cannot delete the property which is not in either "New" or "Cancelled" state.')

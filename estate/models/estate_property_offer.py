@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import date, timedelta
 
 class EstatePropertyOffer(models.Model):
@@ -52,6 +52,19 @@ class EstatePropertyOffer(models.Model):
     # def set_offer_pending(self):
     #     for record in self:
     #         record.status = 'pending'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id']) #* self.env[target-model].browse(vals[related-field])
+
+            if vals['price'] < property.best_price:
+                raise exceptions.UserError('The new offer cannot be less than the best offer.')
+            
+            if property.state == 'new':
+                property.state = 'offer_received'
+        
+        return super().create(vals_list)
 
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', 'The offer price should be strictly positive.')

@@ -41,7 +41,7 @@
                 <header>
                     <button name="action_mark_sold" type="object" string="Mark Sold" invisible='not selling_price' class='btn btn-primary' />
                     <button name="action_mark_cancel" type="object" string="Cancel" invisible='not selling_price' class='btn btn-secondary' />
-                    <field name="state" widget="statusbar" />
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <h1><field name="name" label="Property Name" placeholder="Property Name"/></h1>

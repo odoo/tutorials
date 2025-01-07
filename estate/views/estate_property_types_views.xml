@@ -21,7 +21,7 @@
             <list string="Properties" > <!-- editable="bottom" --> 
                 <field name="sequence" widget="handle"/>
                 <field name="name"></field>
-                <field name="offer_count"/>
+                <!-- <field name="offer_count"/> -->
             </list>
         </field>
     </record>
