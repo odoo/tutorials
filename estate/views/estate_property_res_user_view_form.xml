@@ -2,7 +2,7 @@
 <odoo>
     <record id="inherited_res_users_view_form" model="ir.ui.view">
         <field name="name">inherited.res.users.view.form</field>
-        <field name="model">res.users</field> <!-- using the res.users model -->
+        <field name="model">res.users</field> <!-- using the estate's res.users model -->
         <field name="inherit_id" ref="base.view_users_form"/> <!-- what to extent the base.view_users_form-->
 
         <field name="arch" type="xml">
