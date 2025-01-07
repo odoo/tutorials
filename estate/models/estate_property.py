@@ -20,6 +20,8 @@ class EstateProperty(models.Model):
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
 
     bedrooms = fields.Integer('Bedrooms', default=2)
+    bedrooms = fields.Char('Bedrooms', default='two')
+
     living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer('Facades')
 
@@ -50,8 +52,8 @@ class EstateProperty(models.Model):
 
     property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type", auto_join=True, ondelete="cascade")
     
-    user_id = fields.Many2one('res.users', string='Salesman', index=True, tracking=True, default=lambda self: self.env.user, ondelete="cascade")
-    partner_id = fields.Many2one('res.partner', string='Buyer', index=True, tracking=True, ondelete="cascade")
+    user_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user, ondelete="cascade")
+    partner_id = fields.Many2one('res.partner', string='Buyer', index=True, ondelete="cascade")
 
     tag_ids=fields.Many2many(comodel_name="estate.property.tag", string="Property Tags", ondelete="cascade" )
 
@@ -155,3 +157,4 @@ class EstateProperty(models.Model):
      
 
     
+

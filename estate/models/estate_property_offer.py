@@ -113,17 +113,27 @@ class EstatePropertyOffer(models.Model):
 
     property_type_id=fields.Many2one(related="property_id.property_type_id")
 
-         
-    # @api.model
-    # def create(self, vals):
-    #     offer_ref=self.env['estate.property.offer'].browse(vals['property_id'])
-
-    #     for record in self:
-    #         if offer_ref.price < record.property_id.best_price:
-    #             raise UserError("Can't delete this Record")
 
 
-    
+    @api.model
+    def create(self, vals_list):
+        
+        offer_ref=self.env['estate.property'].browse(vals_list['property_id'])
+        if vals_list['price'] < offer_ref.best_price:
+            raise UserError("Offer Price must be greater than the best offer price")
+        if offer_ref.state=="new":
+            offer_ref.state="offer_received"
+        
+
+        return super(EstatePropertyOffer, self).create(vals_list)        
 
 
-    #     return super().create(vals)      
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     for vals in vals_list:
+    #         prop=self.env['estate.property'].browse(vals_list['property_id'])
+    #         if vals["price"] < prop.best_price:
+    #                 raise UserError('price must be greater than best price')
+    #         if prop.state == "new":
+    #                 prop.state = "offer_received"
+    #     return super().create(vals_list)

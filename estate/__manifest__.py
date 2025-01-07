@@ -21,7 +21,8 @@
         'views/estate_property_offer_view.xml',
         'views/estate_property_type_view.xml',
         'views/estate_property_tags_view.xml',
-        'views/estate_property_menu_view.xml', 
+        'views/estate_property_menu_view.xml',
+        'views/users_properties.xml'
 
     ],
     
