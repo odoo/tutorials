@@ -11,5 +11,10 @@
         'views/estate_menus.xml', #estate root-menu, first level menu, action menu to be shown/ above because id refers to estate_property_views' id
         'views/estate_property_res_user_view_form.xml'
     ],
+    'demo': [
+        'demo/estate.property.type.csv',
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml'
+    ],
     'license':'LGPL-3'
-}
+} # type: ignore
