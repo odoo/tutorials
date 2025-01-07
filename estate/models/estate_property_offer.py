@@ -28,14 +28,16 @@ class EstatePropertyOffer(models.Model):
     #! used model create multi because @api.model is deprecated
     @api.model_create_multi  # sets property state as offer received on creation also prevents creation of offers lower than current one
     def create(self, vals_list):
-        if vals_list["property_id"]:
-            prop = self.env["estate.property"].browse(vals_list["property_id"])
-            if vals_list["price"] < prop.best_offer:
-                raise ValidationError("Offer price cannot be lower than best offer")
-            if prop.status == "new":
-                prop.status = "offer_received"
-            elif prop.status == "offer_accepted":
-                raise ValidationError("Offer already accepted for this property")
+        print(vals_list)
+        for vals in vals_list:
+            if vals["property_id"]:
+                prop = self.env["estate.property"].browse(vals["property_id"])
+                if vals["price"] < prop.best_offer:
+                    raise ValidationError("Offer price cannot be lower than best offer")
+                if prop.status == "new":
+                    prop.status = "offer_received"
+                elif prop.status == "offer_accepted":
+                    raise ValidationError("Offer already accepted for this property")
 
         return super().create(vals_list)
 
