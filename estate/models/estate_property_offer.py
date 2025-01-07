@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -8,6 +8,9 @@ class EstatePropertyOffer(models.Model):
     _order = 'price desc'
 
     price = fields.Float(string="price")
+    _sql_constraints = [
+        ('price_positive', 'CHECK(price > 0)', 'The offer price must be strictly positive!')
+    ]
     status = fields.Selection(
         [
             ('accepted', 'Accepted'),
@@ -16,7 +19,7 @@ class EstatePropertyOffer(models.Model):
         copy=False
     )
     partner_id = fields.Many2one('res.partner',required=True)
-    property_id = fields.Many2one('estate.property', required=True)
+    property_id = fields.Many2one('estate.property', required=True, ondelete="restrict")
     validity = fields.Integer(string="Validity", default=7)
     date_deadline = fields.Date(
         string="Deadline Date", 
@@ -24,9 +27,6 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         default=datetime.today()
     )
-    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
-
-
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -42,6 +42,9 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.validity = 0
 
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
+
+
     def action_confirm(self):
         for record in self:
             record.status = 'accepted'
@@ -49,13 +52,21 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer accepted'
 
-
     def action_cancel(self):
         for record in self:
             record.status = 'refused'
-            
-            
+    
+    @api.model_create_multi      #   Use Decorator Class
+    def create(self, vals_list):        #   inherit create method 
+        property_data = self.env['estate.property'].browse(vals_list['property_id'])     #   Fetch Property data using property_id 
+        if vals_list["price"] < property_data.best_price:                               #   Compare Price with best price
+            raise exceptions.UserError("Price can be greater than best price")
+        if property_data.state == 'new':                                                #   Change State if it is new Data
+            property_data.state = 'offer received'     
 
-    _sql_constraints = [
-        ('price_positive', 'CHECK(price > 0)', 'The offer price must be strictly positive!')
-    ]
+        return super().create(vals_list)
+       
+    
+
+
+    

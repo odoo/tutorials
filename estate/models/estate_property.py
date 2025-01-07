@@ -45,10 +45,10 @@ class EstateProperty(models.Model):
         default='new',
         required=True
     )
-    property_type_id =fields.Many2one('estate.property.type',string="Property Type")
+    property_type_id =fields.Many2one('estate.property.type',string="Property Type", ondelete="restrict")
     salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)    
-    tag_ids = fields.Many2many('estate.property.tag', string="Tag Name")
+    tag_ids = fields.Many2many('estate.property.tag', string="Tag Name", ondelete="cascade")
     offer_ids = fields.One2many('estate.property.offer', "property_id")
 
     best_price = fields.Float(string="Best Price", compute="_best_price", store=True)
@@ -105,4 +105,11 @@ class EstateProperty(models.Model):
                 raise exceptions.ValidationError("selling Price should be Higher than 90%")
 
 
-  
+
+    @api.ondelete(at_uninstall=False)       #For Delete property using inherit the ondelete()
+    def _unlink_if_property_new_and_canclled(self):     #   override delete method user can delete user if state is NEW or CANCELLED 
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise exceptions.UserError('Only New and Cancelled property can be delete.')
+        
+
