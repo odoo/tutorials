@@ -9,12 +9,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//notebook[@colspan=4]" position="inside">
                     <page name="properties_assigned" string="Real Estate Properties">
-                        <field name="property_ids">
-                        <list>
-                            <field name="name" string="Name"/>
-                            <field name="status" string="Status"/>
-                        </list> 
-                        </field>
+                        <field name="property_ids"/>
                     </page>
                 </xpath>
             </field>
