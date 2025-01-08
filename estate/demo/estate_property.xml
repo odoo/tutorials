@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <odoo>
+    <!-- offer received property changed by demo/estate_property_offer.xml -->
     <record id="estate_property_1" model="estate.property">
         <field name="name">Big Villa</field>
-        <field name="state">new</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
         <field name="date_availability">2020-02-02</field>
@@ -17,24 +17,87 @@
         <field name="property_type_id" ref="estate.estate_property_type_1" /> <!--ref is refering to a data record in its correspondin file-->
     </record>
 
+    <!-- offer received property  -->
     <record id="estate_property_2" model="estate.property">
+        <field name="name">Big Villa offer Received</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">99999</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1" /> <!--ref is refering to a data record in its correspondin file-->
+        <field 
+            name="offer_ids" 
+            eval="[
+                Command.create({
+                    'partner_id': ref('base.res_partner_12'),
+                    'price': 999990,
+                    'validity': 71,
+                    'status': 'refused'
+                }),
+                Command.create({
+                    'partner_id': ref('base.res_partner_12'),
+                    'price': 999999,
+                    'validity': 7, 
+                    'status': 'accepted'
+                }),
+            ]" 
+        />
+    </record>
+
+    <!-- sold property -->
+    <record id="estate_property_3" model="estate.property">
         <field name="name">Trailer home</field>
-        <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
         <field name="date_availability">1970-01-01</field>
         <field name="expected_price">100000</field>
-        <field name="selling_price">120000</field>
+        <field name="selling_price">999999</field>
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
         <field name="garage">False</field>
         <field name="property_type_id" ref="estate.estate_property_type_1"/>
+
+        <!--! while adding offer_ids there is no need to mention the property_id(inverse_name) below eg by default it will link to the current property-->
+        <field 
+            name="offer_ids" 
+            eval="[
+                Command.create({
+                    'partner_id': ref('base.res_partner_12'),
+                    'price': 999990,
+                    'validity': 71,
+                    'status': 'refused'
+                }),
+                Command.create({
+                    'partner_id': ref('base.res_partner_12'),
+                    'price': 999999,
+                    'validity': 7, 
+                    'status': 'accepted'
+                }),
+            ]" 
+        />
     </record>
+    <!-- mark property sold why need of calling sold function??-->
+    <!-- it seems the offer_ids eval is being calculated at last, as a result our sold value is being updated by the estate_property_offer's create method and being reinit with the offer_received value-->
+    <!-- <function model="estate.property" name="mark_property_sold">
+        <value eval="[ref('estate.estate_property_2')]"/>
+    </function> -->
+    <!-- mark one offers -->
+    <function model="estate.property" name="mark_property_sold">
+        <value eval="[ref('estate.estate_property_3')]"/>
+    </function>
     
-    <record id="estate_property_3" model="estate.property">
-        <field name="name">Trailer home2</field>
-        <field name="state">cancelled</field>
+
+    <!-- new property -->
+    <record id="estate_property_4" model="estate.property">
+        <field name="name">Trailer home new property</field>
         <field name="description">Home in a trailer park2</field>
         <field name="postcode">54321</field>
         <field name="date_availability">1970-01-01</field>
@@ -45,23 +108,6 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
         <field name="property_type_id" ref="estate.estate_property_type_1"/>
-        
-        <!--! while adding offer_ids there is no need to mention the property_id(inverse_name) below eg by default it will link to the current property-->
-        <field 
-            name="offer_ids" 
-            eval="[
-                Command.create({
-                    'partner_id': ref('base.res_partner_12'),
-                    'price': 999999,
-                    'validity': 7, 
-                }),
-                Command.create({
-                    'partner_id': ref('base.res_partner_12'),
-                    'price': 9999991,
-                    'validity': 71,
-                })
-            ]" 
-        />
     </record>
 
 </odoo>

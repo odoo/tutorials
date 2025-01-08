@@ -68,6 +68,7 @@
                 <header>
                     <button name="mark_property_sold" class="btn btn-primary" type="object" string="SOLD" invisible="state in ['sold', 'cancelled']" /> <!-- action 'mark_property_sold' to be triggered on estate.property model-->
                     <button name="mark_property_cancel" type= "object" string="CANCEL" invisible="state in ['sold', 'cancelled']" /> <!-- action 'mark_property_cancel' to be triggered on estate.property model-->
+                    <button name="%(estate.estate_property_report)d" class="btn" icon="fa-print" type="action">print</button>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
 
                 </header>
