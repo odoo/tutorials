@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record model="ir.cron" id="account_analytic_cron_for_installment_invoice">
         <field name="name">Installment: generate recurring invoices for installment</field>
         <field name="model_id" ref="model_sale_order"/>
         <field name="state">code</field>
-        <field name="code">model.cron_recurring_create_installment_invoice()</field>
+        <field name="code">model._cron_recurring_create_installment_invoice()</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="nextcall" eval="(datetime.now() + timedelta(minutes=7)).strftime('%Y-%m-%d %H:%M:%S')"/>
     </record>
+
 </odoo>

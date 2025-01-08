@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="product_warranty_option_form_inherit" model="ir.ui.view">
+    <record id="sale_order_view_inherit" model="ir.ui.view">
         <field name="name">Add EMI</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <!-- documents stat button -->
+                <button name="document_upload" class="btn btn-primary " icon="fa-file-text" string="Documents" type="object"/>
+                <!-- installment stat button -->
+                 <button name="open_installment_invoices" invisible="not installment_invoice_ids" class="btn btn-primary " icon="fa-money" type="object">
+                    <field name="installment_invoice_ids" widget="statinfo" string="Installments"/>
+                 </button>
+            </xpath>
            <xpath expr="//div[@name='so_button_below_order_lines']/button[@name='action_open_discount_wizard']" position="before">
-                <button name="%(action_open_installment_wizard)d"  type="action" class="btn-primary "
+                <button name="action_open_installment_wizard"  type="object" class="btn-primary "
                     string="Add EMI" />
-                <button name="cron_recurring_create_installment_invoice"  type="object" class="btn-primary "
-                string="Test cron job"/>
             </xpath>
         </field>
     </record>
 
 </odoo>
+

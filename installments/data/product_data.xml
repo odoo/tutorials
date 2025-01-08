@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
+
     <record id="product_product_admin_charges" model="product.product">
         <field name="name">Admin Charges</field>
         <field name="default_code">ADMIN_EXPENSES</field>
@@ -39,4 +40,5 @@
         <field name="uom_po_id" ref="uom.product_uom_unit"/>
         <field name="categ_id" ref="product.product_category_all"/>
     </record>
+    
 </odoo>

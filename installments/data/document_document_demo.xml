@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Add installment folder -->
+    <record id="document_internal_folder_sales_installment" model="documents.document" forcecreate="0">
+        <field name="type">folder</field>
+        <field name="access_internal">view</field>
+        <field name="name">Sales - Installment</field>
+    </record>
+
+    <!-- Add demo tags for documents-->
+    <record id="documents_nid_tag" model="documents.tag" forcecreate="0">
+        <field name="name">NID</field>
+    </record>
+    
+    <record id="documents_bank-statement_tag" model="documents.tag" forcecreate="0">
+        <field name="name">Bank Statement</field>
+    </record>
+    
+    <record id="documents_rental_contract_tag" model="documents.tag" forcecreate="0">
+        <field name="name">Rental Contract</field>
+    </record>
+
+    <record id="documents_salary_components_tag" model="documents.tag" forcecreate="0">
+        <field name="name">Salary Components</field>
+    </record>
+
+    <record id="documents_bank_rate_letter_tag" model="documents.tag" forcecreate="0">
+        <field name="name">Bank Rate Letter</field>
+    </record>
+
+    <record id="documents_ownership_contract_tag" model="documents.tag" forcecreate="0">
+        <field name="name">Ownership Contract</field>
+    </record>
+
+</odoo>

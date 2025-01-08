@@ -1,6 +1,7 @@
 from odoo import models,fields, Command
 from dateutil.relativedelta import relativedelta
 from datetime import timedelta
+from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -9,7 +10,7 @@ class SaleOrder(models.Model):
     next_installment_date = fields.Date()
     installment_invoice_ids = fields.One2many('account.move', 'sale_order_id')
 
-    def cron_recurring_create_installment_invoice(self):
+    def _cron_recurring_create_installment_invoice(self):
         today = fields.Date.context_today(self)
 
         #for regular installments
@@ -79,7 +80,6 @@ class SaleOrder(models.Model):
             ("penalty_applied", "=", False),
             ("invoice_date", "<=", delay_penalty_date),
         ])
-        breakpoint()
         for invoice in invoices:
             #calculate penalty amount
             penalty_amount=(delay_penalty_percentage/100)*invoice.amount_total
@@ -107,8 +107,124 @@ class SaleOrder(models.Model):
                             'penalty_applied': True,
                             'penalty_invoice_id':penalty_invoice.id
                         })
-            
 
+    def action_open_installment_wizard(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Installment Information',
+            'res_model': 'installment.wizard',
+            'view_mode': 'form',
+            'view_id': self.env.ref('installments.emi_wizard_form_view_form').id,
+            'target': 'new',
+        } 
 
-            
+    def open_installment_invoices(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Installment invoices',
+            'res_model': 'account.move',
+            'view_mode': 'list,form',
+            'domain': [('sale_order_id', '=', self.id)], 
+           'target': 'current',
+        }
 
+    def document_upload(self):
+        installment_folder = self.env["documents.document"].search(
+            [("name", "=", "Sales - Installment")], limit=1
+        )
+
+        if not installment_folder:
+            installment_folder = self.env["documents.document"].create(
+                {
+                    "name": "Sales - Installment",
+                    "folder_id": None,
+                }
+            )
+
+        subfolder = self.env["documents.document"].search([("name", "=", self.name)])
+        if not subfolder:
+            subfolder = self.env["documents.document"].create(
+                {
+                    "name": self.name,
+                    'type': 'folder',
+                    "folder_id": installment_folder.id,
+                }
+            )
+        if not subfolder:
+            raise ValidationError(
+                "Failed to create or find the corresponding subfolder."
+            )
+
+        # Configuration parameters for required documents
+        settings = self.env["ir.config_parameter"]
+        documents_to_upload = {
+            "NID": settings.get_param("installment.nid_required") == "True",
+            "Salary Components": settings.get_param("installment.salary_components_required") == "True",
+            "Bank Statement": settings.get_param("installment.bank_statement_required") == "True",
+            "Bank Rate Letter": settings.get_param("installment.bank_rate_letter_required") == "True",
+            "Rental Contract": settings.get_param("installment.rental_contract_required") == "True",
+            "Ownership Contract": settings.get_param("installment.ownership_contract_required") == "True",
+        }
+        required_documents_count = sum(1 for is_required in documents_to_upload.values() if is_required)
+        # Create document requests for required documents
+        for doc_name, is_required in documents_to_upload.items():
+            if is_required:
+                existing_documents = self.env["documents.document"].search(
+                    [
+                        ("folder_id", "=", subfolder.id),
+                    ],
+                )
+
+                # prevent request creation if document for the request is already uploaded
+                if len(existing_documents)<required_documents_count:
+                    existing_document = self.env["documents.document"].search(
+                    [
+                        ("name", "=", doc_name),
+                        ("folder_id", "=", subfolder.id),
+                    ],
+                    limit=1,
+                )
+
+                    # Create the request only if it does not already exist
+                    if not existing_document:
+                        self.env["documents.document"].create(
+                            {
+                                "name": doc_name,
+                                "folder_id": subfolder.id,
+                            }
+                        )
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Documents",
+            "res_model": "documents.document",
+            "view_mode": "kanban,list,form",
+            "domain": [("folder_id", "=", subfolder.id)],
+            "context": {"searchpanel_default_folder_id": subfolder.id},
+        }
+    
+    def _action_confirm(self):
+         # Configuration parameters for required documents
+        settings = self.env["ir.config_parameter"]
+        documents_to_upload = {
+            "NID": settings.get_param("installment.nid_required") == "True",
+            "Salary Components": settings.get_param("installment.salary_components_required") == "True",
+            "Bank Statement": settings.get_param("installment.bank_statement_required") == "True",
+            "Bank Rate Letter": settings.get_param("installment.bank_rate_letter_required") == "True",
+            "Rental Contract": settings.get_param("installment.rental_contract_required") == "True",
+            "Ownership Contract": settings.get_param("installment.ownership_contract_required") == "True",
+        }
+        required_documents_count = sum(1 for is_required in documents_to_upload.values() if is_required)
+ 
+        uploaded_document_count=0
+        existing_documents = self.env["documents.document"].search(
+                    [
+                        ("folder_id", "=", self.name),
+                    ],
+                )
+        for document in existing_documents:
+            if(document.attachment_type=='binary'):
+                uploaded_document_count+=1
+        if uploaded_document_count<required_documents_count:
+                raise ValidationError("Please upload required documents to confirm the sales order."
+        )
+        return super()._action_confirm()

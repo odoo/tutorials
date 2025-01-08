@@ -7,6 +7,7 @@
         <field name="priority" eval="10"/>
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
+            <!-- Add installment settings inside sales setting -->
             <xpath expr="//block[@name='catalog_setting_container']" position="after">
                 <block title="Installment Process" id="installment_setting_container">
                     <setting id="max_duration_setting" help="Define Max Duration.">

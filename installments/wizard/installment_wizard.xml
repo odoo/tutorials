@@ -32,4 +32,5 @@
         <field name="view_id" ref="emi_wizard_form_view_form"/>
         <field name="target">new</field>
     </record>
+    
 </odoo>
