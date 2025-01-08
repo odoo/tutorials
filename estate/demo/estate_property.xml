@@ -32,4 +32,36 @@
         <field name="property_type_id" ref="estate.estate_property_type_1"/>
     </record>
     
+    <record id="estate_property_3" model="estate.property">
+        <field name="name">Trailer home2</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park2</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="selling_price">120000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1"/>
+        
+        <!--! while adding offer_ids there is no need to mention the property_id(inverse_name) below eg by default it will link to the current property-->
+        <field 
+            name="offer_ids" 
+            eval="[
+                Command.create({
+                    'partner_id': ref('base.res_partner_12'),
+                    'price': 999999,
+                    'validity': 7, 
+                }),
+                Command.create({
+                    'partner_id': ref('base.res_partner_12'),
+                    'price': 9999991,
+                    'validity': 71,
+                })
+            ]" 
+        />
+    </record>
+
 </odoo>
