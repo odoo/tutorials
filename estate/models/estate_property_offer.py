@@ -56,7 +56,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
     
-    @api.model_create_multi      #   Use Decorator Class
+    @api.model_create_multi   #   Use Decorator Class
     def create(self, vals_list):        #   inherit create method 
         property_data = self.env['estate.property'].browse(vals_list['property_id'])     #   Fetch Property data using property_id 
         if vals_list["price"] < property_data.best_price:                               #   Compare Price with best price

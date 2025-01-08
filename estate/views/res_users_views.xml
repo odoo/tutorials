@@ -10,6 +10,7 @@
                 <page name="properties_assigned" string="Real Estate Properties">
                         <field name="property_ids"/>
                 </page>
+               
             </xpath>
         </field>
     </record>
