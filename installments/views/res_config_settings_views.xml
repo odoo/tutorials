@@ -12,26 +12,35 @@
                 <block title="Installment Process" id="installment_setting_container">
                     <setting id="max_duration_setting" help="Define Max Duration.">
                         <field name="max_duration" widget="integer" string="Max Duration" help="Define the maximum installment duration."/>
+                        <div class="d-inline-block">years</div>
                     </setting>
 
                     <setting id="annual_rate_percentage_setting" help="Define Annual rate Percentage.">
                         <field name="annual_rate_percentage" widget="float" string="Annual Rate Percentage" help="Define the annual rate percentage."/>
+                        <div class="d-inline-block">%Per Year</div>
                     </setting>
 
                     <setting id="down_payment_percentage_setting" help="Define Down Payment Percentage.">
                         <field name="down_payment_percentage" widget="float" string="Down Payment Percentage" help="Define the down payment percentage."/>
+                        <div class="d-inline-block">%From Product Price</div>
                     </setting>
 
                     <setting id="admin_expenses_percentage_setting" help="Define Administrative Expenses Percentage.">
                         <field name="admin_expenses_percentage" widget="float" string="Administrative Expenses Percentage" help="Define the administrative expenses percentage."/>
+                        <div class="d-inline-block">%From Amount</div>
                     </setting>
 
                     <setting id="delay_penalty_percentage_setting" help="Define Delay Penalty Percentage.">
                         <field name="delay_penalty_percentage" widget="float" string="Delay Penalty Percentage" help="Define the delay penalty percentage."/>
+                        <div class="d-inline-block">%From monthly Amount</div>
                     </setting>
 
                     <setting id="delay_penalty_days_setting" help="Define Delay Penalty Days.">
                         <field name="delay_penalty_days" widget="integer" string="Delay Penalty Days" help="Define the delay penalty process (in days)."/>
+                        <div class="d-inline-block">days</div>
+                        <div class="text-muted">
+                                Delay penalty percentage will be applied after exceed the delay process period.
+                            </div>
                     </setting>
                 </block>
 

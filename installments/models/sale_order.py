@@ -63,7 +63,7 @@ class SaleOrder(models.Model):
             invoice = self.env['account.move'].create(invoice_vals)
             sale_order.installment_invoice_ids = [Command.link(invoice.id)]
             # Update the next installment date
-            sale_order.next_installment_date = sale_order.next_installment_date + relativedelta(months=1) if sale_order.next_installment_date else today + relativedelta(months=1)
+            sale_order.next_installment_date = sale_order.next_installment_date + relativedelta(months=1) if sale_order.next_installment_date else None
 
         #For penalty invoices
         delay_penalty_date = today - timedelta(days=delay_penalty_process)
@@ -105,13 +105,13 @@ class SaleOrder(models.Model):
                             'penalty_invoice_id':penalty_invoice.id
                         })
 
-    def action_open_installment_wizard(self):
+    def open_installment_wizard(self):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Installment Information',
             'res_model': 'installment.wizard',
             'view_mode': 'form',
-            'view_id': self.env.ref('installments.emi_wizard_form_view_form').id,
+            'view_id': self.env.ref('installments.add_emi_wizard_form_view').id,
             'target': 'new',
         } 
 

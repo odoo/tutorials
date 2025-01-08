@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <!-- Form view for the wizard -->
-    <record id="emi_wizard_form_view_form" model="ir.ui.view">
+    <record id="add_emi_wizard_form_view" model="ir.ui.view">
         <field name="name">installment.wizard.form</field>
         <field name="model">installment.wizard</field>
         <field name="arch" type="xml">
@@ -24,13 +24,4 @@
         </field>
     </record>
 
-    <!-- Action to open the wizard -->
-    <record id="action_open_installment_wizard" model="ir.actions.act_window">
-        <field name="name">Installment Information</field>
-        <field name="res_model">installment.wizard</field>
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="emi_wizard_form_view_form"/>
-        <field name="target">new</field>
-    </record>
-    
 </odoo>
