@@ -1,23 +1,24 @@
 from odoo import api, fields, models, Command
 from dateutil.relativedelta import relativedelta
+from datetime import timedelta
 
 class InstallmentWizard(models.TransientModel):
     _name = 'installment.wizard'
     _description = 'Show installment information inside wizard'
 
-    sale_order_id= fields.Many2one('sale.order', string="Sale Order")
-    so_amount=fields.Float(readonly=True)
-    down_payment=fields.Float(readonly=True)
-    remaining_amount=fields.Float(readonly=True)
-    interest=fields.Float(readonly=True)
-    monthly_installment_count=fields.Float(readonly=True)
-    monthly_installment_amount=fields.Float(readonly=True)
+    sale_order_id = fields.Many2one('sale.order', string="Sale Order")
+    so_amount = fields.Float(readonly=True)
+    down_payment = fields.Float(readonly=True)
+    remaining_amount = fields.Float(readonly=True)
+    interest = fields.Float(readonly=True)
+    monthly_installment_count = fields.Float(readonly=True)
+    monthly_installment_amount = fields.Float(readonly=True)
     
     def default_get(self, fields):
         res = super().default_get(fields)
         active_id = self.env.context.get('active_id')  
         sale_order = self.env['sale.order'].browse(active_id)
-         # Fetch default values based on the sale order and relevant logic
+         # Fetch default values based on the sale order and relevant calculations
         if sale_order:
             config = self.env['ir.config_parameter'].sudo()
             down_payment_percentage = float(config.get_param('installment.down_payment_percentage', default=0.0))
@@ -50,7 +51,8 @@ class InstallmentWizard(models.TransientModel):
         sale_order = record.sale_order_id
         if sale_order:
             sale_order.is_emi=True
-            # Calculate admin expenses dynamically
+       
+            # Fetch default values based on the sale order and relevant calculations            
             config = self.env['ir.config_parameter'].sudo()
             down_payment_percentage = float(config.get_param('installment.down_payment_percentage', default=0.0))
             annual_rate_percentage = float(config.get_param('installment.annual_rate_percentage', default=0.0))
@@ -66,43 +68,31 @@ class InstallmentWizard(models.TransientModel):
             monthly_installment_count = max_duration*12
             monthly_installment_amount = total_with_interest / monthly_installment_count if monthly_installment_count else 0.0
             
-            # Fetch or create the admin expenses product
-            # admin_expenses_product = self.env['product.product'].search([('default_code', '=', 'ADMIN_EXPENSES')], limit=1)
-            # if not admin_expenses_product:
-            #     admin_expenses_product = self.env['product.product'].create({
-            #         'name': 'Administrative Expenses',
-            #         'default_code': 'ADMIN_EXPENSES',
-            #         'type': 'service',  # Make it a service product
-            #     })
-
-            # # Create the sale order line
-            # self.env['sale.order.line'].create({
-            #     'order_id': sale_order.id,
-            #     'product_id': admin_expenses_product.id,
-            #     'name': f'Expense: {admin_expenses}',  # Dynamically include admin_expenses value
-            #     'price_unit': admin_expenses,  # Set price to 0
-            # })
             installment_product = self.env.ref('installments.product_product_installment')
             down_payment_product = self.env.ref('installments.product_product_down_payment')
-             # Create the installment invoice
+            
+             # Create the initial installment invoice
             invoice_vals = {
                 'move_type': 'out_invoice',
                 'partner_id': sale_order.partner_id.id,
                 'invoice_date': today,
+                'invoice_date_due': today + timedelta(days=30),
                 'invoice_line_ids': [
                     Command.create({
                         'product_id': installment_product.id,
                         'quantity': 1,
-                        'price_unit': down_payment,
+                        'price_unit': monthly_installment_amount,
+                        'tax_ids': None,
                     }),
                     Command.create({
                         'product_id': down_payment_product.id,
                         'quantity': 1,
-                        'price_unit': monthly_installment_amount,
+                        'price_unit': down_payment,
+                        'tax_ids': None,
                     })
                 ],
                 'sale_order_id': sale_order.id,
             }
             invoice = self.env['account.move'].create(invoice_vals)
-            sale_order.installment_invoice_ids = [(4, invoice.id)]
+            sale_order.installment_invoice_ids = [Command.link(invoice.id)]
             sale_order.next_installment_date=today + relativedelta(months=1)

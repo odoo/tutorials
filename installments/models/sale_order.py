@@ -14,13 +14,12 @@ class SaleOrder(models.Model):
         today = fields.Date.context_today(self)
 
         #for regular installments
-        sale_orders = self.search([('is_emi', '=', True), ('next_installment_date', '=', today)])
+        sale_orders = self.search([('is_emi', '=', True), ('next_installment_date', '<=', today)])
 
         # Fetch the installment product
         installment_product = self.env.ref('installments.product_product_installment', False)
-        if not installment_product:
-            raise ValueError("Installment product with ID 'product_product_installment' is missing.")
         
+        # fetch configuration values from settings
         config = self.env['ir.config_parameter'].sudo()
         down_payment_percentage = float(config.get_param('installment.down_payment_percentage', default=0.0))
         annual_rate_percentage = float(config.get_param('installment.annual_rate_percentage', default=0.0))
@@ -30,7 +29,6 @@ class SaleOrder(models.Model):
         delay_penalty_percentage = float(config.get_param('installment.delay_penalty_percentage', default=0.0))
 
         for sale_order in sale_orders:
-
             # Calculate financial values
             down_payment = (down_payment_percentage / 100) * sale_order.amount_total
             remaining_amount = sale_order.amount_total - down_payment
@@ -51,7 +49,7 @@ class SaleOrder(models.Model):
                 'move_type': 'out_invoice',
                 'partner_id': sale_order.partner_id.id,
                 'invoice_date': today,
-                'invoice_date_due': fields.Datetime.now() +relativedelta(month=1)   ,
+                'invoice_date_due': today + timedelta(days=30),
                 'invoice_line_ids': [
                     Command.create({
                         'product_id': installment_product.id,
@@ -63,8 +61,7 @@ class SaleOrder(models.Model):
                 'sale_order_id': sale_order.id,
             }
             invoice = self.env['account.move'].create(invoice_vals)
-            sale_order.installment_invoice_ids = [(4, invoice.id)]
-
+            sale_order.installment_invoice_ids = [Command.link(invoice.id)]
             # Update the next installment date
             sale_order.next_installment_date = sale_order.next_installment_date + relativedelta(months=1) if sale_order.next_installment_date else today + relativedelta(months=1)
 
@@ -88,7 +85,7 @@ class SaleOrder(models.Model):
                 'move_type': 'out_invoice',
                 'partner_id': invoice.partner_id.id,
                 'invoice_date': today,
-                'invoice_date_due': fields.Datetime.now() + relativedelta(month=1),
+                'invoice_date_due': today + timedelta(days=30),
                 'invoice_line_ids': [
                     Command.create({
                         'product_id': penalty_product.id,
@@ -182,8 +179,7 @@ class SaleOrder(models.Model):
                         ("name", "=", doc_name),
                         ("folder_id", "=", subfolder.id),
                     ],
-                    limit=1,
-                )
+                    limit=1)
 
                     # Create the request only if it does not already exist
                     if not existing_document:
@@ -191,8 +187,7 @@ class SaleOrder(models.Model):
                             {
                                 "name": doc_name,
                                 "folder_id": subfolder.id,
-                            }
-                        )
+                            })
         return {
             "type": "ir.actions.act_window",
             "name": "Documents",
@@ -202,6 +197,7 @@ class SaleOrder(models.Model):
             "context": {"searchpanel_default_folder_id": subfolder.id},
         }
     
+    #Override default confirm action to prevent user from confirming invoice without uploading required documents
     def _action_confirm(self):
          # Configuration parameters for required documents
         settings = self.env["ir.config_parameter"]
@@ -222,9 +218,9 @@ class SaleOrder(models.Model):
                     ],
                 )
         for document in existing_documents:
+            #if type is file (not a request)
             if(document.attachment_type=='binary'):
                 uploaded_document_count+=1
         if uploaded_document_count<required_documents_count:
-                raise ValidationError("Please upload required documents to confirm the sales order."
-        )
+                raise ValidationError("Please upload required documents to confirm the sales order.")
         return super()._action_confirm()
