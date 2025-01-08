@@ -17,7 +17,7 @@
                     </group>       
                 </sheet>
                 <footer>
-                    <button string="Add Installment" type="object" name="action_add_installment" class="btn-primary"/>
+                    <button string="Add Installment" name="action_add_installment" type="object"  class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

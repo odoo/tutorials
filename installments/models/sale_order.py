@@ -122,7 +122,7 @@ class SaleOrder(models.Model):
             'res_model': 'account.move',
             'view_mode': 'list,form',
             'domain': [('sale_order_id', '=', self.id)], 
-           'target': 'current',
+            'target': 'current',
         }
 
     def document_upload(self):

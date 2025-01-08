@@ -27,17 +27,17 @@
 
                     <setting id="admin_expenses_percentage_setting" help="Define Administrative Expenses Percentage.">
                         <field name="admin_expenses_percentage" widget="float" string="Administrative Expenses Percentage" help="Define the administrative expenses percentage."/>
-                        <div class="d-inline-block">%From Amount</div>
+                        <div class="d-inline-block">%From Amount After D.Payment</div>
                     </setting>
 
                     <setting id="delay_penalty_percentage_setting" help="Define Delay Penalty Percentage.">
                         <field name="delay_penalty_percentage" widget="float" string="Delay Penalty Percentage" help="Define the delay penalty percentage."/>
-                        <div class="d-inline-block">%From monthly Amount</div>
+                        <div class="d-inline-block">%From Monthly Amount</div>
                     </setting>
 
                     <setting id="delay_penalty_days_setting" help="Define Delay Penalty Days.">
                         <field name="delay_penalty_days" widget="integer" string="Delay Penalty Days" help="Define the delay penalty process (in days)."/>
-                        <div class="d-inline-block">days</div>
+                        <div class="d-inline-block">Days</div>
                         <div class="text-muted">
                                 Delay penalty percentage will be applied after exceed the delay process period.
                             </div>
