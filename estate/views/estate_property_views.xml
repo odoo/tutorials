@@ -127,4 +127,37 @@
         </field>
     </record>
 
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id">
+                <field name="state" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div>
+                                <text>Property Name: </text>
+                                <field name="name" />
+                            </div>
+                            <div t-if="record.state.raw_value=='offer_received'">
+                                <text>Expected Price: </text>
+                                <field name="expected_price" />
+                            </div>
+                            <div t-if="record.state.raw_value=='offer_accepted'">
+                                <text>Selling Price: </text>
+                                <field name="selling_price" />
+                            </div>
+                            <div>
+                                <text>Tags: </text>
+                                <field name="property_tags_id" widget="many2many_tags" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
 </odoo>
