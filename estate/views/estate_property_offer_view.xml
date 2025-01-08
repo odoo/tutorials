@@ -15,7 +15,7 @@
         <field name="name">test.property.offer</field>
 
         <field name="arch" type="xml"  >
-            <list editable='top' decoration-success="status == 'Accepted'" decoration-danger="status == 'Refused'" >
+            <list editable='top' decoration-success="status == 'Accepted'" decoration-danger="status == 'Refused'"  >
                 <field name="price"/>
                 <field name="buyer_id"/>
                 <button name="property_accepted" string="accepted" type="object" icon="fa-check"/>

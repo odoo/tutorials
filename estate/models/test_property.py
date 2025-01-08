@@ -51,10 +51,10 @@ class TestProperty(models.Model):
 
 
 
-    # @api.depends('living_area','garden_area')
-    # def _compute_total_area(self):
-    #     for record in self:
-    #         record.total_area=record.living_area+record.garden_area
+    @api.depends('living_area','garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area=record.living_area+record.garden_area
 
 
     @api.depends("property_offers_id.price")
@@ -91,7 +91,8 @@ class TestProperty(models.Model):
 
 
 
-    def property_sold_action(self):
+    def action_sold(self):
+        print("xxxxxxxxxxx")
         for record in self:
             
             if record.status == "sold":
@@ -102,6 +103,7 @@ class TestProperty(models.Model):
                 raise UserError("Accepted any offer")
             else:
                 raise UserError("Canceled property can't be sold")
+
         return True
 
     def property_cancle_action(self):
@@ -145,13 +147,7 @@ class TestProperty(models.Model):
 
 
     
-    # @api.model
-    # def create(self, vals):
-    #     for record in self:
-    #         record.env['gamification.badge'].browse(vals['badge_id']).check_granting()
-
-
-    #     return super(TestProperty,self).create(vals)
+    
 
 
 

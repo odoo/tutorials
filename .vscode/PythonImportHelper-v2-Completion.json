@@ -90,6 +90,22 @@
         "documentation": {}
     },
     {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
         "label": "api",
         "importPath": "odoo",
         "description": "odoo",
@@ -155,6 +171,22 @@
     },
     {
         "label": "api",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "Command",
         "importPath": "odoo",
         "description": "odoo",
         "isExtraImport": true,
@@ -183,6 +215,14 @@
         "description": "odoo.http",
         "isExtraImport": true,
         "detail": "odoo.http",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
         "documentation": {}
     },
     {
@@ -295,6 +335,15 @@
         "documentation": {}
     },
     {
+        "label": "Inherited_User",
+        "kind": 6,
+        "importPath": "estate.models.inherited_user",
+        "description": "estate.models.inherited_user",
+        "peekOfCode": "class Inherited_User(models.Model):\n    _inherit = \"res.users\"\n    property_ids = fields.One2many('test.property', 'sales_person_id', string='property')",
+        "detail": "estate.models.inherited_user",
+        "documentation": {}
+    },
+    {
         "label": "TestProperty",
         "kind": 6,
         "importPath": "estate.models.test_property",
@@ -328,6 +377,15 @@
         "description": "estate.models.test_property_type",
         "peekOfCode": "class TestPropertyType(models.Model):\n    _name = \"test.property.type\"\n    _order = \"name\"\n    name = fields.Char('name')\n    propertys_id = fields.One2many(\"test.property\", \"property_types_id\")\n    sequence = fields.Integer('Sequence', default=1, help=\"Used to order type\")\n    offer_ids = fields.One2many('test.property.offer', 'property_type_id', string='offers')\n    offer_count = fields.Integer(readonly=True,compute=\"_compute_count_offer\")\n    @api.depends('offer_ids')\n    def _compute_count_offer(self):",
         "detail": "estate.models.test_property_type",
+        "documentation": {}
+    },
+    {
+        "label": "Property_Invoice",
+        "kind": 6,
+        "importPath": "estate_account.models.estate_property",
+        "description": "estate_account.models.estate_property",
+        "peekOfCode": "class Property_Invoice(models.Model):\n    _inherit = \"test.property\"\n    def action_sold(self):\n        print(\"_______________________________\")\n        self.env[\"account.move\"].create(\n                {\n                    \"partner_id\":self.buyer_id.id,\n                    \"move_type\": \"out_invoice\",\n                    'invoice_line_ids': [\n                Command.create({",
+        "detail": "estate_account.models.estate_property",
         "documentation": {}
     }
 ]

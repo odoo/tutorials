@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "estate",
+    'name': "estate_account",
 
     'summary': """
         Starting module for "Discover the JS framework, chapter 1: Owl components"
@@ -20,16 +20,11 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'web'],
+    'depends': ['base', 'web','estate','account'],
     'application': True,
     'installable': True,
     'data' : [
-        'data/ir.model.access.csv',
-        'views/estate_property_offer_view.xml', 
-        'views/estate_property_view.xml',
-        'views/estate_property_type_view.xml',
-        'views/inherited_user_view.xml',
-        'views/estate_property_menu.xml',
+        
 
 
     ],

@@ -68,10 +68,25 @@ class test_property_offer(models.Model):
 
 
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals["property_id"]:
+                prop = self.env["test.property"].browse(vals["property_id"])
+            if vals["price"] < prop.best_price:
+                raise UserError('price must be greater than best price')
+            if prop.status == "new":
+                prop.status = "offer_received"
+        return super().create(vals_list)
 
 
 
 
-
-
-
+    # @api.model
+    # def create(self , vals_list):
+    #     prop = self.env["test.property"].browse(vals_list["property_id"])
+    #     if vals_list["price"] < prop.best_price:
+    #         raise UserError('price must be greater than best price')
+    #     if prop.status == "new":
+    #         prop.status = "offer_received"
+    #     return super().create(vals_list)

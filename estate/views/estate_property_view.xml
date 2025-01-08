@@ -40,8 +40,8 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <header>
-                    <button name="property_sold_action" type="object" string="SOLD"/>
-                    <button name="property_cancle_action" type="object" string="CANCEL"/>
+                    <button name="action_sold" type="object" string="SOLD" invisible="status == 'sold' or status == 'cancelled'"/>
+                    <button name="property_cancle_action" type="object" string="CANCEL" invisible="status == 'sold' or status == 'cancelled'"/>
                     <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
 
                  </header>
@@ -122,7 +122,7 @@
                                 <group>
                                     <field name="garden_area"  invisible="not garden"/>
                                 </group>  
-                                <group>
+                                <group>invisible="not garden"
                                     <field name="total_area" />
                                 </group>
                             </group>
@@ -130,7 +130,7 @@
                         </page>
                         <page name="Offer" string="Offers">
                                 <group>
-                                    <field name="property_offers_id" />
+                                    <field name="property_offers_id" readonly="status== 'sold' or status == 'offer_accepted' or status=='cancelled'"/>
                                 </group>
                         </page>
                         <page name="other info" string="other info">
