@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="offer_1" model="estate.property.offer">
+    <field name="partner_id" ref="base.res_partner_12"/>
+    <field name="property_id" ref="big_villa"/>
+    <field name="price" >10000</field>
+    <field name="validity">14</field>
+    <field name="date_deadline" eval="datetime.now()"/>
+</record>
+
+<record id="offer_2" model="estate.property.offer">
+    <field name="partner_id" ref="base.res_partner_12"/>
+    <field name="property_id" ref="big_villa"/>
+    <field name="price">1500000</field>
+    <field name="validity">14</field>
+    <field name="date_deadline" eval="datetime.now()"/>
+
+</record>
+
+<record id="offer_3" model="estate.property.offer">
+    <field name="partner_id" ref="base.res_partner_2"/>
+    <field name="property_id" ref="big_villa"/>
+    <field name="price" >1500001</field>
+    <field name="validity">14</field>
+    <field name="date_deadline" eval="datetime.now()"/>
+
+</record>
+
+
+<function model="estate.property.offer" name="cross_refuse">
+    <value eval="[ref('offer_1'),ref('offer_2')]"/>
+</function>
+
+<function model="estate.property.offer" name="tick_accept" >
+    <value eval="[ref('offer_3')]"/>
+
+</function>
+
+    
+</odoo>

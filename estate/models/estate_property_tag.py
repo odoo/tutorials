@@ -1,5 +1,6 @@
-from odoo import models,fields
 from random import randint
+from odoo import models,fields
+
 
 
 class EstatePropertyTag(models.Model):
@@ -10,12 +11,9 @@ class EstatePropertyTag(models.Model):
     name = fields.Char('Property Tag', required=True)
     color = fields.Integer( string="Color Index", default=lambda self: self._default_color())
 
+
     def _default_color(self):
         return randint(1, 11)
-
-    
-
-
 
     _sql_constraints = [
             ('uniq_name', 'unique(name)' ,'Property Tag Name should be unique'),

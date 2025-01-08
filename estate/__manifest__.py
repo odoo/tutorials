@@ -17,12 +17,20 @@
     'data':[
 
         'security/ir.model.access.csv',
-        'views/estate_property_view.xml',
-        'views/estate_property_offer_view.xml',
-        'views/estate_property_type_view.xml',
-        'views/estate_property_tags_view.xml',
-        'views/estate_property_menu_view.xml',
-        'views/users_properties.xml'
+        'views/partner_salesman_views.xml',
+        'views/estate_property_offer_views.xml',
+        'views/estate_property_tag_views.xml',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_views.xml',
+        'views/estate_menus.xml',
+        'data/estate.property.type.csv'
+
+    ],
+
+
+    'demo':[
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml'
 
     ],
     
