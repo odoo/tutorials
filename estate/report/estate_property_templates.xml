@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_property_offer" name="Property Offer">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-call="estate.report_property_template"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_property_template" name="Property">
+        <t t-call="estate.report_offer_basic"/>
+        <t t-call="estate.report_offer_table"/>
+    </template>
+
+    <template id="report_offer_table" name="Offer Table">
+        <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+        <t t-if="offers">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Price</th>
+                        <th>Buyer</th>
+                        <th>Validity</th>
+                        <th>Deadline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="offers" t-as="offer">
+                        <tr>
+                            <td>
+                                <span t-field="offer.price"/>
+                            </td>
+                            <td>
+                                <span t-field="offer.partner_id.name"/>
+                            </td>
+                            <td>
+                                <span t-field="offer.validity"/>
+                            </td>
+                            <td>
+                                <span t-field="offer.date_deadline"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <strong>Sorry, there is no offer for this property</strong>
+        </t>
+    </template>
+
+    <template id="report_offer_basic" name="Offer Basic">
+        <div class="page p-4">
+            <h2 class="text-primary mb-4">
+                <span t-field="property.name"/>
+            </h2>
+            <div class="mb-3">
+                <strong class="text-secondary">Expected Price: </strong>
+                <span class="text-dark fw-bold" t-field="property.expected_price"/>
+            </div>
+            <div class="mb-3">
+                <strong class="text-secondary">Best Offer: </strong>
+                <span class="text-dark fw-bold" t-field="property.best_offer"/>
+            </div>
+            <div>
+                <strong class="text-secondary">Status: </strong>
+                <span class="text-dark fw-bold" t-field="property.status"></span>
+            </div>
+            <div class="mb-3">
+                <strong class="text-secondary">Property Type: </strong>
+                <span class="text-dark" t-field="property.property_type_id.name"/>
+            </div>
+            <div class="mb-4">
+                <strong class="text-secondary">Date Availability: </strong>
+                <span class="text-dark" t-field="property.date_availability"/>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_user_properties" name="Salesman Properties Report">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page p-4">
+                        <h2 class="text-primary mb-4">
+                            Salesman: <span t-field="user.name"/>
+                        </h2>
+                        <t t-set="properties" t-value="user.mapped('property_ids')"/>
+                        <t t-foreach="properties" t-as="property">
+                            <t t-call="estate.report_property_template"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_offer_basic_inherited" name="Offer Basic Inherited" inherit_id="estate.report_offer_basic">
+        <xpath expr="//div[@class='page p-4']" position="inside">
+            <strong t-if="property.status=='sold'" class="text-danger fw-bold">!!! Invoice Already Generated !!!</strong>
+        </xpath>
+    </template>
+</odoo>

@@ -47,6 +47,7 @@
                     <button name="action_sold" class="btn btn-secondary" invisible='status == "offer_accepted" or status == "sold" or status == "canceled"' type="object" string="Sell"/>
                     <button name="action_cancel" class="btn btn-secondary" invisible='status =="sold" or status == "canceled"' type="object" string="Cancel"/>
                     <field name="status" readonly="1" widget="statusbar" nolabel="1"></field>
+                    <!-- <button string="Print" name="estate.report_estate_property_action" type="action" class="oe_highlight"/> -->
                 </header>
                 <sheet>
                     <group name="Basics">
