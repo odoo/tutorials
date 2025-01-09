@@ -130,7 +130,9 @@ class EstateProperty(models.Model):
                 raise UserError(_("Can't delete this Record because Property is %s. ", record.state))
 
       
-     
+    def print_quotation(self):
+        return self.env.ref('estate.action_report_estate_property_sold').report_action(self)
+
 
     
 

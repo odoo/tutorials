@@ -12,3 +12,9 @@ class InheritedModel(models.Model):
         string='Properties_Inherited' , 
 
         )
+
+    def print_quotation(self):
+        return self.env.ref('estate.action_report_salesman_properties').report_action(self)
+
+
+    

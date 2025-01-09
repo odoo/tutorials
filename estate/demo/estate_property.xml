@@ -53,4 +53,22 @@
     ]" />
 </record>
 
+
+<record id="forty_acre_land" model="estate.property">
+    <field name="name">Forty Acre Land</field>
+    <field name="state">new</field>
+    <field name="description">Widespread and lush green land area</field>
+    <field name="postcode">12254</field>
+    <field name="date_availability">2024-01-15</field>
+    <field name="expected_price">1500</field>
+    <field name="selling_price">1600</field>
+    <field name="bedrooms">0</field>
+    <field name="living_area">0</field>
+    <field name="facades">4</field>
+    <field name="garage">False</field>
+    <field name="property_type_id" ref="4" />
+    
+</record>
+
+
 </odoo>

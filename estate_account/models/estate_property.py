@@ -1,5 +1,4 @@
-from odoo import models,fields, Command
-from datetime import datetime
+from odoo import models,Command
 
 
 class EstateInvoice(models.Model):
@@ -13,7 +12,6 @@ class EstateInvoice(models.Model):
            {    
              'partner_id': self.partner_id.id,
              'move_type': 'out_invoice',
-            #'invoice_date': fields.Date(default= datetime.today()),
              'invoice_line_ids': [
                 Command.create({
                     'name': self.name,
@@ -32,8 +30,5 @@ class EstateInvoice(models.Model):
            }
          
         ).action_post()
-
-
-
 
         return super().sell_action()

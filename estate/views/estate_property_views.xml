@@ -78,6 +78,7 @@
     <field name="arch" type="xml">
         <form string="estate_property_form">
             <header>
+                <button name="print_quotation" string="Print" type="object" class="oe_highlight" groups="base.group_user" data-hotkey="k"/>
                 <button class= "btn btn-primary"  name="sell_action" type="object" string="SOLD" invisible=" state == 'sold' or  state=='cancelled'"/>
                 <button class= "btn btn-primary"  name="cancel_action" type="object" string="CANCEL" invisible=" state == 'sold' or  state=='cancelled'"/>
                 <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
