@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    is_emi = fields.Boolean(default=False)
+    is_emi = fields.Boolean()
     next_installment_date = fields.Date()
     installment_invoice_ids = fields.One2many('account.move', 'sale_order_id')
 
@@ -23,7 +23,7 @@ class SaleOrder(models.Model):
         config = self.env['ir.config_parameter'].sudo()
         down_payment_percentage = float(config.get_param('installment.down_payment_percentage', default=0.0))
         annual_rate_percentage = float(config.get_param('installment.annual_rate_percentage', default=0.0))
-        max_duration = float(config.get_param('installment.max_duration', default=12))
+        max_duration = float(config.get_param('installment.max_duration', default=1))
         admin_expenses_percentage = float(config.get_param('installment.admin_expenses_percentage', default=0.0))
         delay_penalty_process = float(config.get_param('installment.delay_penalty_days', 0.0))
         delay_penalty_percentage = float(config.get_param('installment.delay_penalty_percentage', default=0.0))
@@ -105,7 +105,7 @@ class SaleOrder(models.Model):
                             'penalty_invoice_id':penalty_invoice.id
                         })
 
-    def open_installment_wizard(self):
+    def action_open_installment_wizard(self):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Installment Information',
@@ -115,7 +115,7 @@ class SaleOrder(models.Model):
             'target': 'new',
         } 
 
-    def open_installment_invoices(self):
+    def action_open_installment_invoices(self):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Installment invoices',
@@ -125,7 +125,7 @@ class SaleOrder(models.Model):
             'target': 'current',
         }
 
-    def document_upload(self):
+    def action_document_upload(self):
         installment_folder = self.env["documents.document"].search(
             [("name", "=", "Sales - Installment")], limit=1
         )

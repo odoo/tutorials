@@ -9,15 +9,15 @@
 
             <xpath expr="//div[@name='button_box']" position="inside">
                 <!-- documents stat button -->
-                <button name="document_upload" type="object" string="Documents" class="btn btn-primary " icon="fa-file-text"/>
+                <button name="action_document_upload" type="object" string="Documents" class="btn btn-primary " icon="fa-file-text"/>
                 <!-- installment stat button -->
-                 <button name="open_installment_invoices" type="object" invisible="not installment_invoice_ids" class="btn btn-primary " icon="fa-money">
+                 <button name="action_open_installment_invoices" type="object" invisible="not installment_invoice_ids" class="btn btn-primary " icon="fa-money">
                     <field name="installment_invoice_ids" widget="statinfo" string="Installments"/>
                  </button>
             </xpath>
     
            <xpath expr="//div[@name='so_button_below_order_lines']/button[@name='action_open_discount_wizard']" position="before">
-                <button name="open_installment_wizard" type="object" class="btn-primary "
+                <button name="action_open_installment_wizard" type="object" class="btn-primary "
                     string="Add EMI" />
             </xpath>
             

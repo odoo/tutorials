@@ -23,7 +23,7 @@ class InstallmentWizard(models.TransientModel):
             config = self.env['ir.config_parameter'].sudo()
             down_payment_percentage = float(config.get_param('installment.down_payment_percentage', default=0.0))
             annual_rate_percentage = float(config.get_param('installment.annual_rate_percentage', default=0.0))
-            max_duration = float(config.get_param('installment.max_duration', default=12))  
+            max_duration = float(config.get_param('installment.max_duration', default=1))  
             admin_expenses_percentage = float(config.get_param('installment.admin_expenses_percentage', default=0.0))
 
             down_payment = (down_payment_percentage / 100) * sale_order.amount_total
@@ -56,7 +56,7 @@ class InstallmentWizard(models.TransientModel):
             config = self.env['ir.config_parameter'].sudo()
             down_payment_percentage = float(config.get_param('installment.down_payment_percentage', default=0.0))
             annual_rate_percentage = float(config.get_param('installment.annual_rate_percentage', default=0.0))
-            max_duration = float(config.get_param('installment.max_duration', default=12))  
+            max_duration = float(config.get_param('installment.max_duration', default=1))  
             admin_expenses_percentage = float(config.get_param('installment.admin_expenses_percentage', default=0.0))
 
             down_payment = (down_payment_percentage / 100) * sale_order.amount_total

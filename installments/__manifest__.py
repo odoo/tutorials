@@ -2,7 +2,8 @@
     'name': 'installments',
     'version': '1.0',
     'author' : 'Dhruv Chauhan',
-    'description': 'Installments management module!',
+    'description': 'Enables sales order payments via EMIs.',
+    'summary': 'Adds EMI payment functionality, penalty management, and required document upload to the Sales module.',
     'depends': ['base', 'sale_management', 'documents'],
     'data': [
         'security/ir.model.access.csv',
