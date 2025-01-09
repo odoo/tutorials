@@ -6,9 +6,7 @@
     <field name="model">res.users</field>
     <field name="inherit_id" ref="base.view_users_form"/>
     <field name="arch" type="xml">
-        <!-- find field description and add the field
-             new_field after it -->
-        <xpath expr="//notebook[@colspan='4']" position="inside">
+         <xpath expr="//notebook[@colspan='4']" position="inside">
          <page  string="propertys">
             <field name="property_ids"></field>
          </page>

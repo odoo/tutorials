@@ -114,6 +114,14 @@
         "documentation": {}
     },
     {
+        "label": "_",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
         "label": "models",
         "importPath": "odoo",
         "description": "odoo",
@@ -218,6 +226,30 @@
         "documentation": {}
     },
     {
+        "label": "relativedelta",
+        "importPath": "dateutil.relativedelta",
+        "description": "dateutil.relativedelta",
+        "isExtraImport": true,
+        "detail": "dateutil.relativedelta",
+        "documentation": {}
+    },
+    {
+        "label": "relativedelta",
+        "importPath": "dateutil.relativedelta",
+        "description": "dateutil.relativedelta",
+        "isExtraImport": true,
+        "detail": "dateutil.relativedelta",
+        "documentation": {}
+    },
+    {
+        "label": "relativedelta",
+        "importPath": "dateutil.relativedelta",
+        "description": "dateutil.relativedelta",
+        "isExtraImport": true,
+        "detail": "dateutil.relativedelta",
+        "documentation": {}
+    },
+    {
         "label": "datetime",
         "importPath": "datetime",
         "description": "datetime",
@@ -271,22 +303,6 @@
         "description": "odoo.exceptions",
         "isExtraImport": true,
         "detail": "odoo.exceptions",
-        "documentation": {}
-    },
-    {
-        "label": "relativedelta",
-        "importPath": "dateutil.relativedelta",
-        "description": "dateutil.relativedelta",
-        "isExtraImport": true,
-        "detail": "dateutil.relativedelta",
-        "documentation": {}
-    },
-    {
-        "label": "relativedelta",
-        "importPath": "dateutil.relativedelta",
-        "description": "dateutil.relativedelta",
-        "isExtraImport": true,
-        "detail": "dateutil.relativedelta",
         "documentation": {}
     },
     {
@@ -348,7 +364,7 @@
         "kind": 6,
         "importPath": "estate.models.test_property",
         "description": "estate.models.test_property",
-        "peekOfCode": "class TestProperty(models.Model):\n    _name = \"test.property\"\n    _description = \"Test Model\"\n    _order = \"id desc\"\n    name = fields.Char('name',required=True,default=\"My new House\")\n    description=fields.Text('description')\n    postcode=fields.Char()\n    date_availability=fields.Date('availability',default=(datetime.today() + relativedelta(months=3)).date(),copy=False)\n    expected_price=fields.Float()\n    best_price=fields.Float(readonly=True,compute=\"_compute_best_price\")",
+        "peekOfCode": "class TestProperty(models.Model):\n    _name = \"test.property\"\n    _description = \"Test proerty\"\n    _order = \"id desc\"\n    name = fields.Char('name',required=True,default=\"My new House\")\n    description=fields.Text('description')\n    postcode=fields.Char()\n    date_availability=fields.Date('availability',default=(datetime.today() + relativedelta(months=3)).date(),copy=False)\n    expected_price=fields.Float()\n    best_price=fields.Float(readonly=True,compute=\"_compute_best_price\")",
         "detail": "estate.models.test_property",
         "documentation": {}
     },
@@ -357,7 +373,7 @@
         "kind": 6,
         "importPath": "estate.models.test_property_offer",
         "description": "estate.models.test_property_offer",
-        "peekOfCode": "class test_property_offer(models.Model):\n    _name = \"test.property.offer\"\n    _order = \"price desc\"\n    price = fields.Float('price',required=True)\n    status = fields.Selection([('Accepted','Accepted'),('Refused','Refused'),('Pennding','pennding')],default=\"Pennding\",copy=False)\n    buyer_id = fields.Many2one('res.partner',string='partner_id',required=True)   \n    property_id = fields.Many2one('test.property',required=True,ondelete='cascade')\n    validity = fields.Integer(default=7)\n    date_deadline = fields.Date(compute='_compute_date_deadline',inverse='_inverse_date_deadline',default=datetime.today())\n    property_type_id = fields.Many2one(related='property_id.property_types_id',string=\"property_type\")",
+        "peekOfCode": "class test_property_offer(models.Model):\n    _name = \"test.property.offer\"\n    _description = \"Test proerty Offer\"\n    _order = \"price desc\"\n    price = fields.Float('price',required=True)\n    status = fields.Selection([('Accepted','Accepted'),('Refused','Refused'),('Pennding','pennding')],default=\"Pennding\",copy=False)\n    buyer_id = fields.Many2one('res.partner',required=True)   \n    property_id = fields.Many2one('test.property',required=True,ondelete='cascade')\n    validity = fields.Integer(default=7)#! if there is any default value in fields compute does not work on demo data\n    date_deadline = fields.Date(compute='_compute_date_deadline',inverse='_inverse_date_deadline',default=datetime.today())",
         "detail": "estate.models.test_property_offer",
         "documentation": {}
     },
@@ -366,7 +382,7 @@
         "kind": 6,
         "importPath": "estate.models.test_property_tags",
         "description": "estate.models.test_property_tags",
-        "peekOfCode": "class TestPropertyTags(models.Model):\n    _name = \"test.property.tags\"\n    _order = \"name\"\n    name = fields.Char('name')\n    color = fields.Integer(\n        'Color',\n        default=lambda self : self._default_color()\n    )\n    def _default_color(self):\n        return randint(1, 11)",
+        "peekOfCode": "class TestPropertyTags(models.Model):\n    _name = \"test.property.tags\"\n    _description = \"Test proerty Tags\"\n    _order = \"name\"\n    name = fields.Char('name')\n    color = fields.Integer(\n        'Color',\n        default=lambda self : self._default_color()\n    )\n    def _default_color(self):",
         "detail": "estate.models.test_property_tags",
         "documentation": {}
     },
@@ -375,7 +391,7 @@
         "kind": 6,
         "importPath": "estate.models.test_property_type",
         "description": "estate.models.test_property_type",
-        "peekOfCode": "class TestPropertyType(models.Model):\n    _name = \"test.property.type\"\n    _order = \"name\"\n    name = fields.Char('name')\n    propertys_id = fields.One2many(\"test.property\", \"property_types_id\")\n    sequence = fields.Integer('Sequence', default=1, help=\"Used to order type\")\n    offer_ids = fields.One2many('test.property.offer', 'property_type_id', string='offers')\n    offer_count = fields.Integer(readonly=True,compute=\"_compute_count_offer\")\n    @api.depends('offer_ids')\n    def _compute_count_offer(self):",
+        "peekOfCode": "class TestPropertyType(models.Model):\n    _name = \"test.property.type\"\n    _description = \"Test proerty Type\"\n    _order = \"name\"\n    name = fields.Char('name')\n    propertys_id = fields.One2many(\"test.property\", \"property_types_id\")\n    sequence = fields.Integer('Sequence', default=1, help=\"Used to order type\")\n    offer_ids = fields.One2many('test.property.offer', 'property_type_id', string='offers')\n    offer_count = fields.Integer(readonly=True,compute=\"_compute_count_offer\")\n    @api.depends('offer_ids')",
         "detail": "estate.models.test_property_type",
         "documentation": {}
     },
@@ -384,7 +400,7 @@
         "kind": 6,
         "importPath": "estate_account.models.estate_property",
         "description": "estate_account.models.estate_property",
-        "peekOfCode": "class Property_Invoice(models.Model):\n    _inherit = \"test.property\"\n    def action_sold(self):\n        print(\"_______________________________\")\n        self.env[\"account.move\"].create(\n                {\n                    \"partner_id\":self.buyer_id.id,\n                    \"move_type\": \"out_invoice\",\n                    'invoice_line_ids': [\n                Command.create({",
+        "peekOfCode": "class Property_Invoice(models.Model):\n    _inherit = \"test.property\"\n    def action_sold(self):\n        self.env[\"account.move\"].create(\n                {\n                    \"partner_id\":self.buyer_id.id,\n                    \"move_type\": \"out_invoice\",\n                    'invoice_line_ids': [\n                Command.create({\n                    'name': self.name,",
         "detail": "estate_account.models.estate_property",
         "documentation": {}
     }

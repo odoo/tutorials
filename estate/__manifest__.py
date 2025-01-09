@@ -24,15 +24,23 @@
     'application': True,
     'installable': True,
     'data' : [
-        'data/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/estate_property_offer_view.xml', 
         'views/estate_property_view.xml',
         'views/estate_property_type_view.xml',
         'views/inherited_user_view.xml',
         'views/estate_property_menu.xml',
+        "data/test.property.type.csv",
+
 
 
     ],
+    'demo':[
+        'demo/test_property_demo.xml',
+        'demo/test_property_offer_demo.xml'
+    ],
+
+   
    
     'license': 'AGPL-3'
 }

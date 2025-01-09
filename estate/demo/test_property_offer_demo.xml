@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- property_id_1   -->
+        <record id="property_offer_1" model="test.property.offer">
+            <field name="buyer_id" ref="base.res_partner_12"></field>
+            <field name="property_id" ref="property_id_1"></field>
+            <field name="price">10000</field>
+            <field name="validity">14</field>
+            <field name="date_deadline" eval="(datetime.today() + relativedelta(days=14)).date()"/>
+        </record>
+
+        <record id="property_offer_2" model="test.property.offer">
+            <field name="buyer_id" ref="base.res_partner_12"></field>
+            <field name="property_id" ref="property_id_1"></field>
+            <field name="price">1500000</field>
+            <field name="validity">14</field>
+            <field name="date_deadline" eval="(datetime.today() + relativedelta(days=14)).date()"/>
+        </record>
+        
+        <record id="property_offer_3" model="test.property.offer">
+            <field name="buyer_id" ref="base.res_partner_2"></field>
+            <field name="property_id" ref="property_id_1"></field>
+            <field name="price">1500001</field>
+            <field name="validity">14</field>
+            <field name="date_deadline" eval="(datetime.today() + relativedelta(days=14)).date()"/>
+        </record>
+
+
+    <!-- property_id_2   -->
+        <record id="property_offer_4" model="test.property.offer">
+            <field name="buyer_id" ref="base.res_partner_12"></field>
+            <field name="property_id" ref="property_id_2"></field>
+            <field name="price">1500000</field>
+            <field name="validity">14</field>
+            <field name="date_deadline" eval="(datetime.today() + relativedelta(days=14)).date()"/>
+
+        </record>
+        <record id="property_offer_5" model="test.property.offer">
+            <field name="buyer_id" ref="base.res_partner_2"></field>
+            <field name="property_id" ref="property_id_2"></field>
+            <field name="price">1500001</field>
+            <field name="validity">14</field>
+            <field name="date_deadline" eval="(datetime.today() + relativedelta(days=14)).date()"/>
+        </record>
+
+    <!-- Call by Action -->
+        <function model="test.property.offer" name="property_rejected">
+            <value eval="[ref('property_offer_1')]"/>
+        </function>
+
+        <function model="test.property.offer" name="property_accepted">
+            <value eval="[ref('property_offer_3')]"/>
+        </function>        
+
+        <function model="test.property.offer" name="property_rejected">
+            <value eval="[ref('property_offer_4')]"/>
+        </function>
+
+
+</odoo>

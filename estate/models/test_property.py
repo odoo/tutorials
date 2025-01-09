@@ -1,4 +1,4 @@
-from odoo import fields, models , api
+from odoo import fields, models , api , _
 from datetime import datetime
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 
 class TestProperty(models.Model):
     _name = "test.property"
-    _description = "Test Model"
+    _description = "Test proerty"
     _order = "id desc"
 
     name = fields.Char('name',required=True,default="My new House")
@@ -92,7 +92,6 @@ class TestProperty(models.Model):
 
 
     def action_sold(self):
-        print("xxxxxxxxxxx")
         for record in self:
             
             if record.status == "sold":
@@ -143,7 +142,7 @@ class TestProperty(models.Model):
     def _unlink_if_user_inactive(self):
         for record in self:
             if record.status == "sold" or  record.status == 'offer_accepted' or record.status == 'offer_received' :
-                raise UserError("Can't delete  this property!")
+                raise UserError(_("Can't delete  this property! "))
 
 
     

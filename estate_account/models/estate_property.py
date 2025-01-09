@@ -6,7 +6,6 @@ class Property_Invoice(models.Model):
     _inherit = "test.property"
 
     def action_sold(self):
-        print("_______________________________")
         self.env["account.move"].create(
                 {
                     "partner_id":self.buyer_id.id,

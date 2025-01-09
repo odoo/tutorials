@@ -2,6 +2,8 @@ from odoo import models,fields,api
 
 class TestPropertyType(models.Model):
     _name = "test.property.type"
+    _description = "Test proerty Type"
+
     _order = "name"
 
     name = fields.Char('name')
@@ -14,3 +16,8 @@ class TestPropertyType(models.Model):
     def _compute_count_offer(self):
         for record in self:
             record.offer_count = len(self.offer_ids)
+
+
+    _sql_constraints = [
+        ("name_uniq", "unique(name)", "Type must be unique"),
+    ]

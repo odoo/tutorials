@@ -12,15 +12,15 @@
 
 
     <record id="test_property_type_list_view" model="ir.ui.view">
-       <field name="model">test.property.type</field>
+        <field name="model">test.property.type</field>
         <field name="name">test.property.type</field>
 
-        <field name="arch" type="xml"  >
-            <list string="list of property types"  sample='1'>
+        <field name="arch" type="xml">
+            <list string="list of property types" sample='1'>
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
-               
-                
+
+
 
             </list>
         </field>
@@ -33,38 +33,38 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <sheet>
-                <div class="oe_button_box" name="button_box">
+                    <div class="oe_button_box" name="button_box">
 
-                    <button name="estate.test_property_offer_action" type="action" class="oe_stat_button" icon="fa-money">
-                        <field name="offer_count" string=" Offers" widget="statinfo"/>
-                    </button>
+                        <button name="estate.test_property_offer_action" type="action" class="oe_stat_button" icon="fa-money">
+                            <field name="offer_count" string=" Offers" widget="statinfo"/>
+                        </button>
 
-                   </div>
+                    </div>
                     <group>
-                            <field name="name"/>
+                        <field name="name"/>
                     </group>
-                   
+
                     <notebook>
                         <page string="Propertys">
 
-                             <group>
-                                    <field name="propertys_id" string="">
-                                        <list>
-                                            <field name="name"/>
-                                            <field name="best_price"/>
-                                        </list>
-                                    </field>
-                             </group>
+                            <group>
+                                <field name="propertys_id" string="">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="best_price"/>
+                                    </list>
+                                </field>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
-   </record>
+    </record>
 
 
-        
-        
-        
-        
+
+
+
+
 </odoo>

@@ -8,13 +8,15 @@ from odoo.exceptions import ValidationError
 
 class test_property_offer(models.Model):
     _name = "test.property.offer"
+    _description = "Test proerty Offer"
+
     _order = "price desc"
 
     price = fields.Float('price',required=True)
     status = fields.Selection([('Accepted','Accepted'),('Refused','Refused'),('Pennding','pennding')],default="Pennding",copy=False)
-    buyer_id = fields.Many2one('res.partner',string='partner_id',required=True)   
+    buyer_id = fields.Many2one('res.partner',required=True)   
     property_id = fields.Many2one('test.property',required=True,ondelete='cascade')
-    validity = fields.Integer(default=7)
+    validity = fields.Integer(default=7)#! if there is any default value in fields compute does not work on demo data
     date_deadline = fields.Date(compute='_compute_date_deadline',inverse='_inverse_date_deadline',default=datetime.today())
     property_type_id = fields.Many2one(related='property_id.property_types_id',string="property_type")
 
@@ -48,13 +50,14 @@ class test_property_offer(models.Model):
 
     def property_rejected(self):
         for record in self:
-            if record.status=="Accepted" or record.status=="Pennding":
-                record.status="Refused"
-                record.property_id.selling_price = 0
-                record.property_id.status = "offer_received"
+            if record.property_id.status != "cancelled":
+                if record.status=="Accepted" or record.status=="Pennding":
+                    record.status="Refused"
+                    record.property_id.selling_price = 0
+                    record.property_id.status = "offer_received"
 
-            else:
-                record.status="Pennding"
+                else:
+                    record.status="Pennding"
 
 
     @api.constrains('price','status')

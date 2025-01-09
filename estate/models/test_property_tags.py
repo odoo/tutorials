@@ -3,6 +3,7 @@ from random import randint
 
 class TestPropertyTags(models.Model):
     _name = "test.property.tags"
+    _description = "Test proerty Tags"
     _order = "name"
 
     name = fields.Char('name')

@@ -4,34 +4,73 @@
     <record id="test_property_action" model="ir.actions.act_window">
         <field name="name">property</field>
         <field name="res_model">test.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Define new property
             </p>
         </field>
-                    <field name="context">{'search_default_available':True}</field>
+        <field name="context">{'search_default_available':True}</field>
 
     </record>
+
+
+    <record id="test_property_kanban_view" model="ir.ui.view">
+        <field name="model">test.property</field>
+        <field name="name">test.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" records_draggable="False">
+                                   
+                <field name="status"/>
+                <templates>
+                    <t t-name="card">
+                       
+                        <div>
+                           <div>
+                             <field name="name"/>
+                           </div>
+                            <div t-if="record.status.raw_value == 'new'">
+                                     This is new!
+                            </div>
+
+                            <div>
+                               <text>expected price</text> <field name="expected_price"/>
+                            </div>
+                            <div t-if="record.status.raw_value == 'offer_accepted' or record.status.raw_value == 'sold'">
+                                <text>selling price</text><field name="selling_price"/>
+                            </div>
+                            <div t-if="record.status.raw_value == 'offer_received'">
+                                <text>best price</text><field name="best_price"/>
+                            </div>
+                          
+                            <field name="property_tags_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
+
+                       
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
 
     <record id="test_property_list_view" model="ir.ui.view">
 
         <field name="model">test.property</field>
         <field name="name">test.property</field>
 
-        <field name="arch" type="xml"  >
-            <list string="list of property"  sample='1' decoration-muted="status == 'sold'" decoration-success="status == 'offer_received'or status == 'offer_accepted'" decoration-bf="status == 'offer_accepted'"  >
+        <field name="arch" type="xml">
+            <list string="list of property" sample='1' decoration-muted="status == 'sold'" decoration-success="status == 'offer_received'or status == 'offer_accepted'" decoration-bf="status == 'offer_accepted'">
                 <field name="name"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="active"/>
                 <field name="status"/>
                 <field name="date_availability" optional="hide" />
 
             </list>
         </field>
-        
-    </record>  
+
+    </record>
 
 
     <record id="test_property_form_view" model="ir.ui.view">
@@ -44,10 +83,10 @@
                     <button name="property_cancle_action" type="object" string="CANCEL" invisible="status == 'sold' or status == 'cancelled'"/>
                     <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
 
-                 </header>
+                </header>
                 <sheet>
                     <group>
-                            <field name="name"/>
+                        <field name="name"/>
                     </group>
                     <group>
                         <group>
@@ -55,8 +94,8 @@
                         </group>
                         <group>
                             <field name="expected_price" />
-                        </group>  
-                         <group>
+                        </group>
+                        <group>
                             <field name="best_price" string="Best Price"/>
                         </group>
                         <group>
@@ -67,18 +106,18 @@
                         </group>
                         <group>
                             <field name="sales_person_id" widget="many2one_avatar_user"/>
-                        </group> 
+                        </group>
                         <group>
-                            <field name="status"/>
-                        </group> 
+                            <field name="status"/> 
+                        </group>
                         <group>
                             <field name="property_tags_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
-                        
+
                     </group>
                     <notebook>
                         <page string="Description">
-                            
+
                             <group>
                                 <field name="description"/>
                             </group>
@@ -88,7 +127,7 @@
                                 <group>
                                     <field name="bedrooms"/>
                                 </group>
-                                
+
                             </group>
                             <group>
 
@@ -104,7 +143,7 @@
                                 <group>
                                     <field name="garden"/>
                                 </group>
-                               
+
                             </group>
                             <group>
                                 <group>
@@ -115,38 +154,38 @@
                                 </group>
                             </group>
                             <group>
-                                 
+
                                 <group>
                                     <field name="living_area"/>
                                 </group>
                                 <group>
-                                    <field name="garden_area"  invisible="not garden"/>
-                                </group>  
+                                    <field name="garden_area" invisible="not garden"/>
+                                </group>
                                 <group>invisible="not garden"
                                     <field name="total_area" />
                                 </group>
                             </group>
-                            
+
                         </page>
                         <page name="Offer" string="Offers">
-                                <group>
-                                    <field name="property_offers_id" readonly="status== 'sold' or status == 'offer_accepted' or status=='cancelled'"/>
-                                </group>
+                            <group>
+                                <field name="property_offers_id" readonly="status== 'sold' or status == 'offer_accepted' or status=='cancelled'"/>
+                            </group>
                         </page>
                         <page name="other info" string="other info">
-                                <group>
-                                        <field name="sales_person_id" widget="many2one_avatar_user"/>
-                                </group>
-                                <group>
-                                        <field name="buyer_id" widget="many2one_avatar_user"/>
-                                </group>
+                            <group>
+                                <field name="sales_person_id" widget="many2one_avatar_user"/>
+                            </group>
+                            <group>
+                                <field name="buyer_id" widget="many2one_avatar_user"/>
+                            </group>
 
                         </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
-   </record>
+    </record>
 
 
 
@@ -154,20 +193,20 @@
         <field name="name">test.property</field>
         <field name="model">test.property</field>
         <field name="arch" type="xml">
-            <search string="test" >
-                    <field name="name"/>
-                    <field name="postcode"/>
-                    <field name="description"/>
-                    <field name="living_area" filter_domain="[ ('living_area', '>', self)]"/>
-                    <filter string="Available" name="available" domain="['|', ('status', '=', 'new'), ('status', '=', 'offer_received')]"/>
-                    <filter string="Archived" name="active" domain="[('active', '=', False)]"/>
-                     <group expand="1" string="Group By">
+            <search string="test">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="description"/>
+                <field name="living_area" filter_domain="[ ('living_area', '>', self)]"/>
+                <filter string="Available" name="available" domain="['|', ('status', '=', 'new'), ('status', '=', 'offer_received')]"/>
+                <filter string="Archived" name="active" domain="[('active', '=', False)]"/>
+                <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
                 </group>
             </search>
         </field>
     </record>
-        
-        
-    
+
+
+
 </odoo>
