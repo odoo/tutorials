@@ -135,39 +135,39 @@
 
    <!-- Kanban View -->
 
-   <record id="estate_property_view_kanban" model="ir.ui.view">
-    <field name="name">estate_property</field>
-    <field name="model">estate.property</field>
-    <field name="arch" type="xml">
-        <kanban default_group_by="property_type_id" records_draggable="0">
-            <field name="state"></field>
-            <templates>
-                <t t-name="card" >
-                    <div>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate_property</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="0">
+                <field name="state"></field>
+                <templates>
+                    <t t-name="card" >
                         <div>
-                            <text>Property Name : </text>
-                            <field name="name"></field>
+                            <div>
+                                <text>Property Name : </text>
+                                <field name="name"></field>
+                            </div>
+                            <div>
+                                <text>Expected Price : </text>
+                                <field name="expected_price"></field>
+                            </div>
+                            <div t-if="record.state.raw_value=='offer received'">
+                                <text>Best Price : </text>
+                                <field name="best_price"></field>
+                            </div>
+                            <div t-if="record.state.raw_value=='offer accepted'">
+                                <text>Selling Price : </text>
+                                <field name="selling_price"></field>
+                            </div>
+                            <div>
+                                <field name="tag_ids"></field>
+                            </div>
                         </div>
-                        <div>
-                            <text>Expected Price : </text>
-                            <field name="expected_price"></field>
-                        </div>
-                        <div t-if="record.state.raw_value=='offer received'">
-                            <text>Best Price : </text>
-                            <field name="best_price"></field>
-                        </div>
-                        <div t-if="record.state.raw_value=='offer accepted'">
-                            <text>Selling Price : </text>
-                            <field name="selling_price"></field>
-                        </div>
-                        <div>
-                            <field name="tag_ids"></field>
-                        </div>
-                    </div>
-                </t>
-            </templates>
-        </kanban>
-    </field>
-   </record>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 
 </odoo>
