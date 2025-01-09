@@ -5,10 +5,18 @@
         <field name="model">estate.property</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">estate.estate_property_offer_template</field>
-        <field name="report_file">estate.estate_property_offer_template</field>
         <field name="print_report_name">'%s_offers' % (object.name).replace(' ','_')</field>
         <field name="paperformat_id" ref="base.paperformat_us"/>
-        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="estate_property_report_res_user" model="ir.actions.report">
+        <field name="name">Estate Property Offer Report Res User</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">estate.estate_property_offer_template_res_user</field>
+        <field name="print_report_name">'%s_offers' % (object.name).replace(' ', '_')</field>
+        <field name="paperformat_id" ref="base.paperformat_us"/>
         <field name="binding_type">report</field>
     </record>
 </odoo>

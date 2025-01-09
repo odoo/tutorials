@@ -13,7 +13,7 @@
         <field name="arch" type="xml">
             <list editable="bottom"> 
                 <!--fields to show as a colomn in list view-->
-                <field name="name" string="namco"/>
+                <field name="name" string="Name"/>
             </list>
         </field>
     </record>

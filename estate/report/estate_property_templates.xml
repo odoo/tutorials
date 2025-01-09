@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <template id="estate_property_offer_template">
 
+    <!-- template for estate_property -->
+    <template id="estate_property_offer_template">
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container"> 
                 <t t-call="web.external_layout"> <!-- adds default header and footer web module must be installed-->
@@ -19,16 +20,44 @@
                             <strong>Status: </strong>
                             <span t-field="property.state"/>
                             <br />
+                            <span id="estate_account_data_here"></span>
                         </div>
                         <t t-call="estate.property_offers_template_table" />
                     </div>
                 </t>
             </t>
         </t>
-
     </template>
 
+    <!-- template to generate the property report associated to a user -->
+    <template id="estate_property_offer_template_res_user">
+        <t t-call="web.html_container"> 
+            <t t-call="web.external_layout"> <!-- adds default header and footer web module must be installed-->
+                <div class="page">
+                    <h1>
+                        <strong>Salesman: </strong> <span t-field="docs.name" />
+                    </h1>
+                    <t t-foreach="docs.property_ids" t-as="property">
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price"/>
+                            <br/>
+                            <strong>Status: </strong>
+                            <span t-field="property.state"/>
+                            <br />
+                        </div>
+                        <t t-call="estate.property_offers_template_table" />
+                    </t>
+                    <br/>
+                </div>
+            </t>
+        </t>
+    </template>
 
+    <!-- template for table offer table creation -->
     <template id="property_offers_template_table">
 
         <t t-if="len(property.mapped('offer_ids')) > 0">

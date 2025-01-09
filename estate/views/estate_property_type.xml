@@ -14,7 +14,7 @@
         <field name="arch" type="xml">
             <list> 
                 <!--fields to show as a colomn in list view-->
-                <field name="name" string="namko"/>
+                <field name="name" string="Name"/>
                 <field name="sequence" widget="handle" /> <!-- widget=handle is used to reorder the sequence in list view-->
             </list>
         </field>
@@ -27,12 +27,12 @@
             <form> 
                 <sheet> 
                     <div class="oe_button_box oe_right">
-                        <button name="get_all_property_offers_related" class="oe_stat_button" icon="fa-money tet" type="object" >
+                        <!-- <button name="get_all_property_offers_related" class="oe_stat_button" icon="fa-money tet" type="object" >
                             12
                             Offer
-                        </button>
+                        </button> -->
                     </div>
-                    <field name="name" string="namko"/>
+                    <field name="name" string="Name"/>
                 </sheet>
             </form>
         </field>

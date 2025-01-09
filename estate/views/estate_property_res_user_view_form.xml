@@ -26,6 +26,11 @@
                     </field>
                 </page>
             </xpath>
+
+            <xpath expr="//header" position="inside"> 
+                <field name="name"></field>
+                <button name="%(estate.estate_property_report_res_user)d" class="btn" icon="fa-print" type="action">print</button>
+            </xpath>
         </field>
     </record>
 </odoo>
