@@ -20,9 +20,10 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Properties" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'rejected'">
-                <field name="partener_id"/>
+                <field name="partner_id"/>
                 <field name="property_id" />
                 <field name="validity" />
+                <field name="date_deadline" />
                 <field name="price"/>
                 <button name="set_offer_accepted" string=" " type="object" icon="fa-check" invisible="status in ['rejected', 'accepted']" />
                 <button name="set_offer_rejected" string=" " type="object" icon="fa-times" invisible="status in ['rejected', 'accepted']" />

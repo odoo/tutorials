@@ -19,7 +19,7 @@ class EstatePropertyOffer(models.Model):
         required=True
     )
 
-    partener_id = fields.Many2one("res.partner", string="Partner", required=True)
+    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True, ondelete="cascade")
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
@@ -41,7 +41,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'accepted'
             record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partener_id
+            record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer_accepted'
 
     def set_offer_rejected(self):

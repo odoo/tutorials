@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="demo_offer_1" model="estate.property.offer">
+        <field name="partner_id">15</field>
+        <field name="property_id">1</field>
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+    </record>
+    <record id="demo_offer_2" model="estate.property.offer">
+        <field name="partner_id">15</field>
+        <field name="property_id">1</field>
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+    </record>
+    <record id="demo_offer_3" model="estate.property.offer">
+        <field name="partner_id">10</field>
+        <field name="property_id">1</field>
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+    </record>
+    <record id="demo_offer_4" model="estate.property.offer">
+        <field name="partner_id">15</field>
+        <field name="property_id">3</field>
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+    </record>
+    <record id="demo_offer_5" model="estate.property.offer">
+        <field name="partner_id">15</field>
+        <field name="property_id">4</field>
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+    </record>
+    <record id="demo_offer_6" model="estate.property.offer">
+        <field name="partner_id">10</field>
+        <field name="property_id">6</field>
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+    </record>
+
+    <function model="estate.property.offer" name="set_offer_accepted" eval="[ref('demo_offer_3')]"></function>
+    <function model="estate.property.offer" name="set_offer_rejected" eval="[ref('demo_offer_2')]"></function>
+    <function model="estate.property.offer" name="set_offer_rejected" eval="[ref('demo_offer_1')]"></function>
+    <function model="estate.property.offer" name="set_offer_accepted" eval="[ref('demo_offer_4')]"></function>
+    <function model="estate.property.offer" name="set_offer_rejected" eval="[ref('demo_offer_5')]"></function>
+    <function model="estate.property.offer" name="set_offer_rejected" eval="[ref('demo_offer_6')]"></function>
+
+</odoo>

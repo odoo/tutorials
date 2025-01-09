@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_demo_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">1600000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="property_type_1" />
+    </record>
+
+    <record id="estate_property_demo_2" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="selling_price">120000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="property_type_1" />
+    </record>
+
+    <record id="estate_property_demo_3" model="estate.property">
+        <field name="name">Failure Zilla</field>
+        <field name="state">offer_received</field>
+        <field name="description">does it even need any descriptions?</field>
+        <field name="expected_price">1000</field>
+        <field name="postcode">54321</field>
+        <field name="offer_ids" eval="[
+            Command.create({
+                'partner_id': 15,
+                'price': 1500
+            }),
+            Command.create({
+                'partner_id': 10,
+                'price': 2000
+            })
+        ]"></field>
+        <field name="property_type_id" ref="property_type_4" />
+    </record>
+
+    <record id="estate_property_demo_4" model="estate.property">
+        <field name="name">Passed Out Village</field>
+        <field name="state">sold</field>
+        <field name="description">does it even need any descriptions?</field>
+        <field name="expected_price">1000</field>
+        <field name="postcode">54321</field>
+        <field name="offer_ids" eval="[
+            Command.create({
+                'partner_id': 15,
+                'price': 1500
+            }),
+            Command.create({
+                'partner_id': 10,
+                'price': 2000
+            })
+        ]"></field>
+        <field name="property_type_id" ref="property_type_3" />
+    </record>
+
+    <record id="estate_property_demo_5" model="estate.property">
+        <field name="name">Luxury Penthouse</field>
+        <field name="state">new</field>
+        <field name="description">A modern and luxurious penthouse with a rooftop garden.</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability">2025-01-01</field>
+        <field name="expected_price">5000000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">250</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">500</field>
+        <field name="garden_orientation">north</field>
+        <field name="property_type_id" ref="property_type_2" />
+    </record>
+
+    <record id="estate_property_demo_6" model="estate.property">
+        <field name="name">Cozy Cottage</field>
+        <field name="state">cancelled</field>
+        <field name="description">A small and cozy cottage in the countryside.</field>
+        <field name="postcode">11223</field>
+        <field name="date_availability">2025-02-01</field>
+        <field name="expected_price">250000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">60</field>
+        <field name="facades">3</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">300</field>
+        <field name="garden_orientation">west</field>
+        <field name="property_type_id" ref="property_type_3" />
+    </record>
+
+    <record id="estate_property_demo_7" model="estate.property">
+        <field name="name">City Loft</field>
+        <field name="state">sold</field>
+        <field name="description">A stylish city loft with a fantastic view of the skyline.</field>
+        <field name="postcode">33333</field>
+        <field name="date_availability">2025-01-15</field>
+        <field name="expected_price">950000</field>
+        <field name="selling_price">980000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">120</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="property_type_id" ref="property_type_1" />
+    </record>
+
+
+</odoo>
