@@ -40,7 +40,7 @@ class SaleOrder(models.Model):
             monthly_installment_amount = total_with_interest / monthly_installment_count if monthly_installment_count else 0.0
 
             # Check if there are already 24 invoices
-            if len(sale_order.installment_invoice_ids) >= 24:
+            if len(sale_order.installment_invoice_ids) >= monthly_installment_count:
                 sale_order.next_installment_date = False
                 continue
          
