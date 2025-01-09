@@ -211,16 +211,13 @@ class SaleOrder(models.Model):
         }
         required_documents_count = sum(1 for is_required in documents_to_upload.values() if is_required)
  
-        uploaded_document_count=0
         existing_documents = self.env["documents.document"].search(
                     [
                         ("folder_id", "=", self.name),
+                        ("attachment_type","=","binary")
                     ],
                 )
-        for document in existing_documents:
-            #if type is file (not a request)
-            if(document.attachment_type=='binary'):
-                uploaded_document_count+=1
-        if uploaded_document_count<required_documents_count:
+        
+        if len(existing_documents)<required_documents_count:
                 raise ValidationError("Please upload required documents to confirm the sales order.")
         return super()._action_confirm()

@@ -48,17 +48,17 @@
                     <setting id="nid_required_setting">
                         <field name="nid_required" widget="boolean" string="NID" help="Indicate if NID is required."/>
                     </setting>
-                    <setting id="bank_statement_required_setting">
-                        <field name="bank_statement_required" widget="boolean" string="Bank Statement" help="Indicate if a bank statement is required."/>     
-                    </setting>
-                    <setting id="rental_contract_required_setting">
-                        <field name="rental_contract_required" widget="boolean" string="Rental Contract" help="Indicate if a rental contract is required."/>
-                    </setting>
                     <setting id="salary_components_required_setting">
                         <field name="salary_components_required" widget="boolean" string="Salary Components" help="Indicate if salary components are required."/>
                     </setting>
+                    <setting id="bank_statement_required_setting">
+                        <field name="bank_statement_required" widget="boolean" string="Bank Statement" help="Indicate if a bank statement is required."/>     
+                    </setting>
                     <setting id="bank_rate_letter_required_setting">
                         <field name="bank_rate_letter_required" widget="boolean" string="Bank Rate Letter" help="Indicate if a bank rate letter is required."/>
+                    </setting>
+                    <setting id="rental_contract_required_setting">
+                        <field name="rental_contract_required" widget="boolean" string="Rental Contract" help="Indicate if a rental contract is required."/>
                     </setting>
                     <setting id="ownership_contract_required_setting">
                         <field name="ownership_contract_required" widget="boolean" string="Ownership Contract" help="Indicate if an ownership contract is required."/>

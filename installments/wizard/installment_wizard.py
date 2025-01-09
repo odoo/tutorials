@@ -1,4 +1,4 @@
-from odoo import api, fields, models, Command
+from odoo import fields, models, Command
 from dateutil.relativedelta import relativedelta
 from datetime import timedelta
 
@@ -13,13 +13,16 @@ class InstallmentWizard(models.TransientModel):
     interest = fields.Float(readonly=True)
     monthly_installment_count = fields.Float(readonly=True)
     monthly_installment_amount = fields.Float(readonly=True)
+    is_emi = fields.Boolean(readonly=True)
     
     def default_get(self, fields):
         res = super().default_get(fields)
+        
         active_id = self.env.context.get('active_id')  
         sale_order = self.env['sale.order'].browse(active_id)
          # Fetch default values based on the sale order and relevant calculations
         if sale_order:
+            
             config = self.env['ir.config_parameter'].sudo()
             down_payment_percentage = float(config.get_param('installment.down_payment_percentage', default=0.0))
             annual_rate_percentage = float(config.get_param('installment.annual_rate_percentage', default=0.0))
@@ -43,6 +46,7 @@ class InstallmentWizard(models.TransientModel):
             res['interest'] = interest
             res['monthly_installment_count'] = monthly_installment_count
             res['monthly_installment_amount'] = monthly_installment_amount
+            res['is_emi']=sale_order.is_emi
         return res
 
     def action_add_installment(self):
