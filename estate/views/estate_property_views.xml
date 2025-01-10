@@ -136,6 +136,9 @@
                                 <group>
                                     <field name="buyer" />
                                     <field name="salesperson" />
+
+                                    <!--for verification only-->
+                                    <field name="company_id" string="Company" />
                                 </group>
                             </group>
                         </page>

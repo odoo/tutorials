@@ -65,6 +65,8 @@ class EstateProperty(models.Model):
     total_area= fields.Integer(string="Total Area(sqm)", compute="_compute_total_area", help="Total Area is the sum of Living Area and Garden Area")
     #? since the store!=True the above field is not going to store in the db
 
+    #? below field is added to know from which company this property belongs to in case of multi company environment
+    company_id= fields.Many2one(comodel_name="res.company", string="related company", required=True, default=lambda self: self.env.user.company_id)
     
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_not_new_or_cancelled(self):

@@ -6,10 +6,13 @@ class InheritedEstateProperty(models.Model):
     
     #overring the sold method
     def mark_property_sold(self):
+        
+        # checking that current user can do update operation on estate.property model or not if not then error on client
+        self.env['estate.property'].check_access('write')
         print("mark_property_sold in estate account")
         
         # creating a new invoice
-        self.env['account.move'].create({
+        self.env['account.move'].sudo().create({ # used sudo to bypass security for normal agents
             'partner_id': self.buyer.id, #person id who is buying
             'move_type': 'out_invoice',
             'invoice_line_ids': [

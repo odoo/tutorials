@@ -6,7 +6,7 @@
             <menuitem id="estate_property_model_menu_action" action="estate.estate_property_action"/> <!-- the action id to trigger-->
         </menuitem>
 
-        <menuitem id="estate_property_type_first_level_menu" name="Settings">
+        <menuitem id="estate_property_type_first_level_menu" name="Settings" groups="estate.estate_group_manager"> <!--only estate_group_manager users will be able to view the menu-->
             <menuitem id="estate_property_type_model_menu_action" action="estate.estate_property_type_action" />
             <menuitem id="estate_property_tag_model_menu_action" action="estate.estate_property_tag_action" />
         </menuitem>
