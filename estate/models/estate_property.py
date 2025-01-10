@@ -54,8 +54,8 @@ class EstateProperty(models.Model):
     best_price = fields.Float(string="Best Price", compute="_best_price", store=True)
     sequence = fields.Integer('Sequence', default=0)
 
-    @api.depends("offer_ids")
-    def _best_price(self):
+    @api.depends("offer_ids")   
+    def _best_price(self):      # Commputed Method
         for record in self:
             if record.offer_ids:
                 record.best_price = max(record.offer_ids.mapped('price'))
@@ -64,11 +64,11 @@ class EstateProperty(models.Model):
 
     
     @api.depends("living_area", "garden_area")
-    def _compute_total(self):
+    def _compute_total(self):       # Commputed Method
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
 
-    @api.onchange('garden')
+    @api.onchange('garden')         # Onchange Method
     def _onchange_garden(self):
         for record in self:
             if record.garden:
@@ -78,14 +78,14 @@ class EstateProperty(models.Model):
                 record.garden_area = 0  
                 record.garden_orientation = False
 
-    def action_to_sold(self):
+    def action_to_sold(self):       #   Function
         for record in self:
             if record.state == 'cancelled':
                 raise exceptions.UserError("Cancelled Property can not be sold")
             elif record.state == 'offer accepted':
                 self.state = 'sold'
 
-    def action_to_cancel(self):
+    def action_to_cancel(self):     #   Function
         for record in self:
             if record.state == 'offer accepted':
                 record.state = 'cancelled'
@@ -106,7 +106,7 @@ class EstateProperty(models.Model):
 
 
 
-    @api.ondelete(at_uninstall=False)       #For Delete property using inherit the ondelete()
+    @api.ondelete(at_uninstall=False)                   #For Delete property using inherit the ondelete()
     def _unlink_if_property_new_and_canclled(self):     #   override delete method user can delete user if state is NEW or CANCELLED 
         for record in self:
             if record.state not in ['new', 'cancelled']:

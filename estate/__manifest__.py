@@ -22,7 +22,8 @@
         'data/estate.property.type.csv',
         'data/estate_property_data.xml',
         'data/estate_property_offer_data.xml',
-        
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
     ],
     'demo':[
         

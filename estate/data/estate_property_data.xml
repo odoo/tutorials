@@ -111,9 +111,4 @@
         <field name="property_type_id" ref="estate.property_type_id_2"></field>
        
     </record>
-
-
-
-    
-
 </odoo>
