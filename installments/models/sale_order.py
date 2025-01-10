@@ -39,7 +39,7 @@ class SaleOrder(models.Model):
             monthly_installment_count = max_duration * 12
             monthly_installment_amount = total_with_interest / monthly_installment_count if monthly_installment_count else 0.0
 
-            # Check if there are already 24 invoices
+            # Check if there are already monthly_installment_count invoices
             if len(sale_order.installment_invoice_ids) >= monthly_installment_count:
                 sale_order.next_installment_date = False
                 continue
@@ -125,17 +125,7 @@ class SaleOrder(models.Model):
         }
 
     def action_document_upload(self):
-        installment_folder = self.env["documents.document"].search(
-            [("name", "=", "Sales - Installment")], limit=1
-        )
-
-        if not installment_folder:
-            installment_folder = self.env["documents.document"].create(
-                {
-                    "name": "Sales - Installment",
-                    "folder_id": None,
-                }
-            )
+        installment_folder = self.env.ref("installments.document_internal_folder_sales_installment")
 
         subfolder = self.env["documents.document"].search([("name", "=", self.name)])
         if not subfolder:
