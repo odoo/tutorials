@@ -5,8 +5,9 @@ class InheritedModel(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        print("Overridden method called")
-        self.env["account.move"].create(
+        print(" reached ".center(100, "="))
+        self.check_access("write")
+        self.env["account.move"].sudo().create(
             {
                 "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",

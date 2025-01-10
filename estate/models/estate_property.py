@@ -4,9 +4,9 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 
-class test_model(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Sample model"
+    _description = "Estate Property"
     _order = "id desc"
 
     name = fields.Char(required=True)
