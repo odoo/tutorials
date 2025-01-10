@@ -21,6 +21,7 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         default=datetime.today(),
     )
+    property_status=fields.Selection(related="property_id.status", store=True)
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )  #!This field is for stat button
@@ -58,14 +59,16 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            record.status = "accepted"
             if record.property_id.status == "offer_received":
+                record.status = "accepted"
                 record.property_id.status = "offer_accepted"
                 record.property_id.selling_price = self.price
                 record.property_id.buyer_id = record.partner_id
             else:
                 if record.property_id.status == "sold":
                     raise ValidationError("Property already sold")
+                elif record.property_id.status == "offer_accepted":
+                    raise ValidationError("Offer already accepted")
                 else:
                     raise ValidationError("Property canceled")
 

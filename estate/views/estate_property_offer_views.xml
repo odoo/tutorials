@@ -18,8 +18,8 @@
                 <field name="partner_id" string="Buyer"/>
                 <field name="validity" string="Validity"/>
                 <field name="date_deadline" string="Deadline"/>
-                <button name="action_accept" type="object" invisible="status == 'refused' or property_id.status == 'offer_accepted'" icon="fa-check" title="Accept"/>
-                <button name="action_refuse" type="object" invisible="status == 'refused' or property_id.status == 'offer_accepted'" icon="oi-close" title="Refuse"/>
+                <button name="action_accept" type="object" invisible='status == "refused" or status == "accepted" or property_status=="offer_accepted"' icon="fa-check" title="Accept"/>
+                <button name="action_refuse" type="object" invisible='status == "refused" or status == "accepted" or property_status=="offer_accepted"' icon="oi-close" title="Refuse"/>
             </list>
         </field>
     </record>
