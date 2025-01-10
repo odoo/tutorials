@@ -1,0 +1,120 @@
+<odoo>
+<template id="report_property_offer_details" name="offer details">
+    <h2>
+        <span t-field="property.name"/>
+    </h2>
+    <div>
+        <strong>Expected Price: </strong>
+        <span t-field="property.expected_price"/><br />
+        <strong>Status: </strong>
+        <span t-field="property.state"/>
+        <span name="placeholder"></span>
+    </div>
+    <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+    <t t-if="len(offers) != 0">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Partner</th>
+                    <th>Validity</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="offers" t-as="offer">
+                    <td>
+                        <span t-field="offer.price"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.partner_id"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.validity"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.date_deadline"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.status"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </t>
+    <t t-else="">
+        <br />
+        <center>There are no offers on this property yet.</center>
+    </t>
+</template>
+
+<template id="report_property_offers">
+    <t t-foreach="docs" t-as="property">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <!-- <div>
+                        <span t-field="property.seller_id.company_id.name"></span>
+                    </div> -->
+                        <h2>
+                        <span t-field="property.name"/>
+                    </h2>
+                    <div>
+                        <strong>Expected Price: </strong>
+                        <span t-field="property.expected_price"/><br />
+                        <strong>Salesman: </strong>
+                        <span t-field="property.seller_id"/>
+                        <strong>Status: </strong>
+                        <span t-field="property.state"/>
+                        
+                    </div>
+                    <t t-call="estate.report_property_offer_details"></t>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+
+
+    <template id="report_seller_properties" name="seller properties">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <h1>
+                        <strong>Salesman</strong>
+                        <span t-field="user.name"/>
+                    </h1>
+                    
+                    <t t-set="properties" t-value="user.mapped('property_ids')"></t>
+                    <t t-foreach="properties" t-as="property">
+                        <t t-call="estate.report_property_offer_details"></t>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+<template id="report_property_details" name="template_name">
+    <h2>
+                        <span t-field="property.name"/>
+                    </h2>
+                    <div>
+                        <strong>Expected Price: </strong>
+                        <span t-field="property.expected_price"/><br />
+                        <strong>Status: </strong>
+                        <span t-field="property.state"/>
+                        
+                    </div>
+</template>
+
+    <template id="report_sold_property" name="template_name" inherit_id="estate.report_property_offer_details">
+        <xpath expr="//span[@name='placeholder']" position="inside">
+            <t t-if="property.state == 'sold'">
+                <strong>Your invoice has already been generated!!!</strong>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
