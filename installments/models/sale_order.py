@@ -21,12 +21,12 @@ class SaleOrder(models.Model):
         
         # fetch configuration values from settings
         config = self.env['ir.config_parameter'].sudo()
-        down_payment_percentage = float(config.get_param('installment.down_payment_percentage', default=0.0))
-        annual_rate_percentage = float(config.get_param('installment.annual_rate_percentage', default=0.0))
-        max_duration = float(config.get_param('installment.max_duration', default=1))
-        admin_expenses_percentage = float(config.get_param('installment.admin_expenses_percentage', default=0.0))
+        down_payment_percentage = float(config.get_param('installment.down_payment_percentage', 0.0))
+        annual_rate_percentage = float(config.get_param('installment.annual_rate_percentage', 0.0))
+        max_duration = float(config.get_param('installment.max_duration', 1))
+        admin_expenses_percentage = float(config.get_param('installment.admin_expenses_percentage', 0.0))
         delay_penalty_process = float(config.get_param('installment.delay_penalty_days', 0.0))
-        delay_penalty_percentage = float(config.get_param('installment.delay_penalty_percentage', default=0.0))
+        delay_penalty_percentage = float(config.get_param('installment.delay_penalty_percentage', 0.0))
 
         for sale_order in sale_orders:
             # Calculate financial values
@@ -74,7 +74,7 @@ class SaleOrder(models.Model):
             ("move_type", "=", "out_invoice"),
             ("state", "=", "draft"),
             ('sale_order_id', "!=", False),
-            ("penalty_applied", "=", False),
+            ("is_penalty_applied", "=", False),
             ("invoice_date", "<=", delay_penalty_date),
         ])
         for invoice in invoices:
@@ -94,14 +94,13 @@ class SaleOrder(models.Model):
                         'tax_ids': None,
                     })
                 ],
-                'penalty_applied': True,
-                'sale_order_id': invoice.sale_order_id.id,
+                'is_penalty_applied': True,
             }
             penalty_invoice = self.env['account.move'].create(invoice_vals)
 
             invoice.write(
                         {
-                            'penalty_applied': True,
+                            'is_penalty_applied': True,
                             'penalty_invoice_id':penalty_invoice.id
                         })
 
@@ -210,14 +209,14 @@ class SaleOrder(models.Model):
             "Ownership Contract": settings.get_param("installment.ownership_contract_required") == "True",
         }
         required_documents_count = sum(1 for is_required in documents_to_upload.values() if is_required)
- 
+
         existing_documents = self.env["documents.document"].search(
                     [
                         ("folder_id", "=", self.name),
                         ("attachment_type","=","binary")
                     ],
                 )
-        
+
         if len(existing_documents)<required_documents_count:
                 raise ValidationError("Please upload required documents to confirm the sales order.")
         return super()._action_confirm()

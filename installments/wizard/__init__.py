@@ -1,1 +1,1 @@
-from.import installment_wizard
+from . import installment_wizard

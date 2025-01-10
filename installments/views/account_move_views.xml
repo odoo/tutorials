@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_move_view_inherit" model="ir.ui.view">
+      <field name="name">account.view.move.form.inherited</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                  <!-- penalty stat button -->
+                 <button name="action_open_penalty_invoices" type="object" invisible="not penalty_invoice_id" class="btn btn-primary " icon="fa-money">
+                    <field name="penalty_invoice_id" widget="statinfo" string="Penalty"/>
+                 </button>
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>
