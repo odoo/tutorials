@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <!-- Report for property offers -->
     <template id="report_property_offers">
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container">
@@ -10,10 +11,10 @@
                             <span t-field="property.salesperson_id"/>
                         </h1>
                         <h2>
-                            <h-100 t-field="property.name"/>
+                            <span t-field="property.name"/>
                         </h2>
                         <div>
-                            <div>
+                            <div id="hello">
                                 <strong>Expected Price: </strong>
                                 <span t-field="property.expected_price"/>
                             </div>
@@ -29,50 +30,49 @@
                         </t>
                         <t t-else="">
                             <table class="table">
-                            <thead>
-                                <tr>
-                                    <th><strong>Price</strong></th>
-                                    <th><strong>Partner</strong></th>
-                                    <th><strong>Validity (Days)</strong></th>
-                                    <th><strong>Deadline</strong></th>
-                                    <th><strong>State</strong></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <tr t-foreach="offers" t-as="offer">
-                                    <td>
-                                        <span t-field="offer.price"/>
-                                    </td>
-                                    <td>
-                                        <span t-field="offer.partner_id"/>
-                                    </td>
-                                    <td>
-                                         <span t-field="offer.validity"/>
-                                    </td>
-                                    <td>
-                                        <span t-field="offer.date_deadline"/>
-                                    </td>
-                                    <td>
-                                        <span t-field="offer.status"/>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <thead>
+                                    <tr>
+                                        <th><strong>Price</strong></th>
+                                        <th><strong>Partner</strong></th>
+                                        <th><strong>Validity (Days)</strong></th>
+                                        <th><strong>Deadline</strong></th>
+                                        <th><strong>State</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="offers" t-as="offer">
+                                        <td>
+                                            <span t-field="offer.price"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="offer.partner_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="offer.validity"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="offer.date_deadline"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="offer.status"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </t>
-
                     </div>
                 </t>
             </t>
         </t>
     </template>
 
-    <template id="report_offer_details" name="offer_details">
+    <!-- Report for offer details -->
+    <template id="report_offer_details" name="Offer Details">
         <h2>
-            <h-100 t-field="property.name"/>
+            <span t-field="property.name"/>
         </h2>
         <div>
-            <div>
+            <div id="hello">
                 <strong>Expected Price: </strong>
                 <span t-field="property.expected_price"/>
             </div>
@@ -83,12 +83,11 @@
         </div>
 
         <t t-set="offers" t-value="property.mapped('offer_ids')"/>
-            <t t-if="len(offers) == 0">
-                <strong>There is no offer</strong>
-            </t>
-            <t t-else="">
-
-                <table class="table">
+        <t t-if="len(offers) == 0">
+            <strong>There is no offer</strong>
+        </t>
+        <t t-else="">
+            <table class="table">
                 <thead>
                     <tr>
                         <th><strong>Price</strong></th>
@@ -99,7 +98,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
                     <tr t-foreach="offers" t-as="offer">
                         <td>
                             <span t-field="offer.price"/>
@@ -108,7 +106,7 @@
                             <span t-field="offer.partner_id"/>
                         </td>
                         <td>
-                                <span t-field="offer.validity"/>
+                            <span t-field="offer.validity"/>
                         </td>
                         <td>
                             <span t-field="offer.date_deadline"/>
@@ -119,9 +117,10 @@
                     </tr>
                 </tbody>
             </table>
-            </t>
+        </t>
     </template>
 
+    <!-- Report for user (Salesperson) details -->
     <template id="report_res_user">
         <t t-foreach="docs" t-as="user">
             <t t-call="web.html_container">
@@ -131,7 +130,7 @@
                             <strong>Salesperson Name: </strong>
                             <span t-field="user.name"/>
                         </h1>
-                        <t t-set="properties" t-value="user.mapped('property_ids')"></t>
+                        <t t-set="properties" t-value="user.mapped('property_ids')"/>
                         <t t-foreach="properties" t-as="property">
                             <t t-call="estate.report_offer_details"/>
                         </t>
@@ -140,5 +139,16 @@
             </t>
         </t>
     </template>
+
+    <!-- Invoice Checker: Add this to the original template if the property is sold -->
+    <template id="invoice_checker" inherit_id="estate.report_property_offers" name="Invoice Created">
+    <xpath expr="//div[@id='hello']" position="inside">
+        <!-- The logic for checking if the property is sold and displaying the invoice message -->
+        <t t-if="property.state == 'sold'">
+            <h6>Invoice has already been created !!!!</h6>
+        </t>
+    </xpath>
+</template>
+
 
 </odoo>

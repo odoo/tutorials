@@ -3,7 +3,7 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "Hitesh Prajapati",
-    'category': 'tutorials/estate',
+    'category': 'Real Estate/Brokerage',
     'license': 'LGPL-3',
     'description': """
     Description text
@@ -12,6 +12,7 @@
     'instalable': True,
 
     'data':[
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/res_users_views.xml',
         'views/estate_property_offer_views.xml',

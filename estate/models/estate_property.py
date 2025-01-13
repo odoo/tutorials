@@ -53,6 +53,7 @@ class EstateProperty(models.Model):
 
     best_price = fields.Float(string="Best Price", compute="_best_price", store=True)
     sequence = fields.Integer('Sequence', default=0)
+    company_id = fields.Many2one('res.company', default=lambda self:self.env.company)
 
     @api.depends("offer_ids")   
     def _best_price(self):      # Commputed Method
