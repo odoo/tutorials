@@ -19,9 +19,8 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
-        default=datetime.today(),
     )
-    property_status=fields.Selection(related="property_id.status", store=True)
+    property_status = fields.Selection(related="property_id.status", store=True)
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )  #!This field is for stat button

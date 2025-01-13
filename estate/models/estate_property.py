@@ -56,6 +56,9 @@ class EstateProperty(models.Model):
         default="new",
         copy=False,
     )
+    company_id = fields.Many2one(
+        "res.company", default=lambda self: self.env.company, required=True
+    )
     _sql_constraints = [
         (
             "check_expected_price",
@@ -126,3 +129,15 @@ class EstateProperty(models.Model):
                 raise UserError("Sold property can't be canceled")
             else:
                 raise UserError("Property already canceled")
+
+    def action_make_offer(self):
+        return {
+            'name': 'Make offer',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'view_mode': 'form',
+            'res_model': 'estate.property.make.offer',
+            'context': {
+                'default_property_ids': self.ids,
+            }
+        }
