@@ -15,7 +15,6 @@ class EstatePropertyType(models.Model):
         comodel_name='estate.property.offer',  
         inverse_name='property_type_id',  
         string='Offers' , 
-        ondelete="cascade"
     )
     offer_count=fields.Integer(compute='_calculate_offers')
 

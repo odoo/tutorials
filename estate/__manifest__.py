@@ -1,7 +1,6 @@
 {
     'name': 'Estate',
-    'category': 'Sales/Estate',
-
+    'category': 'Real Estate/Brokerage',
     'summary': 'Real Estate Management Module',
     'description': """
         This module is designed to manage real estate properties. 
@@ -9,13 +8,12 @@
         such as name, description, price, living area, and more. 
         Users can also track the status of properties, availability, and other key details.
     """,
-    'website': 'https://www.odoo.com/estate',
     'depends': [
-        'base_setup',
+        'base'
     ],
 
     'data':[
-
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/partner_salesman_views.xml',
         'views/estate_property_offer_views.xml',
@@ -25,11 +23,8 @@
         'views/estate_menus.xml',
         'data/estate.property.type.csv',
         'report/estate_property_templates.xml',
-        'report/estate_property_reports.xml'
-
+        'report/estate_property_reports.xml',
     ],
-
-
 
     'demo':[
         'demo/estate_property.xml',
@@ -39,8 +34,6 @@
     
     'application': True,
     'installable':True,
-     'license': 'AGPL-3'
+    'auto_install':True
 
-
-    
 }

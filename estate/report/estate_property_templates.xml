@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
-
 <odoo>
-
 
 <template id="report_propertyofferstable">
     <table class="table">
@@ -33,8 +30,6 @@
     </table>
 </template>
 
-
-
 <template id="report_propertyoffers">
     <t t-foreach="docs" t-as="property">
         <t t-call="web.html_container">
@@ -60,8 +55,6 @@
         </t>
     </t>
 </template>
-
-
 
 <template id="report_salesmanproperties">
     <t t-foreach="docs" t-as="user">
@@ -95,13 +88,10 @@
     </t>
 </template>
 
-
-
 <template id="report_offer_basic_inherited" name="Offer Basic Inherited" inherit_id="estate.report_propertyoffers">
     <xpath expr="//div[3]" position="after">
         <strong t-if="property.state=='sold'" class="text-danger fw-bold">!!! Invoice has already been created !!!</strong>
     </xpath>
 </template>
-
 
 </odoo>

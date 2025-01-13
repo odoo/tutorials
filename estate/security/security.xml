@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="comment">Real estate agents can manage the properties under their care, or properties which are not specifically under the care of any agent.</field>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[(4, ref('estate.estate_group_user'))]"/>
+        <field name="comment">Real estate managers can configure the system (manage available types and tags) as well as oversee every property in the pipeline.</field>
+    </record>
+
+    <record id="estate_agent_rule" model="ir.rule">
+        <field name="name">Agent cannot see properties for which some other agent is assigned.</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
+        <field name="domain_force">[
+        '|', ('user_id', '=', user.id),
+            ('user_id', '=', False), 
+    ]</field>
+    </record>
+
+
+    <record id="estate_manager_rule" model="ir.rule">
+        <field name="name">Agent cannot see properties for which some other agent is assigned.</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]"/>
+        <field name="domain_force">[]</field>
+    </record>
+
+
+    <record id="company_visiblity_rule" model="ir.rule">
+        <field name="name">Agent cannot see properties for which some other agent is assigned.</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
+         <field name="domain_force">[
+            '|', ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+        ]</field>
+    </record>
+
+
+
+</odoo>

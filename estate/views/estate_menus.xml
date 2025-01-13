@@ -26,7 +26,7 @@
  <menuitem
         id="estate_property_menu_settings"
         name="Settings"
-        parent="estate_property_menu_root" />
+        parent="estate_property_menu_root" groups="estate_group_manager"/>
     
  <menuitem
         id="estate_property_type_menu_property_type"

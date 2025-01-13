@@ -40,19 +40,21 @@ class EstateProperty(models.Model):
         copy=False,  
     )
     property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type", auto_join=True, ondelete="cascade")
-    user_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user, ondelete="cascade")
+    user_id = fields.Many2one('res.users', string='Salesman', index=True, ondelete="cascade")
     partner_id = fields.Many2one('res.partner', string='Buyer', index=True, ondelete="cascade")
     tag_ids=fields.Many2many(comodel_name="estate.property.tag", string="Property Tags", ondelete="cascade" )
     offer_ids = fields.One2many(
         comodel_name='estate.property.offer',  
         inverse_name='property_id',  
         string='Offers' , 
-        ondelete="cascade")
-    
+      )
+
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
     status_button=fields.Char()
     estate_id = fields.Many2one("estate.property.type")
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
+
 
 
 
@@ -118,16 +120,12 @@ class EstateProperty(models.Model):
         ),
     ]
      
-    
-    
-
-
+     
     @api.ondelete(at_uninstall=False)
-    def _unlink_except_state_new_cancelled(self):
+    def _unlink_if_state_new_cancelled(self):
         for record in self:
-            if record.state == 'offer_accepted' or record.state=='sold' or record.state=='offer_received':
-                # raise UserError(_("Can't delete this Record because Property is %s. ", dict(record._fields['state'].selection).get(record.state) ))
-                raise UserError(_("Can't delete this Record because Property is %s. ", record.state))
+            if record.state in ['offer_accepted', 'sold', 'offer_received']:
+                raise UserError("Can't delete this Record either property is sold or Offer is received or accepted")
 
       
     def print_quotation(self):

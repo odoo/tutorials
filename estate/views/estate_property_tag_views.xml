@@ -2,24 +2,24 @@
 <odoo>
 
 
-<!-- ESTATE PROPERTY TAG MAIN ACTION RECORD-->
-<record id="estate_property_tag_action" model="ir.actions.act_window">
-    <field name="name">Estate Property Tags</field>
-    <field name="res_model">estate.property.tag</field>
-    <field name="view_mode">list,form</field>  
-</record>
+    <!-- ESTATE PROPERTY TAG MAIN ACTION RECORD-->
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Estate Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
 
 
-<!-- ESTATE PROPERTY LIST VIEW  -->
-<record id="estate_property_tag_view_list" model="ir.ui.view">
-    <field name="name">estate_property.tag.view.list</field>
-    <field name="model">estate.property.tag</field>
-    <field name="arch" type="xml">
-        <list sample="1" editable="bottom">
-            <field name="name"></field>
-        </list>
-    </field>
-</record>
+    <!-- ESTATE PROPERTY LIST VIEW  -->
+    <record id="estate_property_tag_view_list" model="ir.ui.view">
+        <field name="name">estate_property.tag.view.list</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list sample="1" editable="bottom">
+                <field name="name"></field>
+            </list>
+        </field>
+    </record>
 
 
 </odoo>
