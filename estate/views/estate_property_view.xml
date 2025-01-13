@@ -20,32 +20,35 @@
         <field name="name">test.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="status" records_draggable="False">
-                                   
+
                 <field name="status"/>
                 <templates>
                     <t t-name="card">
-                       
+
                         <div>
-                           <div>
-                             <field name="name"/>
-                           </div>
+                            <div>
+                                <field name="name"/>
+                            </div>
                             <div t-if="record.status.raw_value == 'new'">
                                      This is new!
                             </div>
 
                             <div>
-                               <text>expected price</text> <field name="expected_price"/>
+                                <text>expected price</text>
+                                <field name="expected_price"/>
                             </div>
                             <div t-if="record.status.raw_value == 'offer_accepted' or record.status.raw_value == 'sold'">
-                                <text>selling price</text><field name="selling_price"/>
+                                <text>selling price</text>
+                                <field name="selling_price"/>
                             </div>
                             <div t-if="record.status.raw_value == 'offer_received'">
-                                <text>best price</text><field name="best_price"/>
+                                <text>best price</text>
+                                <field name="best_price"/>
                             </div>
-                          
+
                             <field name="property_tags_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
 
-                       
+
                         </div>
                     </t>
                 </templates>
@@ -65,6 +68,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="status"/>
+                <field name="company_id"/>
                 <field name="date_availability" optional="hide" />
 
             </list>
@@ -81,6 +85,7 @@
                 <header>
                     <button name="action_sold" type="object" string="SOLD" invisible="status == 'sold' or status == 'cancelled'"/>
                     <button name="property_cancle_action" type="object" string="CANCEL" invisible="status == 'sold' or status == 'cancelled'"/>
+                    <button name="%(estate.report_property_offers)d" type="action" string="print"/>
                     <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
 
                 </header>
@@ -108,7 +113,7 @@
                             <field name="sales_person_id" widget="many2one_avatar_user"/>
                         </group>
                         <group>
-                            <field name="status"/> 
+                            <field name="status"/>
                         </group>
                         <group>
                             <field name="property_tags_id" widget="many2many_tags" options="{'color_field': 'color'}"/>

@@ -6,7 +6,7 @@
         <menuitem id="estate_advertisement_level_menu" name="Advertisement">
             <menuitem id="test_property_menu_action" name="property" action="test_property_action"/>
         </menuitem>
-        <menuitem id="estate_settings_level_menu" name="Settings">
+        <menuitem id="estate_settings_level_menu" name="Settings" groups="estate_group_manager">
             <menuitem id="test_property_type_menu_action" name="type" action="test_property_type_action"/>
         </menuitem>
     </menuitem>

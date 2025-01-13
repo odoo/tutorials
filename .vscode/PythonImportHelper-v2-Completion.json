@@ -364,7 +364,7 @@
         "kind": 6,
         "importPath": "estate.models.test_property",
         "description": "estate.models.test_property",
-        "peekOfCode": "class TestProperty(models.Model):\n    _name = \"test.property\"\n    _description = \"Test proerty\"\n    _order = \"id desc\"\n    name = fields.Char('name',required=True,default=\"My new House\")\n    description=fields.Text('description')\n    postcode=fields.Char()\n    date_availability=fields.Date('availability',default=(datetime.today() + relativedelta(months=3)).date(),copy=False)\n    expected_price=fields.Float()\n    best_price=fields.Float(readonly=True,compute=\"_compute_best_price\")",
+        "peekOfCode": "class TestProperty(models.Model):\n    _name = \"test.property\"\n    _description = \"Test proerty\"\n    _order = \"id desc\"\n    name = fields.Char(\"name\", required=True, default=\"My new House\")\n    description = fields.Text(\"description\")\n    postcode = fields.Char()\n    date_availability = fields.Date(\n        \"availability\",\n        default=(datetime.today() + relativedelta(months=3)).date(),",
         "detail": "estate.models.test_property",
         "documentation": {}
     },
@@ -373,7 +373,7 @@
         "kind": 6,
         "importPath": "estate.models.test_property_offer",
         "description": "estate.models.test_property_offer",
-        "peekOfCode": "class test_property_offer(models.Model):\n    _name = \"test.property.offer\"\n    _description = \"Test proerty Offer\"\n    _order = \"price desc\"\n    price = fields.Float('price',required=True)\n    status = fields.Selection([('Accepted','Accepted'),('Refused','Refused'),('Pennding','pennding')],default=\"Pennding\",copy=False)\n    buyer_id = fields.Many2one('res.partner',required=True)   \n    property_id = fields.Many2one('test.property',required=True,ondelete='cascade')\n    validity = fields.Integer(default=7)#! if there is any default value in fields compute does not work on demo data\n    date_deadline = fields.Date(compute='_compute_date_deadline',inverse='_inverse_date_deadline',default=datetime.today())",
+        "peekOfCode": "class test_property_offer(models.Model):\n    _name = \"test.property.offer\"\n    _description = \"Test proerty Offer\"\n    _order = \"price desc\"\n    price = fields.Float(\"price\", required=True)\n    status = fields.Selection(\n        [(\"Accepted\", \"Accepted\"), (\"Refused\", \"Refused\"), (\"Pending\", \"Pending\")],\n        default=\"Pending\",\n        copy=False,\n    )",
         "detail": "estate.models.test_property_offer",
         "documentation": {}
     },
@@ -400,7 +400,7 @@
         "kind": 6,
         "importPath": "estate_account.models.estate_property",
         "description": "estate_account.models.estate_property",
-        "peekOfCode": "class Property_Invoice(models.Model):\n    _inherit = \"test.property\"\n    def action_sold(self):\n        self.env[\"account.move\"].create(\n                {\n                    \"partner_id\":self.buyer_id.id,\n                    \"move_type\": \"out_invoice\",\n                    'invoice_line_ids': [\n                Command.create({\n                    'name': self.name,",
+        "peekOfCode": "class Property_Invoice(models.Model):\n    _inherit = \"test.property\"\n    def action_sold(self):\n        print(\" reached \".center(100, \"=\"))\n        self.check_access(\"write\")\n        self.env[\"account.move\"].sudo().create(\n            {\n                \"partner_id\": self.buyer_id.id,\n                \"move_type\": \"out_invoice\",\n                \"invoice_line_ids\": [",
         "detail": "estate_account.models.estate_property",
         "documentation": {}
     }

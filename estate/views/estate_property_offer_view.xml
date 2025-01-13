@@ -15,10 +15,10 @@
         <field name="name">test.property.offer</field>
 
         <field name="arch" type="xml">
-            <list editable='top' decoration-success="status == 'Accepted'" decoration-danger="status == 'Refused'">
+            <list editable='top' decoration-success="status == 'Accept'" decoration-danger="status == 'Refuse'">
                 <field name="price"/>
                 <field name="buyer_id"/>
-                <button name="property_accepted" string="accepted" type="object" icon="fa-check"/>
+                <button name="property_accepted" string="accepted" type="object" icon="fa-check" />
                 <button name="property_rejected" string="rejected" type="object" icon="fa-times"/>
                 <field name="status"/>
                 <field name="validity"/>
