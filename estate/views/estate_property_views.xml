@@ -45,6 +45,11 @@
         <field name="model">estate.property</field> <!--model name-->
         <field name="arch" type="xml">
             <list decoration-success="offer_ids.length >0 and state != 'sold'" decoration-bf="state=='offer_accepted'" decoration-muted="state == 'sold'"> 
+
+                <header>
+                    <button name="show_add_offer_wizard" string="Add Offer" type="object"/>
+                </header>
+
                 <!--fields to show as a colomn in list view-->
                 <field name="name"/>
                 <field name="description"/>
@@ -170,6 +175,35 @@
     </record>
 
 
+    <record id="estate_property_offer_form_wizard" model="ir.ui.view">
+        <field name="name">Estate Property offer </field>
+        <field name="model">estate.property.offer</field> <!--model name-->
+        <field name="arch" type="xml">
+            <form >
+                <sheet>
+                    <group>
+                        <field name="price" />
+                    </group>
 
+                    <group>
+                        <field name="validity" />
+                    </group>
+                    <group>
+                        <field name="partner_id" />
+                    </group>
+
+                    <!-- <group>
+                        <group>
+                        </group>
+                    </group> -->
+                </sheet>
+
+                <footer>
+                    <button name="add_offer_to_property" string="Make an offer" class='btn btn-primary' type="object"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
 
 </odoo>

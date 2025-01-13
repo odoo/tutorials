@@ -140,3 +140,14 @@ class EstateProperty(models.Model):
             record.state='cancelled'
         return True #a public method should always return something so that it can be called through XML-RPC. When in doubt, just return True.
         
+        
+    def show_add_offer_wizard(self):
+        return {
+            'type'      : 'ir.actions.act_window',
+            'name'      : 'Add new offer on selected properties',
+            'res_model' : 'estate.property.offer',
+            'view_type' : 'form',
+            'view_mode' : 'form',
+            'target'    : 'new',
+            
+        }
