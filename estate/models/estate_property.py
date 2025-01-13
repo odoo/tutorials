@@ -132,5 +132,19 @@ class EstateProperty(models.Model):
         return self.env.ref('estate.action_report_estate_property_sold').report_action(self)
 
 
+    def action_make_offer(self):
+        print(self)
+        return {
+            'name': 'Make Bulk Offer',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'view_mode': 'form',
+            'res_model': 'estate.property.make.bulk.offer',
+            'context': {
+                'default_property_id': self.ids,
+            }
+        }
+
+
     
 

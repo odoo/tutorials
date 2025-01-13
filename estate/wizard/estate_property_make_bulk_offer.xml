@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="make_bulk_offer_view_form" model="ir.ui.view">
+        <field name="model">estate.property.make.bulk.offer</field>
+        <field name="arch" type="xml">
+            <form>
+               <group>
+                 <field name="price" required="1"/>
+                <field name="validity" required="1"/>
+                <field name="partner_id" />
+               </group>
+                <footer>
+                    <button name="make_offers" string="Make an Offer" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

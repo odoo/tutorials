@@ -24,6 +24,7 @@
         'data/estate.property.type.csv',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
+        'wizard/estate_property_make_bulk_offer.xml'
     ],
 
     'demo':[
@@ -34,6 +35,7 @@
     
     'application': True,
     'installable':True,
-    'auto_install':True
+    'auto_install':True,
+    'license': 'LGPL-3',
 
 }

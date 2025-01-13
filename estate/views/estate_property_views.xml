@@ -165,6 +165,15 @@
             </search>
         </field>
     </record>
+    
 
+     <record id="action_make_bulk_offer" model="ir.actions.server">
+        <field name="name">Add Offer</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="binding_model_id" ref="estate.model_estate_property"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_make_offer()</field>
+    </record>
 
 </odoo>

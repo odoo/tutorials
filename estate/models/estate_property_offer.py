@@ -123,3 +123,6 @@ class EstatePropertyOffer(models.Model):
     
         
     #     return True
+
+
+  
