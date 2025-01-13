@@ -3,7 +3,7 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "Kishan B. Gajera",
-    'category': 'real-estate',
+    'category': 'Real Estate/Brokerage',
     'description': """
         Estate App
     """,
@@ -15,6 +15,7 @@
     'license':'LGPL-3',
 
     'data': [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offers_view.xml',
