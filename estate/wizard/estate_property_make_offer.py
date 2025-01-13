@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields
 
 
 class EstatePropertyMakeOffer(models.TransientModel):
@@ -11,33 +11,28 @@ class EstatePropertyMakeOffer(models.TransientModel):
     partner_id = fields.Many2one("res.partner", string="Partner")
 
     def make_offer(self):
-        offers = []
+        failed_properties = []
         for property in self.property_ids:
-            offer = self.env["estate.property.offer"].create(
-                {
-                    "price": self.offer_price,
-                    "property_id": property.id,
-                    "partner_id": self.partner_id.id,
-                    "validity": self.offer_validity,
-                }
-            )
-            offers.append(offer)
-
-        if offers:
-            return {
-                "type": "ir.actions.act_window",
-                "name": "Offer",
-                "res_model": "estate.property.offer",
-                "res_id": offers[-1].id, 
-                "view_mode": "form",
-                "target": "current",
-            }
-        else:
+            try:
+                self.env["estate.property.offer"].create(
+                    {
+                        "price": self.offer_price,
+                        "property_id": property.id,
+                        "partner_id": self.partner_id.id,
+                        "validity": self.offer_validity,
+                    }
+                )
+            except Exception:
+                failed_properties.append(property.name)
+        if failed_properties:
             return {
                 "type": "ir.actions.client",
                 "tag": "display_notification",
                 "params": {
+                    "message": "Failed to create offers for the following properties: "
+                    + ", ".join(failed_properties),
                     "type": "danger",
-                    "message": "No offers were created.",
+                    "next": {"type": "ir.actions.act_window_close"},
                 },
             }
+        return {"type": "ir.actions.act_window_close"}

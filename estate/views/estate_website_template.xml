@@ -1,0 +1,39 @@
+<odoo>
+    <template id="listing_page" name="Estate Property Listing">
+        <t t-call="website.layout">
+            <div class="container">
+                <h2>Estate Properties</h2>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="ratio ratio-4x3">
+                                    <t t-if="property.image">
+                                        <img t-att-src="'/web/image/estate.property/%d/image' % property.id" class="card-img-top object-fit-cover" alt="Property Image"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img t-att-src="'https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg'" class="card-img-top object-fit-cover" alt="Default Property Image"/>
+                                    </t>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-esc="property.name"/>
+                                    </h5>
+                                    <p class="card-text">
+                                        <strong>Price:</strong>
+                                        <t t-esc="property.expected_price"/>
+                                        <br/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-center my-3">
+                    <t t-call="website.pager"/>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
+

@@ -12,7 +12,7 @@
     "version": "0.1",
     "application": True,
     "installable": True,
-    "depends": ["base_setup"],
+    "depends": ["base_setup", "website"],
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",
@@ -24,9 +24,10 @@
         "views/estate_property_tags_views.xml",
         "views/res_users_views.xml",
         "views/estate_menu_views.xml",
-        "data/estate.property.type.csv",
+        "views/estate_website_template.xml",
+        # "data/estate.property.type.csv",
         "wizard/estate_property_wizard_view.xml",
     ],
-    "demo": ["demo/estate_property_demo.xml", "demo/estate_property_offers.xml"],
+    # "demo": ["demo/estate_property_demo.xml", "demo/estate_property_offers.xml"],
     "license": "AGPL-3",
 }
