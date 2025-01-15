@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _order = 'id desc'
 
     name = fields.Char(string="Name", required=True)
+    image = fields.Image()
     description = fields.Text(string="Description")
     postcode = fields.Char(string="postcode")
     date_availability = fields.Date(
@@ -112,5 +113,18 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise exceptions.UserError('Only New and Cancelled property can be delete.')
-        
 
+    def action_make_offer(self):
+        return {
+            'name': ('Make Offers'),
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'view_mode': 'form',
+            'res_model': 'estate.property.make.offer',
+            'context': {
+                'default_property_ids': self.ids,
+            }
+        }
+    
+
+        

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="fleet_vehicle_send_mail_view_form" model="ir.ui.view">
+        <field name="model">estate.property.make.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="price"/>
+                    <field name="validity"/>                    
+                    <field name="partner_id"/>
+                    <field name="property_ids" />
+                </group>
+                
+                <footer>
+                    <button name="make_an_offer" string="Make an offer" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

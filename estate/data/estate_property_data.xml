@@ -3,6 +3,7 @@
 
     <record id="property_1" model="estate.property">
         <field name="name">Big Villa</field>
+        <field name="image">flat.jpeg</field>
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
@@ -20,6 +21,7 @@
     </record>
     <record id="property_2" model="estate.property">
         <field name="name">Trailer home</field>
+        <field name="image">home.jpeg</field>
         <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
@@ -36,6 +38,7 @@
 
     <record id="property_3" model="estate.property">
         <field name="name">Property 3</field>
+        <field name="image">house.jpg</field>
         <field name="expected_price">100</field>
         <field name="property_type_id" ref="estate.property_type_id_1"></field>
         <field name="offer_ids" eval="[
@@ -52,6 +55,7 @@
 
     <record id="property_4" model="estate.property">
         <field name="name">Property new 1</field>
+        <field name="image">house2.jpg</field>
         <field name="state">new</field>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
@@ -83,6 +87,7 @@
 
     <record id="property_6" model="estate.property">
         <field name="name">Property 6</field>
+        <field name="image">house3.jpg</field>
         <field name="expected_price">300</field>
         <field name="property_type_id" ref="estate.property_type_id_2"></field>
         <field name="offer_ids" eval="[
@@ -99,6 +104,7 @@
 
       <record id="property_7" model="estate.property">
         <field name="name">Property 7</field>
+        <field name="image">pool.jpeg</field>
         <field name="expected_price">300</field>
         <field name="state">sold</field>
         <field name="property_type_id" ref="estate.property_type_id_1"></field>
@@ -106,6 +112,7 @@
 
       <record id="property_8" model="estate.property">
         <field name="name">Property 8</field>
+        <field name="image">shop.jpeg</field>
         <field name="expected_price">300</field>
         <field name="state">sold</field>
         <field name="property_type_id" ref="estate.property_type_id_2"></field>
