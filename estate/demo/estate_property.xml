@@ -110,4 +110,23 @@
         <field name="property_type_id" ref="estate.estate_property_type_1"/>
     </record>
 
+
+    <!--create page for /properties url-->
+    <record id="properties_page" model="website.page">
+        <field name="url">/properties</field>
+        <field name="is_published">True</field>
+        <field name="view_id" ref="estate.estate_property_website_grid_view"/>
+        <field name="track">True</field>
+        <field name="website_meta_description">This is the estate property page of the website</field>
+    </record>
+
+    <!-- create menu for Properties-->
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="page_id" ref="estate.properties_page"/> <!--ref to a page-->
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">100</field>
+    </record>
+
 </odoo>

@@ -2,7 +2,7 @@
     'name': 'estate',
     'installable': True, #Whether a user should be able to install the module from the Web UI or not.
     'application': True, #Whether the module should be considered as a fully-fledged application (True) or is just a technical module (False) that provides some extra functionality to an existing application module.
-    'depends': ['base','web'], # any module necessary for this one to work correctly
+    'depends': ['base','web','website'], # any module necessary for this one to work correctly
     'category': 'Real Estate/Brokerage', # category(module_category)/subcategory
     'data': [
         'security/security.xml',

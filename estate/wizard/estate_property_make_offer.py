@@ -35,7 +35,7 @@ class EstatePropertyMakeOffer(models.TransientModel):
                     'type': 'warning',
                     'message': f"Offered price is lower than 90% of best price hence skipping the offer addition for properties {failed_property_name}",
                     'sticky': False,
-                    "next": {"type": "ir.actions.act_window_close"}
+                    "next": {"type": "ir.actions.act_window_close"} #necesarry to close any opened action window
                 }
             }
             return notification

@@ -80,8 +80,15 @@
 
                 <sheet> <!-- to make layout responsive -->
                     <group> <!--groups divides a single row in 2 columns-->
-                        <field name="name" class='fs-1 fw-bolder'/> <!-- label is hidden -->
-                        <field name="tag_ids" class='mb-3' widget="many2many_tags" placeholder="e.g. renovated, cozy tags" options="{'color_field': 'color'}" /> <!-- this is a widget type tags||| options color_field refers to color field in the _tag model-->
+                        <group>
+                            <field name="name" class='fs-1 fw-bolder' nolabel="1"/> <!-- label is hidden -->
+                        </group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar" nolabel="1"/>
+                        </group>
+                        <group>
+                            <field name="tag_ids" class='mb-3' nolabel="1" widget="many2many_tags" placeholder="Tags: e.g. renovated, cozy tags" options="{'color_field': 'color'}" /> <!-- this is a widget type tags||| options color_field refers to color field in the _tag model-->
+                        </group>
                         <group>
                             <field name="property_type_id" widget="many2one" options="{'no_create': true, 'no_create_edit': true}"/> <!-- field takes two 2 columns by default 1 for label and 1 for input-->
                         </group>

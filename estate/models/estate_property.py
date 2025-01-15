@@ -17,6 +17,7 @@ class EstateProperty(models.Model):
     description= fields.Text('Property Description')
     postcode= fields.Char("Postcode")
     date_availability=fields.Date(string="Date Availability", copy=False, default=fields.Date.today() + relativedelta(months=+3))
+    image = fields.Image("Image", max_width=1600, max_height=1600)
     
     expected_price=fields.Float("Expected price", required=True)
     selling_price=fields.Float(string="Selling price", readonly=False, copy=False)
