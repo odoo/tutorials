@@ -4,7 +4,7 @@
     "category": "Real Estate/Brokerage",
     "summary": "Realistic business advertisements",
     "description": "our ultimate real estate spotlight! Effortlessly showcase properties and attract buyers with sleek, engaging ads that sell.",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "whatsapp"],
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",

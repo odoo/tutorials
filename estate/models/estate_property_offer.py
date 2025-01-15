@@ -7,7 +7,7 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
-    inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -38,14 +38,6 @@ class EstatePropertyOffer(models.Model):
     @api.constrains("price")
     def _check_offer_price(self):
         for record in self:
-            # print("Current Offer Details:")
-            # print(f"Offer ID: {record.id}, Price: {record.price}")
-            # print(f"Property ID: {record.property_id.id}, Name: {record.property_id.name}")
-            # print("All Offers for this Property:")
-            # print("---------------------------------------")
-            # for offer in record.property_id.offer_ids:
-            #     print(f" - Offer ID: {offer.id}, Price: {offer.price}")
-
             if record.property_id.offer_ids and any(
                 offer.price >= record.price
                 for offer in record.property_id.offer_ids
@@ -54,21 +46,6 @@ class EstatePropertyOffer(models.Model):
                 raise ValidationError(
                     "You cannot create an offer lower than an existing offer."
                 )
-
-            # existing_offers = self.search(
-            #     [("property_id", "=", record.property_id.id), ("id", "!=", record.id)]
-            # )
-
-            # for offer in existing_offers:
-            #     print(f" - Offer ID: {offer.id}, Price: {offer.price}")
-
-            # # Compare the current offer price with existing offers in the database
-            # if existing_offers and any(
-            #     offer.price >= record.price for offer in existing_offers
-            # ):
-            #     raise ValidationError(
-            #         "You cannot create an offer lower than an existing offer."
-            #     )
 
     @api.depends("validity")
     def _compute_date_deadline(self):

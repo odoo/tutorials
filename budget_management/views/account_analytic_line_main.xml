@@ -10,8 +10,8 @@
                         <field name="budget_amount" />
                         <field name="achieved_amount"></field>
                     </group>
-                    <field name="line_ids">
-                        <list editable="bottom" open_view_form="0">
+                    <field name="line_ids" readonly="stage not in ['draft']">
+                        <list editable="bottom" open_view_form="0" >
                             <field name="date" />
                             <field name="name" />
                             <field name="currency_id" column_invisible="1" />

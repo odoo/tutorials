@@ -15,6 +15,7 @@ class AccountAnalyticLineMain(models.Model):
     currency_id = fields.Many2one(comodel_name="res.currency", default=lambda self: self.env.company.currency_id.id)
     budget_amount = fields.Monetary(related="budget_line_id.budget_amount")
     achieved_amount = fields.Monetary(related="budget_line_id.achieved_amount")
+    stage = fields.Selection(related="budget_line_id.budget_id.stage")
 
     @api.model
     def create(self, vals):

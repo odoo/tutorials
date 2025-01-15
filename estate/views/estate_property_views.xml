@@ -35,13 +35,18 @@
                         invisible="state in ['sold', 'cancelled']" />
                     <button string="Cancel" name="action_property_cancel" type="object"
                         invisible="state in ['sold', 'cancelled']" />
-                    <field name="state" widget="statusbar" options="{'clickable': False}"
+                    <field name="state" widget="statusbar" options="{'clickable': True}"
                         statusbar_visible="new,received,accepted,sold" />
                 </header>
                 <sheet>
-                    <h1>
-                        <field name="name" />
-                    </h1>
+                    <div class="o_horizontal_layout">
+                        <field name="image" widget="image" type="base64" class="oe_avatar" />
+                        <div>
+                            <h1>
+                                <field name="name" />
+                            </h1>
+                        </div>
+                    </div>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <group>
                         <group>

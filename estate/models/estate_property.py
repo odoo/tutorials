@@ -53,7 +53,8 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one(
-        comodel_name="estate.property.type", string="Property Type"
+        comodel_name="estate.property.type",
+        string="Property Type",
     )
     company_id = fields.Many2one(
         comodel_name="res.company",
@@ -72,6 +73,7 @@ class EstateProperty(models.Model):
         comodel_name="estate.property.offer", inverse_name="property_id"
     )
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+    image = fields.Image(max_width=512, max_height=512)
 
     _sql_constraints = [
         (
@@ -160,4 +162,65 @@ class EstateProperty(models.Model):
             if record.state == "cancelled":
                 raise UserError("Cancelled property cannot be sold.")
             record.state = "sold"
+
+            print("\n\n\n\n\n")
+            self._send_email_notification()
+            print("Sent mail")
+            self._send_whatsapp_notification()
+            print("Sent whatsapp msg")
+        return True
+
+    def _send_email_notification(self):
+        for record in self:
+            if not record.buyer_id.email:
+                raise UserError(
+                    "The property buyer must have a valid email address to send an email notification."
+                )
+
+            mail_content = [
+                {
+                    "subject": f"Property Sold: {record.name}",
+                    "body_html": f"""
+                    <p>Dear {record.buyer_id.name},</p>
+                    <p>Congratulations! The property <strong>{record.name}</strong> has been successfully sold.</p>
+                    <p>Thank you for your business.</p>
+                    <p>Best regards,<br>Your Estate Team</p>
+                """,
+                    "email_to": record.buyer_id.email,
+                    "email_from": self.env.user.email_formatted,
+                    "author_id": self.env.user.partner_id.id,
+                    "auto_delete": False,
+                }
+            ]
+
+            self.env["mail.mail"].sudo().create(mail_content)
+        return True
+
+    def _send_whatsapp_notification(self):
+        for record in self:
+            if not record.buyer_id.phone:
+                raise UserError(
+                    "The property buyer must have a valid phone number to send an whatsapp notification."
+                )
+
+            mail_message = self.env["mail.message"].create(
+                {
+                    "body": f"""
+                    <p>Dear {record.buyer_id.name},</p>
+                    <p>Congratulations! The property <strong>{record.name}</strong> has been successfully sold.</p>
+                    <p>Thank you for your business.</p>
+                """,
+                    "subject": f"Property Sold: {record.name}",
+                    "message_type": "whatsapp_message",
+                    "partner_ids": [(6, 0, [record.buyer_id.id])],
+                }
+            )
+
+            whatsapp_message = {
+                    "mobile_number": record.buyer_id.mobile,
+                    "message_type": "inbound",
+                    "mail_message_id": mail_message.id,
+                }
+            
+            self.env["whatsapp.message"].sudo().create(whatsapp_message)._send()
         return True
