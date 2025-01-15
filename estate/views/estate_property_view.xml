@@ -212,6 +212,15 @@
         </field>
     </record>
 
+    <record id="offers_action_server" model="ir.actions.server">
+        <field name="name">Make Offer</field>
+        <field name="model_id" ref="estate.model_test_property"/>
+        <field name="binding_model_id" ref="estate.model_test_property"/>
+        <field name="state">code</field>
+        <field name="code">action=records.action_make_offer()</field>
+        <field name="binding_view_types">list</field>
+    </record>
+
 
 
 </odoo>

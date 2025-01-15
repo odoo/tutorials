@@ -154,3 +154,17 @@ class TestProperty(models.Model):
                 or record.status == "offer_received"
             ):
                 raise UserError(_("Can't delete  this property! "))
+
+    def action_make_offer(self):
+        print(" reached ".center(100, "="))
+        print(self.ids)
+        return {
+            "name": "make offer",
+            "type": "ir.actions.act_window",
+            "target": "new",
+            "res_model": "propery.offers",
+            "view_mode": "form",
+            "context": {
+                "default_property_ids": self.ids,
+            },
+        }

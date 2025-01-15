@@ -22,9 +22,7 @@
         <field name="model_id" ref="estate.model_test_property"/>
         <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
         <field name="perm_read" eval="True"/>
-        <field name="domain_force">[
-        '|', ('company_id', 'in', company_ids),
-             ('sales_person_id', '=', False)
+        <field name="domain_force">[ ('company_id', 'in', company_ids)
     ]</field>
     </record>
 

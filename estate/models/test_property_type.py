@@ -21,3 +21,5 @@ class TestPropertyType(models.Model):
     _sql_constraints = [
         ("name_uniq", "unique(name)", "Type must be unique"),
     ]
+
+        

@@ -186,6 +186,30 @@
         "documentation": {}
     },
     {
+        "label": "api",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
         "label": "models",
         "importPath": "odoo",
         "description": "odoo",
@@ -393,6 +417,15 @@
         "description": "estate.models.test_property_type",
         "peekOfCode": "class TestPropertyType(models.Model):\n    _name = \"test.property.type\"\n    _description = \"Test proerty Type\"\n    _order = \"name\"\n    name = fields.Char('name')\n    propertys_id = fields.One2many(\"test.property\", \"property_types_id\")\n    sequence = fields.Integer('Sequence', default=1, help=\"Used to order type\")\n    offer_ids = fields.One2many('test.property.offer', 'property_type_id', string='offers')\n    offer_count = fields.Integer(readonly=True,compute=\"_compute_count_offer\")\n    @api.depends('offer_ids')",
         "detail": "estate.models.test_property_type",
+        "documentation": {}
+    },
+    {
+        "label": "ProperyOffers",
+        "kind": 6,
+        "importPath": "estate.wizard.property_offers",
+        "description": "estate.wizard.property_offers",
+        "peekOfCode": "class ProperyOffers(models.TransientModel):\n    _name = \"propery.offers\"\n    _description = \"TransientModelmodel for offers\"\n    price = fields.Float(\"price\", required=True)\n    property_ids = fields.Many2many(\"test.property\", string=\"property_id\")\n    buyer_id = fields.Many2one(\"res.partner\", required=True)\n    validity = fields.Integer(default=7)\n    def make_offer(self):\n        failed_properties = []\n        for property in self.property_ids:",
+        "detail": "estate.wizard.property_offers",
         "documentation": {}
     },
     {

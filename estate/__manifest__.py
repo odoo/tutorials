@@ -21,6 +21,7 @@
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
+        "wizard/wizard_property_offers_view.xml",
         "report/test_property_templates.xml",
         "report/test_property_reports.xml",
         "views/estate_property_offer_view.xml",

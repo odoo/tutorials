@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="proeprty_offers_action" model="ir.actions.act_window">
+        <field name="name">property offers</field>
+        <field name="res_model">propery.offers</field>
+        <field name="view_mode">form</field>
+    </record>
+
+
+    <record id="property_offers_view_form" model="ir.ui.view">
+        <field name="name">propery.offers</field>
+        <field name="model">propery.offers</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="price" />
+                        <field name="buyer_id" />
+                        <field name="validity" />
+                        <field name="property_ids" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="make_offer" type="object" string="offer" />
+
+                </footer>
+
+            </form>
+        </field>
+    </record>
+</odoo>
