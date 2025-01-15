@@ -19,6 +19,7 @@
         {'search_default_available': True }
         </field>
     </record>
+    
 
 
     <!-- ESTATE PROPERTY KANBAN VIEW  -->
@@ -86,10 +87,18 @@
                 </header>
 
                 <sheet>
-                    <h1>
+                    <group>
+                        <group>
+                         <h1>
                         <field name="name" placeholder="Property Name"></field>
-                    </h1>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </h1>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+
+                        </group>
+                        <group>
+                        <field name="property_image" widget='image' options="{ 'size' :[100,100]}" />
+                        </group>
+                    </group>
                     <group>
                         <group>
                             <field name="status_button"></field>

@@ -47,10 +47,10 @@
     <field name="facades">4</field>
     <field name="garage">False</field>
     <field name="property_type_id" ref="1" />
-    <field name="offer_ids" eval="[
+    <!-- <field name="offer_ids" eval="[
         Command.create({'partner_id': ref('base.res_partner_1'), 'price': 100000}),
         Command.create({'partner_id': ref('base.res_partner_3'), 'price': 9877655})
-    ]" />
+    ]" /> -->
 </record>
 
 

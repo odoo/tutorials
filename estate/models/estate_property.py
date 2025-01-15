@@ -15,7 +15,6 @@ class EstateProperty(models.Model):
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
-    bedrooms = fields.Char('Bedrooms', default='two')
     living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer('Facades')
     garage = fields.Boolean('Garage')
@@ -54,6 +53,7 @@ class EstateProperty(models.Model):
     status_button=fields.Char()
     estate_id = fields.Many2one("estate.property.type")
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
+    property_image=fields.Image()
 
 
 

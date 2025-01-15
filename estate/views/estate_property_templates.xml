@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_list_template" name="Property List">
+        <t t-call="website.layout">
+            <div class="container">
+                <h3 class="mt-3">Properties for Sale</h3>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <a t-att-href="'/properties/%d' % property.id" class="text-decoration-none">
+                                <div class="card">
+                                    <img t-att-src="'/web/image/estate.property/%d/property_image' % property.id" class="card-img-top" alt="Property Image" style="object-fit: cover; height: 200px;" />
+                                    
+                                    <div class="card-body">
+                                        <h5 class="card-title"><t t-esc="property.name" /></h5>
+                                        <p class="card-text"><t t-esc="property.description" /></p>
+                                        <p class="card-text">
+                                            <strong>Price:</strong> $<t t-esc="property.expected_price" />
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+                <div t-if="pager" class="o_portal_pager d-flex justify-content-center p-4">
+                    <t t-call="website.pager" />
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_details_template">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row">
+                    <!-- Left Column: Property Image -->
+                    <div class="col-12 col-md-6 mb-4 mb-md-0">
+                        <t t-if="property.property_image">
+                            <img t-att-src="'/web/image/estate.property/%d/property_image' % property.id"
+                                 alt="Property Image" class="img-fluid rounded" style="height: 500px; object-fit: cover;" />
+                        </t>
+                    </div>
+
+                    <!-- Right Column: Property Title, Description, Price and Features -->
+                    <div class="col-12 col-md-6">
+                        <!-- Title, Description, and Price -->
+                        <h1 t-esc="property.name" class="display-4 mb-4" />
+                        <p t-esc="property.description" class="lead mb-4" />
+                        <div class="d-flex justify-content-between">
+                            <span class="h4 font-weight-bold text-primary">Price: €<span t-esc="property.expected_price" /></span>
+                        </div>
+
+                        <!-- Property Features -->
+                        <h4 class="mb-3 mt-5">Property Features</h4>
+                        <div class="row">
+                            <!-- Feature 1 -->
+                            <div class="col-6 mb-4">
+                                <div class="d-flex align-items-center">
+                                    <span class="fa fa-map-marker-alt mr-3 pr-4" style="color: #714B67;"></span>
+                                    <strong>Postcode:</strong> <span t-esc="property.postcode" />
+                                </div>
+                            </div>
+                            <!-- Feature 2 -->
+                            <div class="col-6 mb-4">
+                                <div class="d-flex align-items-center">
+                                    <span class="fa fa-car mr-3" style="color: #714B67;"></span>
+                                    <strong>Garage:</strong> 
+                                    <span t-esc="property.garage" t-if="property.garage">Available</span>
+                                    <span t-esc="property.garage" t-if="not property.garage">Not Available</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Feature 3 -->
+                            <div class="col-6 mb-4">
+                                <div class="d-flex align-items-center">
+                                    <span class="fa fa-expand-arrows-alt mr-3" style="color: #714B67;"></span>
+                                    <strong>Living Area:</strong> <span t-esc="property.living_area" /> m²
+                                </div>
+                            </div>
+                            <!-- Feature 4 -->
+                              <div class="col-6 mb-4">
+                                <div class="d-flex align-items-center">
+                                    <span class="fa fa-leaf mr-3" style="color: #714B67;"></span>
+                                    <strong>Garden:</strong>
+                                    <span t-esc="property.garden" t-if="property.garden">Yes</span>
+                                    <span t-esc="property.garden" t-if="not property.garden">No</span>
+                                </div>
+                            </div>
+                            <!-- Feature 5 -->
+                            <div class="col-6 mb-4">
+                                <div class="d-flex align-items-center">
+                                    <span class="fa fa-bed mr-3" style="color: #714B67;"></span>
+                                    <strong>Bedrooms:</strong> <span t-esc="property.bedrooms" />
+                                </div>
+                            </div>
+                            <!-- Feature 6 -->
+                            <t t-if="property.garden">
+                                <div class="col-6 mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <span class="fa fa-arrows-alt-h mr-3" style="color: #714B67;"></span>
+                                        <strong>Garden Area:</strong> <span t-esc="property.garden_area" /> m²
+                                    </div>
+                                </div>
+                            </t>
+                            <!-- Feature 7 -->
+                             <div class="col-6 mb-4">
+                                <div class="d-flex align-items-center">
+                                    <span class="fa fa-cogs mr-3" style="color: #714B67;"></span>
+                                    <strong>Facades:</strong> <span t-esc="property.facades" />
+                                </div>
+                            </div>
+                            <!-- Feature 8 -->
+                            <t t-if="property.garden">
+                                <div class="col-6 mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <span class="fa fa-compass mr-3" style="color: #714B67;"></span>
+                                        <strong>Garden Orientation:</strong> <span t-esc="property.garden_orientation" />
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

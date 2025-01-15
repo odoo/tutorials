@@ -9,7 +9,7 @@
         Users can also track the status of properties, availability, and other key details.
     """,
     'depends': [
-        'base'
+        'base', 'website'
     ],
 
     'data':[
@@ -21,10 +21,12 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+        'views/estate_property_templates.xml',
         'data/estate.property.type.csv',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
-        'wizard/estate_property_make_bulk_offer.xml'
+        'wizard/estate_property_make_bulk_offer.xml',
+       
     ],
 
     'demo':[
