@@ -22,12 +22,16 @@
                                     <p class="card-text">
                                         <strong>Price:</strong>
                                         <t t-esc="property.expected_price"/>
-                                        <br/>
+ $
                                     </p>
+                                    <a t-att-href="'/property/%d' % property.id" class="btn btn-outline-primary">
+                    View Details
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </t>
+
                 </div>
                 <div class="d-flex justify-content-center my-3">
                     <t t-call="website.pager"/>
@@ -35,5 +39,127 @@
             </div>
         </t>
     </template>
+
+    <template id="property_detail_page" name="Customer Property View">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <!-- Title -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="text-primary">
+                        <t t-esc="property.name" />
+                    </h1>
+                </div>
+
+                <!-- Property Image -->
+                <div class="text-center mb-4">
+                    <t t-if="property.image">
+                        <img t-att-src="'/web/image/estate.property/%d/image' % property.id" class="img-fluid rounded shadow-lg" alt="Property Image" />
+                    </t>
+                    <t t-else="">
+                        <img src="https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg" class="img-fluid rounded shadow-lg" alt="Default Property Image" />
+                    </t>
+                </div>
+
+                <!-- Basic Property Details -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="fa fa-map-marker-alt text-danger"></i> Postcode:</strong>
+                                <span>
+                                    <t t-esc="property.postcode" />
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="fa fa-calendar-alt text-primary"></i> Date Availability:</strong>
+                                <span>
+                                    <t t-esc="property.date_availability" />
+                                </span>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="fa fa-dollar-sign text-warning"></i> Expected Price:</strong>
+                                <span class="text-success fw-bold">
+                                    <t t-esc="property.expected_price" />
+ $</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Room Features -->
+                <h3 class="mb-3 text-primary">Room Features</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="fa fa-bed"></i> Bedrooms:</strong>
+                                <span>
+                                    <t t-esc="property.bedrooms" />
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="fa fa-couch"></i> Living Area:</strong>
+                                <span>
+                                    <t t-esc="property.living_area" />
+ m²</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="fa fa-car"></i> Garage:</strong>
+                                <span>
+                                    <i t-if="property.garage" class="fa fa-check text-success"></i>
+                                    <i t-if="not property.garage" class="fa fa-times text-danger"></i>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="fa fa-tree"></i> Garden:</strong>
+                                <span>
+                                    <i t-if="property.garden" class="fa fa-check text-success"></i>
+                                    <i t-if="not property.garden" class="fa fa-times text-danger"></i>
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="fa fa-leaf"></i> Garden Area:</strong>
+                                <span>
+                                    <t t-esc="property.garden_area" />
+ m²</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="fa fa-compass"></i> Garden Orientation:</strong>
+                                <span>
+                                    <t t-esc="property.garden_orientation" />
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="fa fa-ruler-combined"></i> Total Area:</strong>
+                                <span>
+                                    <t t-esc="property.total_area" />
+ m²</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
 </odoo>
 

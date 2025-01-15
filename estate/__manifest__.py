@@ -25,9 +25,9 @@
         "views/res_users_views.xml",
         "views/estate_menu_views.xml",
         "views/estate_website_template.xml",
-        # "data/estate.property.type.csv",
+        "data/estate.property.type.csv",
         "wizard/estate_property_wizard_view.xml",
     ],
-    # "demo": ["demo/estate_property_demo.xml", "demo/estate_property_offers.xml"],
+    "demo": ["demo/estate_property_demo.xml", "demo/estate_property_offers.xml"],
     "license": "AGPL-3",
 }
