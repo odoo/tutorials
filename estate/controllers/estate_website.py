@@ -11,9 +11,6 @@ class EstateWebsite(http.Controller):
     )
     def list_properties(self, page=1, **kwargs):
         step = 6
-
-        total_properties = request.env["estate.property"].sudo().search_count([])
-
         offset = (page - 1) * step
 
         #! Fetch only the properties for the current page
@@ -32,7 +29,7 @@ class EstateWebsite(http.Controller):
         )
 
         pager = request.website.pager(
-            url="/properties", total=total_properties, step=step, page=page
+            url="/properties", total=len(properties), step=step, page=page
         )
 
         # Render the template with paginated properties and the pager
