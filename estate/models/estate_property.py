@@ -145,9 +145,11 @@ class EstateProperty(models.Model):
         return {
             'type'      : 'ir.actions.act_window',
             'name'      : 'Add new offer on selected properties',
-            'res_model' : 'estate.property.offer',
+            'res_model' : 'estate.property.make.offer',
             'view_type' : 'form',
             'view_mode' : 'form',
             'target'    : 'new',
-            
+            'context': {
+                'property_ids': self.ids
+            }
         }

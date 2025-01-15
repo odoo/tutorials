@@ -26,37 +26,14 @@ class EstatePropertyOffer(models.Model):
     
     @api.model_create_multi
     def create(self, vals):
-        new_vals= []
-        #? skipping the price check for bulk offer create
-        if(self.env.context.get('active_ids', None) is not None and len(self.env.context.get('active_ids')) > 0):
-            for property_id in self.env.context.get('active_ids'):
-                estate_property_ref= self.env['estate.property'].browse(property_id)
-                
-                best_price= estate_property_ref.best_price
-                
-                if vals[0]['price'] < best_price:
-                    continue
- 
-                val= {
-                    'price': vals[0]['price'],
-                    'validity': vals[0]['validity'],
-                    'partner_id': vals[0]['partner_id'],
-                    'property_id': property_id
-                }
-                new_vals.append(val)
-        else:
-            estate_property_ref = self.env['estate.property'].browse(vals[0]['property_id'])
+        for val in vals:
+            estate_property_ref = self.env['estate.property'].browse(val['property_id'])
             best_price= estate_property_ref.best_price
                 
-            if vals[0]['price'] < best_price:
-                raise UserError(f"The offer must be higher than the {best_price}")
+            if val['price'] < best_price:
+                raise ValidationError(f"The offer must be higher than the {best_price}")
             estate_property_ref.state='offer_received'
-            new_vals=vals
-        
-        if(len(new_vals)==0):
-            raise UserError("For all property best offer is bigger than the given price")
-        
-        return super().create(new_vals)
+        return super().create(vals)
     
     
     _sql_constraints= [
@@ -105,30 +82,3 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status= 'refused'
         return True
- 
-    def add_offer_to_property(self):
-        sticky_note_property_title=[]
-        
-        #? skipping the price check for bulk offer create
-        if(self.env.context.get('active_ids', None) is not None and len(self.env.context.get('active_ids')) > 0):
-            for property_id in self.env.context.get('active_ids'):
-                estate_property_ref= self.env['estate.property'].browse(property_id)
-                
-                best_price= estate_property_ref.best_price
-                
-                if self.price < best_price:
-                    sticky_note_property_title.append(estate_property_ref.name)
-        if(sticky_note_property_title.__len__() == 0):
-            return True
-        
-        notification = {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': _('Waning'),
-                'type': 'warning',
-                'message': f"Offered price is lower than 90% of best price hence skipping the offer addition for properties {sticky_note_property_title}",
-                'sticky': False,
-            }
-        }
-        return notification

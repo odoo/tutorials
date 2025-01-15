@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_make_offer_view_form" model="ir.ui.view">
+        <field name="name">Estate Property make offer view </field>
+        <field name="model">estate.property.make.offer</field> 
+        <field name="arch" type="xml">
+            <form >
+                <sheet>
+                    <group>
+                        <field name="price" />
+                    </group>
+
+                    <group>
+                        <field name="validity" />
+                    </group>
+                    <group>
+                        <field name="partner_id" string="Buyer"/>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <button name="add_offer_to_property" string="Make an offer" class='btn btn-primary' type="object"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>
