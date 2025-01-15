@@ -39,8 +39,8 @@
         <field name="arch" type="xml">
             <form string="Property Details" > <!-- editable="bottom" --> 
                 <header>
-                    <button name="action_mark_sold" type="object" string="Mark Sold" invisible='not selling_price' class='btn btn-primary' />
-                    <button name="action_mark_cancel" type="object" string="Cancel" invisible='not selling_price' class='btn btn-secondary' />
+                    <button name="action_mark_sold" type="object" string="Mark Sold" invisible="state != 'offer_accepted'" class='btn btn-primary' />
+                    <button name="action_mark_cancel" type="object" string="Cancel" invisible="state in ['new', 'sold', 'cancelled']" class='btn btn-secondary' />
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
@@ -158,6 +158,15 @@
                 </templates>
             </kanban>
         </field>
+    </record>
+
+    <record id="estate_property_action_server" model="ir.actions.server">
+        <field name="name">Make Offer</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="binding_model_id" ref="estate.model_estate_property"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_make_offer()</field>
     </record>
 
 </odoo>

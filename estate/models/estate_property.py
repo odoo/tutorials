@@ -124,3 +124,15 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise exceptions.UserError('Cannot delete the property which is not in either "New" or "Cancelled" state.')
+
+    def action_make_offer(self):
+        return {
+            'name': ('Make Offer'),
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'view_mode': 'form',
+            'res_model': 'estate.property.make.offer',
+            'context': {
+                'default_property_ids': self.ids
+            }
+        }

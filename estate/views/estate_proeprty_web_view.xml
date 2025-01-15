@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="estate_property_web_view" name="estate_property_web">
+        <html>
+            <head>
+                <title>Properties</title>
+            </head>
+            <body>
+                <h1>Available Properties</h1>
+                <t t-foreach="properties" t-as="property">
+                    <div>
+                        <h2>
+                            <t t-esc="property.name"/>
+                        </h2>
+                        <p>Price: <t t-esc="property.expected_price"/>
+                        </p>
+                        <p>Description: <t t-esc="property.description"/>
+                        </p>
+                        <p>State: <t t-esc="property.state"/>
+                        </p>
+                    </div>
+                </t>
+            </body>
+        </html>
+    </template>
+
+</odoo>
