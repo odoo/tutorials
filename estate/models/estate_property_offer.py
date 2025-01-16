@@ -1,5 +1,6 @@
-from odoo import models, fields, api, exceptions
 from datetime import date, timedelta
+
+from odoo import models, fields, api, exceptions
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -47,11 +48,6 @@ class EstatePropertyOffer(models.Model):
     def set_offer_rejected(self):
         for record in self:
             record.status = 'rejected'
-            # record.property_id.selling_price = 0
-
-    # def set_offer_pending(self):
-    #     for record in self:
-    #         record.status = 'pending'
 
     @api.model_create_multi
     def create(self, vals_list):

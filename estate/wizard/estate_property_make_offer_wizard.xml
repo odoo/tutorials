@@ -11,9 +11,6 @@
                     <field name="partner_id"></field>
                     <field name="validity"></field>
                 </group>
-                <group name="properties" string="Properties">
-                    <field name="property_ids" nolabel='1'></field>
-                </group>
                 <footer>
                     <button name="make_offer" string="Add Offer" type="object" class="btn-primary" icon="fa-check" />
                     <button string="Discard" class="btn-secondary" special="cancel" icon="fa-times" />

@@ -8,7 +8,6 @@
         Estate App
     """,
 
-
     'application': True,
     'installable': True,
 

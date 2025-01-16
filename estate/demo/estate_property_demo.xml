@@ -16,6 +16,7 @@
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
         <field name="property_type_id" ref="property_type_1" />
+        <field name="image" type="base64" file="estate/static/properties/1.jpg"></field>
     </record>
 
     <record id="estate_property_demo_2" model="estate.property">
@@ -31,6 +32,7 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
         <field name="property_type_id" ref="property_type_1" />
+        <field name="image" type="base64" file="estate/static/properties/1.jpg"></field>
     </record>
 
     <record id="estate_property_demo_3" model="estate.property">
@@ -50,6 +52,7 @@
             })
         ]"></field>
         <field name="property_type_id" ref="property_type_4" />
+        <field name="image" type="base64" file="estate/static/properties/1.jpg"></field>
     </record>
 
     <record id="estate_property_demo_4" model="estate.property">
@@ -69,6 +72,7 @@
             })
         ]"></field>
         <field name="property_type_id" ref="property_type_3" />
+        <field name="image" type="base64" file="estate/static/properties/1.jpg"></field>
     </record>
 
     <record id="estate_property_demo_5" model="estate.property">
@@ -86,6 +90,7 @@
         <field name="garden_area">500</field>
         <field name="garden_orientation">north</field>
         <field name="property_type_id" ref="property_type_2" />
+        <field name="image" type="base64" file="estate/static/properties/1.jpg"></field>
     </record>
 
     <record id="estate_property_demo_6" model="estate.property">
@@ -103,6 +108,7 @@
         <field name="garden_area">300</field>
         <field name="garden_orientation">west</field>
         <field name="property_type_id" ref="property_type_3" />
+        <field name="image" type="base64" file="estate/static/properties/1.jpg"></field>
     </record>
 
     <record id="estate_property_demo_7" model="estate.property">
@@ -119,7 +125,13 @@
         <field name="garage">True</field>
         <field name="garden">False</field>
         <field name="property_type_id" ref="property_type_1" />
+        <field name="image" type="base64" file="estate/static/properties/1.jpg"></field>
     </record>
 
+    <record id="menu_contactus" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
 
 </odoo>

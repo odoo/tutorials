@@ -1,21 +1,15 @@
 {
     'name': "Estate Account",
     'version': '1.0',
-    'depends': ['base', 'estate','account'],
+    'depends': ['base', 'estate', 'account'],
     'author': "Kishan B. Gajera",
-    'category': 'tutorials/estate_account',
+    'category': 'Real Estate/Account',
     'description': """
         Estate App
     """,
 
-
     'application': True,
     'installable': True,
 
-    'license':'LGPL-3',
-
-    'data': [
-
-    ],
-    'demo': [],
+    'license':'LGPL-3'
 }

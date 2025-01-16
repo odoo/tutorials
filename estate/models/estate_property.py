@@ -1,38 +1,33 @@
-from odoo import models, fields, api, exceptions
 from datetime import timedelta
+
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate properties"
     _order = "id desc"
 
-    name = fields.Char("Name", readonly=False, required=True)
-    description = fields.Text("Description", readonly=False)
+    name = fields.Char("Name", required=True)
+    description = fields.Text("Description", )
     
-    postcode = fields.Char("Postcode", readonly=False)
-    date_availability = fields.Date("Available From", readonly=False, copy=False, default=lambda self: fields.Date.today() + timedelta(days=90))
+    postcode = fields.Char("Postcode")
+    date_availability = fields.Date("Available From", copy=False, default=lambda self: fields.Date.today() + timedelta(days=90))
     
-    expected_price = fields.Float("Expected Price", readonly=False, required=True)
+    expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     
-    bedrooms = fields.Integer("Bedrooms", readonly=False, default=2)
-    living_area = fields.Integer("Living Area", readonly=False)
+    bedrooms = fields.Integer("Bedrooms", default=2)
+    living_area = fields.Integer("Living Area")
     
-    facades = fields.Integer("Facades", readonly=False)
+    facades = fields.Integer("Facades")
     
-    garage = fields.Boolean("Garage", readonly=False)
-    garden = fields.Boolean("Garden", readonly=False)
+    garage = fields.Boolean("Garage")
+    garden = fields.Boolean("Garden")
 
-    @api.onchange('garden')
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+    image = fields.Image("Image")
 
-    garden_area = fields.Integer("Garden Area", readonly=False)
+    garden_area = fields.Integer("Garden Area")
     
     garden_orientation = fields.Selection(
         string='Orientation',
@@ -41,12 +36,6 @@ class EstateProperty(models.Model):
     )
 
     total_area = fields.Integer("Total Area", readonly=True, compute="_compute_total_area", store=True)
-
-    @api.depends("garden_area", "living_area")
-    def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.garden_area + record.living_area
-
     active = fields.Boolean("Active", default=True)
 
     state = fields.Selection(
@@ -75,6 +64,20 @@ class EstateProperty(models.Model):
 
     company_id = fields.Many2one("res.company", default=lambda self: self.env.company, required=True)
 
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    @api.depends("garden_area", "living_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
@@ -86,44 +89,28 @@ class EstateProperty(models.Model):
     def action_mark_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise exceptions.UserError('A Cancelled Property Cannot Be Sold')
+                raise UserError('A Cancelled Property Cannot Be Sold')
             else:
                 record.state = 'sold'
 
     def action_mark_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError('A Sold Property Cannot Be Cancelled')
+                raise UserError('A Sold Property Cannot Be Cancelled')
             else:
                 record.state = 'cancelled'
-
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price should be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price should be strictly positive.')
-    ]
 
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
             if record.selling_price < 0.9 * record.expected_price:
-                raise exceptions.ValidationError("The selling price is lower than the 90% of expected price.")
-
-    # @api.constrains('offer_ids')
-    # def _check_offers(self):
-    #     for record in self:
-    #         if record.offer_ids:
-    #             if record.state == 'new':
-    #                 record.state = 'offer_received'
-    #         else:
-    #             if record.state != 'cancelled':
-    #                 record.state = 'new'
-
+                raise ValidationError("The selling price is lower than the 90% of expected price.")
 
     @api.ondelete(at_uninstall=False)
     def on_delete(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
-                raise exceptions.UserError('Cannot delete the property which is not in either "New" or "Cancelled" state.')
+                raise UserError('Cannot delete the property which is not in either "New" or "Cancelled" state.')
 
     def action_make_offer(self):
         return {
@@ -132,7 +119,9 @@ class EstateProperty(models.Model):
             'target': 'new',
             'view_mode': 'form',
             'res_model': 'estate.property.make.offer',
-            'context': {
-                'default_property_ids': self.ids
-            }
         }
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price should be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price should be strictly positive.')
+    ]
