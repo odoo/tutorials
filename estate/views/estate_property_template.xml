@@ -1,54 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <template id="property_listing_template" name="Property Listing Template">
-        <div class="container mt-5">
-            <h1 class="text-center mb-4">Available Properties</h1>
-            <div class="row">
-                <!-- Loop through properties -->
-                <t t-foreach="properties" t-as="property">
-                    <div class="col-md-4">
-                        <!-- Property Card -->
-                        <div class="card mb-4">
-                            <!-- Property Image -->
-                            <t t-if="property.image">
-                                <img class="card-img-top" t-att-src="'/web/image/estate.property/' + str(property.id) + '/image_1920'" alt="Property Image"/>
+    <data>
+        <template id="estate_property_web_view" name="Properties">
+        <t t-call="website.layout">
+            <html>
+                <head>
+                    <title>Properties</title>
+                    <style>
+                        .card-img-top {
+                            height: 200px;
+                            object-fit: cover;
+                            overflow: hidden;
+                        }
+                        .card-text-description {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container my-5">
+                        <h2 class="text-center mb-4">Available Properties</h2>
+                        <div class="row">
+                            <t t-foreach="properties" t-as="property">
+                                <div class="col-md-4 mb-4">
+                                    <div class="card">
+                                        <img t-att-src="'/web/image/estate.property/%d/image' % property.id" class="card-img-top" alt="property image" />
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <t t-esc="property.name"/>
+                                            </h5>
+                                            <p class="card-text">Price: <t t-esc="property.expected_price"/>
+                                            </p>
+                                            <p class="card-text card-text-description">Description: <t t-esc="property.description"/>
+                                            </p>
+                                            <a t-att-href="'/properties/' + str(property.id)" class="btn btn-primary">View Property</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </t>
-                            <t t-else="">
-                                <img class="card-img-top" src="/web/static/src/img/placeholder.png" alt="No Image Available"/>
-                            </t>
-
-                            <div class="card-body">
-                                <h5 class="card-title"><t t-esc="property.name"/></h5>
-                                <p class="card-text"><t t-esc="property.description"/></p>
-                                <p><strong>Price:</strong> <t t-esc="property.expected_price"/> €</p>
-                                <p><strong>State:</strong> <t t-esc="property.state"/></p>
-                                <!-- View Details Button -->
-                                <a t-att-href="'/properties/detail/' + str(property.id)" class="btn btn-primary">View Details</a>
-                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center my-3">
+                            <t t-call="website.pager"/>
                         </div>
                     </div>
-                </t>
-            </div>
-        </div>
-    </template>
-</odoo>
-
-
-
-<!-- <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
-    <template id="property_listing_template" name="Property Listing Template">
-        <h1>Available Properties</h1>
-        <t t-foreach="properties" t-as="property">
-            <div>
-                <h2><t t-esc="property.name"/></h2>
-                <p>Price: <t t-esc="property.expected_price"/></p>
-                <p>Description: <t t-esc="property.description"/></p>
-                <p>Description: <t t-esc="property.state"/></p>
-            </div>
+                </body>
+            </html>
         </t>
     </template>
-
-</odoo> -->
+    </data>
+</odoo>

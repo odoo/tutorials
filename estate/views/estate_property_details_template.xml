@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="property_details_template" name="template_name">
+            <t t-call="website.layout">
+                <div class="container mt-5">
+                    <div class="row" style="margin-bottom:20px">
+                        <!-- Property Image -->
+                        <div class="col-md-6"
+                            style="align:center">
+                            <a t-att-href="'/properties'">Properties</a> --> <t
+                                t-esc="property.name" /> 
+                            <div class="property-image">
+                                <t t-if="property.image">
+                                    <img class="img-fluid rounded shadow"
+                                        t-att-src="'/web/image/estate.property/%d/image' % property.id"
+                                        alt="Property Image"
+                                        style="margin:10px; width:500px; height:450px;" />
+                                </t>
+                                <t t-else="">
+                                    <img class="img-fluid rounded shadow"
+                                        src="/web/static/src/img/placeholder.png"
+                                        alt="No Image Available" />
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Property Details -->
+                        <div class="col-md-6">
+                            <h2 class="text-primary mb-4">
+                                <t t-esc="property.name" />
+                            </h2>
+                            <table class="table table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Description</th>
+                                        <td>
+                                            <t
+                                                t-esc="property.description or 'No description available'" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Price</th>
+                                        <td class="text-success"><t
+                                                t-esc="property.expected_price or 'Price not available'" />€</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">State</th>
+                                        <td>
+                                            <t t-esc="property.state or 'State not specified'" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Postcode</th>
+                                        <td>
+                                            <t t-esc="property.postcode or 'Postcode not specified'" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Bedrooms</th>
+                                        <td>
+                                            <t t-esc="property.bedrooms or 'Not specified'" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Living Area</th>
+                                        <td><t t-esc="property.living_area or 'Not specified'" /> m²</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Facades</th>
+                                        <td>
+                                            <t t-esc="property.facades or 'Not specified'" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Garage</th>
+                                        <td>
+                                            <t t-esc="property.garage or 'Not specified'" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Garden</th>
+                                        <td>
+                                            <t t-esc="property.garden or 'Not specified'" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Garden Area</th>
+                                        <td><t t-esc="property.garden_area or 'Not specified'" /> m²</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Garden Orientation</th>
+                                        <td>
+                                            <t
+                                                t-esc="property.garden_orientation or 'Not specified'" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Availability Date</th>
+                                        <td>
+                                            <t t-esc="property.date_availability or 'Not specified'" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

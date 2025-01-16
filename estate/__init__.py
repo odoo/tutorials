@@ -1,1 +1,1 @@
-from . import models, wizard, controllers
+from . import models, wizard, controller

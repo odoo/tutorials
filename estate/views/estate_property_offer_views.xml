@@ -13,13 +13,15 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Channel" decoration-success="status == 'accepted'"
-                                decoration-danger="status == 'refused'">
+                decoration-danger="status == 'refused'">
                 <field name="partner_id" />
                 <field name="price" />
                 <field name="validity" />
                 <field name="date_deadline" />
-                <button name="action_confirm" class="oe_state_button" type="object" icon="fa-check" title="Confirm Offer" invisible="status in ['refused', 'accepted']"/>
-                <button name="action_cancel" class="oe_state_button" type="object" icon="fa-times" title="Cancel Offer" invisible="status in ['refused', 'accepted']"/>
+                <button name="action_confirm" class="oe_state_button" type="object" icon="fa-check"
+                    title="Confirm Offer" invisible="status in ['refused', 'accepted']" />
+                <button name="action_cancel" class="oe_state_button" type="object" icon="fa-times"
+                    title="Cancel Offer" invisible="status in ['refused', 'accepted']" />
             </list>
         </field>
     </record>
