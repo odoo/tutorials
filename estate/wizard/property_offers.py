@@ -6,7 +6,7 @@ class ProperyOffers(models.TransientModel):
     _description = "TransientModelmodel for offers"
 
     price = fields.Float("price", required=True)
-    property_ids = fields.Many2many("test.property", string="property_id")
+    property_ids = fields.Many2many("estate.property", string="property_id")
     buyer_id = fields.Many2one("res.partner", required=True)
     validity = fields.Integer(default=7)
 
@@ -14,7 +14,7 @@ class ProperyOffers(models.TransientModel):
         failed_properties = []
         for property in self.property_ids:
             try:
-                self.env["test.property.offer"].create(
+                self.env["estate.property.offer"].create(
                     {
                         "price": self.price,
                         "property_id": property.id,

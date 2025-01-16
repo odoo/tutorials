@@ -74,15 +74,7 @@
         "documentation": {}
     },
     {
-        "label": "fields",
-        "importPath": "odoo",
-        "description": "odoo",
-        "isExtraImport": true,
-        "detail": "odoo",
-        "documentation": {}
-    },
-    {
-        "label": "models",
+        "label": "http",
         "importPath": "odoo",
         "description": "odoo",
         "isExtraImport": true,
@@ -186,6 +178,22 @@
         "documentation": {}
     },
     {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
         "label": "api",
         "importPath": "odoo",
         "description": "odoo",
@@ -250,27 +258,11 @@
         "documentation": {}
     },
     {
-        "label": "relativedelta",
-        "importPath": "dateutil.relativedelta",
-        "description": "dateutil.relativedelta",
+        "label": "request",
+        "importPath": "odoo.http",
+        "description": "odoo.http",
         "isExtraImport": true,
-        "detail": "dateutil.relativedelta",
-        "documentation": {}
-    },
-    {
-        "label": "relativedelta",
-        "importPath": "dateutil.relativedelta",
-        "description": "dateutil.relativedelta",
-        "isExtraImport": true,
-        "detail": "dateutil.relativedelta",
-        "documentation": {}
-    },
-    {
-        "label": "relativedelta",
-        "importPath": "dateutil.relativedelta",
-        "description": "dateutil.relativedelta",
-        "isExtraImport": true,
-        "detail": "dateutil.relativedelta",
+        "detail": "odoo.http",
         "documentation": {}
     },
     {
@@ -327,6 +319,30 @@
         "description": "odoo.exceptions",
         "isExtraImport": true,
         "detail": "odoo.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "relativedelta",
+        "importPath": "dateutil.relativedelta",
+        "description": "dateutil.relativedelta",
+        "isExtraImport": true,
+        "detail": "dateutil.relativedelta",
+        "documentation": {}
+    },
+    {
+        "label": "relativedelta",
+        "importPath": "dateutil.relativedelta",
+        "description": "dateutil.relativedelta",
+        "isExtraImport": true,
+        "detail": "dateutil.relativedelta",
+        "documentation": {}
+    },
+    {
+        "label": "relativedelta",
+        "importPath": "dateutil.relativedelta",
+        "description": "dateutil.relativedelta",
+        "isExtraImport": true,
+        "detail": "dateutil.relativedelta",
         "documentation": {}
     },
     {
@@ -375,48 +391,57 @@
         "documentation": {}
     },
     {
-        "label": "Inherited_User",
+        "label": "Academy",
         "kind": 6,
-        "importPath": "estate.models.inherited_user",
-        "description": "estate.models.inherited_user",
-        "peekOfCode": "class Inherited_User(models.Model):\n    _inherit = \"res.users\"\n    property_ids = fields.One2many('test.property', 'sales_person_id', string='property')",
-        "detail": "estate.models.inherited_user",
+        "importPath": "estate.controllers.estate_property_website",
+        "description": "estate.controllers.estate_property_website",
+        "peekOfCode": "class Academy(http.Controller):\n    @http.route(\n        [\"/properties\", \"/properties/page/<int:page>\"],\n        type=\"http\",\n        auth=\"public\",\n        website=True,\n    )\n    def index(self, page=1, **kw):\n        step = 6\n        offset = (page - 1) * step",
+        "detail": "estate.controllers.estate_property_website",
         "documentation": {}
     },
     {
         "label": "TestProperty",
         "kind": 6,
-        "importPath": "estate.models.test_property",
-        "description": "estate.models.test_property",
-        "peekOfCode": "class TestProperty(models.Model):\n    _name = \"test.property\"\n    _description = \"Test proerty\"\n    _order = \"id desc\"\n    name = fields.Char(\"name\", required=True, default=\"My new House\")\n    description = fields.Text(\"description\")\n    postcode = fields.Char()\n    date_availability = fields.Date(\n        \"availability\",\n        default=(datetime.today() + relativedelta(months=3)).date(),",
-        "detail": "estate.models.test_property",
+        "importPath": "estate.models.estate_property",
+        "description": "estate.models.estate_property",
+        "peekOfCode": "class TestProperty(models.Model):\n    _name = \"estate.property\"\n    _description = \"Test proerty\"\n    _order = \"id desc\"\n    name = fields.Char(\"name\", required=True, default=\"My new House\")\n    description = fields.Text(\"description\")\n    postcode = fields.Char()\n    date_availability = fields.Date(\n        \"availability\",\n        default=(datetime.today() + relativedelta(months=3)).date(),",
+        "detail": "estate.models.estate_property",
         "documentation": {}
     },
     {
-        "label": "test_property_offer",
+        "label": "estate_property_offer",
         "kind": 6,
-        "importPath": "estate.models.test_property_offer",
-        "description": "estate.models.test_property_offer",
-        "peekOfCode": "class test_property_offer(models.Model):\n    _name = \"test.property.offer\"\n    _description = \"Test proerty Offer\"\n    _order = \"price desc\"\n    price = fields.Float(\"price\", required=True)\n    status = fields.Selection(\n        [(\"Accepted\", \"Accepted\"), (\"Refused\", \"Refused\"), (\"Pending\", \"Pending\")],\n        default=\"Pending\",\n        copy=False,\n    )",
-        "detail": "estate.models.test_property_offer",
+        "importPath": "estate.models.estate_property_offer",
+        "description": "estate.models.estate_property_offer",
+        "peekOfCode": "class estate_property_offer(models.Model):\n    _name = \"estate.property.offer\"\n    _description = \"Test proerty Offer\"\n    _order = \"price desc\"\n    price = fields.Float(\"price\", required=True)\n    status = fields.Selection(\n        [(\"Accepted\", \"Accepted\"), (\"Refused\", \"Refused\"), (\"Pending\", \"Pending\")],\n        default=\"Pending\",\n        copy=False,\n    )",
+        "detail": "estate.models.estate_property_offer",
         "documentation": {}
     },
     {
         "label": "TestPropertyTags",
         "kind": 6,
-        "importPath": "estate.models.test_property_tags",
-        "description": "estate.models.test_property_tags",
-        "peekOfCode": "class TestPropertyTags(models.Model):\n    _name = \"test.property.tags\"\n    _description = \"Test proerty Tags\"\n    _order = \"name\"\n    name = fields.Char('name')\n    color = fields.Integer(\n        'Color',\n        default=lambda self : self._default_color()\n    )\n    def _default_color(self):",
-        "detail": "estate.models.test_property_tags",
+        "importPath": "estate.models.estate_property_tags",
+        "description": "estate.models.estate_property_tags",
+        "peekOfCode": "class TestPropertyTags(models.Model):\n    _name = \"estate.property.tags\"\n    _description = \"Test proerty Tags\"\n    _order = \"name\"\n    name = fields.Char(\"name\")\n    color = fields.Integer(\"Color\", default=lambda self: self._default_color())\n    def _default_color(self):\n        return randint(1, 11)",
+        "detail": "estate.models.estate_property_tags",
         "documentation": {}
     },
     {
         "label": "TestPropertyType",
         "kind": 6,
-        "importPath": "estate.models.test_property_type",
-        "description": "estate.models.test_property_type",
-        "peekOfCode": "class TestPropertyType(models.Model):\n    _name = \"test.property.type\"\n    _description = \"Test proerty Type\"\n    _order = \"name\"\n    name = fields.Char('name')\n    propertys_id = fields.One2many(\"test.property\", \"property_types_id\")\n    sequence = fields.Integer('Sequence', default=1, help=\"Used to order type\")\n    offer_ids = fields.One2many('test.property.offer', 'property_type_id', string='offers')\n    offer_count = fields.Integer(readonly=True,compute=\"_compute_count_offer\")\n    @api.depends('offer_ids')",
-        "detail": "estate.models.test_property_type",
+        "importPath": "estate.models.estate_property_type",
+        "description": "estate.models.estate_property_type",
+        "peekOfCode": "class TestPropertyType(models.Model):\n    _name = \"estate.property.type\"\n    _description = \"Test proerty Type\"\n    _order = \"name\"\n    name = fields.Char(\"name\")\n    propertys_id = fields.One2many(\"estate.property\", \"property_types_id\")\n    sequence = fields.Integer(\"Sequence\", default=1, help=\"Used to order type\")\n    offer_ids = fields.One2many(\n        \"estate.property.offer\", \"property_type_id\", string=\"offers\"\n    )",
+        "detail": "estate.models.estate_property_type",
+        "documentation": {}
+    },
+    {
+        "label": "Inherited_User",
+        "kind": 6,
+        "importPath": "estate.models.inherited_user",
+        "description": "estate.models.inherited_user",
+        "peekOfCode": "class Inherited_User(models.Model):\n    _inherit = \"res.users\"\n    property_ids = fields.One2many(\n        \"estate.property\", \"sales_person_id\", string=\"property\"\n    )",
+        "detail": "estate.models.inherited_user",
         "documentation": {}
     },
     {
@@ -424,7 +449,7 @@
         "kind": 6,
         "importPath": "estate.wizard.property_offers",
         "description": "estate.wizard.property_offers",
-        "peekOfCode": "class ProperyOffers(models.TransientModel):\n    _name = \"propery.offers\"\n    _description = \"TransientModelmodel for offers\"\n    price = fields.Float(\"price\", required=True)\n    property_ids = fields.Many2many(\"test.property\", string=\"property_id\")\n    buyer_id = fields.Many2one(\"res.partner\", required=True)\n    validity = fields.Integer(default=7)\n    def make_offer(self):\n        failed_properties = []\n        for property in self.property_ids:",
+        "peekOfCode": "class ProperyOffers(models.TransientModel):\n    _name = \"propery.offers\"\n    _description = \"TransientModelmodel for offers\"\n    price = fields.Float(\"price\", required=True)\n    property_ids = fields.Many2many(\"estate.property\", string=\"property_id\")\n    buyer_id = fields.Many2one(\"res.partner\", required=True)\n    validity = fields.Integer(default=7)\n    def make_offer(self):\n        failed_properties = []\n        for property in self.property_ids:",
         "detail": "estate.wizard.property_offers",
         "documentation": {}
     },
@@ -433,7 +458,7 @@
         "kind": 6,
         "importPath": "estate_account.models.estate_property",
         "description": "estate_account.models.estate_property",
-        "peekOfCode": "class Property_Invoice(models.Model):\n    _inherit = \"test.property\"\n    def action_sold(self):\n        print(\" reached \".center(100, \"=\"))\n        self.check_access(\"write\")\n        self.env[\"account.move\"].sudo().create(\n            {\n                \"partner_id\": self.buyer_id.id,\n                \"move_type\": \"out_invoice\",\n                \"invoice_line_ids\": [",
+        "peekOfCode": "class Property_Invoice(models.Model):\n    _inherit = \"estate.property\"\n    def action_sold(self):\n        print(\" reached \".center(100, \"=\"))\n        self.check_access(\"write\")\n        self.env[\"account.move\"].sudo().create(\n            {\n                \"partner_id\": self.buyer_id.id,\n                \"move_type\": \"out_invoice\",\n                \"invoice_line_ids\": [",
         "detail": "estate_account.models.estate_property",
         "documentation": {}
     }

@@ -3,17 +3,17 @@
 
     <record id="report_property_offers" model="ir.actions.report">
         <field name="name">Property Offers</field>
-        <field name="model">test.property</field>
+        <field name="model">estate.property</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">estate.test_property_offer_template</field>
-        <field name="report_file">estate.test_property_offer_template</field>
+        <field name="report_name">estate.estate_property_offer_template</field>
+        <field name="report_file">estate.estate_property_offer_template</field>
         <field name="print_report_name">' %s property offers' % (object.name)</field>
-        <field name="binding_model_id" ref="model_test_property"/>
+        <field name="binding_model_id" ref="model_estate_property"/>
         <field name="binding_type">report</field>
     </record>
 
 
-        <record id="report_property_offers_resusers" model="ir.actions.report">
+    <record id="report_property_offers_resusers" model="ir.actions.report">
         <field name="name">users Offers</field>
         <field name="model">res.users</field>
         <field name="report_type">qweb-pdf</field>

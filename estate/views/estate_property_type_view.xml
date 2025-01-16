@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <record id="test_property_type_action" model="ir.actions.act_window">
+    <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">property types</field>
-        <field name="res_model">test.property.type</field>
+        <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
 
 
 
-    <record id="test_property_type_list_view" model="ir.ui.view">
-        <field name="model">test.property.type</field>
-        <field name="name">test.property.type</field>
+    <record id="estate_property_type_list_view" model="ir.ui.view">
+        <field name="model">estate.property.type</field>
+        <field name="name">estate.property.type</field>
 
         <field name="arch" type="xml">
             <list string="list of property types" sample='1'>
@@ -25,15 +25,15 @@
     </record>
 
 
-    <record id="test_property_type_form_view" model="ir.ui.view">
-        <field name="name">test.property.type</field>
-        <field name="model">test.property.type</field>
+    <record id="estate_property_type_form_view" model="ir.ui.view">
+        <field name="name">estate.property.type</field>
+        <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Test">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
 
-                        <button name="estate.test_property_offer_action" type="action" class="oe_stat_button" icon="fa-money">
+                        <button name="estate.estate_property_offer_action" type="action" class="oe_stat_button" icon="fa-money">
                             <field name="offer_count" string=" Offers" widget="statinfo"/>
                         </button>
 

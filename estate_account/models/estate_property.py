@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class Property_Invoice(models.Model):
-    _inherit = "test.property"
+    _inherit = "estate.property"
 
     def action_sold(self):
         print(" reached ".center(100, "="))

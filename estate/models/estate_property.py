@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 
 
 class TestProperty(models.Model):
-    _name = "test.property"
+    _name = "estate.property"
     _description = "Test proerty"
     _order = "id desc"
 
@@ -51,8 +51,8 @@ class TestProperty(models.Model):
         string="state",
         required=True,
     )
-    property_types_id = fields.Many2one("test.property.type", ondelete="restrict")
-    property_tags_id = fields.Many2many("test.property.tags")
+    property_types_id = fields.Many2one("estate.property.type", ondelete="restrict")
+    property_tags_id = fields.Many2many("estate.property.tags")
 
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     sales_person_id = fields.Many2one(
@@ -60,13 +60,14 @@ class TestProperty(models.Model):
     )
 
     property_offers_id = fields.One2many(
-        "test.property.offer",
+        "estate.property.offer",
         "property_id",
         string="offer",
     )
     company_id = fields.Many2one(
         "res.company", required=True, default=lambda self: self.env.company
     )
+    image = fields.Image()
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -99,7 +100,6 @@ class TestProperty(models.Model):
             }
         else:
             self.garden_area = 0
-            self.garden_orientation = ""
 
     def action_sold(self):
         for record in self:

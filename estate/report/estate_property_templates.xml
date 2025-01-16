@@ -36,7 +36,7 @@
         </t>
     </template>
 
-    <template id="test_property_offer_template">
+    <template id="estate_property_offer_template">
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
@@ -115,7 +115,7 @@
         </t>
     </template>
 
-    <template id="inherit_template1" inherit_id="estate.test_property_offer_template">
+    <template id="inherit_template1" inherit_id="estate.estate_property_offer_template">
         <xpath expr="//div[3]" position="after">
             <t t-if="property.status == 'sold'">
                 <strong>!!!Invoice has already been created !!!</strong>

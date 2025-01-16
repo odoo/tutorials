@@ -5,8 +5,8 @@ from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 
 
-class test_property_offer(models.Model):
-    _name = "test.property.offer"
+class estate_property_offer(models.Model):
+    _name = "estate.property.offer"
     _description = "Test proerty Offer"
 
     _order = "price desc"
@@ -18,7 +18,7 @@ class test_property_offer(models.Model):
         copy=False,
     )
     buyer_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("test.property", required=True, ondelete="cascade")
+    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
     #! if there is compute and inverse in model then both fields data have to give in demo data
     # ! can't call compute or inverse if there is any default given in any feld
     validity = fields.Integer(default=7)
@@ -47,7 +47,7 @@ class test_property_offer(models.Model):
 
     def property_accepted(self):
         for record in self:
-            if record.property_id.status != "offer_accepted"    :
+            if record.property_id.status != "offer_accepted":
                 if record.status == "Pending":
                     record.status = "Accepted"
                     record.property_id.selling_price = record.price
@@ -85,7 +85,7 @@ class test_property_offer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals["property_id"]:
-                prop = self.env["test.property"].browse(vals["property_id"])
+                prop = self.env["estate.property"].browse(vals["property_id"])
             if vals["price"] < prop.best_price:
                 raise UserError("price must be greater than best price")
             if prop.status == "new":
@@ -94,7 +94,7 @@ class test_property_offer(models.Model):
 
     # @api.model
     # def create(self , vals_list):
-    #     prop = self.env["test.property"].browse(vals_list["property_id"])
+    #     prop = self.env["estate.property"].browse(vals_list["property_id"])
     #     if vals_list["price"] < prop.best_price:
     #         raise UserError('price must be greater than best price')
     #     if prop.status == "new":
