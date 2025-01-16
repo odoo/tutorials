@@ -13,6 +13,7 @@
                         (<span  t-field="property_details.property_type_id.name"></span>)
                     </span>
                 </t>
+                
                 <br />
                 <div class="row gap-3 gap-md-0">
                     <t t-if="property_details.image">
