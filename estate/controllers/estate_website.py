@@ -28,8 +28,16 @@ class EstateWebsite(http.Controller):
             )
         )
 
+        total_properties = request.env["estate.property"].sudo().search_count(
+            [
+                "&",
+                ("status", "in", ["new", "offer_received", "offer_accepted"]),
+                ("active", "=", True),
+            ]
+        )
+
         pager = request.website.pager(
-            url="/properties", total=len(properties), step=step, page=page
+            url="/properties", total=total_properties, step=step, page=page
         )
 
         # Render the template with paginated properties and the pager

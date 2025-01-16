@@ -53,7 +53,7 @@
                         <h1>
                             <field name="name" label="Property Name" placeholder="Property Name" />
                         </h1>
-                        <field name="image" widget="image" options="{'size': [70, 70]}"/>
+                        <field name="image" widget="image" options="{'size': [150, 150]}"/>
 
                         <field name="tag_ids" widget="many2many_tags" placeholder="eg. Cozy, Quiet, Furnished, ..." options="{'color_field': 'color'}"/>
 
