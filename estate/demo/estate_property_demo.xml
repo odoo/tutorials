@@ -16,6 +16,7 @@
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
         <field name="property_type_id" ref="estate.property_1"/>
+        <field name="image" type="base64" file="estate/static/demo_images/1.jpg"></field>
     </record>
 
     <!-- Record 2: Trailer Home -->
@@ -32,6 +33,7 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
         <field name="property_type_id" ref="estate.property_1"/>
+        <field name="image" type="base64" file="estate/static/demo_images/2.jpg"></field>
     </record>
 
     <!-- record 3: Duplex with offers made directly here -->
@@ -48,11 +50,10 @@
         <field name="facades">4</field>
         <field name="garage">True</field>
         <field name="property_type_id" ref="estate.property_1"/>
+        <field name="image" type="base64" file="estate/static/demo_images/3.jpg"></field>
         <field name="offer_ids" eval="[
         Command.create({'partner_id':ref('base.res_partner_12'),'price': 150000.00}),
         Command.create({'partner_id':ref('base.res_partner_18'),'price':155000.00}),
         Command.create({'partner_id':ref('base.res_partner_10'),'price':160000.00})]"/>
     </record>
 </odoo>
-
-
