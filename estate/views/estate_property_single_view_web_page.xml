@@ -19,7 +19,14 @@
                     <t t-if="property_details.image">
                         <div class="col-12 col-md-6">
                             <img t-att-src="image_data_uri(property_details.image)"
-                                class="card-img-top w-full h-full border border-primary rounded shadow-lg" />
+                                class="card-img-top w-full h-full rounded shadow-lg" />
+                        </div>
+                    </t>
+                    
+                    <t t-else="">
+                        <div class="col-12 col-md-6">
+                            <img src="/web/static/img/placeholder.png"
+                                class="card-img-top w-full h-full rounded shadow-lg" style="height:500px"/>
                         </div>
                     </t>
                     <div class="col-12 col-md-6 d-flex flex-column justify-content-center">

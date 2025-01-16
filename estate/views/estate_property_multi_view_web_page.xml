@@ -5,12 +5,15 @@
     <template id="estate_property_website_grid_view">
         <t t-call="website.layout">
             <div class="container">
-                <div class="row">
+                <div class="row gy-3">
                     <t t-foreach="all_properties" t-as="property">
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-3">
                             <div class="card">
                                 <t t-if="property.image">
-                                    <img t-att-src="image_data_uri(property.image)" class="card-img-top"/>
+                                    <img t-att-src="image_data_uri(property.image)" class="card-img-top" style="height:200px"/>
+                                </t>
+                                <t t-else="">
+                                    <img src="/web/static/img/placeholder.png" class="class-img-top" style="height:200px"/>
                                 </t>
                                 <div class="card-body">
                                     <h5 class="card-title text-primary">

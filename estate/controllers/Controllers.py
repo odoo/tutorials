@@ -15,7 +15,7 @@ class MyController(http.Controller):
         params= http.request.get_http_params()
         print(params)
         page= int(params.get('page', 1))
-        limit= int(params.get('limit',6))
+        limit= int(params.get('limit',8))
         
         offset= (page-1)*limit
         
