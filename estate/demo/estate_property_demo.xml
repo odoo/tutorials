@@ -56,4 +56,11 @@
         Command.create({'partner_id':ref('base.res_partner_18'),'price':155000.00}),
         Command.create({'partner_id':ref('base.res_partner_10'),'price':160000.00})]"/>
     </record>
+
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">60</field>
+    </record>
 </odoo>
