@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--template to show a single
+    propertiees in the website in /properties/<property_id> route-->
+    <template id="estate_property_website_single_view">
+        <t t-call="website.layout">
+            <div class="container">
+                <br/>
+                <span class="text-primary h3" t-field="property_details.name" />
+                <t t-if="property_details.property_type_id">
+                    <span class="h3 text-primary">
+                        (<span  t-field="property_details.property_type_id.name"></span>)
+                    </span>
+                </t>
+                <br />
+                <div class="row gap-3 gap-md-0">
+                    <t t-if="property_details.image">
+                        <div class="col-12 col-md-6">
+                            <img t-att-src="image_data_uri(property_details.image)"
+                                class="card-img-top w-full h-full border border-primary rounded shadow-lg" />
+                        </div>
+                    </t>
+                    <div class="col-12 col-md-6 d-flex flex-column justify-content-center">
+                        <t t-if="property_details.description">
+                            <span t-field="property_details.description" />
+                        </t>
+                        <t t-else="">
+                            <p>No description given by the seller</p>
+                        </t>
+                        <hr />
+                        <h5>What this place Offers:</h5>
+                        <div class="row gap-3 gap-md-0">
+                            <div class="col">
+                                <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <strong>
+                                                Postcode:</strong>
+                                            <span>
+                                                <span t-field="property_details.postcode" />
+                                            </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <strong>
+                                                Date Availabilty:</strong>
+                                            <span>
+                                                <span t-field="property_details.date_availability" />
+                                            </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <strong>
+                                                Expected Price:</strong>
+                                            <span>
+                                                <span t-field="property_details.expected_price" />
+                                            </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <strong>
+                                                Best Price:</strong>
+                                            <span>
+                                                <span t-field="property_details.best_price" />
+                                            </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <strong>
+                                                Sales Person:</strong>
+                                            <span>
+                                                <span t-field="property_details.salesperson" />
+                                            </span>
+                                        </li>
+                                </ul>
+
+                            </div>
+                            <div class="col">
+                                <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <strong>
+                                                Garden Area:</strong>
+                                            <span>
+                                                <span t-field="property_details.garden_area" />
+                                            </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <strong>
+                                                Garden Orientation:</strong>
+                                            <span>
+                                                <span t-field="property_details.garden_orientation" />
+                                            </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <strong>
+                                                Total Area:</strong>
+                                            <span>
+                                                <span t-field="property_details.total_area" />
+                                            </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <strong>
+                                                bedrooms:</strong>
+                                            <span>
+                                                <span t-field="property_details.bedrooms" />
+                                            </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <strong>
+                                                Facades:</strong>
+                                            <span>
+                                                <span t-field="property_details.facades" />
+                                            </span>
+                                        </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+            </div>
+        </t>
+    </template>
+
+</odoo>

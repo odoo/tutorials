@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--template to show the available propertiees in the website in /properties route-->
+    <template id="estate_property_website_grid_view">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="row">
+                    <t t-foreach="all_properties" t-as="property">
+                        <div class="col-12 col-md-4">
+                            <div class="card">
+                                <t t-if="property.image">
+                                    <img t-att-src="image_data_uri(property.image)" class="card-img-top"/>
+                                </t>
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">
+                                        <span t-field="property.name"></span>
+                                        <t t-if="property.property_type_id">
+                                            <span class="h5 text-primary">
+                                                (<span  t-field="property.property_type_id.name"></span>)
+                                            </span>
+                                        </t>
+                                    </h5>
+                                    <p class="card-text">
+                                        Best price received: $<span t-field="property.best_price" /> <br/>
+                                        Expected Price: $<span t-field="property.expected_price" />
+                                    </p>
+                                    <a t-att-href="'/properties/%s' % property.id" class="btn btn-primary">See more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+
+                <!--pagination-->
+                <div class="d-flex justify-content-center mt-5">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <t t-if="current_page-1 == 0">
+                                    <a class="page-link disabled">
+                                        <i class="fa fa-angle-left" />
+                                    </a>
+                                </t>
+                                <t t-else="">
+                                    <a class="page-link" t-att-href="'?page=%s' % (current_page-1)">
+                                        <i class="fa fa-angle-left" />
+                                    </a>
+                                </t>
+                            </li>
+                            <t t-foreach="total_arr" t-as="index">
+                                <li class="page-item px-1">
+                                    <t t-if="index==current_page-1">
+                                        <a class="page-link active" t-att-href="'?page=%s' % (index+1)">
+                                            <t t-out="index+1" />
+                                        </a>
+                                    </t>
+                                    <t t-else="">
+                                        <a class="page-link" t-att-href="'?page=%s' % (index+1)">
+                                            <t t-out="index+1" />
+                                        </a>
+                                    </t>
+                                </li>
+                            </t>
+                            <li class="page-item">
+                                <t t-if="current_page == len(total_arr)">
+                                    <a class="page-link disabled" t-att-href="'?page=%s' % (current_page+1)">
+                                        <i class="fa fa-angle-right" />
+                                    </a>
+                                </t>
+                                <t t-else="">
+                                    <a class="page-link" t-att-href="'?page=%s' % (current_page+1)" t-att-disabled="">
+                                        <i class="fa fa-angle-right" />
+                                    </a>
+                                </t>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
