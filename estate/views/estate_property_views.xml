@@ -19,7 +19,7 @@
         {'search_default_available': True }
         </field>
     </record>
-    
+
 
 
     <!-- ESTATE PROPERTY KANBAN VIEW  -->
@@ -89,14 +89,14 @@
                 <sheet>
                     <group>
                         <group>
-                         <h1>
-                        <field name="name" placeholder="Property Name"></field>
-                        </h1>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <h1>
+                                <field name="name" placeholder="Property Name"></field>
+                            </h1>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
 
                         </group>
                         <group>
-                        <field name="property_image" widget='image' options="{ 'size' :[100,100]}" />
+                            <field name="property_image" widget='image' options="{ 'size' :[100,100]}" />
                         </group>
                     </group>
                     <group>
@@ -174,9 +174,9 @@
             </search>
         </field>
     </record>
-    
 
-     <record id="action_make_bulk_offer" model="ir.actions.server">
+
+    <record id="action_make_bulk_offer" model="ir.actions.server">
         <field name="name">Add Offer</field>
         <field name="model_id" ref="estate.model_estate_property"/>
         <field name="binding_model_id" ref="estate.model_estate_property"/>

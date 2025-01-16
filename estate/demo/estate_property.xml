@@ -1,74 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<record id="big_villa" model="estate.property">
-    <field name="name">Big Villa</field>
-    <field name="state">new</field>
-    <field name="description">A nice and big villa</field>
-    <field name="postcode">12345</field>
-    <field name="date_availability">2020-02-02</field>
-    <field name="expected_price">1600000</field>
-    <field name="selling_price">0</field>
-    <field name="bedrooms">6</field>
-    <field name="living_area">100</field>
-    <field name="facades">4</field>
-    <field name="garage">True</field>
-    <field name="garden">True</field>
-    <field name="garden_area">100000</field>
-    <field name="garden_orientation">south</field>
-    <field name="property_type_id" ref="1" />
-</record>
+    <record id="big_villa" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">1600000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="1" />
+        <field name="property_image" type="base64" file="estate/static/images/oneimage.jpg"/>
+    </record>
 
-<record id="trailer_home" model="estate.property">
-    <field name="name">Trailer home</field>
-    <field name="state">cancelled</field>
-    <field name="description">Home in a trailer park</field>
-    <field name="postcode">54321</field>
-    <field name="date_availability">1970-01-01</field>
-    <field name="expected_price">100000</field>
-    <field name="selling_price">120000</field>
-    <field name="bedrooms">1</field>
-    <field name="living_area">10</field>
-    <field name="facades">4</field>
-    <field name="garage">False</field>
-    <field name="property_type_id" ref="1" />
-</record>
+    <record id="trailer_home" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="selling_price">120000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="1" />
+        <field name="property_image" type="base64" file="estate/static/images/twoimage.jpg"/>
 
-<record id="penthouse_airy" model="estate.property">
-    <field name="name">Super Ventilated Pent house</field>
-    <field name="state">new</field>
-    <field name="description">airy and ventilated penthouse</field>
-    <field name="postcode">54321</field>
-    <field name="date_availability">1970-01-01</field>
-    <field name="expected_price">12000</field>
-    <field name="selling_price">1400000</field>
-    <field name="bedrooms">6</field>
-    <field name="living_area">120</field>
-    <field name="facades">4</field>
-    <field name="garage">False</field>
-    <field name="property_type_id" ref="1" />
-    <!-- <field name="offer_ids" eval="[
-        Command.create({'partner_id': ref('base.res_partner_1'), 'price': 100000}),
-        Command.create({'partner_id': ref('base.res_partner_3'), 'price': 9877655})
-    ]" /> -->
-</record>
+    </record>
+
+    <record id="penthouse_airy" model="estate.property">
+        <field name="name">Super Ventilated Pent house</field>
+        <field name="state">new</field>
+        <field name="description">airy and ventilated penthouse</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">12000</field>
+        <field name="selling_price">1400000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">120</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="1" />
+        <field name="property_image" type="base64" file="estate/static/images/threeimage.jpg"/>
+        <field name="offer_ids" eval="[
+            Command.create({'partner_id': ref('base.res_partner_1'), 'price': 100000}),
+            Command.create({'partner_id': ref('base.res_partner_3'), 'price': 9877655})]" />
+    </record>
 
 
-<record id="forty_acre_land" model="estate.property">
-    <field name="name">Forty Acre Land</field>
-    <field name="state">new</field>
-    <field name="description">Widespread and lush green land area</field>
-    <field name="postcode">12254</field>
-    <field name="date_availability">2024-01-15</field>
-    <field name="expected_price">1500</field>
-    <field name="selling_price">1600</field>
-    <field name="bedrooms">0</field>
-    <field name="living_area">0</field>
-    <field name="facades">4</field>
-    <field name="garage">False</field>
-    <field name="property_type_id" ref="4" />
-    
-</record>
+    <record id="forty_acre_land" model="estate.property">
+        <field name="name">Forty Acre Land</field>
+        <field name="state">new</field>
+        <field name="description">Widespread and lush green land area</field>
+        <field name="postcode">12254</field>
+        <field name="date_availability">2024-01-15</field>
+        <field name="expected_price">1500</field>
+        <field name="selling_price">1600</field>
+        <field name="bedrooms">0</field>
+        <field name="living_area">0</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="4" />
+        <field name="property_image" type="base64" file="estate/static/images/fourimage.jpg"/>
+    </record>
+
+    <record id="dragon_isle" model="estate.property">
+        <field name="name">Dragon Isle Villa</field>
+        <field name="state">new</field>
+        <field name="description">Super Luxurious white marble villas</field>
+        <field name="postcode">12641</field>
+        <field name="date_availability">2024-01-15</field>
+        <field name="expected_price">250000</field>
+        <field name="selling_price">26000</field>
+        <field name="bedrooms">10</field>
+        <field name="living_area">2500</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="1" />
+        <field name="property_image" type="base64" file="estate/static/images/fiveimage.jpg"/>
+    </record>
+
+    <record id="Whole_wood_Castle" model="estate.property">
+        <field name="name">Premium Wood Castle</field>
+        <field name="state">new</field>
+        <field name="description">Giant Pure sag wood Castle</field>
+        <field name="postcode">52110</field>
+        <field name="date_availability">2024-01-15</field>
+        <field name="expected_price">35000</field>
+        <field name="selling_price">36200</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">5000</field>
+        <field name="facades">6</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="1" />
+        <field name="property_image" type="base64" file="estate/static/images/siximage.jpg"/>
+    </record>
+
+    <record id="row_house_cozy" model="estate.property">
+        <field name="name">Row House</field>
+        <field name="state">new</field>
+        <field name="description">Compact Row houses</field>
+        <field name="postcode">350012</field>
+        <field name="date_availability">2024-01-15</field>
+        <field name="expected_price">12500</field>
+        <field name="selling_price">35000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">2500</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="1" />
+        <field name="property_image" type="base64" file="estate/static/images/rowhouse.jpg"/>
+    </record>
+
+    <record id="factory_greenwood" model="estate.property">
+        <field name="name">Giant MP Factory</field>
+        <field name="state">new</field>
+        <field name="description">Processing factory for sale</field>
+        <field name="postcode">52110</field>
+        <field name="date_availability">2024-01-15</field>
+        <field name="expected_price">1200</field>
+        <field name="selling_price">1300</field>
+        <field name="bedrooms">0</field>
+        <field name="living_area">0</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="1" />
+        <field name="property_image" type="base64" file="estate/static/images/factoryimage.jpg"/>
+    </record>
+
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">60</field>
+    </record>
 
 
 </odoo>

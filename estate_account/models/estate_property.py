@@ -23,12 +23,9 @@ class EstateInvoice(models.Model):
                         'name': self.name,
                         'quantity': 1,
                         'price_unit': self.selling_price+100.00
-                    })
-                ]
-
-
+                    })]
             }
-
         ).action_post()
 
         return super().sell_action()
+        

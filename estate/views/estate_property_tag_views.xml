@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-
     <!-- ESTATE PROPERTY TAG MAIN ACTION RECORD-->
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name">Estate Property Tags</field>

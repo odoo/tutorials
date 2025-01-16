@@ -5,11 +5,9 @@ class MakeBulkOffer(models.TransientModel):
     _name = 'estate.property.make.bulk.offer'
     _description = 'Make Bulf Offer for Properties at once'
 
-    property_id = fields.Many2many(
-        'estate.property', string='Property', required=True, ondelete="cascade")
+    property_id = fields.Many2many('estate.property', string='Property', required=True, ondelete="cascade")
     price = fields.Float('Property Price')
-    partner_id = fields.Many2one(
-        'res.partner', string='Partner', required=True)
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     validity = fields.Integer('Validity (days)', default=7)
 
     def make_offers(self):
@@ -37,5 +35,4 @@ class MakeBulkOffer(models.TransientModel):
                         "type": "ir.actions.act_window_close"
                     }
                 }
-
             }

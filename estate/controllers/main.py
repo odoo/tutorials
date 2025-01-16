@@ -1,4 +1,4 @@
-from odoo import http, fields, tools, models
+from odoo import http
 from odoo.http import request
 
 class list_properties_website(http.Controller):
@@ -10,15 +10,17 @@ class list_properties_website(http.Controller):
     def properties(self, page=1):
         items_per_page = 6
         Property = request.env['estate.property']
-        total_properties = Property.search_count([])
+        total_properties = Property.search_count([  
+            '&',('state','in',['new','offer_received','offer_accepted']),
+            ('active','=',True)])
         
         properties = Property.search([
             '&',('state','in',['new','offer_received','offer_accepted']),
             ('active','=',True)
         ], limit=items_per_page, offset=(page - 1) * items_per_page)
+        
         pager = request.website.pager(
             url="/properties",
-           
             total=total_properties,
             page=page,
             step=items_per_page,

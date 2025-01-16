@@ -11,7 +11,6 @@
     'depends': [
         'base', 'website'
     ],
-
     'data':[
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -21,23 +20,18 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
-        'views/estate_property_templates.xml',
+        'views/estate_property_website_templates.xml',
         'data/estate.property.type.csv',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
         'wizard/estate_property_make_bulk_offer.xml',
-       
     ],
-
     'demo':[
         'demo/estate_property.xml',
         'demo/estate_property_offer.xml'
-
     ],
-    
     'application': True,
     'installable':True,
     'auto_install':True,
     'license': 'LGPL-3',
-
 }

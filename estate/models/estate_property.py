@@ -36,8 +36,7 @@ class EstateProperty(models.Model):
         string='State',
         required=True,
         default='new',  
-        copy=False,  
-    )
+        copy=False)
     property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type", auto_join=True, ondelete="cascade")
     user_id = fields.Many2one('res.users', string='Salesman', index=True, ondelete="cascade")
     partner_id = fields.Many2one('res.partner', string='Buyer', index=True, ondelete="cascade")
@@ -45,17 +44,37 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many(
         comodel_name='estate.property.offer',  
         inverse_name='property_id',  
-        string='Offers' , 
-      )
-
-    total_area = fields.Float(compute="_compute_total_area")
-    best_price = fields.Float(compute="_compute_best_price")
+        string='Offers')
     status_button=fields.Char()
     estate_id = fields.Many2one("estate.property.type")
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     property_image=fields.Image()
+    total_area = fields.Float(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
 
 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if not self.garden:
+            self.garden_area = 0
+            self.garden_orientation=None
+        else:
+            self.garden_area=10
+            self.garden_orientation='north'
+    
+
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price must be strictly positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "Selling price must be non-negative",
+        ),
+    ]
 
 
     @api.depends("garden_area","living_area")
@@ -71,19 +90,14 @@ class EstateProperty(models.Model):
                 record.best_price=0
                 continue
             record.best_price = max(record.offer_ids.mapped('price'))
-
-
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if not self.garden:
-            self.garden_area = 0
-            self.garden_orientation=None
-        else:
-            self.garden_area=10
-            self.garden_orientation='north'
-
-
     
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_new_cancelled(self):
+        for record in self:
+            if record.state in ['offer_accepted', 'sold', 'offer_received']:
+                raise UserError("Can't delete this Record either property is sold or Offer is received or accepted")
+
 
     def sell_action(self):
         for record in self:
@@ -95,7 +109,6 @@ class EstateProperty(models.Model):
         return True
 
 
-
     def cancel_action(self):
         for record in self:
             if record.status_button != 'sold':
@@ -104,30 +117,8 @@ class EstateProperty(models.Model):
             else:
                 raise UserError("SOLD properties can not be CANCELLED")    
         return True
-    
 
 
-    _sql_constraints = [
-        (
-            "check_expected_price",
-            "CHECK(expected_price > 0)",
-            "Expected price must be strictly positive",
-        ),
-        (
-            "check_selling_price",
-            "CHECK(selling_price >= 0)",
-            "Selling price must be non-negative",
-        ),
-    ]
-     
-     
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_state_new_cancelled(self):
-        for record in self:
-            if record.state in ['offer_accepted', 'sold', 'offer_received']:
-                raise UserError("Can't delete this Record either property is sold or Offer is received or accepted")
-
-      
     def print_quotation(self):
         return self.env.ref('estate.action_report_estate_property_sold').report_action(self)
 
@@ -144,7 +135,3 @@ class EstateProperty(models.Model):
                 'default_property_id': self.ids,
             }
         }
-
-
-    
-

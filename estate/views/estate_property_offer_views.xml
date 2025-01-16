@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-
         <!-- ESTATE PROPERTY OFFERS MAIN ACTION RECORD-->
         <record id="estate_property_offer_action" model="ir.actions.act_window">
                 <field name="name">Offers</field>
@@ -13,19 +12,18 @@
 
         <!-- ESTATE PROPERTY OFFERS LIST VIEW-->
         <!-- <record id="estate_property_offer_view_list" model="ir.ui.view">
-        <field name="name">estate.property.offer.view.list</field>
-        <field name="model">estate.property.offer</field>
-        <field name="arch" type="xml">
-        <list sample="1" editable="bottom" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
-                <field name="price" string="Price"/> 
-                <field name="partner_id" /> 
-                <field name="validity"></field>
-                <field name="date_deadline"></field>
-                <button name="tick_accept" string="Accept" type="object" icon="fa-check" invisible="property_state=='offer_accepted'"/>                    
-                <button name="cross_refuse" string="Refuse" type="object" icon="oi-close" invisible="property_state=='offer_accepted'"/> 
-        </list>
-        </field>
-</record> -->
-
+                <field name="name">estate.property.offer.view.list</field>
+                <field name="model">estate.property.offer</field>
+                <field name="arch" type="xml">
+                        <list sample="1" editable="bottom" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
+                                <field name="price" string="Price"/>
+                                <field name="partner_id" />
+                                <field name="validity"></field>
+                                <field name="date_deadline"></field>
+                                <button name="tick_accept" string="Accept" type="object" icon="fa-check" invisible="property_state=='offer_accepted'"/>
+                                <button name="cross_refuse" string="Refuse" type="object" icon="oi-close" invisible="property_state=='offer_accepted'"/>
+                        </list>
+                </field>
+        </record> -->
 
 </odoo>

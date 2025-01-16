@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+<!-- Offers are applied to big villa property  -->
 <record id="offer_1" model="estate.property.offer">
     <field name="partner_id" ref="base.res_partner_12"/>
     <field name="property_id" ref="big_villa"/>
