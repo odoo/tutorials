@@ -14,7 +14,9 @@
         'views/estate_property_views.xml',#actions defs & views to be shown
         'views/estate_menus.xml', #estate root-menu, first level menu, action menu to be shown/ above because id refers to estate_property_views' id
         'views/estate_property_res_user_view_form.xml',
-        'wizard/estate_property_make_offer_wizard_view.xml'
+        'wizard/estate_property_make_offer_wizard_view.xml',
+        'views/estate_property_multi_view_web_page.xml',
+        'views/estate_property_single_view_web_page.xml'
     ],
     'demo': [
         'demo/estate.property.type.csv',
