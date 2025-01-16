@@ -1,28 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="estate_property_web_view" name="estate_property_web">
-        <html>
-            <head>
-                <title>Properties</title>
-            </head>
-            <body>
-                <h1>Available Properties</h1>
-                <t t-foreach="properties" t-as="property">
-                    <div>
-                        <h2>
-                            <t t-esc="property.name"/>
-                        </h2>
-                        <p>Price: <t t-esc="property.expected_price"/>
-                        </p>
-                        <p>Description: <t t-esc="property.description"/>
-                        </p>
-                        <p>State: <t t-esc="property.state"/>
-                        </p>
+    <template id="estate_property_web_view" name="Properties">
+        <t t-call="website.layout">
+            <html>
+                <head>
+                    <title>Properties</title>
+                    <style>
+                        .card-img-top {
+                            height: 200px;
+                            object-fit: cover;
+                            overflow: hidden;
+                        }
+                        .card-text-description {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container my-5">
+                        <h2 class="text-center mb-4">Available Properties</h2>
+                        <div class="row">
+                            <t t-foreach="properties" t-as="property">
+                                <div class="col-md-4 mb-4">
+                                    <div class="card">
+                                        <img t-att-src="'/web/image/estate.property/%d/image' % property.id" class="card-img-top" alt="property image" />
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <t t-esc="property.name"/>
+                                            </h5>
+                                            <p class="card-text">Price: <t t-esc="property.expected_price"/>
+                                            </p>
+                                            <p class="card-text card-text-description">Description: <t t-esc="property.description"/>
+                                            </p>
+                                            <a t-att-href="'/property/' + str(property.id)" class="btn btn-primary">View Property</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                        <div class="d-flex justify-content-center my-3">
+                            <t t-call="website.pager"/>
+                        </div>
                     </div>
-                </t>
-            </body>
-        </html>
+                </body>
+            </html>
+        </t>
+    </template>
+
+    <template id="estate_property_web_view_single" name="Properties">
+        <t t-call="website.layout">
+            <html lang="en">
+                <head>
+                    <title>Property Details</title>
+                    <style>
+                        .section-spacing {
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                        }
+
+                        .property-header {
+                            font-size: 2rem;
+                            font-weight: 700;
+                            color: #333;
+                        }
+
+                        .property-description {
+                            font-size: 1.2rem;
+                            margin-top: 10px;
+                            color: #555;
+                        }
+
+                        .property-details {
+                            font-size: 1rem;
+                            margin-top: 20px;
+                            color: #777;
+                        }
+
+                        .property-details p {
+                            line-height: 1.6;
+                        }
+
+                        .property-details strong {
+                            font-weight: 600;
+                            color: #333;
+                        }
+
+                        .property-image {
+                            overflow: hidden;
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .property-image img {
+                            width: 100%;
+                            height: auto;
+                        }
+
+                        .property-footer {
+                            font-size: 1rem;
+                            color: #333;
+                            padding-top: 15px;
+                            border-top: 1px solid #eaeaea;
+                            margin-top: 30px;
+                        }
+                        
+                        .property-info-col {
+                            display: flex;
+                            flex-direction: column;
+                        }
+
+                        @media (max-width: 767px) {
+                            .property-info-col {
+                                margin-bottom: 30px;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+
+                    <div class="container mt-5">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-8 col-sm-12">
+                                <div class="property-info-col">
+                                    <h1 class="property-header">
+                                        <t t-esc="property.name"/>
+                                    </h1>
+
+                                    <p class="property-description">
+                                        <t t-esc="property.description"/>
+                                    </p>
+
+                                    <div class="property-details">
+                                        <p>
+                                            <strong>Price:</strong> $<t t-esc="property.expected_price"/>
+                                        </p>
+                                        <p>
+                                            <strong>Status:</strong>
+                                            <t t-esc="property.state"/>
+                                        </p>
+                                        <p>
+                                            <strong>Bedrooms:</strong>
+                                            <t t-esc="property.bedrooms"/>
+                                        </p>
+                                        <p>
+                                            <strong>Living Area:</strong>
+                                            <t t-esc="property.living_area"/> m²</p>
+                                        <p>
+                                            <strong>Total Area:</strong>
+                                            <t t-esc="property.total_area"/> m²</p>
+                                        <p>
+                                            <strong>Facades:</strong>
+                                            <t t-esc="property.facades"/>
+                                        </p>
+                                        <p>
+                                            <strong>Garage:</strong>
+                                            <t t-esc="property.garage and 'Yes' or 'No'"/>
+                                        </p>
+                                        <p>
+                                            <strong>Garden:</strong>
+                                            <t t-esc="property.garden and 'Yes' or 'No'"/>
+                                        </p>
+                                        <p>
+                                            <strong>Garden Area:</strong>
+                                            <t t-esc="property.garden_area"/> m²</p>
+                                        <p>
+                                            <strong>Garden Orientation:</strong>
+                                            <t t-esc="property.garden_orientation or 'N/A'"/>
+                                        </p>
+                                    </div>
+
+                                    <div class="property-footer">
+                                        <p>
+                                            <strong>Available From:</strong>
+                                            <t t-esc="property.date_availability"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-12 section-spacing d-flex align-items-center">
+                                <div class="property-image">
+                                    <img t-att-src="'/web/image/estate.property/%d/image' % property.id" alt="Property Image" class="img-fluid" style="max-width: 100%; height: auto;"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+            </html>
+        </t>
     </template>
 
 </odoo>

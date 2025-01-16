@@ -23,6 +23,8 @@ class EstateProperty(models.Model):
     garage = fields.Boolean("Garage", readonly=False)
     garden = fields.Boolean("Garden", readonly=False)
 
+    image = fields.Image("Image")
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
