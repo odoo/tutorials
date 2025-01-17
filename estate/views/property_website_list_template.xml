@@ -92,9 +92,9 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <strong>
                                     <i class="fa fa-dollar-sign text-warning"></i> Expected Price:</strong>
-                                <span class="text-success fw-bold">
-                                    <t t-esc="property.expected_price" />
- $</span>
+                                <t t-esc="property.expected_price">
+                                    <span class="text-success fw-bold"> $</span>
+                                </t>
                             </li>
                         </ul>
                     </div>
@@ -115,9 +115,9 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <strong>
                                     <i class="fa fa-couch"></i> Living Area:</strong>
-                                <span>
-                                    <t t-esc="property.living_area" />
- m²</span>
+                                <t t-esc="property.living_area">
+                                    <span> m²</span>
+                                </t>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <strong>
@@ -144,9 +144,9 @@
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <strong>
                                         <i class="fa fa-leaf"></i> Garden Area:</strong>
-                                    <span>
-                                        <t t-esc="property.garden_area" />
- m²</span>
+                                    <t t-esc="property.garden_area">
+                                        <span> m²</span>
+                                    </t>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <strong>
@@ -159,9 +159,10 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <strong>
                                     <i class="fa fa-ruler-combined"></i> Total Area:</strong>
-                                <span>
-                                    <t t-esc="property.total_area" />
- m²</span>
+
+                                <t t-esc="property.total_area">
+                                    <span> m²</span>
+                                </t>
                             </li>
                         </ul>
                     </div>
