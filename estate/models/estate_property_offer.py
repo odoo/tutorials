@@ -1,7 +1,7 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from odoo import models,fields,api
-from odoo.exceptions import ValidationError,UserError
+from odoo import api,fields,models
+from odoo.exceptions import UserError,ValidationError
 from odoo.tools import float_compare
    
 
@@ -41,20 +41,11 @@ class EstatePropertyOffer(models.Model):
         return True
     
 
-    # @api.constrains('price','status')
-    # def _check_offer_constraint(self):
-    #     for record in self:
-    #         if record.price < 0.90*record.property_id.expected_price and record.status=='accepted':
-    #              raise ValidationError("The selling price must be atleast 90 percentage of expected price")        
-    #     return True
-
-
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
             record.date_deadline = datetime.today() + relativedelta(days=record.validity)
-            # print(record.date_deadline , 'this is compute deadline')
-
+    
     
     @api.depends("date_deadline")
     def _inverse_deadline(self):
@@ -73,7 +64,7 @@ class EstatePropertyOffer(models.Model):
         return super().create(vals_list)
 
 
-    def tick_accept(self):
+    def action_accept_offer(self):
         for record in self:
             record.status='accepted'
             record.property_id.state='offer_accepted'
@@ -82,7 +73,7 @@ class EstatePropertyOffer(models.Model):
         return True
 
 
-    def cross_refuse(self):
+    def action_refuse_offer(self):
         for record in self:
             record.status='refused' 
         return True

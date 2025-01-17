@@ -13,7 +13,6 @@
             <field name="binding_type">report</field>
         </record>
 
-
         <record id="action_report_salesman_properties" model="ir.actions.report">
             <field name="name">Print Report</field>
             <field name="model">res.users</field>
@@ -25,6 +24,5 @@
             <field name="binding_model_id" ref="base.model_res_users"/>
             <field name="binding_type">report</field>
         </record>
-      
     </data>
 </odoo>

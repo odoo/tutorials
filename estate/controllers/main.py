@@ -1,20 +1,21 @@
 from odoo import http
 from odoo.http import request
 
+
 class list_properties_website(http.Controller):
     @http.route([
         '/properties',
         '/properties/page/<int:page>',
-    ], type='http', auth="public", website=True, sitemap=True)
+    ], type='http', auth="public", website=True)
     
     def properties(self, page=1):
         items_per_page = 6
         Property = request.env['estate.property']
-        total_properties = Property.search_count([  
+        total_properties = Property.sudo().search_count([  
             '&',('state','in',['new','offer_received','offer_accepted']),
             ('active','=',True)])
         
-        properties = Property.search([
+        properties = Property.sudo().search([
             '&',('state','in',['new','offer_received','offer_accepted']),
             ('active','=',True)
         ], limit=items_per_page, offset=(page - 1) * items_per_page)
@@ -34,7 +35,7 @@ class list_properties_website(http.Controller):
 
     @http.route([
         '/properties/<model("estate.property"):property>',
-    ], type='http', auth="public", website=True, sitemap=True)
+    ], type='http', auth="public", website=True)
     
     def property_details(self, property):
         

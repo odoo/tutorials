@@ -8,7 +8,6 @@
         <field name="view_mode">list,form</field>
     </record>
 
-
     <!-- ESTATE PROPERTY LIST VIEW  -->
     <record id="estate_property_tag_view_list" model="ir.ui.view">
         <field name="name">estate_property.tag.view.list</field>
@@ -19,6 +18,5 @@
             </list>
         </field>
     </record>
-
 
 </odoo>

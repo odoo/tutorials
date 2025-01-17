@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-
     <!-- ESTATE PROPERTY TYPE MAIN ACTION RECORD-->
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Esatte Property Type</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
-
 
     <!-- ESTATE PROPERTY TYPE LIST VIEW    -->
     <record id="estate_property_type_view_list" model="ir.ui.view">
@@ -21,7 +19,6 @@
             </list>
         </field>
     </record>
-
 
     <!-- ESTATE PROPERTY TYPE FORM VIEW -->
     <record id="estate_property_type_view_form" model="ir.ui.view">
@@ -39,7 +36,6 @@
                     <h1>
                         <field name="name" placeholder="Property Type"></field>
                     </h1>
-
                     <notebook>
                         <page name="Properties_types" string="Properties">
                             <group>
@@ -57,6 +53,5 @@
             </form>
         </field>
     </record>
-
 
 </odoo>

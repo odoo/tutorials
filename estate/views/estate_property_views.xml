@@ -80,9 +80,8 @@
         <field name="arch" type="xml">
             <form string="estate_property_form">
                 <header>
-                    <button name="print_quotation" string="Print" type="object" class="oe_highlight" groups="base.group_user" data-hotkey="k"/>
-                    <button class= "btn btn-primary" name="sell_action" type="object" string="SOLD" invisible=" state == 'sold' or state=='cancelled'"/>
-                    <button class= "btn btn-primary" name="cancel_action" type="object" string="CANCEL" invisible=" state == 'sold' or state=='cancelled'"/>
+                    <button class= "btn btn-primary" name="action_sell" type="object" string="SELL" invisible=" state == 'sold' or state=='cancelled'"/>
+                    <button class= "btn btn-primary" name="action_cancel" type="object" string="CANCEL" invisible=" state == 'sold' or state=='cancelled'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
 
@@ -101,7 +100,6 @@
                     </group>
                     <group>
                         <group>
-                            <field name="status_button"></field>
                             <field name="property_type_id" options="{'no_create':True}"></field>
                             <field name="postcode"></field>
                             <field name="date_availability"></field>
@@ -130,16 +128,7 @@
                         </page>
                         <page name="offers_page" string="Offers">
                             <group>
-                                <field name="offer_ids" nolabel="1" readonly ="state=='offer_accepted' or state=='cancelled' or state=='sold' ">
-                                    <list sample="1" editable="bottom" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
-                                        <field name="price" string="Price"/>
-                                        <field name="partner_id" />
-                                        <field name="validity"></field>
-                                        <field name="date_deadline"></field>
-                                        <button name="tick_accept" string="Accept" type="object" icon="fa-check" invisible="status=='accepted' or status=='refused' or property_state=='offer_accepted'"/>
-                                        <button name="cross_refuse" string="Refuse" type="object" icon="oi-close" invisible="status=='accepted' or status=='refused' or property_state=='offer_accepted'"/>
-                                    </list>
-                                </field>
+                                <field name="offer_ids" nolabel="1" readonly ="state=='offer_accepted' or state=='cancelled' or state=='sold' "></field>
                             </group>
                         </page>
                         <page name="other_info_page" string="Other Info">
@@ -153,7 +142,6 @@
             </form>
         </field>
     </record>
-
 
     <!-- ESTATE PROPERTY SEARCH VIEW -->
     <record id="estate_property_view_search" model="ir.ui.view">
@@ -174,7 +162,6 @@
             </search>
         </field>
     </record>
-
 
     <record id="action_make_bulk_offer" model="ir.actions.server">
         <field name="name">Add Offer</field>

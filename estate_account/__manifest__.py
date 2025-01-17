@@ -6,7 +6,7 @@
         This module is designed to generate invoices for users of properties that are sold.
     """,
     'depends': [
-        'base_setup',
+        'base',
         'estate',
         'account'
     ],

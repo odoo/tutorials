@@ -1,7 +1,8 @@
 from datetime import datetime
-from odoo import models,fields,api,_
 from dateutil.relativedelta import relativedelta
+from odoo import api,fields,models
 from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -24,7 +25,6 @@ class EstateProperty(models.Model):
                 selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
                 string='Garden Orientation') 
     active=fields.Boolean(default=True)
-    # last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
     state = fields.Selection(
         selection=[
             ('new', 'New'),
@@ -37,16 +37,11 @@ class EstateProperty(models.Model):
         required=True,
         default='new',  
         copy=False)
-    property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type", auto_join=True, ondelete="cascade")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type", auto_join=True, ondelete="cascade")
     user_id = fields.Many2one('res.users', string='Salesman', index=True, ondelete="cascade")
     partner_id = fields.Many2one('res.partner', string='Buyer', index=True, ondelete="cascade")
-    tag_ids=fields.Many2many(comodel_name="estate.property.tag", string="Property Tags", ondelete="cascade" )
-    offer_ids = fields.One2many(
-        comodel_name='estate.property.offer',  
-        inverse_name='property_id',  
-        string='Offers')
-    status_button=fields.Char()
-    estate_id = fields.Many2one("estate.property.type")
+    tag_ids=fields.Many2many("estate.property.tag", string="Property Tags", ondelete="cascade" )
+    offer_ids = fields.One2many('estate.property.offer','property_id',string='Offers')
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     property_image=fields.Image()
     total_area = fields.Float(compute="_compute_total_area")
@@ -99,28 +94,32 @@ class EstateProperty(models.Model):
                 raise UserError("Can't delete this Record either property is sold or Offer is received or accepted")
 
 
-    def sell_action(self):
-        for record in self:
-            if record.status_button != 'cancelled':
-                record.status_button= 'sold'
-                record.state='sold'
+    def action_sell(self):
+           for record in self:
+            if (
+                record.state == "new"
+                or record.state == "offer_accepted"
+                or record.state == "offer_received"
+            ):
+                record.state = "sold"
+            elif record.state == "cancelled":
+                raise UserError("Canceled property can't be sold")
             else:
-                raise UserError("CANCELLED properties can not be SOLD")      
-        return True
+                raise UserError("Property already sold")
 
 
-    def cancel_action(self):
-        for record in self:
-            if record.status_button != 'sold':
-                record.status_button='cancelled'
-                record.state='cancelled'
+    def action_cancel(self):
+          for record in self:
+            if (
+                record.state == "new"
+                or record.state == "offer_accepted"
+                or record.state == "offer_received"
+            ):
+                record.state = "cancelled"
+            elif record.state == "sold":
+                raise UserError("Sold property can't be canceled")
             else:
-                raise UserError("SOLD properties can not be CANCELLED")    
-        return True
-
-
-    def print_quotation(self):
-        return self.env.ref('estate.action_report_estate_property_sold').report_action(self)
+                raise UserError("Property already canceled")
 
 
     def action_make_offer(self):
@@ -131,7 +130,4 @@ class EstateProperty(models.Model):
             'target': 'new',
             'view_mode': 'form',
             'res_model': 'estate.property.make.bulk.offer',
-            'context': {
-                'default_property_id': self.ids,
-            }
         }

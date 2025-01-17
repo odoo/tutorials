@@ -1,10 +1,10 @@
-from odoo import models, Command
+from odoo import Command,models
 
 
 class EstateInvoice(models.Model):
     _inherit = 'estate.property'
 
-    def sell_action(self):
+    def action_sell(self):
         print("Inherited model for invocing is working fine")
         self.check_access('write')
         print(" reached ".center(100, '='))
@@ -27,5 +27,5 @@ class EstateInvoice(models.Model):
             }
         ).action_post()
 
-        return super().sell_action()
+        return super().action_sell()
         

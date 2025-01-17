@@ -1,14 +1,7 @@
-from odoo import models,fields
+from odoo import fields,models
 
 
 class InheritedModel(models.Model):
     _inherit= "res.users"
     
-    property_ids = fields.One2many(
-        comodel_name='estate.property',  
-        inverse_name='user_id',  
-        string='Properties_Inherited')
-
-
-    def print_quotation(self):
-        return self.env.ref('estate.action_report_salesman_properties').report_action(self)
+    property_ids = fields.One2many('estate.property','user_id','Properties_Inherited')

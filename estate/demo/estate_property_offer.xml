@@ -29,14 +29,13 @@
 </record>
 
 
-<function model="estate.property.offer" name="cross_refuse">
+<function model="estate.property.offer" name="action_refuse_offer">
     <value eval="[ref('offer_1'),ref('offer_2')]"/>
 </function>
 
-<function model="estate.property.offer" name="tick_accept" >
+<function model="estate.property.offer" name="action_accept_offer" >
     <value eval="[ref('offer_3')]"/>
 
 </function>
 
-    
 </odoo>

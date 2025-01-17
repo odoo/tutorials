@@ -144,5 +144,4 @@
         <field name="sequence" type="int">60</field>
     </record>
 
-
 </odoo>
