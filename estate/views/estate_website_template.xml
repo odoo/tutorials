@@ -21,17 +21,15 @@
                                     </h5>
                                     <p class="card-text">
                                         <strong>Price:</strong>
-                                        <t t-esc="property.expected_price"/>
- $
+                                        <t t-esc="property.expected_price"/>$
                                     </p>
                                     <a t-att-href="'/property/%d' % property.id" class="btn btn-outline-primary">
-                    View Details
+                                        <i class="fa fa-info-circle"></i> View Details
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </t>
-
                 </div>
                 <div class="d-flex justify-content-center my-3">
                     <t t-call="website.pager"/>
@@ -87,8 +85,8 @@
                                 <strong>
                                     <i class="fa fa-dollar-sign text-warning"></i> Expected Price:</strong>
                                 <span class="text-success fw-bold">
-                                    <t t-esc="property.expected_price" />
- $</span>
+                                    <t t-esc="property.expected_price" />$
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -110,8 +108,8 @@
                                 <strong>
                                     <i class="fa fa-couch"></i> Living Area:</strong>
                                 <span>
-                                    <t t-esc="property.living_area" />
- m²</span>
+                                    <t t-esc="property.living_area" />m²
+                                </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <strong>
@@ -137,8 +135,8 @@
                                 <strong>
                                     <i class="fa fa-leaf"></i> Garden Area:</strong>
                                 <span>
-                                    <t t-esc="property.garden_area" />
- m²</span>
+                                    <t t-esc="property.garden_area" />m²
+                                </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <strong>
@@ -151,8 +149,8 @@
                                 <strong>
                                     <i class="fa fa-ruler-combined"></i> Total Area:</strong>
                                 <span>
-                                    <t t-esc="property.total_area" />
- m²</span>
+                                    <t t-esc="property.total_area" />m²
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -160,6 +158,4 @@
             </div>
         </t>
     </template>
-
 </odoo>
-

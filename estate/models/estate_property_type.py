@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -8,13 +8,14 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(required=True)
     property_ids = fields.One2many("estate.property", "property_type_id")
-    _sql_constraints = [
-        ("name_uniq", "unique(name)", "Type must be unique"),
-    ]
     offer_ids = fields.One2many(
         comodel_name="estate.property.offer", inverse_name="property_type_id"
     )
     offer_count = fields.Integer(compute="_compute_offer_count")
+
+    _sql_constraints = [
+        ("name_uniq", "unique(name)", "Type must be unique"),
+    ]
 
     def _compute_offer_count(self):
         for record in self:

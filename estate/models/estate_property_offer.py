@@ -1,8 +1,9 @@
-from odoo import models, fields, api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from odoo.tools.float_utils import float_compare
+
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):

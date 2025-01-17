@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <!-- Estate property Tags action -->
     <record id="estate_property_tags_action" model="ir.actions.act_window">
         <field name="name">property tag</field>
@@ -27,5 +26,4 @@
             </list>
         </field>
     </record>
-
 </odoo>

@@ -1,4 +1,4 @@
-from odoo import models, fields, Command
+from odoo import Command, fields, models
 
 
 class InheritedModel(models.Model):

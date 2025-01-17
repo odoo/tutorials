@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class EstatePropertyMakeOffer(models.TransientModel):
@@ -12,18 +12,18 @@ class EstatePropertyMakeOffer(models.TransientModel):
 
     def make_offer(self):
         failed_properties = []
-        for property in self.property_ids:
+        for property in self.env.context.get("active_ids"):
             try:
                 self.env["estate.property.offer"].create(
                     {
                         "price": self.offer_price,
-                        "property_id": property.id,
+                        "property_id": property,
                         "partner_id": self.partner_id.id,
                         "validity": self.offer_validity,
                     }
                 )
             except Exception:
-                failed_properties.append(property.name)
+                failed_properties.append(str(property))
         if failed_properties:
             return {
                 "type": "ir.actions.client",

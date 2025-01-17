@@ -1,5 +1,6 @@
-from odoo import models, fields
 import random
+
+from odoo import fields, models
 
 
 class EstatePropertyTags(models.Model):

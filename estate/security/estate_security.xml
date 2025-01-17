@@ -28,7 +28,7 @@
         <field name="name">Estate Manager rules for all properties</field>
         <field name="model_id" ref="estate.model_estate_property"/>
         <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]" />
-        <field name="domain_force">[]</field>
+        <field name="domain_force">[(1,'=',1)]</field>
     </record>
 
     <record model="ir.rule" id="estate_company_rule">

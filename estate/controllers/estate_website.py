@@ -6,7 +6,7 @@ class EstateWebsite(http.Controller):
     @http.route(
         ["/properties", "/properties/page/<int:page>"],
         type="http",
-        auth="user",
+        auth="public",
         website=True,
     )
     def list_properties(self, page=1, **kwargs):
@@ -28,12 +28,16 @@ class EstateWebsite(http.Controller):
             )
         )
 
-        total_properties = request.env["estate.property"].sudo().search_count(
-            [
-                "&",
-                ("status", "in", ["new", "offer_received", "offer_accepted"]),
-                ("active", "=", True),
-            ]
+        total_properties = (
+            request.env["estate.property"]
+            .sudo()
+            .search_count(
+                [
+                    "&",
+                    ("status", "in", ["new", "offer_received", "offer_accepted"]),
+                    ("active", "=", True),
+                ]
+            )
         )
 
         pager = request.website.pager(
@@ -49,7 +53,7 @@ class EstateWebsite(http.Controller):
     @http.route(
         "/property/<model('estate.property'):property>",
         type="http",
-        auth="user",
+        auth="public",
         website=True,
     )
     def property_detail(self, property, **kwargs):

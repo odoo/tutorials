@@ -10,9 +10,8 @@
     "website": "https://www.odoo.com",
     "category": "Tutorials/Estate_Account",
     "version": "0.1",
-    "application": True,
     "installable": True,
-    "depends": ["base_setup","estate","account"],
+    "depends": ["base_setup", "estate", "account"],
     "data": [],
     "license": "AGPL-3",
 }

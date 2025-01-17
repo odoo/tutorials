@@ -1,7 +1,8 @@
-from odoo import models, fields, api
-from odoo.exceptions import UserError
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -18,7 +19,6 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer()
-
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -60,6 +60,7 @@ class EstateProperty(models.Model):
         "res.company", default=lambda self: self.env.company, required=True
     )
     image = fields.Image("Image")
+
     _sql_constraints = [
         (
             "check_expected_price",
@@ -138,7 +139,4 @@ class EstateProperty(models.Model):
             "target": "new",
             "view_mode": "form",
             "res_model": "estate.property.make.offer",
-            "context": {
-                "default_property_ids": self.ids,
-            },
         }
