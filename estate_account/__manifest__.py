@@ -10,11 +10,4 @@
         """,
     'application': True,
     'instalable': True,
-
-    'data':[
-    ],
-    'demo':[
-        
-    ]
-    
 }

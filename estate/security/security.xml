@@ -29,7 +29,7 @@
         <field name="name">Salesperson access rule for property</field>
         <field name="model_id" ref="estate.model_estate_property"/>
         <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]"/>
-        <field name="domain_force">[]</field>
+        <field name="domain_force">[(1, '=', 1)]</field>
     </record>
     
     <record model="ir.rule" id="company_rule">

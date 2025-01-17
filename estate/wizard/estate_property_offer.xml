@@ -8,7 +8,6 @@
                     <field name="price"/>
                     <field name="validity"/>                    
                     <field name="partner_id"/>
-                    <field name="property_ids" />
                 </group>
                 
                 <footer>

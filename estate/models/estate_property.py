@@ -1,5 +1,7 @@
-from odoo import models, fields, api, exceptions
 from datetime import timedelta
+
+from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -46,7 +48,7 @@ class EstateProperty(models.Model):
         default='new',
         required=True
     )
-    property_type_id =fields.Many2one('estate.property.type',string="Property Type", ondelete="restrict")
+    property_type_id =fields.Many2one('estate.property.type',string="Property Type", ondelete="cascade")
     salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)    
     tag_ids = fields.Many2many('estate.property.tag', string="Tag Name", ondelete="cascade")
@@ -83,7 +85,7 @@ class EstateProperty(models.Model):
     def action_to_sold(self):       #   Function
         for record in self:
             if record.state == 'cancelled':
-                raise exceptions.UserError("Cancelled Property can not be sold")
+                raise UserError("Cancelled Property can not be sold")
             elif record.state == 'offer accepted':
                 self.state = 'sold'
 
@@ -92,8 +94,6 @@ class EstateProperty(models.Model):
             if record.state == 'offer accepted':
                 record.state = 'cancelled'
                 
-    
-
     _sql_constraints = [
         ('expected_price_positive', 'CHECK(expected_price > 0)', 'Expected Price must be strictly positive!'),
         ('selling_price_positive', 'CHECK(selling_price > 0)', 'Selling Price must be positive!'),
@@ -104,15 +104,13 @@ class EstateProperty(models.Model):
         for record in self:
             lower_price = (record.expected_price * 9)/10
             if record.selling_price <= lower_price:
-                raise exceptions.ValidationError("selling Price should be Higher than 90%")
+                raise UserError("selling Price should be Higher than 90%")
 
-
-
-    @api.ondelete(at_uninstall=False)                   #For Delete property using inherit the ondelete()
-    def _unlink_if_property_new_and_canclled(self):     #   override delete method user can delete user if state is NEW or CANCELLED 
+    @api.ondelete(at_uninstall=False)                   # For Delete property using inherit the ondelete()
+    def _unlink_if_property_new_and_canclled(self):     # override delete method user can delete user if state is NEW or CANCELLED 
         for record in self:
             if record.state not in ['new', 'cancelled']:
-                raise exceptions.UserError('Only New and Cancelled property can be delete.')
+                raise UserError('Only New and Cancelled property can be delete.')
 
     def action_make_offer(self):
         return {
@@ -122,9 +120,6 @@ class EstateProperty(models.Model):
             'view_mode': 'form',
             'res_model': 'estate.property.make.offer',
             'context': {
-                'default_property_ids': self.ids,
+                'default_property_ids': self.env.context.get('active_ids'),
             }
         }
-    
-
-        
