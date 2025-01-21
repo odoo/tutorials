@@ -12,6 +12,7 @@
         <field name="category_id" ref="base.module_category_real_estate_brokerage" />
         <field name="comment">this group is for real estate Manager </field>
         <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"></field>
     </record>
 
 

@@ -23,6 +23,6 @@
         "views/estate_property_menu.xml",
         "data/estate.property.type.csv",
     ],
-    # "demo": ["demo/estate_property_demo.xml", "demo/estate_property_offer_demo.xml"],
+    "demo": ["demo/estate_property_demo.xml", "demo/estate_property_offer_demo.xml"],
     "license": "AGPL-3",
 }

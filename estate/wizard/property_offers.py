@@ -6,25 +6,26 @@ class ProperyOffers(models.TransientModel):
     _description = "TransientModelmodel for offers"
 
     price = fields.Float("price", required=True)
-    property_ids = fields.Many2many("estate.property", string="property_id")
+    # property_ids = fields.Many2many("estate.property", string="property_id")
     buyer_id = fields.Many2one("res.partner", required=True)
     validity = fields.Integer(default=7)
 
     def make_offer(self):
+        print(self)
         failed_properties = []
-        for property in self.property_ids:
+        for property in self.env.context.get("active_ids"):
             try:
                 self.env["estate.property.offer"].create(
                     {
                         "price": self.price,
-                        "property_id": property.id,
+                        "property_id": property,
                         "buyer_id": self.buyer_id.id,
                         "validity": self.validity,
                     }
                 )
             except Exception as e:
-                print(f"{e} exception in ", property.name)
-                failed_properties.append(str(e) + " in " + property.name)
+                print(f"{e} exception in ", property)
+                failed_properties.append(str(e) + " in " + str(property))
         if failed_properties:
             return {
                 "type": "ir.actions.client",

@@ -156,15 +156,15 @@ class TestProperty(models.Model):
                 raise UserError(_("Can't delete  this property! "))
 
     def action_make_offer(self):
-        print(" reached ".center(100, "="))
-        print(self.ids)
+        print(" makeoffers ".center(100, "="))
+        print(self)
         return {
-            "name": "make offer",
             "type": "ir.actions.act_window",
             "target": "new",
             "res_model": "propery.offers",
             "view_mode": "form",
-            "context": {
-                "default_property_ids": self.ids,
-            },
+            # "context": {
+            #     "default_property_ids": self.ids,
+            # },
         }
+        # return self.env.ref("estate.property_offers_view_form")

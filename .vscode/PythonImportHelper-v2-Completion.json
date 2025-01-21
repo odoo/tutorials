@@ -74,6 +74,54 @@
         "documentation": {}
     },
     {
+        "label": "api",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "api",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
         "label": "http",
         "importPath": "odoo",
         "description": "odoo",
@@ -234,6 +282,54 @@
         "documentation": {}
     },
     {
+        "label": "api",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "api",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
         "label": "request",
         "importPath": "odoo.http",
         "description": "odoo.http",
@@ -322,6 +418,14 @@
         "documentation": {}
     },
     {
+        "label": "ValidationError",
+        "importPath": "odoo.exceptions",
+        "description": "odoo.exceptions",
+        "isExtraImport": true,
+        "detail": "odoo.exceptions",
+        "documentation": {}
+    },
+    {
         "label": "relativedelta",
         "importPath": "dateutil.relativedelta",
         "description": "dateutil.relativedelta",
@@ -391,6 +495,24 @@
         "documentation": {}
     },
     {
+        "label": "AccountMoveLine",
+        "kind": 6,
+        "importPath": "book_price.models.account_move_line",
+        "description": "book_price.models.account_move_line",
+        "peekOfCode": "class AccountMoveLine(models.Model):\n    _inherit = \"account.move.line\"\n    book_price = fields.Float(string=\"Book Price\", compute=\"_compute_book_price\")\n    @api.depends(\"product_id.lst_price\")\n    def _compute_book_price(self):\n        print(\" Book Price \".center(100, \"=\"))\n        for record in self:\n            print(record.move_type)\n            print(record.product_id.lst_price)\n            record.book_price = record.product_id.lst_price",
+        "detail": "book_price.models.account_move_line",
+        "documentation": {}
+    },
+    {
+        "label": "SaleOrderLine",
+        "kind": 6,
+        "importPath": "book_price.models.sale_order_line",
+        "description": "book_price.models.sale_order_line",
+        "peekOfCode": "class SaleOrderLine(models.Model):\n    _inherit = \"sale.order.line\"\n    book_price = fields.Float(\n        string=\"Book Price\", readonly=True, compute=\"_compute_book_price\"\n    )\n    @api.depends(\"product_id.lst_price\")\n    def _compute_book_price(self):\n        for record in self:\n            record.book_price = record.product_id.lst_price",
+        "detail": "book_price.models.sale_order_line",
+        "documentation": {}
+    },
+    {
         "label": "Academy",
         "kind": 6,
         "importPath": "estate.controllers.estate_property_website",
@@ -449,7 +571,7 @@
         "kind": 6,
         "importPath": "estate.wizard.property_offers",
         "description": "estate.wizard.property_offers",
-        "peekOfCode": "class ProperyOffers(models.TransientModel):\n    _name = \"propery.offers\"\n    _description = \"TransientModelmodel for offers\"\n    price = fields.Float(\"price\", required=True)\n    property_ids = fields.Many2many(\"estate.property\", string=\"property_id\")\n    buyer_id = fields.Many2one(\"res.partner\", required=True)\n    validity = fields.Integer(default=7)\n    def make_offer(self):\n        failed_properties = []\n        for property in self.property_ids:",
+        "peekOfCode": "class ProperyOffers(models.TransientModel):\n    _name = \"propery.offers\"\n    _description = \"TransientModelmodel for offers\"\n    price = fields.Float(\"price\", required=True)\n    # property_ids = fields.Many2many(\"estate.property\", string=\"property_id\")\n    buyer_id = fields.Many2one(\"res.partner\", required=True)\n    validity = fields.Integer(default=7)\n    def make_offer(self):\n        print(self)\n        failed_properties = []",
         "detail": "estate.wizard.property_offers",
         "documentation": {}
     },
@@ -458,8 +580,26 @@
         "kind": 6,
         "importPath": "estate_account.models.estate_property",
         "description": "estate_account.models.estate_property",
-        "peekOfCode": "class Property_Invoice(models.Model):\n    _inherit = \"estate.property\"\n    def action_sold(self):\n        print(\" reached \".center(100, \"=\"))\n        self.check_access(\"write\")\n        self.env[\"account.move\"].sudo().create(\n            {\n                \"partner_id\": self.buyer_id.id,\n                \"move_type\": \"out_invoice\",\n                \"invoice_line_ids\": [",
+        "peekOfCode": "class Property_Invoice(models.Model):\n    _inherit = \"estate.property\"\n    def action_sold(self):\n        print(\" invoice \".center(100, \"=\"))\n        self.check_access(\"write\")\n        self.env[\"account.move\"].sudo().create(\n            {\n                \"partner_id\": self.buyer_id.id,\n                \"move_type\": \"out_invoice\",\n                \"invoice_line_ids\": [",
         "detail": "estate_account.models.estate_property",
+        "documentation": {}
+    },
+    {
+        "label": "ProductTemplate",
+        "kind": 6,
+        "importPath": "product_warranty.models.product_template",
+        "description": "product_warranty.models.product_template",
+        "peekOfCode": "class ProductTemplate(models.Model):\n    _inherit = \"product.template\"\n    is_warranty = fields.Boolean(default=False, string=\"Warranty\")\n    warranty_configuration_ids = fields.One2many(\n        \"product.warranty.configuration\", \"product_template_id\", string=\"Add Warranty\"\n    )",
+        "detail": "product_warranty.models.product_template",
+        "documentation": {}
+    },
+    {
+        "label": "WarrantyConfiguration",
+        "kind": 6,
+        "importPath": "product_warranty.models.warranty",
+        "description": "product_warranty.models.warranty",
+        "peekOfCode": "class WarrantyConfiguration(models.Model):\n    _name = \"product.warranty.configuration\"\n    _description = \"product.warranty.configuration\"\n    name = fields.Char(string=\"name\", required=True)\n    product_template_id = fields.Many2one(\n        \"product.template\", required=True, ondelete=\"cascade\"\n    )\n    percentage = fields.Float()\n    years = fields.Integer(default=1)\n    @api.onchange(\"percentage\")",
+        "detail": "product_warranty.models.warranty",
         "documentation": {}
     }
 ]

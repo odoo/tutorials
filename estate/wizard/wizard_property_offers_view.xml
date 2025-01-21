@@ -17,7 +17,7 @@
                         <field name="price" />
                         <field name="buyer_id" />
                         <field name="validity" />
-                        <field name="property_ids" />
+                        <!-- <field name="property_ids" /> -->
                     </group>
                 </sheet>
                 <footer>
