@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-from odoo import fields, models, api, _ #importing _ for the text of the error(unsure).
-from odoo.exceptions import UserError, ValidationError #importing to throw error in ui view
 from dateutil.relativedelta import relativedelta # to do operation on datetime class.
+
+from odoo import _, api, fields, models #importing _ for the translation
+from odoo.exceptions import UserError, ValidationError #importing to throw error in ui view
 import odoo.tools.float_utils as floatUtil
 
 
@@ -126,7 +126,7 @@ class EstateProperty(models.Model):
             
         
     #method triggering from form view on click of button sold in estate property    
-    def mark_property_sold(self):
+    def action_mark_property_sold(self):
         for record in self:
             if(record.state == 'cancelled'):
                 raise UserError(_("Cancelled property cannot be sold."))
@@ -134,7 +134,7 @@ class EstateProperty(models.Model):
         return True #a public method should always return something so that it can be called through XML-RPC. When in doubt, just return True.
     
     #method triggering from form view on click of button cancelled in estate property 
-    def mark_property_cancel(self):
+    def action_mark_property_cancel(self):
         for record in self:
             if(record.state == 'sold'):
                 raise UserError(_("Sold property cannot be cancelled."))
@@ -150,7 +150,4 @@ class EstateProperty(models.Model):
             'view_type' : 'form',
             'view_mode' : 'form',
             'target'    : 'new',
-            'context': {
-                'property_ids': self.ids
-            }
         }

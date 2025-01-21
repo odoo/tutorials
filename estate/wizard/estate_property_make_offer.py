@@ -1,5 +1,5 @@
 
-from odoo import fields, models, _
+from odoo import _, fields, models
 
 class EstatePropertyMakeOffer(models.TransientModel):
     _name = 'estate.property.make.offer'
@@ -11,7 +11,7 @@ class EstatePropertyMakeOffer(models.TransientModel):
 
     
     def add_offer_to_property(self):
-        property_ids= self.env.context['property_ids']
+        property_ids= self.env.context['active_ids']
         failed_property_name=[]
         
         for property_id in property_ids:
