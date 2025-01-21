@@ -10,5 +10,7 @@
     'application' : True,
     # data files always loaded at installation
     #'data' : ['data/estate.property.csv'],
-    'data' : ['security/ir.model.access.csv']
+    'data' : ['security/ir.model.access.csv',
+              'views/estate_property_view.xml',
+              'views/estate_menu.xml'],
 }
