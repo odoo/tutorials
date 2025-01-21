@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
     _order = "sequence"
 
     name = fields.Char('Property Name', required=True, translate=True)
-    #barn = fields.Char('Namei', required=True, translate=True)
+    barn = fields.Char(string='Namei barn', required=True, translate=True)
 
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
