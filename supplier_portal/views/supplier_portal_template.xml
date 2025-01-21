@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="supplier_portal_template" name="Supplier Upload Documents">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card shadow">
+                            <div class="card-header bg-primary text-white text-center">
+                                <h4>Bill Details</h4>
+                            </div>
+                            <div class="card-body">
+                                <form action="/my/upload_documents/submit" method="post" enctype="multipart/form-data" class="needs-validation">
+                                    <div class="mb-3">
+                                        <label for="company" class="form-label">Company:</label>
+                                        <select class="form-select" id="company" name="company">
+                                            <t t-foreach="request.env.user.company_ids" t-as="company">
+                                                <option t-att-value="company.id" t-esc="company.name"></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="upload_pdf" class="form-label">Upload PDF</label>
+                                        <input type="file" id="upload_pdf" name="upload_pdf" class="form-control" required="true"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="upload_xml" class="form-label">Upload XML File</label>
+                                        <input type="file" id="upload_xml" name="upload_xml" class="form-control" required="true" />
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary px-4">
+                                            <i class="fa fa-upload me-2"></i>Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="generic_message_template" name="Generic Message Template">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <!-- Success Message -->
+                <t t-if="success_message">
+                    <div class="alert alert-success text-center" role="alert">
+                        <t t-esc="success_message" />
+                    </div>
+                </t>
+
+                <!-- Error Message -->
+                <t t-if="error_message">
+                    <div class="alert alert-danger text-center" role="alert">
+                        <t t-esc="error_message" />
+                    </div>
+                </t>
+
+                <!-- Back to Dashboard Button -->
+                <div class="text-center mt-4">
+                    <a href="/my" class="btn btn-primary">
+                        <i class="fa fa-home"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+</odoo>

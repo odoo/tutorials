@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Upload Documents</field>
+        <field name="url">/my/upload_documents</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">60</field>
+    </record>
+
+</odoo>
