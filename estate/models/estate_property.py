@@ -29,3 +29,11 @@ class Property(models.Model):
             ('west', 'West')
         ]
     )
+    active = fields.Boolean()
+    state = fields.Selection(string='Status', required=True, default='new', selection=[
+        ('new', 'New'),
+        ('offer_received', 'Offer received'),
+        ('offer_accepted', 'Offer accepted'),
+        ('sold', 'Sold'),
+        ('cancelled', 'Cancelled')
+    ])
