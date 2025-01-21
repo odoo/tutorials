@@ -1,7 +1,8 @@
-from odoo import fields, models, api, _ #importing _ for the text of the error(unsure).
-from odoo.exceptions import ValidationError, UserError #importing to throw error in ui view
 from dateutil.relativedelta import relativedelta 
 from datetime import datetime
+
+from odoo import _, api, fields, models #importing _ for the translation
+from odoo.exceptions import ValidationError, UserError #importing to throw error in ui view
 
 class EstatePropertyOffer(models.Model):
     _name= "estate.property.offer"

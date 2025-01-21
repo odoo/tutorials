@@ -17,4 +17,3 @@ class EstatePropertyType(models.Model):
     
     def get_all_property_offers_related(self):
         pass
-    

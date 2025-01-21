@@ -1,18 +1,18 @@
-from odoo import http
 import math
+from odoo.http import Controller, request, route
 
-class MyController(http.Controller):
-    @http.route(route='/reports', auth='public')
+class MyController(Controller):
+    @route(route='/reports', auth='public')
     def hellorUser(self):
-        userProperty= http.request.env['estate.property'].sudo().search([])
+        userProperty= request.env['estate.property'].sudo().search([])
         print(userProperty)
-        return http.request.render("estate.estate_property_offer_template",{
+        return request.render("estate.estate_property_offer_template",{
             'docs': userProperty
         })
     
-    @http.route(route='/properties', website=True, auth='user', methods=['GET'])
+    @route(route='/properties', website=True, auth='user', methods=['GET'])
     def properties(self):
-        params= http.request.get_http_params()
+        params= request.get_http_params()
         print(params)
         page= int(params.get('page', 1))
         limit= int(params.get('limit',8))
@@ -24,17 +24,17 @@ class MyController(http.Controller):
             ('active','=',True)
         ]
         
-        all_properties= http.request.env['estate.property'].search(domain,offset=offset, limit=limit)
+        all_properties= request.env['estate.property'].search(domain,offset=offset, limit=limit)
         
-        total= http.request.env['estate.property'].sudo().search_count(domain)
+        total= request.env['estate.property'].sudo().search_count(domain)
         
-        return http.request.render("estate.estate_property_website_grid_view",{
+        return request.render("estate.estate_property_website_grid_view",{
             'all_properties': all_properties,
             'total_arr': list(range(math.ceil(total/limit))),
             'current_page': page
         })
         
-    @http.route(route="/properties/<int:property_id>", website=True, auth="user", methods=["GET"])
+    @route(route="/properties/<int:property_id>", website=True, auth="user", methods=["GET"])
     def property_details(self, property_id):
         property_id= int(property_id)
         
@@ -42,7 +42,7 @@ class MyController(http.Controller):
             ('id','=',property_id)
         ]
         
-        property_details= http.request.env['estate.property'].search(domain=domain)
-        return http.request.render("estate.estate_property_website_single_view", {
+        property_details= request.env['estate.property'].search(domain=domain)
+        return request.render("estate.estate_property_website_single_view", {
             'property_details': property_details
         })

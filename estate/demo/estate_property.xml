@@ -86,11 +86,11 @@
     </record>
     <!-- mark property sold why need of calling sold function??-->
     <!-- it seems the offer_ids eval is being calculated at last, as a result our sold value is being updated by the estate_property_offer's create method and being reinit with the offer_received value-->
-    <!-- <function model="estate.property" name="mark_property_sold">
+    <!-- <function model="estate.property" name="action_mark_property_sold">
         <value eval="[ref('estate.estate_property_2')]"/>
     </function> -->
     <!-- mark one offers -->
-    <function model="estate.property" name="mark_property_sold">
+    <function model="estate.property" name="action_mark_property_sold">
         <value eval="[ref('estate.estate_property_3')]"/>
     </function>
     
