@@ -6,3 +6,8 @@ class TypeModel(models.Model):
 
     name = fields.Char('Property Types', required=True)
     
+
+    _sql_constraints = [
+        ('check_type_uniqueness', 'UNIQUE(name)',
+         'The new property type should be unique')
+    ]

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<odoo>
+    <data>
+        <record id="estate_property_offer_view_list" model="ir.ui.view">
+            <field name="name">estate.property.offer.list</field>
+            <field name="model">estate_property_offer</field>
+            <field name="arch" type="xml">
+                <list string="Channel">
+                    <field name="price" width="200px"/>
+                    <field name="partner_id" width="200px"/>
+                    <button name="action_accept_offer" string="Accept Offer" type="object" icon="fa-thumbs-up" class="btn-primary"/>
+                    <button name="action_refuse_offer" string="Refuse Offer" type="object" icon="fa-times" class="btn-danger"/>
+                    <field name="validity"/>
+                    <field name="date_deadline"/>
+                    <field name="status"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="estate_property_offer_view_form" model="ir.ui.view">
+            <field name="name">estate.property.offer.form</field>
+            <field name="model">estate_property_offer</field>
+            <field name="arch" type="xml">
+                <form string="Test">
+                    <sheet>
+                        <group>
+                            <field name="price"/>
+                            <field name="partner_id"/>
+                            <button name="action_accept_offer" string="Accept Offer" type="object" icon="fa-thumbs-up" class="btn-primary"/>
+                            <button name="action_refuse_offer" string="Refuse Offer" type="object" icon="fa-times" class="btn-danger"/>
+                            <field name="validity"/>
+                            <field name="date_deadline"/>
+                            <field name="status"/>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
