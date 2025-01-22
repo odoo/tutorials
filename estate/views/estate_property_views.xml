@@ -13,6 +13,7 @@
             <field name="arch" type="xml">
                 <list>
                     <field name="name" width="200px" />
+                    <field name="property_type_id" width="160px" />
                     <field name="postcode" width="50px" />
                     <field name="bedrooms" />
                     <field name="living_area" />
@@ -35,14 +36,12 @@
                             </h1>
                         </div>
                         <group>
-                            <group>
-                                <field name="postcode" />
-                                <field name="date_availability" />
-                            </group>
-                            <group>
-                                <field name="expected_price" />
-                                <field name="selling_price" />
-                            </group>
+                            <field name="tag_ids" widget="many2many_tags" />
+                            <field name="property_type_id" />
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                            <field name="expected_price" />
+                            <field name="selling_price" />
                         </group>
                         <notebook>
                             <page string="Details">
@@ -56,6 +55,17 @@
                                     <field name="garden" />
                                     <field name="garden_area" />
                                     <field name="garden_orientation" />
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                <group>
+                                    <field name="offer_ids" string="" />
+                                </group>
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <field name="user_id" />
+                                    <field name="buyer_id" />
                                 </group>
                             </page>
                         </notebook>
@@ -75,6 +85,7 @@
                     <field name="bedrooms" />
                     <field name="living_area" />
                     <field name="facades" />
+                    <field name="property_type_id" />
 
                     <filter name="filter_available" string="Available"
                         domain="[('state','in', ['new,offer_received'])]" />

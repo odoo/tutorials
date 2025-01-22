@@ -29,7 +29,7 @@ class Property(models.Model):
             ('west', 'West')
         ]
     )
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
     state = fields.Selection(string='Status', required=True, default='new', selection=[
         ('new', 'New'),
         ('offer_received', 'Offer received'),
@@ -37,3 +37,10 @@ class Property(models.Model):
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
     ])
+    property_type_id = fields.Many2one('estate.property.type')
+    buyer_id = fields.Many2one('res.partner')
+    user_id = fields.Many2one(
+        'res.users', string='Salesperson', default=lambda self: self.env.user)
+    tag_ids = fields.Many2many('estate.property.tag')
+    offer_ids = fields.One2many(
+        'estate.property.offer', 'property_id', string='Offers')

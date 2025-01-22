@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="estate_property_tags_action" model="ir.actions.act_window">
+            <field name="name">Estate Property Tags</field>
+            <field name="res_model">estate.property.tag</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="estate_property_tag_view_form" model="ir.ui.view">
+            <field name="name">Estate Property</field>
+            <field name="model">estate.property.tag</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" />
+                            </h1>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
