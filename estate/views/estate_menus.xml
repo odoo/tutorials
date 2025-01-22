@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<menuitem id="test_menu_root" name="Test">
+    <menuitem id="test_first_level_menu" name="First Level">
+        <menuitem id="test_model_menu_action" action="estate_property_view" />
+    </menuitem>
+    <menuitem id="test_first_level_menu_2" name="First Level 2"> 
+        <menuitem id="test_model_menu_action_2" action="estate_property_view" />
+    </menuitem>
+</menuitem>
+
+</odoo>
