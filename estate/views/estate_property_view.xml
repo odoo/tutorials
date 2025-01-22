@@ -7,9 +7,13 @@
             <field name="type">list</field>
             <field name="arch" type="xml">
                 <list>
-                    <field name="name"/>
-                    <field name="description"/>
-                    <field name="postcode"/>
+                    <field name="name" width="160px"/>
+                    <field name="postcode" width="80px"/>
+                    <field name="bedrooms"/>
+                    <field name="living_area"/>
+                    <field name="expected_price"/>
+                    <field name="selling_price"/>
+                    <field name="date_availability"/>
                 </list>
             </field>
         </record>
@@ -20,16 +24,38 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form>
-                <field name="name" placeholder="Enter the property name">
-                    <attribute name="help">This is the name of the property.</attribute>
-                </field>
-                <field name="description" placeholder="Enter a brief description of the property">
-                    <attribute name="help">Provide a detailed description of the property.</attribute>
-                </field>
-                <field name="postcode" placeholder="Enter the postcode">
-                    <attribute name="help">Provide the postal code for the property location.</attribute>
-                </field>
-
+                    <sheet>
+                            <div class="oe_title">
+                                <h1>
+                                    <field name="name" />
+                                </h1>
+                            </div>
+                        <group>
+                            <group>
+                                <field name="postcode"/>
+                                <field name="date_availability"/>
+                            </group>
+                            <group>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="state"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -39,6 +65,26 @@
             <field name="view_mode">list,form</field>
             <field name="view_id" ref="view_estate_property_list"/>
         </record>
+
+<record id="view_estate_property_search" model="ir.ui.view">
+            <field name="name">estate.property.search</field>
+            <field name="model">estate.property</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" string="Title"/>
+                    <field name="description" string="Description"/>
+                    <field name="bedrooms" string="Bedrooms"/>
+                    <field name="postcode" string="Postcode"/>
+                    <field name="expected_price" string="Expected Price"/>
+                    <field name="facades" string="Facades"/>
+                    <field name="living_area" string="Living area (m²)"/>
+                    <filter name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                    <group expand="1" string="Group By">
+                        <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
     </data>
 </odoo>
-

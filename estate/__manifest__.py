@@ -12,5 +12,6 @@
     #'data' : ['data/estate.property.csv'],
     'data' : ['security/ir.model.access.csv',
               'views/estate_property_view.xml',
-              'views/estate_menu.xml'],
+              'views/estate_menu.xml',
+              ],
 }
