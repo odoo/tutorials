@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class PropertyOffer(models.Model):
@@ -34,3 +34,18 @@ class PropertyOffer(models.Model):
         for record in self:
             cd = fields.Date.to_date(record.create_date or fields.Date.today())
             record.validity = (record.date_deadline - cd).days
+
+    def action_accept(self):
+        for record in self:
+            if record.state != 'accepted':
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.state = 'sold'
+                record.state = 'accepted'
+            else:
+                raise exceptions.UserError(
+                    'You can’t accept an offer for a sold property')
+
+    def action_refuse(self):
+        for record in self:
+            record.state = 'refused'

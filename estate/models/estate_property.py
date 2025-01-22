@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class Property(models.Model):
@@ -11,9 +11,12 @@ class Property(models.Model):
     name = fields.Char('Title', required=True)
     description = fields.Text()
     postcode = fields.Char()
+    property_type_id = fields.Many2one('estate.property.type')
+    tag_ids = fields.Many2many('estate.property.tag')
 
     date_availability = fields.Date('Available From')
     expected_price = fields.Float(required=True)
+    best_offer = fields.Float(compute='_compute_best_offer')
     selling_price = fields.Float(default=0.0, readonly=True)
 
     bedrooms = fields.Integer()
@@ -33,22 +36,20 @@ class Property(models.Model):
     )
     total_area = fields.Integer(
         'Total Area (m²)', compute='_compute_total_area')
+
     active = fields.Boolean(default=True)
-    state = fields.Selection(string='Status', required=True, default='new', selection=[
+    state = fields.Selection(string='Status', required=True, default='new', readonly=True, selection=[
         ('new', 'New'),
         ('offer_received', 'Offer received'),
         ('offer_accepted', 'Offer accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
     ])
-    property_type_id = fields.Many2one('estate.property.type')
-    buyer_id = fields.Many2one('res.partner')
+    buyer_id = fields.Many2one('res.partner', readonly=True)
     user_id = fields.Many2one(
         'res.users', string='Salesperson', default=lambda self: self.env.user)
-    tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many(
         'estate.property.offer', 'property_id', string='Offers')
-    best_offer = fields.Float(compute='_compute_best_offer')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -69,3 +70,19 @@ class Property(models.Model):
         for record in self:
             record.best_offer = max(record.mapped(
                 'offer_ids.price'), default=0.0)
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError(
+                    'Sold properties can not be cancelled')
+            record.state = 'cancelled'
+        return True
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError(
+                    'Cancelled properties can not be sold')
+            record.state = 'sold'
+        return True

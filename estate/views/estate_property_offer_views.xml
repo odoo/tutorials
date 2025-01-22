@@ -8,6 +8,10 @@
                 <list>
                     <field name="price" />
                     <field name="partner_id" />
+                    <button invisible="state in ('accepted', 'refused')" name="action_accept"
+                        string="Accept" type="object" icon="fa-check" />
+                    <button invisible="state in ('accepted', 'refused')" name="action_refuse"
+                        string="Refuse" type="object" icon="fa-times" />
                     <field name="state" />
                     <field name="date_deadline" />
                     <field name="validity" />
