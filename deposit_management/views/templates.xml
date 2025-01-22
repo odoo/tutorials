@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="deposit" name="deposit_for_rent" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='product_option_block']" position="after">
+            <div class="mt-4">
+                <h5>Deposit : <span t-field="product.deposit_amount" style="color: #714B67;"/>
+                </h5>
+            </div>
+        </xpath>
+    </template>
+</odoo>

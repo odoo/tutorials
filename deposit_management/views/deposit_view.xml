@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_template_form_view_rental_inherited" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.rental</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="sale_renting.product_template_form_view_rental"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='extra_rental']" position="inside">
+                <field name="deposit_status"/>
+                <field name="deposit_amount" invisible="not deposit_status"></field>
+            </xpath>
+        </field>
+    </record>
+</odoo>

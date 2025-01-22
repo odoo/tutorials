@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="rental_product_5" model="product.product">
+        <field name="name">Deposit</field>
+        <field name="categ_id" ref="sale_renting.cat_renting"/>
+        <field name="type">consu</field>
+        <field name="rent_ok" eval="True"/>
+    </record>
+
+</odoo>
