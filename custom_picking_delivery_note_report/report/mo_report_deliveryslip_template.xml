@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="mo_report_deliveryslip_template">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="custom_picking_delivery_note_report.report_delivery_document" t-lang="o._get_report_lang()"/>
+        </t>
+    </template>
+
+    <template id="report_delivery_document" inherit_id="stock.report_delivery_document" primary="True">
+        <xpath expr="//table[@name='stock_move_table']/tbody" position="replace">
+            <tbody>
+                <t t-set="lines" t-value="o.move_ids.filtered(lambda x: x.product_uom_qty)"/>
+
+                <tr t-foreach="lines" t-as="move">
+                    <t t-if="move.bom_line_id.bom_id.type != 'phantom'"> <!-- !condition to not print KITS for MO Delivery note -->
+                        <td>
+                            <span t-field="move.product_id">Customizable Desk</span>
+                            <p t-if="move.description_picking and move.description_picking != move.product_id.name and move.description_picking != move.product_id.display_name">
+                                <span t-field="move.description_picking">Description on transfer</span>
+                            </p>
+                        </td>
+                        <td class="text-end">
+                            <span t-field="move.product_uom_qty">3.00</span>
+                            <span t-field="move.product_uom" groups="uom.group_uom">units</span>
+                            <span t-if="move.product_packaging_id">
+                                (<span t-field="move.product_packaging_qty" t-options='{"widget": "integer"}'/> <span t-field="move.product_packaging_id"/>)
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <span t-field="move.quantity">3.00</span>
+                            <span t-field="move.product_uom" groups="uom.group_uom">units</span>
+                            <span t-if="move.product_packaging_id">
+                                (<span t-field="move.product_packaging_quantity" t-options='{"widget": "integer"}'/> <span t-field="move.product_packaging_id"/>)
+                            </span>
+                        </td>
+                    </t>
+                </tr>
+            </tbody>
+        </xpath>
+    </template>
+    
+</odoo>
