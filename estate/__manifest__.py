@@ -1,4 +1,5 @@
 {
+  'license': 'LGPL-3',
   'name': 'Real Estate',
   'depends': ['base'],
   'application': True,
