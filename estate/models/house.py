@@ -1,6 +1,6 @@
 from odoo import models, fields
 
-class House(models.Model):
+class house(models.Model):
     _name = 'house'
 
     name = fields.Char(string='House Name', required=True)
