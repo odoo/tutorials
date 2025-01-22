@@ -1,5 +1,6 @@
 {
   'name': 'Real Estate',
   'depends': ['base'],
-  'application': True
+  'application': True,
+  'data': ['./data/security/ir.model.access.csv']
 }
