@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_warranty_wizard_form" model="ir.ui.view">
+        <field name="name">product.warranty.wizard.form</field>
+        <field name="model">product.warranty.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Warranty" nolabel="1">
+                <sheet>
+                    <group>
+                        <field name="sale_order_id" invisible="1"/>
+                        <field name="line_ids">
+                            <list editable="bottom" delete="0" create="0">
+                                <field name="sale_order_line_id" optional="hide"/>
+                                <field name="product_template_id" readonly="1"/>
+                                <field name="warranty_config_id" options="{'no_create': True}"/>
+                                <field name="date_end" readonly="1"/>
+                            </list>
+                        </field>
+                    </group>
+                    <footer>
+                        <button string="Apply" type="object" name="apply_warranty" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
