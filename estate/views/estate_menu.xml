@@ -2,8 +2,13 @@
 <odoo>
     <data>
         <menuitem id="properties_menu_root" name="Estate Properties">
-            <menuitem id="properties_first_level_menu" name="First Level">
+            <menuitem id="properties_first_level_menu" name="Dashboard">
                 <menuitem id="properties_model_menu_action" action="action_estate_property"/>
+            </menuitem>
+            <menuitem id="properties_types_first_level_menu" name="Categories">
+                <menuitem id="properties_model_type_menu_action" action="action_estate_property_type"/>
+                <menuitem id="properties_model_tag_menu_action" action="action_estate_property_tag"/>
+                <menuitem id="properties_model_offer_menu_action" action="action_estate_property_offer"/>
             </menuitem>
         </menuitem>
     </data>
