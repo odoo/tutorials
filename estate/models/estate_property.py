@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, exceptions, fields, models
+from odoo.tools.float_utils import float_compare
 
 
 class Property(models.Model):
@@ -15,7 +16,7 @@ class Property(models.Model):
     tag_ids = fields.Many2many('estate.property.tag')
 
     date_availability = fields.Date('Available From')
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(required=True, default=100)
     best_offer = fields.Float(compute='_compute_best_offer')
     selling_price = fields.Float(default=0.0, readonly=True)
 
@@ -50,6 +51,13 @@ class Property(models.Model):
         'res.users', string='Salesperson', default=lambda self: self.env.user)
     offer_ids = fields.One2many(
         'estate.property.offer', 'property_id', string='Offers')
+
+    _sql_constraints = [
+        ('selling_price_positive', 'check (selling_price >= 0.0)',
+         'The selling price must be strictly positive!'),
+        ('expected_price_positive', 'check (expected_price > 0)',
+         'The expected price must be strictly positive!'),
+    ]
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -86,3 +94,12 @@ class Property(models.Model):
                     'Cancelled properties can not be sold')
             record.state = 'sold'
         return True
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_price(self):
+        for record in self:
+            if record.state != 'sold' and record.selling_price == 0:
+                continue
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                raise exceptions.ValidationError(
+                    'The selling price must be at least 90% of the expected price')

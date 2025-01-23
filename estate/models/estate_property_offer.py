@@ -19,6 +19,11 @@ class PropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute='_compute_date_deadline', inverse='_inverse_dead_deadline')
 
+    _sql_constraints = [
+        ('price_positive', 'check (price > 0.0)',
+         'The offer price must be strictly positive!')
+    ]
+
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -40,7 +45,7 @@ class PropertyOffer(models.Model):
             if record.state != 'accepted':
                 record.property_id.selling_price = record.price
                 record.property_id.buyer_id = record.partner_id
-                record.property_id.state = 'sold'
+                record.property_id.state = 'offer_accepted'
                 record.state = 'accepted'
             else:
                 raise exceptions.UserError(
