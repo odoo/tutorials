@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+product_model_kit,product_model_kit,model_product_template,base.group_user,1,1,1,0
+access_product_kit,access_product_kit,model_product_kit,base.group_user,1,1,1,1
+access_product_kit_lines,access_product_kit_lines,model_product_kit_lines,base.group_user,1,1,1,1
+access_sale_order_sublines,access_sale_order_sublines,model_sale_order_line_subline,base.group_user,1,1,1,0
+sell_product_kit.access_product_sub_product,access_product_sub_product,sell_product_kit.model_product_sub_product,base.group_user,1,1,1,1

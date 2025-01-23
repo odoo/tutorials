@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="new_product_kit" model="ir.actions.act_window"> <!--Id of the action-->
+        <field name="name">Product Kit</field> <!--name of action-->
+        <field name="res_model">product.kit</field> <!--models reference models/estate_property.py > _name-->
+        <field name="view_mode">list,form,kanban</field> <!-- shows default list, form, kanban views-->
+    </record>
+
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">product kit Form View</field>
+        <field name="model">product.kit</field> 
+        <field name="arch" type="xml">
+           <form string="form_view">
+                <h4>SUB PRODUCTS</h4>
+                <field name="product_kit_line_ids" >
+                    <list create="false" delete="false" editable="bottom">
+                        <field name="product_id" readonly="1"></field>
+                        <field name="quantity"></field>
+                        <field name="price"></field>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_add_kit_values_to_product" string="Confirm" class='btn btn-primary' type="object"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+           </form>
+
+        </field>
+
+    </record>
+
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sub_product_action" model="ir.actions.act_window"> 
+        <field name="name">Open Sub Product Wizrd</field> 
+        <field name="res_model">product.sub.product</field> 
+        <field name="view_mode">list</field> 
+    </record>
+
+    <record id="product_sub_product_view_list" model="ir.ui.view">
+        <field name="name">product.sub.product</field>
+        <field name="model">product.sub.product</field>
+        <field name="arch" type="xml">
+            <list>
+                <!-- <field name="product_id" >
+                    <field name="name"></field>
+                </field> -->
+            </list>
+        </field>
+    </record>
+
+</odoo>
