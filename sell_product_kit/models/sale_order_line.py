@@ -9,16 +9,30 @@ class InheritedProductTemplate(models.Model):
         depends=['product_id']
     )
     
+    prev_filled_unit_price=fields.Float()
+    
+    linked_product_kit_id = fields.Many2one(
+        string="Linked product kit Line",
+        comodel_name='sale.order.line',
+        ondelete='cascade',
+        domain="[('order_id', '=', order_id)]",
+        copy=False,
+        index=True,
+    )
+    linked_product_kit_ids = fields.One2many(
+        string="Linked product kit Lines", comodel_name='sale.order.line', inverse_name='linked_product_kit_id',
+    )
+    
     is_sub_line= fields.Boolean(
         default=False,
         compute="_compute_is_sub_line",
         store=True
     )
     
-    @api.depends('linked_line_id')
+    @api.depends('linked_product_kit_id')
     def _compute_is_sub_line(self):
         for record in self:
-            if(record.linked_line_id):
+            if(record.linked_product_kit_id):
                 record.is_sub_line= True
 
     def action_open_add_kit_wizard(self):

@@ -14,6 +14,10 @@
             <xpath expr="//field[@name='order_line']/list" position="attributes">
                 <attribute name="decoration-muted">is_sub_line</attribute>
             </xpath>
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="print_in_report"/>
+            </xpath>
         </field>
     </record>
 
