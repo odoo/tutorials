@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 class TestModel(models.Model):
     _name = "estate_property"
     _description = "estate property description"
+    _order = "id desc"
 
     name = fields.Char('Estate Name', required=True)
 
@@ -14,6 +15,7 @@ class TestModel(models.Model):
     users_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
 
     tags_ids = fields.Many2many('estate_property_tag', string='Tags')
+
 
     offers_ids = fields.One2many('estate_property_offer', 'property_id', string='Offers')
 

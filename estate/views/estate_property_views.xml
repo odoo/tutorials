@@ -12,14 +12,14 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Channel" decoration-success="state=='offer received' or state=='offer accepted'" decoration-muted="state=='sold'" decoration-bf="state=='offer accepted'">
                 <field name="name" width="200px"/>
                 <field name="postcode" width="100px"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="date_availability" optional= "hide"/>
                 <field name="property_type_id" width="200px"/>
                 <field name="tags_ids" width="200px" widget="many2many_tags"/>
             </list>
@@ -32,16 +32,17 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <header>
-                    <button name="sold_button_action" type="object" string="SOLD"/>
-                    <button name="cancel_button_action" type="object" string="CANCEL"/>
+                    <button name="sold_button_action" type="object" string="SOLD" invisible="state == 'sold' or state == 'cancelled'"/>
+                    <button name="cancel_button_action" type="object" string="CANCEL" invisible="state == 'sold' or state == 'cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted, sold"/>
                 </header>
                 <sheet>
                     <group>
 
                         <field name="name"/>
                         <group>
-                            <field name="tags_ids" widget="many2many_tags"/>
-                            <field name="property_type_id"/>
+                            <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="property_type_id" options="{'no_create': true, 'no_open': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -60,18 +61,18 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
-"
+                                <field name="garden_area" invisible="garden == False"/>
+                                <field name="garden_orientation" invisible="garden == False"/>
                                 <field name="state"/>
-"
+
+
                                 <field name="total_area"/>
                             </group>
                         </page>
 
                         <page string="Offers">
                             <group>
-                                <field name="offers_ids"/>
+                                <field name="offers_ids" readonly="state == 'offer accepted' or state == 'sold' or state == 'cancelled'"/>
                             </group>
                         </page>
 
@@ -97,11 +98,11 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" select="multi"/>
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <separator />
-                <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]" help="something helpful"/>
+                <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]" help="A property is available either if it is new or if the offer has only been received"/>
                 <separator />
                 <group string="Group By">
                     <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
