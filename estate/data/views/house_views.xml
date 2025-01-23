@@ -12,6 +12,12 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <record id="estate.house_tag_action" model="ir.actions.act_window">
+        <field name="name">House Tag</field>
+        <field name="res_model">estate.house_tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="estate_house_tree" model="ir.ui.view">
         <field name="name">estate_house_tree</field>
         <field name="model">house</field>
@@ -24,6 +30,7 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" string="Available From" />
+                <field widget="many2many_tags" name="house_tag_ids" string="Tags" />
             </list>
         </field>
     </record>
@@ -37,6 +44,9 @@
                     <h1>
                         <field name="name" />  
                     </h1>
+                    <h3>
+                        <field widget="many2many_tags" name="house_tag_ids" />
+                    </h3>
                     <group>
                         <group>
                             <field name="house_type" />
