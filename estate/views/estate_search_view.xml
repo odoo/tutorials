@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+ <record id="estate_property_view_search" model="ir.ui.view">
+    <field name="name">estate.property.view.search</field>
+    <field name="model">estate.property</field>
+    <field name="type">search</field>
+    <field name="arch" type="xml">
+
+        <search string="Tests">
+            <field name="name"/>
+            <field name="bedrooms"/>
+            <field name="description"/>
+            <field name ="postcode"/>
+            <field name ="date_availability"/>
+            <field name ="expected_price"/>
+            <field name ="selling_price"/>
+            <field name ="living_area"/>
+            <group expand="1" string="Group By">
+            <filter string="BedRooms" name="bedrooms" context="{'group_by':'bedrooms', 'residual_visible':True}"/>
+            </group>
+            <filter string="Postcode" name="bedrooms" context="{'group_by':'postcode', 'residual_visible':True}"/>
+            <filter string="With Garden" name="garden" domain="[('garden', '=', True)]"/>
+            <filter string="Available" name="garden" domain="[('state', 'in',['New','Offer Received'] )]"/>
+
+
+        </search>
+    </field>
+ </record>
+
+
+</odoo>
