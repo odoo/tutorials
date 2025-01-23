@@ -27,6 +27,9 @@ class house(models.Model):
         ('Sold', 'Sold'),
         ('Cancelled', 'Cancelled'),
     ], default='New', required=True)
+    buyer_id = fields.Many2one('res.users', string='Buyer')
+    seller_id = fields.Many2one('res.users', string='Salesperson')
+
     
     def get_availability_date(self):
         current_date = fields.Date.today()
