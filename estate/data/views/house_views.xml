@@ -45,11 +45,11 @@
                         <field name="name" />  
                     </h1>
                     <h3>
-                        <field widget="many2many_tags" name="house_tag_ids" />
+                        <field widget="many2many_tags" name="house_tag_ids"/>
                     </h3>
                     <group>
                         <group>
-                            <field name="house_type" />
+                            <field name="house_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>

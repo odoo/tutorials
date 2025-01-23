@@ -29,7 +29,7 @@ class house(models.Model):
     ], default='New', required=True)
     buyer_id = fields.Many2one('res.users', string='Buyer')
     seller_id = fields.Many2one('res.users', string='Salesperson')
-    house_type = fields.Many2one('estate.house_type', string='Property Type')
+    house_type_id = fields.Many2one('estate.house_type', string='Property Type')
     house_tag_ids = fields.Many2many('estate.house_tag')
 
     
