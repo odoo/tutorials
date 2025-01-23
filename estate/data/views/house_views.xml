@@ -6,6 +6,12 @@
         <field name="view_mode">list,form,kanban</field>
     </record>
 
+    <record id="estate.house_type_action" model="ir.actions.act_window">
+        <field name="name">House Type</field>
+        <field name="res_model">estate.house_type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="estate_house_tree" model="ir.ui.view">
         <field name="name">estate_house_tree</field>
         <field name="model">house</field>
@@ -33,6 +39,7 @@
                     </h1>
                     <group>
                         <group>
+                            <field name="house_type" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
