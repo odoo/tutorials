@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, models, fields
 
 class house(models.Model):
     _name = 'house'
@@ -32,8 +32,13 @@ class house(models.Model):
     house_type_id = fields.Many2one('estate.house_type', string='Property Type')
     house_tag_ids = fields.Many2many('estate.house_tag')
     offers_ids = fields.One2many('estate.house_offer', 'property_id')
-
+    total_area = fields.Float(compute='_calculate_total_area')
     
     def get_availability_date(self):
         current_date = fields.Date.today()
         return fields.Date.add(current_date, month=3)
+    
+    @api.depends("living_area", "garden_area")
+    def _calculate_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
