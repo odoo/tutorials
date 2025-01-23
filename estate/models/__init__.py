@@ -1,1 +1,1 @@
-from . import house
+from . import house, house_type
