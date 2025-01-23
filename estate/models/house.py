@@ -31,6 +31,7 @@ class house(models.Model):
     seller_id = fields.Many2one('res.users', string='Salesperson')
     house_type_id = fields.Many2one('estate.house_type', string='Property Type')
     house_tag_ids = fields.Many2many('estate.house_tag')
+    offers_ids = fields.One2many('estate.house_offer', 'property_id')
 
     
     def get_availability_date(self):
