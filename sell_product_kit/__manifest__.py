@@ -10,7 +10,8 @@
         'views/new_product_kit_view.xml',
         'wizard/product_sub_product_wizard.xml',
         'views/sale_order_view.xml',
-        'report/sale_order_document_report.xml'
+        'report/sale_order_document_report.xml',
+        'report/sale_portal_templates_report.xml'
     ],
     'license':'LGPL-3'
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+    <!--report to show sublines while clicking on setting>print/Quatation-order button in QO-->
      <template id="sale_order_document_report_inherited" inherit_id="sale.report_saleorder_document">
         <xpath expr="//tbody/t/tr" position="attributes">
             <attribute name="t-if">(doc.print_in_report) or (not line.is_sub_line)</attribute>

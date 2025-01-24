@@ -57,10 +57,38 @@ class ProductKit(models.TransientModel):
 
             sale_order_line.update({
                 'price_subtotal': sale_order_line.price_subtotal+sub_product_total
+            })    
+        else:  #TODO TO UPDATE THE LINE'S PRICE AND QUNATITY
+            new_subtotal= sale_order_line.price_subtotal
+            #remove the old price and add new price;
+            # formula==> new_subtotal = new_subtotal - (old_qty*price_pu) + (new_qty*price_pu)
+            # to update the linked_kit_lines details for next time
+            
+            old_price=0
+            for old_line in sale_order_line.linked_product_kit_ids:
+                old_price+= old_line.product_uom_qty * old_line.prev_filled_unit_price
+            
+            incomming_price=0
+            for new_line in template_sub_products:
+                incomming_price+= new_line.quantity * new_line.price
+            
+            new_subtotal= new_subtotal - old_price + incomming_price
+            
+            for old_line in sale_order_line.linked_product_kit_ids:
+                for new_line in template_sub_products:
+                    if(old_line.product_id.id == new_line.product_id.id):
+                        old_line.update({
+                            'prev_filled_unit_price': new_line.price,
+                            'product_uom_qty': new_line.quantity,
+                            'price_unit':0
+                        })
+                        breakpoint()
+    
+            sale_order_line.update({
+                'price_subtotal': new_subtotal
             })
-            template_sub_products.unlink()
-        #TODO TO UPDATE THE LINE'S PRICE AND QUNATITY
-        
+            
+        template_sub_products.unlink()
         return True
 
 class ProductKitLines(models.TransientModel):

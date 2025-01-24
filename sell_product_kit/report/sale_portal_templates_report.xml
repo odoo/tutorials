@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--report whether to show sublines while clicking on preview button in QO-->
+     <template id="sale_portal_templates_report_inherited" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//table[@id='sales_order_table']/tbody/t/tr" position="attributes">
+            <attribute name="t-if">(sale_order.print_in_report) or (not line.is_sub_line)</attribute>
+            <!-- do not show kit product kit sub lines-->
+        </xpath>
+     </template>
+
+</odoo>
