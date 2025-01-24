@@ -1,1 +1,1 @@
-from . import product_sub_product
+from . import product_kit_model

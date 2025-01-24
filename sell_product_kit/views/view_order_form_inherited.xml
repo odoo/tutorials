@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="inherited_sale_order_view_form" model="ir.ui.view">
+    <record id="view_order_form_inherited" model="ir.ui.view">
         <field name="name">inherited.sale.order.view.form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
 
         <field name="arch" type="xml">
             <xpath expr="//field[@name='product_template_id']" position="after">
-                <button name="action_open_add_kit_wizard" type="object" class="btn-secondary" string="Add Kits" invisible="not is_kit_product or state in ('sale')">add kits</button>
+                <button name="action_open_add_kit_wizard" type="object" class="btn-secondary" string="Add/Update Kit" invisible="not is_kit_product or state in ('sale')"/>
             </xpath>
 
             <xpath expr="//field[@name='order_line']/list" position="attributes">

@@ -6,10 +6,9 @@
     'depends': ['product', 'sale','sale_management'],
     'data': [
         'security/ir.model.access.csv',
-        'views/product_kit_view_form.xml',
-        'views/new_product_kit_view.xml',
-        'wizard/product_sub_product_wizard.xml',
-        'views/sale_order_view.xml',
+        'views/product_template_form_view_inherited.xml',
+        'wizard/product_kit_view_wizrd.xml',
+        'views/view_order_form_inherited.xml',
         'report/sale_order_document_report.xml',
         'report/sale_portal_templates_report.xml'
     ],
