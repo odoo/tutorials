@@ -13,6 +13,10 @@ class WarrantyConfiguration(models.Model):
     percentage = fields.Float()
     years = fields.Integer(default=1)
 
+    _sql_constraints = [
+        ("name", "unique(name)", "Warranty name mustr be unique"),
+    ]
+
     @api.onchange("percentage")
     def _onchange_percentage(self):
         for record in self:
