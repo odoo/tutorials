@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_add_warranty_view_form" model="ir.ui.view">
+        <field name="name">product.add.warranty.view.form</field>
+        <field name="model">product.add.warranty</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="list_warranty_ids" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>
