@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="website_calendar_index_topbar_mode_filter" name="Filter by Mode" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//t[@t-call='website.website_search_box_input']" position="before">
+            <t t-set="selected_mode" t-value="mode" />
+            <div class="dropdown d-none d-lg-block">
+                <a href="#" role="button" class="btn dropdown-toggle btn-light" data-bs-toggle="dropdown" title="Filter by Mode">
+                    Mode <span t-if="selected_mode != 'all'" t-out="1" class="badge bg-primary ms-1"/>
+                </a>
+                <div class="dropdown-menu">
+                    <span t-att-data-post="'/appointment?%s' % keep_query('*', mode='all')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if selected_mode == 'all' else ''}">
+                        All
+                    </span>
+                    <span t-att-data-post="'/appointment?%s' % keep_query('*', mode='online')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if selected_mode == 'online' else ''}">
+                        Online
+                    </span>
+                    <span t-att-data-post="'/appointment?%s' % keep_query('*', mode='offline')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if selected_mode == 'offline' else ''}">
+                        Offline
+                    </span>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="website_calendar_index_topbar_type_filter" name="Filter by Type" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//t[@t-call='website.website_search_box_input']" position="before">
+            <t t-set="selected_type" t-value="type" />
+            <div class="dropdown d-none d-lg-block">
+                <a href="#" role="button" class="btn dropdown-toggle btn-light" data-bs-toggle="dropdown" title="Filter by Type">
+                    Type <span t-if="selected_type != 'all'" t-out="1" class="badge bg-primary ms-1"/>
+                </a>
+                <div class="dropdown-menu">
+                    <span t-att-data-post="'/appointment?%s' % keep_query('*', type='all')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if selected_type == 'all' else ''}">
+                        All
+                    </span>
+                    <span t-att-data-post="'/appointment?%s' % keep_query('*', type='paid')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if selected_type == 'paid' else ''}">
+                        Paid
+                    </span>
+                    <span t-att-data-post="'/appointment?%s' % keep_query('*', type='free')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if selected_type == 'free' else ''}">
+                        Free
+                    </span>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="website_calendar_index_topbar_schedule_filter" name="Filter by Date" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//t[@t-call='website.website_search_box_input']" position="before">
+            <t t-set="selected_schedule" t-value="schedule" />
+            <div class="dropdown d-none d-lg-block">
+                <a href="#" role="button" class="btn dropdown-toggle btn-light" data-bs-toggle="dropdown" title="Filter by Date">
+                    Schedule <span t-if="selected_schedule != 'all'" t-out="1" class="badge bg-primary ms-1"/>
+                </a>
+                <div class="dropdown-menu">
+                    <span t-att-data-post="'/appointment?%s' % keep_query('*', schedule='all')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if selected_schedule == 'all' else ''}">
+                        All
+                    </span>
+                    <span t-att-data-post="'/appointment?%s' % keep_query('*', schedule='resources')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if selected_schedule == 'resources' else ''}">
+                        Resources
+                    </span>
+                    <span t-att-data-post="'/appointment?%s' % keep_query('*', schedule='users')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if selected_schedule == 'users' else ''}">
+                        Users
+                    </span>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
