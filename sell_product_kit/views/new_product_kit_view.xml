@@ -14,7 +14,7 @@
            <form string="form_view">
                 <h4>SUB PRODUCTS</h4>
                 <field name="product_kit_line_ids" >
-                    <list create="false" delete="false" editable="bottom">
+                    <list create="0" delete="0" editable="bottom">
                         <field name="product_id" readonly="1"></field>
                         <field name="quantity"></field>
                         <field name="price"></field>

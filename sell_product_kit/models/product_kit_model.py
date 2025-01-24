@@ -3,7 +3,7 @@ from odoo import models, fields, api
 class ProductKit(models.TransientModel):
     _name="product.kit"
     
-    product_kit_line_ids= fields.Many2many(comodel_name='product.kit.lines')
+    product_kit_line_ids= fields.One2many(comodel_name='product.kit.lines', inverse_name="product_kit_id")
     
     @api.model
     def default_get(self, fields_list):
@@ -13,15 +13,18 @@ class ProductKit(models.TransientModel):
         defaults = super().default_get(fields_list)
         product_kit_line_ids=[]
         
-        if(len(sale_order_line_id.linked_product_kit_ids)>0):
-            for c_pro in sale_order_line_id.linked_product_kit_ids:
-                product_kit_line_ids.append({
-                    'product_id':c_pro.product_id.id,
-                    'quantity': c_pro.product_uom_qty,
-                    'price': c_pro.prev_filled_unit_price
-                })
-        else:
-            for c_pro in product_template.sub_products_ids:
+        is_kit_line_exits={}
+        
+        #Handling subproduct added later case in future case for that Taking union of existing and not existing line()
+        for c_pro in sale_order_line_id.linked_product_kit_ids:
+            product_kit_line_ids.append({
+                'product_id':c_pro.product_id.id,
+                'quantity': c_pro.product_uom_qty,
+                'price': c_pro.prev_filled_unit_price
+            })
+            is_kit_line_exits[c_pro.product_id.id]=True
+        for c_pro in product_template.sub_products_ids:
+            if(not is_kit_line_exits.get(c_pro.id, False)):
                 product_kit_line_ids.append({
                     'product_id': c_pro.id,
                     'quantity': 1,
@@ -58,7 +61,7 @@ class ProductKit(models.TransientModel):
             sale_order_line.update({
                 'price_subtotal': sale_order_line.price_subtotal+sub_product_total
             })    
-        else:  #TODO TO UPDATE THE LINE'S PRICE AND QUNATITY
+        else:
             new_subtotal= sale_order_line.price_subtotal
             #remove the old price and add new price;
             # formula==> new_subtotal = new_subtotal - (old_qty*price_pu) + (new_qty*price_pu)
@@ -82,7 +85,6 @@ class ProductKit(models.TransientModel):
                             'product_uom_qty': new_line.quantity,
                             'price_unit':0
                         })
-                        breakpoint()
     
             sale_order_line.update({
                 'price_subtotal': new_subtotal
@@ -94,6 +96,7 @@ class ProductKit(models.TransientModel):
 class ProductKitLines(models.TransientModel):
     _name="product.kit.lines"
     
+    product_kit_id= fields.Many2one(comodel_name="product.kit")
     product_id= fields.Many2one(string="product", comodel_name='product.product')
     quantity= fields.Float(string="quantity")
     price= fields.Float(string="price")
