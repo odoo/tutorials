@@ -8,5 +8,3 @@ class ProductSubProduct(models.TransientModel):
     product_id= fields.Many2one(string="Product", comodel_name="product.product")
     quantity= fields.Float(string="Quantity")
     price= fields.Float(string="Price")
-    
-    

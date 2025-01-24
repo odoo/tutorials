@@ -7,4 +7,3 @@ class SaleOrderLineSubline(models.Model):
     product_id=fields.Many2one(comodel_name="product.product")
     quantity=fields.Integer()
     price=fields.Float()
-    

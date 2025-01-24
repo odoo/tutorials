@@ -48,4 +48,3 @@ class InheritedProductTemplate(models.Model):
                 'sale_order_line_id': self.id
             }
         }
-    
