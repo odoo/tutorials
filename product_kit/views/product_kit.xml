@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   <record id="product_kit_view" model="ir.ui.view">
+        <field name="name">sales permission</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_general']" position="inside">
+                <field name="is_kit" /> 
+                <field name="sub_products_kit_ids" widget="many2many_tags" invisible="is_kit==False" />
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="product_property_button_view" model="ir.ui.view">
+        <field name="name">Product Property Button View</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//list/field[@name='product_uom_qty']" position="before">
+               <button 
+                    name="action_product_kit_wizard"
+                    type="object"
+                    class="btn btn-primary" 
+                    string="Add Sub Product" 
+                    optional="show" 
+                    invisible="state in ['sale', 'cancel'] or not is_kit"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_property_button_view" model="ir.ui.view">
+        <field name="name">Product Property Button View</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//list/field[@name='product_uom_qty']" position="before">
+               <button 
+                    name="action_product_kit_wizard"
+                    type="object"
+                    class="btn btn-primary" 
+                    string="Add Sub Product" 
+                    optional="show" 
+                    invisible="state in ['sale', 'cancel'] or not is_kit"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="print_report_button_view" model="ir.ui.view">
+        <field name="name">sales permission</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='order_details']" position="inside">
+                <field name="print_in_report" /> 
+            </xpath>
+        </field>
+    </record>
+</odoo>
