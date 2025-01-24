@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import date, timedelta
 
 class EstatePropertyOffer(models.Model):
@@ -31,3 +31,14 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - record.create_date).days
             else:
                 record.validity = (record.date_deadline - fields.Date.today()).days
+
+    def action_reject_offer(self):
+        self.status = "refused"
+    def action_accept_offer(self):
+        if not self.property_id.get_status():
+            self.status = "accepted"
+            self.property_id.set_buyer(self.partner_id)
+            self.property_id.set_status("sold")
+            self.property_id.set_sold_price(self.price)
+        else:
+            raise exceptions.UserError("This property has already been sold !")

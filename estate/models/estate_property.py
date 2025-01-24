@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import date, timedelta
 class EstateProperty(models.Model):
 
@@ -62,3 +62,24 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def cancel_property(self):
+        for record in self:
+            if record.state == "sold":
+                raise exceptions.UserError("A sold property can't be cancelled")
+            else:
+                record.state = "cancelled"
+    def sold_property(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise exceptions.UserError("A cancelled property can't be sold")
+            else:
+                record.state = "sold"
+    def set_buyer(self, buyer):
+        self.buyer_id=buyer
+    def set_status(self, status):
+        self.state = status
+    def set_sold_price(self, price):
+        self.selling_price = price
+    def get_status(self):
+        return self.state

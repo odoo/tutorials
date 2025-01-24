@@ -25,6 +25,10 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <button name="cancel_property" string="Cancel" type="object"/>
+                        <button name="sold_property" string="Sold" type="object" />
+                    </header>
                     <sheet>
                             <div class="oe_title">
                                 <h1>
