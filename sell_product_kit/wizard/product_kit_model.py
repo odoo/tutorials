@@ -11,42 +11,36 @@ class ProductKit(models.TransientModel):
         sale_order_line_id = self.env['sale.order.line'].browse(self.env.context.get('sale_order_line_id'))
         
         defaults = super().default_get(fields_list)
-        product_kit_line_ids=[]
-        
-        is_kit_line_exits={}
+        product_kit_line_ids={}
         
         #Handling subproduct added later case in future case for that Taking union of existing and not existing line()
         for c_pro in sale_order_line_id.linked_product_kit_ids:
-            product_kit_line_ids.append({
+            product_kit_line_ids[c_pro.product_id.id]= {
                 'product_id':c_pro.product_id.id,
                 'quantity': c_pro.product_uom_qty,
                 'price': c_pro.prev_filled_unit_price
-            })
-            is_kit_line_exits[c_pro.product_id.id]=True
+            }
+            # is_kit_line_exits[c_pro.product_id.id]=True
         for c_pro in product_template.sub_products_ids:
-            if(not is_kit_line_exits.get(c_pro.id, False)):
-                product_kit_line_ids.append({
+            if(c_pro.id not in product_kit_line_ids.keys()):
+                product_kit_line_ids[c_pro.id]= {
                     'product_id': c_pro.id,
                     'quantity': 1,
                     'price': 0
-                })
-            
-        line= self.env['product.kit.lines'].create(product_kit_line_ids)
-        product_kit_line_ids= line
-            
-        defaults['product_kit_line_ids']=product_kit_line_ids
+                }
+
+        defaults['product_kit_line_ids'] = self.env['product.kit.lines'].create(list(product_kit_line_ids.values()))
         return defaults
 
     #adding Sale kit product into sale order line
     def action_add_kit_values_to_product(self):
         sale_order_line= self.env['sale.order.line'].search([('id','=',self.env.context.get('active_id'))])
-        template_sub_products=self.product_kit_line_ids
         
         sub_product_total= 0
         
         #is no sale.order.line exist related to the current product order line only then create else update
         if(len(sale_order_line.linked_product_kit_ids)==0):    
-            for prod in template_sub_products:
+            for prod in self.product_kit_line_ids:
                 self.env['sale.order.line'].create({
                     'linked_product_kit_id': sale_order_line.id,
                     'order_id': sale_order_line.order_id.id,
@@ -72,13 +66,13 @@ class ProductKit(models.TransientModel):
                 old_price+= old_line.product_uom_qty * old_line.prev_filled_unit_price
             
             incomming_price=0
-            for new_line in template_sub_products:
+            for new_line in self.product_kit_line_ids:
                 incomming_price+= new_line.quantity * new_line.price
             
             new_subtotal= new_subtotal - old_price + incomming_price
             
             for old_line in sale_order_line.linked_product_kit_ids:
-                for new_line in template_sub_products:
+                for new_line in self.product_kit_line_ids:
                     if(old_line.product_id.id == new_line.product_id.id):
                         old_line.update({
                             'prev_filled_unit_price': new_line.price,
@@ -90,7 +84,7 @@ class ProductKit(models.TransientModel):
                 'price_subtotal': new_subtotal
             })
             
-        template_sub_products.unlink()
+        self.product_kit_line_ids.unlink()
         return True
 
 class ProductKitLines(models.TransientModel):

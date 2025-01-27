@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <record id="new_product_kit" model="ir.actions.act_window"> <!--Id of the action-->
-        <field name="name">Product Kit</field> <!--name of action-->
-        <field name="res_model">product.kit</field> <!--models reference models/estate_property.py > _name-->
-        <field name="view_mode">list,form,kanban</field> <!-- shows default list, form, kanban views-->
-    </record>
-
-    <record id="estate_property_view_form" model="ir.ui.view">
+    <record id="product_kit_view_form" model="ir.ui.view">
         <field name="name">product kit Form View</field>
         <field name="model">product.kit</field> 
         <field name="arch" type="xml">
