@@ -8,13 +8,20 @@
     </record>
 
     <record id="estate_property_type_view_form" model="ir.ui.view">
-        <field name="name">estate.property.type.form</field>
+        <field name="name">estate.property.type.view.form</field>
         <field name="model">estate_property_type</field>
         <field name="arch" type="xml">
             <form string="Test">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <button name="%(estate_property_offer_action)d" type="action" string="Offers" class="oe_stat_button" icon="fa-money">
+                                <field name="offer_count" readonly="1"/>
+                            </button>
+                        </group>
                         <field name="property_ids">
                             <list>
 

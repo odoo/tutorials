@@ -21,6 +21,8 @@ class OfferModel(models.Model):
     validity = fields.Integer('Validity (days)', default=7)
     date_deadline = fields.Date('Date_deadline', compute="_compute_deadline", inverse="_inverse_deadline")
 
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
+
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
@@ -52,6 +54,33 @@ class OfferModel(models.Model):
             record.property_id.selling_price = 0.0 
 
         record.status = 'refused'
+
+    @api.model
+    def create(self, vals):
+        property_id = vals.get('property_id')
+
+        property_record = self.env['estate_property'].browse(property_id)
+
+        if property_record:
+            property_record.state = 'offer received'
+        
+        new_offer_price = None
+        
+        if 'price' in vals:
+            new_offer_price = vals['price']
+
+        if new_offer_price is not None:
+            existing_offers = self.env['estate_property_offer'].search([
+                ('property_id', '=', property_id),
+                ('price', '>=', new_offer_price)
+            ])
+        
+        if existing_offers:
+                raise UserError(f"The new offer price ({new_offer_price}) is lower than an existing offer.")
+
+        return super().create(vals)
+
+
 
     _sql_constraints = [
         ('check_positive_offer', 'CHECK(price >= 0)',

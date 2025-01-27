@@ -1,15 +1,51 @@
 <?xml version="1.0"?>
 
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name"> Estate action</field>
-        <field name="res_model">estate_property</field>
-        <field name="view_mode">list,form</field>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by='property_type_id' records_draggable='False'>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <strong>
+                                <field name="name"/>
+                                <field name="state" column_invisible="True"/>
+                            </strong>
+
+                            <div>
+                                <span>Expected Price: </span>
+                                <field name="expected_price"/>
+                            </div>
+                            <div t-if="record.state.raw_value=='offer received'">
+
+                                <div>
+                                    <span>Best Price: </span>
+                                    <field name="best_price"/>
+                                </div>
+                            </div>
+                            <div t-if="record.state.raw_value=='offer accepted'">
+
+                                <div>
+                                    <span>Selling Price: </span>
+                                    <field name="selling_price"/>
+                                </div>
+                            </div>
+
+                            <div>
+                                <field name="tags_ids"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
     </record>
 
-
     <record id="estate_property_view_list" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <list string="Channel" decoration-success="state=='offer received' or state=='offer accepted'" decoration-muted="state=='sold'" decoration-bf="state=='offer accepted'">
@@ -27,7 +63,7 @@
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Test">
@@ -90,7 +126,7 @@
     </record>
 
     <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <search string="Tests">
@@ -98,17 +134,25 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area" select="multi"/>
+                <field name="living_area" filter_domain="[('living_area', '&gt;', self)]"/>
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <separator />
-                <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]" help="A property is available either if it is new or if the offer has only been received"/>
+                <filter name="date_availability" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]" help="A property is available either if it is new or if the offer has only been received"/>
                 <separator />
                 <group string="Group By">
                     <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name"> Estate property action</field>
+        <field name="res_model">estate_property</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_id" ref="estate_property_view_kanban"/>
+        <field name="context">{'search_default_date_availability': True}</field>
     </record>
 
 </odoo>

@@ -3,7 +3,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 
-class TestModel(models.Model):
+class EstateProperty(models.Model):
     _name = "estate_property"
     _description = "estate property description"
     _order = "id desc"
@@ -86,6 +86,12 @@ class TestModel(models.Model):
             if record.state == "sold":
                 raise UserError('Sold property cannot be cancelled')
             record.state = "cancelled"
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(f"You cannot delete the property {record.name} unless its state is 'New' or 'Cancelled'.'")
 
     _sql_constraints = [
         ('check_positive_price', 'CHECK(expected_price >= 0)',
