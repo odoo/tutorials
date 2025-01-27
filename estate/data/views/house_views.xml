@@ -139,6 +139,10 @@
                         <field name="partner_id" string="Partner" />
                         <field name="status" />
                     </group>
+                    <group>
+                        <field name="validity" />
+                        <field name="date_deadline" string="Offer Deadline" />
+                    </group>
                 </sheet>
             </form>
         </field>
