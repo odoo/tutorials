@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="budget_budget_action" model="ir.actions.act_window">
+        <field name="name">budget.budget</field>
+        <field name="res_model">budget.budget</field>
+        <field name="view_mode">kanban,form</field> 
+         <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define new Budget
+            </p>
+            <p>
+                Use options specified in form to list Budget
+            </p>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="budget_budget_kanban_view" model="ir.ui.view">
+        <field name="name">budget.budget.kanban</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <kanban 
+                on_create="budget_management.budget_wizard_action"
+                action="action_budget_line_form" type="object">
+                <templates>
+                    <t t-name="menu">
+                         <div class="container">
+                            <div class="row">
+                                <div name="card_menu_view" class="col-6">
+                                    <div role="menuitem">
+                                        <a name="action_budget_form_view" type="object">Configuration</a>
+                                        <field name="con_color" widget="kanban_color_picker"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>   
+                    <t t-name="card">
+                        <div>
+                            <div>
+                                <text>Name : </text>
+                                <field name="name"></field>
+                            </div>
+                            <div>
+                                <field name="period_start_date" string="Planned Date" widget="daterange" options='{"end_date_field": "period_end_date", "always_range": "1"}' required="period_start_date or period_end_date" />
+                                <field name="period_end_date" invisible="1" required="period_start_date"/>
+                            </div>
+                        </div>
+                        <footer>
+                            <div class="d-flex ms-auto align-items-center">
+                                <field name="user_id" widget="many2one_avatar_user" class="me-1"/>
+                            </div>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="budget_budget_form_view" model="ir.ui.view">
+        <field name="name">budget.budget.form</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <form>
+            <div class="alert alert-warning p-2 mb-3" invisible="is_warning==False" role="alert">
+                <strong>Warning:</strong> achieved amount is greater than its budget amount in the budget line.
+            </div>
+             <header>
+                    <!-- <button name="action_to_draft" class="btn btn-primary" type="object" string="draft" invisible="state not in ['draft']" /> -->
+                    <button name="action_to_conform" class="btn btn-primary" type="object" string="conform" invisible="state in ['done', 'conformed','revised']"/>
+                    <button name="action_to_revised" class="btn btn-primary" type="object" string="revised" invisible="state in ['draft', 'revised', 'done']"/>
+                    <button name="action_to_done" class="btn btn-primary" type="object" string="done" invisible="state in ['done','revised']"/>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,conformed,revised,done" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="state in ['revised']"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="user_id" readonly="state in ['revised']"></field>
+                            <field name="company_id" readonly="state in ['revised']"></field>
+                        </group>
+                        <group>
+                            <field name="period_start_date" string="Planned Date" 
+                                widget="daterange" 
+                                options='{"end_date_field": "period_end_date", "always_range": "1"}' 
+                                required="period_start_date or period_end_date" readonly="state in ['revised']"/>
+                            <field name="over_budget" readonly="state not in ['draft']"></field>
+                        </group>
+                    </group>
+                     <notebook>
+                        <page name="Budget Lines" string="Budget Lines" >
+                            <field name="budget_line_ids" >
+                                <list editable="bottom">
+                                    <field name="name" />
+                                    <field name="analytic_account_id" />
+                                    <field name="budget_amount" />
+                                    <field name="archived_amount" />
+                                    <field name="progress_percentage" widget="progressbar" />
+                                    <button type="object" name="action_open_budget_entries" string="View" icon="fa-arrow-circle-o-right" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+</odoo>

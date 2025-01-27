@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="analytical_account_line_view" model="ir.actions.act_window">
+        <field name="name">acount.analytic.line</field>
+        <field name="res_model">account.analytic.line</field>
+        <field name="view_mode">list,form</field> 
+    </record>
+
+</odoo>

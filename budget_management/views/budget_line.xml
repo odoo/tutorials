@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="act_budget_lines_view" model="ir.actions.act_window" >
+        <field name="name">Budget Lines</field>
+        <field name="res_model">budget.line</field>
+        <field name="view_mode">list,form,pivot,graph,gantt</field>
+        <field name="domain">[('budget_id', '=', active_id)]</field>
+    </record>
+
+    <!-- List View -->
+     <record id="view_budget_line_tree" model="ir.ui.view" >
+        <field name="name">budget.line.list</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <list string="Budget Lines" >
+                <field name="name" />
+                <field name="analytic_account_id" />
+                <field name="budget_amount" />
+                <field name="archived_amount" />
+                <field name="progress_percentage" widget="progressbar" />
+                <button type="object" name="action_open_budget_entries" string="View" icon="fa-arrow-circle-o-right" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="budget_line_view_pivot" model="ir.ui.view">
+        <field name="name">budget.line.view.pivot</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget Pivot">
+                <field name="analytic_account_id" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph View -->
+    <record id="budget_line_view_graph" model="ir.ui.view">
+        <field name="name">budget.line.view.graph</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <graph string="Budget Graph" type="bar">
+                <field name="name" type="row"/>
+                <field name="budget_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Gantt View -->
+    <record id="budget_budget_view_gantt" model="ir.ui.view">
+        <field name="name">budget.line.view.gantt</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <gantt string="Budget Gantt" default_group_by="name" color="analytic_account_id" date_start="period_start_date" date_stop="period_end_date">
+                <field name="analytic_account_id" type="row"/>
+            </gantt>
+        </field>
+    </record>
+
+</odoo>
