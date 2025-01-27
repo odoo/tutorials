@@ -111,8 +111,13 @@ class Property(models.Model):
 
     def action_sold(self):
         for record in self:
-            if record.state == 'cancelled':
-                raise exceptions.UserError(
-                    'Cancelled properties can not be sold')
-            record.state = 'sold'
-        return True
+            match record.state:
+                case 'cancelled':
+                    raise exceptions.UserError(
+                        'Cancelled properties can not be sold')
+                case 'offer_accepted':
+                    record.state = 'sold'
+                    return True
+                case _:
+                    raise exceptions.UserError(
+                        'Properties must have an accepted offer in order to be sold')
