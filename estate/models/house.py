@@ -33,6 +33,7 @@ class house(models.Model):
     house_tag_ids = fields.Many2many('estate.house_tag')
     offers_ids = fields.One2many('estate.house_offer', 'property_id')
     total_area = fields.Float(compute='_calculate_total_area')
+    best_price = fields.Float(compute='_calculate_best_price')
     
     def get_availability_date(self):
         current_date = fields.Date.today()
@@ -42,3 +43,17 @@ class house(models.Model):
     def _calculate_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offers_ids")
+    def _calculate_best_price(self):
+        for record in self:
+            record.best_price = max(record.offers_ids.mapped('price'), default=0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if(self.garden):
+            self.garden_area = 100
+            self.garden_orientation = 'N'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
