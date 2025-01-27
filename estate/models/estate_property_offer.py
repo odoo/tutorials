@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
+from odoo.tools.float_utils import float_compare
 from odoo import api, exceptions, fields, models
 
 
@@ -47,8 +48,14 @@ class PropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         offer = super(PropertyOffer, self).create(vals_list)
+
+        if float_compare(offer.price, offer.property_id.best_offer, precision_digits=2) < 0:
+            raise exceptions.UserError(
+                f'The offer must be higher than {offer.property_id.best_offer:0.2f}')
+
         if offer.property_id.state == 'new':
             offer.property_id.write({'state': 'offer_received'})
+
         return offer
 
     def action_accept(self):

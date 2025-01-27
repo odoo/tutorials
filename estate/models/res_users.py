@@ -1,9 +1,8 @@
-# fix the ensuing conflict
-from odoo import models
+from odoo import models, fields
 
 
 class ResUsers(models.Model):
-    _inherit = ""
+    _inherit = "res.users"
 
-    def do_something(self):
-        return True
+    property_ids = fields.One2many('estate.property', 'user_id', domain="[('state', 'in', ['new,offer_received'])]",
+                                   string='Properties')
