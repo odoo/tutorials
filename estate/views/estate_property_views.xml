@@ -7,11 +7,12 @@
         <field name="arch" type="xml">
             <search string="Properties">
                 <field name="name" string="Ttile"/>
+                <field name="state" string="state"/>
                 <field name="postcode" string="Postcode"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
-                <field name="selling_price" string="Selling Price"/>
+                <field name="expected_price" string="Expected Price" optional="hide"/>
+                <field name="bedrooms" string="Bedrooms" optional="hide"/>
+                <field name="living_area" string="Living Area (sqm)" optional="hide"/>
+                <field name="selling_price" string="Selling Price" optional="hide"/>
                 <field name="date_availability" string="Availabe From"/>
                 <separator/>
                 <filter string="Available" name="available" domain="[('state', 'in', ('new','offer_received'))]"/>
@@ -29,9 +30,9 @@
             <list string="Properties">
                 <field name="name" string="Ttile"/>
                 <field name="postcode" string="Postcode"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="expected_price" string="Expected Price" optional="hide"/>
+                <field name="bedrooms" string="Bedrooms" optional="hide"/>
+                <field name="living_area" string="Living Area (sqm)" optional="hide"/>
                 <field name="facades" string="Facades"/>
             </list>
         </field>
@@ -42,6 +43,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
+                <header>
+                    <button name="action_set_cancelled" type="object" string="Cancel"/>
+                    <button name="action_set_sold" type="object" string="Sold"/>
+                    <button name="action_set_new" type="object" string="Rest to New"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" string="Ttile"/>
@@ -51,6 +57,7 @@
                     </div>
                     <group>
                         <group>
+                            <field name="state" string="state"/>
                             <field name="property_type_id" string="Property Type"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Availabe From"/>
@@ -58,7 +65,7 @@
                         <group>
                             <field name="expected_price" string="Expected Price"/>
                             <field name="selling_price" string="Selling Price"/>
-                             <field name="best_price" string="Best Offer"/>
+                            <field name="best_price" string="Best Offer"/>
                         </group>
                     </group>
                     <notebook>
@@ -76,12 +83,12 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name='property_offer_ids' />
+                            <field name='property_offer_ids'/>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="user_id" />
-                                <field name="partner_id" />
+                                <field name="user_id"/>
+                                <field name="partner_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -90,6 +97,7 @@
         </field>
     </record>
 
+    # Define the action and the view modes
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>

@@ -1,9 +1,27 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 from datetime import timedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property data model"
+    _inherit = ['mail.thread']
+
+    #region Constraint
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)',
+         'The expected price of a property MUST be postive.'),
+         ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price of a property MUST be postive.'),
+    ]
+    @api.constrains('expected_price','selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=3):
+                continue
+            if float_compare(value1=record.selling_price, value2=(0.9*record.expected_price),precision_digits=3) == -1:
+                raise ValidationError("Selling price must be at least 90% of the expected price!")
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -67,3 +85,29 @@ class EstateProperty(models.Model):
         self.garden_orientation = 'n' if self.garden else False
 
     #endregion
+
+    # region actions
+    def action_set_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties can not be cancelled!")
+            record.state = 'cancelled'
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancelled properties can not be sold!")
+            record.state = 'sold'
+
+    def action_set_new(self):
+        for record in self:
+            record.state = 'new'
+            self.selling_price = False
+            self.partner_id = False
+
+    def action_offer_accepted(self, offer):
+        if self.state == 'offer_accepted':
+            raise UserError("this property has already an accepted offer!!")
+        self.state = 'offer_accepted'
+        self.selling_price = offer.price
+        self.partner_id = offer.partner_id
