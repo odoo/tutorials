@@ -129,6 +129,8 @@
                 <field name="price" />
                 <field name="partner_id" string="Partner" />
                 <field name="status" />
+                <button name="accept_offer" type="object" icon="fa-check"/>
+                <button name="reject_offer" type="object" icon="fa-ban"/>
             </list>
         </field>
     </record>
