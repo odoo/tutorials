@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import timedelta
 from odoo import api, exceptions, fields, models
 
 
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate property offer'
+    _order = 'price desc'
 
     price = fields.Float()
     state = fields.Selection(copy=False, selection=[
@@ -18,6 +20,8 @@ class PropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute='_compute_date_deadline', inverse='_inverse_dead_deadline')
+    property_type_id = fields.Many2one(
+        related='property_id.property_type_id', store=True)
 
     _sql_constraints = [
         ('price_positive', 'check (price > 0.0)',
@@ -28,21 +32,28 @@ class PropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             if isinstance(record.create_date, fields.Date):
-                record.date_deadline = record.create_date.replace(
-                    day=record.create_date.day+record.validity)
+                record.date_deadline = record.create_date + \
+                    timedelta(days=record.validity)
             else:
                 fields.Date.today()
-                record.date_deadline = fields.Date.today().replace(
-                    day=fields.Date.today().day+record.validity)
+                record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
 
     def _inverse_dead_deadline(self):
         for record in self:
             cd = fields.Date.to_date(record.create_date or fields.Date.today())
-            record.validity = (record.date_deadline - cd).days
+            if record.date_deadline and cd:
+                record.validity = (record.date_deadline - cd).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        offer = super(PropertyOffer, self).create(vals_list)
+        if offer.property_id.state == 'new':
+            offer.property_id.write({'state': 'offer_received'})
+        return offer
 
     def action_accept(self):
         for record in self:
-            if record.state != 'accepted':
+            if record.property_id.state == 'offer_received':
                 record.property_id.selling_price = record.price
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.state = 'offer_accepted'

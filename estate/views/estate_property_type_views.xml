@@ -7,17 +7,46 @@
             <field name="view_mode">list,form</field>
         </record>
 
+        <record id="estate_property_type_view_list" model="ir.ui.view">
+            <field name="name">Estate Property Types</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sequence" widget="handle" />
+                    <field name="name" />
+                </list>
+            </field>
+        </record>
+
         <record id="estate_property_type_view_form" model="ir.ui.view">
             <field name="name">Estate Property</field>
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button name="%(estate_property_offer_action_from_type)d" type="action"
+                                class="oe_stat_button"
+                                icon="fa-money" invisible="offer_count == 0">
+                                <field name="offer_count" string="Offers" widget="statinfo" />
+                            </button>
+                        </div>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" />
                             </h1>
                         </div>
+                        <notebook>
+                            <page name="Properties">
+                                <field name="property_ids">
+                                    <list>
+                                        <field name="name" />
+                                        <field name="expected_price" />
+                                        <field name="state" />
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>

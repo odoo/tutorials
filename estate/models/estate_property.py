@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare
 class Property(models.Model):
     _name = 'estate.property'
     _description = 'Estate properties model'
+    _order = 'id desc'
 
     name = fields.Char('Title', required=True)
     description = fields.Text()
@@ -79,6 +80,21 @@ class Property(models.Model):
             record.best_offer = max(record.mapped(
                 'offer_ids.price'), default=0.0)
 
+    @api.onchange('offer_ids')
+    def _onchange_offer_ids(self):
+        for record in self:
+            if record.state == 'new' and len(record.offer_ids) > 0:
+                record.state = 'offer_received'
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_price(self):
+        for record in self:
+            if record.state != 'sold' and record.selling_price == 0:
+                continue
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                raise exceptions.ValidationError(
+                    'The selling price must be at least 90% of the expected price')
+
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
@@ -94,12 +110,3 @@ class Property(models.Model):
                     'Cancelled properties can not be sold')
             record.state = 'sold'
         return True
-
-    @api.constrains('expected_price', 'selling_price')
-    def _check_price(self):
-        for record in self:
-            if record.state != 'sold' and record.selling_price == 0:
-                continue
-            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
-                raise exceptions.ValidationError(
-                    'The selling price must be at least 90% of the expected price')
