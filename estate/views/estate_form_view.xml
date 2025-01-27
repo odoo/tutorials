@@ -37,12 +37,14 @@
                                 <field name="buyer_id"/>
                                 <field name="salesperson_id"/>
                                 <field name="living_area"/>
+                                <field name="total_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="state"/>
+                                <field name="best_price"/>
                                 </group>
             </page>
             <page string="Other Info">
