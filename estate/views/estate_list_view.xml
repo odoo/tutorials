@@ -8,6 +8,11 @@
 
         <list string="Tests">
             <field name="name"/>
+            <field name="tag_ids" widget="many2many_tags"/>
+            <field name ="offer_ids" widget="many2many_tags"/>
+            <field name="property_type_id"/>
+            <field name="buyer_id"/>
+            <field name="salesperson_id"/>
             <field name="bedrooms"/>
             <field name ="state"/>
             <field name ="garden"/>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+     <record id="estate_offer_view" model="ir.actions.act_window">
+        <field name="name">View property Offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>  

@@ -8,17 +8,21 @@
 
         <search string="Tests">
             <field name="name"/>
+            <field name="property_type_id"/>
             <field name="bedrooms"/>
             <field name="description"/>
             <field name ="postcode"/>
             <field name ="date_availability"/>
             <field name ="expected_price"/>
+            <field name="buyer_id"/>
+            <field name="salesperson_id"/>
             <field name ="selling_price"/>
             <field name ="living_area"/>
             <group expand="1" string="Group By">
             <filter string="BedRooms" name="bedrooms" context="{'group_by':'bedrooms', 'residual_visible':True}"/>
             </group>
             <filter string="Postcode" name="bedrooms" context="{'group_by':'postcode', 'residual_visible':True}"/>
+            <filter string="Buyer" name="bedrooms" context="{'group_by':'buyer_id', 'residual_visible':True}"/>
             <filter string="With Garden" name="garden" domain="[('garden', '=', True)]"/>
             <filter string="Available" name="garden" domain="[('state', 'in',['New','Offer Received'] )]"/>
 

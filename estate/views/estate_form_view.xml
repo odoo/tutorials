@@ -7,12 +7,11 @@
     <field name="arch" type="xml">
     <form string="Test">
         <sheet>
-        <div class="oe_title">
-            <h1>
-                <field name="name" />
-            </h1>
-        </div>
+
          <group>
+
+
+
             <group>
                 <field name="name"/>
             </group>
@@ -32,7 +31,11 @@
             <page string="Description">
                 <group>
                                 <field name="description"/>
+                                <field name="tag_ids" widget="many2many_tags"/>
                                 <field name="bedrooms"/>
+                                <field name="property_type_id"/>
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
                                 <field name="living_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
@@ -41,6 +44,19 @@
                                 <field name="garden_orientation"/>
                                 <field name="state"/>
                                 </group>
+            </page>
+            <page string="Other Info">
+                <group>
+                    <field name="buyer_id"/>
+                    <field name="salesperson_id"/>
+                </group>
+               
+            </page>
+            <page string="Offers">
+                <group>
+                    <field name="offer_ids"/>
+                </group>
+               
             </page>
         </notebook>
         </sheet>
