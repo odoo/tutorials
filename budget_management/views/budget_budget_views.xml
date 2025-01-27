@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="budget_budget_action" model="ir.actions.act_window">
+        <field name="name">Budget</field>
+        <field name="res_model">budget.budget</field>
+        <field name="view_mode">kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define new Budget
+            </p>
+            <p>
+                Click on the button to create a new budget 
+            </p>
+        </field>
+    </record>
+    <record id="budget_budget_view_kanban" model="ir.ui.view">
+        <field name="name">budget.budget.view.kanban</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <kanban type="object" action="action_open_budget_lines" default_group_by="state" records_draggable="0" highlight_color="color" on_create="budget_management.budget_wizard_action" quick_create_view="budget_management.budget_wizard_view_form">
+                <templates>
+                    <t t-name="menu">
+                        <t t-if="widget.editable">
+                            <a role="menuitem" type="open" class="dropdown-item">Configuration</a>
+                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                        </t>
+                        <div role="separator" class="dropdown-divider"></div>
+                        <field name="color" widget="kanban_color_picker"/>
+                    </t>
+                    <t t-name="card">
+                        <h3>
+                            <field name="name" />
+                        </h3>
+                        <div class="flex-row">
+                            <i class="fa fa-calendar mx-2" title="Period"></i>
+                            <field name="date_from" />
+                            <i class="fa fa-arrow-right mx-2" title="to"></i>
+                            <field name="date_to" />
+                        </div>
+
+                        <footer class="d-flex justify-content-end">
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="budget_budget_view_form" model="ir.ui.view">
+        <field name="name">budget.budget.view.form</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <form string="Budget">
+                <div class="alert alert-warning p-2 mb-3" invisible="show_warning!=True" role="alert">
+                    <strong>Warning:</strong> One of your budget lines is over budget.
+                </div>
+                <header>
+                    <button string="Reset to Draft" name="action_budget_draft" invisible="state == 'draft'" type="object" class="btn btn-primary" />
+                    <button string="Confirm" name="action_budget_confirm" invisible="state != 'draft'" type="object" class="btn btn-primary" />
+                    <button string="Revise" name="create_revised_budget" invisible="state != 'confirmed'" type="object" class="btn btn-secondary" />
+                    <button string="Done" name="action_budget_done" invisible="state != 'confirmed'" type="object" class="btn btn-secondary" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done" class="status-bar"/>
+                </header>
+                <sheet string="Budget">
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" readonly="state != 'draft'" placeholder="e.g. Budget 2023"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="user_id" readonly="state != 'draft'" domain="[('share', '=', False)]" widget="many2one_avatar" options="{'no_create': True}"/>
+                            <field name="parent_id" invisible="not parent_id" readonly="1" />
+                        </group>
+                        <group>
+                            <label for="date_from" string="Period"/>
+                            <div class="o_row">
+                                <field name="date_from" nolabel="1" class="oe_inline" readonly="state != 'draft'"/>
+                                <i class="fa fa-long-arrow-right mx-2" aria-label="to" title="to"/>
+                                <field name="date_to" nolabel="1" class="oe_inline" readonly="state != 'draft'"/>
+                            </div>
+                            <field name="action_over_budget" readonly="state != 'draft'" widget="radio"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Budget Lines" name="budget_lines">
+                            <field name="budget_line_ids" colspan="4" nolabel="1" readonly="state != 'draft'">
+                                <list string="Budget Lines" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="account_id" optional="show"/>
+                                    <field name="amount" />
+                                    <field name="achieved_amount" decoration-danger="(achieved_amount > amount)" />
+                                    <field name="achieved_percent" widget="progressbar" />
+                                    <button type="object" name="action_open_analytic_lines" string="Details..." icon="fa-arrow-circle-o-right" column_invisible="parent.state in ('draft')" />
+                                </list>
+        
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="budget_budget_view_search" model="ir.ui.view">
+        <field name="name">budget.budget.view.search</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

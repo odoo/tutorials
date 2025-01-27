@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="budget_budget_line_action" model="ir.actions.act_window">
+        <field name="name">Budget Lines</field>
+        <field name="res_model">budget.budget.line</field>
+        <field name="view_mode">list,graph,gantt,pivot</field>
+        <field name="context">[('budget_id','=',active_id)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define new budget line
+            </p>
+            <p>
+                Use options specified in form to list budget line
+            </p>
+        </field>
+    </record>
+
+    <record id="budget_budget_line_view_list" model="ir.ui.view">
+        <field name="name">budget.budget.line.view.list</field>
+        <field name="model">budget.budget.line</field>
+        <field name="arch" type="xml">
+            <list string="Budget Line">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="account_id" optional="show"/>
+                <field name="amount" />
+                <field name="achieved_amount" decoration-danger="(achieved_amount > amount)" />
+            </list>
+        </field>
+    </record>
+
+    <record id="budget_budget_line_view_graph" model="ir.ui.view">
+        <field name="name">budget.line.graph</field>
+        <field name="model">budget.budget.line</field>
+        <field name="arch" type="xml">
+            <graph string="Budget Line" type="bar" stacked="true">
+                <field name="name" type="row"/>
+                <field name="achieved_amount" />
+                <field name="amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="budget_budget_line_view_gantt" model="ir.ui.view">
+        <field name="name">budget.line.gantt.view</field>
+        <field name="model">budget.budget.line</field>
+        <field name="arch" type="xml">
+            <gantt default_group_by="name" progress="achieved_percent" date_start="date_from" date_stop="date_to" string="Budget Lines" color="id">
+                <field name="name"/>
+            </gantt>
+        </field>
+    </record>
+
+
+    <record id="budget_budget_line_view_pivot" model="ir.ui.view">
+        <field name="name">budget.line.pivot</field>
+        <field name="model">budget.budget.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget Lines">
+                <field name="name" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+</odoo>
