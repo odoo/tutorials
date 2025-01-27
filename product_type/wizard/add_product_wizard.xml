@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_add_product_view_form" model="ir.ui.view">
+        <field name="name">product.add.product</field>
+        <field name="model">product.add.product</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <field name="name" />
+                    <field name="pid" invisible="1" />
+                    <field name="is_create" invisible="1"/>
+                    <field name="list_product_ids" />
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>

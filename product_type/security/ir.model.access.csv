@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+product_type.access_product_add_product,access_product_add_product,product_type.model_product_add_product,base.group_user,1,1,1,1
+product_type.access_product_list_product,access_product_list_product,product_type.model_product_list_product,base.group_user,1,1,1,1

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="inherit_product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='product_tooltip']" position="after">
+                <field name="is_kit" />
+                <field name="kit_product_ids" invisible="not is_kit" widget="many2many_tags"/>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

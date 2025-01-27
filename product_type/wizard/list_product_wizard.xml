@@ -2,16 +2,16 @@
 <odoo>
 
     <record id="list_warranty_list_view" model="ir.ui.view">
-        <field name="model">product.list.warranty</field>
-        <field name="name">product.list.warranty</field>
+        <field name="model">product.list.product</field>
+        <field name="name">product.list.product</field>
 
         <field name="arch" type="xml">
             <list editable="top">
-                <field name="product_id" options="{'no_create': true, 'no_open': true}"/>
-                <field name="warranty_id" options="{'no_create': true, 'no_open': true}"/>
+                <field name="product_id" />
                 <field name="qty"/>
-                <field name="enddate"/>
+                <field name="price"/>
                 <field name="order_line_id" column_invisible="1"/>
+
 
 
 

@@ -25,6 +25,7 @@ class add_warranty(models.TransientModel):
         warranty_ids = self.env["product.list.warranty"].create(ids)
         defaults["list_warranty_ids"] = warranty_ids
         return defaults
+        
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -45,7 +46,7 @@ class add_warranty(models.TransientModel):
                             "name": warranty.warranty_id.product_template_id.name,
                             "product_uom_qty": warranty.qty,
                             "price_unit": warranty_price,
-                            "deposit_link_product_id": warranty.order_line_id,
+                            "link_product_id": warranty.order_line_id,
                         }
                     )
 
