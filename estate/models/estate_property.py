@@ -1,5 +1,6 @@
 from odoo import models, fields, api, exceptions
 from datetime import date, timedelta
+from odoo.exceptions import ValidationError
 class EstateProperty(models.Model):
 
     _name = "estate.property"
@@ -41,6 +42,15 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area", string="Total Area (m²)")
     best_price = fields.Float(compute="_compute_best_price", string="Best price")
 
+    _sql_constraints = [
+        ('positive_expected_price',
+        'CHECK (expected_price>0)',
+        'The expected price should always be positive!'),
+        ('positive_selling_price',
+        'CHECK (selling_price>0)',
+        'The selling price should always be positive!'),
+    ]
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -62,6 +72,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+    
+    @api.constrains('selling_price')
+    def check_selling_price_not_lower_than_90_percent_of_expected_price(self):
+        for record in self:
+            if record.selling_price < 0.9 * record.expected_price:
+                raise ValidationError("The selling price must be at least 90% of the expected price")
 
     def cancel_property(self):
         for record in self:
