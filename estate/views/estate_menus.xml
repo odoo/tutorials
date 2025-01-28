@@ -1,0 +1,19 @@
+<odoo>
+ <menuitem id="menu_estate_root" name="Real Estate" sequence="1" >
+
+        <menuitem id="menu_estate_offers" name="Advertisments" sequence="10" >
+            <menuitem  id="menu_estate_property" name="Properties" action="action_estate_property" sequence="20" />
+                        <menuitem  id="menu_estate_offer" name="Offers" action="action_estate_property_offer" sequence="20" />
+
+
+
+        </menuitem>
+
+            <menuitem id="menu_estate_settings" name="Settings" sequence="10" >
+
+                <menuitem  id="menu_estate_property_type" name="Property Types" action="action_estate_property_type" sequence="20" />
+                <menuitem  id="menu_estate_property_tag" name="Property Tags" action="action_estate_property_tag" sequence="30" />
+
+           </menuitem>
+    </menuitem>
+</odoo>
