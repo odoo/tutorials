@@ -6,7 +6,12 @@
     <field name="type">form</field>
     <field name="arch" type="xml">
     <form string="Test">
+
         <sheet>
+            <header>
+                <button name="action_sold" type="object" string="SOLD"/>
+                <button name="action_cancelled" type="object" string="CANCELLED"/>
+            </header>
 
          <group>
 

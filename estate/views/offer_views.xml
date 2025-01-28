@@ -10,6 +10,8 @@
 
         <list string="Tests">
             <field name="price"/>  
+            <button name="offer_accepted" type="object" icon="fa-check" title="Confirm"/>
+            <button name="offer_declined" type="object" icon="fa-times" title="Refused"/>
             <field name="date_deadline"/>
             <field name="validity"/>
             <field name="partner_id"/>  
@@ -30,6 +32,7 @@
         <sheet>
             <group>
             <field name="price" />
+            
             <field name="date_deadline"/>
             <field name="validity"/>
             <field name="partner_id"/>  

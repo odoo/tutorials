@@ -1,4 +1,4 @@
-from odoo import api,fields, models
+from odoo import api,fields, models,exceptions
 from datetime import date, timedelta
 
 class EstatePropertyOffer(models.Model):
@@ -25,3 +25,18 @@ class EstatePropertyOffer(models.Model):
         for record in self: 
             date_crea = fields.Date.to_date(record.create_date or fields.Date.today())
             record.validity=(record.date_deadline-date_crea).days
+    
+    def offer_accepted(self):
+        if "Accepted" in self.property_id.offer_ids.mapped('status'):
+            raise exceptions.UserError("An other offer has already been accepted")
+        else : 
+            for record in self: 
+                record.status="Accepted"
+                record.property_id.buyer_id=record.partner_id
+                record.property_id.selling_price=record.price
+            return True
+
+    def offer_declined(self):
+        for record in self:
+            record.status="Refused"
+        return True

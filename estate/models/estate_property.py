@@ -1,4 +1,4 @@
-from odoo import api,fields, models
+from odoo import api,fields, models,exceptions
 from datetime import date, timedelta
 
 class EstateProperty(models.Model):
@@ -24,7 +24,7 @@ class EstateProperty(models.Model):
     garden_area= fields.Integer()
     garden_orientation = fields.Selection([("North","North"),("South","South"),("East","East"),("West","West")])
     active = fields.Boolean(default=True)
-    state = fields.Selection([("New","New"),("Offer Received","Offer Received"),("Offer Accpeted","Offer Accepted"),("Solde","Solde"),("Cancelled","Cancelled")],copy=False,default="New")
+    state = fields.Selection([("New","New"),("Offer Received","Offer Received"),("Offer Accpeted","Offer Accepted"),("Sold","Sold"),("Cancelled","Cancelled")],copy=False,default="New")
     total_area= fields.Integer(compute = "_compute_total_area")
     best_price=fields.Float(compute="_compute_best_price")
 
@@ -50,3 +50,18 @@ class EstateProperty(models.Model):
         if self.garden==False:
             self.garden_area=0
             self.garden_orientation=None
+
+    def action_sold(self):
+        if self.state=="Cancelled":
+            raise exceptions.UserError("impossible car la propriété est cancelled")
+        else :
+            self.state="Sold"
+        return True
+
+    def action_cancelled(self):
+        if self.state=="Sold":
+            raise exceptions.UserError("impossible car la propriété est sold")
+        else :
+            for record in self:
+                record.state="Cancelled"
+        return True
