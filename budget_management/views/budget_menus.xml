@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+ <menuitem
+        id="budget_management_menu_root"
+        name="Budget Management"
+        web_icon="budget_management,static/description/icon.png" />
+
+ <menuitem
+        id="budget_management_menu_budgets"
+        name="Budgets"
+        parent="budget_management_menu_root"
+        action="budget_management.budget_views_action"/>
+
+</odoo>
