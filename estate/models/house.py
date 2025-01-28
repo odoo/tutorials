@@ -3,6 +3,10 @@ from odoo.exceptions import UserError
 
 class house(models.Model):
     _name = 'house'
+    _sql_constraints = [
+        ('check_positive_expected_price', 'CHECK(expected_price > 0)', "expected_price can't be negative"),
+        ('check_positive_selling_price', 'CHECK(selling_price > 0)', "selling_price can't be negative")
+    ]
 
     name = fields.Char(string='House Name', required=True, default='Unknown')
     description = fields.Text()
