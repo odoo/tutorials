@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="budget_action" model="ir.actions.act_window">
+        <field name="name">Budget</field>
+        <field name="res_model">budget.budget</field>
+        <field name="view_mode">kanban,form,list</field>        
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define New Budget
+            </p><p>
+                Use options specified in form to create new budget(s)
+            </p>
+        </field>
+    </record>
+
+    <record id="budget_budget_view_kanban" model="ir.ui.view">
+        <field name="name">budget.budget.view.kanban</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <kanban sample="1" type="object" on_create="budget_management.create_multiple_budgets_action" quick_create_view="budget_management.create_multiple_budgets_view_form" action="action_view_budget_lines">
+                <templates>
+                    <t t-name="menu" groups="base.group_user">
+                        <div class="container">
+                            <div class="row">
+                                <div name="card_menu_view" class="col-6">
+                                    <div role="menuitem">
+                                        <a type="object" name="action_view_form">Configure</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+
+                    <t t-name="card">
+                        <field name="name" class="fw-bolder" string="Budget Menu" />
+                        <div>
+                            <span class="fa fa-clock-o me-2" title="Dates"></span>
+                            <field name="starting_date" />
+                                <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow" />
+                            <field name="ending_date" />
+                        </div>
+                        <div class="d-flex">
+                            <field name="responsible_person" class="ms-auto" widget="many2one_avatar_user" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="budget_budget_view_form" model="ir.ui.view">
+        <field name="name">budget.budget.view.form</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <form string="Budget Details">
+                <div class="alert alert-warning" role="alert" invisible="not warning_message">
+                    <strong>Warning: </strong>One or more of your budget account is overusing the set budget.
+                </div>
+                <header>
+                    <button string="Confirm" name="action_confirm" type="object" class="oe_highlight" invisible="state in ['confirmed', 'done', 'revised']" />
+                    <button string="Done" name="action_done" type="object" class="oe_highlight" invisible="state in ['done', 'revised']" />
+                    <button string="Reset to Draft" name="action_draft" type="object" invisible="state in ['draft', 'revised']" />
+                    <button string="Revise" name="action_revise" type="object" invisible="state in ['draft', 'revised']" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done" />
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name"></field>
+                    </h1>
+                    <group name="budget details">
+                        <group name="budget details 1">
+                            <field name="responsible_person" placeholder="Add a responsible person" readonly="state in ['confirmed', 'revised', 'done']"></field>
+                            <field name="revision_id"></field>
+                            <field name="company_id" placeholder="Add a company" readonly="state in ['confirmed', 'revised', 'done']"></field>
+                        </group>
+                        <group name="budget details 2">
+                            <field name="starting_date" string="Period" widget="daterange" options='{"end_date_field": "ending_date", "always_range": "1"}' required="starting_date or ending_date" readonly="state in ['confirmed', 'revised', 'done']" />
+                            <field name="ending_date" invisible="1" required="starting_date" readonly="state in ['confirmed', 'revised', 'done']" />
+                            <field name="on_over_budget" placeholder="Select" readonly="state in ['confirmed', 'revised', 'done']" ></field>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="Budget Lines" string="Budget Lines">
+                            <field name="budget_line_ids" readonly="state in ['confirmed', 'revised', 'done']"></field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="budget_budget_view_list" model="ir.ui.view">
+        <field name="name">budget.budget.view.list</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <list sample="1">
+                <field name="name"></field>
+                <field name="state"></field>
+                <field name="starting_date"></field>
+                <field name="ending_date"></field>
+                <field name="responsible_person"></field>
+                <field name="company_id"></field>
+            </list>
+        </field>
+    </record>
+
+    <record id="budget_budget_view_search" model="ir.ui.view">
+        <field name="name">budget.budget.view.search</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <search string="Budget">
+                <field name="name" string="Name" />
+                <field name="state" string="State" />
+                <field name="responsible_person" string="Responsible Person" />
+                <field name="company_id" string="Company" />
+
+                <filter string="Revised" name="active" domain="[('active', '=', False)]" />
+
+                <group expand="1" string="Group By">
+                    <filter string="Responsible Person" name="responsible_person" context="{'group_by': 'responsible_person'}" />
+                    <filter string="Status" name="state" context="{'group_by': 'state'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="budget_menu" name="Budget" web_icon="budget_management,static/budget-icon.png" action="budget_action">
+        <menuitem id="budget_budgets_menu" name="Budgets" action="budget_action"></menuitem>
+    </menuitem>
+
+</odoo>

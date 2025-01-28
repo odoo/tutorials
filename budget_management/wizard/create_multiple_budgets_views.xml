@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="create_multiple_budgets_action" model="ir.actions.act_window">
+        <field name="name">Create Multiple Budgets</field>
+        <field name="res_model">create.multiple.budgets</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="create_multiple_budgets_view_form" model="ir.ui.view">
+        <field name="name">create_multiple_budgets.view.form</field>
+        <field name="model">create.multiple.budgets</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="starting_date" string="Period" widget="daterange" options='{"end_date_field": "ending_date", "always_range": "1"}' />
+
+                        <field name="periods" widget="radio"></field>
+
+                        <field name="analytic_accounts" widget="many2many_tags"></field>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_create_budgets" string="Create" type="object" class="btn-primary" icon="fa-check" />
+                    <button string="Discard" class="btn-secondary" special="cancel" icon="fa-times" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
