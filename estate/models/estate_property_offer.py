@@ -5,6 +5,7 @@ class EstatePropertyOffer(models.Model):
 
     _name = "estate.property.offer"
     _description = "The offers for a property"
+    _order = "price desc"
 
     price = fields.Float(name = "Price", required = True)
     status = fields.Selection(string='Status',
@@ -16,6 +17,13 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(name="Validity", default=7)
     date_deadline = fields.Date(name="Deadline", compute="_compute_deadline", inverse="_inverse_validity")
+    #property_type_id = fields.Many2one("estate.property.types", name="Property type")
+    property_type_id = fields.Many2one(
+        "estate.property.types", 
+        related="property_id.type_id", 
+        store=True, 
+        string="Property Type"
+    )
     _sql_constraints = [
     ('positive_offer_price', 
      'CHECK(price > 0)', 
@@ -32,13 +40,16 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_validity(self):
         for record in self:
-            if isinstance(record.create_date, fields.Date):
-                record.validity = (record.date_deadline - record.create_date).days
+            if record.date_deadline:
+                # Convert create_date to a date object if it exists
+                create_date = record.create_date.date() if record.create_date else fields.Date.today()
+                record.validity = (record.date_deadline - create_date).days
             else:
-                record.validity = (record.date_deadline - fields.Date.today()).days
+                record.validity = 0
 
     def action_reject_offer(self):
         self.status = "refused"
+
     def action_accept_offer(self):
         if not self.property_id.get_status():
             self.status = "accepted"

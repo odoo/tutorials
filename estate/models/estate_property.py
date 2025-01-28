@@ -5,6 +5,7 @@ class EstateProperty(models.Model):
 
     _name = "estate.property"
     _description = "Damn this model is good for doing real estate related stuff"
+    _order = "id desc"
 
     name = fields.Char(name = "Title", required=True)
     description = fields.Text(name = "Description", required = True)

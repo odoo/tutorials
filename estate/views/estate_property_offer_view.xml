@@ -6,13 +6,14 @@
             <field name="model">estate.property.offer</field>
             <field name="type">list</field>
             <field name="arch" type="xml">
-                <list>
+                <list editable="bottom" decoration-success="status in ['accepted']" decoration-danger="status in ['refused']">
                     <field name="price"/>
                     <field name="partner_id"/>
                     <field name="date_deadline"/>
-                    <button name="action_accept_offer" string="Accept" type="object" icon="fa-check"/>
-                    <button name="action_reject_offer" string="Reject" type="object" icon="fa-times"/>
-                    <field name="status"/>
+                    <button name="action_accept_offer" string="Accept" type="object" icon="fa-check" invisible="status in ['accepted', 'refused']"/>
+                    <button name="action_reject_offer" string="Reject" type="object" icon="fa-times" invisible="status in ['accepted', 'refused']"/>
+                    <field name="property_type_id" width="120px"/>
+                    <field name="status" column_invisible="1"/>
                 </list>
             </field>
         </record>
@@ -20,6 +21,13 @@
             <field name="name">Offers</field>
             <field name="res_model">estate.property.offer</field>
             <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_estate_property_offer_list"/>
+        </record>
+        <record id="action_estate_property_offer_from_types" model="ir.actions.act_window">
+            <field name="name">OffersFromTypes</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('property_type_id', '=', active_id)]</field>
             <field name="view_id" ref="view_estate_property_offer_list"/>
         </record>
 
