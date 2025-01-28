@@ -6,6 +6,7 @@ class offer(models.Model):
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', "offer price can't be negative")
     ]
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection(selection=[('Accepted','Accepted'),('Refused','Refused')], copy=False)
@@ -13,6 +14,7 @@ class offer(models.Model):
     property_id = fields.Many2one('house', 'Property applied on', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_offer_deadline", inverse="_inverse_offer_deadline")
+    property_type = fields.Many2one(related='property_id.house_type_id')
 
     @api.depends("validity")
     def _compute_offer_deadline(self):
@@ -28,13 +30,12 @@ class offer(models.Model):
     def accept_offer(self):
         for offer in self:
             property = offer.property_id
-            if(property.is_offer_accepted):
+            if(property.state == 'Offer Accepted'):
                 raise UserError('This property has already accepted an offer')
-            property.is_offer_accepted = True
             offer.status = 'Accepted'
+            property.state = 'Offer Accepted'
             property.selling_price = offer.price
             property.buyer_id = offer.partner_id
-            
     
     def reject_offer(self):
         for offer in self:

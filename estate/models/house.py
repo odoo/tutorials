@@ -8,6 +8,7 @@ class house(models.Model):
         ('check_positive_expected_price', 'CHECK(expected_price > 0)', "expected_price can't be negative"),
         ('check_positive_selling_price', 'CHECK(selling_price > 0)', "selling_price can't be negative")
     ]
+    _order = 'id desc'
 
     name = fields.Char(string='House Name', required=True, default='Unknown')
     description = fields.Text()
@@ -40,7 +41,6 @@ class house(models.Model):
     offers_ids = fields.One2many('estate.house_offer', 'property_id')
     total_area = fields.Float(compute='_calculate_total_area')
     best_price = fields.Float(compute='_calculate_best_price')
-    is_offer_accepted = fields.Boolean(default=False)
     
     def get_availability_date(self):
         current_date = fields.Date.today()
@@ -80,7 +80,7 @@ class house(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_expected_price_constraint(self):
         for house in self:
-            if(not house.is_offer_accepted):
+            if(not house.state == 'Offer Accepted'):
                 return
             threshold = 0.9 * house.expected_price
             if(float_utils.float_compare(house.selling_price, threshold, precision_digits=2) == -1):
