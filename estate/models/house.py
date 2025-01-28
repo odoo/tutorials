@@ -1,5 +1,6 @@
 from odoo import api, models, fields
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_utils
 
 class house(models.Model):
     _name = 'house'
@@ -73,6 +74,15 @@ class house(models.Model):
     def cancel_property(self):
         for house in self:
             if(house.state == 'Sold'):
-                # raise error here
                 raise UserError("Sold porpoerty can't be cancelled")
             house.state = 'Cancelled'
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_expected_price_constraint(self):
+        for house in self:
+            if(not house.is_offer_accepted):
+                return
+            threshold = 0.9 * house.expected_price
+            if(float_utils.float_compare(house.selling_price, threshold, precision_digits=2) == -1):
+                raise ValidationError("selling_price can't be less than 90% of the expected_price")
+                

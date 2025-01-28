@@ -30,10 +30,11 @@ class offer(models.Model):
             property = offer.property_id
             if(property.is_offer_accepted):
                 raise UserError('This property has already accepted an offer')
+            property.is_offer_accepted = True
             offer.status = 'Accepted'
             property.selling_price = offer.price
             property.buyer_id = offer.partner_id
-            property.is_offer_accepted = True
+            
     
     def reject_offer(self):
         for offer in self:
