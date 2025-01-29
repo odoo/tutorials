@@ -42,6 +42,8 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", name="Offers")
     total_area = fields.Float(compute="_compute_total_area", string="Total Area (m²)")
     best_price = fields.Float(compute="_compute_best_price", string="Best price")
+    salesperson_id = fields.Many2one("res.users", string="Salesperson")
+
 
     _sql_constraints = [
         ('positive_expected_price',
@@ -79,6 +81,12 @@ class EstateProperty(models.Model):
         for record in self:
             if record.selling_price < 0.9 * record.expected_price:
                 raise ValidationError("The selling price must be at least 90% of the expected price")
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_is_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise ValidationError("You can't delete a property in this state")
 
     def cancel_property(self):
         for record in self:

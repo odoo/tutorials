@@ -2,5 +2,6 @@ from odoo import fields, models
 
 
 class ResUsers(models.Model):
-    # Resolve the ensuing conflict in this file
-    pass
+    _inherit = "res.users"
+
+    property_ids = fields.One2many("estate.property", "salesperson_id", string="Properties", domain=[('state', 'in', ['new', 'offer received'])])

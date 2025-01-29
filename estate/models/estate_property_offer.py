@@ -17,7 +17,6 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(name="Validity", default=7)
     date_deadline = fields.Date(name="Deadline", compute="_compute_deadline", inverse="_inverse_validity")
-    #property_type_id = fields.Many2one("estate.property.types", name="Property type")
     property_type_id = fields.Many2one(
         "estate.property.types", 
         related="property_id.type_id", 
@@ -38,10 +37,15 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
 
+    @api.model
+    def create(self, vals):
+        if vals['price'] < self.env['estate.property'].browse(vals['property_id']):
+            raise ValueError("Can't make an offer this low")
+        return super(EstatePropertyOffer, self).create(vals)
+
     def _inverse_validity(self):
         for record in self:
             if record.date_deadline:
-                # Convert create_date to a date object if it exists
                 create_date = record.create_date.date() if record.create_date else fields.Date.today()
                 record.validity = (record.date_deadline - create_date).days
             else:

@@ -96,7 +96,7 @@
                     <field name="living_area" string="Living area (m²)"/>
                     <field name="type_id" string="Property type"/>
                     <filter name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
-                    <field name="description" string="Name and description" filter_domain="['|', ('name', 'ilike', self), ('description', 'ilike', self)]"/>
+                    <field name="description" string="Name and description" filter_domain="['|', ('name', '=', self), ('description', '=', self)]"/>
                     <group expand="1" string="Group By">
                         <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
                     </group>
