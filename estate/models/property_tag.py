@@ -7,3 +7,8 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char('Property Tag Name',required=True)
     properties = fields.Many2many("estate.property","tag_ids",string="properties")
+
+    _sql_constraints = [
+        ('unique_tag_name', 'UNIQUE(name)',
+         'There is already a tag with this name'),
+    ]

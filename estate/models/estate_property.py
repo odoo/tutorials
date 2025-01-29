@@ -65,3 +65,15 @@ class EstateProperty(models.Model):
             for record in self:
                 record.state="Cancelled"
         return True
+
+    _sql_constraints = [
+        ('expected_price_positive', 'CHECK(expected_price >= 0)',
+         'The price hase to be positive'),
+         ('selling_price_positiv','CHECK(selling_price >= 0)','the selling price has to be positive')
+    ]
+
+    @api.constrains('selling_price')
+    def _check_selling_price_90(self):
+        for record in self: 
+            if record.selling_price<0.9*(record.expected_price):
+                raise exceptions.ValidationError("the selling prise is lower than 90 pourcent of the expected price")
