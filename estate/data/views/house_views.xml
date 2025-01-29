@@ -111,6 +111,41 @@
         </field>
     </record>
 
+    <record id="estate.house_kanban" model="ir.ui.view">
+        <field name="name">house kanban</field>
+        <field name="model">house</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="house_type_id" records_draggable="false" >
+                <field name="state" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <strong>
+                                <field name="name" />
+                            </strong>
+                            <t t-if="record.state.value == 'Offer Received'">
+                                <div>
+                                    Best Price: <field name="best_price" />
+                                </div>
+                            </t>
+                            <div>
+                                Expected Price: <field name="expected_price" />
+                            </div>
+                            <t t-if="record.state.value == 'Offer Accepted'">
+                                <div>
+                                    Selling Price: <field name="selling_price" />
+                                </div>
+                            </t>
+                            <div>
+                                <field name="house_tag_ids" widget="many2many_tags" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="estate_house_search" model="ir.ui.view">
         <field name="name">estate_house_search</field>
         <field name="model">house</field>
