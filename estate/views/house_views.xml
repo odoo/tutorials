@@ -2,7 +2,7 @@
 <odoo>
     <record id="house_action" model="ir.actions.act_window">
         <field name="name">Houses</field>
-        <field name="res_model">house</field>
+        <field name="res_model">estate.house</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="context">
             {
@@ -13,19 +13,19 @@
 
     <record id="estate.house_type_action" model="ir.actions.act_window">
         <field name="name">House Type</field>
-        <field name="res_model">estate.house_type</field>
+        <field name="res_model">estate.house.type</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <record id="estate.house_tag_action" model="ir.actions.act_window">
         <field name="name">House Tag</field>
-        <field name="res_model">estate.house_tag</field>
+        <field name="res_model">estate.house.tag</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <record id="estate.house_offer_action" model="ir.actions.act_window">
         <field name="name">Offers</field>
-        <field name="res_model">estate.house_offer</field>
+        <field name="res_model">estate.house.offer</field>
         <field name="view_mode">list,form</field>
         <field name="domain">
             [('property_type', '=', active_id)]
@@ -34,7 +34,7 @@
 
     <record id="estate_house_tree" model="ir.ui.view">
         <field name="name">estate_house_tree</field>
-        <field name="model">house</field>
+        <field name="model">estate.house</field>
         <field name="arch" type="xml">
             <list decoration-success="state=='Offer Received' or state=='Offer Accepted'" decoration-bf="state=='Offer Accepted'"
                decoration-muted="state=='Sold'" >
@@ -52,7 +52,7 @@
 
     <record id="estate_house_form" model="ir.ui.view">
         <field name="name">estate_house_form</field>
-        <field name="model">house</field>
+        <field name="model">estate.house</field>
         <field name="arch" type="xml">
             <form>
                 <header>
@@ -113,7 +113,7 @@
 
     <record id="estate.house_kanban" model="ir.ui.view">
         <field name="name">house kanban</field>
-        <field name="model">house</field>
+        <field name="model">estate.house</field>
         <field name="arch" type="xml">
             <kanban default_group_by="house_type_id" records_draggable="false" >
                 <field name="state" />
@@ -148,7 +148,7 @@
 
     <record id="estate_house_search" model="ir.ui.view">
         <field name="name">estate_house_search</field>
-        <field name="model">house</field>
+        <field name="model">estate.house</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name" string="Title" />
@@ -168,7 +168,7 @@
 
     <record id="estate.house_offer_tree" model="ir.ui.view">
         <field name="name">estate.house_offer_tree</field>
-        <field name="model">estate.house_offer</field>
+        <field name="model">estate.house.offer</field>
         <field name="arch" type="xml">
             <list decoration-success="status == 'Accepted'" decoration-danger="status == 'Refused'">
                 <field name="price" />
@@ -182,7 +182,7 @@
 
     <record id="estate.house_offer_form" model="ir.ui.view">
         <field name="name">estate.house_offer_form</field>
-        <field name="model">estate.house_offer</field>
+        <field name="model">estate.house.offer</field>
         <field name="arch" type="xml">
             <form string="Offer">
                 <sheet>
@@ -202,7 +202,7 @@
 
     <record id="estate.house_type_form" model="ir.ui.view">
         <field name="name">estate.house_type_form</field>
-        <field name="model">estate.house_type</field>
+        <field name="model">estate.house.type</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -230,7 +230,7 @@
 
     <record id="estate.house_type_tree" model="ir.ui.view">
         <field name="name">House Types</field>
-        <field name="model">estate.house_type</field>
+        <field name="model">estate.house.type</field>
         <field name="arch" type="xml">
             <list>
                 <field name="sequence" widget="handle" />

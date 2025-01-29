@@ -1,5 +1,5 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-access_house,access_house,model_house,base.group_user,1,1,1,1
+access_house,access_house,model_estate_house,base.group_user,1,1,1,1
 estate.house_type_access,estate.house_type_access,model_estate_house_type,base.group_user,1,1,1,1
 estate.house_tag_access,estate.house_tag_access,model_estate_house_tag,base.group_user,1,1,1,1
 estate.house_offer_access,estate.house_offer_access,model_estate_house_offer,base.group_user,1,1,1,1

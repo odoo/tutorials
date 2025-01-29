@@ -2,7 +2,7 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 class offer(models.Model):
-    _name = 'estate.house_offer'
+    _name = 'estate.house.offer'
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', "offer price can't be negative")
     ]
@@ -10,8 +10,8 @@ class offer(models.Model):
 
     price = fields.Float(required=True)
     status = fields.Selection(selection=[('Accepted','Accepted'),('Refused','Refused')], copy=False)
-    partner_id = fields.Many2one('res.partner', stirng='Partner', required=True)
-    property_id = fields.Many2one('house', 'Property applied on', required=True)
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True)
+    property_id = fields.Many2one('estate.house', 'Property applied on', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_offer_deadline", inverse="_inverse_offer_deadline")
     property_type = fields.Many2one(related='property_id.house_type_id')

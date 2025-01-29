@@ -1,7 +1,7 @@
 from odoo import Command, models
 
 class Property(models.Model):
-    _inherit = 'house'
+    _inherit = 'estate.house'
 
     def sell_property(self):
         print("I am the child behavior")

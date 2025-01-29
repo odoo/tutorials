@@ -3,7 +3,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_utils
 
 class house(models.Model):
-    _name = 'house'
+    _name = 'estate.house'
     _sql_constraints = [
         ('check_positive_expected_price', 'CHECK(expected_price > 0)', "expected_price can't be negative"),
         ('check_positive_selling_price', 'CHECK(selling_price > 0)', "selling_price can't be negative")
@@ -36,9 +36,9 @@ class house(models.Model):
     ], default='New', required=True)
     buyer_id = fields.Many2one('res.partner', string='Buyer')
     seller_id = fields.Many2one('res.users', string='Salesperson')
-    house_type_id = fields.Many2one('estate.house_type', string='Property Type')
-    house_tag_ids = fields.Many2many('estate.house_tag')
-    offers_ids = fields.One2many('estate.house_offer', 'property_id')
+    house_type_id = fields.Many2one('estate.house.type', string='Property Type')
+    house_tag_ids = fields.Many2many('estate.house.tag')
+    offers_ids = fields.One2many('estate.house.offer', 'property_id')
     total_area = fields.Float(compute='_calculate_total_area')
     best_price = fields.Float(compute='_calculate_best_price')
     
