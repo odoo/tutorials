@@ -76,9 +76,13 @@ class EstateProperty(models.Model):
         else:
             self.action_set_new()
 
-    #endregion
+    @api.ondelete(at_uninstall=True)
+    def prevent_delete(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("Deletion operation is not possible")
 
-    #region actions
+
     def action_set_cancelled(self):
         for record in self:
             if record.state == 'sold':
