@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="bulk_budget_action" model="ir.actions.act_window">
+        <field name="name">Create Bulk Budgets</field>
+        <field name="res_model">bulk.budget</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="bulk_budget_view_form" model="ir.ui.view">
+        <field name="name">bulk.budget.view.form</field>
+        <field name="model">bulk.budget</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <label for="date_from" string="Period"/>
+                        <div class="o_row">
+                            <field name="date_from" nolabel="1" class="oe_inline"/>
+                            <i class="fa fa-long-arrow-right mx-2" aria-label="to" title="to"/>
+                            <field name="date_to" nolabel="1" class="oe_inline"/>
+                        </div>
+                        <field name="periods" widget="radio"></field>
+                        <field name="budget_amount"></field>
+                        <field name="analytical_account_ids" widget="many2many_tags"></field>
+                    </group>
+                    <footer>
+                        <button name="action_bulk_budgets" string="Generate Budgets" type="object" class="btn-primary" icon="fa-check" />
+                        <button string="Discard" class="btn-secondary" special="cancel" icon="fa-times" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_line_form_inherit" model="ir.ui.view">
+        <field name="name">model.name.view.form.inherit</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/group[2]" position="inside">
+                <field name="budget_line_id"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

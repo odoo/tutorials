@@ -1,7 +1,7 @@
 {
     "name": "Budget Management",
     "category": "Accounting/Budgeting",
-    "depends": ["base", "analytic"],
+    "depends": ["base", "account"],
     "description": """
             This module is for managing Budgets.
     """,
@@ -9,6 +9,7 @@
         "security/ir.model.access.csv",
         "views/budget_views.xml",
         "views/budget_lines_views.xml",
+        "wizard/bulk_budget_views.xml",
         "views/budget_menus.xml",
     ],
     "demo": [],
