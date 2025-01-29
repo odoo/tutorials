@@ -2,6 +2,16 @@
 
 <odoo>
 
+    <record id="estate_property_tag_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.tag.tree</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list string="Property Tags" editable="bottom">
+                <field name="name" string="Title"/>
+                
+            </list>
+        </field>
+    </record>
 
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name">Estate Property Tag</field>

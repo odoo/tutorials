@@ -6,23 +6,8 @@ from datetime import timedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property data model"
-    _inherit = ['mail.thread']
-
-    #region Constraint
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >= 0)',
-         'The expected price of a property MUST be postive.'),
-         ('check_selling_price', 'CHECK(selling_price >= 0)',
-         'The selling price of a property MUST be postive.'),
-    ]
-    @api.constrains('expected_price','selling_price')
-    def _check_selling_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_digits=3):
-                continue
-            if float_compare(value1=record.selling_price, value2=(0.9*record.expected_price),precision_digits=3) == -1:
-                raise ValidationError("Selling price must be at least 90% of the expected price!")
-
+    _order = "id desc"
+    
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -36,7 +21,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        selection=[('n', 'North'),
+        selection=[('n', 'North'), 
                    ('s', 'South'),
                    ('e', 'East'),
                    ('w', 'West'),
@@ -61,7 +46,7 @@ class EstateProperty(models.Model):
     user_id = fields.Many2one(comodel_name='res.users', string='Salesperson', default=lambda self: self.env.uid)
     partner_id = fields.Many2one(comodel_name='res.partner', string='Buyer', copy=False)
 
-    # computed
+    # computed 
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
@@ -84,15 +69,22 @@ class EstateProperty(models.Model):
         self.garden_area = 10 if self.garden else False
         self.garden_orientation = 'n' if self.garden else False
 
+    @api.onchange('property_offer_ids')
+    def _onchange_property_offer_ids(self):
+        if len(self.property_offer_ids) > 0:
+            self.action_offer_received()
+        else:
+            self.action_set_new()
+
     #endregion
 
-    # region actions
+    #region actions
     def action_set_cancelled(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError("Sold properties can not be cancelled!")
             record.state = 'cancelled'
-
+    
     def action_set_sold(self):
         for record in self:
             if record.state == 'cancelled':
@@ -111,3 +103,27 @@ class EstateProperty(models.Model):
         self.state = 'offer_accepted'
         self.selling_price = offer.price
         self.partner_id = offer.partner_id
+
+    def action_offer_received(self):
+        self.state = 'offer_received'
+
+    #endregion
+
+    #region Constraint
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)',
+         'The expected price of a property MUST be postive.'),
+         ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price of a property MUST be postive.'),
+    ]
+
+    @api.constrains('expected_price','selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=3):
+                continue
+
+            if float_compare(value1=record.selling_price, value2=(0.9*record.expected_price),precision_digits=3) == -1:
+                raise ValidationError("Selling price must be at least 90% of the expected price!")
+
+    #endregion

@@ -2,17 +2,18 @@
 
 <odoo>
 
-     <record id="estate_property_type_view_tree" model="ir.ui.view">
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
         <field name="name">estate.property.type.tree</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Types">
                 <field name="sequence" widget="handle"/>
                 <field name="name" string="Title"/>
-
+                
             </list>
         </field>
     </record>
+
     <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
@@ -39,14 +40,13 @@
                                     <field name="state" string="Status"/>
                                 </list>
                             </field>
-
+    
                         </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-
 
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Estate Property Type</field>
