@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <record id="budget_generate_wizard_action" model="ir.actions.act_window"> <!--Id of the action-->
+        <field name="name">Budget</field> <!--name of action-->
+        <field name="res_model">budget.bulk.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <record id="budget_generate_wizard_view_form" model="ir.ui.view">
+        <field name="name">wizard generate budget</field>
+        <field name="model">budget.bulk.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="date_start" string="Duration" widget="daterange" options='{"end_date_field": "date_end", "always_range": "1"}' required="date_start and date_end" />
+                        <field name="period"  widget="radio"/>
+                        <field name="analytic_account_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <button name="action_create_bulk_budget" string="Create" class='btn btn-primary' type="object"/>
+                    <button special="cancel" string="Discard"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

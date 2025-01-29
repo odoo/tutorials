@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="budget_menu_root" name="Budget Management"> <!--module
+        name to show in the root menu-->
+        <menuitem id="budget_first_level_menu" name="Budget" action="budget.budget_action"> <!--first
+            level menu name-->
+        </menuitem>
+    </menuitem>
+
+</odoo>

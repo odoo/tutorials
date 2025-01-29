@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="budget_line_view_form" model="ir.ui.view">
+        <field name="name">Budget line form View</field>
+        <field name="model">budget.budget.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="budget_id" string="Budget"></field>
+                            <field name="analytic_account_id"></field>
+                        </group>
+                        <group>
+                        
+                            <field name="budget_amount"></field>
+                            <field name="achieved_amount" string="Achived Amount"></field>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="budget_line_view_list" model="ir.ui.view">
+        <field name="name">Budget line list View</field>
+        <field name="model">budget.budget.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="budget_id" string="Budget"></field>
+                <field name="analytic_account_id"></field>
+                <field name="budget_amount"></field>
+                <field name="achieved_amount" string="Achived Amount"></field>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="budget_line_view_graph" model="ir.ui.view">
+        <field name="name">Budget View Graph</field>
+        <field name="model">budget.budget.line</field>
+        <field name="arch" type="xml">
+            <graph string="Budget account graph" type="bar" stacked="1" sample="1">
+                <field name="analytic_account_id" type="row" />
+                <field name="achieved_amount" type="measure" />
+                <field name="budget_amount" type="measure" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="budget_line_view_pivot" model="ir.ui.view">
+        <field name="name">Budget Pivot view</field>
+        <field name="model">budget.budget.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Pivot Analysis">
+                <field name="analytic_account_id" type="row"/>
+                <field name="achieved_amount" operator="+"></field>
+                <field name="budget_amount" operator="+"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="budget_budget_line_view_gantt" model="ir.ui.view">
+        <field name="name">budget.budget.line.view.gantt</field>
+        <field name="model">budget.budget.line</field>
+        <field name="arch" type="xml">
+            <gantt string="Budget lines" date_start="date_start" date_stop="date_end" default_group_by="budget_id" progress="achieved_percentage" decoration-info="achieved_percentage>100" color="color"></gantt>
+        </field>
+    </record>
+</odoo>

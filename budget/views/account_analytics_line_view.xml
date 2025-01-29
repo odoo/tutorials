@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_analytic_line_form_inherit_account" model="ir.ui.view">
+        <field name="name">account.analytic.line.form.inherit.account</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='analytic_item']" position="inside">
+                <field name="budget_id"></field>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="attributes">
+                <attribute name="invisible">true</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_line_list_inherit_account" model="ir.ui.view">
+        <field name="name">account.analytic.line.list.inherit.account</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="attributes">
+                <attribute name="optional">hide</attribute>
+                <attribute name="invisible">true</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

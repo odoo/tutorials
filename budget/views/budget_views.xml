@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="budget_action" model="ir.actions.act_window"> <!--Id of the action-->
+        <field name="name">Budget</field> <!--name of action-->
+        <field name="res_model">budget.budget</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+
+    <record id="budget_view_kanban" model="ir.ui.view">
+        <field name="name">Budget Kanban View</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" records_draggable='false' action="action_open_budget_lines" type="object" on_create="budget.budget_generate_wizard_action" quick_create_view="budget.budget_generate_wizard_action">
+                <!-- <header>
+                    <button name="action_generate_bulk_budget" type="object"
+                        string="Generate Bulk Budget" display="always" />
+                </header> -->
+                <templates>
+
+                    <t t-name="menu">
+                        <div role="menuitem">
+                            <button class="w-100" name="action_open_budget" type="object"
+                                string="Configuration" />
+                            <br />
+                            <field name="color" widget="kanban_color_picker" />
+                        </div>
+                    </t>
+                    <t t-name="card">
+                        <div class="px-3">
+                            <div class="mt-3 d-flex">
+                                <field name="is_favorite" widget="boolean_favorite" nolabel="1" />
+                                <span class="h3">
+                                    <field name="name" nolabel="1" />
+                                </span>
+                            </div>
+                            <div class="mt-2 mb-3">
+                                <i class="fa fa-clock-o me-1" role="img" aria-label="Period"
+                                    title="Period" />
+                                <field name="date_start" />
+                                <i class='fa fa-long-arrow-right mx-2'></i>
+                                <field name="date_end" />
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <field name="responsible_id" widget="many2one_avatar_user" nolabel="1"></field>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="budget_view_form" model="ir.ui.view">
+        <field name="name">Budget Form View</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <form string="form_view">
+                <header>
+                    <button name="action_budget_confirm" class="btn btn-primary" type="object"
+                        string="Confirm" invisible="state not in ('draft')" />
+                    <button name="action_budget_revise" class="btn btn-secondary" type="object"
+                        string="Revise" invisible="state not in ('confirmed')" />
+                    <button name="action_budget_done" class="btn btn-secondary" type="object"
+                        string="Done" invisible="state not in ('confirmed',)" />
+                    <field name="state" widget="statusbar" />
+                    <div>
+                        <field class="p-2 alert alert-warning d-flex" name="warning_message"
+                            invisible="warning_message=='None' or on_over_budget_type!='warning_on_budget'"></field>
+                    </div>
+                </header>
+
+                <sheet> <!-- to make layout responsive -->
+
+
+                    <div class="oe_title">
+                        <label for="name" />
+                        <h1>
+                            <field name="name" placeholder="e.g. Budget 2023" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="responsible_id" widget="many2one_avatar" options="{'no_create': true, 'no_create_edit': true}" />
+                            <field name="revision_id"></field>
+                        </group>
+                        <group>
+                            <field name="date_start" string="Planned Date" widget="daterange" options='{"end_date_field": "date_end", "always_range": "1"}' required="date_start and date_end" />
+                            <field name="company_id" widget="many2one" options="{'no_create': true, 'no_create_edit': true}" /> 
+                            <field name="on_over_budget_type" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Budget Line">
+                            <field name="budget_line_ids" readonly="state not in ('draft')" decoration-muted="state not in ('draft')">
+                                <list editable="bottom" >
+                                    <field name="analytic_account_id"></field>
+                                    <field name="budget_amount"></field>
+                                    <field name="achieved_amount"></field>
+                                    <field name="achieved_percentage" widget="progressbar"></field>
+                                    <button name="action_open_budget_line" type="object" string="View" invisible="state not in ('draft')"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+</odoo>
