@@ -16,6 +16,15 @@ class offer(models.Model):
     date_deadline = fields.Date(compute="_compute_offer_deadline", inverse="_inverse_offer_deadline")
     property_type = fields.Many2one(related='property_id.house_type_id')
 
+    @api.model
+    def create(self, vals):
+        house = self.env["house"].browse(vals["property_id"])
+        smaller_offers = self.env["estate.house_offer"].search_count([('price', '>', vals['price'])], limit=1)
+        if(smaller_offers > 0):
+            raise UserError("Can't create offer with price less than one of the existing offers")
+        house.state = 'Offer Received'
+        return super().create(vals)
+
     @api.depends("validity")
     def _compute_offer_deadline(self):
         for offer in self:

@@ -64,6 +64,12 @@ class house(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_not_new_or_cancelled(self):
+        for house in self:
+            if(not house.state in ('New', 'Cancelled')):
+                raise UserError(f"Can't delete {house.state} state house")
 
     def sell_property(self):
         for house in self:
