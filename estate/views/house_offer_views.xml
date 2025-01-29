@@ -12,7 +12,7 @@
         <field name="name">estate.house_offer_tree</field>
         <field name="model">estate.house.offer</field>
         <field name="arch" type="xml">
-            <list decoration-success="status == 'Accepted'" decoration-danger="status == 'Refused'">
+            <list decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                 <field name="price" />
                 <field name="partner_id" string="Partner" />
                 <field name="property_type" />

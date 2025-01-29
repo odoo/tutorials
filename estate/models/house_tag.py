@@ -1,6 +1,6 @@
 from odoo import fields, models
 
-class house_tag(models.Model):
+class HouseTag(models.Model):
     _name = 'estate.house.tag'
     _description = 'House Tag Model'
     _sql_constraints = [

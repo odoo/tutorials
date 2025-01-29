@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 
-class house_type(models.Model):
+class HouseType(models.Model):
     _name = 'estate.house.type'
     _description = 'House Type Model'
     _sql_constraints = [
@@ -9,11 +9,11 @@ class house_type(models.Model):
     _order = 'name'
 
     name = fields.Char(required=True)
-    houses_ids = fields.One2many('estate.house', 'house_type_id')
+    house_ids = fields.One2many('estate.house', 'house_type_id')
     sequence = fields.Integer(default=1)
-    offers_count = fields.Integer(compute="_compute_offers_count")
+    offer_count = fields.Integer(compute="_compute_offer_count")
 
-    @api.depends("houses_ids.offers_ids")
-    def _compute_offers_count(self):
+    @api.depends("house_ids.offer_ids")
+    def _compute_offer_count(self):
         for house_type in self:
-            house_type.offers_count = len(house_type.houses_ids.offers_ids)
+            house_type.offer_count = len(house_type.house_ids.offer_ids)

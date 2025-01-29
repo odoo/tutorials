@@ -13,13 +13,13 @@
                 <sheet>
                     <header>
                         <button type="action" name="estate.house_offer_action" class="oe_stat_button" icon="fa-envelope">
-                            Offers Counts <field name="offers_count" />
+                            Offers Counts <field name="offer_count" />
                         </button>
                     </header>
                     <field name="name" />
                     <notebook>
                         <page string="Properties">
-                            <field name="houses_ids">
+                            <field name="house_ids">
                                 <list>
                                     <field name="name" string="title" />
                                     <field name="expected_price" />
@@ -40,7 +40,7 @@
             <list>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
-                <field name="offers_count" />
+                <field name="offer_count" />
             </list>
         </field>
     </record>

@@ -14,8 +14,8 @@
         <field name="name">estate_house_tree</field>
         <field name="model">estate.house</field>
         <field name="arch" type="xml">
-            <list decoration-success="state=='Offer Received' or state=='Offer Accepted'" decoration-bf="state=='Offer Accepted'"
-               decoration-muted="state=='Sold'" >
+            <list decoration-success="state=='offer_received' or state=='offer_accepted'" decoration-bf="state=='offer_accepted'"
+               decoration-muted="state=='sold'" >
                 <field name="name" string="Title" />
                 <field name="postcode" />
                 <field name="bedrooms" />
@@ -73,7 +73,7 @@
                         </page>
                         <page string="Offers">
                             <list>
-                                <field name="offers_ids" readonly="state in ('Offer Accepted', 'Sold', 'Cancelled')"
+                                <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')"
                                 editable="bottom" />
                             </list>
                         </page>
@@ -101,7 +101,7 @@
                             <strong>
                                 <field name="name" />
                             </strong>
-                            <t t-if="record.state.value == 'Offer Received'">
+                            <t t-if="record.state.raw_value == 'offer_received'">
                                 <div>
                                     Best Price: <field name="best_price" />
                                 </div>
@@ -109,7 +109,7 @@
                             <div>
                                 Expected Price: <field name="expected_price" />
                             </div>
-                            <t t-if="record.state.value == 'Offer Accepted'">
+                            <t t-if="record.state.raw_value == 'offer_accepted'">
                                 <div>
                                     Selling Price: <field name="selling_price" />
                                 </div>
@@ -137,7 +137,7 @@
                 <field name="facades" />
                 
                 <filter name="available" string="Available"
-                    domain = "['|', ('state', '=', 'New'), ('state', '=', 'Offer Received')]"/>
+                    domain = "['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="estate_house_postcode_grouping_filter" string="Postcode"
                     context="{'group_by': 'postcode'}" />
             </search>

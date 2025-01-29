@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
-class offer(models.Model):
+class Offer(models.Model):
     _name = 'estate.house.offer'
     _description = 'House Offer Model'
     _sql_constraints = [
@@ -10,7 +10,10 @@ class offer(models.Model):
     _order = 'price desc'
 
     price = fields.Float(required=True)
-    status = fields.Selection(selection=[('Accepted','Accepted'),('Refused','Refused')], copy=False)
+    status = fields.Selection(selection=[
+        ('accepted','Accepted'),
+        ('refused','Refused')
+    ], copy=False)
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     property_id = fields.Many2one('estate.house', 'Property applied on', required=True)
     validity = fields.Integer(default=7)
@@ -23,7 +26,7 @@ class offer(models.Model):
         smaller_offers = self.env["estate.house.offer"].search_count([('price', '>', vals['price'])], limit=1)
         if(smaller_offers > 0):
             raise UserError("Can't create offer with price less than one of the existing offers")
-        house.state = 'Offer Received'
+        house.state = 'offer_received'
         return super().create(vals)
 
     @api.depends("validity")
@@ -40,13 +43,13 @@ class offer(models.Model):
     def accept_offer(self):
         for offer in self:
             property = offer.property_id
-            if(property.state == 'Offer Accepted'):
+            if(property.state == 'offer_accepted'):
                 raise UserError('This property has already accepted an offer')
-            offer.status = 'Accepted'
-            property.state = 'Offer Accepted'
+            offer.status = 'accepted'
+            property.state = 'offer_accepted'
             property.selling_price = offer.price
             property.buyer_id = offer.partner_id
     
     def reject_offer(self):
         for offer in self:
-            offer.status = 'Refused'
+            offer.status = 'refused'
