@@ -1,4 +1,6 @@
 <odoo>
     <menuitem id="estate_menu_root" name="Real Estate" sequence="1"/>
     <menuitem id="estate_menu_properties" name="Properties" parent="estate_menu_root" action="estate_property_action" sequence="2"/>
+    <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root"  sequence="2"/>
+    <menuitem id="estate_property_type_submenu" name="Property Types" parent="estate_menu_settings" action="estate_property_type_action"/>
 </odoo>

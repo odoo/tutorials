@@ -5,12 +5,18 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="type">list</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Estate Properties">
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="bedrooms" string="Bedrooms"/>
@@ -18,52 +24,91 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" string="Available From"/>
+                <field name="type_id" string="Property Type"/>
             </list>
         </field>
     </record>
 
-    <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+<record id="estate_property_view_form" model="ir.ui.view">
+    <field name="name">estate.property.form</field>
+    <field name="model">estate.property</field>
+    <field name="type">form</field>
+    <field name="arch" type="xml">
+        <form string="Property">
+            <sheet>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="type_id" string="Property Type"/>
+                        <field name="postcode"/>
+                        <field name="date_availability" string="Available From"/>
+                    </group>
+                </group>
+                <group>
+                    <group>
+                        <field name="expected_price"/>
+                        <field name="selling_price"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Description">
+                        <group>
+                            <field name="description"/>
+                            <field name="bedrooms" string="Bedrooms"/>
+                            <field name="living_area"/>
+                            <field name="facades" string="Facades"/>
+                            <field name="garage" string="Garage"/>
+                            <field name="garden" string="Garden"/>
+                            <field name="garden_area"/>
+                            <field name="garden_orientation"/>
+                        </group>
+                    </page>
+                    <page string="Offers">
+                        <field name="offer_ids">
+                            <list editable="bottom">
+                                <field name="price"/>
+                                <field name="partner_id"/>
+                                <field name="status"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Other info">
+                        <group>
+                            <field name="salesperson_id"/>
+                            <field name="buyer_id"/>
+                        </group>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
-        <field name="type">form</field>
+        <field name="type">search</field>
         <field name="arch" type="xml">
-            <form string="Property">
-                <sheet>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="name"/>
-                        </h1>
-                    </div>
-                    <group>
-                        <group>
-                            <field name="postcode"/>
-                            <field name="date_availability" string="Available From"/>
-                        </group>
-                    </group>
-                    <group>
-                        <group>
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Description">
-                            <group>
-                                <field name="description"/>
-                                <field name="bedrooms" string="Bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades" string="Facades"/>
-                                <field name="garage" string="Garage"/>
-                                <field name="garden" string="Garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
-                            </group>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
+            <search string="Search Estate Properties">
+                <field name="name" string="String"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <field name="type_id" string="Property Type"/>
+                <filter string="Available" name="available" domain="['|',('state','=','new'),('state','=','offer_received')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
         </field>
     </record>
-
 
 </odoo>
