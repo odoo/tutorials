@@ -3,6 +3,7 @@ from odoo.exceptions import UserError
 
 class offer(models.Model):
     _name = 'estate.house.offer'
+    _description = 'House Offer Model'
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', "offer price can't be negative")
     ]
@@ -18,8 +19,8 @@ class offer(models.Model):
 
     @api.model
     def create(self, vals):
-        house = self.env["house"].browse(vals["property_id"])
-        smaller_offers = self.env["estate.house_offer"].search_count([('price', '>', vals['price'])], limit=1)
+        house = self.env["estate.house"].browse(vals["property_id"])
+        smaller_offers = self.env["estate.house.offer"].search_count([('price', '>', vals['price'])], limit=1)
         if(smaller_offers > 0):
             raise UserError("Can't create offer with price less than one of the existing offers")
         house.state = 'Offer Received'

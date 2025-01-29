@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="house_action" model="ir.actions.act_window">
         <field name="name">Houses</field>
@@ -8,27 +7,6 @@
             {
                 'search_default_available': 1
             }
-        </field>
-    </record>
-
-    <record id="estate.house_type_action" model="ir.actions.act_window">
-        <field name="name">House Type</field>
-        <field name="res_model">estate.house.type</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
-    <record id="estate.house_tag_action" model="ir.actions.act_window">
-        <field name="name">House Tag</field>
-        <field name="res_model">estate.house.tag</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
-    <record id="estate.house_offer_action" model="ir.actions.act_window">
-        <field name="name">Offers</field>
-        <field name="res_model">estate.house.offer</field>
-        <field name="view_mode">list,form</field>
-        <field name="domain">
-            [('property_type', '=', active_id)]
         </field>
     </record>
 
@@ -118,7 +96,7 @@
             <kanban default_group_by="house_type_id" records_draggable="false" >
                 <field name="state" />
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div>
                             <strong>
                                 <field name="name" />
@@ -164,94 +142,5 @@
                     context="{'group_by': 'postcode'}" />
             </search>
         </field> 
-    </record>
-
-    <record id="estate.house_offer_tree" model="ir.ui.view">
-        <field name="name">estate.house_offer_tree</field>
-        <field name="model">estate.house.offer</field>
-        <field name="arch" type="xml">
-            <list decoration-success="status == 'Accepted'" decoration-danger="status == 'Refused'">
-                <field name="price" />
-                <field name="partner_id" string="Partner" />
-                <field name="property_type" />
-                <button name="accept_offer" type="object" invisible="status" icon="fa-check"/>
-                <button name="reject_offer" type="object" invisible="status" icon="fa-ban"/>
-            </list>
-        </field>
-    </record>
-
-    <record id="estate.house_offer_form" model="ir.ui.view">
-        <field name="name">estate.house_offer_form</field>
-        <field name="model">estate.house.offer</field>
-        <field name="arch" type="xml">
-            <form string="Offer">
-                <sheet>
-                    <group>
-                        <field name="price" />
-                        <field name="partner_id" string="Partner" />
-                        <field name="status" />
-                    </group>
-                    <group>
-                        <field name="validity" />
-                        <field name="date_deadline" string="Offer Deadline" />
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="estate.house_type_form" model="ir.ui.view">
-        <field name="name">estate.house_type_form</field>
-        <field name="model">estate.house.type</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <header>
-                        <button type="action" name="estate.house_offer_action" class="oe_stat_button" icon="fa-envelope">
-                            Offers Counts <field name="offers_count" />
-                        </button>
-                    </header>
-                    <field name="name" />
-                    <notebook>
-                        <page string="Properties">
-                            <field name="houses_ids">
-                                <list>
-                                    <field name="name" string="title" />
-                                    <field name="expected_price" />
-                                    <field name="state" string="status" />
-                                </list>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="estate.house_type_tree" model="ir.ui.view">
-        <field name="name">House Types</field>
-        <field name="model">estate.house.type</field>
-        <field name="arch" type="xml">
-            <list>
-                <field name="sequence" widget="handle" />
-                <field name="name" />
-                <field name="offers_count" />
-            </list>
-        </field>
-    </record>
-
-    <record id="estate.house_extension" model="ir.ui.view">
-        <field name="name">House Extensions</field>
-        <field name="model">res.users</field>
-        <field name="inherit_id" ref="base.view_users_form" />
-        <field name="arch" type="xml">
-            <xpath expr="//page[@name='account_security']" position="after">
-                <page string="Houses">
-                    <list>
-                        <field name="property_ids" />
-                    </list>
-                </page>
-            </xpath>
-        </field>
     </record>
 </odoo>

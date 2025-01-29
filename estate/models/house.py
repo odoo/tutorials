@@ -4,6 +4,7 @@ from odoo.tools import float_utils
 
 class house(models.Model):
     _name = 'estate.house'
+    _description = 'House Model'
     _sql_constraints = [
         ('check_positive_expected_price', 'CHECK(expected_price > 0)', "expected_price can't be negative"),
         ('check_positive_selling_price', 'CHECK(selling_price > 0)', "selling_price can't be negative")
