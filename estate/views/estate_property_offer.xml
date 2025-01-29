@@ -4,9 +4,9 @@
     <data>
         <record id="estate_property_offer_view_list" model="ir.ui.view">
             <field name="name">estate.property.offer.view.list</field>
-            <field name="model">estate_property_offer</field>
+            <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
-                <list string="Channel" editable="bottom">
+                <list string="Property Offer" editable="bottom">
                     <field name="price" width="200px"/>
                     <field name="partner_id" width="200px"/>
                     <button name="action_accept_offer" string="Accept Offer" type="object" icon="fa-thumbs-up" class="btn-primary" invisible="status == 'accepted' or status == 'refused'"/>
@@ -21,9 +21,9 @@
 
         <record id="estate_property_offer_view_form" model="ir.ui.view">
             <field name="name">estate.property.offer.view.form</field>
-            <field name="model">estate_property_offer</field>
+            <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
-                <form string="Test">
+                <form string="Property Offer Details">
                     <sheet>
                         <group>
                             <field name="price"/>
@@ -43,7 +43,7 @@
 
         <record id="estate_property_offer_action" model="ir.actions.act_window">
             <field name="name">Estate Property Offer Action</field>
-            <field name="res_model">estate_property_offer</field>
+            <field name="res_model">estate.property.offer</field>
             <field name="view_mode">list,form</field>
             <field name="domain">[('property_type_id', '=', active_id)]</field> 
             <field name="context">{'search_default_property_type_id': active_id}</field>

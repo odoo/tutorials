@@ -1,13 +1,13 @@
 from odoo import fields, models, api
 
 class EstatePropertyType(models.Model):
-    _name = "estate_property_type"
+    _name = "estate.property.type"
     _description = "estate property type"
     _order = "sequence, name"
 
-    name = fields.Char('Property Types', required=True)
+    name = fields.Char('Property Type', required=True)
 
-    property_ids = fields.One2many('estate_property', 'property_type_id', string='Properties')
+    property_ids = fields.One2many('estate.property', 'property_type_id', string='Properties')
     sequence = fields.Integer('Sequence', default=1, help="Used to order types. Lower is better.")
 
     offer_ids = fields.One2many('estate_property_offer', 'property_type_id', string='offers')
@@ -24,3 +24,4 @@ class EstatePropertyType(models.Model):
         ('check_type_uniqueness', 'UNIQUE(name)',
          'The new property type should be unique')
     ]
+    

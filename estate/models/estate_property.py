@@ -4,20 +4,20 @@ from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "estate property description"
     _order = "id desc"
 
     name = fields.Char('Estate Name', required=True)
 
-    property_type_id = fields.Many2one('estate_property_type', string='Property type')
+    property_type_id = fields.Many2one('estate.property.type', string='Property type')
     partner_id = fields.Many2one('res.partner', string='Buyer')
-    users_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
+    user_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
 
-    tags_ids = fields.Many2many('estate_property_tag', string='Tags')
+    tags_ids = fields.Many2many('estate.property.tag', string='Tags')
 
 
-    offers_ids = fields.One2many('estate_property_offer', 'property_id', string='Offers')
+    offers_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
 
     total_area = fields.Integer(compute="_compute_total_area")
 
@@ -61,8 +61,8 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         selection=[
             ('new', 'New'), 
-            ('offer received', 'Offer Received'), 
-            ('offer accepted', 'Offer Accepted'), 
+            ('offer_received', 'Offer Received'), 
+            ('offer_accepted', 'Offer Accepted'), 
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')], default="new", required=True, copy=False)
 
@@ -99,3 +99,4 @@ class EstateProperty(models.Model):
          ('check_positive_selling_price', 'CHECK(selling_price >= 0)',
          'The selling price of a real estate should always be positive')
     ]
+    

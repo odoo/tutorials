@@ -3,7 +3,7 @@ from datetime import timedelta
 from odoo.exceptions import UserError, ValidationError
 
 class OfferModel(models.Model):
-    _name = "estate_property_offer"
+    _name = "estate.property.offer"
     _description = "estate property offer"
     _order = "price desc"
 
@@ -40,13 +40,12 @@ class OfferModel(models.Model):
         for record in self:
             if record.property_id.state == "offer accepted":
                 raise UserError('An Offer has already been accepted for this property')
-            record.property_id.state = "offer accepted"
-            record.property_id.partner_id = record.partner_id
             if record.price < record.property_id.expected_price * 0.9:
                 raise ValidationError("The price cannot be lower than 90% of the expcted price")
+            record.property_id.state = "offer_accepted"
+            record.property_id.partner_id = record.partner_id
             record.property_id.selling_price = record.price
-
-        record.status = 'accepted'
+            record.status = 'accepted'
     
     def action_refuse_offer(self):
         for record in self:
@@ -59,10 +58,10 @@ class OfferModel(models.Model):
     def create(self, vals):
         property_id = vals.get('property_id')
 
-        property_record = self.env['estate_property'].browse(property_id)
+        property_record = self.env['estate.property'].browse(property_id)
 
         if property_record:
-            property_record.state = 'offer received'
+            property_record.state = 'offer_received'
         
         new_offer_price = None
         
@@ -86,3 +85,4 @@ class OfferModel(models.Model):
         ('check_positive_offer', 'CHECK(price >= 0)',
          'The offer for a real estate should always be positive')
     ]
+    

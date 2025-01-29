@@ -9,9 +9,9 @@
 
     <record id="estate_property_tag_view_list" model="ir.ui.view">
             <field name="name">estate.property.tag.view.list</field>
-            <field name="model">estate_property_tag</field>
+            <field name="model">estate.property.tag</field>
             <field name="arch" type="xml">
-                <list string="Channel" editable="bottom">
+                <list string="Property tag" editable="bottom">
                     <field name="name" width="200px"/>
                 </list>
             </field>

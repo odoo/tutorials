@@ -4,7 +4,7 @@
 
     <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">estate.property.view.kanban</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by='property_type_id' records_draggable='False'>
                 <templates>
@@ -46,9 +46,9 @@
 
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.view.list</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channel" decoration-success="state=='offer received' or state=='offer accepted'" decoration-muted="state=='sold'" decoration-bf="state=='offer accepted'">
+            <list string="Estate Property" decoration-success="state=='offer received' or state=='offer accepted'" decoration-muted="state=='sold'" decoration-bf="state=='offer accepted'">
                 <field name="name" width="200px"/>
                 <field name="postcode" width="100px"/>
                 <field name="bedrooms"/>
@@ -64,13 +64,13 @@
 
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form string="Estate Property Details">
                 <header>
                     <button name="sold_button_action" type="object" string="SOLD" invisible="state == 'sold' or state == 'cancelled'"/>
                     <button name="cancel_button_action" type="object" string="CANCEL" invisible="state == 'sold' or state == 'cancelled'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted, sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted, sold"/>
                 </header>
                 <sheet>
                     <group>
@@ -108,7 +108,7 @@
 
                         <page string="Offers">
                             <group>
-                                <field name="offers_ids" readonly="state == 'offer accepted' or state == 'sold' or state == 'cancelled'"/>
+                                <field name="offer_ids" readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled'"/>
                             </group>
                         </page>
 
@@ -127,9 +127,9 @@
 
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.view.search</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Tests">
+            <search string="Search Properties">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
@@ -138,7 +138,7 @@
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <separator />
-                <filter name="date_availability" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]" help="A property is available either if it is new or if the offer has only been received"/>
+                <filter name="date_availability" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" help="A property is available either if it is new or if the offer has only been received"/>
                 <separator />
                 <group string="Group By">
                     <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
@@ -149,7 +149,7 @@
 
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name"> Estate property action</field>
-        <field name="res_model">estate_property</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">kanban,list,form</field>
         <field name="view_id" ref="estate_property_view_kanban"/>
         <field name="context">{'search_default_date_availability': True}</field>

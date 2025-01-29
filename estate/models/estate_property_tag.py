@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 class TagModel(models.Model):
-    _name = "estate_property_tag"
+    _name = "estate.property.tag"
     _description = "estate property tag"
     _order = "name"
 
@@ -12,4 +12,3 @@ class TagModel(models.Model):
         ('check_tag_uniqueness', 'UNIQUE(name)',
          'The new tag should be unique')
     ]
-    
