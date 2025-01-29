@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="budget_line_list_view" model="ir.ui.view">
+
+        <field name="model">budget.line</field>
+        <field name="name">budget.line</field>
+
+        <field name="arch" type="xml">
+            <list string="list of budget line" editable="top">
+
+                <field name="name" />
+                <field name="budget_total" />
+                <field name="budget_achive" />
+                <field name="budget_achive" widget="progressbar" options="{ 'max_value': 'budget_total', 'editable': false}" />
+
+                <field name="analytic_account_id" />
+                <button string="detail" name="action_open_account_analytic" type="object" />
+            </list>
+        </field>
+
+    </record>
+    <record id="budget_line_graph_view" model="ir.ui.view">
+        <field name="name">budget.line</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <graph string="Budget Line" type="bar" stacked="True">
+                <field name="name" type="row" />
+                <field name="budget_total" options="{ 'max_value': 'budget_achive'}">
+                </field>
+
+            </graph>
+        </field>
+    </record>
+
+    <record id="budget_line_gantt_view" model="ir.ui.view">
+        <field name="name">budget.line</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <gantt string="Budget Line" date_start="date_from" date_stop="date_to" default_group_by="name" default_scale="year" pill_label="True" color="id">
+
+
+            </gantt>
+        </field>
+    </record>
+
+
+    <record id="budget_line_pivot_view" model="ir.ui.view">
+        <field name="name">budget.line</field>
+        <field name="model">budget.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget Lines">
+                <field name="analytic_account_id" type="row" />
+            </pivot>
+        </field>
+    </record>
+
+</odoo>

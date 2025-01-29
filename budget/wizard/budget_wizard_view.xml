@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="budget_budget_wizard_action" model="ir.actions.act_window">
+        <field name="name">budget</field>
+        <field name="res_model">budget.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="budget_budget_wizard_view" model="ir.ui.view">
+        <field name="name">budget.budget.view.wizard</field>
+        <field name="model">budget.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="date_start" string="Duration" widget="daterange" options='{"end_date_field": "date_end", "always_range": "1"}' required="date_start and date_end" />
+
+                </group>
+                <group>
+                    <field name="duration" widget="radio" />
+
+                </group>
+                <group>
+                    <field name="account_id" widget="many2many_tags" string="account line" />
+
+                </group>
+                <footer>
+                    <button name="action_create_budgets" string="Create" type="object" class="btn-primary" icon="fa-check" />
+                    <button string="cancle" class="btn-secondary" special="cancel" icon="fa-times" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

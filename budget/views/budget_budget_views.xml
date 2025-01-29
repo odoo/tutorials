@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="budget_budget_action" model="ir.actions.act_window">
+        <field name="name">budget</field>
+        <field name="res_model">budget.budget</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define new budgets
+            </p>
+        </field>
+    </record>
+
+    <record id="budget_budget_kanban_view" model="ir.ui.view">
+        <field name="name">budget.budget.view.kanban</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <kanban records_draggable="False" type="object" action="action_budget_lines" on_create="budget.budget_budget_wizard_action">
+                <!--optional quick_create_view="budget.budget_budget_wizard_view"  -->
+                <templates>
+                    <t t-name="menu">
+                        <t t-if="widget.editable">
+                            <!-- another way <a role="menuitem" type="object" name="action_budget_form" class="dropdown-item">Configuration</a> -->
+
+                            <a role="menuitem" type="open" class="dropdown-item">Configuration</a>
+                        </t>
+                    </t>
+                    <t t-name="card">
+                        <h3>
+                            <field name="description" />
+                        </h3>
+                        <div class="flex-row">
+                            <i class="fa fa-clock-o mx-1" title="start date"></i>
+                            <field name="duration_start_date" />
+                            <i class="fa fa-arrow-right mx-1" title="end date"></i>
+                            <field name="duration_end_date" />
+                        </div>
+
+                        <footer class="d-flex justify-content-end">
+                            <field name="responsible" widget="many2one_avatar_user" />
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+
+    <record id="budget_budget_form_view" model="ir.ui.view">
+        <field name="name">budget.budget.form.view</field>
+        <field name="model">budget.budget</field>
+        <field name="arch" type="xml">
+            <form >
+                <header>
+                    <button name="action_draft" type="object" string="Reset to Draft" class="btn-primary" invisible="status=='Draft'" />
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary" invisible="status=='Confirmed'" />
+                    <button name="action_revise" type="object" string="Revise" />
+                    <button name="action_done" type="object" string="Done" />
+                    <field name="status" widget="statusbar" statusbar_visible="Draft,Confirmed,Revised,Done" />
+                </header>
+                <sheet >
+                    <div class="alert alert-warning alert-link" invisible="warning">Warning!! Your Budget Account is Using More Then Allocated Budget</div>
+                    <group>
+
+
+                        <group>
+                            <h4>
+                                <field name="name" />
+                            </h4>
+
+                        </group>
+
+
+
+                    </group>
+                    <group>
+                        <group>
+                            <field name="description" string=" " />
+                        </group>
+                        <group>
+
+                        </group>
+                        <group >
+
+                        </group>
+                    </group>
+                    <group>
+
+                        <group>
+                            <field name="responsible" />
+                            <field name="revise_by" readonly="1" string="Revise by" />
+
+
+                        </group>
+                        <group>
+                            <group>
+                                <field name="duration_start_date" string="duration" />
+                                <field name="company_id" readonly="1" />
+                                <field name="over_budget" />
+
+                            </group>
+                            <group>
+                                <field name="duration_end_date" string="->" />
+
+                            </group>
+
+
+                        </group>
+
+
+
+
+                    </group>
+                    <notebook>
+                        <page string="Budget line">
+
+                            <field name="budget_line_ids" readonly="status in ['Confirmed','Revised','Done'] " />
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <chatter />
+
+            </form>
+        </field>
+    </record>
+</odoo>
