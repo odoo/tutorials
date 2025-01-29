@@ -3,5 +3,9 @@
   'name': 'Real Estate',
   'depends': ['base'],
   'application': True,
-  'data': ['./security/ir.model.access.csv', './views/house_views.xml', './views/menus.xml']
+  'data': [
+      './security/ir.model.access.csv', 
+      './views/house_views.xml',
+        './views/menus.xml'
+  ]
 }

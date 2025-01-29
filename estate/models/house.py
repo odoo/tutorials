@@ -10,7 +10,7 @@ class house(models.Model):
     ]
     _order = 'id desc'
 
-    name = fields.Char(string='House Name', required=True, default='Unknown')
+    name = fields.Char(string='House Name', required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=lambda self : self.get_availability_date())

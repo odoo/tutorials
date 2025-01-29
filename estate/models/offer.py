@@ -8,7 +8,7 @@ class offer(models.Model):
     ]
     _order = 'price desc'
 
-    price = fields.Float()
+    price = fields.Float(required=True)
     status = fields.Selection(selection=[('Accepted','Accepted'),('Refused','Refused')], copy=False)
     partner_id = fields.Many2one('res.partner', stirng='Partner', required=True)
     property_id = fields.Many2one('house', 'Property applied on', required=True)
