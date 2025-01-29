@@ -16,4 +16,3 @@ class house_type(models.Model):
     def _compute_offers_count(self):
         for house_type in self:
             house_type.offers_count = len(house_type.houses_ids.offers_ids)
-
