@@ -12,13 +12,13 @@ class EstatePropertyOffer(models.Model):
  
     price = fields.Float('Price')
 
+
     status = fields.Selection(
         selection=[
             ('new', 'New'),
             ('offer_received', 'Offer Received'),
             ('accepted', 'Accepted'),
             ('refused', 'Refused'),
-            ('sold', 'Sold'),
             ('cancelled', 'Cancelled'),
         ],
         string="Status",
@@ -30,6 +30,16 @@ class EstatePropertyOffer(models.Model):
    
     partner_id = fields.Many2one('res.partner', string="Partner",required=True)
     property_id = fields.Many2one('estate_property', string="Property",required=True)    
+    # property_type_id = fields.Integer(related="property_id.property_type_id", required=True)
+
+    property_type_id = fields.Many2one(
+        comodel_name='estate_property_type',
+        string='Property Type',
+        related='property_id.property_type_id',
+        store=True,
+        readonly=True
+    )
+
 
     validity = fields.Integer('Validity (in days)', default=7)
 
@@ -84,3 +94,24 @@ class EstatePropertyOffer(models.Model):
     def refuse_offer(self):
         for offer in self:
             offer.status = 'refused'
+
+
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Override create to add custom business logic for offers in batch mode."""
+
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+
+            # Check if a higher or equal offer exists
+            existing_offer = property_id.offer_ids.filtered(lambda offer: offer.price >= vals['price'])
+            if existing_offer:
+                raise UserError(
+                    "Cannot create an offer with a lower or equal amount than an existing offer."
+                )
+
+            # Update the property state to 'Offer Received'
+            property_id.state = 'offer_received'
+
+        return super().create(vals_list)

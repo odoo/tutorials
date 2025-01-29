@@ -62,6 +62,18 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate_property_tag', string="Property Tags")
     offer_ids = fields.One2many('estate_property_offer', 'property_id', string="Offers")
 
+
+    offer_count = fields.Integer('Offer Count', compute='_compute_offer_count')
+
+
+
+    @api.depends('offer_ids')
+
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)
+
+
     _sql_constraints = [
         ('check_expected_price_positive', 'CHECK(expected_price >= 0)',
         'A property expected price must be strictly positive'),
@@ -79,7 +91,6 @@ class EstateProperty(models.Model):
         'A property number of facades must be strictly positive'),
         ('check_sequence_positive', 'CHECK(sequence >= 0)',
         'A property sequence must be strictly positive'),
-        ('unique_name', 'unique (name)', "Tag name already exists!"),
     ]
 
     
@@ -124,7 +135,7 @@ class EstateProperty(models.Model):
             record.selling_price = accepted_offer.price
             record.buyer_id = accepted_offer.partner_id
             record.state = 'sold'
-            
+
     @api.constrains('expected_price','selling_price')
     def check_selling_expected(self):
         for record in self:
@@ -133,5 +144,17 @@ class EstateProperty(models.Model):
                     raise ValidationError("The selling price cannot be lower than the expected price by 0.9.")
    
 
+
+    def unlink(self):
+        """Prevent deletion if state is not 'New' or 'Cancelled'."""
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError(
+                    "You can only delete properties in 'New' or 'Cancelled' state."
+                )
+        return super().unlink()
+    
+
+    
     def is_offer_accepted(self):
         return bool(self.offer_ids.filtered(lambda offer: offer.state == 'accepted'))

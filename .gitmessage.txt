@@ -1,0 +1,16 @@
+[TAG] module: describe your change in a short sentence (ideally < 50 chars)
+
+Long version of the change description, including the rationale for the change,
+or a summary of the feature being introduced.
+
+Please spend a lot more time describing WHY the change is being done rather
+than WHAT is being changed. This is usually easy to grasp by actually reading
+the diff. WHAT should be explained only if there are technical choices
+or decision involved. In that case explain WHY this decision was taken.
+
+End the message with references, such as task or bug numbers, PR numbers, and
+OPW tickets, following the suggested format:
+task-123 (related to task)
+Fixes #123  (close related issue on Github)
+Closes #123  (close related PR on Github)
+opw-123 (related to ticket)
