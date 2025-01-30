@@ -2,7 +2,7 @@
     'name': "Real Estate",
     'version': '1.0',
     'depends': ['base'],
-    'author': "Abdelrahman Mahmoud (amah)",
+    'author': "Ahmed Elamery AELE",
     'category': 'Training',
 
     'data' :[
