@@ -1,5 +1,6 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
@@ -62,14 +63,31 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
+    best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store=True)
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+        ('unique_name', 'UNIQUE(name)', 'The name must be unique.'),
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+
+            min_allowed_price = record.expected_price * 0.90
+
+            if float_compare(record.selling_price, min_allowed_price, precision_digits=2) == -1:
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price."
+                )
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
-
-
-    best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store=True)
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
