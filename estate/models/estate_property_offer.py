@@ -102,7 +102,7 @@ class EstatePropertyOffer(models.Model):
         """Override create to add custom business logic for offers in batch mode."""
 
         for vals in vals_list:
-            property_id = self.env['estate.property'].browse(vals['property_id'])
+            property_id = self.env['estate_property'].browse(vals['property_id'])
 
             # Check if a higher or equal offer exists
             existing_offer = property_id.offer_ids.filtered(lambda offer: offer.price >= vals['price'])

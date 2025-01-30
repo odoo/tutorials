@@ -135,6 +135,7 @@ class EstateProperty(models.Model):
             record.selling_price = accepted_offer.price
             record.buyer_id = accepted_offer.partner_id
             record.state = 'sold'
+            print("hello")
 
     @api.constrains('expected_price','selling_price')
     def check_selling_expected(self):
