@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="budget_menu" name="Budget" web_icon="budget_management,static/budget.png">
+    <menuitem id="budget_menu" name="Budget" web_icon="budget,static/budget.png">
         <menuitem id="budget_budget_menu_action1" name="budget" action="budget_budget_action" />
     </menuitem>
 </odoo>

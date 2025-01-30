@@ -40,15 +40,15 @@ class BudgetBudget(models.Model):
         "res.company", required=True, default=lambda self: self.env.company
     )
 
-    revise_by = fields.Many2one("res.users", ondelete="restrict")
+    revise_by = fields.Many2one("res.users", ondelete="restrict", copy=False)
     budget_line_ids = fields.One2many(
-        "budget.line", inverse_name="budget_id", string="budget_lines"
+        "budget.line", inverse_name="budget_id", string="budget_lines", copy=True
     )
 
     message_ids = fields.One2many(
         "mail.message",
         "res_id",
-        domain=[("model", "=", "buavatardget.budget"), ("model", "=", "budget.line")],
+        domain=[("model", "=", "budget.budget"), ("model", "=", "budget.line")],
         string="Messages",
     )
 
@@ -112,7 +112,9 @@ class BudgetBudget(models.Model):
 
     def action_revise(self):
         for record in self:
-            record.write({"status": "Revised", "active": False})
+            record.write(
+                {"revise_by": self.env.user, "status": "Revised", "active": False}
+            )
             revised_budget = record.sudo().copy(
                 default={
                     "name": record.name,
@@ -140,6 +142,9 @@ class BudgetBudget(models.Model):
             "view_mode": "list,graph,pivot,gantt",
             "res_model": "budget.line",
             "type": "ir.actions.act_window",
+            "context": {
+                "default_budget_id": self.id,
+            },
             "domain": [("budget_id", "=", self.id)],
         }
 

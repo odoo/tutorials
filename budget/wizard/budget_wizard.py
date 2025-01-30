@@ -1,10 +1,9 @@
 from dateutil.relativedelta import relativedelta
 from datetime import date
+from odoo import fields, models
 
-from odoo import api, fields, models
 
-
-class BudgetWizard(models.Model):
+class BudgetWizard(models.TransientModel):
     _name = "budget.wizard"
     _description = "budget.wizard"
 

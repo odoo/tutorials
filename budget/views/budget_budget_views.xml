@@ -90,7 +90,7 @@
 
                         <group>
                             <field name="responsible" />
-                            <field name="revise_by" readonly="1" string="Revise by" />
+                            <field name="revise_by" readonly="1" string="Revise by" invisible="not revise_by" />
 
 
                         </group>
