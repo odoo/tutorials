@@ -110,16 +110,25 @@
             <field name="type">kanban</field>
             <field name="arch" type="xml">
                 <kanban default_group_by="type_id" disable_quick_create="1" group_create="false" records_draggable="false">
+                    <field name='state'/>
                     <templates>
                         <t t-name="kanban-box">
                             <div>
+                                <label for="name">Name: </label>
                                 <field name="name"/>
+                                <div><br/></div>
+                                <label for="expected_price">Expected price: </label>
                                 <field name="expected_price"/>
-                                <div t-if="record.state == 'offer received'">
+                                <div><br/></div>
+                                <div t-if="record.state.raw_value == 'offer received'">
+                                    <label for="best_price">Best price: </label>
                                     <field name="best_price"/>
+                                    <div><br/></div>
                                 </div>
-                                <div t-if="record.state == 'offer accepted'">
+                                <div t-if="record.state.raw_value == 'offer accepted'">
+                                    <label for="selling_price">Selling price: </label>
                                     <field name="selling_price"/>
+                                    <div><br/></div>
                                 </div>
                                 <field name="tag_ids"/>
                             </div>

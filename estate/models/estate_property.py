@@ -95,7 +95,6 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
     def sold_property(self):
-        print('aaaaaaa')
         for record in self:
             if record.state == "cancelled":
                 raise exceptions.UserError("A cancelled property can't be sold")

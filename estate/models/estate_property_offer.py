@@ -39,7 +39,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals['price'] < self.env['estate.property'].browse(vals['property_id']):
+        if vals['price'] < self.env['estate.property'].browse(vals['property_id']).best_price:
             raise ValueError("Can't make an offer this low")
         return super(EstatePropertyOffer, self).create(vals)
 
