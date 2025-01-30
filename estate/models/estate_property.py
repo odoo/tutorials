@@ -34,6 +34,7 @@ class EstateProperty(models.Model):
                    ('sold', 'Sold'), 
                    ('cancelled', 'Cancelled')
                    ],
+                   default='new',
         help="Is the house sold already ?")
     type_id = fields.Many2one("estate.property.types", string = "Property Type")
     sales_person_id = fields.Many2one("res.users", string = "Sales Person", default=lambda self: self.env.user)

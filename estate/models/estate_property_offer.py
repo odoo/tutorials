@@ -37,7 +37,7 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         if vals['price'] < self.env['estate.property'].browse(vals['property_id']).best_price:
             raise ValueError("Can't make an offer this low")
