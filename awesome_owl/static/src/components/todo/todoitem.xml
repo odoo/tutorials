@@ -1,0 +1,33 @@
+<templates>
+    <t t-name="awesome_owl.todo.item">
+        <div class="card d-inline-block m-2" style="width: 18rem;" t-att-class="{
+            'text-muted': this.props.todo.isCompleted,
+            'text-decoration-line-through': this.props.todo.isCompleted
+        }">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <t t-out="this.props.todo.id" />
+                </h5>
+                <p class="card-text">
+                    <t t-out="this.props.todo.description" />
+                </p>
+                <p class="card-text">
+                    <input type="checkbox" t-model="this.props.todo.isCompleted" /> completed
+                </p>
+                <button t-on-click="() => this.props.removeTodo(this.props.todo.id)">
+                    <span class="fa fa-remove" />
+                </button>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="awesome_owl.todo.list">
+        <h2> Todos </h2>
+        <input t-on-keyup="addTodo" t-model="this.description_input.val" class="form-control w-25" 
+        t-ref="todo_in"    placeholder="add a todo description" />
+        <t t-foreach="this.todos" t-as="todoItem" t-key="todoItem.id">
+            <TodoItem todo="todoItem" removeTodo.bind="this.removeTodo" />
+        </t>
+    </t>
+</templates>
+
