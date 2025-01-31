@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="root_estate_menu" name="Real Estate">
+        <menuitem id="top_level_estate_menu" name="Estates">
+            <menuitem id="estate_action_menu" action="house_action" />
+        </menuitem>
+    </menuitem>
+
+    <menuitem id="estate.settings" parent = "root_estate_menu" name="Settings"> 
+        <menuitem id="estate.house_type_menu" name="House Types" action="estate.house_type_action" />
+        <menuitem id="estate.house_tag_menu" name="House Tags" action="estate.house_tag_action" />
+        <!-- <menuitem id="estate.house_offer_menu" name="Offers" action="estate.house_offer_action" />  -->
+    </menuitem>
+</odoo>
