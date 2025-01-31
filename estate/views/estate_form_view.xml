@@ -9,8 +9,9 @@
 
         <sheet>
             <header>
-                <button name="action_sold" type="object" string="SOLD"/>
-                <button name="action_cancelled" type="object" string="CANCELLED"/>
+                <field name="state" widget="statusbar" statusbar_visible="New,Offer Received,Offer Accpeted,Sold" options="{'clickable': True}"/>
+                <button name="action_sold" type="object" string="SOLD" invisible="state=='Sold'or state=='Cancelled'"/>
+                <button name="action_cancelled" type="object" string="CANCELLED" invisible="state=='Sold'or state=='Cancelled'"/>
             </header>
 
          <group>
@@ -35,22 +36,21 @@
         <notebook>
             <page string="Description">
                 <group>
-                                <field name="description"/>
-                                <field name="tag_ids" widget="many2many_tags"/>
-                                <field name="bedrooms"/>
-                                <field name="property_type_id"/>
-                                <field name="buyer_id"/>
-                                <field name="salesperson_id"/>
-                                <field name="living_area"/>
-                                <field name="total_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
-                                <field name="state"/>
-                                <field name="best_price"/>
-                                </group>
+                    <field name="description"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
+                    <field name="bedrooms"/>
+                    <field name="property_type_id" options="{'no_create': True}"/>
+                    <field name="buyer_id"/>
+                    <field name="salesperson_id"/>
+                    <field name="living_area"/>
+                    <field name="total_area"/>
+                    <field name="facades"/>
+                    <field name="garage"/>
+                    <field name="garden"/>
+                    <field name="garden_area" invisible="not garden"/>
+                    <field name="garden_orientation" invisible="not garden"/>
+                    <field name="best_price"/>
+                </group>
             </page>
             <page string="Other Info">
                 <group>
@@ -61,7 +61,7 @@
             </page>
             <page string="Offers">
                 <group>
-                    <field name="offer_ids"/>
+                    <field name="offer_ids" readonly="state=='Sold' or state=='Cancelled'"/>
                 </group>
                
             </page>

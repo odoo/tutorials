@@ -7,6 +7,9 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char('Property Tag Name',required=True)
     properties = fields.Many2many("estate.property","tag_ids",string="properties")
+    color = fields.Integer(string="Color") 
+    _order ="name"
+
 
     _sql_constraints = [
         ('unique_tag_name', 'UNIQUE(name)',

@@ -8,10 +8,10 @@
     <field name="type">list</field>
     <field name="arch" type="xml">
 
-        <list string="Tests">
+        <list string="Tests" editable="bottom">
             <field name="price"/>  
-            <button name="offer_accepted" type="object" icon="fa-check" title="Confirm"/>
-            <button name="offer_declined" type="object" icon="fa-times" title="Refused"/>
+            <button name="offer_accepted" type="object" icon="fa-check" title="Confirm" invisible="status"/>
+            <button name="offer_declined" type="object" icon="fa-times" title="Refused" invisible="status"/>
             <field name="date_deadline"/>
             <field name="validity"/>
             <field name="partner_id"/>  
@@ -23,7 +23,7 @@
  </record>
 
 <!-- the form view -->
-  <record id="estate_type_view_form" model="ir.ui.view">
+  <record id="estate_offer_view_form" model="ir.ui.view">
     <field name="name">estate.offer.view.form</field>
     <field name="model">estate.property.offer</field>
     <field name="type">form</field>

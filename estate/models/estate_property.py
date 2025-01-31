@@ -27,6 +27,8 @@ class EstateProperty(models.Model):
     state = fields.Selection([("New","New"),("Offer Received","Offer Received"),("Offer Accpeted","Offer Accepted"),("Sold","Sold"),("Cancelled","Cancelled")],copy=False,default="New")
     total_area= fields.Integer(compute = "_compute_total_area")
     best_price=fields.Float(compute="_compute_best_price")
+    _order="id desc"
+    
 
 
 
@@ -39,6 +41,11 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self: 
             if record.offer_ids:
+                print("TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEST")
+                print("the print before record.mapped")
+                print(record.mapped('offer_ids.price'))
+                print("the print before record.offer_ids")
+                print(record.offer_ids.mapped('price'))
                 record.best_price=max(record.mapped('offer_ids.price'))
             else : record.best_price=0
 
@@ -72,7 +79,7 @@ class EstateProperty(models.Model):
          ('selling_price_positiv','CHECK(selling_price >= 0)','the selling price has to be positive')
     ]
 
-    @api.constrains('selling_price')
+    @api.constrains('selling_price','expected_price')
     def _check_selling_price_90(self):
         for record in self: 
             if record.selling_price<0.9*(record.expected_price):
