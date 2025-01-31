@@ -3,11 +3,11 @@
     'name': "Awesome Owl",
 
     'summary': """
-        Starting module for "Discover the JS framework, chapter 1: Owl components"
+        Companion addon for the Odoo Smartclass 2024 on the JS Framework
     """,
 
     'description': """
-        Starting module for "Discover the JS framework, chapter 1: Owl components"
+        Companion addon for the Odoo Smartclass 2024 on the JS Framework
     """,
 
     'author': "Odoo",
@@ -16,8 +16,8 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Tutorials/AwesomeOwl',
-    'version': '0.1',
+    'category': 'Tutorials',
+    'version': '0.2',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'web'],
