@@ -1,0 +1,25 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "python:odoo",
+            "type": "debugpy",
+            "request": "launch",
+            "stopOnEntry": false,
+            "python": "/usr/bin/python3",
+            "program": "/home/odoo/odoo-training/odoo/odoo-bin",
+            "console": "integratedTerminal",
+            "args": [
+                "--limit-time-cpu=99999",
+                "--limit-time-real=99999",
+                "--limit-request=10000",
+                "--addons-path=/home/odoo/odoo-training/odoo/addons,/home/odoo/odoo-training/enterprise,/home/odoo/odoo-training/tutorials",
+                "--dev=all",
+                "-d rd-demo",
+            ],
+        }
+    ]
+}
