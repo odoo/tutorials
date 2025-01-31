@@ -3,7 +3,7 @@
 <odoo>
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name"> Estate property tag action</field>
-        <field name="res_model">estate_property_tag</field>
+        <field name="res_model">estate.property.tag</field>
         <field name="view_mode">list,form</field>
     </record>
 

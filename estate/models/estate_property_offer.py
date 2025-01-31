@@ -16,7 +16,7 @@ class OfferModel(models.Model):
         ]
     )
     partner_id = fields.Many2one('res.partner', string='Offeror')
-    property_id = fields.Many2one('estate_property', string='property')
+    property_id = fields.Many2one('estate.property', string='property')
 
     validity = fields.Integer('Validity (days)', default=7)
     date_deadline = fields.Date('Date_deadline', compute="_compute_deadline", inverse="_inverse_deadline")
@@ -69,7 +69,7 @@ class OfferModel(models.Model):
             new_offer_price = vals['price']
 
         if new_offer_price is not None:
-            existing_offers = self.env['estate_property_offer'].search([
+            existing_offers = self.env['estate.property.offer'].search([
                 ('property_id', '=', property_id),
                 ('price', '>=', new_offer_price)
             ])

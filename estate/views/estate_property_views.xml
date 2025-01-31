@@ -115,7 +115,7 @@
                         <page string="Other Info">
                             <group>
                                 <field name="partner_id"/>
-                                <field name="users_id"/>
+                                <field name="user_id"/>
                             </group>
                         </page>
 
