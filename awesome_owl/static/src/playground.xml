@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve">
+<templates>
+   <t t-name="awesome_owl.playground">
+      <div class="d-flex justify-content-between m-3 align-items-center text-center border rounded-3 p-4 shadow-sm">
+         <div class="d-flex flex-column align-items-start">
+            <h2 class="mb-2">COUNTERS</h2>
+            <h6>Sum of two counters: <t t-esc="sum.value"/></h6>
+         </div>
+         <div class="d-flex gap-3">
+            <Counter callbackincrement.bind="incrementSum" callbackdecrement.bind="decrementSum"/>
+            <Counter callbackincrement.bind="incrementSum" callbackdecrement.bind="decrementSum"/>
+         </div>
+      </div>
 
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
+      <div class="d-flex justify-content-between m-3 p-4 align-items-center text-center border rounded-3 shadow-sm">
+         <div class="d-flex flex-column align-items-start">
+            <h2 class="mb-2">CARDS</h2>
+            <p>A simple card component</p>
+         </div>
+         <div class="d-flex gap-3">
+            <Card title="titlevalue">
+               <Counter callbackincrement.bind="incrementSum" callbackdecrement.bind="decrementSum"/>
+            </Card>
+            <Card title="titlevalue2">
+               <Counter callbackincrement.bind="incrementSum" callbackdecrement.bind="decrementSum"/>
+            </Card>
+         </div>
+      </div>
 
+      <div class="d-flex justify-content-between m-3 p-4 align-items-center text-center border rounded-3 shadow-sm">
+         <div class="d-flex flex-column align-items-start">
+            <h2 class="mb-2">TO-DO LIST</h2>
+            <p>A simple To-Do List</p>
+         </div>
+         <div class="d-flex gap-3">
+            <ToDoList/>
+         </div>
+      </div>
+   </t>
 </templates>

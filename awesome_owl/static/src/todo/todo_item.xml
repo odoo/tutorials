@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="awesome_owl.todo_item">
+        <div class="d-flex align-items-center mb-2" t-att-class="props.todo_item.isCompleted ? 'text-decoration-line-through text-muted' : ''">
+            <input type="checkbox" t-on-change="toggleState" class="form-check-input me-3" />
+
+            <span class="todo-id"><t t-esc="props.todo_item.id"/>.</span>
+            <span class="todo-description"><t t-esc="props.todo_item.description"/></span>
+
+            <span class="fa fa-remove ms-3 cursor-pointer" t-on-click="()=>props.removeTodo(props.todo_item)"/>
+        </div>
+    </t>
+</templates>

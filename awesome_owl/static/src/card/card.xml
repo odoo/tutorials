@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem; background-color: #714b67; color: white; border-radius: 10px;">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title text-start" style="font-size: 1.5rem; font-weight: bold;">
+                        <t t-out="props.title"/>
+                    </h5>
+                    <button class="btn btn-sm bg-white text-dark" 
+                            t-on-click="()=>{state.isOpen = !state.isOpen}">
+                        Toggle
+                    </button>
+                </div>
+                <div class="card-text mt-2" style="font-size: 1rem;" t-if="state.isOpen">
+                    <t t-slot="default"/>
+                </div>
+                <div class="card-text mt-4" style="font-size: 1rem;" t-else="">
+                    <p>Click on Toggle Button to View the Counter!</p>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
