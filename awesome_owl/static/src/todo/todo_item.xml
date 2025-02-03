@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div class="card my-2"> <!-- {'key1 key2': true} ===> 'key1 key2'-->
+            <div class="card-body d-flex align-items-center">
+                <input type="checkbox" checkbox="props.isCompleted" t-on-change="()=>props.toggleState(props.id)"/>
+                <div class="d-flex mx-3" t-att-class="{'text-decoration-line-through text-muted': props.isCompleted}">
+                    <t t-out="props.id"/>.
+                    <p class="card-text" t-out="props.description"></p>
+                </div>
+                <span class="fa fa-remove" t-on-click="()=> props.removeTodo(props.id)" />
+            </div>
+        </div>
+    </t>
+
+</templates>

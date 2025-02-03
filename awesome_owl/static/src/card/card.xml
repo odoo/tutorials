@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.Card">
+        <div class="card" style="width: 18rem;">
+            <h5 class="card-title" t-esc="props.title"></h5>
+            
+            <t t-if="this.state.isToggleShow">
+                <p class="card-text" t-out="props.content" ></p>
+                <t t-slot="default"></t><br/>
+                <t t-slot="named_slot" />
+            </t>
+            <t t-else="">
+                <span t-on-click="toggleShow" class="cursor-pointer">Toggle</span>
+            </t>
+
+        </div>
+    </t>
+
+</templates>
