@@ -2,8 +2,30 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="container-fluid p-4">
+            <!-- Playground 1: Todo List -->
+            <div class="row justify-content-center mb-5">
+                <div class="col-12 col-md-2">
+                    <h1 class="text-center">Playground 1</h1>
+                    <Card>
+                        <t t-set-slot="title">
+                            <TodoList />
+                        </t>
+                    </Card>
+                </div>
+            </div>
+
+            <!-- Playground 3: Counter -->
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-4 text-center mb-4">
+                    <h1>Playground 2</h1>
+                    <Counter increment="incrementSum" decrement="decrementSum" />
+                    <Counter increment="incrementSum" decrement="decrementSum" />
+
+                    <p class="mt-3">Sum: <t t-esc="state.sum" />
+                    </p>
+                </div>
+            </div>
         </div>
     </t>
 
