@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date()              # Available date
     expected_price = fields.Float(required=True)   # Expected price
     selling_price = fields.Float()                 # Selling price
-    bedrooms = fields.Integer()                        # Number of bedrooms
+    bedrooms = fields.Integer()                    # Number of bedrooms
     living_area = fields.Integer()                 # Size of the property
     facades = fields.Integer()                     # Number of facades
     garage = fields.Boolean()                      # Does it have a garage?
@@ -25,4 +25,3 @@ class EstateProperty(models.Model):
          ('east', 'East'), 
          ('west', 'West')]
     )
-    #changed
