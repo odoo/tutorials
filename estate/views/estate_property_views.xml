@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<odoo>
+    <record id="estate_property_views_action" model="ir.actions.act_window">
+        <field name="name">View Estate Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,kanban</field>
+    </record>
+</odoo>
