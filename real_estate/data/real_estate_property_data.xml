@@ -1,0 +1,14 @@
+<odoo>
+    <record id="property_1" model="real.estate.property">
+        <field name="name">Beach House</field>
+        <field name="expected_price">250000</field>
+        <field name="bedrooms">3</field>
+    </record>
+
+    <record id="property_2" model="real.estate.property">
+        <field name="name">Mountain Cabin</field>
+        <field name="expected_price">180000</field>
+        <field name="selling_price">175000</field>
+        <field name="bedrooms">2</field>
+    </record>
+</odoo>
