@@ -1,13 +1,14 @@
 from odoo import models, fields
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
     name = fields.Char(required=True)              # Property name
-    create_uid=fields.Char(required=True)
-    create_date=fields.Char(required=True)
-    postcode=fields.Char()
+    create_uid = fields.Char(required=True)
+    create_date = fields.Char(required=True)
+    postcode = fields.Char()
     description = fields.Text()                    # Description
     postcode = fields.Char()                       # Postcode
     date_availability = fields.Date()              # Available date
@@ -20,8 +21,8 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()                      # Does it have a garden?
     garden_area = fields.Integer()                 # Garden size
     garden_orientation = fields.Selection(         # Garden direction
-        [('north', 'North'), 
-         ('south', 'South'), 
-         ('east', 'East'), 
+        [('north', 'North'),
+         ('south', 'South'),
+         ('east', 'East'),
          ('west', 'West')]
     )
