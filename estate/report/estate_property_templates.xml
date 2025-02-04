@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="report_offers_table">
+        <t t-if="offers">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity (days)</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="offers" t-as="offer">
+                        <td>
+                            <span t-field="offer.price" />
+                        </td>
+                        <td>
+                            <span t-field="offer.partner_id" />
+                        </td>
+                        <td>
+                            <span t-field="offer.validity" />
+                        </td>
+                        <td>
+                            <span t-field="offer.date_deadline" />
+                        </td>
+                        <td>
+                            <span t-field="offer.status" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <strong>No Offers have been made yet</strong>
+        </t>
+    </template>
+
+    <template id="report_property_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <header>
+                        <img t-att-src="image_data_uri(property.company_id.logo)"
+                            style="max-height: 40pt; max-width: 100%;" alt="Company Logo" />
+                        <hr />
+                        <div>
+                            <strong t-field="property.company_id.name" />
+                        </div>
+                        <div t-field="property.company_id.street" />
+                        <div t-field="property.company_id.city" />
+                        <div t-field="property.company_id.country_id.name" />
+                    </header>
+                    <br />
+                    <br />
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name" />
+                        </h2>
+                        <div>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.salesperson_id" />
+                        </div>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price" />
+                        </div>
+                        <div class="status">
+                            <strong>Status: </strong>
+                            <span t-field="property.state" />
+                        </div>
+                        <t t-set="offers" t-value="property.offer_ids" />
+                        <t t-call="estate.report_offers_table" t-arg-offers="offers" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_properties">
+        <t t-foreach="docs" t-as="sales_person">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <header>
+                        <img t-att-src="image_data_uri(sales_person.company_id.logo)"
+                            style="max-height: 40pt; max-width: 100%;" alt="Company Logo" />
+                        <hr />
+                        <div>
+                            <strong t-field="sales_person.company_id.name" />
+                        </div>
+                        <div t-field="sales_person.company_id.street" />
+                        <div t-field="sales_person.company_id.city" />
+                        <div t-field="sales_person.company_id.country_id.name" />
+                    </header>
+                    <div>
+                        <h1>
+                            <strong>Salesman: </strong>
+                            <span t-field="sales_person.name" />
+                        </h1>
+                    </div>
+                    <t t-if="sales_person.property_ids">
+                    </t>
+                    <t t-else="">no property</t>
+                    <t t-foreach="sales_person.property_ids" t-as="property">
+                        <br />
+                        <br />
+                        <div class="page">
+                            <h2>
+                                <span t-field="property.name" />
+                            </h2>
+                            <div>
+                                <strong>Expected Price: </strong>
+                                <span t-field="property.expected_price" />
+                            </div>
+                            <div>
+                                <strong>Status: </strong>
+                                <span t-field="property.state" />
+                            </div>
+                            <t t-set="offers" t-value="property.offer_ids" />
+                            <t t-call="estate.report_offers_table" t-arg-offers="offers" />
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

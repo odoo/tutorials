@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_rule_property_manager" model="ir.rule">
+        <field name="name">Property_Manager</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups" eval="[(4, ref('estate_group_manager'))]" />
+        <field name="domain_force">[
+            ('state', 'in', ['offer_received', 'offer_accepted', 'sold']),
+            '|',
+            ('company_id', '=', False),
+            ('company_id', 'in', company_ids)
+            ]</field>
+    </record>
+
+    <record id="estate_rule_property_agent" model="ir.rule">
+        <field name="name">Agent can only see their own properties</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups" eval="[(4, ref('estate_group_user'))]" />
+        <field name="domain_force">[
+            '|',
+            ('salesperson_id', '=', user.id),
+            ('salesperson_id', '=',False),
+            '|',
+            ('company_id', '=', False),
+            ('company_id', 'in', company_ids)
+            ]</field>
+    </record>
+
+</odoo>

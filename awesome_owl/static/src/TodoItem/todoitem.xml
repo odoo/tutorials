@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todoitem">
+        <p>
+            <t t-out="props.todo.id"/>
+            <t t-out="props.todo.description" />
+            <t t-if="props.todo.isComplete">Completed</t>
+            <t t-else="">Not Complete yet</t>
+        </p>
+    </t>
+</templates>

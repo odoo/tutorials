@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties"
+                decoration-success="state in ['offer_received', 'offer_accepted']"
+                decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <field name="name" string="Title" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                <field name="expected_price" string="Price" />
+                <field name="selling_price" />
+                <field name="date_availibility" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight"
+                        invisible="state in ['cancelled', 'sold']" />
+                    <button name="action_cancelled" type="object" string="Cancelled"
+                        invisible="state in ['cancelled', 'sold']" />
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"
+                        statusbar_visible="new, offer_received, offer_accepted, sold, cancelled" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" class="h1" placeholder="Property Name" nolabel="1" />
+                        </group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar" nolabel="1" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags" editable="bottom"
+                                options="{'color_field': 'color'}" />
+                            <field name="property_type_id" options="{'no_create': True}" />
+                            <field name="postcode" />
+                            <field name="date_availibility" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                            <field name="best_price" />
+                            <field name="selling_price" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
+                                <field name="active" />
+                                <field name="total_area" />
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer_id" />
+                                <field name="salesperson_id" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" editable="bottom" nolabel="1"
+                                    readonly="state in ['offer_accepted', 'sold', 'cancelled']">
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="property">
+                <field name="name" />
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]" />
+                <separator />
+                <filter string="Search expected price for: 1" name="expected_price"
+                    domain="[('expected_price', '=', 1)]" />
+                <filter string="Search bedroom for: 1" name="bedrooms"
+                    domain="[('bedrooms', '=', 1)]" />
+                <filter string="Search postcode for: 1" name="postcode"
+                    domain="[('postcode', '=', 1)]" />
+                <filter string="Search facades for: 1" name="facades" domain="[('facades', '=', 1)]" />
+                <filter string="Available" name="filter_state"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
+                <group expand="0" string="Group By">
+                    <filter string="Bedroom" name="bedrooms" context="{'group_by': 'bedrooms'}" />
+                    <filter string="State" name="group_state" domain="[]"
+                        context="{'group_by': 'state'}" />
+                    <filter string="Tag IDs" name="tag_ids" context="{'group_by': 'tag_ids'}" />
+                    <filter string="Property Type" name="property_type_id"
+                        context="{'group_by': 'property_type_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Graph View -->
+    <record id="estate_property_view_graph" model="ir.ui.view">
+        <field name="name">estate.property.view.graph</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <graph string="Properties">
+                <field name="property_type_id" />
+                <field name="buyer_id" />
+            </graph>
+        </field>
+    </record>
+
+    <!-- Pivot view -->
+    <record id="estate_property_view_pivot" model="ir.ui.view">
+        <field name="name">estate.property.view.pivot</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <pivot string="Properties">
+                <field name="property_type_id" type="row" />
+                <field name="salesperson_id" type="col" />
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" archivable="false" default_group_by="state" sort="False">
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bold fs-5" />
+                        <div>
+                            <span>Property Type : </span>
+                            <field name="property_type_id" />
+                        </div>
+                        <div>
+                            <span>Total Area : </span>
+                            <field name="total_area" />
+                        </div>
+                        <div class="d-flex mt-auto">
+                            <span>Price : $</span>
+                            <field name="expected_price" class="me-2" string="selling price" />
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
+                        <t t-if="record.image.raw_value">
+                            <div class="d-flex justify-content-center">
+                                <field name="image" widget="image" class="oe_avatar p-2" />
+                            </div>
+                        </t>
+                        <footer class="pt-1 mt-0">
+                            <field name="salesperson_id" widget="many2one_avatar_user"
+                                class="ms-auto" />
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- View Action -->
+    <record id="estate_property_views_action" model="ir.actions.act_window">
+        <field name="name">Real Estate Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">kanban,list,form,search,graph,pivot</field>
+        <field name="context">{'search_default_filter_state': True}</field>
+    </record>
+
+</odoo>
