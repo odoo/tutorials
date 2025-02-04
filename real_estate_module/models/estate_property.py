@@ -7,7 +7,6 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)              # Property name
     create_uid=fields.Char(required=True)
     create_date=fields.Char(required=True)
-    postcode=fields.Char()
     description = fields.Text()                    # Description
     postcode = fields.Char()                       # Postcode
     date_availability = fields.Date()              # Available date
