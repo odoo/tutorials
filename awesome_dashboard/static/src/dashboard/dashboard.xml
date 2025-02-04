@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <i class="fa fa-2x fa-gear"></i>
+                </button>
+
+                <!-- Vertically centered modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                        <form t-on-submit="this.submitDashboardSetting">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Dashboard Items Configuration</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Which cards do you wish to see?<br/><br/>
+                                <t t-foreach="Object.values(this.formState)" t-as="item" t-key="item.id">
+                                    <t t-set="id" t-value="item.id"/>
+                                    <input type="checkbox" t-att-checked="item.isChecked" class="mx-2" t-att-name="id" t-att-value="id" t-on-change="()=>this.updateFormState(item.id)"/> 
+                                    <label t-att-for="id"><span t-out="item.description"></span></label>
+                                    
+                                    <br/>
+                                </t>
+                            </div>
+                            <!-- <div class="modal-footer justify-content-start">
+                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Done</button>
+                            </div> -->
+                        </form>
+                     </div>
+                    </div>
+                </div>
+            </t>
+            <div class="d-flex flex-wrap gap-2 m-2">
+                <t t-foreach="Object.values(this.formState)" t-as="item" t-key="item.id">
+                    <t t-if="item.isChecked">
+                        <DashboardItem size="item.size || 1">
+                            <t t-set="itemProp" t-value="item.props ? item.props(this.statisticResponse) : {'data': this.statisticResponse}"/>
+                            <t t-component="item.Component" t-props="itemProp" />
+                        </DashboardItem>
+                    </t>
+                </t>
+            </div>  
+        </Layout>
+    </t>
+
+</templates>
