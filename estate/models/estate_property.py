@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 class EstateProperty(models.Model):
     _name = "real_estate_property"
@@ -34,3 +34,4 @@ class EstateProperty(models.Model):
         ('east', 'East'),
         ('west', 'West')
     ], string='Garden Orientation')
+    
