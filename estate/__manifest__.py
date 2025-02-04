@@ -1,11 +1,14 @@
 {
     'name': 'Real estate',
     
-    'depends': [
-        'base_setup'
+    "depends": ["base"],
+    
+    'data' : [
+        "security/ir.model.access.csv",
     ],
     
     'installable': True,
     'application': True,
-    'auto_install': False
+    'auto_install': False,
+    'license': 'LGPL-3', 
 }
