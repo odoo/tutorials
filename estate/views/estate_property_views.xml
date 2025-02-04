@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="estate_property_action" model="ir.actions.act_window">
+            <field name="name">Estate action</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">list,form,kanban,pivot,graph</field>
+        </record>
+    </data>
+</odoo>
