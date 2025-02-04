@@ -1,4 +1,4 @@
-    {
+{
     'name': 'Real Estate',
     'version': '1.0',
     'summary': 'Real estate module for managing property listings and transactions',
