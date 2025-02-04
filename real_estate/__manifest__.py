@@ -13,12 +13,14 @@
     'website': "https://www.odoo.com/",
     'category': 'Tutorials',
     'version': '0.1',
-    'application': False,
-    'installable': False,
-    'depends': [
-    ],
+    'application': True,
+    'installable': True,
+    'depends': ['base'],
 
-    'data': [],
+    'data': [
+        'security/security_groups.xml',
+        'security/real_estate.model.access.csv'
+    ],
     'assets': {
     },
     'license': 'AGPL-3'
