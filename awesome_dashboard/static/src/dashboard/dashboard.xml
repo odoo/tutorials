@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="display">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerForm">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                <button class="btn btn-light" t-on-click="openSettingsDialog">
+                    <i class="fa fa-cog"/>
+                </button>
+            </t>
+            <t t-set-slot="default">
+                <div class="d-flex flex-wrap justify-content-center">
+                    <t t-foreach="visibleItems" t-as="item" t-key="item.id">
+                        <div class="p-2" t-att-class="item.props(state.dashboardItems).title ? 'd-flex justify-content-center' : ''">
+                            <DashboardItem size="item.size || 1">
+                                <t t-set-slot="component">
+                                    <t t-component="item.Component" t-props="item.props(state.dashboardItems)" />
+                                </t>
+                            </DashboardItem>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </Layout>
+    </t>
+</templates>
