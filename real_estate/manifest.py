@@ -1,25 +1,14 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Real Estate",
-
-    'summary': """
-        Starting module for Real Estate Tutorial"
-    """,
-
-    'description': """
-        Starting module for Real Estate Tutorial"
-    """,
-
-    'author': "Odoo",
-    'website': "https://www.odoo.com/",
-    'category': '',
+    'name': "Real Estate Module",
+    'summary': "Manage real estate properties.",
+    'description': "This is the real estate module used for buying and selling properties!",
     'version': '0.1',
     'application': True,
+    'category': 'Tutorials',
     'installable': True,
-    'depends': [],
-
-    'data': [],
-    'assets': {
-    },
+    'depends': ['base'],
+    'data': [
+    ],
     'license': 'AGPL-3'
 }
