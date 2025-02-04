@@ -1,6 +1,7 @@
 {
-    "application": True,
-    "depend": ["bash"],
-    "name": "Estate",
-    "sequence": "1",
+    'name': 'Estate',
+    'application': True,
+    'depends': ['base'],
+    'sequence': 1,
+    'license': 'LGPL-3'
 }
