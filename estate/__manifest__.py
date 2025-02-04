@@ -11,5 +11,6 @@
         'security/ir.model.access.csv',  #Load security first
         'views/estate_property_views.xml', #Load model views
         'views/estate_menus.xml', #Load menus after views
+        
     ],
 }
