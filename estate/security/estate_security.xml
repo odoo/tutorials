@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Module Category -->
+    <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
+        <field name="description">Real Estate Category.</field>
+    </record>
+
+    <!-- Property Agent Group -->
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Property Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <!-- Property Manager Group -->
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Property Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+</odoo>
