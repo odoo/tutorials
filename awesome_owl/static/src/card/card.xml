@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <!-- <div class='card m-3'>
+            <div class='card-header d-flex justify-content-between align-items-center'>
+                <span>
+                    <t t-raw='props.title'/>
+                </span>
+                <button class='btn btn-sm btn-primary' t-on-click='() => (isOpen = !isOpen)'>Toggle</button>
+            </div>
+            <div class='card-body' t-if='isOpen'>
+                <t t-slot='default'/>
+            </div>
+        </div> -->
+
+        <div class="card" style="width: 18rem;">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <t t-slot="title"/>
+                </h5>
+                <button class="btn btn-danger btn-sm" t-on-click="toggle"><i class="fa fa-close"></i></button>
+            </div>
+            <div class="card-body" t-if="this.isOpen.value">
+                <t t-slot="content"/>
+            </div>
+            <div class="card-body" t-else="">
+                <p>Click on Toggle to View Counters</p>
+            </div>
+        </div>
+    </t>
+</templates>

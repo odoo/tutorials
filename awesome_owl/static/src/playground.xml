@@ -2,9 +2,24 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
+        <!-- <Counter onChange="sumOfCounters" /> -->
+        <!-- <Counter onChange="sumOfCounters" /> -->
+        <!-- <div t-esc="sum.value"></div> -->
+        <!-- <br /> -->
+        <Card>
+            <t t-set-slot="title">
+                Sample Title
+            </t>
+            <t t-set-slot="content">
+                <Counter onChange="sumOfCounters" />
+                <Counter onChange="sumOfCounters" />
+                <Counter onChange="sumOfCounters" />
+            </t>
+        </Card>
+        <!-- <Card title="'Card 2'" content="'Description 2'" />
+        <Card title="'Card 3'" content="'Description 3'" />
+        <Card title="'Card 4'" content="'Description 4'" /> -->
+        <!-- <TodoList /> -->
     </t>
 
 </templates>

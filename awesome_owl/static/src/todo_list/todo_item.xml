@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div t-if="props.todo" class='list-group-item d-flex align-items-center' t-att-class='props.todo.isCompleted ? "text-muted text-decoration-line-through bg-light" : ""'>
+            <input type='checkbox' class="form-check-input me-2" t-att-checked='props.todo.isCompleted' t-on-change='() => toggleState(props.todo.id)'/>
+            <span t-esc='props.todo.description' class="flex-grow-1"/>
+            <button class="btn btn-sm btn-outline-danger" t-on-click="removeTodo">
+                <i class="fa fa-trash"/>
+            </button>
+        </div>
+    </t>
+
+</templates>

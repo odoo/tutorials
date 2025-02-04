@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_list">
+        <div class="card shadow-sm border-0" style="width: 30%; margin: auto;">
+            <div class="card-header text-white d-flex align-items-center" style="background-color: #714B67;">
+                <h5 class="mb-0 flex-grow-1">Todo List</h5>
+            </div>
+            <div class="card-body">
+                <input t-ref='input' type='text' class='form-control mb-3' placeholder='Enter a new task' t-on-keyup='addTodo'/>
+                <div class="list-group">
+                    <div t-foreach='todos' t-as='todo' t-key='todo.id'>
+                        <TodoItem todo='todo' toggleState='toggleState' removeTodo='removeTodo'/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
