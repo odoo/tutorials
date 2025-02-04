@@ -1,0 +1,10 @@
+<odoo>
+<record id="estate_property_action" model="ir.actions.act_window">
+    <field name="name">Test action</field>
+    <field name="res_model">estate.property</field>
+    <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="estate_property_menu_action" action="estate_property_action"/>
+
+
+</odoo>
