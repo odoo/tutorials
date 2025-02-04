@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="listing_page" name="Estate Property Listing">
+        <t t-call="website.layout">
+            <div class="container">
+                <h2>Estate Properties</h2>
+                <!-- Filter Form -->
+                <form action="/property" method="get" class="mb-4">
+                    <div class="row">
+                        <!-- Status Filter -->
+                        <div class="col-md-3">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-control">
+                                <option value="all" t-att-selected="request.params.get('status') == 'all'">All</option>
+                                <option value="new" t-att-selected="request.params.get('status') == 'new'">New</option>
+                                <option value="offer_received" t-att-selected="request.params.get('status') == 'offer_received'">Offer Received</option>
+                            </select>
+                        </div>
+                        <!-- Min Price -->
+                        <div class="col-md-2">
+                            <label class="form-label">Min Price</label>
+                            <input type="number" name="min_price" class="form-control" placeholder="Min Price" t-att-value="request.params.get('min_price')"/>
+                        </div>
+                        <!-- Max Price -->
+                        <div class="col-md-2">
+                            <label class="form-label">Max Price</label>
+                            <input type="number" name="max_price" class="form-control" placeholder="Max Price" t-att-value="request.params.get('max_price')"/>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- Property Listing -->
+                <div class="row">
+                    <t t-if="properties">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-md-4 mb-4">
+                                <div class="card">
+                                    <div class="ratio ratio-4x3">
+                                        <t t-if="property.image">
+                                            <img t-att-src="image_data_uri(property.image)"
+                                                class="card-img-top object-fit-cover"
+                                                alt="Property Image"/>
+                                        </t>
+                                        <t t-else="">
+                                            <img t-att-src="'/estate/static/src/img/default.png'"
+                                                class="card-img-top object-fit-cover"
+                                                alt="Default Property Image"/>
+                                        </t>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <t t-esc="property.name"/>
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>Price:</strong>
+                                            <t t-esc="property.expected_price"/>₹
+                                        </p>
+                                        <a t-att-href="'/property/%d' % property.id" class="btn btn-outline-primary">
+                                            <i class="fa fa-info-circle"></i> View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <p class="text-muted">No properties found matching your criteria.</p>
+                    </t>
+                    <div class="d-flex justify-content-center my-3">
+                        <t t-call="website.pager"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="property_detail_page" name="Estate Property Description">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <!-- Property Image -->
+                    <div class="col-md-6">
+                        <div class="ratio ratio-4x3">
+                            <t t-if="property.image">
+                                <img t-att-src="image_data_uri(property.image)"
+                                    class="img-fluid rounded shadow-sm" alt="Property Image"/>
+                            </t>
+                            <t t-else="">
+                                <img t-att-src="'/estate/static/src/img/default.png'"
+                                    class="img-fluid rounded shadow-sm" alt="Default Property Image"/>
+                            </t>
+                        </div>
+                    </div>
+                    <!-- Property Details -->
+                    <div class="col-md-6">
+                        <h2><t t-esc="property.name"/></h2>
+                        <p class="text-muted"><t t-esc="property.description or 'No description available'"/></p>
+
+                        <div class="mb-2">
+                            <strong>Expected Price:</strong>
+                            <span t-field="property.expected_price"/>₹
+                        </div>
+                        <div class="mb-2">
+                            <strong>Bedrooms:</strong>
+                            <span t-field="property.bedrooms"/>
+                        </div>
+                        <div class="mb-2">
+                            <strong>Living Area:</strong>
+                            <span t-field="property.living_area"/> m²
+                        </div>
+                        <div class="mb-2">
+                            <strong>State:</strong>
+                            <span t-field="property.state"/>
+                        </div>
+                        <div class="mb-2">
+                            <strong>Salesperson:</strong>
+                            <span t-field="property.sales_id.name"/>
+                        </div>
+                        <div class="mb-2">
+                            <strong>Avilable from:</strong>
+                            <span t-field="property.date_availability"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
