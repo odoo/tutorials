@@ -1,18 +1,29 @@
 {
-    'name': "Real Estate",
-    'version': '1.0',
-    'depends': ['base'],
-    'author': "mkap",
-    'category': 'tutorials/estate',
-    'description': """
-    App to list and sell/rent property
+    'name': "estate app",
+
+    'summary': """
+        estate module"
     """,
-    # data files always loaded at installation
+
+    'description': """
+        estate module"
+    """,
+
+    'author': "Odoo",
+    'website': "https://www.odoo.com/",
+
+    # Categories can be used to filter modules in modules listing
+    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
+    # for the full list
+    'category': 'Tutorials/estate',
+    'version': '0.1',
+
+    # any module necessary for this one to work correctly
+    'depends': ['base', 'web'],
+    'application': True,
+    'installable': True,
     'data': [
-        'views/mymodule_view.xml',
+      #  'views/templates.xml',
     ],
-    # data files containing optionally loaded demonstration data
-    'demo': [
-        'demo/demo_data.xml',
-    ],
+    'license': 'AGPL-3'
 }
