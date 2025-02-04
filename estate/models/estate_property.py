@@ -24,8 +24,8 @@ class EstateProperty(models.Model):
     garden_area= fields.Integer()
     garden_orientation = fields.Selection([("North","North"),("South","South"),("East","East"),("West","West")])
     active = fields.Boolean(default=True)
-    state = fields.Selection([("New","New"),("Offer Received","Offer Received"),("Offer Accpeted","Offer Accepted"),("Sold","Sold"),("Cancelled","Cancelled")],copy=False,default="New")
-    total_area= fields.Integer(compute = "_compute_total_area")
+    state = fields.Selection([("New","New"),("Offer Received","Offer Received"),("Offer Accepted","Offer Accepted"),("Sold","Sold"),("Cancelled","Cancelled")],copy=False,default="New")
+    total_area= fields.Integer(compute = "_compute_total_area",default=0)
     best_price=fields.Float(compute="_compute_best_price")
     _order="id desc"
     
@@ -41,11 +41,6 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self: 
             if record.offer_ids:
-                print("TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEST")
-                print("the print before record.mapped")
-                print(record.mapped('offer_ids.price'))
-                print("the print before record.offer_ids")
-                print(record.offer_ids.mapped('price'))
                 record.best_price=max(record.mapped('offer_ids.price'))
             else : record.best_price=0
 
@@ -73,6 +68,8 @@ class EstateProperty(models.Model):
                 record.state="Cancelled"
         return True
 
+
+
     _sql_constraints = [
         ('expected_price_positive', 'CHECK(expected_price >= 0)',
          'The price hase to be positive'),
@@ -84,3 +81,10 @@ class EstateProperty(models.Model):
         for record in self: 
             if record.selling_price<0.9*(record.expected_price):
                 raise exceptions.ValidationError("the selling prise is lower than 90 pourcent of the expected price")
+
+
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_user_inactive(self):
+        if self.state not in ["New","Cancelled"]:
+            raise exceptions.UserError("Can't delete a property not new or cancelled!")

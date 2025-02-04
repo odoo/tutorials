@@ -5,13 +5,15 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "reals estate properties offer"
 
-    property_type_id= fields.Char('Property Offer ID')
+    property_offer_id= fields.Char('Property Offer ID')
     price = fields.Float('Le Prix')
     status = fields.Selection([("Accepted","Accepted"),("Refused","Refused")],copy=False)
     partner_id=fields.Many2one("res.partner",required=True)
     property_id=fields.Many2one("estate.property",required=True)
     validity= fields.Integer(default=7)
     date_deadline=fields.Date(compute="_compute_deadline",inverse="_inverse_deadline",string="Date Limite")
+    offer_type_id=fields.Many2one(related="property_id.property_type_id")
+    
     _order="price desc"
 
 
@@ -46,3 +48,11 @@ class EstatePropertyOffer(models.Model):
         ('offer_price_positive', 'CHECK(price >= 0)',
          'The offer price hase to be positive'),
     ]
+
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals: 
+            if val['price'] < self.env['estate.property'].browse(val['property_id']).best_price:
+                raise exceptions.UserError("Can't make an offer this low")
+            self.env['estate.property'].browse(val['property_id']).state="Offer Received"
+        return super().create(vals)

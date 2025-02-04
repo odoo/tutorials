@@ -9,7 +9,7 @@
 
         <sheet>
             <header>
-                <field name="state" widget="statusbar" statusbar_visible="New,Offer Received,Offer Accpeted,Sold" options="{'clickable': True}"/>
+                <field name="state" widget="statusbar" statusbar_visible="New,Offer Received,Offer Accepted,Sold" options="{'clickable': True}"/>
                 <button name="action_sold" type="object" string="SOLD" invisible="state=='Sold'or state=='Cancelled'"/>
                 <button name="action_cancelled" type="object" string="CANCELLED" invisible="state=='Sold'or state=='Cancelled'"/>
             </header>

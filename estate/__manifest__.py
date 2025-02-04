@@ -15,9 +15,10 @@
         'views/tag_actions.xml',
         'views/tag_menus.xml',
         'views/tag_views.xml',
-        # 'views/offer_actions.xml',
+        'views/offer_actions.xml',
         # 'views/offer_menus.xml',
         'views/offer_views.xml',
+        'views/user_views.xml'
 
     ]
   }

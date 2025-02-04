@@ -4,5 +4,6 @@
         <field name="name">View properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_Available': True}</field>
     </record>
 </odoo>  

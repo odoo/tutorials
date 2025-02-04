@@ -5,4 +5,12 @@
         <field name="res_model">estate.property.tags</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <!-- action to show the extended vue -->
+         <record id="estate_tag_view_new" model="ir.actions.act_window">
+        <field name="name">View property Tags New</field>
+        <field name="res_model">estate.property.tags</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="estate_tag_view_list_new"/>
+    </record>
 </odoo>  

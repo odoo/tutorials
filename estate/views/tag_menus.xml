@@ -3,6 +3,7 @@
 <menuitem id="estate_menu_root" name="Real Estate">
     <menuitem id="estate_settings" name="Settings">
         <menuitem id="estate_tag_menu_action" action="estate_tag_view" />
+        <menuitem id="estate_tag_menu_action_new" action="estate_tag_view_new" />
     </menuitem>
 
 </menuitem>

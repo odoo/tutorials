@@ -10,10 +10,38 @@
 
         <list string="Tests" editable="bottom">
             <field name="name"/>  
-            <field name="properties"/>       
+            <field name="properties"/>
+        
         </list>
     </field>
  </record>
+
+<!-- the extended list view  extension-->
+<!-- <record id="estate_tag_view_list_new" model="ir.ui.view">
+    <field name="name">estate.tag.view.list.test.extenstion</field>
+    <field name="model">estate.property.tags</field>
+    <field name="inherit_id" ref="estate.estate_tag_view_list"/>
+    <field name="mode">extension</field>
+    <field name="arch" type="xml">
+        <field name="name" position="after">
+            <field name="color"/>
+        </field>
+    </field>
+</record> -->
+
+<!-- the extended list view  primary-->
+<record id="estate_tag_view_list_new" model="ir.ui.view">
+    <field name="name">estate.tag.view.list.test.primary</field>
+    <field name="model">estate.property.tags</field>
+    <field name="inherit_id" ref="estate.estate_tag_view_list"/>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <field name="name" position="after">
+            <field name="color"/>
+        </field>
+    </field>
+</record>
+
 
 <!-- the form view -->
   <record id="estate_tag_view_form" model="ir.ui.view">

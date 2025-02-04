@@ -13,6 +13,7 @@
             <field name="name"/>
             <field name="property_type_id"/>
             <field name = "properties" widget="many2many_tags"/>
+            <field name="offer_count"/>
             
         </list>
     </field>
@@ -26,6 +27,16 @@
     <field name="arch" type="xml">
     <form string="Test">
         <sheet>
+        <header>
+         <button name="%(estate_offer_view)d"
+                                string="Offers"
+                                type="action"
+                                icon="fa-industry"
+                                class="oe_stat_button">
+                                <field name="offer_count" widget="statinfo" />
+        </button>
+        </header>
+
             <group>
             <field name="name" />
  

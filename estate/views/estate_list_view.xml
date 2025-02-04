@@ -6,7 +6,7 @@
     <field name="type">list</field>
     <field name="arch" type="xml">
 
-        <list string="Tests" decoration-success="offer_ids">
+        <list string="Tests" decoration-success="offer_ids" decoration-bf="state == 'Offer Accepted'" decoration-muted="state=='Sold'">
             <field name="name"/>
             <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
             <field name ="offer_ids" widget="many2many_tags"/>

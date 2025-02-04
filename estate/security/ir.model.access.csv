@@ -3,3 +3,7 @@ estate.access_estate_property,access_estate_property,model_estate_property,base.
 estate.access_estate_property_types,access_estate_property_types,model_estate_property_types,base.group_user,1,1,1,1
 estate.access_estate_property_tags,access_estate_property_tags,model_estate_property_tags,base.group_user,1,1,1,1
 estate.access_estate_property_offer,access_estate_property_offer,model_estate_property_offer,base.group_user,1,1,1,1
+res.users.access,res.users,model_res_users,base.group_user,1,1,1,1
+estate.access_inheritance_0,access_inheritance_0,model_inheritance_0,base.group_user,1,1,1,1
+estate.access_inheritance_1,access_inheritance_1,model_inheritance_1,base.group_user,1,1,1,1
+estate.access_inheritance_2,access_inheritance_2,model_inheritance_2,base.group_user,1,1,1,1
