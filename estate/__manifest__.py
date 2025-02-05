@@ -1,8 +1,8 @@
 {
-    'name': 'Real Estate',
-    'category': 'Real Estate',
+    'name': 'Estate',
+    'depends': ['base'],
+    'author': 'Odoo - Utsav',
     'license': 'LGPL-3',
-    'installable': True,
     'application': False,
     'auto_install': False
 }
