@@ -4,6 +4,15 @@ from datetime import datetime, timedelta
 class Property_Plan(models.Model):
     _name = "estate_property"
     _description = "Test Model"
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', string='Buyer',copy=False)
+
+    tag_ids = fields.Many2many('estate.property.tag',string='Tags')
+
+    offer_ids = fields.One2many('estate.property.offer','property_id',string='Offers')
+
     name = fields.Char(string="Title",required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
