@@ -45,7 +45,7 @@ class Property(models.Model):
         help="This field specifies if the property has a garage",
     )
     garden = fields.Boolean(
-        "Garage",
+        "Garden",
         help="This field specifies if the property has a garden",
     )
     garden_area = fields.Integer(
