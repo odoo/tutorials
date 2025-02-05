@@ -1,15 +1,36 @@
-from odoo import fields, models
-# import for adding months with relativedelta
+from odoo import api,fields, models
 from dateutil.relativedelta import relativedelta 
 
 class PropertyPlan(models.Model):
     _name = "estate.property"
     _description = "Estate property tables"
 
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _computer_best_price(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_price = 0.0
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 00
+            self.garden_orientation = ''
+
     name = fields.Char(string="Title",required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
-    date_availability = fields.Date(string="Available From",copy=False, default=(fields.Date.today()+relativedelta(months=+3))) #Added 3 months
+    date_availability = fields.Date(string="Available From",copy=False, default=(fields.Date.today()+relativedelta(months=+3)))
     expected_price = fields.Float(string="Expected Price",required=True)
     selling_price = fields.Float(string="Selling Price",readonly=True)
     bedrooms = fields.Integer(string="Bedrooms",default=2)
@@ -19,27 +40,22 @@ class PropertyPlan(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)")
     active = fields.Boolean(string="Active",default=True)
-
-    #selection firld for "State"
     state = fields.Selection(
         string='State',
         required=True,
         default="new",
         copy=False,
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), 
+        ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
         help="Used to decide the state of Garden")
-
-    #selection firld for "Garden Orientation"
     garden_orientation = fields.Selection(
         string='Garden Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Used to decide the direction of Garden")
-    #Many2one field for property id
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    #Many2many field for property tag
     tag = fields.Many2many("estate.property.tag", string="Property Tag")
     buyer = fields.Char(string="Buyer", copy=False)
-    #Many2one field for user name
     sales_person = fields.Many2one('res.users',string="Salesman",default=lambda self: self.env.user)
-    #One2many field for partner id from property offer table
     offer_ids = fields.One2many('estate.property.offer','property_id', string='Price')
+    total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
+    best_price = fields.Float(string="Best Offer", compute="_computer_best_price")
