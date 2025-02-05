@@ -13,7 +13,7 @@ export const loadStatistics = async ()=> {
 export const loadStatisticsService = {
     
     async start () {
-        const INTERVAL = 5*1000;
+        const INTERVAL = 10*1000;
         const state= reactive({staticData: {}})
 
         Object.assign(state.staticData, await loadStatistics())

@@ -7,11 +7,7 @@ export class PieChartCard extends Component {
     static props = {
         title: String,
         labels: Array,
-        data: Array
-    }
-    static defaultProps= {
-        labels: [],
-        data: []
+        data: Array,
     }
     super() {
         console.log(this.props)
