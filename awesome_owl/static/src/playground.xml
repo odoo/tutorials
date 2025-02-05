@@ -2,9 +2,31 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div>
+            <button class="btn btn-outline-primary" t-on-click="inccard1">card1</button>
+            <button class="btn btn-outline-primary" t-on-click="inccard2">card2</button>
+
         </div>
+        <t t-if="this.state.card1">
+            <Card title="'counter-1'" content="'counter -1 '">
+                <t t-set-slot="counter">
+                    <Counter incrementsum="incrementsum" />
+                </t>
+
+            </Card>
+        </t>
+        <t t-if="this.state.card2">
+            <Card title="'counter-2'" content="value2">
+                <t t-set-slot="counter">
+                    <Counter incrementsum="incrementsum" />
+                </t>
+            </Card>
+        </t>
+        <div class="p-3">
+            <p>sum: <t t-esc="state.sum" />
+            </p>
+        </div>
+        <Todolist />
     </t>
 
 </templates>
