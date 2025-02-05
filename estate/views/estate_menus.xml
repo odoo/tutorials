@@ -1,8 +1,23 @@
-
+<!-- 
 <odoo>
-<menuitem id="estate_menu_root" name="estate">
-    <menuitem id="test_first_level_menu" name="First Level">
-        <menuitem id="estate_property_menu_action" action="estate_property_action"/>
-    </menuitem>
-</menuitem>
+<menuitem id="estate_menu_root" name="estate"/>
+    <menuitem id="estate_first_level_menu" name="Advertisements" parent="estate_menu_root"/>
+    <menuitem id="estate_property_menu_action" name="Properties" parent="estate_first_level_menu" action="estate_property_action"/>    
+
+    <menuitem id="estate_first_level_menu" name="Settings" parent="estate_menu_root"/>
+    <menuitem id="estate_property_type_menu_action" name="Property Type" parent="estate_second_level_menu" action="estate_property_type_action"/>
+
+</odoo> -->
+<odoo>
+    <menuitem id="estate_menu_root" name="Estate"/>
+
+    <!-- First level menu - Advertisements -->
+    <menuitem id="estate_first_level_menu_ads" name="Advertisements" parent="estate_menu_root"/>
+    <menuitem id="estate_property_menu_action" name="Properties" parent="estate_first_level_menu_ads" action="estate_property_action"/>
+    
+
+    <!-- First level menu - Settings -->
+    <menuitem id="estate_first_level_menu_settings" name="Settings" parent="estate_menu_root"/>
+    <menuitem id="estate_property_type_menu_action" name="Property Type" parent="estate_first_level_menu_settings" action="estate_property_type_action"/>
+    <menuitem id="estate_property_tag_menu_action" name="Property Tag" parent="estate_first_level_menu_settings" action="estate_property_tag_action"/>
 </odoo>
