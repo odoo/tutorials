@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem
+        id="estate_menu_root"
+        name="Real Estate"
+        web_icon="estate,static/description/icon.png"
+    />
+
+    <menuitem
+        id="estate_menu_advertisements"
+        name="Advertisements"
+        parent="estate_menu_root"
+    />
+    <menuitem
+        id="estate_menu_advertisements_properties"
+        parent="estate_menu_advertisements"
+        action="estate_properties_action"
+    />
+
+    <menuitem
+        id="estate_menu_settings"
+        name="Settings"
+        parent="estate_menu_root"
+    />
+    <menuitem
+        id="estate_menu_property_types"
+        parent="estate_menu_settings"
+        action="estate_property_types_action"
+    />
+</odoo>
