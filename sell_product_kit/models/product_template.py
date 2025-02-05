@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class InheritedProductTemplate(models.Model):
+class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     is_kit = fields.Boolean(string="Is Kit", default=False)

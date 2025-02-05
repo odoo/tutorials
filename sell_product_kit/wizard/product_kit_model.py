@@ -42,7 +42,7 @@ class ProductKit(models.TransientModel):
         if(len(sale_order_line.linked_product_kit_ids)==0):    
             for prod in self.product_kit_line_ids:
                 self.env['sale.order.line'].create({
-                    'linked_product_kit_id': sale_order_line.id,
+                    'product_kit_line_id': sale_order_line.id,
                     'order_id': sale_order_line.order_id.id,
                     'product_id': prod.product_id.id,
                     'product_uom_qty': prod.quantity,
