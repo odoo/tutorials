@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">First action</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- <menuitem id="estate_property_menu_action" action="estate_property_action" /> -->
+
+    <menuitem id="test_menu_root" name="Real Estate">
+        <menuitem id="test_first_level_menu" name="First Level">
+            <menuitem id="test_model_menu_action" action="estate_property_action" />
+        </menuitem>
+    </menuitem>
+
+</odoo>
