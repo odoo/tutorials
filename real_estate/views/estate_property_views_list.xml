@@ -1,0 +1,17 @@
+<odoo>
+<record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">cestate.property.tree.custom</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area(sqm)"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="date_availability" string="Available From"/>
+            </list>
+        </field>
+    </record>
+</odoo>
