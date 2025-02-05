@@ -1,27 +1,30 @@
 from odoo import fields, models
+from dateutil.relativedelta import relativedelta
 
 
 class Properties(models.Model):
     _name = 'real.estate.property'
     _description = "Real Estate Property Table to store information."
 
-    name = fields.Char("Property Name", required=True)
-    description = fields.Text("Property Description")
-    postcode = fields.Char("Postcode")
+    # Description
+    name = fields.Char("Property Name", required=True)   #Property Name
+    description = fields.Text("Property Description")    #Property Description
+    postcode = fields.Char("Postcode")     #Postcode  
     date_availability = fields.Date(
-        "Date Availability", 
+        "Availabile From", 
         copy=False,
-        default=lambda self: fields.Date.today() + relativedelta(months=3)
-    )
-    expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
-    bedrooms = fields.Integer("Bedrooms", default=2)
-    living_area = fields.Integer("Living Area")
-    facades = fields.Integer("Facades")
-    garage = fields.Boolean("Garage")
-    garden = fields.Boolean("Garden")
-    garden_area = fields.Integer("Garden Area")
-    garden_orientation = fields.Selection(
+        default=fields.Datetime.today() + relativedelta(months=3)
+    )       #Available From
+
+    expected_price = fields.Float("Expected Price", required=True)  #Expected Price
+    selling_price = fields.Float("Selling Price", readonly=True, copy=False)    #Selling Price
+    bedrooms = fields.Integer("Bedrooms", default=2)    #Bedrooms
+    living_area = fields.Integer("Living Area")     #Living Area
+    facades = fields.Integer("Facades")     #Facades
+    garage = fields.Boolean("Garage")       #Garage
+    garden = fields.Boolean("Garden")       #Garden
+    garden_area = fields.Integer("Garden Area")     #Garden area
+    garden_orientation = fields.Selection(  
         string='Type',
         selection=[
             ('north', "North"), 
@@ -29,8 +32,9 @@ class Properties(models.Model):
             ('east', "East"), 
             ('west', "West")
         ]
-    )
-    active = fields.Boolean(string="Active", default=True)
+    )       #Garden Orientation
+
+    active = fields.Boolean(string="Active", default=True)      #active or not
     state = fields.Selection(
         string='State',
         selection=[('new', "New"),
@@ -41,4 +45,4 @@ class Properties(models.Model):
         required=True,
         default="new",
         copy=False
-    )
+    )       #State of property
