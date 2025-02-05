@@ -12,43 +12,45 @@
             <field name="arch" type="xml">
                 <form string="Property">
                     <sheet>
-                    
+
                         <group>
                             <group>
                                 <div class="oe_title">
-                                    <h1><field name="name" class="oe_inline"/></h1>
+                                    <h1>
+                                        <field name="name" class="oe_inline" />
+                                    </h1>
                                 </div>
                             </group>
                         </group>
 
                         <group>
-                                <group>
-                                    <field name="postcode"/>
-                                    <field name="date_availability"/>
-                                </group>
-                                <group>
-                                    <field name="expected_price"/>
-                                    <field name="selling_price"/>
-                                </group>
+                            <group>
+                                <field name="postcode" />
+                                <field name="date_availability" />
+                            </group>
+                            <group>
+                                <field name="expected_price" />
+                                <field name="selling_price" />
+                            </group>
                         </group>
 
                         <notebook>
                             <page string="Description">
                                 <group>
-                                    <field name="description"/>
-                                    <field name="living_area"/>
-                                    <field name="fascades"/>
-                                    <field name="garage"/>
-                                    <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="description" />
+                                    <field name="living_area" />
+                                    <field name="fascades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" />
+                                    <field name="garden_orientation" />
                                 </group>
                             </page>
                         </notebook>
                     </sheet>
                 </form>
             </field>
-        
+
         </record>
 
         <record id="estate_model_action_list_view" model="ir.ui.view">
@@ -56,13 +58,13 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <list string="Name">
-                    <field name="name"/>
-                    <field name="postcode"/>
-                    <field name="bedrooms"/>
-                    <field name="living_area"/>
-                    <field name="expected_price"/>
-                    <field name="selling_price"/>
-                    <field name="date_availability"/>
+                    <field name="name" />
+                    <field name="postcode" />
+                    <field name="bedrooms" />
+                    <field name="living_area" />
+                    <field name="expected_price" />
+                    <field name="selling_price" />
+                    <field name="date_availability" />
                 </list>
             </field>
         </record>
@@ -72,8 +74,8 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name"/>
-                    <field name="postcode"/>
+                    <field name="name" />
+                    <field name="postcode" />
                 </search>
             </field>
         </record>
