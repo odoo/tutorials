@@ -1,4 +1,5 @@
 <odoo>
+    <!-- Property Action Menu -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
@@ -12,6 +13,7 @@
         <field name="arch" type="xml">
             <list string="Property">
                 <field name="name" />
+                <field name="property_type_id" />
                 <field name="description" />
                 <field name="postcode" />
                 <field name="date_availability" />
@@ -26,6 +28,7 @@
                 <field name="garden_orientation" />
                 <field name="active" />
                 <field name="state" />
+                <field name="property_tag_ids" />
             </list>
         </field>
     </record>
@@ -44,7 +47,14 @@
                     </group>
 
                     <group>
+                        <h5>
+                            <field name="property_tag_ids" widget="many2many_tags" />
+                        </h5>
+                    </group>
+
+                    <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -55,22 +65,41 @@
                         </group>
                     </group>
 
-                    <notebook>
-                        <page string="Description">
-                            <group>
-                                <field name="description" />
-                                <field name="bedrooms" />
-                                <field name="living_area" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
-                                <field name="active" />
-                                <field name="state" />
-                            </group>
-                        </page>
-                    </notebook>
+                    <group>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" />
+                                    <field name="garden_orientation" />
+                                    <field name="active" />
+                                    <field name="state" />
+                                </group>
+                            </page>
+
+                            <page string="Offers">
+                                <field name="property_offer_ids">
+                                    <list string="Offer List">
+                                        <field name="price" />
+                                        <field name="partner_id" />
+                                        <field name="status" />
+                                    </list>
+                                </field>
+                            </page>
+
+                            <page string="Other Info">
+                                <group>
+                                    <field name="salesman" />
+                                    <field name="buyer" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -89,18 +118,21 @@
                 <field name="facades" />
                 <field name="garage" />
                 <field name="garden" />
-                
-                <separator/>
+
+                <separator />
 
                 <!-- Today's availability filter -->
-                <filter string="Availability" name="date_availability" domain="[('date_availability', '>=', context_today())]" />
+                <filter string="Availability" name="date_availability"
+                    domain="[('date_availability', '>=', context_today())]" />
 
                 <!-- Available with NEW or OFFER RECEIVED state filter -->
-                <filter string="New or Offer Received" name="state" domain="[('date_availability', '>=', context_today()), '|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
+                <filter string="New or Offer Received" name="state"
+                    domain="[('date_availability', '>=', context_today()), '|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
 
                 <!-- Group By postcode -->
                 <group expand="1" string="Group By">
-                    <filter string="Postcode" name="postcode" context="{'group_by': 'postcode', 'residual_visible': True}" />
+                    <filter string="Postcode" name="postcode"
+                        context="{'group_by': 'postcode', 'residual_visible': True}" />
                 </group>
             </search>
         </field>
