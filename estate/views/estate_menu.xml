@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <!-- Root Menu for Estate Management (App Switcher) -->
+  <menuitem id="menu_estate_root" name="Estate Management">
+  </menuitem>
+  <menuitem id="menu_estate_property" name="Properties" parent="menu_estate_root">
+  </menuitem>
+  <menuitem id="menu_estate_property_action" name="All Properties" action="estate_property_action" parent="menu_estate_property" />
+</odoo>
