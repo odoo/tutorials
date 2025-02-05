@@ -13,14 +13,14 @@ export const loadStatistics = async ()=> {
 export const loadStatisticsService = {
     
     async start () {
-        const INTERVAL = 10*1000;
+        const revalidateTime = 10*1000;
         const state= reactive({staticData: {}})
 
         Object.assign(state.staticData, await loadStatistics())
 
         setInterval(async() => {
             Object.assign(state.staticData, await loadStatistics())
-        }, INTERVAL);
+        }, revalidateTime);
 
         return state
     }
