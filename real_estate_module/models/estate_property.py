@@ -2,29 +2,30 @@ from odoo import models, fields
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "Real Estate Property"
+    _name = 'estate.property'
+    _description = 'Real Estate Property'
 
-    name = fields.Char(required=True)              # Property name
-    create_uid = fields.Char(required=True)
-    create_date = fields.Char(required=True)
-    postcode = fields.Char()
-    description = fields.Text()                    # Description
-    postcode = fields.Char()                       # Postcode
-    date_availability = fields.Date(copy=False, default=fields.Date.today)              # Available date
-    expected_price = fields.Float(required=True)   # Expected price
-    selling_price = fields.Float(readonly=True, copy=False)                 # Selling price
-    bedrooms = fields.Integer(default=2)                    # Number of bedrooms
-    living_area = fields.Integer()                 # Size of the property
-    facades = fields.Integer()                     # Number of facades
-    garage = fields.Boolean()                      # Does it have a garage?
-    garden = fields.Boolean()                      # Does it have a garden?
-    garden_area = fields.Integer()                 # Garden size
-    garden_orientation = fields.Selection(         # Garden direction
+    name = fields.Char(required=True, string="Name")              
+    # create_uid = fields.Char(required=True)
+    # create_date = fields.Char(required=True)
+    postcode = fields.Char(string="Postcode")
+    description = fields.Text(string="Description")                    
+    # postcode = fields.Char()                      
+    date_availability = fields.Date(copy=False, default=fields.Date.today, string="Available Date")              
+    expected_price = fields.Float(required=True, string="Expected Price")   
+    selling_price = fields.Float(readonly=True, copy=False, string="Selling Price")                 
+    bedrooms = fields.Integer(default=2, string="No of Bedrooms")                    
+    living_area = fields.Integer(string="Living Area")                 
+    facades = fields.Integer(string="Facades")                     
+    garage = fields.Boolean(string="Garage?")                      
+    garden = fields.Boolean(string="Garden?")                      
+    garden_area = fields.Integer(string="Garden Area")                 
+    garden_orientation = fields.Selection(         
         [('north', 'North'),
          ('south', 'South'),
          ('east', 'East'),
-         ('west', 'West')]
+         ('west', 'West')],
+         string="Garden Orientation"
     )
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
@@ -35,5 +36,5 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
         ],
-        required=True, copy=False, default='new'
+        required=True, copy=False, default='new', string="Current State"
     )
