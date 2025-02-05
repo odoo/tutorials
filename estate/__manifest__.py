@@ -1,13 +1,17 @@
 {
     'name': 'Estate',
     'description': "Real Estate Management",
-    'depends': ['base'],
+    'depends': [
+        'base'
+    ],
     'author': "sbbh",
     'category': 'Real Estate/Brokerage',
     'data': [
-        'security/ir.model.access.csv',  # access rights file
-        'views/estate_property_views.xml', 
-        'views/estate_menus.xml'
+        'security/ir.model.access.csv',
+        
+        'views/estate_property_views.xml',
+        # 'views/estate_property_type.xml',
+        'views/estate_menus.xml',
     ],
     'installable': True,
     'application': True,
