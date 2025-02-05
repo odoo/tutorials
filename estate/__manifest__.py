@@ -7,6 +7,7 @@
     'application': True,
     'installable': True,
     'sequence': 0,
+    'license': 'LGPL-3',
 
     'description': """
     Description text
