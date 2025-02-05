@@ -5,7 +5,8 @@
     'sequence': 10,
     'description': 'This is my first custom Odoo module',
     'category': 'Custom',
-    'author': 'Your Name',
+    'author': 'Harsh Sharma',
+    'license': 'LGPL-3',
     'depends': ['base'],  # This means it depends on the "base" module
     'data': [
         'security/ir.model.access.csv',  # Security rules
