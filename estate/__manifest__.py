@@ -1,8 +1,8 @@
 {
-    'name': 'estate',
-    'depends': ['base'],
-    'data': [],
-    'installable': True,
-    'application': True,
-    'license' : 'LGPL-3'
+    "name": "estate",
+    "depends": ["base"],
+    "data": ["security/ir.model.access.csv"],
+    "installable": True,
+    "application": True,
+    "license": "LGPL-3",
 }
