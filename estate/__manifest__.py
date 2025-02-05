@@ -4,6 +4,8 @@
 {
     'name': 'Real Estate',
     'category':'module_category_real_estate_brokerage',
+    'license': 'LGPL-3',
+    'version' : '1.0',
     'depends': [
         'base'
     ],
