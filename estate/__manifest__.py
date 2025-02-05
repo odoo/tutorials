@@ -1,12 +1,15 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'category': 'app',  
+    'category': 'Real Estate',  
     'author': 'Tushar',
     'website': 'https://tushar.com',  
     'depends': ['base'],
     'data': [
-        'security/ir.model.access.csv',  # Reference the CSV file 
+        'security/ir.model.access.csv', 
+        'views/estate_property_views.xml', 
+        'views/estate_property_type_views.xml',
+        'views/estate_menus.xml',  
     ],
     'installable': True,
     'application': True,
