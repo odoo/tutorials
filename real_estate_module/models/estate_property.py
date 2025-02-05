@@ -11,10 +11,10 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     description = fields.Text()                    # Description
     postcode = fields.Char()                       # Postcode
-    date_availability = fields.Date()              # Available date
+    date_availability = fields.Date(copy=False, default=fields.Date.today)              # Available date
     expected_price = fields.Float(required=True)   # Expected price
-    selling_price = fields.Float()                 # Selling price
-    bedrooms = fields.Integer()                    # Number of bedrooms
+    selling_price = fields.Float(readonly=True, copy=False)                 # Selling price
+    bedrooms = fields.Integer(default=2)                    # Number of bedrooms
     living_area = fields.Integer()                 # Size of the property
     facades = fields.Integer()                     # Number of facades
     garage = fields.Boolean()                      # Does it have a garage?
@@ -25,4 +25,15 @@ class EstateProperty(models.Model):
          ('south', 'South'),
          ('east', 'East'),
          ('west', 'West')]
+    )
+    active = fields.Boolean('Active', default=True)
+    state = fields.Selection(
+        [
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
+        required=True, copy=False, default='new'
     )

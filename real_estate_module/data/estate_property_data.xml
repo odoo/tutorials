@@ -1,6 +1,6 @@
 <odoo>
-    <record id="property_1" model="estate.property">
-        <field name="name">House 1</field>
-        <field name="expected_price">222</field>
+    <record id="prop_1" model="estate.property">
+        <field name="name">Bhat House</field>
+        <field name="expected_price">100000</field>
     </record>
 </odoo>
