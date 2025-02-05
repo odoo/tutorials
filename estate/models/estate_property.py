@@ -34,3 +34,12 @@ class PropertyPlan(models.Model):
         string='Garden Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Used to decide the direction of Garden")
+    #Many2one field for property id
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    #Many2many field for property tag
+    tag = fields.Many2many("estate.property.tag", string="Property Tag")
+    buyer = fields.Char(string="Buyer", copy=False)
+    #Many2one field for user name
+    sales_person = fields.Many2one('res.users',string="Salesman",default=lambda self: self.env.user)
+    #One2many field for partner id from property offer table
+    offer_ids = fields.One2many('estate.property.offer','property_id', string='Price')

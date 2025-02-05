@@ -6,7 +6,7 @@
         <field name="view_mode">list,form</field>
     </record>
 
-<!-- List view -->
+    <!-- List view -->
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.view.tree</field>
         <field name="model">estate.property</field>
@@ -23,7 +23,7 @@
         </field>
     </record>
 
-<!-- Form view -->
+    <!-- Form view -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
@@ -34,9 +34,11 @@
                         <h1 class="mb32">
                             <field name="name" class="mb16" />
                         </h1>
+                        <field name="tag" widget="many2many_tags"/>
                     </group>
                     <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -56,7 +58,22 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
-                                 <field name="state" />
+                                <field name="state" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price" />
+                                    <field name="status" />
+                                    <field name="partner_id" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer" />
+                                <field name="sales_person" />
                             </group>
                         </page>
                     </notebook>
@@ -64,8 +81,7 @@
             </form>
         </field>
     </record>
-
-<!-- Search modification -->
+    <!-- Search modification -->
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
@@ -77,15 +93,15 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
-                 <separator/>
-                 <!-- Filter on availability comparing it with today's date -->
-            <filter string="Available" name="date_availability" domain="[('date_availability', '>=', context_today())]"/>
-           <!-- Filter on checking the availability and if the selected state is new or offer_recievied -->
-            <filter string="New or Offer Recieved" name="state" domain="[('date_availability', '>=', context_today()), '|', ('state', '=', 'new'),('state', '=', 'offer_received')]"/>
-            <!-- Group by on similar postcode and making visible the remaining (no value in postcode field) -->
-            <group expand="1" string="Group By">
-                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
-                    </group>
+                <separator/>
+                <!-- Filter on availability comparing it with today's date -->
+                <filter string="Available" name="date_availability" domain="[('date_availability', '>=', context_today())]"/>
+                <!-- Filter on checking the availability and if the selected state is new or offer_recievied -->
+                <filter string="New or Offer Recieved" name="state" domain="[('date_availability', '>=', context_today()), '|', ('state', '=', 'new'),('state', '=', 'offer_received')]"/>
+                <!-- Group by on similar postcode and making visible the remaining (no value in postcode field) -->
+                <group expand="1" string="Group By">
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                </group>
             </search>
         </field>
     </record>
