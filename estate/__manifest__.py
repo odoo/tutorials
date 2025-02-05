@@ -1,7 +1,8 @@
 {
     'name': 'estate',
-    'depends': ["base"],
-    'sequence' : 1,
-    'application' : True,
+    'depends': ['base'],
+    'data': [],
+    'installable': True,
+    'application': True,
     'license' : 'LGPL-3'
 }
