@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--Basic action that will open the default landing page of module-->
+        <record id="test_model_action" model="ir.actions.act_window">
+            <field name="name">Real Estate</field>
+            <field name="res_model">estate.properties</field>
+            <field name="view_mode">list,kanban</field>
+        </record>
+
+    <!--Action that will help to search data accordingly-->
+    <record id="estate_view_search" model="ir.ui.view">
+        <field name="name">estate.view.search</field>
+        <field name="model">estate.properties</field>
+        <field name="arch" type="xml">
+            <search string="Search Data">
+                <field name="name"/>
+                <filter string="Name" name="name"/>
+                <separator/>
+                <filter string="Garden" name="garden"/>
+            </search>
+        </field>
+    </record>
+    </data>
+</odoo>
