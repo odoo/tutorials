@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Define the List View -->
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Estate Properties">
+                <field name="name" string="Property Name"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="date_availability" string="Available From"/>
+            </list>
+        </field>
+    </record>
+
+    
+    <!-- Define the Form View -->
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property">
+                <sheet>
+                    <group>
+                    <h1>
+                        <field name="name" string="Title" required="1"/>
+                    </h1>
+                    <group>
+                        <field name="postcode" string="Postcode"/>
+                        <field name="date_availability" string="Available From"/>
+                    </group>
+                    <group>
+                        <field name="expected_price" string="Expected Price" required="1"/>
+                        <field name="selling_price" string="Selling Price" readonly="1"/>
+                    </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+        <!-- Define the Search View -->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+              <search string="Search Estate Properties">
+                <!-- Filter for Available Properties -->
+                <filter 
+                    name="filter_available" 
+                    string="Available Properties" 
+                    domain="[('state', 'in', ['new', 'offer_received'])]"
+                />
+
+                <!-- Group By Postcode -->
+                <group expand="0" string="Group By">
+                    <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_estate_property" model="ir.actions.act_window">
+        <field name="name">Estate Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

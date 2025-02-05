@@ -1,16 +1,20 @@
+from datetime import timedelta
 from odoo import fields, models
 
-class estate_property(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
 
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date()
+    date_availability = fields.Date(
+        copy=False, 
+        default=lambda self: fields.Date.today() + timedelta(days=90)
+    )  # Default to 3 months from today
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
-    bedrooms = fields.Integer()
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)  # Default number of bedrooms is 2
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -24,4 +28,17 @@ class estate_property(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
+    )
+    active = fields.Boolean(default=True)  # Active field to manage visibility
+    state = fields.Selection(
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        required=True,
+        copy=False,
+        default="new",  # Default state is 'New'
     )

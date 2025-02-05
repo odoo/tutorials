@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_estate_root" name="Real Estate" sequence="1" />
+
+    <!-- First Level Menu -->
+    <menuitem id="menu_estate_management" name="Management" parent="menu_estate_root" sequence="2" />
+
+    <!-- Action Menu -->
+    <menuitem id="menu_estate_properties" name="Properties" parent="menu_estate_management" action="action_estate_property" sequence="3" />
+</odoo>
