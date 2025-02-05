@@ -17,11 +17,11 @@ class AwesomeDashboard extends Component {
     static components = { Layout, DashboardItem, PieChart};
     
     setup(env) {
-        this.EXCLUDED_ITEM_IDS="EXCLUDED_ITEM_IDS"
+        this.hiddenDashboardItemIds="awesome_dashboard.hidden_dashboard_items"
         
         this.items= registry.category('awesome_dashboard').get('items', [])
         
-        this.excluded_item_ids = JSON.parse(browser.localStorage.getItem(this.EXCLUDED_ITEM_IDS) || "[]") 
+        this.excludedItemIds = JSON.parse(browser.localStorage.getItem(this.hiddenDashboardItemIds) || "[]") 
         
         this.formState=useState({});
 
@@ -29,7 +29,7 @@ class AwesomeDashboard extends Component {
             const key= this.items[i].id;
             const value = {isChecked: true ,...this.items[i]};
 
-            if(this.excluded_item_ids.indexOf(key) !=-1) {
+            if(this.excludedItemIds.indexOf(key) !=-1) {
                 value.isChecked= false
             }
 
@@ -64,17 +64,17 @@ class AwesomeDashboard extends Component {
     }
 
     updateFormState(id) {
-        const arr= JSON.parse(browser.localStorage.getItem(this.EXCLUDED_ITEM_IDS) || "[]") 
+        const arr= JSON.parse(browser.localStorage.getItem(this.hiddenDashboardItemIds) || "[]") 
         
         if(this.formState[id].isChecked) {
             arr.push(id)
-            browser.localStorage.setItem(this.EXCLUDED_ITEM_IDS, JSON.stringify(arr)) 
+            browser.localStorage.setItem(this.hiddenDashboardItemIds, JSON.stringify(arr)) 
         } else {
             const index = arr.findIndex((item) => item === id);
             if (index >= 0)
                 arr.splice(index, 1);
 
-            browser.localStorage.setItem(this.EXCLUDED_ITEM_IDS, JSON.stringify(arr))
+            browser.localStorage.setItem(this.hiddenDashboardItemIds, JSON.stringify(arr))
         }
 
         this.formState[id].isChecked= !this.formState[id].isChecked

@@ -13,22 +13,22 @@
                 <!-- Vertically centered modal -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
-                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Dashboard Items Configuration</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Dashboard Items Configuration</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Which cards do you wish to see?<br/><br/>
+                                <t t-foreach="Object.values(this.formState)" t-as="item" t-key="item.id">
+                                    <t t-set="id" t-value="item.id"/>
+                                    <input type="checkbox" t-att-checked="item.isChecked" class="mx-2" t-att-name="id" t-att-value="id" t-on-change="()=>this.updateFormState(item.id)"/> 
+                                    <label t-att-for="id"><span t-out="item.description"></span></label>
+                                    
+                                    <br/>
+                                </t>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            Which cards do you wish to see?<br/><br/>
-                            <t t-foreach="Object.values(this.formState)" t-as="item" t-key="item.id">
-                                <t t-set="id" t-value="item.id"/>
-                                <input type="checkbox" t-att-checked="item.isChecked" class="mx-2" t-att-name="id" t-att-value="id" t-on-change="()=>this.updateFormState(item.id)"/> 
-                                <label t-att-for="id"><span t-out="item.description"></span></label>
-                                
-                                <br/>
-                            </t>
-                        </div>
-                     </div>
                     </div>
                 </div>
             </t>
