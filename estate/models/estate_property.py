@@ -1,8 +1,5 @@
 from odoo import models, fields
-from datetime import date
 from dateutil.relativedelta import relativedelta
-
-three_months = date.today() + relativedelta(months=+6)
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -12,7 +9,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string = "Name", required = True)
     description = fields.Text(string = "Description")
     postcode = fields.Char(string = "PostCode")
-    date_availability = fields.Date(string = "Available From", copy=False, default = three_months)
+    date_availability = fields.Date(string = "Available From", copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float(string = "Expected Price", required = True)
     selling_price = fields.Float(string = "Selling Price", readonly= True, copy=False)
     bedrooms = fields.Integer(string = "Bedrooms", default=2)
