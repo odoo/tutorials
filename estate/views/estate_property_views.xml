@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Action for estate.property model -->
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,kanban</field>
+         
+    </record>
+
+       <!-- Define the List View for the 'estate.property' model -->
+    <record id="estate_property_list_view" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="name" string="Property Name"/>
+           
+                <field name="postcode" string="Postcode"/>
+                <field name="date_availability" string="Availability Date"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area"/>
+               
+             
+            </list>
+        </field>
+    </record>
+
+     
+
+
+     <!-- Define the Form View for the 'estate.property' model -->
+    <record id="estate_property_form_view" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <!-- Main Information Group -->
+                    <group>
+                      <h1> <field name="name" string="Property Name"/></h1>
+                        <field name="description" string="Description"/>
+                        <field name="postcode" string="Postcode"/>
+                        <field name="date_availability" string="Availability Date"/>
+                    </group>
+
+                    <!-- Price and Details Group -->
+                    <group class="oe_inline oe_left oe_avatar"> 
+                        <field name="expected_price" string="Expected Price"/>
+                        <field name="selling_price" string="Selling Price"/>
+                        <field name="bedrooms" string="Bedrooms"/>
+                        <field name="living_area" string="Living Area"/>
+                        <field name="facades" string="Facades"/>
+                    </group>
+
+                    <!-- Additional Features Group -->
+                    <group class="oe_inline oe_right oe_avatar">
+                        <field name="garage" string="Garage"/>
+                        <field name="garden" string="Garden"/>
+                        <field name="garden_area" string="Garden Area"/>
+                        <field name="garden_orientation" string="Garden Orientation"/>
+                    </group>
+
+                    <!-- Active Status Group -->
+                    <!-- <group>
+                        <field name="active" string="Active"/>
+                    </group> -->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Define the Search View for the 'estate.property' model -->
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Property Search">
+                <!-- Search field for Property Name -->
+                <field name="name" string="Property Name"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="selling_price" string="Selling Price"/>
+
+                <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
+                <separator/>
+                <filter string="Garden" name="garden" domain="[('garden', '=', 'True')]"/>
+                <separator/>
+                <filter string="Garage" name="garage" domain="[('garage', '=', 'True')]" />
+
+                    <filter string="State" name="state" context="{'group_by':'state'}" />
+                    <separator/>
+                    <filter string="Garder Orientation" name="garden_orientation" context="{'group_by':'garden_orientation'}" />
+                    <separator/>
+                    <filter string="Bedrooms" name="bedrooms" context="{'group_by':'bedrooms'}" />
+            </search>
+        </field>
+    </record>
+
+</odoo>
+
+
+    
+
+
+ 
+   
