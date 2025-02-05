@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Real Estate Module",
     'summary': "Manage real estate properties.",
@@ -14,8 +13,9 @@
     'views/estate_menus.xml',
     'data/estate_property_data.xml'
 
-],
+    ],
 
 
     'license': 'AGPL-3'
 }
+
