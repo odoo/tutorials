@@ -1,15 +1,16 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base'],
     'author': "drat-odoo",
-    'category': 'Category',
+    'sequence': "20",
+    'category': 'estate',
     'description': """
-    This is base version of estate
+This is test version of estate (for learning purpose).
     """,
-    # data files always loaded at installation
-
-    # data files containing optionally loaded demonstration data
+    'data': [
+        'security/ir.mode.access.csv',
+    ],
     'installable': True,
-    'license': 'OEEL-1',
+    'application': True,
+    'license': 'OEEL-1'
 }
