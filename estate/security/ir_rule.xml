@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="rule_property_manager_own_records" model="ir.rule">
+            <field name="name">Own Records Access</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="groups" eval="[(4, ref('group_property_manager'))]"/>
+            <field name="domain_force">[('buyer_id', '=', user.id)]</field>
+            <field name="perm_read">1</field>
+            <field name="perm_write">1</field>
+            <field name="perm_create">0</field>
+            <field name="perm_unlink">1</field>
+        </record>
+    </data>
+</odoo>

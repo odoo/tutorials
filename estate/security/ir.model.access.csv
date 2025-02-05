@@ -1,0 +1,9 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"estate_property_access","Estate Property Access","estate.model_estate_property","base.group_user",1,1,1,0
+"property_manager_access","Property Manager Access","estate.model_estate_property","group_property_manager",1,1,1,0
+"access_estate_property_type","Estate Property Type Access","estate.model_estate_property_type","base.group_user",1,1,1,0
+"estate_property_tag_access","Estate Property Tag Access","estate.model_estate_property_tag","base.group_user",1,1,1,0
+"estate_property_offer_access","Estate Property Offer Access","estate.model_estate_property_offer","base.group_user",1,1,1,0
+"access_estate_property_agent","Estate Property Agent Access","estate.model_estate_property","group_estate_agent",1,1,1,0
+"access_estate_property_type_agent","Estate Property Type Agent Access","estate.model_estate_property_type","group_estate_agent",1,0,0,0
+"access_estate_property_tag_agent","Estate Property Tag Agent Access","estate.model_estate_property_tag","group_estate_agent",1,0,0,0

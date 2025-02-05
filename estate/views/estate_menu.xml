@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Root Menu for Estate -->
+    <menuitem id="estate_menu_root" name="Estate">
+        <!-- Property Menu Item -->
+        <menuitem id="estate_first_level_menu" name="Property">
+            <!-- Properties submenu linked to action -->
+            <menuitem id="estate_model_menu_action" name="Properties" action="estate_property_action"/>
+        </menuitem>
+        <!-- Property Types Menu Item -->
+        <menuitem id="estate_property_types_menu" name="Property Types" action="estate_property_type_list_action"/>
+        <menuitem id="estate_property_offers_menu" name="Property Offers" action="estate_property_offer_list_action"/>
+        <menuitem id="estae_property_tags_menu" name="Property Tags" action="estate_property_tag_list_action"/>
+    </menuitem>
+</odoo>
