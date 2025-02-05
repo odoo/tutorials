@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+<!-- <data> -->
+
+<menuitem id="test_menu_root" name="Real Estate">
+    <menuitem id="test_first_level_menu" name="Advertisement">
+        <menuitem id="test_model_menu_action" action="estate_property_action"/>
+    </menuitem>
+</menuitem>
+<!-- </data> -->
+
+
+</odoo>
