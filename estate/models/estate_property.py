@@ -3,6 +3,7 @@ from odoo import fields, models
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate App"
+
     name = fields.Char(required=True)
     description = fields.Text() 
     postcode = fields.Char()
@@ -18,3 +19,4 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         selection = [('north', 'North'), ('south', 'South'),('east', 'East'),('west', 'West'),]
     )
+    

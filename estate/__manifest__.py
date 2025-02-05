@@ -1,29 +1,17 @@
 {
     'name': "estate app",
-
-    'summary': """
-        estate module"
-    """,
-
-    'description': """
-        estate module"
-    """,
-
+    'summary': "estate module",
+    'description': "estate module for buying and selling properties. Users can buy/sell properties via estate agents",
     'author': "Odoo",
-    'website': "https://www.odoo.com/",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Tutorials/estate',
     'version': '0.1',
-
-    # any module necessary for this one to work correctly
-    'depends': ['base', 'web'],
+    'depends': ['base'],
+    'data':[
+        'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
+        'views/estate_menus.xml',
+        ],
     'application': True,
     'installable': True,
-    'data': [
-      #  'views/templates.xml',
-    ],
     'license': 'AGPL-3'
 }
