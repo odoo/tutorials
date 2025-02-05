@@ -8,6 +8,7 @@
         'views/estate_menus.xml',
         'views/estate_list_view.xml',
         'views/estate_form_view.xml',
+        'views/estate_kanban_view.xml',
         'views/estate_search_view.xml',
         'views/type_actions.xml',
         'views/type_menus.xml',
