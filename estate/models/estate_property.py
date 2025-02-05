@@ -7,18 +7,18 @@ class Property(models.Model):
     _description = "Estate Propety Model"
 
     name = fields.Char(
-        "Property Name", required=True,
+        "Title", required=True,
         help="This field specifies the estate property name.",
     )
     description = fields.Text(
-        "Property Description",
+        "Description",
         help="This field specifies the description of property in brief to provide insights on the property.",
     )
     postcode = fields.Char(
-        "Post Code", help="This field specifies the postcode of the property address."
+        "Postcode", help="This field specifies the postcode of the property address."
     )
     date_availability = fields.Date(
-        "Date Of Availability",
+        "Available From",
         help="This field specifies the date when the property will be available.",
         copy=False,
         default=fields.Date.today() + relativedelta(months=3),
@@ -34,7 +34,7 @@ class Property(models.Model):
         copy=False,
     )
     bedrooms = fields.Integer(
-        "Number Of Bedrooms",
+        "Bedrooms",
         help="This field specifies the number of bedroom that this property consists of.",
         default=2,
     )
