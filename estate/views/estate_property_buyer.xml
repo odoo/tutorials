@@ -1,0 +1,31 @@
+<odoo>
+    <record id="view_buyer_list" model="ir.ui.view">
+    <field name="name">estate.property.buyer.list</field>
+    <field name="model">estate.property.buyer</field>
+    <field name="arch" type="xml">
+        <list string="buyer name">
+        <field name="name"></field>
+        </list>
+    </field>
+    </record>
+
+    <record id="view_seller_form" model="ir.ui.view">
+    <field name="name">estate.property.buyer.form</field>
+    <field name="model">estate.property.buyer</field>
+    <field name="arch" type="xml">
+        <form name="Buyer Name">
+        <sheet>
+            <group>
+                <field name="name"></field>
+            </group>
+        </sheet>
+        </form>
+    </field>
+    </record>
+<record id="estate_property_buyer_action" model="ir.actions.act_window">
+        <field name="name">Buyer</field>
+        <field name="res_model">estate.property.buyer</field>
+        <field name="view_mode">list,form</field>
+</record>
+
+</odoo>

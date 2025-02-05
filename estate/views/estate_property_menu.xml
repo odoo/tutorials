@@ -1,0 +1,39 @@
+<odoo>
+<menuitem id="main_menu_root" name="Estate">
+    <menuitem id="first_level_menu" name="First Level">
+    <menuitem id="menu_action" action="estate_property_action"/>
+    </menuitem>
+    <menuitem id="type_menu" name="Settings">
+    <menuitem id="type_action" action="estate_property_type_action"/>
+    <menuitem id="menu_property_tags" action="estate_property_tag_action"/>
+    </menuitem>
+    <menuitem id="seller_menu" name="Sell">
+        <menuitem id="sell_action" action="estate_property_seller_action"/>
+    </menuitem>
+    <menuitem id="buyer_menu" name="Buyer">
+        <menuitem id="buy_action" action="estate_property_buyer_action"/>
+    </menuitem>
+</menuitem>
+<record id="main_menu_root" model="ir.ui.menu">
+    <field name="web_icon">estate,static/dependencies/real_estate_icon.png</field>
+ </record>
+</odoo>
+
+<!-- OR YOU CAN ACHIVE THIS BY FOLLOWING AS WELL , THE FOLLOWING DEFINES PARENT HIREARCHY-->
+<!--  
+    <odoo>
+   
+    <menuitem id="main_menu_root" name="Estate"/>
+
+    
+    <menuitem id="first_level_menu" name="First Level" parent="main_menu_root"/>
+
+   
+    <menuitem id="menu_action" action="estate.property_action" parent="first_level_menu"/>
+
+    <record id="main_menu_root" model="ir.ui.menu">
+        <field name="web_icon">real_estate,static/dependencies/real_estate_icon.png</field>
+    </record>
+</odoo>
+
+-->
