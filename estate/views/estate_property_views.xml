@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- <record id="view_estate_property_list" model="ir.ui.view">
+            <field name="arch" type="xml">
+                <form string="My New House">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="postcode"/>
+                                <field name="available_from"/>
+                            </group>
+                            <group>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+    </record> -->
+
+
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="arch" type="xml">
+            <list string="Estate Properties">
+                <field name="title"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="available_from"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Real Estate Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>
