@@ -1,5 +1,4 @@
 {
-    "name" : "estate" ,
-    'application': True,
+    'name' : 'estate',
     'license': 'AGPL-3'
 }
