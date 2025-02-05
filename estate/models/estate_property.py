@@ -1,4 +1,5 @@
 from odoo import fields, models
+from dateutil.relativedelta import relativedelta
 
 
 class Property(models.Model):
@@ -19,6 +20,8 @@ class Property(models.Model):
     date_availability = fields.Date(
         "Date Of Availability",
         help="This field specifies the date when the property will be available.",
+        copy=False,
+        default=fields.Date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float(
         "Expected Price", required=True,
@@ -27,10 +30,13 @@ class Property(models.Model):
     selling_price = fields.Float(
         "Selling Price",
         help="This field specifies the actual selling price of the property.",
+        readonly=True,
+        copy=False,
     )
     bedrooms = fields.Integer(
         "Number Of Bedrooms",
         help="This field specifies the number of bedroom that this property consists of.",
+        default=2,
     )
     living_area = fields.Integer(
         "Living Area (sqm)",
@@ -61,4 +67,19 @@ class Property(models.Model):
             ("west", "West"),
         ],
         help="This selection fields specifies the facing direction of garden (North, South, East, or West).",
+    )
+    state = fields.Selection(
+        string="Status of the Property", required=True, copy=False, default="new",
+        selection=[
+            ("new", "New"),
+            ("offer received", "Offer Received"),
+            ("offer accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        help="This selection fields specifies the status of the property in regards to its availability.",
+    )
+    active = fields.Boolean(
+        "Active", default=True,
+        help="Mark as active if you want the property to be listed."
     )
