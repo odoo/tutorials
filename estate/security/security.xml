@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Property Manager</field>
+    </record>
+    <record id="estate_property_manager_rule" model="ir.rule">
+        <field name="name">Property Manager Restricted Access</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups" eval="[(4, ref('estate_group_manager'))]" />
+        <field name="domain_force">[('state', 'in', ['offer received', 'offer accepted', 'sold'])]</field>
+    </record>
+
+</odoo>  
