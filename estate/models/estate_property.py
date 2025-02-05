@@ -37,5 +37,6 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled")
         ],
         required = True,
-        default = "new"
+        default = "new",
+        copy=False
     )
