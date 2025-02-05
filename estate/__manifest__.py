@@ -1,5 +1,5 @@
 {
-    'name': 'Real Estate',
+    'name': 'RealEstate',
     'depends':['base'],
     'application': True,
     'license': 'LGPL-3',
