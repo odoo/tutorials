@@ -1,7 +1,23 @@
-<odoo>
-    <menuitem id="action_menu_root" name="Real Estate">
-        <menuitem id="estate_first_level_menu" name="Advertisement" parent="estate_menu_root">
-            <menuitem id="estate_property_menu" name="Properties" action="action_estate_property" parent="estate_first_level_menu" />
+<odoo>   
+    <menuitem id="estate_menu_root" name="Real Estate">
+        <menuitem id="estate_advertisement_menu" name="Advertisement" sequence="1">
+            <menuitem id="estate_property_menu" name="Properties" action="action_estate_property"/>
+        </menuitem>
+        <menuitem id="estate_setting_menu" name="Setting">
+            <menuitem id="estate_property_tag_menu" name="Property Tags" action="action_estate_property_tag"/>
+            <menuitem id="estate_property_type_menu" name="Property Types" action="action_estate_property_type"/>
         </menuitem>
     </menuitem>
 </odoo>
+<!-- 
+<odoo>
+    <menuitem id="estate_menu_root" name="Real Estate">
+        <menuitem id="estate_advertisement_menu" name="Advertisement" parent="estate_menu_root" sequence="1">
+            <menuitem id="estate_property_menu" name="Properties" action="action_estate_property" parent="estate_advertisement_menu" sequence="1"/>
+        </menuitem>
+        <menuitem id="estate_setting_menu" name="Setting" parent="estate_menu_root" sequence="2">
+            <menuitem id="estate_property_tag_menu" name="Property Tags" action="action_estate_property_tag" parent="estate_setting_menu" sequence="1"/>
+            <menuitem id="estate_property_type_menu" name="Property Types" action="action_estate_property_type" parent="estate_setting_menu" sequence="2"/>
+        </menuitem>
+    </menuitem>
+</odoo> -->
