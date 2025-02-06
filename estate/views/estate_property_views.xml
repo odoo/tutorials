@@ -24,15 +24,20 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property Form">
+                <header>
+                    <button name="action_property_sold" type="object" string="SOLD"/>
+                    <button name="action_property_cancelled" type="object" string="CANCEL"/>
+                </header>
                 <sheet>
                     <group>
-                        <h1 class="mb32">
-                            <field name="name" class="mb16" />
+                        <h1>
+                            <field name="name"/>
                         </h1>
                         <field name="tag" widget="many2many_tags"/>
                     </group>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
@@ -54,7 +59,6 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
-                                <field name="state" />
                                 <field name="total_area" />
                             </group>
                         </page>
@@ -65,13 +69,15 @@
                                     <field name="partner_id" />
                                     <field name="validity" />
                                     <field name="date_deadline" />
+                                    <button name="action_confirm" type="object" icon="fa-check" help="Accept"/>
+                                    <button name="action_refuse" type="object" icon="fa-times" help="Refuse"/>
                                     <field name="status" />
                                 </list>
                             </field>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="buyer" />
+                                <field name="partner_id" />
                                 <field name="sales_person" />
                             </group>
                         </page>
@@ -91,7 +97,7 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
-                <separator/>        
+                <separator/>
                 <filter string="Available" name="date_availability" domain="[('date_availability', '>=', context_today())]"/>
                 <filter string="New or Offer Recieved" name="state" domain="[('date_availability', '>=', context_today()), '|', ('state', '=', 'new'),('state', '=', 'offer_received')]"/>
                 <group expand="1" string="Group By">
