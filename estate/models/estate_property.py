@@ -1,30 +1,40 @@
 from datetime import timedelta
+
 from odoo import models, fields
 
+
 class EstateProperty(models.Model):
-    _name ="estate.property"
-    _description="test description"
+    _name = "estate.property"
+    _description = "test description"
 
-
-    name=fields.Char(required=True,default="Unknown")
-    description=fields.Text()
-    postcode=fields.Char()
-    date_availability=fields.Date(copy=False,default=fields.Date.today()+timedelta(days=+90))
-    expected_price=fields.Float(required=True)
-    selling_price=fields.Float(readonly=True, copy=False)
-    bedrooms=fields.Integer(default=2)
-    living_area=fields.Integer()
-    facades=fields.Integer()
-    garage=fields.Boolean()
-    garden=fields.Boolean()
-    garden_area=fields.Integer()
-    garden_orientation=fields.Selection(
-        string='Garden Orientation',
-        selection=[('north','North'), ('south','South'), ('east','East'), ('west','West'),],
-        help="It is used to define the garden orientation"
+    name = fields.Char("Title", required=True, default="Unknown")
+    description = fields.Text("Description")
+    postcode = fields.Char("Postcode")
+    date_availability = fields.Date("Date availability", copy=False, default=fields.Date.today() + timedelta(days=+90))
+    expected_price = fields.Float("Expected price", required=True)
+    selling_price = fields.Float("Selling price", readonly=True, copy=False)
+    bedrooms = fields.Integer("Bedrooms", default=2)
+    living_area = fields.Integer("Living area")
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
+    garden_orientation = fields.Selection(
+        [('north','North'),
+         ('south','South'),
+         ('east','East'),
+         ('west','West')],
+        string = "Garden Orientation",
+        help = "It is used to define the garden orientation"
     )
-    state=fields.Selection(
-        default="new",
-        selection=[('new', 'New'), ('offerreceived', 'Offer Received'), ('offeraccepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')]
+    state = fields.Selection(
+        [('new', 'New'),
+         ('offerreceived', 'Offer Received'),
+         ('offeraccepted', 'Offer Accepted'), 
+         ('sold', 'Sold'), 
+         ('cancelled', 'Cancelled')
+        ],
+        string="State",
+        default = "new"
     )
-    active=fields.Boolean(default=True)
+    active = fields.Boolean("Active", default=True)
