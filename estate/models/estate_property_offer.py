@@ -53,11 +53,16 @@ class EstatePropertyOffer(models.Model):
                 record.status = "refused"
         return True
 
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "Price must be positive."),
+    ]
+
     price = fields.Float(string="Price")
     status = fields.Selection(
         string="Status",
         copy=False,
         selection=[("accepted", "Accepted"), ("refused", "Refused")],
+        readonly=True,
         help="Status of the offer",
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)

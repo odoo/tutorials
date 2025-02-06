@@ -25,8 +25,8 @@
         <field name="arch" type="xml">
             <form string="Estate Property Form">
                 <header>
-                    <button name="action_property_sold" type="object" string="SOLD"/>
-                    <button name="action_property_cancelled" type="object" string="CANCEL"/>
+                    <button name="action_property_sold" type="object" string="SOLD" class="oe_highlight"/>
+                    <button name="action_property_cancelled" type="object" string="CANCEL" class="oe_highlight"/>
                 </header>
                 <sheet>
                     <group>
