@@ -2,7 +2,7 @@ from odoo import fields, models
 from dateutil.relativedelta import relativedelta
 
 
-class estate_property(models.Model):
+class EstateProperty(models.Model):
     _name="estate.property"
     _description="Estate Model"
 
@@ -16,14 +16,14 @@ class estate_property(models.Model):
     )    
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True,copy=False)
-    bedrooms = fields.Integer(defualt=2 )
+    bedrooms = fields.Integer(defualt=2)
     living_area = fields.Integer()
     facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
+    is_garage = fields.Boolean()
+    is_garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        selection=[('north', 'North'), ('south', 'South'),('east', 'East'),('west', 'West')],
+        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
     )
     active = fields.Boolean(default = 'True')
     status = fields.Selection(

@@ -4,7 +4,7 @@
     "description": "Estate module",
     "author": "Odoo",
     "category": "Tutorials/estate",
-    "version": "0.1",
+    "version": "1.0",
     "depends": ["base"],
     "application": True,
     "installable": True,
