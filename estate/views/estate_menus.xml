@@ -4,7 +4,7 @@
         <!-- First-level Submenu under Estate (Estate Management) -->
         <menuitem id="estate_menu_management" name="Estate Management">
             <!-- Third-level Submenu under Estate Management (Estate Properties) -->
-            <menuitem id="menu_estate_properties" name="Estate Properties"
+            <menuitem id="menu_estate_properties" name="Properties"
                 action="estate_property_action">
             </menuitem>
         </menuitem>
