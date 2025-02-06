@@ -7,7 +7,11 @@
             <list string="Property Offers">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <button name="action_accept" type="object" title="Accept" icon="fa-check"/>
+                <button name="action_reject" type="object" title="Refuse" icon="fa-times"/>
                 <field name="status"/>
+                <field name="validity"/>
+                <field name="offer_deadline"/>
             </list>
         </field>
     </record>
@@ -24,15 +28,11 @@
                         </h1>
                         <field name="partner_id"/>
                         <field name="status"/>
+                        <field name="validity"/>
+                        <field name="offer_deadline"/>
                     </group>
                 </sheet>
             </form>
         </field>
-    </record>
-
-    <record id="estate_property_offer_action" model="ir.actions.act_window">
-        <field name="name">Offers</field>
-        <field name="res_model">estate.property.offer</field>
-        <field name="view_mode">list,form</field>
     </record>
 </odoo>

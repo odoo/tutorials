@@ -21,6 +21,10 @@
         <field name="arch" type="xml">
         <form string="Test">
             <sheet>
+                <header>
+                    <button name="is_Cancelled" type="object" string="Cancel"/>
+                    <button name="is_Sold" type="object" string="Sell"/>
+                </header>
                 <group>
                     <h1>
                         <field name="name"/>
@@ -36,6 +40,7 @@
                     <group>
                         <field string="Expected Price" name="expected_price"/>
                         <field string="Selling Price" name="selling_price"/>
+                        <field string="Best offer" name="best_price"/>
                     </group>
                 </group>
                 <notebook>
@@ -46,21 +51,30 @@
                                 <field string="Bedrooms" name="bedrooms"/>
                                 <field string="Living Area" name="living_area"/>
                                 <field string="Facades" name="facades"/>
+                                <field string="Total Area" name="total_area"/>
                             </group>
                             <group>
                                 <field string="Garage" name="garage"/>
                                 <field string="Garden" name="garden"/>
                                 <field string="Garden orientation" name="garden_orientation"/>
+                                <field string="Garden Area" name="garden_area"/>
                                 <field string="Active" name="active"/>
                                 <field string="State" name="state"/>
                             </group>
                         </group>
                     </page>
+
+                    <page string="Offers">
+                        <group>
+                            <field name="offer_ids"/>
+                        </group>
+                    </page>
+
                     <page string="Other info">
-                    <group>
-                        <field string="Salesperson" name="salesperson_id"/>
-                        <field string="Buyer" name="buyer_id"/>
-                    </group>
+                        <group>
+                            <field string="Salesperson" name="salesperson_id"/>
+                            <field string="Buyer" name="buyer_id"/>
+                        </group>
                     </page>
                 </notebook>
             </sheet>

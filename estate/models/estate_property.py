@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
 
 
@@ -36,13 +36,53 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("canceled", "Canceled"),
+            ("cancelled", "Cancelled"),
         ],
         required=True,
         copy=False,
         default="new",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string="Offers")
+
+    total_area = fields.Float(compute="_total_area")
+    best_price = fields.Integer(compute="_compute_best_price")
+
+    @api.depends("living_area", "garden_area")
+    def _total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+        
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+
+    @api.onchange("garden")
+    def _update_garden_vals(self):
+        if self.garden == True:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
+            return {'warning': {'title': ("Heads Up!"), 'message': ('This will affect your total area.')}}
+    
+    def is_Cancelled(self):
+        for record in self:
+            if record.state != "sold":
+                record.state = "cancelled"
+            else:
+                raise exceptions.UserError("Property is already sold!")
+        return True
+
+    def is_Sold(self):
+        for record in self:
+            if record.state != "cancelled":
+                record.state = "sold"
+            else:
+                raise exceptions.UserError("Sorry! This listing is cancelled.")
+        return True
