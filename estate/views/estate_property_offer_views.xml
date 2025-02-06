@@ -7,6 +7,10 @@
             <list string="Property Offers">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <button name="action_accept_offer" title="Accept" type="object" icon="fa-check"/>
+                <button name="action_refuse_offer" title="Refuse" type="object" icon="fa-times"/>
                 <field name="status"/>
             </list>
         </field>
@@ -20,6 +24,8 @@
                     <group class="w-25">
                         <field name="price"/>
                         <field name="partner_id"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
                         <field name="status"/>
                     </group>
                 </sheet>

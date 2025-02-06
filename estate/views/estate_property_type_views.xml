@@ -20,6 +20,7 @@
         <field name="arch" type="xml">
             <form string="Property Types">
                 <sheet>
+                    <!-- <button type="action" name="%(estate.estate_property_action)d" string="Properties"/> -->
                     <group class="w-25">
                         <h1>
                             <field name="name"/>
