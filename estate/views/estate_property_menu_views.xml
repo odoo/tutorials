@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!-- Root Menu Item-->
     <menuitem
         id="estate_menu_root"
         name="Real Estate"
         web_icon="estate,static/description/icon.png"
     />
 
+    <!-- Advertisements Sub-Menu -->
     <menuitem
         id="estate_menu_advertisements"
         name="Advertisements"
@@ -17,6 +19,7 @@
         action="estate_properties_action"
     />
 
+    <!-- Settings Sub-Menu -->
     <menuitem
         id="estate_menu_settings"
         name="Settings"
@@ -26,5 +29,10 @@
         id="estate_menu_property_types"
         parent="estate_menu_settings"
         action="estate_property_types_action"
+    />
+    <menuitem
+        id="estate_menu_property_tags"
+        parent="estate_menu_settings"
+        action="estate_property_tags_action"
     />
 </odoo>
