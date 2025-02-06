@@ -1,0 +1,51 @@
+<odoo>
+
+  <record id="action_estate_property_type_view" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <!-- Estate Property Form View -->
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="property_type_id"/>
+                        <!-- Other fields can go here -->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Estate Property list View -->
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Estate Properties">
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <!-- Other fields can go here -->
+            </list>
+        </field>
+    </record>
+
+    <!-- Estate Property Search View -->
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Estate Properties">
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <!-- Other fields for searching -->
+            </search>
+        </field>
+    </record>
+
+</odoo>

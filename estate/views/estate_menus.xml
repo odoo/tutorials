@@ -4,7 +4,13 @@
 
     <!-- First-level menu -->
     <menuitem id="estate_first_level_menu" name="Properties" parent="estate_menu_root" sequence="1"/>
+     <menuitem id="menu_estate_property_type" name="settings" parent="estate_menu_root"/>
 
     <!-- Action menu linked to a valid action -->
+    
     <menuitem id="estate_property_menu_action" name="Properties List" parent="estate_first_level_menu" action="estate.estate_property_action" sequence="1"/>
+    
+    <menuitem id="menu_estate_property" name="Properties_type" parent="menu_estate_property_type" action="estate.action_estate_property_type_view"/>
+
+    <menuitem id="menu_estate_property_id" name="Properties_tag" parent="menu_estate_property_type" action="estate.action_estate_property_tag"/>
 </odoo>

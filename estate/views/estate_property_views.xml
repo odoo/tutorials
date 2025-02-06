@@ -7,6 +7,7 @@
         <field name="view_mode">list,form,kanban</field>
          
     </record>
+    <menuitem id="menu_estate_root" name="Estate" sequence="1"/>
 
        <!-- Define the List View for the 'estate.property' model -->
     <record id="estate_property_list_view" model="ir.ui.view">
@@ -17,7 +18,11 @@
                 <field name="name" string="Property Name"/>
            
                 <field name="postcode" string="Postcode"/>
+                <field name="property_type_id" string="Property Type"/>
+                <field name="tag_ids" string="propert tag"  widget="many2many_tags"/>
                 <field name="date_availability" string="Availability Date"/>
+                <field name="validity" string="validity"/>
+                <field name="date_deadline" string="date-deadline"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="selling_price" string="Selling Price"/>
                 <field name="bedrooms" string="Bedrooms"/>
@@ -32,46 +37,83 @@
 
 
      <!-- Define the Form View for the 'estate.property' model -->
-    <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <form string="Property">
-                <sheet>
-                    <!-- Main Information Group -->
-                    <group>
-                      <h1> <field name="name" string="Property Name"/></h1>
-                        <field name="description" string="Description"/>
-                        <field name="postcode" string="Postcode"/>
-                        <field name="date_availability" string="Availability Date"/>
+     <record id="estate_property_form_view" model="ir.ui.view">
+            <field name="name">estate.property.form</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <form string="Property Form">
+                    <sheet>
+                        <div class="oe_title">
+                            <div class="oe_edit_only">
+                                <label for="name"/>
+                            </div>
+                            <h1 class="mb32 w-50">
+                                <field name="name" class="mb16"/>
+                                
+                            </h1>
+                        </div>
+                        <group>
+                            <group class="mb32">
+                                <!-- <field name"partner_id" class="w-50" /> -->
+                                <field name="property_type_id" string="property_type"/>
+                                 <field name="tag_ids" string="propert tag" widget="many2many_tags"/>
+                                <field name="postcode" class="w-50" />
+                                <field name="date_availability" class="w-50" />
+                            </group>
+                            <group>
+                                <field name="expected_price" class="w-50" />
+                                <field name="best_price" class="w-50"/>
+                                <field name="selling_price" class="w-50" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="More Info">
+                                <group>
+                                    <group>
+                                        <field string="Description" name="description"/>
+                                        <field string="Bedrooms" name="bedrooms"/>
+                                        <field string="Living Area (sqm)" name="living_area"/>
+                                        <field name="facades"/>
+                                        <field string="State" name="state"/>
+                                        <field  string="total-area" name="total_area" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field string="Garage" name="garage"/>
+                                        <field string="Garden" name="garden"/>
+                                        <field string="Garden Area (sqm)" name="garden_area"/>
+                                        <field string="Garden Orientation" name="garden_orientation"/>
+                                        <field string="Visible" invisible="1" name="active"/>
+                                         <field name="best_price" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                             <page string="buyer and selleer ">
+                        <group>
+                        <field string="buyer_id" name="buyer_id" options="{'no_create':true}"></field>
+                        <field string="salesperson_id" name="salesperson_id" options="{'no_create':true}"></field>
+                        </group>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn-danger"/>
+                        <button name="action_sold" type="object" string="Sold" class="btn-success"/>
+              
+                        </page>
+                        <page string="offer">
+                          <group >
+                        <field name="offer_ids" widget="one2many_list">
+                            <list >
+                                <field name="price"/>
+                                <field name="status"/>
+                                <field name="partner_id"/>
+                                <field name="validity"/>
+                                <field name="date_deadline"/>
+                            </list>
+                        </field>
                     </group>
-
-                    <!-- Price and Details Group -->
-                    <group class="oe_inline oe_left oe_avatar"> 
-                        <field name="expected_price" string="Expected Price"/>
-                        <field name="selling_price" string="Selling Price"/>
-                        <field name="bedrooms" string="Bedrooms"/>
-                        <field name="living_area" string="Living Area"/>
-                        <field name="facades" string="Facades"/>
-                    </group>
-
-                    <!-- Additional Features Group -->
-                    <group class="oe_inline oe_right oe_avatar">
-                        <field name="garage" string="Garage"/>
-                        <field name="garden" string="Garden"/>
-                        <field name="garden_area" string="Garden Area"/>
-                        <field name="garden_orientation" string="Garden Orientation"/>
-                    </group>
-
-                    <!-- Active Status Group -->
-                    <!-- <group>
-                        <field name="active" string="Active"/>
-                    </group> -->
-                </sheet>
-            </form>
-        </field>
-    </record>
-
+                    </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
     <!-- Define the Search View for the 'estate.property' model -->
     <record id="estate_property_search_view" model="ir.ui.view">
@@ -82,6 +124,10 @@
                 <!-- Search field for Property Name -->
                 <field name="name" string="Property Name"/>
                 <field name="postcode" string="Postcode"/>
+                  <field name="property_type_id"/>
+                  <field name="tag_ids"/>
+                  <field name="buyer_id"/>
+                <field name="salesperson_id"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="selling_price" string="Selling Price"/>
 
