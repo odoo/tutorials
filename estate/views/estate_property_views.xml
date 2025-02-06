@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <!-- list view  -->
     <record id="view_estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -14,25 +13,37 @@
                 <field name="postcode" />
                 <field name="date_availability" />
                 <field name="active" />
+                <field name="property_type_id" />
+                <field name="tag_ids" widget="many2many_tags" />
             </list>
         </field>
     </record>
 
-    <!-- form view -->
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
-                    <group>
+                    <h1>
                         <field name="name" />
-                        <field name="expected_price" />
-                        <field name="selling_price" />
-                        <field name="state" />
-                        <field name="postcode" />
-                        <field name="date_availability" />
-                        <field name="active" />
+                    </h1>
+                    <div class="mb16">
+                        <field name="tag_ids" widget="many2many_tags" />
+                    </div>
+                    <group>
+                        <group>
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                        </group>
+                        <group>
+                            <field name="state" />
+                            <field name="property_type_id" />
+                        </group>
                     </group>
                     <notebook>
                         <page string="Description">
@@ -47,13 +58,26 @@
                                 <field name="garden_orientation" />
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="status" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other information">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-
-    <!-- search view -->
 
     <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
@@ -61,13 +85,14 @@
         <field name="arch" type="xml">
             <search string="Search Properties">
                 <field name="name" />
-                 <filter string="Archived" name="inactive"
+                <field name="property_type_id" />
+                <filter string="Archived" name="inactive"
                     domain="[('active', '=', False)]" />
-                <filter string="Available" name="aadfae"
+                <filter string="Available" name="status"
                     domain="[('state', 'in', ['New', 'Offer Received'])]" />
-                <filter name="fadsfef"
+                <filter name="postcode"
                     string="Postcode"
-                    context="{'group_by': 'postcode'}" /> 
+                    context="{'group_by': 'postcode'}" />
             </search>
         </field>
     </record>
