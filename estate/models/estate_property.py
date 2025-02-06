@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api,fields, models
+from odoo import api,fields, models, exceptions
 
 #Class of EstateProperty to define fields of database table
 class EstateProperty(models.Model):
@@ -37,7 +37,7 @@ class EstateProperty(models.Model):
         default='new')
     total_area = fields.Float(string='Total Aream(sqm)',compute='_compute_total_area')
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
-    user_id=fields.Many2one(res.users', string='Salesperson', default=lambda self: self.env.user)
+    user_id=fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     partner_id = fields.Many2one('res.partner', string='Buyer',copy=False)
     tag_ids = fields.Many2many('estate.property.tags',string='Tags')
     offer_ids = fields.One2many('estate.property.offer','property_id',string='Offers') #One2Many field
@@ -66,4 +66,20 @@ class EstateProperty(models.Model):
         else:
             self.garden_area =0
             self.garden_orientation =''
-            
+
+    #Function to perform action when property Sold
+    def action_to_sold_property(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError('A cancelled property can not be sold')
+            record.state = 'sold'
+        return True
+    
+    #Function to perform action when property Canceled
+    def action_to_cancel_property(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError('A sold property can not be cancelled')
+            record.state = 'cancelled'
+        return True
+
