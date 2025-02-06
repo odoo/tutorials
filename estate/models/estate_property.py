@@ -6,18 +6,28 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property Name"
 
     name = fields.Char('Property name', required = True, size = 30)
-    selling_price = fields.Integer('Selling Price', readonly = True, copy = False)
-    description = fields.Text('Property description', size = 50)
+    selling_price = fields.Integer('Selling Price',
+        readonly = True,
+        copy = False,
+        default = 1000000
+    )
+    description = fields.Char('Property description', size = 50)
     postcode = fields.Char('Postcode', size =6)
     date_availability = fields.Date(
         default=fields.Date.today() + timedelta(days=90), copy=False
     )
     expected_price = fields.Float('Expected price', required = True)
-    bedrooms = fields.Integer('No.of bedrooms', default = 2)
+    bedrooms = fields.Integer('Bedrooms', default = 2)
     living_area = fields.Integer('Area')
     facades = fields.Integer('facade')
-    garage = fields.Boolean('Available')
-    garden = fields.Boolean('Present')
+    garage = fields.Boolean('Available',
+        default =False,
+        help = 'Mark if Garage is available'
+    )
+    garden = fields.Boolean('Present',
+        default = False,
+        help = 'Mark if Garden is Present',
+    )
     garden_area = fields.Integer('Garden Area')
     active = fields.Boolean('Active',
         default = True,
