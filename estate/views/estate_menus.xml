@@ -1,16 +1,17 @@
 <odoo>
-    <!-- Root Menu -->
     <menuitem id="estate_menu_root" name="Estate" sequence="1" />
 
-    <!-- Advertisement Menu -->
-    <menuitem id="estate_advertisement_menu" name="Advertisement" parent="estate_menu_root" sequence="10" />
-    <menuitem id="estate_property_menu_action" name="Estate Property" parent="estate_advertisement_menu" action="estate_property_action" sequence="20" />
+    <menuitem id="estate_advertisement_menu" name="Advertisement" parent="estate_menu_root"
+        sequence="10" />
+    <menuitem id="estate_property_menu_action" name="Estate Property"
+        parent="estate_advertisement_menu" action="estate_property_action" sequence="20" />
 
-    <!-- Settings Menu -->
     <menuitem id="estate_settings_menu" name="Settings" parent="estate_menu_root" sequence="30" />
-    <menuitem id="estate_property_settings_menu_action1" name="Property Type" parent="estate_settings_menu" action="estate_property_type_action" sequence="40" />
+    <menuitem id="estate_property_settings_menu_action1" name="Property Type"
+        parent="estate_settings_menu" action="estate_property_type_action" sequence="40" />
 
-    <!-- Property Tags Menu with Action -->
-    <menuitem id="estate_property_settings_menu_action2" name="Property Tags" parent="estate_settings_menu" action="estate_property_tags_action" sequence="40" />
+    <menuitem id="estate_property_settings_menu_action2" name="Property Tags"
+        parent="estate_settings_menu" action="estate_property_tags_action" sequence="40" />
 
 </odoo>
+

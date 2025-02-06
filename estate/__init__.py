@@ -1,2 +1,2 @@
-from . import models
+from . import models  # noqa: F401
 

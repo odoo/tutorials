@@ -30,6 +30,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Test">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" class="btn-success" />
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-primary" />
+                    <!-- Add the statusbar widget for the state field -->
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" />
@@ -39,14 +45,15 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="availability_date" />
                         </group>
                         <group>
                             <field name="expected_price" />
+                            <field name="best_price" />
                             <field name="selling_price" />
-                            <field name="state" />
                         </group>
                     </group>
                     <notebook>
@@ -60,21 +67,16 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                                <field name="total_area" readonly="1" />
                             </group>
                         </page>
                         <page string="Offer">
-                            <field name="offer_ids">
-                                <list>
-                                    <field name="price" /> 
-                                    <field name="partner_id" />
-                                    <field name="status" />
-                                </list>
-                            </field>
+                            <field name="offer_ids" />
                         </page>
                         <page string="Other Info">
                             <group>
                                 <field name="sales_man" />
-                                <field name="buyer" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
@@ -113,3 +115,4 @@
 
 
 </odoo>
+
