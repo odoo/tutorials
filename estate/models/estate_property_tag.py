@@ -3,9 +3,13 @@ from odoo import fields, models
 
 
 class EstatePropertyTag(models.Model):
-    _name = "property.tags"
+    _name = "estate.property.tag"
     _description = "Estate Property Tags"
 
 
 
-    tags_of_property = fields.Char('Property tags', required=True)
+    name = fields.Char('Property tag', required=True)
+
+    _sql_constraints = [
+    ('estate_property_tag_name_unique', 'UNIQUE(name)', 'The tag must be unique.')]
+
