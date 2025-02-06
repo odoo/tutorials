@@ -6,5 +6,16 @@
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form,kanban,pivot,graph</field>
         </record>
+        <record id="estate_property_list_view" model="ir.ui.view">
+            <field name="name">estate.property.list</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <list open_form_view="1">
+                    <field name="name" />
+                    <field name="expected_price" />
+                    <field name="date_availability" />
+                </list>
+            </field>
+        </record>
     </data>
 </odoo>
