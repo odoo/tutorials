@@ -40,17 +40,19 @@
 
                     <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
                         <group>
+                            <field name="tag_ids" widget="many2many_tags" />
                             <field name="expected_price" />
                             <field name="selling_price" readonly="1" />
                         </group>
                     </group>
 
                     <notebook>
-                        <page string="Description">
+                        <page string="Discription">
                             <group>
                                 <field name="description" />
                                 <field name="bedrooms" />
@@ -61,6 +63,23 @@
                                 <field name="garden_area" string="Garden Area (sqm)" />
                                 <field name="garden_orientation" />
                                 <field name="state" />
+                            </group>
+                        </page>
+
+                        <page string="Offers">
+                        <field name="offer_ids">
+                            <list>
+                                <field name="price" />
+                                <field name="partner_id" />
+                                <field name="status" />
+                            </list>
+                        </field>
+                        </page>
+
+                        <page string="Other info">
+                            <group>
+                                <field name="partner_id" />
+                                <field name="user_id" />
                             </group>
                         </page>
                     </notebook>
@@ -85,11 +104,14 @@
                 <field name="facades" />
                 <field name="garage" />
                 <field name="garden" />
-                <filter name="available" string="Available" domain="[('date_availability', '>=', context_today())]" />
+                <filter name="available" string="Available"
+                    domain="[('date_availability', '>=', context_today())]" />
                 <filter name="has_garden" string="Has Garden" domain="[('garden', '=', True)]" />
                 <group string="Group By">
-                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
-                    <filter string="State" name="state" context="{'group_by':'state', 'residual_visible':True}"/>
+                    <filter string="Postcode" name="postcode"
+                        context="{'group_by':'postcode', 'residual_visible':True}" />
+                    <filter string="State" name="state"
+                        context="{'group_by':'state', 'residual_visible':True}" />
                 </group>
             </search>
         </field>
