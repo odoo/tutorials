@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <menuitem id="test_menu_root" name="Test">
+    <menuitem id="test_first_level_menu_1" name="Property" sequence="1">
+        <menuitem id="test_model_menu_action_1" action="estate_property_actions" name="My Property"/>
+        <menuitem id="test_model_menu_action_2" action="estate_property_actions" name="All Properties"/>
+        <menuitem id="test_model_menu_action_3" action="estate_property_actions" name="Lost Property"/>
+    </menuitem>
+    <menuitem id="test_first_level_menu_2" name="Contact" sequence="2">
+        <menuitem id="test_model_menu_action_4" action="estate_property_actions" name="Forms"/>
+        <menuitem id="test_model_menu_action_5" action="estate_property_actions" name="Email"/>
+        <menuitem id="test_model_menu_action_6" action="estate_property_actions" name="Help"/>
+    </menuitem>
+    <menuitem id="test_first_level_menu_3" name="Help" sequence="3">
+        <menuitem id="test_model_menu_action_7" action="estate_property_actions" name="Odoo Bot"/>
+    </menuitem>
+  </menuitem>
+</odoo>
