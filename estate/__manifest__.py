@@ -9,4 +9,10 @@
     """,
     'installable': True,
     'application': True,
+    'license': 'LGPL-3',
+    'data': [
+        'security/ir.model.access.csv',
+        'views/estate_property_actions.xml', # Maintain the sequance for loading of the data files
+        'views/estate_property_menus.xml'
+    ]
 }
