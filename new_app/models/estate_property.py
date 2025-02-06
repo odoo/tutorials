@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
 
 
@@ -6,21 +6,21 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Table"
 
-    name = fields.Char(required=True)
-    description = fields.Text('Description', default='bla bla bla')
-    postcode = fields.Char('Postcode', default='456010')
+    name = fields.Char(string="Property Name", required=True)
+    description = fields.Text(string="Description", default='bla bla bla')
+    postcode = fields.Char(string="Postcode", default='456010')
     # date_availability = fields.Date()
-    date_availability = fields.Date('Availability Date', readonly=False,
+    date_availability = fields.Date(string="Availability Date", readonly=False,
                                     copy=False, default=fields.Datetime.today() + relativedelta(days=60))
     expected_price = fields.Float(
-        'Expected Price', default='1500000.00', required=True)
-    selling_price = fields.Float('Selling Price', default='1500000.00')
-    living_area = fields.Integer('Living area', default='15465')
-    facades = fields.Integer('Facades', default='4')
-    bedroom = fields.Integer('Bedrooms', default='2')
-    garage = fields.Boolean('Garage', default=True)
-    garden = fields.Boolean('Garden', default=True)
-    garden_area = fields.Integer('Garden Area', default='3456', copy=False)
+        string="Expected Price", default='1500000.00', required=True)
+    selling_price = fields.Float(string="Selling Price", default='1500000.00')
+    living_area = fields.Integer(string="Living area (sqm)", default='15465')
+    facades = fields.Integer(string="Facades", default='4')
+    bedroom = fields.Integer(string="Bedrooms", default='2')
+    garage = fields.Boolean(string="Garage", default=True)
+    garden = fields.Boolean(string="Garden", default=True)
+    garden_area = fields.Integer(string="Garden Area (sqm)", default='3456', copy=False)
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
@@ -64,3 +64,21 @@ class EstateProperty(models.Model):
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
     ], copy=False, default='new', required=True)               # Reserved field with default state as New
+
+
+    # Chapter-8
+    # exercise-1
+    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
+ 
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+    
+    # exercise-2
+    best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price'))

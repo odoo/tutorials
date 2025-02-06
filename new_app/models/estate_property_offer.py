@@ -19,12 +19,12 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one(
         "res.partner",
-        string="Buyer",
+        string="Buyer Name",
         required=True
     )
 
     property_id = fields.Many2one(
         "estate.property",
-        string="Buyer",
+        string="Property",
         required=True
     )
