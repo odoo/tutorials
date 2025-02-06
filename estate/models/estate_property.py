@@ -1,10 +1,9 @@
 from odoo import fields, models
 from dateutil.relativedelta import relativedelta
 
-
 class Property(models.Model):
     _name = "estate.property"
-    _description = "Estate Propety Model"
+    _description = "Estate Property"
 
     name = fields.Char(
         "Title", required=True,
@@ -18,25 +17,20 @@ class Property(models.Model):
         "Postcode", help="This field specifies the postcode of the property address."
     )
     date_availability = fields.Date(
-        "Available From",
+        "Available From", readonly=False, default=fields.Date.today() + relativedelta(months=3),
         help="This field specifies the date when the property will be available.",
-        copy=False,
-        default=fields.Date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float(
         "Expected Price", required=True,
         help="This field specifies the price expected for the property.",
     )
     selling_price = fields.Float(
-        "Selling Price",
+        "Selling Price", readonly=True, copy=False,
         help="This field specifies the actual selling price of the property.",
-        readonly=True,
-        copy=False,
     )
     bedrooms = fields.Integer(
-        "Bedrooms",
+        "Bedrooms", default=2,
         help="This field specifies the number of bedroom that this property consists of.",
-        default=2,
     )
     living_area = fields.Integer(
         "Living Area (sqm)",
@@ -69,17 +63,30 @@ class Property(models.Model):
         help="This selection fields specifies the facing direction of garden (North, South, East, or West).",
     )
     state = fields.Selection(
-        string="Status of the Property", required=True, copy=False, default="new",
+        string="Property Status", copy=False, required=True, default="new",
         selection=[
             ("new", "New"),
             ("offer received", "Offer Received"),
             ("offer accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
         ],
-        help="This selection fields specifies the status of the property in regards to its availability.",
+        help="This selection fields specifies the state of the property.",
     )
     active = fields.Boolean(
         "Active", default=True,
-        help="Mark as active if you want the property to be listed."
+        help="This specifies if the property should be listed."
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type", string="Property Type",
+        help="This specifies the type of the property."
+    )
+    buyer = fields.Many2one(
+        "res.partner", string="Buyer", copy=False,
+        help="Buyer of the property."
+    )
+    salesperson = fields.Many2one(
+        "res.users", string="Salesman", default=lambda self: self.env.user,
+        help="Sales Person associated with the property."
+    )
+    tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property Offers")
