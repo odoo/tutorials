@@ -3,12 +3,12 @@
 
 {
     'name': 'Real Estate',
+    'category': 'Real Estate',
     'summary': 'Manage real estate properties',
     'description': """
     This module allows the users to manage their real estate properties.
     It also enables them to advertise them.
     """,
-    'category': 'Marketing',
     'version': '1.0',
     'depends': [
         'base',
