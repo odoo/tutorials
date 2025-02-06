@@ -6,3 +6,4 @@ class EstatePropertyTag(models.Model):
     _description="Estate Property Tag"
     
     name=fields.Char(string="Name", required=True)
+    active = fields.Boolean(default=True)

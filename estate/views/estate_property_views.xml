@@ -13,6 +13,7 @@
         <field name="arch" type="xml">
             <list string="Listed Properties">
                 <field name="name" string="Title" />
+                <field name="tag_ids" widget="many2many_tags" />
                 <field name="postcode" />
                 <field name="property_type_id" />
                 <field name="bedrooms" />
@@ -29,19 +30,26 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_mark_property_sold" type="object" string="Sold" />
+                    <button name="action_mark_property_cancelled" type="object" string="Cancel" />
+                </header>
                 <sheet>
-                    <div class="oe_title w-25 mb-2">
+                    <div class="w-25 mb-4">
                         <label for="name"/>
                         <h1><field name="name" string="Title" /></h1>
                     </div>
                     <group>
                         <group>
+                            <field name="state" />
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
+                            <field name="best_price" />
                             <field name="selling_price" />
                         </group>
                     </group>
@@ -57,8 +65,12 @@
                                     <field name="garden" />
                                     <field name="garden_area" />
                                     <field name="garden_orientation" />
+                                    <field name="total_area" />
                                 </group>
                             </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -99,28 +111,17 @@
                     string="Postcode"
                     name="postcode"
                     context="{'group_by':'postcode'}"
+                /> 
+                <filter
+                    string="Tags"
+                    name="tag_ids"
+                    context="{'group_by':'tag_ids'}"
                 />
                 <filter
                     string="State"
                     name="state"
                     context="{'group_by':'state'}"
                 />
-            </search>
-        </field>
-    </record>
-
-    <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Property Type</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
-    <record id="estate_property_type_search" model="ir.ui.view">
-        <field name="name">estate.property.type.search</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <search string="Estate Property Type Search">
-                <field name="name" />
             </search>
         </field>
     </record>
