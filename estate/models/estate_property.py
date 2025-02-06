@@ -1,16 +1,17 @@
+from dateutil.relativedelta import relativedelta
 from odoo import models , fields
 
-class Estate(models.Model):
-    _name = "estate_property"
+class EstateProperty(models.Model):
+    _name = "estate.property"
     _description = "This is property tabel."
 
-    name = fields.Char("Property Name" , required=True)
+    name = fields.Char("Property Name", required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
-    date_availability = fields.Date("Date")
-    expected_price = fields.Float("Expected Price")
-    selling_price = fields.Float("Selling Price")
-    bedrooms = fields.Integer("Bedrooms")
+    date_availability = fields.Date(string="Date Available", copy=False, default=fields.Date.today()+relativedelta(months=3))
+    expected_price = fields.Float("Expected Price", required=True)
+    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
+    bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living Area")
     facades = fields.Integer("Facades")
     garage = fields.Boolean("Garage")
@@ -23,5 +24,4 @@ class Estate(models.Model):
             ('south', 'South'),
             ('east', 'East'),
             ('west', 'West')
-            ])
-
+        ])
