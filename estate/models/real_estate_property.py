@@ -1,21 +1,24 @@
 from odoo import fields, models
 
 class TestModel(models.Model):
-    _name = "test_model_real_estate"
-    _description = "Test Model of Real estate"
 
-    name = fields.Char(required=True)
-    description = fields.Text()
-    postcode = fields.Char()
-    date_availability = fields.Date()
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
-    bedrooms = fields.Integer()
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
+    _name = "estate.property"
+    _description = "Declare property for Real estate"
+
+    # --------------------------------------- Fields Declaration ----------------------------------
+
+    name = fields.Char("Title", required=True)
+    description = fields.Text("Description")
+    postcode = fields.Char("Postcode")
+    date_availability = fields.Date("Available From")
+    expected_price = fields.Float("Expected Price", required=True)
+    selling_price = fields.Float("Selling Price")
+    bedrooms = fields.Integer("Bedrooms")
+    living_area = fields.Integer("Living Area (sqm)")
+    facades = fields.Integer("Facades")
+    is_garage = fields.Boolean("Garage")
+    is_garden = fields.Boolean("Garden")
+    garden_area = fields.Integer("Garden Area (yard)")
     garden_orientation = fields.Selection(
         string="Garden Oientation",
         selection=[
@@ -26,4 +29,3 @@ class TestModel(models.Model):
         ],
         help="Type is used to separate garden orientation uses",
     )
-
