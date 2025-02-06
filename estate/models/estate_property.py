@@ -1,12 +1,12 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from odoo import fields, models
 
-class estateModel(models.Model):
+
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate testing model"
 
-    id = fields.Integer()
-    name = fields.Char('Estate Name', required=True)
+    name = fields.Char('Title', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
     date_availability = fields.Date('Available From', copy=False, default=fields.Date.today() + timedelta(days=90))
@@ -24,10 +24,12 @@ class estateModel(models.Model):
         ('east', 'East'),
         ('west', 'West')
     ], string='Garden Orientation')
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     state = fields.Selection([
         ('new', 'New'),
         ('offer_received', 'Offer Received'),
         ('offer_accepted', 'Offer Accepted'),
-        ('sold_and_cancelled', 'Sold and Cancelled'),
+        ('sold', 'Sold'),
+        ('cancelled', 'Cancelled')
     ], string='Select State', required=True, copy=False, default='new')
+    property_type_id = fields.Many2one("res.partner", string="Property Type")
