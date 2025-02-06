@@ -4,3 +4,4 @@ access_estate_property_type,access_estate_property_type,model_estate_property_ty
 access_estate_property_buyer,access_estate_property_buyer,model_estate_property_buyer,base.group_user,1,1,1,1
 access_estate_property_seller,access_estate_property_seller,model_estate_property_seller,base.group_user,1,1,1,1
 access_estate_property_tag,access_estate_property_tag,model_estate_property_tag,base.group_user,1,1,1,1
+access_estate_property_offer,access_estate_property_offer,model_estate_property_offer,base.group_user,1,1,1,1
