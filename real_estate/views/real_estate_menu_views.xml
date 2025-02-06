@@ -6,7 +6,7 @@
         <menuitem 
             id="real_estate_menu_advertisements" 
             name="Advertisements">
-                
+
             <menuitem 
                 id="menu_real_estate_properties" 
                 action="real_estate_properties"/>
@@ -15,10 +15,13 @@
         <menuitem 
             id="real_estate_menu_setting" 
             name="Setting">
-
             <menuitem 
                 id="menu_real_estate_property_type" 
-                action="real_estate_properties"/>
+                action="real_estate_property_type"/>
+
+            <menuitem 
+                id="menu_real_estate_property_tag" 
+                action="real_estate_property_tag"/>
         </menuitem>
 
     </menuitem>
