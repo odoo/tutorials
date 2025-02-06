@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
 
 class EstatePropertyOffer(models.Model):
@@ -28,4 +28,24 @@ class EstatePropertyOffer(models.Model):
                     delta = record.date_deadline - fields.Date.today()
                     record.validity = delta.days
             else:
-                record.validity=7
+                record.validity=7      
+
+    def action_accept(self):
+        for record in self:
+            if record.status == 'accepted' or record.status == 'refused':
+                raise exceptions.UserError("Property is already accepted or refused.")
+            else:
+                all_offers = record.property_id.offer_ids  # Geting all offers og property
+                for offer in all_offers:
+                    if offer.id != record.id:  # Excluding the current offer
+                        offer.status = 'refused'
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id = record.partner_id
+                record.status = 'accepted' 
+
+    def action_refuse(self):
+        for record in self:
+            if record.status == 'accepted' or record.status == 'refused':
+                raise exceptions.UserError("Property is already accepted or refused.")
+            else:
+                record.status = 'refused'

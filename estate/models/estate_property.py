@@ -1,4 +1,4 @@
-from odoo import api,fields, models
+from odoo import api, fields, models,exceptions
 from datetime import datetime, timedelta
 
 class Property_Plan(models.Model):
@@ -28,7 +28,7 @@ class Property_Plan(models.Model):
     )
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area")
     best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store=True)
-    state = fields.Selection(string="State", selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], required=True, copy=False)
+    state = fields.Selection(string="State", selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')], required=True, copy=False)
     active = fields.Boolean(string="Active", default=True)
 
     @api.depends("living_area","garden_area")
@@ -49,4 +49,20 @@ class Property_Plan(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
-                    
+
+    def button_cancel_action(self):
+        for record in self:
+            if(record.state == 'sold'):
+                raise exceptions.UserError("Sold properties can't be canceled")
+            else:
+                record.state= 'canceled'
+        return True
+    
+    def button_sold_action(self):
+        for record in self:
+            if(record.state == 'canceled'):
+                raise exceptions.UserError("Canceled properties can't be sold")
+            else:
+                record.state = 'sold'
+        return True   
+                
