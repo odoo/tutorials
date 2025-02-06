@@ -1,4 +1,5 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-estate_property_model,estate_property_model,model_estate_property,base.group_user,1,1,1,1,
+estate_property_model,estate_property_model,model_estate_property,base.group_user,1,1,1,1
 estate_property_types_model,estate_property_types_model,model_estate_property_types,base.group_user,1,1,1,1
-estate_property_tags_model,estate_property_tags_model,model_estate_property_tags,base.group_user,1,1,1,
+estate_property_tags_model,estate_property_tags_model,model_estate_property_tags,base.group_user,1,1,1,1
+estate_property_offer_model,estate_property_offer_model,model_estate_property_offer,base.group_user,1,1,1,1
