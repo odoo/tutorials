@@ -29,7 +29,7 @@
             <form string="Property Form">
                 <sheet>
                     <h1>
-                       <field name="name"/>
+                        <field name="name"/>
                     </h1>
                     <group>
                         <group>

@@ -17,11 +17,11 @@
 
     <record id="estate_property_type_form_view" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
-        <field name="model">estate.property</field>
+        <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property type Form">
                 <sheet>
-                    <h1><field name="name"/></h1>                                  
+                    <h1><field name="name"/></h1>
                 </sheet>
             </form>
         </field>

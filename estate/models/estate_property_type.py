@@ -5,6 +5,3 @@ class EstatePropertyType(models.Model):
     _description = "Specific types of properties"
 
     name = fields.Char(string = "Name", required = True)
-    
-
-
