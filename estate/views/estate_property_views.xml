@@ -1,10 +1,11 @@
 <odoo>
+<!-- Action -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
-
+    <!-- list view -->
     <record id="my_property_list_view" model="ir.ui.view">
         <field name="name">list view</field>
         <field name="model">estate.property</field>
@@ -22,64 +23,103 @@
         </field>
     </record>
 
+    <!-- form view -->
     <record id="my_property_form_view" model="ir.ui.view">
         <field name="name">form view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
                 <sheet>
+                   <div class="oe_title">
+                        <h1 class="mb16">
+                            <field name="name"></field>
+                        </h1>
+                    </div>
                     <group>
                         <group>
-                            <field name="name" widget="char" class="o_field_widget o_required_modifier" style="font-size:24px; font-weight:bold;"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="expected_price"/>
                         </group>
                         <group>
                             <field name="selling_price"/>
+                            <field name="best_offer"/>
                             <field name="date_availability"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Description"></page>
+                    <!-- Description tab -->
+                        <page string="Description">
+                            <group>
+                                <field name="description" help="True"/>
+                                <field name="bedrooms" help="No. of bedrroms in the property"/>
+                                <field name="living_area" help="living area in sqm"/>
+                                <field name="facades" help="facaes in the property"/>
+                                <field name="garage" help="garage in the property"/>
+                                <field name="garden" help="if there is garden in the property"/>
+                                <field name="garden_area" help="size of the garden as sqm"/>
+                                <field name="garden_orientation" help="facing of the garden"/>
+                                <field name="total_area" help="Total Area calculated by adding living area and garden area "/>
+
+
+                            </group>
+                        </page>
+                        <!-- other info tab -->
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id" help="The one who is responsible for selling the property"/>
+                                <field name="buyer_id" help="The one who will buy or bought the property"/>
+                            </group>
+                        </page>
+
+                <!-- offers tab-->
+                        <page string="Offers">
+                            <field name="offer_ids">
+                            </field>
+                        </page> 
+
                     </notebook>
-                    <group>
-                        <group>
-                            <field name="description"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
-                        </group>
-                    </group>
                 </sheet>
             </form>
         </field>
     </record>
-    
+
+    <!-- search view -->
     <record id="estate_property_search_view" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Properties">
-                
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
-
+                <!-- filter -->
                 <filter name="filter_available_properties" string="Available Properties" 
                         domain="['|', ('state', '=', 'New'), ('state', '=', 'offer_received')]"/>
-
-    
-                        
+                <!-- groupby -->
                 <filter name="group_by_postcode" string="Group by Postcode" context="{'group_by': 'postcode'} " domain="[]"/>
             </search>
         </field>
     </record>
+<!-- Total Area -->
+    <!-- <record id="view_estate_property_form" model="ir.ui.view">
+    <field name="name">estate.property.form</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <field name="living_area"/>
+                    <field name="garden_area"/>
+                    <field name="total_area"/>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record> -->
     
     
 </odoo>
