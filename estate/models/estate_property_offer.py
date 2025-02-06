@@ -1,6 +1,6 @@
-from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 from odoo import api, models, fields
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -17,7 +17,11 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity')
     def _compute_deadline(self):
         for record in self:
-            record.date_deadline = record.create_date + relativedelta(days=record.validity)
+            if record.create_date:
+                record.date_deadline = record.create_date + relativedelta(days=record.validity)
+            else:
+                record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
+
 
     def _inverse_deadline(self):
         for record in self:
@@ -26,3 +30,27 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.validity = 7
     
+    # Action Button Methods
+    def action_set_offer_status_accepted(self):
+        for offer in self:
+            if offer.status == 'accepted' or offer.status == 'refused':
+                raise UserError("Property is already accepted or refused.")
+            else:
+                other_offers = self.env['estate.property.offer'].search([
+                    ('property_id', '=', offer.property_id.id),
+                    ('id', '!=', offer.id)  # Exclude the current offer
+                ])
+
+                other_offers.write({'status': 'refused'})
+
+                offer.property_id.selling_price = offer.price
+                offer.property_id.buyer = offer.partner_id
+
+                offer.status = 'accepted'
+
+    def action_set_offer_status_refused(self):
+        for record in self:
+            if record.status == 'accepted' or record.status == 'refused':
+                raise UserError("Property is already accepted or refused.")
+            else:
+                self.status = 'refused'

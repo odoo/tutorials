@@ -2,6 +2,7 @@ from ast import If
 from odoo import api, models, fields
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -45,7 +46,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
 
     salesman = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
-    buyer = fields.Many2one("res.users", string="Buyer", copy=False)
+    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
 
     # Many2many Field
     property_tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
@@ -78,3 +79,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    # Action Button Methods
+    def action_set_sold_status(self):
+        if self.state == 'cancelled':
+            raise UserError('A cancelled property cannot be sold.')
+        else:
+            self.state = 'sold'
+
+    def action_set_cancelled_status(self):
+        if self.state == 'sold':
+            raise UserError('A sold property cannot be cancelled.')
+        else:
+            self.state = 'cancelled'
+
