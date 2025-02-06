@@ -4,20 +4,73 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "These are Estate Module Properties"
 
-    name = fields.Char(string="Name", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
-    date_availability = fields.Date(string="Date Availability")
-    expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price")    
-    bedrooms = fields.Integer(string="Bedrooms")
-    living_area = fields.Integer(string="Living Area")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden Area")
+    name = fields.Char(
+        string="Name", 
+        required=True
+    )
+    description = fields.Text(
+        string="Description"
+    )
+    postcode = fields.Char(
+        string="Postcode"
+    )
+    date_availability = fields.Date(
+        string="Date Availability", 
+        default=lambda self: fields.Date.add(fields.Date.today(), months=3)
+    )
+    expected_price = fields.Float(
+        string="Expected Price", 
+        required=True
+    )
+    selling_price = fields.Float(
+        string="Selling Price"
+    )
+    bedrooms = fields.Integer(
+        string="Bedrooms", 
+        default=2
+    )
+    living_area = fields.Integer(
+        string="Living Area"
+    )
+    facades = fields.Integer(
+        string="Facades"
+    )
+    garage = fields.Boolean(
+        string="Garage"
+    )
+    garden = fields.Boolean(
+        string="Garden"
+    )
+    garden_area = fields.Integer(
+        string="Garden Area"
+    )
     garden_orientation = fields.Selection(
-        string="Garden Orientation", 
-        selection=[('n', 'North'), ('s', 'South'), ('e', 'East'), ('w', 'West'),
-            ('nw', 'North-West'), ('ne', 'North-East'), ('se', 'South-East'), ('sw', 'South-West')])
-    
+        selection=[
+            ('n', 'North'),
+            ('s', 'South'),
+            ('e', 'East'),
+            ('w', 'West'),
+            ('nw', 'North-West'),
+            ('ne', 'North-East'),
+            ('se', 'South-East'),
+            ('sw', 'South-West')
+        ]
+    )
+    state = fields.Selection(
+        string="Status", 
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
+        default='new',
+        copy=False, 
+        required=True
+    )
+
+    active = fields.Boolean(
+        string="Active", 
+        default=True
+    )
