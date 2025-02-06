@@ -1,5 +1,8 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import models, fields
 from datetime import datetime, timedelta
+
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
@@ -22,12 +25,23 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
-        [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
+        selection=[
+            ('north', 'North'), 
+            ('south', 'South'), 
+            ('east', 'East'), 
+            ('west', 'West')
+        ],
         string="Garden Orientation"
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        [('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection=[
+            ('new', 'New'),
+            ('offer received', 'Offer Received'),
+            ('offer accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
         string="State",
         required=True,
         copy=False,
