@@ -1,5 +1,4 @@
 <odoo>
-
     <!-- Action Definition -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
@@ -17,7 +16,10 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="bedrooms"/>
+                <field name="best_price"/>
+                <field name="state"/>
                 <field name="property_type_id"/>
+                <field name="property_tag_id" widget="many2many_tags"/>
             </list>
         </field>
     </record>
@@ -28,10 +30,17 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Details">
+                <header>
+                    <button name="action_set_sold" type="object" string="Sold"/>
+                    <button name="action_cancel_property" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="state"/>
                         <field name="property_type_id"/>
+                        <field name="property_tag_id" widget="many2many_tags"/>
+                        <field name="best_price"/>
                     </group>
                     <group>
                         <group>
@@ -56,9 +65,10 @@
                                 <field name="living_area"/>
                                 <field name="facades"/>
                                 <field name="garage" widget="boolean_toggle"/>
-                                <field name="garden" widget="boolean_toggle"/>
+                                <field name="garden" />
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
 
@@ -68,6 +78,10 @@
                                 <field name="salesperson_id"/>
                                 <field name="buyer_id"/>
                             </group>
+                        </page>
+                        <!-- Offer Page -->
+                        <page string="Offer Page">
+                            <field name="offer_ids"/> 
                         </page>
                     </notebook>
                 </sheet>
@@ -83,7 +97,9 @@
             <search>
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="state"/>
                 <field name="expected_price"/>
+                <field name="property_tag_id" widget="many2many_tags"/>
                 <filter name="available_garden" string="Property With Garden" 
                         domain="[('garden', '=', True)]"/>
                 <filter name="group_by_postcode" string="Group by Postcode" 
@@ -91,5 +107,4 @@
             </search>
         </field>
     </record>
-
 </odoo>

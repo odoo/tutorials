@@ -13,4 +13,5 @@
     
     <!-- Property Type Menu, linking it to the correct action -->
     <menuitem id="estate_property_type_menu" name="Property Type" action="estate_property_type_action" parent="estate_setting_menu"/>
+    <menuitem id="estate_property_tag_menu" name="Property Tag" parent="estate_setting_menu" action="estate_property_tag_action"/>
 </odoo>
