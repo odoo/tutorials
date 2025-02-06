@@ -1,12 +1,9 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- <data> -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
-
-
     </record>
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.view.tree</field>
@@ -22,17 +19,19 @@
                 <field name="selling_price" />
                 <field name="date_availability" />
                 <field name="tag_ids" widget="many2many_tags" />
-
             </list>
         </field>
     </record>
-
 
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
+                <header>
+                    <button name="action_set_sold" type="object" string="Sold" />
+                    <button name="action_set_cancel" type="object" string="Cancel" />
+                </header>
                 <sheet>
                     <group>
                         <h1>
@@ -54,7 +53,6 @@
                         </group>
                     </group>
 
-
                     <notebook>
                         <page string="Description">
                             <group>
@@ -66,12 +64,10 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
-                                
+
                                 <field name="active" />
                                 <field name="state" />
                                 <field name="total_price" />
-
-
                             </group>
                         </page>
                         <page name="Offer" string="Offers">
@@ -79,27 +75,24 @@
                                 <list>
                                     <field name="price" />
                                     <field name="partner_id" />
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
+                                    <button name="action_confirm" type="object" icon="fa-check"
+                                        title="confirm" />
+                                    <button name="action_cancel" type="object" icon="fa-times"
+                                        title="cancel" />
                                     <field name="status" />
-                                    <field name="validity"/>
-                                    <field name="date_deadline"/>
-
-                                    
-
                                 </list>
                             </field>
-                            
                         </page>
 
                         <page string="Other Info">
                             <group>
                                 <field name="salesperson_id" />
                                 <field name="buyer_id" />
-
-
                             </group>
                         </page>
 
-                       
                     </notebook>
                 </sheet>
             </form>
@@ -125,9 +118,4 @@
             </search>
         </field>
     </record>
-
-
-    <!-- </data> -->
-
-
 </odoo>

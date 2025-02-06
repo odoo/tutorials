@@ -1,4 +1,4 @@
-from odoo import fields, models,api
+from odoo import fields, models,api,exceptions
 from dateutil.relativedelta import relativedelta
 
 
@@ -54,7 +54,6 @@ class Property_Plan(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            # Use mapped() to get all offer prices and find the maximum
             record.best_price = max(record.offer_ids.mapped("price"),default=0)
     
     @api.onchange("garden")
@@ -64,4 +63,20 @@ class Property_Plan(models.Model):
             self.garden_orientation = 'north'  
         else:
             self.garden_area = 0
-            self.garden_orientation = None 
+            self.garden_orientation = None
+    
+    def action_set_cancel(self):
+        for record in self:
+            if(record.state == 'sold'):
+                raise exceptions.UserError("Sold properties can't be canceled")
+            else:
+                record.state= 'cancelled'
+        return True
+    
+    def action_set_sold(self):
+        for record in self:
+            if(record.state == 'cancelled'):
+                raise exceptions.UserError("Canceled properties can't be sold")
+            else:
+                record.state = 'sold'
+        return True
