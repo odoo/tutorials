@@ -5,5 +5,8 @@
     'author': 'Odoo - Rushil Patel',
     'description': 'Technical training chapter - 2',
     'license': 'LGPL-3',
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'application': True
 }
