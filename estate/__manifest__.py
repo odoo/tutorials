@@ -1,0 +1,19 @@
+{
+    'name': "Estate",
+    'version': "1.0",
+    'depends': ["base"],
+    'author': "Prathmesh Soni (pdso)",
+    'category': "Tutorials/Estate",
+    'summary': "A real estate app",
+    'description': "A real estate app developed by Prathmesh Soni (pdso).",
+    'data': [
+        "security/ir.model.access.csv",
+        "views/estate_property_views.xml",
+        "views/estate_menus.xml",
+    ],
+    'sequence': 1,
+    'application': True,
+    'auto_install': True,
+    'maintainer': "Prathmesh Soni (pdso)",
+    'license': "LGPL-3",
+}
