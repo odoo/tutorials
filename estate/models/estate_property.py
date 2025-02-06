@@ -1,22 +1,25 @@
 from odoo import fields, models
 from dateutil.relativedelta import relativedelta
 
+
 class estate_property(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-
-    name = fields.Char(required=True)
-    description = fields.Text()
-    postcode = fields.Char()
-    date_availability = fields.Date(default=fields.Datetime.today() + relativedelta(days=90))
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
+    name = fields.Char(string="Name", required=True)
+    description = fields.Text(string="Description")
+    postcode = fields.Integer(string="Postcode")
+    date_availability = fields.Date(
+        string="Availability Date",
+        default=lambda self:fields.Datetime.today() + relativedelta(days=90),
+    )
+    expected_price = fields.Float(string="Expected Price", required=True)
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    living_area = fields.Integer(string="Living Area (sqm)")
+    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
@@ -26,4 +29,14 @@ class estate_property(models.Model):
             ("west", "West"),
         ],
     )
-    active = fields.Boolean()
+    active = fields.Boolean(string="Active")
+    status = fields.Selection(
+        string="Status",
+        selection=[
+            ("new", "New"),
+            ("offer received", "Offer Received"),
+            ("offer accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled")
+        ],
+    )
