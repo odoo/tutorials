@@ -1,17 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Custom List View -->
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="name" width="20%"/>
+                <field name="postcode" width="10%"/>
+                <field name="bedrooms" width="10%"/>
+                <field name="living_area" width="15%"/>
+                <field name="expected_price" width="15%"/>
+                <field name="selling_price" width="15%"/>
+                <field name="date_availability" width="15%"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Custom Form View -->
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property">
+                <sheet>
+                    <group>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="description" string="Description">
+                            <group>
+                                <field name="description"
+                                    placeholder="When duplicated, status and date are not copied"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Custom Search View -->
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Tests">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer received'])]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">First action</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_estate_property_list"/>
     </record>
-
-    <!-- <menuitem id="estate_property_menu_action" action="estate_property_action" /> -->
-
-    <menuitem id="test_menu_root" name="Real Estate">
-        <menuitem id="test_first_level_menu" name="First Level">
-            <menuitem id="test_model_menu_action" action="estate_property_action" />
-        </menuitem>
-    </menuitem>
-
 </odoo>
