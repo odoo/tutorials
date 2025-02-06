@@ -1,0 +1,20 @@
+<odoo>
+    <record id="view_estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Property Offer">
+                <sheet>
+                    <group>
+                        <field name="price" />
+                        <field name="status" />
+                        <field name="partner_id" />
+                        <field name="property_id" />
+                        <field name="validate" />
+                        <field name="date_deadline" readonly="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
