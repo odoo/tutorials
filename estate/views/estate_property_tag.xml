@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Define the action for the Property Tags model -->
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+      <field name="name">Property Tags</field>      <!-- Name that will appear in the menu -->
+      <field name="res_model">estate.property.tag</field>      <!-- Model associated with the action -->
+      <field name="view_mode">list,form</field>      <!-- View modes: List and Form view -->
+      <field name="domain">[]</field>      <!-- Filter applied to the records in the action (empty means no filter) -->
+      <field name="context">{}</field>      <!-- Context for the action, empty for now -->
+    </record>
+
+    <!-- Define the form view for Property Tag -->
+    <record id="estate_property_tag_form_view" model="ir.ui.view">
+      <field name="name">estate.property.tag.form</field>      <!-- Name of the view -->
+      <field name="model">estate.property.tag</field>      <!-- Model associated with the view -->
+      <field name="arch" type="xml">
+        <form string="Property Tag Form">          <!-- Title of the form -->
+          <sheet>
+            <!-- Define the title section of the form -->
+            <div class="oe_title">
+              <label for="name"/>
+              <!-- Label for the name field -->
+              <h1 class="mb32 w-50">
+                <field name="name" class="mb16"/>
+                <!-- Input field for the tag's name -->
+              </h1>
+            </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+  </data>
+</odoo>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
+
+        <!-- Action for Properties List -->
         <record id="estate_property_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
@@ -8,48 +10,59 @@
             <field name="domain">[]</field>
             <field name="context">{}</field>
         </record>
+
+        <!-- List view for Estate Properties -->
         <record id="view_estate_property_list" model="ir.ui.view">
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <list>
+                    <!-- Columns to be displayed in the list view -->
                     <field name="name"/>
                     <field name="postcode"/>
                     <field name="bedrooms"/>
-                    <field name ="living_area"/>
+                    <field name="living_area"/>
                     <field name="expected_price"/>
                     <field name="selling_price" />
                     <field name="date_availability"/>
                 </list>
             </field>
         </record>
+
+        <!-- Form view for Estate Properties -->
         <record id="estate_property_form_view" model="ir.ui.view">
             <field name="name">estate.property.form</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form string="Property Form">
                     <sheet>
-                        <div class="oe_title">
-                            <div class="oe_edit_only">
-                                <label for="name"/>
-                            </div>
-                            <h1 class="mb32 w-50">
+                        <div class="oe_title mb-32">
+                            <label for="name"/>
+                            <h1 class="w-50">
                                 <field name="name" class="mb16"/>
                             </h1>
                         </div>
+
+                        <!-- Many2many Tags for Property -->
+                        <field name="tags_ids" widget="many2many_tags"/>
+
                         <group>
+                            <!-- First Group: Basic Information -->
                             <group class="mb32">
-                                <!-- <field name"partner_id" class="w-50" /> -->
+                                <field name="property_type" class="w-50" />
                                 <field name="postcode" class="w-50" />
                                 <field name="date_availability" class="w-50" />
                             </group>
                             <group>
                                 <field name="expected_price" class="w-50" />
+                                <field name="best_price" class="w-50" />
                                 <field name="selling_price" class="w-50" />
                             </group>
                         </group>
+
+                        <!-- Notebook with multiple pages -->
                         <notebook>
-                            <page string="More Info">
+                            <page string="Description">
                                 <group>
                                     <group>
                                         <field string="Description" name="description"/>
@@ -63,20 +76,44 @@
                                         <field string="Garden" name="garden"/>
                                         <field string="Garden Area (sqm)" name="garden_area"/>
                                         <field string="Garden Orientation" name="garden_orientation"/>
-                                        <field string="Visible" invisible="1" name="active"/>
+                                        <field string="Total Area" name="total_area"/>
                                     </group>
                                 </group>
+                            </page>
+
+                            <!-- More Info Page -->
+                            <page string="More Info">
+                                <group>
+                                    <field string="Buyer" name="buyer_id"/>
+                                    <field string="Salesperson" name="salesperson_id"/>
+                                </group>
+                            </page>
+
+                            <!-- Offers Page -->
+                            <page string="Offers">
+                                <field name="offer_ids" widget="one2many_list">
+                                    <list>
+                                        <!-- Display offer fields -->
+                                        <field name="price"></field>
+                                        <field name="partner_id"></field>
+                                        <field name="validity"></field>
+                                        <field name="date_deadline"></field>
+                                    </list>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>
                 </form>
             </field>
         </record>
+
+        <!-- Search view for Estate Properties -->
         <record id="estate_property_search" model="ir.ui.view">
             <field name="name">estate.property.search</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <search string="Property Search">
+                    <!-- Fields to search -->
                     <field string="Title" name="name"/>
                     <field string="Postcode" name="postcode"/>
                     <field string="Expected Price" name="expected_price"/>
@@ -84,7 +121,8 @@
                     <field string="Living Area (sqm)" name="living_area"/>
                     <field string="Facades" name="facades"/>
 
-                    <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
+                    <!-- Filters -->
+                    <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                     <separator/>
                     <filter string="Garden" name="garden" domain="[('garden', '=', 'True')]"/>
                     <separator/>
@@ -92,7 +130,7 @@
 
                     <filter string="State" name="state" context="{'group_by':'state'}" />
                     <separator/>
-                    <filter string="Garder Orientation" name="garden_orientation" context="{'group_by':'garden_orientation'}" />
+                    <filter string="Garden Orientation" name="garden_orientation" context="{'group_by':'garden_orientation'}" />
                     <separator/>
                     <filter string="Bedrooms" name="bedrooms" context="{'group_by':'bedrooms'}" />
                 </search>

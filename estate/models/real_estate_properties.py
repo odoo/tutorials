@@ -1,39 +1,132 @@
-from odoo import fields, models
-from datetime import timedelta
-from datetime import datetime
+from odoo import fields, models, api
+from datetime import timedelta, datetime
 
-class realEstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "Real Estate property table :)"
+class RealEstateProperty(models.Model):
+    _name = 'estate.property'
+    _description = 'Real Estate Property Table'
 
-    id = fields.Integer()
-    create_uid = fields.Integer()
-    create_date = fields.Datetime('Create Date', readonly=True, default=fields.Datetime.now)
-    write_uid = fields.Integer()
-    write_date = fields.Datetime('Write Date', readonly=True, default=fields.Datetime.now)
-    name = fields.Char(required=True)
-    description = fields.Text()
-    postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Date availability',default = datetime.now() + timedelta(days=90), readonly=True, copy=False)
-    expected_price = fields.Float('Expected price', required=True)
-    selling_price = fields.Float('Selling price', readonly=True, copy=False)
-    bedrooms = fields.Integer('Bedrooms', default=2)
-    living_area = fields.Integer('Living area')
-    facades = fields.Integer('Facades')
-    garage = fields.Boolean('Garage')
-    garden = fields.Boolean('Garden')
-    garden_area = fields.Integer('Garden Area')
-    garden_orientation = fields.Selection([
-        ('north', 'North'),
-        ('south', 'South'),
-        ('east', 'East'),
-        ('west', 'West')
-    ], string='Garden Orientation')
-    active = fields.Boolean('Active', default=True)
-    state = fields.Selection([
+    # Basic property fields
+    id = fields.Integer()  # Internal ID field (not needed explicitly as Odoo manages it)
+    create_uid = fields.Integer()  # ID of the user who created the record
+    create_date = fields.Datetime(
+        'Create Date', readonly=True, default=fields.Datetime.now
+    )  # Auto-filled creation timestamp
+    write_uid = fields.Integer()  # ID of the last user who modified the record
+    write_date = fields.Datetime(
+        'Write Date', readonly=True, default=fields.Datetime.now
+    )  # Auto-filled last modification timestamp
+
+    name = fields.Char(required=True)  # Property name
+    description = fields.Text()  # Property description
+    postcode = fields.Char('Postcode')  # Postal code of the property
+
+    # Availability date: default is 90 days from creation
+    date_availability = fields.Date(
+        'Date Availability',
+        default=lambda self: datetime.now().date() + timedelta(days=90),
+        readonly=True, copy=False
+    )
+
+    # Price-related fields
+    expected_price = fields.Float('Expected Price', required=True)  # The price the seller expects
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False)  # Final sold price (if sold)
+
+    # Property characteristics
+    bedrooms = fields.Integer('Bedrooms', default=2)  # Default: 2 bedrooms
+    living_area = fields.Integer('Living Area')  # Main living area in square meters
+    facades = fields.Integer('Facades')  # Number of facades (external walls)
+    garage = fields.Boolean('Garage')  # Does the property have a garage?
+    garden = fields.Boolean('Garden')  # Does the property have a garden?
+    garden_area = fields.Integer('Garden Area')  # Garden size in square meters
+
+    # Garden orientation selection
+    garden_orientation = fields.Selection(
+        [
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ],
+        string='Garden Orientation'
+    )
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            # Set default values when garden is set to True
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    active = fields.Boolean('Active', default=True)  # Active status of the property
+
+    # Property state
+    state = fields.Selection(
+        [
             ('new', 'New'),
             ('offer_received', 'Offer Received'),
-            ('offer_accepted','Offer Accepted'),
-            ('sold','Sold'),
-            ('cancelled','Cancelled')
-    ], default='new', required=True)
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
+        default='new',
+        required=True
+    )
+
+    # Computed field: Total area (Living Area + Garden Area)
+    total_area = fields.Float(
+        string='Total Area',
+        compute='_compute_total_area',
+        store=True  # Store the computed value in the database
+    )
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        """ Computes the total area of the property as the sum of living area and garden area. """
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    # Computed field: Best offer price
+    best_price = fields.Float(
+        compute="_compute_best_price",
+        string="Best Offer"
+    )
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        """ Computes the best (highest) price from all offers on the property. """
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+
+    # Relationship with Property Type model
+    property_type = fields.Many2one(
+        'estate.property.type',
+        string='Property Type',
+        required=True
+    )
+
+    # Relationship with Buyer (Partner model)
+    buyer_id = fields.Many2one(
+        'res.partner',
+        string='Buyer',
+        copy=False  # Buyer field should not be duplicated if the property is copied
+    )
+
+    # Salesperson: Defaults to the currently logged-in user
+    salesperson_id = fields.Many2one(
+        'res.users',
+        string='Salesperson',
+        default=lambda self: self.env.user
+    )
+
+    # Many-to-Many relationship with property tags
+    tags_ids = fields.Many2many('estate.property.tag', string="Property Tags")
+
+    # One-to-Many relationship with offers
+    offer_ids = fields.One2many(
+        'estate.property.offer',
+        'property_id',
+        string='Offers'
+    )
