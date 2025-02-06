@@ -1,0 +1,23 @@
+<odoo>
+    <record id="action_estate_property_type" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Define the Search View for Property Type -->
+    <record id="estate_property_type_view_search" model="ir.ui.view">
+     <field name="name">estate.property.type.search</field>
+     <field name="model">estate.property.type</field>
+     <field name="arch" type="xml">
+        <search string="Search Estate Property Types">
+            <!-- Filter for Active Property Types -->
+        
+            <!-- Group By Property Type Name -->
+            <group expand="0" string="Group By">
+                <filter name="group_by_name" string="Name" context="{'group_by': 'name'}"/>
+            </group>
+        </search>
+     </field>
+    </record>
+</odoo>

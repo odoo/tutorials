@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import fields, models
+from odoo import fields, models,api
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -42,3 +42,53 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",  # Default state is 'New'
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type", 
+        string="Property Type"
+    )
+    tag_ids = fields.Many2many(
+        "estate.property.tag",
+        string="Property Tag"
+    )
+    salesperson_id = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user
+    )
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+
+    # Add the One2many field to store the related offers
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+
+    # Computed field for total_area
+    total_area = fields.Float(string='Total Area', compute='_compute_total_area', store=True)
+
+    # Computed field for find a best offer price 
+    best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store=True)
+
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = (record.living_area or 0) + (record.garden_area or 0)
+
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for property in self:
+            if property.offer_ids:
+                property.best_price = max(property.offer_ids.mapped('price'))
+            else:
+                property.best_price = 0.0
+
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10  # Default value for garden area
+            self.garden_orientation = 'north'  # Default value for garden orientation
+        else:
+            self.garden_area = 0  # Clear the garden area
+            self.garden_orientation = False  # Clear the garden orientation
+
+
+
+    

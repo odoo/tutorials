@@ -6,18 +6,18 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Estate Properties">
-                <field name="name" string="Property Name"/>
-                <field name="postcode" string="Postcode"/>
-                <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="selling_price" string="Selling Price"/>
-                <field name="date_availability" string="Available From"/>
+                <field name="name" string="Property Name" />
+                <field name="postcode" string="Postcode" />
+                <field name="bedrooms" string="Bedrooms" />
+                <field name="living_area" string="Living Area" />
+                <field name="expected_price" string="Expected Price" />
+                <field name="selling_price" string="Selling Price" />
+                <field name="date_availability" string="Available From" />
             </list>
         </field>
     </record>
 
-    
+
     <!-- Define the Form View -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
@@ -25,40 +25,100 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <sheet>
-                    <group>
+                    <!-- Header Section -->
                     <h1>
-                        <field name="name" string="Title" required="1"/>
+                        <field name="name" string="Property Name" required="1" />
                     </h1>
-                    <group>
-                        <field name="postcode" string="Postcode"/>
-                        <field name="date_availability" string="Available From"/>
+                    <groupt>
+                        <field name="tag_ids" widget="many2many_tags" />
+                    </groupt>
+                    <!-- Basic Information in Flex Layout -->
+                    <group class="mb32">
+                        <!-- First Row -->
+                        <group>
+                            <field name="property_type_id" string="Property Type" />
+                            <field name="postcode" string="Postcode" />
+                            <field name="date_availability" string="Available From" />
+                        </group>
+                        <!-- Second Row -->
+                        <group>
+                            <field name="expected_price" string="Expected Price" required="1" />
+                            <field name="best_price" string="Best Offer" readonly="1" />
+                            <field name="selling_price" string="Selling Price" readonly="1" />
+                        </group>
                     </group>
-                    <group>
-                        <field name="expected_price" string="Expected Price" required="1"/>
-                        <field name="selling_price" string="Selling Price" readonly="1"/>
-                    </group>
-                    </group>
+
+                    <!-- Tabs Section -->
+                    <notebook>
+                        <!-- Description Tab -->
+                        <page string="Description">
+                            <group>
+                                <field name="description" string="Description" />
+                            </group>
+                            <group>
+                                <field name="bedrooms" string="Bedrooms" />
+                                <field name="living_area" string="Living Area" />
+                                <field name="facades" string="Facades" />
+                            </group>
+                            <group>
+                                <field name="garage" string="Garage" widget="checkbox" />
+                            </group>
+                            <group>
+                                <field name="garden" string="Garden" widget="checkbox" />
+                                <field name="garden_area" string="Garden Area" />
+                                <field name="garden_orientation" string="Garden Orientation" />
+                            </group>
+                            <group>
+                                <!-- Add Total Area Field -->
+                                <field name="total_area" string="Total Area" readonly="1" />
+                            </group>
+                        </page>
+
+                        <!-- Offers Tab-->
+                        <page string="Offers">
+                            <field name="offer_ids" widget="one2many_list"
+                                options="{'no_create': True}">
+                                <list>
+                                    <field name="price" string="Price" />
+                                    <field name="partner_id" string="Partner" />
+                                    <field name="status" string="Status" />
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
+                                </list>
+                            </field>
+                        </page>
+
+
+                        <!-- Other info Tab-->
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id" string="Salesperson" />
+                                <field name="buyer_id" string="Buyer" />
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
-        <!-- Define the Search View -->
+    <!-- Define the Search View -->
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-              <search string="Search Estate Properties">
+            <search string="Search Estate Properties">
                 <!-- Filter for Available Properties -->
-                <filter 
-                    name="filter_available" 
-                    string="Available Properties" 
+                <filter
+                    name="filter_available"
+                    string="Available Properties"
                     domain="[('state', 'in', ['new', 'offer_received'])]"
                 />
 
                 <!-- Group By Postcode -->
                 <group expand="0" string="Group By">
-                    <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                    <filter name="group_by_postcode" string="Postcode"
+                        context="{'group_by': 'postcode'}" />
                 </group>
             </search>
         </field>
@@ -68,6 +128,6 @@
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
     </record>
 </odoo>
