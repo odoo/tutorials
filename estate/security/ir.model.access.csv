@@ -1,3 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_estate_property_user,access.estate_property.user,model_estate_property,base.group_user,1,0,0,0
-access_estate_property_manager,access.estate_property.manager,model_estate_property,base.group_erp_manager,1,1,1,1
+access_estate_property_user,access.estate_property.user,model_estate_property,base.group_user,1,1,1,1
+access_estate_customer_user,access.estate.customer.user,model_estate_customer,base.group_user,1,1,1,1
+access_estate_salesperson_user,access.estate.salesperson.user,model_estate_salesperson,base.group_user,1,1,1,1
+access_estate_property_type_user,access.estate.property.type.user,model_estate_property_type,base.group_user,1,1,1,1
+access_estate_property_offers_user,access.estate.property.offers.user,model_estate_property_offers,base.group_user,1,1,1,1

@@ -1,0 +1,33 @@
+<!-- Estate Customer Views -->
+<odoo>
+    <record id="view_estate_customer_form" model="ir.ui.view">
+        <field name="name">estate_customer_form_view</field>
+        <field name="model">estate.customer</field>
+        <field name="arch" type="xml">
+            <form string="Estate Customer">
+                <sheet>
+                    <group>
+                        <field name="customer_name"/>
+                        <field name="customer_phone"/>
+                        <field name="customer_email"/>
+                    </group>
+                    <group>
+                        <field name="properties"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_estate_customer_list" model="ir.ui.view">
+        <field name="name">estate_customer_list_view</field>
+        <field name="model">estate.customer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="customer_name"/>
+                <field name="customer_phone"/>
+                <field name="customer_email"/>
+            </list>
+        </field>
+    </record>
+</odoo>

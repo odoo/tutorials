@@ -1,0 +1,33 @@
+<!-- Estate Salesperson Views -->
+<odoo>
+    <record id="view_estate_salesperson_form" model="ir.ui.view">
+        <field name="name">estate_salesperson_form_view</field>
+        <field name="model">estate.salesperson</field>
+        <field name="arch" type="xml">
+            <form string="Estate Salesperson">
+                <sheet>
+                    <group>
+                        <field name="salesperson_name"/>
+                        <field name="salesperson_phone"/>
+                        <field name="salesperson_email"/>
+                    </group>
+                    <group>
+                        <field name="sold_properties"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_estate_salesperson_list" model="ir.ui.view">
+        <field name="name">estate_salesperson_list_view</field>
+        <field name="model">estate.salesperson</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="salesperson_name"/>
+                <field name="salesperson_phone"/>
+                <field name="salesperson_email"/>
+            </list>
+        </field>
+    </record>
+</odoo>
