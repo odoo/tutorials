@@ -8,18 +8,13 @@
         <field name="view_mode">list,kanban,form</field>
     </record>
 
-    <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Properties Type</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,kanban,form</field>
-    </record>
-
     <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Property List">
                 <field name="name" string="Title"/>
+                <field name="tag_ids" widget="many2many_tags" string="Tags"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area"/>
@@ -35,24 +30,31 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
+                <header>
+                    <button name="action_set_sold" type="object" string="Sold"/>
+                    <button name="action_set_cancelled" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <div class="oe_edit_only">
                             <label for="name"/>
                         </div>
-                        <h1 class="mb32 w-50">
+                        <h1>
                             <field name="name" class="mb16"/>
                         </h1>
+                        <field class="mb32" name="tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group class="mb32">
-                            <field name="property_type_id" class="w-50" />
-                            <field name="postcode" class="w-50" />
-                            <field name="date_availability" class="w-50" />
+                            <field string="State" name="state"/>
+                            <field name="property_type_id"/>
+                            <field name="postcode" />
+                            <field name="date_availability" string="Available From"/>
                         </group>
                         <group>
-                            <field name="expected_price" class="w-50" />
-                            <field name="selling_price" class="w-50" />
+                            <field name="expected_price"/>
+                            <field name="best_price" string="Best Offer"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -62,16 +64,27 @@
                                     <field string="Description" name="description"/>
                                     <field string="Bedrooms" name="bedrooms"/>
                                     <field string="Living Area (sqm)" name="living_area"/>
-                                    <field name="facades"/>
-                                    <field string="State" name="state"/>
+                                    <field string="Garden Area (sqm)" name="garden_area"/>
+                                    <field string="Total Area (sqm)" name="total_area" />
                                 </group>
                                 <group>
+                                    <field name="facades"/>
                                     <field string="Garage" name="garage"/>
                                     <field string="Garden" name="garden"/>
-                                    <field string="Garden Area (sqm)" name="garden_area"/>
                                     <field string="Garden Orientation" name="garden_orientation"/>
                                     <field string="Visible" invisible="1" name="active"/>
                                </group>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" widget="one2many_list"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                               <group>
+                                    <field string="Salesman" name="salesperson"/>
+                                    <field string="Buyer" name="buyer"/>
+                                </group>
                             </group>
                         </page>
                     </notebook>
@@ -106,37 +119,5 @@
             </search>
         </field>
     </record>
-
-    <record id="estate_property_type_list_view" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <list string="Property Type List">
-                <field name="name" string="Title"/>
-            </list>
-        </field>
-    </record>
-
-
-    <record id="estate_property_type_form_view" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <form string="Property Type Form">
-                <sheet>
-                    <div class="oe_title">
-                        <div class="oe_edit_only">
-                            <label for="name"/>
-                        </div>
-                        <h1 class="mb32 w-50">
-                            <field name="name" class="mb16"/>
-                        </h1>
-                    </div>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-
     
 </odoo>
