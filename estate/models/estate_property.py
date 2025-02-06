@@ -12,9 +12,6 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text("Description")
     postcode = fields.Text(string="Postcode")
-    date_availability = fields.Date(
-        string="Date Availability", default=datetime.today() + relativedelta(months=3)
-    )
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price")
     bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
@@ -23,6 +20,9 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Has Garage")
     garden = fields.Boolean(string="Has Garden")
     garden_area = fields.Integer(string="Garden Area (m²)")
+    date_availability = fields.Date(
+        string="Date Availability", default=datetime.today() + relativedelta(months=3)
+    )
     status = fields.Selection(
         [
             ("new", "New"),
