@@ -5,18 +5,24 @@
     <record id="view_property_list" model="ir.ui.view">
         <field name="name">estate_property.list</field>
         <field name="model">estate_property</field>
-        <field name = "arch" type = 'xml'>
-            <list string= "Properties">
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
+        <field name="arch" type='xml'>
+            <list string="Properties">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
                 <field name="living_area" />
-                <field name= "expected_price" />
+                <field name="expected_price" />
                 <field name="active" />
-                <field name="selling_price"/>
-                <field name="date_availability"/>
-                <field name="state"/>
-
+                <field name="selling_price" />
+                <field name="date_availability" />
+                <field name="state" />
+                <field name="offer_ids">
+                    <list>
+                        <field name="price" />
+                        <field name="partner_id" />
+                        <field name="status" />
+                    </list>
+                </field>
 
             </list>
         </field>
@@ -29,60 +35,73 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
+                <header>
+                    <button string="Sold" name="action_set_sold" type="object" class="" />
+                    <button string="Cancelled" name="action_set_cancelled" type="object" class="" />
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
+                </header>
                 <sheet>
                     <group>
-                            <h1 class= "h1">
-                                <field name="name"/>
+                        <div>
+                            <h1 class="h1">
+                                <field name="name" />
                             </h1>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" />
+                        </div>
                     </group>
                     <group>
                         <group>
                             <field name="property_type_id" />
-                            <field name="postcode"/>
-                            <field name="date_availability"/>
+                            <field name="postcode" />
+                            <field name="date_availability" />
                         </group>
                         <group>
-                            <field name= "expected_price" />
-                            <field name="selling_price"/>
-                       </group>
+                            <field name="expected_price" />
+                            <field name="best_offer" />
+                            <field name="selling_price" />
+                        </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
+                                <field name="description" />
+                                <field name="bedrooms" />
                                 <field name="living_area" />
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
                                 <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="garden_orientation" string="garden Orientation" />
                                 <field name="active" />
+                                <field name="total_area" string="Total area(sqm)" />
                             </group>
 
                         </page>
                         <page string="Offers">
-                            <group string="Offer">
-                                <field name="offer_ids">
-                                    <list>
-                                        <field name="price"/>
-                                        <field name="status"/>
-                                        <field name="partner_id"/>
-                                    </list>
-                                </field>
+                            <group>
+                                <div>
+                                    <field name="offer_ids">
+                                        <list>
+                                            <field name="price" />
+                                            <field name="partner_id" />
+                                            <field name="validity" string="Validity (days)" />
+                                            <field name="date_deadline" string="Deadline" />
+                                            <button name="action_accept_offer" type="object" icon="fa-check" title='accepted' />
+                                            <button name="action_refuse_offer" type="object" icon="fa-times" title='refused' />
+                                            <field name="status" />
+                                        </list>
+                                    </field>
+
+                                </div>
                             </group>
                         </page>
 
                         <page string="Other Details">
-                            <group string="Other">
-                                <field name="buyer_id"  />
-                                <field name="seller_id"/>
+                            <group >
+                                <field name="buyer_id" />
+                                <field name="seller_id" />
                             </group>
-                            <group name="name" string="Address">
-                                <field name="state"/>
-                                <field name="postcode"/>
-                            </group>
+                            
                         </page>
                     </notebook>
                 </sheet>
@@ -99,10 +118,13 @@
                 <field name="name" />
                 <field name="bedrooms" />
                 <field name="last_seen" />
-                <!-- <filter name="archived" string="ARchived" domain="[('active', '=', 'False')]"  /> -->
-                <field name="date_availability"/>
-                <filter name="available_properties" string="Available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
-                <filter name="group_by_postcode" string="Group by Postcode" context="{'group_by':'postcode'}"/>
+                <!-- <filter name="archived" string="ARchived" domain="[('active', '=', 'False')]"
+                /> -->
+                <field name="date_availability" />
+                <filter name="available_properties" string="Available"
+                    domain="[('state', 'in', ['new', 'offer_received'])]" />
+                <filter name="group_by_postcode" string="Group by Postcode"
+                    context="{'group_by':'postcode'}" />
             </search>
         </field>
     </record>

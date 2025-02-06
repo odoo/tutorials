@@ -11,6 +11,19 @@
                             <field name="name" />
                         </h1>
                 </group>
+                <group>
+                    <notebook>
+                        <page name="properties" string="properties">        
+                            <field name="property_ids" >
+                                <list>
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </group>
             </form>
         </field>
     </record>
