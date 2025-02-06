@@ -1,4 +1,4 @@
-from dateutil.relativedelta import relativedelta
+from odoo.tools import float_compare, float_is_zero
 from odoo import api,fields, models, exceptions
 
 #Class of EstateProperty to define fields of database table
@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string='Name',required=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
-    date_availability = fields.Date(string='Available From', copy=False, default=fields.Date.add(fields.Date.today()+ relativedelta(months=3)))
+    date_availability = fields.Date(string='Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price ', readonly=True, copy=False)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
@@ -43,6 +43,11 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer','property_id',string='Offers') #One2Many field
     best_prices = fields.Float(string='Best Offer',compute='_compute_best_offer')
 
+    _sql_constraints = [
+        ('check_expected_price','CHECK(expected_price > 0)','Expected Price must be positive'),
+        ('check_selling_price','CHECK(selling_price > 0)','Selling Price must be positive'),
+    ] 
+    
     #Function of computing total area
     @api.depends('living_area','garden_area')
     def _compute_total_area(self):
@@ -82,4 +87,14 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError('A sold property can not be cancelled')
             record.state = 'cancelled'
         return True
+
+    #constrain of selling price not fall more lower than 90% expected price
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price,2) != 1:
+                threshold = record.expected_price * 0.90
+                if float_compare(threshold,record.selling_price,2) == 1:
+                    raise exceptions.ValidationError("The selling price must be at least 90% of the expected price!You must reduce the expected price if you want to accept this offer.")
+            
 

@@ -11,11 +11,19 @@ class EstatePropertyOffer(models.Model):
         ('accepted','Accepted'),
         ('refused','Refused')],
         string="Status",
-        copy=False)
+        copy=False,
+        readonly=True)
     partner_id = fields.Many2one("res.partner",string="Partner")
     property_id = fields.Many2one("estate.property",string="Property")
     validate = fields.Integer(string="Validity(days)",default=7)
-    date_deadline = fields.Date(string="Deadline",default=fields.Date.today(),compute="_compute_deadline",inverse="_update_validity")
+    date_deadline = fields.Date(string="Deadline",
+                default=fields.Date.today(),
+                compute="_compute_deadline",
+                inverse="_update_validity")
+    
+    _sql_constraints = [
+        ('check_price','CHECK(price > 0)','Offer Price must be positive'),
+    ] 
 
     #Function of implementing comptue field and inverse function on validity days and date dadeline
     @api.depends("validate","create_date")
@@ -36,7 +44,7 @@ class EstatePropertyOffer(models.Model):
     #Function to perform action when offer accpeted
     def action_accept(self):
         for record in self:
-            if record.property_id.selling_price and (record.status == 'accepted' or record.status == 'refused'):
+            if record.status == 'accepted':
                 raise exceptions.UserError("This property has already accepted offer!")
 
             record.property_id.selling_price = record.price

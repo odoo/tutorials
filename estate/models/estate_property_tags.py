@@ -5,4 +5,7 @@ class EstatePropertyTyags(models.Model):
     _description = "Property Tags"
 
     name = fields.Char(string="Name", required=True)
-    
+
+    _sql_constraints = [
+        ('name_uniq', 'unique (name)', "Tag name already exists!"),
+    ]
