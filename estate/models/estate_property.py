@@ -1,19 +1,20 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
-import odoo.tools.float_utils
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id"
 
     name = fields.Char(required=True)
     tag_ids = fields.Many2many("estate.property.tag", string="tags")
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=fields.Datetime.today() + relativedelta(days=90)
+        copy=False,
+        default=lambda self: fields.Datetime.today() + relativedelta(days=90),
     )
     salesperson_id = fields.Many2one(
         "res.partner",
@@ -67,7 +68,7 @@ class EstateProperty(models.Model):
         ),
         (
             "positive_selling_price",
-            "CHECK(selling_price>0)",
+            "CHECK(selling_price > 0)",
             "Selling_price cannot be negative.",
         ),
         ("unique_property_name", "UNIQUE(name)", "Property name should be unique"),
@@ -91,7 +92,7 @@ class EstateProperty(models.Model):
                 self.garden_area = 10
                 self.garden_orientation = "north"
             else:
-                self.garden_orientation = False
+                self.garden_orientation = ""
                 self.garden_area = 0
 
     def sold(self):
@@ -115,4 +116,3 @@ class EstateProperty(models.Model):
                 )
             else:
                 self.state = "sold"
-                
