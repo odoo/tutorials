@@ -6,6 +6,7 @@ from datetime import timedelta
 class EstatePropertyOfferModel(models.Model):
     _name = "estate.property.offer"
     _description = "The estate property offers model"
+    _order = "price desc"
 
     price = fields.Float(string="Offer Price", required=True)
     status = fields.Selection(
@@ -46,6 +47,7 @@ class EstatePropertyOfferModel(models.Model):
             if record.property_id.selling_price:
                 raise UserError("Offer already accepted")
             record.status = "accepted"
+            record.property_id.state = "offer_accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
 

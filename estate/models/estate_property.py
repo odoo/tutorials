@@ -1,10 +1,12 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyModel(models.Model):
     _name = "estate.property"
     _description = "The estate property model"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -54,7 +56,7 @@ class EstatePropertyModel(models.Model):
     tag_ids = fields.Many2many("estate.property.tags", "partner_id", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer("Total Area", compute="_compute_total_area")
-    best_offer = fields.Float("Best Price", compute="_compute_best_price")
+    best_offer = fields.Float("Best Price", compute="_compute_best_offer")
 
     _sql_constraints = [
         (
@@ -72,7 +74,14 @@ class EstatePropertyModel(models.Model):
     @api.constrains("selling_price")
     def check_selling_price(self):
         for record in self:
-            if record.selling_price < record.expected_price * 0.9:
+            if (
+                float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9,
+                    precision_rounding=2,
+                )
+                < 0
+            ):
                 raise ValidationError(
                     "the selling price cannot be lower than 90% of the expected price"
                 )
@@ -83,12 +92,7 @@ class EstatePropertyModel(models.Model):
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
-    def _compute_best_price(self):
-        # for best in self:
-        #     max_price=0
-        #     for offer in best.offer_ids:
-        #         max_price= max(max_price, offer.price)
-        #     best.best_offer= max_price
+    def _compute_best_offer(self):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
 

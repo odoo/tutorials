@@ -1,0 +1,16 @@
+<odoo>
+    <record id="estate_property_tags_view_list" model="ir.ui.view">
+        <field name="name"> Estate property tags list view</field>
+        <field name="model">estate.property.tags</field>
+        <field name="arch" type="xml">
+            <list string="estate property tags list" editable="bottom">
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+    <record id="property_tags_menu_actions" model="ir.actions.act_window">
+        <field name="name">Property tags</field>
+        <field name="res_model">estate.property.tags</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
