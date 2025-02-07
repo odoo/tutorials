@@ -22,7 +22,7 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form name="Form Channel">
+            <form string="Form Channel">
                 <sheet>
                     <h1>
                         <field name="name" />

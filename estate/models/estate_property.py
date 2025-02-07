@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class EstateProperty(models.Model):
 
     # ..................private attribute..................
@@ -49,12 +50,9 @@ class EstateProperty(models.Model):
             ('n', 'North'),
             ('s', 'South'),
             ('e', 'East'),
-            ('w', 'West'),
-            ('nw', 'North-West'),
-            ('ne', 'North-East'),
-            ('se', 'South-East'),
-            ('sw', 'South-West')
-        ]
+            ('w', 'West')
+        ],
+        string="Garden Orientation"
     )
     state = fields.Selection(
         string="Status", 
@@ -78,11 +76,3 @@ class EstateProperty(models.Model):
     #     comodel_name="estate.property.type", 
     #     string="Property Type"
     # )
-
-    # estate_property_tag_id = fields.Many2many(
-    #     comodel_name="estate.property.tag",
-    #     string="Property Tag"
-    # )
-
-
-

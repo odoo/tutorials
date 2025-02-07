@@ -29,7 +29,7 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form name="Form Channel">
+            <form string="Form Channel">
                 <sheet>
                     <div>
                         <h1><field name="name"/></h1>
@@ -79,7 +79,7 @@
                 <field name="facades"/>
                 <!-- <field name="estate_property_type_id"/> -->
 
-                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'),('state', '=', 'offer_received')]"/>         
+                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>         
                 <filter string="New State" name="new_state" domain="[('state', '=', 'new')]"/>
                 <filter string="Offer Recieved" name="offer_recieved" domain="[('state', '=', 'offer_received')]"/>
 
