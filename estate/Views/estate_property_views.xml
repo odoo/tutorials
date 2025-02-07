@@ -14,7 +14,7 @@
                 <field name="expected_price" />
                 <field name="active" />
                 <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="date_availability" optional="hide" />
                 <field name="state" />
                 <field name="offer_ids">
                     <list>
@@ -36,22 +36,22 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button string="Sold" name="action_set_sold" type="object" class="" />
-                    <button string="Cancelled" name="action_set_cancelled" type="object" class="" />
+                    <button string="Sold" name="action_set_sold" type="object" class="" invisible = "state in ['sold', 'cancelled'] "  />
+                    <button string="Cancelled" name="action_set_cancelled" type="object" class=""  invisible = "state in ['sold', 'cancelled'] "/>
                     <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <sheet>
                     <group>
                         <div>
-                            <h1 class="h1">
+                            <h1>
                                 <field name="name" />
                             </h1>
-                            <field name="tag_ids" widget="many2many_tags" />
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create': True, 'no_open': True}"/>
                         </div>
                     </group>
                     <group>
                         <group>
-                            <field name="property_type_id" />
+                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -70,8 +70,8 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" string="garden Orientation" />
+                                <field name="garden_area" invisible = "garden == False"/>
+                                <field name="garden_orientation" string="garden Orientation" invisible="garden == False" />
                                 <field name="active" />
                                 <field name="total_area" string="Total area(sqm)" />
                             </group>
@@ -80,14 +80,14 @@
                         <page string="Offers">
                             <group>
                                 <div>
-                                    <field name="offer_ids">
-                                        <list>
+                                    <field name="offer_ids" readonly="state in ['sold','offer_accepted','cancelled']">
+                                        <list editable="bottom"  decoration-success="status =='accepted'" decoration-danger="status == 'refused'" decoration-bf = "status=='accepted' ">
                                             <field name="price" />
                                             <field name="partner_id" />
                                             <field name="validity" string="Validity (days)" />
                                             <field name="date_deadline" string="Deadline" />
-                                            <button name="action_accept_offer" type="object" icon="fa-check" title='accepted' />
-                                            <button name="action_refuse_offer" type="object" icon="fa-times" title='refused' />
+                                            <button name="action_accept_offer" type="object" icon="fa-check" title='accepted' invisible="status in ['accepted','refused']" />
+                                            <button name="action_refuse_offer" type="object" icon="fa-times" title='refused' invisible="status in ['accepted','refused']" />
                                             <field name="status" />
                                         </list>
                                     </field>

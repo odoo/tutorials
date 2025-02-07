@@ -3,7 +3,7 @@
         <field name="name">estate_property.offer.list</field>
         <field name="model">estate_property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offers">
+            <list string="Property Offers" editable="bottom">
                 <field name="price" />
                 <field name="status" />
                 <field name="partner_id" />

@@ -8,6 +8,7 @@ from datetime import timedelta
 class estate_property(models.Model):
     _name = "estate_property"
     _description = "Estate Property models"
+    _order = "id desc"
 
     name = fields.Char("Title", default="Unknown", required=True)
     description = fields.Text("Description")
@@ -118,93 +119,11 @@ class estate_property(models.Model):
     #  Methods
 
     def action_set_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("A cancelled property cannot be sold.")
-            record.state = "sold"
+        if self.state == "cancelled":
+            raise UserError("A cancelled property cannot be sold.")
+        self.state = "sold"
 
     def action_set_cancelled(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("A Sold property cannot to be cancelled.")
-            record.state = "cancelled"
-
-
-class estate_property_type(models.Model):
-    _name = "estate_property.type"
-    _description = "estate property type"
-
-    name = fields.Char("name", required=True)
-    property_ids = fields.One2many('estate_property','property_type_id')
-
-
-    _sql_constraints = [
-        ("name_unique", "UNIQUE(name)", "The property type name must be unique!")
-    ]
-
-
-class estate_property_tag(models.Model):
-    _name = "estate_property.tag"
-    _description = "estate property tag"
-
-    name = fields.Char("Tag name", required=True)
-
-
-class estate_property_offer(models.Model):
-    _name = "estate_property.offer"
-    _description = "Estate Property offers"
-
-    price = fields.Float()
-    status = fields.Selection(
-        [("accepted", "Accepted"), ("refused", "Refused")], copy=False
-    )
-    partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate_property", required=True)
-    create_date = fields.Date()
-
-    validity = fields.Integer("Validity (Days)", default=7)
-
-    date_deadline = fields.Date(
-        "Deadline Date",
-        compute="_compute_date_deadline",
-        inverse="_inverse_date_deadline",
-        store=True,
-    )
-
-    _sql_constraints = [
-        ("offer_price_positive", "CHECK(price > 0)", "Offer price must be positive!")
-    ]
-
-    @api.depends("create_date", "validity")
-    def _compute_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                record.date_deadline = fields.Date.to_string(
-                    fields.Date.from_string(record.create_date)
-                    + timedelta(days=record.validity)
-                )
-
-    def _inverse_date_deadline(self):
-        for record in self:
-            if record.date_deadline:
-                if record.create_date:
-                    create_date = fields.Date.from_string(record.create_date)
-                    deadline_date = fields.Date.from_string(record.date_deadline)
-                    record.validity = (deadline_date - create_date).days
-            else:
-                record.validity = 7
-
-    # Methods
-    def action_accept_offer(self):
-        for record in self:
-            if record.status == "accepted":
-                raise UserError("This offer has already been accepted.")
-
-            record.status = "accepted"
-
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-
-    def action_refuse_offer(self):
-        for record in self:
-            record.status = "refused"
+        if self.state == "sold":
+            raise UserError("A Sold property cannot to be cancelled.")
+        self.state = "cancelled"
