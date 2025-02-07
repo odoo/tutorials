@@ -21,7 +21,7 @@
         <field name="arch" type="xml">
             <form string="Property Tag Form">
                 <sheet>
-                    <h1><field name="name"/></h1>
+                    <h1><field name="name" placeholder="Name"/></h1>
                 </sheet>
             </form>
         </field>

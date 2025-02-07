@@ -29,7 +29,7 @@
             <form string="Property Form">
                 <sheet>
                     <h1>
-                        <field name="name"/>
+                        <field name="name" placeholder="Enter Property Name"/>
                     </h1>
                     <group>
                         <group>
@@ -51,6 +51,29 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Property Search">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
+
+                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <filter string="New State" name="new_state" domain="[('state', '=', 'new')]"/>
+                <filter string="Offer Recieved" name="offer_recieved" domain="[('state', '=', 'offer_received')]"/>
+
+                <group>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
         </field>
     </record>
 </odoo>
