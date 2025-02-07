@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-
         <!-- Action for Properties List -->
         <record id="estate_property_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
@@ -10,7 +9,6 @@
             <field name="domain">[]</field>
             <field name="context">{}</field>
         </record>
-
         <!-- List view for Estate Properties -->
         <record id="view_estate_property_list" model="ir.ui.view">
             <field name="name">estate.property.list</field>
@@ -20,6 +18,7 @@
                     <!-- Columns to be displayed in the list view -->
                     <field name="name"/>
                     <field name="postcode"/>
+                    <field name="state"/>
                     <field name="bedrooms"/>
                     <field name="living_area"/>
                     <field name="expected_price"/>
@@ -28,13 +27,17 @@
                 </list>
             </field>
         </record>
-
         <!-- Form view for Estate Properties -->
         <record id="estate_property_form_view" model="ir.ui.view">
             <field name="name">estate.property.form</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form string="Property Form">
+                    <header>
+                        <button name="action_sold" type="object" string="Sold" class="btn-primary"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn-secondary"/>
+                        <field name="state" widget="statusbar" state="new, offer_received, offer_accepted, sold, cancelled"/>
+                    </header>
                     <sheet>
                         <div class="oe_title mb-32">
                             <label for="name"/>
@@ -42,14 +45,13 @@
                                 <field name="name" class="mb16"/>
                             </h1>
                         </div>
-
-                        <!-- Many2many Tags for Property -->
-                        <field name="tags_ids" widget="many2many_tags"/>
-
+                        <!-- Many2many Tags for Property with Color picker-->
+                        <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <group>
                             <!-- First Group: Basic Information -->
                             <group class="mb32">
-                                <field name="property_type" class="w-50" />
+                                <field name="state" class="w-50"/>
+                                <field name="property_type" class="w-50" options="{'no_create_edit': true, 'no_create': true}"/>
                                 <field name="postcode" class="w-50" />
                                 <field name="date_availability" class="w-50" />
                             </group>
@@ -59,7 +61,6 @@
                                 <field name="selling_price" class="w-50" />
                             </group>
                         </group>
-
                         <!-- Notebook with multiple pages -->
                         <notebook>
                             <page string="Description">
@@ -80,7 +81,6 @@
                                     </group>
                                 </group>
                             </page>
-
                             <!-- More Info Page -->
                             <page string="More Info">
                                 <group>
@@ -88,16 +88,17 @@
                                     <field string="Salesperson" name="salesperson_id"/>
                                 </group>
                             </page>
-
                             <!-- Offers Page -->
                             <page string="Offers">
-                                <field name="offer_ids" widget="one2many_list">
+                                <field name="offer_ids" widget="one2many_list" options="{'color_field':'color'}">
                                     <list>
-                                        <!-- Display offer fields -->
-                                        <field name="price"></field>
-                                        <field name="partner_id"></field>
-                                        <field name="validity"></field>
-                                        <field name="date_deadline"></field>
+                                        <field name="price"/>
+                                        <field name="partner_id"/>
+                                        <field name="validity"/>
+                                        <field name="date_deadline"/>
+                                        <field name="status"/>
+                                        <button name="action_accept" string="Confirm" states="draft" type="object" icon="fa-check"/>
+                                        <button name="action_refuse" string="Refuse" states="draft" type="object" icon="fa-times"/>
                                     </list>
                                 </field>
                             </page>
@@ -120,7 +121,6 @@
                     <field string="Bedrooms" name="bedrooms"/>
                     <field string="Living Area (sqm)" name="living_area"/>
                     <field string="Facades" name="facades"/>
-
                     <!-- Filters -->
                     <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                     <separator/>

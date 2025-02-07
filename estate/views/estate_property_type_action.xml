@@ -10,6 +10,18 @@
       <field name="context">{}</field>
     </record>
 
+    <!-- List view for Property Types -->
+    <record id="view_estate_property_type_list" model="ir.ui.view">
+      <field name="name">estate.property.type.list</field>
+      <field name="model">estate.property.type</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="sequence" widget="handle"/>
+          <field name="name"/>
+        </list>
+      </field>
+    </record>
+
     <!-- Form view for Property Types -->
     <record id="estate_property_type_form_view" model="ir.ui.view">
       <field name="name">estate.property.type.form</field>
@@ -21,6 +33,11 @@
             <h1 class="mb32 w-50">
               <field name="name" class="mb16"/>
             </h1>
+            <notebook>
+              <page string="Properties">
+                <field name="property_ids"></field>
+              </page>
+            </notebook>
           </sheet>
         </form>
       </field>

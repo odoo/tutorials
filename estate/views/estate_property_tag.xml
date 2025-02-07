@@ -10,25 +10,24 @@
       <field name="context">{}</field>      <!-- Context for the action, empty for now -->
     </record>
 
-    <!-- Define the form view for Property Tag -->
+
+
     <record id="estate_property_tag_form_view" model="ir.ui.view">
-      <field name="name">estate.property.tag.form</field>      <!-- Name of the view -->
-      <field name="model">estate.property.tag</field>      <!-- Model associated with the view -->
+      <field name="name">estate.property.tag.form</field>
+      <field name="model">estate.property.tag</field>
       <field name="arch" type="xml">
-        <form string="Property Tag Form">          <!-- Title of the form -->
+        <form string="Property Tag Form">
           <sheet>
-            <!-- Define the title section of the form -->
             <div class="oe_title">
               <label for="name"/>
-              <!-- Label for the name field -->
-              <h1 class="mb32 w-50">
-                <field name="name" class="mb16"/>
-                <!-- Input field for the tag's name -->
+              <h1>
+                <field name="name"/>
               </h1>
             </div>
           </sheet>
         </form>
       </field>
     </record>
+
   </data>
 </odoo>
