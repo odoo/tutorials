@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
@@ -28,23 +29,31 @@
             <form string="Estate Form">
                 <sheet>
                     <group>
-                        <field name="name" />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </group>
+                    <div class="mb16">
+                        <field name="tag_ids" widget="many2many_tags" />
+                    </div>
+                    <group>
+                        <group>
+                            <field name="property_type_id" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                        </group>
                     </group>
                     <group>
                         <group>
                             <field name="postcode" />
                         </group>
                         <group>
-                            <field name="date_availability" />
+                            <field name="selling_price" />
                         </group>
                     </group>
                     <group>
-                        <group>
-                            <field name="expected_price" />
-                        </group>
-                        <group>
-                            <field name="selling_price" />
-                        </group>
+                        <field name="date_availability" />
                     </group>
                     <notebook>
                         <page string="Description">
@@ -57,6 +66,21 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="status" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="seller_id" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
@@ -76,6 +100,12 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
+                <separator />
+                <filter string="Available" name="available"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
+                <group expand="1" string="Group By">
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
+                </group>
             </search>
         </field>
     </record>
