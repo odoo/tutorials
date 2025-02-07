@@ -1,18 +1,19 @@
 from datetime import timedelta
-from odoo import models, fields,api
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
-class EstatePropertyOffer(models.Model):
-    _name = 'estate.property.offer'
-    _description = 'Estate Property Offer'
+class estatePropertyOffer(models.Model):
+    _name = "estate.property.offer"
+    _description = "Estate Property Offer"
+    _order = "price desc"
 
-    price = fields.Float(string='Price')
+    price = fields.Float(string="Price")
     status = fields.Selection([
-        ('accepted', 'Accepted'),
-        ('refused', 'Refused'),
-    ], string='Status', default='refused', required=True)
-    partner_id = fields.Many2one('res.partner', string='Partner', required=True)
-    property_id = fields.Many2one('estate.property', string='Property', required=True)
-
+        ("accepted", "Accepted"),
+        ("refused", "Refused"),
+    ], string="Status", default="refused", required=True)
+    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(string="Validity (Days)", default=7)
     date_deadline = fields.Date(
         string="Deadline", 
@@ -21,9 +22,12 @@ class EstatePropertyOffer(models.Model):
         store=True
     )
 
+    #constraint
+    _sql_constraints = [
+        ("check_offer_price", "CHECK(price >0)", "The offer price must be strictly more than zero."),
+    ]
 
-
-    @api.depends('create_date', 'validity')
+    @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         """Compute the date_deadline based on create_date and validity."""
         for offer in self:
@@ -38,3 +42,31 @@ class EstatePropertyOffer(models.Model):
             if offer.create_date and offer.date_deadline:
                 delta = (offer.date_deadline - offer.create_date.date()).days
                 offer.validity = delta
+
+    def accept_offer(self):
+        for offer in self:
+            # Check if the property is already sold
+            if offer.property_id.state == "sold":
+                raise UserError("This property has already been sold.")
+            
+            # Check if an offer is already accepted
+            if any(offer.property_id.offer_ids.filtered(lambda x: x.status == "accepted")):
+                raise UserError("This property already has an accepted offer.")
+
+            # Set the offer status to accepted and the property state to sold
+            offer.status = "accepted"
+            offer.property_id.state = "sold"
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+
+    def refuse_offer(self):
+        for offer in self:
+            offer.status = "refused"    
+            offer.property_id.state = "new"
+            offer.property_id.selling_price = False
+            offer.property_id.buyer_id = False
+
+
+            
+
+            

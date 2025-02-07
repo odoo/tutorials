@@ -17,26 +17,34 @@
         </field>
     </record>
 
-
     <!-- Define the Form View -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <!-- Header Section -->
+                <header>
+                    <button name="set_sold" string="Sold" type="object"
+                        class="btn btn-outline-primary o_form_button_create" />
+                    <button name="cancel_property" string="Cancel" type="object"
+                        class="btn btn-outline-primary o_form_button_create btn-danger" />
+
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold, cancle"/>
+                </header>
                 <sheet>
-                    <!-- Header Section -->
                     <h1>
                         <field name="name" string="Property Name" required="1" />
                     </h1>
                     <groupt>
-                        <field name="tag_ids" widget="many2many_tags" />
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </groupt>
                     <!-- Basic Information in Flex Layout -->
                     <group class="mb32">
                         <!-- First Row -->
                         <group>
-                            <field name="property_type_id" string="Property Type" />
+                            <field name="state" string="Status" />
+                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}" string="Property Type" />
                             <field name="postcode" string="Postcode" />
                             <field name="date_availability" string="Available From" />
                         </group>
@@ -47,7 +55,6 @@
                             <field name="selling_price" string="Selling Price" readonly="1" />
                         </group>
                     </group>
-
                     <!-- Tabs Section -->
                     <notebook>
                         <!-- Description Tab -->
@@ -73,7 +80,6 @@
                                 <field name="total_area" string="Total Area" readonly="1" />
                             </group>
                         </page>
-
                         <!-- Offers Tab-->
                         <page string="Offers">
                             <field name="offer_ids" widget="one2many_list"
@@ -81,19 +87,21 @@
                                 <list>
                                     <field name="price" string="Price" />
                                     <field name="partner_id" string="Partner" />
-                                    <field name="status" string="Status" />
                                     <field name="validity" />
                                     <field name="date_deadline" />
+                                    <button name="accept_offer" type="object"
+                                        help="Accept" icon="fa-check" />
+                                    <button name="refuse_offer" type="object"
+                                        help="Refuse" icon="fa-times" />
+                                    <field name="status" string="Status" />
                                 </list>
                             </field>
                         </page>
-
-
                         <!-- Other info Tab-->
                         <page string="Other Info">
                             <group>
                                 <field name="salesperson_id" string="Salesperson" />
-                                <field name="buyer_id" string="Buyer" />
+                                <field name="buyer_id" string="Buyer" readonly="1" />
                             </group>
                         </page>
                     </notebook>
@@ -123,7 +131,6 @@
             </search>
         </field>
     </record>
-
 
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>

@@ -10,9 +10,7 @@
      <field name="name">estate.property.tag.search</field>
      <field name="model">estate.property.tag</field>
      <field name="arch" type="xml">
-        <search string="Search Estate Property Tags">
-            <!-- Filter for Active Property Tags -->
-        
+        <search string="Search Estate Property Tags">      
             <!-- Group By Property Tag Name -->
             <group expand="0" string="Group By">
                 <filter name="group_by_name" string="Name" context="{'group_by': 'name'}"/>

@@ -5,19 +5,59 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <!-- Define the List View for Property Type -->
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Estate Properties Types">
+                <field name="sequence" widget="handle" />
+                <field name="name" string="Property Type Name" />
+                <field name="sequence" string="seq"/>
+            </list>
+        </field>
+    </record>
+
     <!-- Define the Search View for Property Type -->
     <record id="estate_property_type_view_search" model="ir.ui.view">
-     <field name="name">estate.property.type.search</field>
-     <field name="model">estate.property.type</field>
-     <field name="arch" type="xml">
-        <search string="Search Estate Property Types">
-            <!-- Filter for Active Property Types -->
-        
-            <!-- Group By Property Type Name -->
-            <group expand="0" string="Group By">
-                <filter name="group_by_name" string="Name" context="{'group_by': 'name'}"/>
-            </group>
-        </search>
-     </field>
+        <field name="name">estate.property.type.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Estate Property Types">
+                <!-- Group By Property Type Name -->
+                <group expand="0" string="Group By">
+                    <filter name="group_by_name" string="Name" context="{'group_by': 'name'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Define the Form View for Property Type-->
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property Type">
+                <sheet>
+                    <h1>
+                        <field name="name" string="Property Type Name" required="1" />
+                    </h1>
+                    <!-- Tabs Section -->
+                    <notebook>
+                        <!-- Offers Tab-->
+                        <page string="Properties">
+                            <field name="property_ids" widget="one2many_list"
+                                options="{'no_create': True}">
+                                <list>
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" string="Expected Price" />
+                                    <field name="state" string="State" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
     </record>
 </odoo>

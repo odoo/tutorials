@@ -10,7 +10,7 @@
                     <group>
                         <field name="price" string="Price" />
                         <field name="partner_id" string="Partner" />
-                        <field name="status" string="Status" />
+                        <field name="status" string="Status" readonly="1" />
                         <field name="validity" />
                         <field name="date_deadline" />
                     </group>
