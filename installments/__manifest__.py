@@ -10,6 +10,9 @@
         'views/sale_order_views.xml',
         'views/res_config_settings_views.xml',
 
+        'data/product_data.xml',
+        'data/ir_cron.xml',
+        
         'wizard/installment_wizard.xml'
     ],
     'installable': True,

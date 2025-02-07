@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="product_product_admin_charges" model="product.product">
+        <field name="name">Admin Charges</field>
+        <field name="default_code">ADMIN_EXPENSES</field>
+        <field name="list_price">0</field>
+        <field name="standard_price">0</field> 
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="categ_id" ref="product.product_category_all"/>
+    </record>
+
+    <record id="product_product_installment" model="product.product">
+        <field name="name">Installment</field>
+        <field name="default_code">INSTALLMENT</field>
+        <field name="list_price">0</field>
+        <field name="standard_price">0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="categ_id" ref="product.product_category_all"/>
+    </record>
+
+     <record id="product_product_down_payment" model="product.product">
+        <field name="name">Down payment</field>
+        <field name="default_code">DOWN_PAYMENT</field>
+        <field name="list_price">0</field>
+        <field name="standard_price">0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="categ_id" ref="product.product_category_all"/>
+    </record>
+
+     <record id="product_product_penalty" model="product.product">
+        <field name="name">Penalty</field>
+        <field name="default_code">PENALTY</field>
+        <field name="list_price">0</field>
+        <field name="standard_price">0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="categ_id" ref="product.product_category_all"/>
+    </record>
+</odoo>

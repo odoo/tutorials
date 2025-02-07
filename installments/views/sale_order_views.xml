@@ -9,6 +9,8 @@
            <xpath expr="//div[@name='so_button_below_order_lines']/button[@name='action_open_discount_wizard']" position="before">
                 <button name="%(action_open_installment_wizard)d"  type="action" class="btn-primary "
                     string="Add EMI" />
+                <button name="cron_recurring_create_installment_invoice"  type="object" class="btn-primary "
+                string="Test cron job"/>
             </xpath>
         </field>
     </record>
