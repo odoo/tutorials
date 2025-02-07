@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 {
     'name': "Real Estate",
     'version': '1.0',
@@ -13,6 +16,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_actions.xml', # Maintain the sequance for loading of the data files
+        'views/estate_property_type_actions.xml', 
         'views/estate_property_menus.xml'
     ]
 }

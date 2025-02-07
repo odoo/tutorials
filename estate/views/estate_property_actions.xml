@@ -31,10 +31,11 @@
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
-                            <field name="date_availability"/>
                         </group>
                         <group>
+                            <field name="date_availability"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                         </group>
@@ -58,9 +59,42 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesmen"/>
+                                <field name="buyer"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
+    </record>
+    
+    <record id="estate_property_search_view" model="ir.ui.view">
+            <field name="name">Search View</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <search string="Properties Search">
+                    
+                    <!-- search using property -->
+                    <field name="name" string="Title" />
+                    <field name="postcode" string="Postcode"/>
+                    <field name="expected_price" string="Expecte Price"/>
+                    <field name="bedrooms" string="Bedrooms"/>
+                    <field name="living_area" string="Living Area(sqm)"/>
+                    <field name="facades" string="Facades" />
+                    
+                    <!-- filter record -->
+                    <filter string="New" name="new property filter" domain="[('state','=', 'new')]"/>
+                    <filter string="Offer Recieved" name="offer recieved property filter" domain="[('state','=', 'offer received')]"/>
+
+                    <!-- group record -->
+                    <group expand="1" string="group by postcode">
+                        <filter string="PostCode" name="filter for group by postcode" context="{'group_by':'postcode'}"/>
+                    </group>
+
+                </search>
+            </field>
     </record>
 </odoo>
