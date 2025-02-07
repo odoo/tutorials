@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id='estate_properties' model='ir.actions.act_window'>
+        <field name='name'>Properties</field>
+        <field name='res_model'>estate.property</field>
+        <field name='view_mode'>list,form</field>
+    </record>
+
+    <!-- List View of Property -->
+    <record id='estate_list' model='ir.ui.view'>
+        <field name='name'>estate.property.list</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <list string="Properties">
+                <field name='name' string="Title"/>
+                <field name='postcode'/>
+                <field name='property_type_id'/>
+                <field name='property_tag_ids' widget='many2many_tags'/>
+                <field name='bedrooms'/>
+                <field name='living_area' string="Living Area (sqm)"/>
+                <field name='expected_price'/>
+                <field name='selling_price'/>
+                <field name='date_availability' string="Available From"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form of Property -->
+    <record id='estate_form' model='ir.ui.view'>
+        <field name='name'>estate.property.form</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <form string="Property Form">
+                <header>
+                    <button name='action_sold' type='object' string="Sold"/>
+                    <button name='action_cancel' type='object' string="Cancel"/>
+                </header>
+                <sheet>
+                    <group>
+                        <h1>
+                            <field name='name'/>
+                        </h1>
+                    </group>
+                    <group>
+                        <field name='property_tag_ids' widget='many2many_tags'/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name='state'/>
+                            <field name='property_type_id'/>
+                            <field name='postcode'/>
+                            <field name='date_availability' string="Available From"/>
+                        </group>
+                        <group>
+                            <field name='expected_price'/>
+                            <field name='best_offer'/>
+                            <field name='selling_price'/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <!-- Description -->
+                        <page string="Description">
+                            <group>
+                                <field name='description' string="Description"/>
+                                <field name='bedrooms'/>
+                                <field name='living_area' string="Living Area (sqm)"/>
+                                <field name='facades'/>
+                                <field name='garage'/>
+                                <field name='garden'/>
+                                <field name='garden_area' string="Garden Area (sqm)"/>
+                                <field name='garden_orientation' 
+                                    string="Garden Orientation"/>
+                                <field name='total_area' string="Total Area"/>
+                            </group>
+                        </page>
+                        
+                        <!-- Offers -->
+
+                        <page string="Offers">
+                            <group>
+                                <field name='offer_ids' string="">
+                                    <!-- List View -->
+                                    <list>
+                                        <field name='price' string="Price"/>
+                                        <field name='partner_id' string="Partner"/>
+                                        <field name='validity'/>
+                                        <field name='date_deadline'/>
+                                        <button name='action_accept' 
+                                            type='object' icon='fa-check'
+                                            title="action_accept"/>
+                                        <button name='action_refuse' 
+                                            type='object' icon='fa-times'
+                                            title="action_refuse"/>
+                                        <field name='status' string="Status"/>
+                                    </list>
+                                    <!-- Form View -->
+                                    <form>
+                                        <group>
+                                            <field name='price'/>
+                                            <field name='partner_id'/>
+                                            <field name='validity'/>
+                                            <field name='date_deadline'/>
+                                            <field name='status'/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </group>
+                        </page>
+
+                        <!-- Other Info -->
+                        <page string="Other Info">
+                            <group>
+                                <field name='user_id'/>
+                                <field name='buyer_id'/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search Filter of Property -->
+    <record id='estate_properties_search' model='ir.ui.view'>
+        <field name='name'>estate.property.search</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <search string="Search Properties">
+                <!-- Filter which displays available properties, 
+                i.e. the state should be ‘New’ or ‘Offer Received’.  -->
+                <filter name='state' 
+                    string="Available" 
+                    domain="['|', 
+                    ('state', '=', 'new'),
+                    ('state', '=', 'offer_received')]"/>
+                <!-- A search view -->
+                <field name='name' string="Title"/>
+                <field name='postcode'/>
+                <field name='expected_price'/>
+                <field name='bedrooms'/>
+                <field name='living_area'/>
+                <field name='facades'/>
+                <separator/>
+                <!-- Group by Postcode -->
+                <group expand='0' string="Group By" colspan='16'>
+                    <filter string="Postcode" name='postcode'
+                        context="{'group_by':'postcode'}"/>
+                </group>
+            </search>   
+        </field>
+    </record>
+
+</odoo>
