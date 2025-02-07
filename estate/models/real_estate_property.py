@@ -1,7 +1,8 @@
 from odoo import fields, models
+from datetime import datetime,timedelta
 
 class TestModel(models.Model):
-
+    
     _name = "estate.property"
     _description = "Declare property for Real estate"
 
@@ -10,10 +11,10 @@ class TestModel(models.Model):
     name = fields.Char("Title", required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
-    date_availability = fields.Date("Available From")
+    date_availability = fields.Date("Available From",default=datetime.now()+timedelta(90))
     expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price")
-    bedrooms = fields.Integer("Bedrooms")
+    selling_price = fields.Float("Selling Price", copy=False, readonly=True)
+    bedrooms = fields.Integer("Bedrooms", default="2")
     living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer("Facades")
     is_garage = fields.Boolean("Garage")
@@ -29,3 +30,17 @@ class TestModel(models.Model):
         ],
         help="Type is used to separate garden orientation uses",
     )
+    state = fields.Selection(
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Canceled"),
+        ],
+        string="Status",
+        required=True,
+        copy=False,
+        default="new",
+    )
+    active = fields.Boolean("Active", default=True)

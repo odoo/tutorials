@@ -2,7 +2,6 @@
     "name": "Real Estate",
     "version": "1.0",
     "author": "drat-odoo",
-    "depends": ["base"],
     "sequence": "20",
     "category": "estate",
     "description": """
