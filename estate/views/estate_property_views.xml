@@ -15,8 +15,7 @@
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">list,form</field>
     </record>
-    <!-- Menus -->
-    <menuitem id="menu_real_estate_root" name="Real Estate" sequence="1"/>
+    <menuitem id="menu_real_estate_root" name="Real Estate" sequence="1" />
     <menuitem id="menu_real_estate_advertisements" name="Advertisement" parent="menu_real_estate_root"/>
     <menuitem id="menu_real_estate_properties" action="action_estate_property" parent="menu_real_estate_advertisements" name="Properties" sequence="3"/>
     <menuitem id="menu_real_estate_settings" name="Settings" sequence="10" parent="menu_real_estate_root"/>
@@ -36,11 +35,13 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="total_area"/>
+                <field name="best_offer"/>
             </list>
         </field>
     </record>
-    <!-- Form View -->
-    <record id="view_estate_property_form" model="ir.ui.view">
+   <!-- Form View -->
+   <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="type">form</field>
@@ -54,10 +55,12 @@
                             <field name="date_availability"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_offer"/>
                         </group>
                         <group>
                             <field name="bedrooms"/>
                             <field name="living_area"/>
+                            <field name="total_area"/>
                             <field name="facades"/>
                             <field name="garden"/>
                             <field name="garden_area"/>
@@ -88,6 +91,7 @@
             </form>
         </field>
     </record>
+    <!-- Search View for Properties -->
     <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -115,7 +119,6 @@
             </list>
         </field>
     </record>
-
     <!-- Form View for Property Types -->
     <record id="view_estate_property_type_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
@@ -154,7 +157,6 @@
             </form>
         </field>
     </record>
-
     <!-- List View for Property Offers -->
     <record id="view_estate_property_offer_tree" model="ir.ui.view">
         <field name="name">estate.property.offer.tree</field>
