@@ -32,7 +32,7 @@
                 <sheet>
 
                     <h1>
-                        <field name="name" />
+                        <field name="name" placeholder="Enter your property name here" />
                     </h1>
                     <group>
                         <group>
@@ -43,22 +43,23 @@
                             <field name="expected_price" />
                             <field name="selling_price" />
                         </group>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" />
+                                    <field name="garden_orientation" />
+                                    <field name="state" />
+                                </group>
+                            </page>
+                        </notebook>
                     </group>
-                    <notebook>
-                        <page string="Description">
-                            <group>
-                                <field name="description" />
-                                <field name="bedrooms" />
-                                <field name="living_area" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
-                                <field name="state" />
-                            </group>
-                        </page>
-                    </notebook>
+
 
                 </sheet>
             </form>
@@ -78,10 +79,8 @@
                 <field name="living_area" />
                 <field name="facades" />
 
-                <filter name="New" domain="[('state', '=', 'new')]" />
-                <filter name="Offer Received" domain="[('state', '=', 'offerreceived')]" />
-
-                <filter string="Postcode" name="Postcode1" context="{'group_by':'postcode'}" />
+                <filter name="Available" domain="[('state', 'in', ['new', 'offer_received'])]" />
+                <filter name="Postcode" context="{'group_by':'postcode'}" />
             </search>
         </field>
     </record>

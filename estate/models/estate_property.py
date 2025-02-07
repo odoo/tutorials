@@ -1,6 +1,7 @@
-from odoo import models,fields
 from datetime import date
 from dateutil.relativedelta import relativedelta
+
+from odoo import models,fields
 
 
 class EstateProperty(models.Model):
@@ -42,8 +43,8 @@ class EstateProperty(models.Model):
         string='Status',
         selection=[
             ('new',"New"),
-            ('offerreceived',"Offer Received"),
-            ('offeraccepted',"Offer Accepted"),
+            ('offer_received',"Offer Received"),
+            ('offer_accepted',"Offer Accepted"),
             ('sold',"Sold"),
             ('cancelled',"Cancelled")
         ],
