@@ -38,3 +38,21 @@ class PropertyOffer(models.Model):
         for line in self:
             if line.create_date and line.date_deadline:
                 line.validity = (line.date_deadline - fields.Date.to_date(line.create_date)).days
+
+    def accept_offer(self):
+        other_offers = self.search(
+            domain=[
+                ('property_id', '=', self.property_id.id),
+            ],
+        )
+
+        other_offers.write({"status": "refused"})
+
+        self.status = "accepted"
+        self.property_id.buyer = self.partner_id
+        self.property_id.selling_price = self.price
+        return True
+
+    def refuse_offer(self):
+        self.status = "refused"
+        return True

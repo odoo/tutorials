@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
 
 class Property(models.Model):
@@ -69,6 +69,7 @@ class Property(models.Model):
             ("offer received", "Offer Received"),
             ("offer accepted", "Offer Accepted"),
             ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
         help="This selection fields specifies the state of the property.",
     )
@@ -121,3 +122,19 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def cancel_property(self):
+        if self.state == 'sold':
+            raise exceptions.UserError("Sold Property cannot be cancelled.")
+        else:
+            self.state = 'cancelled'
+
+        return True
+
+    def sold_property(self):
+        if self.state == 'cancelled':
+            raise exceptions.UserError("Cancelled Property cannot be sold.")
+        else:
+            self.state = 'sold'
+
+        return True
