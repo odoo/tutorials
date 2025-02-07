@@ -2,19 +2,102 @@
 <odoo>
     <data>
         <record id="estate_property_action" model="ir.actions.act_window">
-            <field name="name">Estate action</field>
+            <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form,kanban,pivot,graph</field>
         </record>
+
         <record id="estate_property_list_view" model="ir.ui.view">
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list open_form_view="1">
+                <list>
                     <field name="name" />
+                    <field name="postcode" />
+                    <field name="bedrooms" />
+                    <field name="living_area" />
                     <field name="expected_price" />
+                    <field name="selling_price" />
                     <field name="date_availability" />
                 </list>
+            </field>
+        </record>
+        <record id="estate_property_search" model="ir.ui.view">
+            <field name="name">estate.property.search</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="postcode"/>
+                    <field name="expected_price"/>
+                    <field name="bedrooms"/>
+                    <field name="living_area"/>
+                    <field name="facades"/>
+                    <filter string="Status" name="status" domain="['|', ('status', '=', 'new'), ('status', '=', 'offer_received')]"/>
+                    <separator />
+                    <filter string="Garden" name="is_garden" domain="[('is_garden', '=', True)]"/>
+                    <separator />
+                    <filter string="Garage" name="is_garage" domain="[('is_garage', '=', True)]"/>
+                    <group>
+                        <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="estate_property_form_view" model="ir.ui.view">
+            <field name="name">estate_property.form</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <form string="Test">
+                    <sheet>
+                        <h1>
+                            <field name="name" class="oe_title"/>
+                        </h1>
+
+                        <group>
+                            <group>
+                                <field name="postcode"/>
+                            </group>
+                            <group>
+                                <field name="expected_price"/>
+                            </group>
+                            <group>
+                                <field name="date_availability"/>
+                            </group>
+                            <group>
+                                <field name="selling_price"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="description" string="Description">
+                                <group>
+                                    <field name="description"/>
+                                </group>
+                                <group>
+                                    <field name="bedrooms"/>
+                                </group>
+                                <group>
+                                    <field name="living_area"/>
+                                </group>
+                                <group>
+                                    <field name="facades"/>
+                                </group>
+                                <group>
+                                    <field name="is_garage"/>
+                                </group>
+                                <group>
+                                    <field name="is_garden"/>
+                                </group>
+                                <group>
+                                    <field name="garden_area"/>
+                                </group>
+                                <group>
+                                    <field name="garden_orientation"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
             </field>
         </record>
     </data>
