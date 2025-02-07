@@ -1,10 +1,11 @@
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api, exceptions, _
 from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate properties"
+    _order = "id desc"
 
     name = fields.Char('Title', required=True, translate=True)
     tags_ids = fields.Many2many('estate.property.tag', string='Tags')
@@ -14,7 +15,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')  # we have give the Many2one field defined in the comodel in the One2many field, because One2many relationship is virtual, it only exist when corrensponding Many2one field exist in the comodel.
     description = fields.Text('Description')
     postcode = fields.Char('Postcode', required=True)
-    date_availability = fields.Date('Available From', copy=False, default=fields.Datetime.today() + relativedelta(months=3))
+    date_availability = fields.Date('Available From', copy=False, default = lambda self : fields.Datetime.today() + relativedelta(months=3))
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     best_offer = fields.Float('Best Offer', compute="_compute_best_offer")
@@ -44,6 +45,11 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new")
+    
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'), 
+        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.')
+    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_amount(self):
@@ -82,3 +88,9 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price <= (0.9 * record.expected_price) and len(record.offer_ids) > 0:
+                raise exceptions.ValidationError("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")

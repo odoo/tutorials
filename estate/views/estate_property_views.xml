@@ -27,8 +27,9 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sold_property" type="object" string="SOLD" class="me-3"/>
-                    <button name="action_cancel_property" type="object" string="CANCEL" class="me-3"/>
+                    <button name="action_sold_property" type="object" string="SOLD" class="me-3" invisible="state == 'sold' or state == 'cancelled'"/>
+                    <button name="action_cancel_property" type="object" string="CANCEL" class="me-3" invisible="state == 'sold' or state == 'cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer received, offer accepted, sold"/>
                 </header>
                 <sheet>
                     <group class="w-25">
@@ -38,13 +39,13 @@
                     </group>
                     <group class="w-25">
                         <h3>
-                            <field name="tags_ids" widget="many2many_tags"/>
+                            <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </h3>
                     </group>
                     <group>
                         <group>
-                            <field name="state" class="w-25"/>
-                            <field name="property_type" class="w-25"/>
+                            <!-- <field name="state" class="w-25"/> -->
+                            <field name="property_type" class="w-25" options="{'no_create': true}"/>
                             <field name="postcode" class="w-25"/>
                             <field name="date_availability" class="w-25"/>
                         </group>
@@ -63,15 +64,15 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                                 <!-- <field name="active"/> -->
                                 <!-- <field name="state"/> -->
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state == 'offer accepted' or state == 'sold' or state == 'cancelled'"/>
                         </page>
                         <page string="Other Info">
                             <group class="w-25">
