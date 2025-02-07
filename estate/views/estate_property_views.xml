@@ -2,7 +2,7 @@
 
 <odoo>
     <!-- Action -->
-    <record id="estate_model_action" model="ir.actions.act_window">
+    <record id="estate_model_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
@@ -48,23 +48,37 @@
                 <notebook>
                     <page string="Description">
                         <group>
-                            <field name="description"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
-                            <field name="active"/>
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
+                            <group>
+                                <field name="active"/>
+                                <field name="status"/>
+                            </group>
                         </group>
-                    </page>
+                    </page> 
+                    <Page string="Other Info">
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="user_id"/>
+                            </group>
+                        </group>
+                    </Page>
                 </notebook>
             </sheet>
         </form>
         </field>
     </record>
 
+    <!-- Filter and Group by -->
     <record id="estate_model_search" model="ir.ui.view">    
     <field name="name">estate.property.search</field>
     <field name="model">estate.property</field>
@@ -80,6 +94,7 @@
             <group expand="1" string="Postcode">
                 <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
             </group>
+            <filter string="Available" name="filter_by_state" domain="['|',('status', '=', 'new'),('status','=','offer received')]"/>
         </search>
     </field>
 </record>

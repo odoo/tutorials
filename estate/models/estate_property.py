@@ -2,7 +2,7 @@ from odoo import fields, models
 from dateutil.relativedelta import relativedelta
 
 
-class estate_property(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     name = fields.Char(string="Name", required=True)
@@ -13,7 +13,7 @@ class estate_property(models.Model):
         default=lambda self:fields.Datetime.today() + relativedelta(days=90),
     )
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    selling_price = fields.Float(string="Selling Price", default="20000",readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer(string="Facades")
@@ -40,3 +40,15 @@ class estate_property(models.Model):
             ("cancelled", "Cancelled")
         ],
     )
+
+    # Relations
+
+    # Relation for property type
+    property_type_id = fields.Many2one(comodel_name = "estate.property.type", string="Property Type")
+
+    # Relation for Partner
+    partner_id = fields.Many2one("res.partner", string="Partner")
+    user_id = fields.Many2one("res.users", string="User")
+
+
+
