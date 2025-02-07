@@ -3,11 +3,11 @@
 <odoo> 
     <menuitem id="estate_menu_root" name="Real Estate"> 
         <menuitem id="estate_first_level_menu1" name="Advertisements"> 
-            <menuitem id="test_model_menu_action1-1" action="estate_property_action"/> 
+            <menuitem id="test_model_menu_action1-1" action="estate_property_view"/> 
         </menuitem> 
         <menuitem id="estate_first_level_menu2" name="Settings"> 
-            <menuitem id="test_model_menu_action2-1" action="estate_property_type_action"/> 
-            <menuitem id="test_model_menu_action2-2" action="estate_property_tag_action"/> 
+            <menuitem id="test_model_menu_action2-1" action="estate_property_type_view"/> 
+            <menuitem id="test_model_menu_action2-2" action="estate_property_tag_view"/> 
         </menuitem> 
     </menuitem> 
 </odoo>
