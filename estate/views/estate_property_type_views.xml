@@ -1,0 +1,34 @@
+<?xml version = "1.0"?>
+<odoo>
+    <record id="action_estate_property_type" model="ir.actions.act_window">
+        <field name="name">Property Type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- List view -->
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">Property Type</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">Property Type</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

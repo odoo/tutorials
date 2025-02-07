@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <menuitem id="menu_estate_root" name="Real Estate App">
-        <menuitem id="advertisements" name="Advertisements">
-            <menuitem id="property_action" name="Property" action="action_estate_property"/>
+        <menuitem id="advertisements_menu" name="Advertisements">
+            <menuitem id="property_menu" name="Property" action="action_estate_property"/>
+        </menuitem>
+        <menuitem id="settings_menu" name="Settings">
+            <menuitem id="property_type_menu" name="Property Types" action="action_estate_property_type"/>
+            <menuitem id="property_tag_menu" name="Property Tags" action="action_estate_property_tag"/>
         </menuitem>
     </menuitem>
 </odoo>
