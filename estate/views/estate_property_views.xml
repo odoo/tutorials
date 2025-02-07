@@ -24,6 +24,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight" />
+                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight" />
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" />
@@ -33,16 +37,14 @@
                     </div>
                     <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
-                        </group>
-                        <group>
-                            <field name="state" />
-                            <field name="property_type_id" />
+                            <field name="best_price" />
                         </group>
                     </group>
                     <notebook>
@@ -56,6 +58,7 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                                <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
@@ -63,14 +66,20 @@
                                 <list>
                                     <field name="price" />
                                     <field name="partner_id" />
+                                    <field name="validity" />
+                                    <field name="deadline" />
                                     <field name="status" />
+                                    <button name="action_accept" type="object" icon="fa-check"
+                                        title="Accept Offer" />
+                                    <button name="action_refuse" type="object" icon="fa-times"
+                                        title="Refuse Offer" />
                                 </list>
                             </field>
                         </page>
                         <page string="Other information">
                             <group>
-                                <field name="salesperson_id"/>
-                                <field name="buyer_id"/>
+                                <field name="salesperson_id" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
