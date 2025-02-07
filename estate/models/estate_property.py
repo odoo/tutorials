@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
 
     date_availability = fields.Date(
         string="Date Availability",
-        default=date.today()+relativedelta(months=3),
+        default=lambda self:date.today()+relativedelta(months=3),
         copy=False
     )
     expected_price = fields.Float(string="Expected Price", required=True)
@@ -32,23 +32,28 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer(string="Garden Area")
     garden_orientation = fields.Selection(
         selection=[
-            ('north',"North"),
-            ('south',"South"),
-            ('east',"East"),
-            ('west',"West")
+            ('north','North'),
+            ('south','South'),
+            ('east','East'),
+            ('west','West')
         ])
 
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(
         string='Status',
         selection=[
-            ('new',"New"),
-            ('offer_received',"Offer Received"),
-            ('offer_accepted',"Offer Accepted"),
-            ('sold',"Sold"),
-            ('cancelled',"Cancelled")
+            ('new','New'),
+            ('offer_received','Offer Received'),
+            ('offer_accepted','Offer Accepted'),
+            ('sold','Sold'),
+            ('cancelled','Cancelled')
         ],
         required=True,
         copy=False,
         default='new'
     )
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+    salesperson = fields.Many2one('res.users',string='Salesman', default=lambda self:self.env.user)
+    buyer = fields.Many2one('res.users',string='Buyer', copy=False)
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+    offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id', string="Offers")

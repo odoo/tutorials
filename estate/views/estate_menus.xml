@@ -5,8 +5,8 @@
             <menuitem id="estate_property_model_menu_action" action="action_estate_property" name="properties"/>
         </menuitem>
         <menuitem id="estate_first_level_menu_settings" name="Settings">
-            <menuitem id="estate_property_tag_model_menu_action" action="action_estate_property_tag" name="tags"/>
-            <menuitem id="estate_property_type_model_menu_action" action="action_estate_property_type" name="types"/>
+            <menuitem id="estate_property_tag_model_menu_action" action="action_estate_property_tag" name="Property tags"/>
+            <menuitem id="estate_property_type_model_menu_action" action="action_estate_property_type" name="Property types"/>
         </menuitem>
     </menuitem>
     
