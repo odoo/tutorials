@@ -29,12 +29,14 @@
                             <h1>
                                 <field name="name"/>
                             </h1>
+                            <field name="tag_ids" widget="many2many_tags"/>
                         </group>
                         <group>
                             <group>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
                                 <field name="state"/>
+                                <field name="property_type_id"/>
                             </group>
                             <group>
                                 <field name="expected_price"/>
@@ -54,6 +56,15 @@
                                     <field name="garden_orientation"/>
                                 </group>
                             </page>
+                            <page name="Offers">
+                                <field name="offer_ids"/>
+                            </page>
+                            <page name="Other info">
+                                <group>
+                                    <field name="seller"/>
+                                    <field name="buyer"/>
+                                </group>
+                            </page>
                         </notebook>
                     </sheet>
                 </form>
@@ -62,7 +73,7 @@
 
         <!-- Custom search view -->
         <record id="view_estate_property_search" model="ir.ui.view">
-            <field name="name">estate.property.form</field>
+            <field name="name">estate.property.search</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <search>
