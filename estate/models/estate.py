@@ -12,8 +12,8 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(
         "Available From",
-        default=lambda self : (datetime.today() - relativedelta(month=3)).date(),
-        copy=False
+        default=lambda self: (datetime.today() - relativedelta(month=3)).date(),
+        copy=False,
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -50,5 +50,5 @@ class EstateProperty(models.Model):
         ],
         default="new",
         required=True,
-        copy=False
+        copy=False,
     )
