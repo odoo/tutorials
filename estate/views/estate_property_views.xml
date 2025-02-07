@@ -15,6 +15,7 @@
         <field name="arch" type="xml">
             <list string="estate_property_view">
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -36,7 +37,9 @@
                         <field name="name"/>
                     </h1>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -48,44 +51,25 @@
                     <notebook>
                         <page name="Description">
                             <group>
-                                <lable for="description"/>
                                 <field name="description"/>
-                            </group>
-                            <group>
-                                <lable for="bedrooms"/>
                                 <field name="bedrooms"/>
-                            </group>
-                            <group>
-                                <lable for="living_area"/>
                                 <field name="living_area"/>
-                            </group>
-                            <group>
-                                <lable for="facades"/>
                                 <field name="facades"/>
-                            </group>
-                            <group>
-                                <lable for="garage"/>
                                 <field name="garage"/>
-                            </group>
-                            <group>
-                                <lable for="garden"/>
                                 <field name="garden"/>
-                            </group>
-                            <group>
-                                <lable for="garden_area"/>
                                 <field name="garden_area"/>
-                            </group>
-                            <group>
-                                <lable for="garden_orientation"/>
                                 <field name="garden_orientation"/>
-                            </group>
-                            <group>
-                                <lable for="active"/>
                                 <field name="active"/>
-                            </group>
-                            <group>
-                                <lable for="state"/>
                                 <field name="state"/>
+                            </group>
+                        </page>
+                        <page name="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page name="Other Info">
+                            <group>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -103,10 +87,12 @@
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="state"/>
+                <field name="property_type_id"/>
                 <filter name="Available Products" domain="['|', ('state', 'ilike', 'New'),('state', 'ilike', 'Offer Received')]"/>
-            <group  expand="1" string="Group By">
-                <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
-            </group>
+                <group  expand="1" string="Group By">
+                    <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
+                    <filter name="property_type" string="Property Type" context="{'group_by':'property_type_id'}"/>
+                </group>
             </search>
         </field>
     </record>
