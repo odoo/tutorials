@@ -1,7 +1,7 @@
-from odoo import models, fields, api
 from datetime import timedelta, date
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo import models, fields, api
 
 
 class EstateProperty(models.Model):
@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
 
     _description = "Property"
 
-    _order = "id desc"  # Order by descending id
+    _order = "id desc"
 
     active = fields.Boolean(string="active", default=True)
 
@@ -43,7 +43,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char(string="Postcode")
 
     availability_date = fields.Date(
-        string="availability_date",
+        string="Availability date",
         default=lambda self: date.today() + timedelta(days=90),
         copy=False,
     )
@@ -110,9 +110,6 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-        # return {'warning': {
-        #         'title': _("Warning"),
-        #         'message': ('This option is not supported for Authorize.net')}}
 
     def action_cancel(self):
         for record in self:
@@ -149,5 +146,16 @@ class EstateProperty(models.Model):
                         "Please adjust the selling price or expected price."
                     )
                 )
+
+    def update_state_based_on_offers(self):
+        for property in self:
+            if not property.offer_ids:  # No offers exist
+                property.state = "new"
+            elif all(
+                offer.status == "refused" for offer in property.offer_ids
+            ):  # All offers refused
+                property.state = "new"
+            else:  # At least one non-refused offer
+                property.state = "offer_received"
 
 

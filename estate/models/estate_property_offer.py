@@ -1,35 +1,27 @@
-from odoo import models, fields, api
 from datetime import timedelta
-import logging
-_logger = logging.getLogger(__name__)
+from odoo import models, fields, api
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-
     _description = "Estate Property Offer"
-
-    _order = "price desc"  # Order by descending price
-
+    _order = "price desc"
     price = fields.Float("Price")
-
     status = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")], string="Status"
     )
-
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-
     property_id = fields.Many2one("estate.property", string="Property", required=True)
-
     validity = fields.Integer(default=7)
-
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True
     )
-
-    create_date = fields.Datetime(readonly=True)
-
     _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.'),
+        (
+            "check_offer_price",
+            "CHECK(price > 0)",
+            "The offer price must be strictly positive.",
+        ),
     ]
 
     @api.depends("create_date", "validity")
@@ -47,25 +39,45 @@ class EstatePropertyOffer(models.Model):
                 record.validity = delta.days
 
     def action_confirm(self):
-        for record in self:
-            record.status = "accepted"
-            record.property_id.selling_price=record.price
-            record.property_id.buyer_id=record.partner_id
-            record.property_id.state = "offer_accepted"
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = "offer_accepted"
 
     def action_refuse(self):
-        for record in self:
-            record.status = "refused"
+        self.status = "refused"
 
-    @api.model
-    def create(self, vals):
-        # Create the offer first
-        offer = super(EstatePropertyOffer, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Create offers
+        offers = super(EstatePropertyOffer, self).create(vals_list)
 
-        # Once the offer is created, set the property status to "offer_received"
-        if offer.property_id:
-            offer.property_id.state = "offer_received"
+        # Update the state of related properties
+        offers.mapped("property_id").update_state_based_on_offers()
 
-        return offer
+        return offers
+
+    # Override write method
+    def write(self, vals):
+        # Update offers
+        res = super(EstatePropertyOffer, self).write(vals)
+
+        # Update the state of related properties
+        self.mapped("property_id").update_state_based_on_offers()
+
+        return res
+
+    # Override unlink method
+    def unlink(self):
+        # Store related properties before unlinking
+        properties = self.mapped("property_id")
+
+        # Delete offers
+        res = super(EstatePropertyOffer, self).unlink()
+
+        # Update the state of related properties
+        properties.update_state_based_on_offers()
+
+        return res
 
 

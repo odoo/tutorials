@@ -10,17 +10,19 @@
         <field name="name">estate.property.name</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Properties">
+            <list string="Estate Properties" decoration-success = "state in ('offer_received','offer_accepted')" 
+            decoration-muted = "state == 'sold'"
+            decoration-bf = "state == 'offer_accepted'">
                 <field name="name" />
-                <field name="tag_ids" widget="many2many_tags" />
-                <field name="state" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                <!-- <field name="state" /> -->
                 <field name="property_type_id" />
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="availability_date" />
+                <field name="availability_date" invisible="1" optional="hide"/>
             </list>
         </field>
     </record>
@@ -31,22 +33,25 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" class="btn-success" />
-                    <button name="action_cancel" type="object" string="Cancel" class="btn-primary" />
+                    <button name="action_sold" type="object" string="Sold" invisible="state == 'offer_accepted'"/>
+                    <button name="action_sold" type="object" string="Sold" class="btn-primary" invisible="state != 'offer_accepted'"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
                     <!-- Add the statusbar widget for the state field -->
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <h1>
                         <field name="name" />
                     </h1>
                     <group>
-                        <field name="tag_ids" widget="many2many_tags" />
+                        <field name="tag_ids" widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
                     </group>
                     <group>
                         <group>
-                            <field name="state"/>
-                            <field name="property_type_id" />
+                            <!-- <field name="state" /> -->
+                            <field name="property_type_id" options="{'no_create': True}"/>
                             <field name="postcode" />
                             <field name="availability_date" />
                         </group>
@@ -65,13 +70,13 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area" readonly="1" />
                             </group>
                         </page>
                         <page string="Offer">
-                            <field name="offer_ids" />
+                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'canceled')" />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -112,7 +117,5 @@
             </search>
         </field>
     </record>
-
-
 </odoo>
 

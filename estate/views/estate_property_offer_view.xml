@@ -5,13 +5,13 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offer List">
-                <field name="price" />
+            <list string="Offer List" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+                <field name="price"/>
                 <field name="validity" />
                 <field name="date_deadline" />
                 <field name="partner_id" />
-                <button name="action_confirm" type="object" icon="fa-check"/>
-                <button name="action_refuse"  type="object" icon="fa-times"/>
+                <button name="action_confirm" type="object" icon="fa-check" invisible="status in ('accepted','refused')"/>
+                <button name="action_refuse"  type="object" icon="fa-times" invisible="status in ('accepted','refused')"/>
                 <field name="status"/>
             </list>
         </field>

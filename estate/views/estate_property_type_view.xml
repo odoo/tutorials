@@ -5,27 +5,44 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="estate_property_type_list_view" model="ir.ui.view">
-    <field name="name">estate.property.type.form</field>
-    <field name="model">estate.property.type</field>
-    <field name="arch" type="xml">
-        <form>
-            <sheet>
-                <group>
-                    <field name="sequence" widget="handle"/>
-                    <field name="name"/>
-                </group>
-                <group string="Properties">
-                    <field name="property_ids">
-                        <list>
-                            <field name="name"/>
-                            <field name="expected_price"/>
-                            <field name="state"/>
-                        </list>
-                    </field>
-                </group>
-            </sheet>
-        </form>
-    </field>
-</record>
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name='model'>estate.property.type</field>
+        <field name="arch" type='xml'>
+            <list string="channel">
+                <!--The
+                widget attribute comes from the framework or platform you're using. In this case, it
+                is most likely from Odoo, a popular ERP framework based on Python.-->
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </group>
+                    <group string="Properties">
+                        <field name="property_ids">
+                            <list>
+                                <field name="name" />
+                                <field name="expected_price" />
+                                <field name="state" />
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>
+
