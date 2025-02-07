@@ -11,8 +11,11 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form string="Property">
+                    <header>
+                        <button type="object" name="action_sold_property">SOLD</button>
+                        <button type="object" name="action_cancel_property">CANCEL</button>
+                    </header>
                     <sheet>
-
                         <group>
                             <group>
                                 <div class="oe_title">
@@ -23,9 +26,9 @@
                                 <field name="tag_ids" widget="many2many_tags" />
                             </group>
                         </group>
-
                         <group>
                             <group>
+                                <field name="state" string="Status" />
                                 <field name="property_type_id" />
                                 <field name="postcode" />
                                 <field name="date_availability" />
@@ -36,7 +39,6 @@
                                 <field name="selling_price" />
                             </group>
                         </group>
-
                         <notebook>
                             <page string="Description">
                                 <group>
@@ -47,18 +49,26 @@
                                     <field name="garden" />
                                     <field name="garden_area" />
                                     <field name="garden_orientation" />
-                                    <field name="state" />
                                     <field name="total_area" />
                                 </group>
                             </page>
                             <page string="Offers">
                                 <field id="offers" name="offer_ids">
-                                    <list string="offers" editable="bottom">
+                                    <list editable="bottom"
+                                        edit="True">
                                         <field name="price" />
                                         <field name="partner_id" />
-                                        <field name="status" />
                                         <field name="validity" />
                                         <field name="date_deadline" />
+                                        <button name="action_accept_offer" type="object"
+                                            help="Accepte"
+                                            title="accept"
+                                            icon="fa-check" />
+                                        <button name="action_refuse_offer" type="object"
+                                            help="Refuse"
+                                            title="refuse"
+                                            icon="fa-times" />
+                                        <field name="status" readonly="1" />
                                     </list>
                                 </field>
                             </page>
