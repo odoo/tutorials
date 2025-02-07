@@ -17,6 +17,7 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" />
+                <field name="property_type_id" />
             </list>
         </field>
     </record>
@@ -30,8 +31,10 @@
                     <h1 class="fw-bolder">
                         <field name="name" />
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags" />
                     <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -55,6 +58,21 @@
                                 <field name="state" />
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="status" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson" />
+                                <field name="buyer" />
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -72,6 +90,7 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
+                <field name="property_type_id" />
                 <filter name="state" string="Status"
                     domain="[('state', 'in', ['new','offer_received'])]" />
                 <group expand="1" string="Group By">
