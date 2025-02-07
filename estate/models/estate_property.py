@@ -7,14 +7,14 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-
+    _order = "id desc"
     name = fields.Char(string="Property Name", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
         string="Date Availability",
         copy=False,
-        default=fields.Date.today() + timedelta(days=90),
+        default=lambda self: fields.Date.today() + timedelta(days=90),
     )
     expected_price = fields.Float(string="Expected Price")
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
@@ -47,9 +47,6 @@ class EstateProperty(models.Model):
         default="new",
         copy=False,
     )
-
-    cancel = fields.Boolean(string="Cancelled", default=False)
-    sold = fields.Boolean(string="Sold", default=False)
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     # property_seller_id=fields.Many2one('estate.property.seller',string="Salesman")
@@ -84,7 +81,7 @@ class EstateProperty(models.Model):
 
     _sql_constraints = [
     ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price should strictly be positive'),
-    ('check_selling_price', 'CHECK(selling_price > 0)', 'Selling price should strictly be positive'),
+    ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price should strictly be positive')
         ]
 
 
@@ -107,18 +104,18 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def cancel_event(self):
-        for record in self:
-            if record.sold:
-                raise UserError("Property is already sold. It cannot be canceled.")
-            record.status = "canceled"
-            record.cancel = True
-        return True
-
     def sold_event(self):
         for record in self:
-            if record.cancel:
-                raise UserError("Property is canceled and cannot be marked as sold.")
-            record.status = "sold"
-            record.sold = True
+            if record.status != 'sold':  # Prevent selling if already sold
+                record.status = 'sold'
+            else:
+                raise UserError("This property is already sold.")
+        return True
+
+    def cancel_event(self):
+        for record in self:
+            if record.status != 'canceled':  # Only allow cancel if not canceled
+                record.status = 'canceled'
+            else:
+                raise UserError("This property is already canceled.")
         return True

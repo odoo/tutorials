@@ -7,11 +7,13 @@ class EstateOffer(models.Model):
     _description = 'Offer'
 
     price = fields.Float(string="Price", required=True)
-    status = fields.Selection([
+    status_offer = fields.Selection([
         ('new', 'New'),
         ('accepted', 'Accepted'),
         ('refused', 'Refused')
     ], string="Status", default='new', copy=False)  
+
+    _order = "id desc"
 
     partner_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     property_id = fields.Many2one('estate.property', string="Property", required=True)
@@ -52,7 +54,7 @@ class EstateOffer(models.Model):
     def accept_offer(self):
         """ Accept an offer """
         for record in self:
-            record.status = "accepted"
+            record.status_offer = "accepted"
             record.property_id.selling_price=record.price
             record.property_id.property_buyer_id=record.partner_id
         return True
@@ -60,6 +62,6 @@ class EstateOffer(models.Model):
     def reject_offer(self):
         """ Reject an offer """
         for record in self:
-            record.status = "refused"
-            record.property_id.selling_price=0
+            record.status_offer = "refused"
+            record.property_id.selling_price=0.000
         return True

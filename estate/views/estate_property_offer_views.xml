@@ -3,12 +3,12 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offers">
+            <list editable="bottom" string="Property Offers">
                 <field name="price"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <field name="partner_id"/>
-                <field name="status"/>
+                <field name="status_offer"/>
             </list>
         </field>
     </record>
@@ -22,7 +22,7 @@
                     <group>
                         <field name="price"/>
                         <field name="partner_id"/>
-                        <field name="status"/>
+                        <field name="status_offer"/>
                         <field name="validity"/>
                         <field name="date_deadline"/>
                     </group>
