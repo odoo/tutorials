@@ -1,4 +1,3 @@
-
 <odoo>
     <!-- Root Estate Menu -->
     <menuitem id="estate_menu_root" name="Estate"/>
@@ -17,4 +16,3 @@
         <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"/>
     </menuitem>
 </odoo>
-

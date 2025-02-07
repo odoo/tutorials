@@ -1,15 +1,17 @@
+from datetime import datetime, timedelta  # Import required libraries
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-
-from datetime import datetime, timedelta  # Import required libraries
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Recurring Plans"
+    _order = "id desc"
 
     name = fields.Char("Name", required=True)
+
     description = fields.Text("Description")
+
     postcode = fields.Char("Postcode")
 
     # Default availability date to 3 months from today
@@ -22,13 +24,19 @@ class EstateProperty(models.Model):
     )
 
     expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price", copy=False, readonly=True)
+
+    selling_price = fields.Float("Selling Price", copy=False, readonly=True, default=0.0)
 
     bedrooms = fields.Integer("Bedrooms", default=2)
+
     living_area = fields.Integer("Living Area")
+
     facades = fields.Integer("Facades")
+
     garage = fields.Boolean("Garage")
+
     garden = fields.Boolean("Garden")
+
     garden_area = fields.Integer("Garden Area")
 
     garden_orientation = fields.Selection(
@@ -58,11 +66,15 @@ class EstateProperty(models.Model):
     )
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+
     user_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
+
     partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Integer(compute="_compute_total_area")
@@ -70,7 +82,9 @@ class EstateProperty(models.Model):
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for estateproperty in self:
-            estateproperty.total_area = estateproperty.garden_area + estateproperty.living_area
+            estateproperty.total_area = (
+                estateproperty.garden_area + estateproperty.living_area
+            )
 
     best_price = fields.Integer(compute="_compute_best_price")
 
@@ -89,22 +103,28 @@ class EstateProperty(models.Model):
             self.garden_orientation = ""
 
     def estate_property_cancle(self):
-        for estateproperty in self:
-            if estateproperty.state!="sold":
-                estateproperty.state="cancelled"
-            else:
-                raise UserError("sold property can not be cancel.")
+        if self.state != "sold":
+            self.state = "cancelled"
+        else:
+            raise UserError("sold property can not be cancel.")
 
     def estate_property_sold(self):
-        for estateproperty in self:
-            if estateproperty.state!="cancelled":
-                estateproperty.state="sold"
-            else:
-                raise UserError("cancelled property can not be sold.")
+        if self.state != "cancelled":
+            self.state = "sold"
+        else:
+            raise UserError("cancelled property can not be sold.")
 
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0 )',
-         'The expected_price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price >=0 )',
-         'The selling_price must be positive.') 
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0 )",
+            "The expected_price must be strictly positive.",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >=0 )",
+            "The selling_price must be positive.",
+        ),
     ]
+    
+    
