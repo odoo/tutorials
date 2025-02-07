@@ -14,7 +14,6 @@
         <field name="arch" type="xml">
             <list string="Property Type List">
                 <field name="name" string="Title"/>
-                <field name="property_id" string="Property"/>
             </list>
         </field>
     </record>
@@ -25,12 +24,21 @@
         <field name="arch" type="xml">
             <form string="Property Type Form">
                 <sheet>
-                    <div class="oe_title">
-                        <label for="name"/>
-                        <h1 class="mb16">
-                            <field name="name"/>
-                        </h1>
-                    </div>
+                    <label for="name"/>
+                    <h1 class="mb16">
+                        <field name="name"/>
+                    </h1>
+                    <notebook>
+                        <page name="properties">
+                            <field name="property_ids">
+                                <list name="Properties">
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

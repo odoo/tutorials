@@ -1,10 +1,14 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price>0)', 'The expected price must be strictly positive!'),
+        ('check_selling_price', 'CHECK(selling_price>=0)', 'The selling price must be positive!')
+    ]
 
     name = fields.Char("Property Name", required=True, help="Property Name")
     description = fields.Char()
@@ -64,6 +68,13 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            min_price = record.expected_price * 0.9 
+            if not fields.float_is_zero(record.selling_price, precision_digits=2) and fields.float_compare(record.selling_price, min_price, precision_rounding=2) < 0:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
+            
     def action_set_sold(self):
         for record in self:
             if record.state == "cancelled":
