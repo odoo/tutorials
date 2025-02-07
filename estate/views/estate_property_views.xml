@@ -2,7 +2,7 @@
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,kanban,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -12,6 +12,7 @@
             <list string="Channel">
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
+                <field name="property_type_id" string="Property Type"/>
                 <field name="date_availability"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
@@ -27,16 +28,19 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <sheet>
-                    <h1 class="mb32">
+                    <h1 class="mb32"> 
                         <field name="name" class="mb16" />
-                    </h1>
+                    </h1>   
+                    <field name="tag_ids" widget="many2many_tags" />         
                     <group>
                         <group>
+                            <field name="property_type_id" string="Property Type" options="{'no_create': true, 'no_edit': true, 'no_open': true}"/>
                             <field name="postcode" />
                             <field string="Available From" name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
+                            <field name="best_price" />
                             <field name="selling_price" />
                         </group>
                     </group>
@@ -51,6 +55,17 @@
                                 <field name="garden" class="mb16" />
                                 <field string="Garden Area (sqm)" name="garden_area" invisible="garden == False" class="mb16" />
                                 <field name="garden_orientation" invisible="garden == False" class="mb16" />
+                                <field name="total_area"  />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" string="Offers" class="mb16" readonly="state in ('offer_accepted','cancelled','sold')"/>   
+                        </page> 
+                      
+                        <page string="Other Info">
+                            <group>
+                                <field name = "user_id" string = "Salesperson"/>
+                                <field name = "buyer_id" string = "Buyer"/>
                             </group>
                         </page>
                     </notebook>
@@ -63,17 +78,23 @@
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Search Estate Property">
+            <search string="Estate Properties Search">
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
-                <field name="date_availability"/>
-                <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" string="Living Area(sqrm)" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="expected_price"/>
                 <field name="selling_price"/>
+                <field name="date_availability" string="Availible From"/>
+                <filter name="availible_property" string="Avalible Property" domain="[('state', 'in', ('offer_received','new'))]"/>
+                <group string="Group By">
+                    <filter name="postcode" context="{'group_by': 'postcode'}"/>        
+                </group>
             </search>
         </field>
     </record>
+    
 </odoo>
+
 
 
