@@ -3,6 +3,13 @@
 
 {
     'name': 'Real Estate APP',
+    'category': 'Real Estate',
+    'summary': 'Manage Real Estate Properties',
+    'description': """
+    This module allows the users to manage their real estate properties.
+    It also enables them to advertise them.
+    """,
+    'version': '1.0',
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
