@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class EstateProperty(models.Model):
@@ -39,7 +39,18 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("canclled", "Cancelled"),
+            ("cancelled", "Cancelled"),
         ],
         default="new",
     )
+
+    # Defining Many2One relationship
+    property_type_id = fields.Many2one("property.type", string="Property Type")
+    # means multiple records can have a single property_type
+
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    salesperson_id = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user
+    )
+    tags_ids = fields.Many2many("property.tags", string="Tags")
+    offer_ids = fields.One2many("property.offers", "property_id", string="Offers")

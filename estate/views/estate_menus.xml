@@ -1,12 +1,15 @@
 <odoo>
     <!-- Root Menu for Estate -->
     <menuitem id="estate_menu_root" name="Estate">
-        <!-- First-level Submenu under Estate (Estate Management) -->
+        <!-- Second-level Submenu under Estate (Estate Management) -->
         <menuitem id="estate_menu_management" name="Estate Management">
             <!-- Third-level Submenu under Estate Management (Estate Properties) -->
-            <menuitem id="menu_estate_properties" name="Properties"
-                action="estate_property_action">
-            </menuitem>
+            <menuitem id="menu_estate_properties" name="Properties" action="estate_property_action" />
+        </menuitem>
+        <!-- Menu of property type (second level)-->
+        <menuitem id="estate_settings" name="Settings">
+            <menuitem id="estate_property_type" name="Property Types" action="property_type_action" />
+            <menuitem id="estate_property_tags" name="Property Tags" action="property_tags_action" />
         </menuitem>
     </menuitem>
 </odoo>

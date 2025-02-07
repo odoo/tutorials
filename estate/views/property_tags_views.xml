@@ -1,0 +1,21 @@
+<odoo>
+    <record id="property_tags_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>  <!-- Name to show in the UI -->
+        <field name="res_model">property.tags</field>  <!-- Model name should be correct -->
+        <field name="view_mode">list,form,search</field>
+    </record>
+    <!-- property tags form view -->
+    <record id="property_tags_view_form" model="ir.ui.view">
+        <field name="name">property.tags.form</field>
+        <field name="model">property.tags</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
