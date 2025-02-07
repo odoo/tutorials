@@ -6,7 +6,7 @@
             <list string="Property Offers">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <field name="status"/>
+                <field name="status"  />
             </list>
         </field>
     </record>
@@ -23,7 +23,6 @@
                         <field name="validity"/>
                         <field name="date_deadline"/>
                         <field name="status"/>
-                        
                     </group>
                 </sheet>
             </form>

@@ -3,6 +3,7 @@
     <field name="name">Property</field>
     <field name="res_model">estate.property</field>
     <field name="view_mode">list,form</field>
+    <field name="context">{'search_default_state': 1}</field>
     </record>
     <menuitem id="estate_property_menu_action" action="estate_property_action"/>
 
@@ -10,15 +11,16 @@
     <field name="name">estate.property.list</field>
     <field name='model'>estate.property</field>
     <field name="arch" type='xml'>
-    <list string="channel">
+    <list string="channel" decoration-success="state in ('offer accepted','offer received')" decoration-bf = "state in ('offer accepted','offer received')">
         <field name="property_type_id"/>
         <field name="name" string='Title'/>
         <field name="postcode"/>
         <field name="bedrooms"/>
+        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/> 
         <field name='living_area'/>
         <field name='expected_price'/>
         <field name='selling_price'/>
-        <field name='active'/>
+        <field name="date_availability" optional="hide" string="Available from"/>
 
     </list> 
 
@@ -31,8 +33,8 @@
     <field name="arch" type='xml'>
     <form string="Test">
         <header>
-        <button name="sold" type='object' string="SOLD" invisible="cancelation"/>
-        <button name='cancel' type='object' string='CANCEL' invisible="solded"/>
+        <button name="sold" type='object' string="SOLD" invisible="state in ['sold','cancelled']"/>
+        <button name='cancel' type='object' string='CANCEL' invisible="state in ['sold','cancelled']"/>
         <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold,cancelled"/>
         </header>
         <sheet>
@@ -82,22 +84,17 @@
                     <field name='total_area' string="Total Area"/>
                 </group>
                 </page>
-                <page string="Offers">
-                    <field name='offer_ids'>
-                    <list>
+                <page string="Offers" >
+                    <field name='offer_ids' readonly="state in ['offer_accepted', 'sold', 'cancelled']">
+                    <list editable="bottom" open_form_view="True" decoration-success="status=='accepted'" decoration-danger="status == 'refused'" decoration-bf = "status=='accepted'">
                         <field name="price"/>
                         <field name="partner_id"/>
                         <field name="validity"/>
                         <field name="date_deadline"/>
-                        <button name="offer_accept" states="draft" type="object" icon="fa-check"/>
-                        <button name="offer_refuse" states="draft" type="object" icon="fa-times"/>
-                        <field name="status"/>
-
-                       
+                        <button name="offer_accept" states="draft" type="object" icon="fa-check" invisible="status in ['accepted', 'refused']" />
+                        <button name="offer_refuse" states="draft" type="object" icon="fa-times" invisible="status in ['accepted', 'refused']"/>
                     </list>
-                    
                     </field>
-
                 </page>
                 <page string="Other Info">
                     <group>
@@ -107,10 +104,8 @@
             </page>
             </notebook>
         </sheet>
-    
     </form>
     </field>
-
 </record>
 
 <record id ="estate_property_view_search" model="ir.ui.view">
@@ -122,14 +117,12 @@
         <field name="postcode"/>
         <field name="expected_price"/>
         <field name="bedrooms"/>
-        <field name='living_area' string='Living Area (sqm)'/>
+        <field name='living_area' string='Living Area (sqm)' filter_domain="[('living_area', '>=', self)]"/>
         <field name='facades'/>
         <filter string='Available' name='state' domain="['|',('state','=','new'),('state','=','offer received')]"/>
         <group expand="1" string="Group By">
         <filter string="PostCode" name="postcode" context="{'group_by':'postcode'}"/>
-        
         </group>
-
         </search>
     </field>
 </record>

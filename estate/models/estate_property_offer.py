@@ -8,7 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "test description 4"
-    _order ="price desc"
+    _order = "price desc"
 
     price = fields.Float(allow_negative=False)
     status = fields.Selection(
@@ -20,7 +20,12 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date", inverse="_inverse_date", store=True
     )
-    create_date = fields.Date(default=date.today(), readonly=True, store=True)
+    create_date = fields.Date(
+        default=lambda self: fields.Datetime.today(), readonly=True, store=True
+    )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
 
     @api.depends("validity")
     def _compute_date(self):
@@ -56,10 +61,41 @@ class EstatePropertyOffer(models.Model):
         if self.partner_id == self.property_id.buyer:
             self.property_id.buyer = None
             self.property_id.selling_price = 0
-            
+            self.property_id.state = "offer received"
 
     @api.constrains("price")
     def _check_price_positive(self):
         for record in self:
             if record.price < 0:
                 raise ValidationError("Price cannot be negative!")
+
+    @api.model
+    def create(self, vals):
+        # Set property state to 'offer received' when creating an offer
+        property = self.env["estate.property"].browse(vals.get("property_id"))
+        if property:
+            property.state = (
+                "offer received"  # Set the property state when an offer is created
+            )
+        return super(EstatePropertyOffer, self).create(vals)
+
+    @api.model
+    def unlink(self):
+        for offer in self:
+            # Check if the offer being deleted was the only offer (or the last accepted offer)
+            if offer.status == "accepted" and offer.property_id:
+                # Look for any other accepted offers for the same property
+                remaining_offers = self.env["estate.property.offer"].search(
+                    [
+                        ("property_id", "=", offer.property_id.id),
+                        ("status", "=", "accepted"),
+                        ("id", "!=", offer.id),
+                    ]
+                )
+
+                if not remaining_offers:
+                    # If there are no remaining accepted offers, change the property state back to 'new'
+                    offer.property_id.state = "new"
+
+        # Call the super method to actually delete the offer
+        return super(EstatePropertyOffer, self).unlink()
