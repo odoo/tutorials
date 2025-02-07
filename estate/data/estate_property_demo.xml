@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="property_4" model="estate.property">
+        <field name="name">Maple Heights</field>
+        <field name="description">Penthouse apartment with panoramic views and private terrace.</field>
+        <field name="postcode">390004</field>
+        <field name="date_availability">2025-09-01</field>
+        <field name="expected_price">850000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">200</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">30</field>
+        <field name="garden_orientation">west</field>
+        <field name="state">new</field>
+    </record>
+
+    <record id="property_5" model="estate.property">
+        <field name="name">Riverside Cottage</field>
+        <field name="description">Charming cottage near the river with traditional architecture.</field>
+        <field name="postcode">390005</field>
+        <field name="date_availability">2025-09-15</field>
+        <field name="expected_price">275000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">85</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">new</field>
+    </record>
+
+    <record id="property_6" model="estate.property">
+        <field name="name">Urban Loft</field>
+        <field name="description">Modern industrial-style loft in downtown area.</field>
+        <field name="postcode">390006</field>
+        <field name="date_availability">2025-10-01</field>
+        <field name="expected_price">425000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">120</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">north</field>
+        <field name="state">new</field>
+    </record>
+
+    <record id="property_7" model="estate.property">
+        <field name="name">Royal Palace</field>
+        <field name="description">Luxury mansion with indoor pool and home theater.</field>
+        <field name="postcode">390007</field>
+        <field name="date_availability">2025-11-01</field>
+        <field name="expected_price">1500000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">400</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">200</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">new</field>
+    </record>
+
+    <record id="property_8" model="estate.property">
+        <field name="name">Cozy Studio</field>
+        <field name="description">Compact studio apartment perfect for singles or couples.</field>
+        <field name="postcode">390008</field>
+        <field name="date_availability">2025-08-15</field>
+        <field name="expected_price">150000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">0</field>
+        <field name="living_area">45</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">west</field>
+        <field name="state">new</field>
+    </record>
+
+    <record id="property_9" model="estate.property">
+        <field name="name">Mountain View Lodge</field>
+        <field name="description">Rustic lodge with stunning mountain views and hiking trails nearby.</field>
+        <field name="postcode">390009</field>
+        <field name="date_availability">2025-12-01</field>
+        <field name="expected_price">680000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">220</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">150</field>
+        <field name="garden_orientation">east</field>
+        <field name="state">new</field>
+    </record>
+
+    <record id="property_10" model="estate.property">
+        <field name="name">Smart Home Hub</field>
+        <field name="description">Modern smart home with latest automation technology.</field>
+        <field name="postcode">390010</field>
+        <field name="date_availability">2025-10-15</field>
+        <field name="expected_price">950000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">250</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">70</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">new</field>
+    </record>
+
+    <record id="property_11" model="estate.property">
+        <field name="name">Beach House</field>
+        <field name="description">Beachfront property with private access to shore.</field>
+        <field name="postcode">390011</field>
+        <field name="date_availability">2025-07-01</field>
+        <field name="expected_price">1200000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">300</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">120</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">new</field>
+    </record>
+
+    <record id="property_12" model="estate.property">
+        <field name="name">City Center Studio</field>
+        <field name="description">Modern studio in prime downtown location.</field>
+        <field name="postcode">390012</field>
+        <field name="date_availability">2025-08-01</field>
+        <field name="expected_price">200000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">55</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">north</field>
+        <field name="state">new</field>
+    </record>
+
+    <record id="property_13" model="estate.property">
+        <field name="name">Eco Farm House</field>
+        <field name="description">Sustainable eco-friendly house with solar panels and organic garden.</field>
+        <field name="postcode">390013</field>
+        <field name="date_availability">2025-09-30</field>
+        <field name="expected_price">580000</field>
+        <field name="selling_price">10000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">160</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">300</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">new</field>
+    </record>
+</odoo>

@@ -11,5 +11,8 @@
         'views/estate_property_views.xml',
         'views/estate_property_menus.xml',
     ],
+    'demo' : [
+        'data/estate_property_demo.xml'
+    ],
     'application': True
 }
