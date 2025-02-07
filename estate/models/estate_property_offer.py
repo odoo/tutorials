@@ -1,10 +1,12 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "This contains offer related configurations."
+    _order = "price desc"
+
 
     price = fields.Float(string="Offer", required=True)
     status = fields.Selection(
@@ -20,6 +22,11 @@ class EstatePropertyOffer(models.Model):
 
     validity = fields.Integer(string="Validity (Days)", default=7)
     offer_deadline = fields.Date(string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
+
+    _sql_constraints = [
+        ('positive_offer_price', 'CHECK(price > 0)',
+         'The offered price must be positive.')
+    ]
 
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):
@@ -42,10 +49,10 @@ class EstatePropertyOffer(models.Model):
             bought_property = record.property_id
             bought_property.buyer_id = record.partner_id
             bought_property.selling_price = record.price
+            bought_property.state = 'offer_accepted'
         return True
 
     def action_reject(self):
         for record in self:
             record.status = "refuse"
         return True
-        

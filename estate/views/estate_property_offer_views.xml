@@ -7,8 +7,8 @@
             <list string="Property Offers">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <button name="action_accept" type="object" title="Accept" icon="fa-check"/>
-                <button name="action_reject" type="object" title="Refuse" icon="fa-times"/>
+                <button name="action_accept" type="object" title="Accept" icon="fa-check" invisible="status == 'accept' or status == 'refuse'"/>
+                <button name="action_reject" type="object" title="Refuse" icon="fa-times" invisible="status == 'accept' or status == 'refuse'"/>
                 <field name="status"/>
                 <field name="validity"/>
                 <field name="offer_deadline"/>
