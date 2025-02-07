@@ -5,7 +5,6 @@
     'depends': ['base'],
     'license': 'LGPL-3',
     'author' : 'Manthan Akbari',
-    'auto_install': True,
      'data' : [
          'security/ir.model.access.csv',
          'views/estate_property_views.xml',
