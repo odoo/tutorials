@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="estate.property" id="property_1">
+        <field name="name">Modern Apartment</field>
+        <field name="postcode">123454</field>
+        <field name="description">Stylish apartment in the city center</field>
+        <field name="expected_price">3000000</field>
+        <field name="facades">2</field>
+        <field name="state">new</field>
+    </record>
+    <record model="estate.property" id="property_2">
+        <field name="name">Cozy Cottage</field>
+        <field name="postcode">123454</field>
+        <field name="description">Charming cottage surrounded by nature</field>
+        <field name="expected_price">200000</field>
+        <field name="facades">1</field>
+        <field name="state">new</field>
+    </record>
+
+    <record model="estate.property" id="property_3">
+        <field name="name">Luxury Villa</field>
+        <field name="postcode">123456</field>
+        <field name="description">Elegant villa with panoramic views</field>
+        <field name="expected_price">1000000</field>
+        <field name="facades">4</field>
+        <field name="state">new</field>
+    </record>
+
+    <record model="estate.property" id="property_4">
+        <field name="name">Riverside Mansion</field>
+        <field name="postcode">123333</field>
+        <field name="description">Grand mansion overlooking the river</field>
+        <field name="expected_price">5000000</field>
+        <field name="facades">6</field>
+        <field name="state">new</field>
+    </record>
+
+    <record model="estate.property" id="property_5">
+        <field name="name">Mountain Retreat</field>
+        <field name="postcode">123666</field>
+        <field name="description">Secluded retreat in the mountains</field>
+        <field name="expected_price">300000</field>
+        <field name="facades">2</field>
+        <field name="state">new</field>
+    </record>
+
+    <record model="estate.property" id="property_6">
+        <field name="name">Beachfront Condo</field>
+        <field name="postcode">123666</field>
+        <field name="description">Modern condo with beach access</field>
+        <field name="expected_price">400000</field>
+        <field name="facades">1</field>
+        <field name="state">new</field>
+    </record>
+
+
+</odoo>
