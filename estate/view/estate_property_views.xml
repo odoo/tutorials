@@ -1,8 +1,89 @@
 <?xml version="1.0"?>
 <odoo>
-<record id="estate_model_action" model="ir.actions.act_window">
-    <field name="name">Properties</field>
-    <field name="res_model">estate_model</field>
-    <field name="view_mode">list,form,kanban</field>
-</record>
-</odoo> 
+    <!-- list view code -->
+    <record id="estate_model_list_view" model="ir.ui.view">
+        <field name="name">estate_property_view</field>
+        <field name="model">estate_model</field>
+        <field name="arch" type="xml">
+            <list string="list_view">
+                <field name="name"/> 
+                <field name="postcode"/>
+                <field name="bedrooms"/> 
+                <field name="living_area"/>
+                <field name="expected_price"/> 
+                <field name="selling_price"/>
+                <field name="date_availability"/>
+            </list> 
+        </field> 
+    </record>
+    <!-- form view code -->
+    <!-- <record id="estate_model_view_mode" model="ir.ui.view">
+        <field name="name">form_view</field>
+        <field name="model">estate_model</field>
+        <field name="arch" type="xml"></field>
+            <form string="formview">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="last_seen"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+    </record> -->
+    <!-- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -->
+    <record id="estate_model_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate_model</field>
+        <field name="view_mode">list,form,kanban,graph</field>
+        <field name="view_id" ref="estate_model_list_view"/> 
+    </record>
+    <record id="postcode_action" model="ir.actions.act_window">
+        <field name="name">PostCode</field>
+        <field name="res_model">estate_model</field>
+        <field name="view_mode">list,form,kanban,graph</field>
+        <field name="view_id" ref="estate_model_list_view"/>
+    </record> 
+    <record id="estate_model_form_view" model="ir.ui.view">
+        <field name="name">estate_property_form_view</field>
+        <field name="model">estate_model</field>
+        <field name="arch" type="xml">
+            <form string="Property Form">
+                <h3>Name</h3>
+                <h1><field name="name"/></h1>
+                    <group>
+                        <group>
+                            <field name="postcode" style="border:2px"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/> 
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/> 
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/> 
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                    </notebook>
+            </form>
+        </field>
+    </record>  
+</odoo>     

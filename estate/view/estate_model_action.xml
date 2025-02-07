@@ -1,11 +1,9 @@
 <?xml version="1.0"?>
 <odoo>
-<menuitem id="test_menu_root" name="Estate">
-    <menuitem id="test_first_level_menu" name="Advertisement">
-        <menuitem id="test_model_menu_action" name="Properies" action="estate_model_action"/>
+    <menuitem id="test_menu_root" name="Estate">
+        <menuitem id="test_first_level_menu" name="Advertisement">
+            <menuitem id="test_model_menu_action" name="Properies" action="estate_model_action"/>
+            <menuitem id="test_model_menu_action_2" name="PostCode" action="postcode_action"/>
+        </menuitem>
     </menuitem>
-    <!-- <menuitem id="test_second_level_menu" name="Second Level">
-        <menuitem id="test_second_model_menu_action" name="Order" action="estate_model_action"/>
-    </menuitem> -->
-</menuitem>
 </odoo>
