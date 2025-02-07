@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 from datetime import timedelta
-
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -13,7 +13,7 @@ class EstatePropertyOffer(models.Model):
     )
     
     status = fields.Selection(
-        [
+        selection=[
             ('accept', "Accepted"),
             ('reject', "Rejected")
         ],
@@ -37,12 +37,6 @@ class EstatePropertyOffer(models.Model):
         help="The property for which the offer is made"
     )
     
-    create_date = fields.Date(
-        string="Create Date",
-        default=fields.Date.context_today,
-        help="The date when the offer was created"
-    )
-    
     validity = fields.Integer(
         string="Validity (days)",
         default=7,
@@ -62,7 +56,7 @@ class EstatePropertyOffer(models.Model):
         """Computes date_deadline as create_date + validity days"""
         for record in self:
             if record.create_date:
-                record.date_deadline = record.create_date + timedelta(days=record.validity)
+                record.date_deadline = record.create_date.date() + timedelta(days=record.validity)
             else:
                 record.date_deadline = False
 
@@ -70,6 +64,22 @@ class EstatePropertyOffer(models.Model):
         """Sets validity based on date_deadline - create_date"""
         for record in self:
             if record.date_deadline and record.create_date:
-                record.validity = (record.date_deadline - record.create_date).days
+                record.validity = (record.date_deadline - record.create_date.date()).days
             else:
                 record.validity = 7
+
+    def action_confirm(self):
+        for record in self:
+            if record.property_id.state == 'sold':
+                raise UserError("Cannot accept an offer for a sold property.")
+            if record.property_id.offer_ids.filtered(lambda o: o.status == 'accept' and o != record):
+                raise UserError("Only one offer can be accepted per property.")
+            record.status = 'accept'
+            record.property_id.state = 'offer_accepted'
+            record.property_id.buyer = record.partner_id
+            record.property_id.selling_price = record.price
+
+    def action_reject(self):
+        for record in self:
+            if not record.status:
+                record.status='reject'

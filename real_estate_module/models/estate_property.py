@@ -1,4 +1,6 @@
 from odoo import api, models, fields
+from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
@@ -105,61 +107,69 @@ class EstateProperty(models.Model):
     )
     
     property_type_id = fields.Many2one(
-        "estate.property.type",
+        comodel_name='estate.property.type',
         string="Property Type",
         help="The type of the property (e.g., apartment, house, etc.)"
     )
     
     buyer = fields.Many2one(
-        "res.partner",
+        comodel_name='res.partner',
         string="Buyer",
         help="The buyer who purchased the property"
     )
     
     salesman = fields.Many2one(
-        "res.users",
+        comodel_name='res.users',
         string="Salesman",
         default=lambda self: self.env.user,
         help="The salesperson responsible for the property"
     )
     
     tag_ids = fields.Many2many(
-        "estate.property.tags",
+        comodel_name='estate.property.tags',
         string="Tags",
         required=True,
         help="Tags associated with the property (e.g., luxury, beachfront)"
     )
     
     offer_ids = fields.One2many(
-        "estate.property.offer",
-        "property_id",
+        comodel_name='estate.property.offer',
+        inverse_name="property_id",
         help="Offers made for this property"
     )
     
     total_area = fields.Float(
-        compute="_compute_total_area",
+        compute='_compute_total_area',
         help="The total area of the property (living area + garden area)"
     )
     
     best_price = fields.Float(
-        compute="_compute_best_price",
+        compute='_compute_best_price',
         help="The best price offered for the property"
     )
     
-    @api.depends("living_area", "garden_area")
-    def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
-    
-    @api.depends("offer_ids.price")
-    def _compute_best_price(self):
-        for record in self:
-            if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped('price'))
-            else:
-                record.best_price = 0.0
+    status = fields.Selection(
+        string="Status",
+        selection=[
+            ('cancel',"Cancelled"),
+            ('sold',"Sold")
+        ]
+    )
 
-    @api.onchange("garden")
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
+    
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for property in self:
+            if property.offer_ids:
+                property.best_price = max(property.offer_ids.mapped('price'))
+            else:
+                property.best_price = 0.0
+
+    @api.onchange('garden')
     def _onchange_garden_area_orientation(self):
         if self.garden:
             self.garden_area = 10
@@ -167,3 +177,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+    
+    def action_cancel_button(self):
+        if not self.status:
+            self.status='cancel'
+        elif self.status=='sold':
+            raise UserError("Sold Properties cannot be cancelled")
+    
+    def action_sold_button(self):
+        if not self.status:
+            self.status='sold'
+        elif(self.status=='cancel'):
+            raise UserError("Cancelled Properties cannot be Sold")
