@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError 
+from odoo.exceptions import UserError
 from odoo import fields, models, api
 
 
@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
+    # Fields definition
     name = fields.Char(string="Property Name", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -45,14 +46,23 @@ class EstateProperty(models.Model):
         string="Garden Orientation",
     )
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        if self.selling_price and self.selling_price < self.expected_price * 0.9:
+            raise UserError("Selling price must be at least 90% of the expected price!")
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         self.total_area = self.living_area + self.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
-        for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
+        self.best_price = max(self.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -64,20 +74,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_cancel_property(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError("Sold properties cannot be cancelled.")
-            record.state = 'cancelled'
-        return True
+        if self.state == 'sold':
+            raise UserError("Sold properties cannot be cancelled.")
+        self.state = 'cancelled'
 
     def action_set_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise UserError("Cancelled properties cannot be sold.")
-            record.state = 'sold'
-        return True
+        if self.state == 'cancelled':
+            raise UserError("Cancelled properties cannot be sold.")
+        self.state = 'sold'
 
-    # SQL constraint to ensure that expected price is greater than 0
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be positive'),('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
-    ]
+    
