@@ -9,21 +9,22 @@ class EstateProperty(models.Model):
     # active field define here
     active = fields.Boolean(string="Active",default=True)
     description = fields.Text()
-    postcode = fields.Char()
+    postcode = fields.Char(string="Postcode")
     
     # Setup the default availability date to 3 months from current date
     date_availability = fields.Date(string="Availability Date", copy=False, default=lambda self: fields.Date.today() + timedelta(days=90))
     
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(string="Expected Price",required=True)
     
     # Making SP readonly and preventing it from being copied
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     
     # Making Default number of bedrooms set to 2
-    bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
     
-    living_area = fields.Integer(string="Living Area(sqm)")
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
+    date_availability = fields.Date(string="Available From")
     
     # Boolean fields for garage and garden
     is_garage = fields.Boolean()
@@ -43,5 +44,5 @@ class EstateProperty(models.Model):
         ('offer accepted','Offer Accepted'),
         ('sold','Sold'),
         ('cancelled','Cancelled')
-    ],string='Status',default="new",copy=False)
+    ],string='State',default="new",copy=False)
     

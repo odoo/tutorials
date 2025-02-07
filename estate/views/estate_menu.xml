@@ -9,4 +9,5 @@
 
     <menuitem id="rent" name="Rent" parent="menu_estate_property"/>
     <menuitem id="rent_sub" name="Rent Sub" parent="rent" action="action_estate_property"/>
+
 </odoo>
