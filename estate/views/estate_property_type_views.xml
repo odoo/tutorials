@@ -7,7 +7,48 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="estate_property_type_search" model="ir.ui.view">
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Property Type">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property Type">
+                <sheet>
+                    <group>
+                        <div class="w-25">
+                            <label for="name" />
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <field name="active"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list string="Properties">
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" />
+                                    <field name="state" string="Status" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_search" model="ir.ui.view">
         <field name="name">estate.property.type.search</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">

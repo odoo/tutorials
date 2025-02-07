@@ -2,7 +2,7 @@
     "name": "Real Estate",
     "description": "This is a real estate listing module.",
     "depends": [
-        "base",  
+        "base",
     ],
     'data': [
         'security/ir.model.access.csv',

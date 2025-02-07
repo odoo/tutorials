@@ -1,12 +1,20 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
+    
+    _sql_constraints = [
+        (
+            'positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive'
+        ),
+    ]
 
     name = fields.Char(
         string="Property Name",
@@ -18,7 +26,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         "Availability Date",
         copy=False,
-        default=fields.Datetime.today() + relativedelta(days=90),
+        default=lambda self: fields.Date.today() + relativedelta(days=90),
     )
     expected_price = fields.Float(
         "Expected Price",
@@ -31,7 +39,7 @@ class EstateProperty(models.Model):
         copy=False
     )
     bedrooms = fields.Integer(
-        "Bedrooms", 
+        "Bedrooms",
         default=2
     )
     living_area = fields.Integer("Living Area (sqm)")
@@ -62,16 +70,15 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-    
-    property_type_id=fields.Many2one(string="Property Type", comodel_name="estate.property.type")
+    property_type_id=fields.Many2one(string="Property Type", comodel_name="estate.property.type", ondelete="restrict")
     buyer=fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False, readonly=True)
     salesperson=fields.Many2one(
         string="Salesperson",
         comodel_name="res.users",
-        default=lambda self: self.env.user
+        default=lambda self: self.env.user,
+        ondelete="restrict"
     )
-
-    tag_ids=fields.Many2many(string="Tags", comodel_name="estate.property.tag")
+    tag_ids=fields.Many2many(string="Tags", comodel_name="estate.property.tag", ondelete="restrict")
     offer_ids=fields.One2many(string="Offers", comodel_name="estate.property.offer", inverse_name="property_id")
     total_area=fields.Integer(compute="_compute_total_area")
     best_price=fields.Integer(compute="_compute_best_price", help="Best price from offers")
@@ -114,3 +121,9 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_valid_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, record.expected_price*0.9, precision_digits=2) < 0:
+                raise ValidationError("Selling price must be atleast 90% of the expected price")

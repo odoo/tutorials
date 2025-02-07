@@ -31,8 +31,9 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="action_mark_property_sold" type="object" string="Sold" />
-                    <button name="action_mark_property_cancelled" type="object" string="Cancel" />
+                    <button name="action_mark_property_sold" type="object" string="Sold" invisible="state == 'sold' or state == 'cancelled'" />
+                    <button name="action_mark_property_cancelled" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'" />
+                    <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
                     <div class="w-25 mb-4">
@@ -42,8 +43,8 @@
                     <group>
                         <group>
                             <field name="state" />
-                            <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="property_type_id" />
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                            <field name="property_type_id" options="{'no_create': true}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -63,14 +64,14 @@
                                     <field name="facades" />
                                     <field name="garage" />
                                     <field name="garden" />
-                                    <field name="garden_area" />
-                                    <field name="garden_orientation" />
+                                    <field name="garden_area" invisible="not garden" />
+                                    <field name="garden_orientation" invisible="not garden" />
                                     <field name="total_area" />
                                 </group>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" />
+                            <field name="offer_ids" readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled'" />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -84,7 +85,7 @@
         </field>
     </record>
 
-    <record id="estate_property_search" model="ir.ui.view">
+    <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -96,15 +97,15 @@
                 <field name="living_area" />
                 <field name="facades" />
 
-                <filter 
+                <filter
                     string="Available"
                     name="state"
-                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" 
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"
                 />
-                <filter 
+                <filter
                     string="With Garden"
                     name="garden"
-                    domain="[('garden', '=', True)]" 
+                    domain="[('garden', '=', True)]"
                 />
                 
                 <filter
