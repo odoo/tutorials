@@ -10,6 +10,10 @@
                         <field name="partner_id"/>
                         <field name="status"/>
                     </group>
+                    <group>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -23,6 +27,10 @@
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="status"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <button name="action_accept" type="object" string="Accept" icon="fa-check"/>
+                <button name="action_refuse" type="object" string="Refuse" icon="fa-times"/>                                         
             </list>
         </field>
     </record>

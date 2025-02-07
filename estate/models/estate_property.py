@@ -1,10 +1,12 @@
-from odoo import api,models,fields
+from odoo import api,models,fields , exceptions
 from datetime import date , timedelta
+from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property" 
     _description = "Real Estate Property"
+    _order = "id desc" 
 
     name = fields.Char(string="Title", required=True)
     expected_price = fields.Float(string="Expected Price", required=True)
@@ -55,4 +57,55 @@ class EstateProperty(models.Model):
             # Using mapped() to get all offer prices and then find the maximum
             record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
 
+    
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise exceptions.UserError("A canceled property cannot be sold!")
+            record.state = "sold"
+        return True
+
+    def action_cancel_property(self):
+        for record in self:
+            if record.state == "sold":
+                raise exceptions.UserError("A sold property cannot be canceled!")
+            record.state = "cancelled"
+        return True
+
+    def action_accept_offer(self):
+        for record in self:
+            if record.property_id.state == "sold":
+                raise exceptions.UserError("You cannot accept an offer for a sold property!")
+            record.status = "accepted"
+            record.property_id.write({
+                'state': 'sold',
+                'buyer_id': record.buyer_id.id,
+                'selling_price': record.price
+                })
+        return True
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 
+         'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 
+         'The selling price must be positive.')
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price > 0 and record.selling_price < record.expected_price * 0.9:
+                raise ValidationError(f"The selling price cannot be lower than 90% of the expected price.")
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    # Sequence = fields.Integer('Sequence', default=10)
     

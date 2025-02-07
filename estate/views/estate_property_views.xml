@@ -29,16 +29,25 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
+                <header>
+                    <button name="action_set_sold" type="object" string="Sold" class="oe_highlight" visibility="{'invisible': [('state', '=', 'sold')]}"/>
+                    <button name="action_cancel_property" type="object" string="Cancel" class="oe_secondary" visibility="{'invisible': [('state', '=', 'cancelled')]}"/>
+                </header>
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
                 <sheet>
                    <div class="oe_title">
                         <h1 class="mb16">
                             <field name="name"></field>
                         </h1>
                     </div>
+
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="property_type_id"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="property_type_id" widget="many2one" options="{'no_create': True}"/>
+                            <!-- <field name="property_type_id"/> -->
                             <field name="postcode"/>
                             <field name="expected_price"/>
                         </group>
@@ -61,7 +70,6 @@
                                 <field name="garden_area" help="size of the garden as sqm"/>
                                 <field name="garden_orientation" help="facing of the garden"/>
                                 <field name="total_area" help="Total Area calculated by adding living area and garden area "/>
-
 
                             </group>
                         </page>
@@ -104,23 +112,7 @@
             </search>
         </field>
     </record>
-<!-- Total Area -->
-    <!-- <record id="view_estate_property_form" model="ir.ui.view">
-    <field name="name">estate.property.form</field>
-    <field name="model">estate.property</field>
-    <field name="arch" type="xml">
-        <form>
-            <sheet>
-                <group>
-                    <field name="living_area"/>
-                    <field name="garden_area"/>
-                    <field name="total_area"/>
-                </group>
-            </sheet>
-        </form>
-    </field>
-</record> -->
-    
-    
 </odoo>
+
+
                                      
