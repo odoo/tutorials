@@ -9,6 +9,6 @@
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
     ],
-    'application': False,
+    'application': True,
     'auto_install': False,
 }

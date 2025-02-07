@@ -3,20 +3,21 @@ from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _description = "Real Estate Property"
     
     name = fields.Char("Property Name", required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
-    date_availability = fields.Date("Date", copy=False, default=fields.Date.today() + relativedelta(months=3))
+    date_availability = fields.Date("Available From", copy=False, default=fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float("Expected Price")
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Bedrooms", default=2)
-    living_area = fields.Integer("Living Area")
+    living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer("Facades")
     garage = fields.Boolean("Garage")
     garden = fields.Boolean("Garden")
-    garden_area = fields.Integer("Garden Area")
-    active = fields.Boolean(active=True)
+    garden_area = fields.Integer("Garden Area (sqm)")
+    active = fields.Boolean(default=True)
     garden_orientation = fields.Selection( 
         string="Garden Orientation",
         selection=[
@@ -34,6 +35,5 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled'),
         ],
-        copy=False,
-        default='new',
+        required=True, copy=False, default='new',
     )
