@@ -3,5 +3,9 @@
         <menuitem id="estate_property_first_level_menu" name="Advertisement">
             <menuitem id="estate_property_model_menu_action" action="estate_property_action"/>
         </menuitem>
+
+        <menuitem id="estate_property_type_menu" name="Settings">
+            <menuitem id="estate_property_type_model_menu_action" action="estate_property_type_action"/>
+        </menuitem>
     </menuitem>
 </odoo>
