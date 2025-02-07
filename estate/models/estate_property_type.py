@@ -7,7 +7,8 @@ class EstatePropertyType(models.Model):
 	_name="estate.property.type"
 	_description = "Estate Property Type"
 
-	name =fields.Char('Property Type Name',required=True)
+	name =fields.Char(string='Property Type Name',required=True)
+	property_ids = fields.One2many("estate.property", "property_type_id", string="Properties")
 
-	
-	
+
+

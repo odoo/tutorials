@@ -12,13 +12,18 @@
                         </h1>
                     </div>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="available_from"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -37,12 +42,24 @@
                             <field name="garden_orientation"/>
                             <field name="state"/>
                             <field name="active"/>
+                            <field name="total_area"/>
                         </group>
                     </page>
-                    <page string="Sales Information">
+                    <page string="Other Info">
                         <group>
                             <field name="salesperson_id"/>
                             <field name="buyer_id"/>
+                        </group>
+                    </page>
+                    <page string="Offers">
+                        <group>
+                            <field name="offer_ids">
+                            <list editable="bottom">
+                                    <field name="price"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
+                                </list>
+                            </field>
                         </group>
                     </page>
                 </notebook>
@@ -63,7 +80,10 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="property_type_id"/>
+                <field name="tag_ids"/>
                 <field name="available_from"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
             </list>
         </field>
     </record>

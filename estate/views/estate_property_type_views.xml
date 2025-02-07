@@ -4,7 +4,7 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="My New House">
+            <form string="Estate Properties">
                 <sheet>
                     <group>
                         <field name="name"/>
