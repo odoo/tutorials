@@ -1,10 +1,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Contains all properties related to estate model"
+    _order = "id desc"
 
     # Basic Details
     name = fields.Char(string="Title", required=True)
@@ -19,7 +22,7 @@ class EstateProperty(models.Model):
         string="Property Type", comodel_name="estate.property.type"
     )
     offer_ids = fields.One2many(
-        string="Offers", comodel_name="estate.property.offer", inverse_name="property_id", copy=False
+        string="Offers", comodel_name="estate.property.offer", inverse_name="property_id"
     )
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(
@@ -59,6 +62,7 @@ class EstateProperty(models.Model):
 
     # Reserved Fields Override
     state = fields.Selection(
+        string="Status",
         selection=[
             ("new", "New"),
             ("offer_received", "Offer Received"),
@@ -71,19 +75,50 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
 
+    _sql_constraints = [('check_expected_price', 'CHECK(expected_price > 0)',
+                         'Expected price must be strictly positive'),
+                        ('check_selling_price', 'CHECK(selling_price >= 0)',
+                         'Selling price must be positive')]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            is_offer_accepted = any([offer.status == 'accepted' for offer in record.offer_ids])
+            if is_offer_accepted and fields.float_compare(record.selling_price, 0.9 * record.expected_price, 2) == -1:
+                raise ValidationError('Selling price must be atleast 90% of the expected price')
+
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
-        self.total_area = self.garden_area + self.living_area
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        self.best_price = max([x.price for x in self.offer_ids], default=0)
+        for record in self:
+            record.best_price = max([x.price for x in record.offer_ids], default=0)
+
+            # set state to offer received if offers are made
+            if len(record.offer_ids) > 0 and record.state == 'new':
+                record.state = 'offer_received'
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = None
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = "north"
+            else:
+                record.garden_area = 0
+                record.garden_orientation = None
+
+    def action_sell_property(self):
+        if self.state == "cancelled":
+            raise UserError('Cancelled property cannot be sold')
+
+        self.state = "sold"
+
+    def action_cancel_property(self):
+        if self.state == "sold":
+            raise UserError('Sold property cannot be cancelled')
+
+        self.state = "cancelled"
