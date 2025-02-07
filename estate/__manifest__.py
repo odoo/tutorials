@@ -5,7 +5,6 @@
     'depends': ['base'],
     'author': 'Shiv Bhadaniya',
     'application': True,
-    'auto_install': True,
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
