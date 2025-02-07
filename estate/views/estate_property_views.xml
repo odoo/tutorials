@@ -6,19 +6,20 @@
         <field name="view_mode">list,form</field>
     </record>  
 
-    <!-- Tree View -->
+    <!-- List View -->
     <record id="estate_properties_tree_view" model="ir.ui.view"> 
         <field name="name">estate.tree.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name" string="Title"/>
+                <field name="name" string="Name"/>
                 <field name="postcode" string="Postcodes"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="selling_price" string="Selling Price"/>
                 <field name="date_availability" string="Available From"/>
+                <field name="tag_id" string="Tags"></field>
             </list>
         </field>
     </record>  
@@ -44,26 +45,34 @@
                         <group>
                             <field name="expected_price" string="Expected Price" colspan="4"/>
                             <field name="selling_price" string="Selling Price" colspan="4"/>
+                            <field name="tag_id" string="Tags"></field>
                         </group>
                     </group>
-
                         <notebook>
                             <page string="Description">
                                 <group>
                                     <group>
-                                            <field name="description"/>
-                                            <field name="bedrooms" string="Bedrooms"/>
-                                            <field name="living_area" string="Living Area"/>
-                                            <field name="facades" string="Facades"/>
-                                            <field name="is_garage" string="Garage"/>
-                                            <field name="is_garden" string="Garden"/>
-                                            <field name="garden_area" string="Garden Area(sqm)"/>
-                                            <field name="garden_orientation" string="Garden Orientation"/>
+                                        <field name="description"/>
+                                        <field name="bedrooms" string="Bedrooms"/>
+                                        <field name="living_area" string="Living Area"/>
+                                        <field name="facades" string="Facades"/>
+                                        <field name="is_garage" string="Garage"/>
+                                        <field name="is_garden" string="Garden"/>
+                                        <field name="garden_area" string="Garden Area(sqm)"/>
+                                        <field name="garden_orientation" string="Garden Orientation"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page string="Other Info">
+                                <group>
+                                    <group>
+                                        <field name="buyer_id" string="Buyer"/>
+                                        <field name="seller_id" string="Salesman"/>
                                     </group>
                                 </group>
                             </page>
                         </notebook>
-               
                 </sheet>
             </form>
         </field>
@@ -83,10 +92,10 @@
                 <field name="facades"/>
                 <field name="is_garage"/>
                 <field name="is_garden"/>
-                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
+                <!-- <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name='postcode' context="{'group_by':'postcode'}"/>
-                </group>
+                </group> -->
             </search>
         </field>
     </record>

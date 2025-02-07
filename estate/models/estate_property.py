@@ -25,4 +25,8 @@ class EstateProperty(models.Model):
         selection=[('new','New'),('offer_received','Offer Received'),('offer_accepted','Offer Accepted'),('sold','Sold'),('cancelled','Cancelled')]
         ,default='new'
     )
-    
+    property_type_id =fields.Many2one("estate.property.type",string="Property Type")
+    buyer_id=fields.Many2one("res.partner",string="Buyer", readonly=True)
+    seller_id=fields.Many2one("res.users",string="Salesman")
+    tag_id=fields.Many2many("estate.property.tag",string="Tags")
+    #offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
