@@ -1,7 +1,6 @@
 <odoo>
     
-    
-    <record id="action_estate_property" model="ir.actions.act_window">
+    <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">kanban,list,form</field>
@@ -9,11 +8,12 @@
 
     <!-- List View Configuration -->
     <record id="estate_property_view_list" model="ir.ui.view">
-        <field name="name">Estate Property List</field>
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="List Channel">
                 <field name="name"/>
+                <!-- <field name="estate_property_type_id"/> -->
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -26,15 +26,18 @@
    
     <!-- Form View Configuration -->
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">Estate Property Form</field>
+        <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form name="Form Channel">
                 <sheet>
-                    
+                    <div>
                         <h1><field name="name"/></h1>
+                        <!-- <field name="estate_property_tag_id" widget="many2many_tags"/> -->
+                    </div>
                     <group>  
                         <group>
+                            <!-- <field name="estate_property_type_id"/> -->
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -64,22 +67,24 @@
 
     <!-- Serach view Configuration -->
     <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">Estate Property Search</field>
+        <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search> 
+                <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <!-- <field name="estate_property_type_id"/> -->
 
-                <filter string="New/Offer Recieved" name="n-or" domain="['|', ('state', '=', 'new'),('state', '=', 'offer_received')]"/>         
-                <filter string="New State" name="ns" domain="[('state', '=', 'new')]"/>
-                <filter string="Offer Recieved" name="or" domain="[('state', '=', 'offer_received')]"/>
+                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'),('state', '=', 'offer_received')]"/>         
+                <filter string="New State" name="new_state" domain="[('state', '=', 'new')]"/>
+                <filter string="Offer Recieved" name="offer_recieved" domain="[('state', '=', 'offer_received')]"/>
 
                 <group>
-                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>

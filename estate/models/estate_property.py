@@ -1,15 +1,15 @@
 from odoo import models, fields
 
 class EstateProperty(models.Model):
+
+    # ..................private attribute..................
     _name = "estate.property"
     _description = "These are Estate Module Properties"
 
-    name = fields.Char(
-        string="Name", 
-        required=True
-    )
-    description = fields.Text(
-        string="Description"
+    # ..................fields attribute..................
+    name = fields.Char(string="Name", required=True)
+    description = fields.Text(string="Description"
+    
     )
     postcode = fields.Char(
         string="Postcode"
@@ -69,8 +69,20 @@ class EstateProperty(models.Model):
         copy=False, 
         required=True
     )
-
     active = fields.Boolean(
         string="Active", 
         default=True
     )
+
+    # estate_property_type_id = fields.Many2one(
+    #     comodel_name="estate.property.type", 
+    #     string="Property Type"
+    # )
+
+    # estate_property_tag_id = fields.Many2many(
+    #     comodel_name="estate.property.tag",
+    #     string="Property Tag"
+    # )
+
+
+
