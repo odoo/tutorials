@@ -32,29 +32,31 @@
                     <group>
                         <group>
                             <h1>
-                                <field name="name" string="Property Name"/>
+                                <field name="name"/>
                             </h1>
                             <field name='tags_ids' widget="many2many_tags"/>
-                            <field name="postcode" string="Postcode"/>
-                            <field name = "date_availability" string="Available From"/>
+                            <field name="postcode"/>
+                            <field name = "date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price" string="Expected Price"/>
-                            <field name="selling_price" string="Selling Price"/>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook >
                         <page string='Description'>
                             <group>
-                                <field name="description" string="Description"/>
-                                <field name="bedrooms" string="Bedrooms"/>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
                                 <field name="living_area" string="Living Area (sqm)"/>
-                                <field name="facades" string="Facades"/>
-                                <field name="garage" string="Garage"/>
-                                <field name="garden" string="Garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation" string="Garden Orientation"/>
-                                <field name="state" string="Status"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="total_area"/>
+                                <field name="state"/>
                             </group>
                         </page>
                         <page string='Other info'>
@@ -66,9 +68,12 @@
                         <page string='Offers'>
                             <field name='offer_ids'>
                                 <list>
-                                    <field name="price" string='Price' width="20%"/>
-                                    <field name="property_id" string='Partner' width="20%"/>
-                                    <field name="status" string='Status'  width="20%"/>
+                                    <field name='buyer_id' string='Buyer' width='20%'/>
+                                    <field name="price" string='Price' width='10%'/>
+                                    <field name='property_id' string='Partner' width='10%'/>
+                                    <field name='validity' string='Validity(days)' width='10%'/>
+                                    <field name='date_deadline' string='Deadline' width='10%'/>
+                                    <field name='status' string='Status'  width='10%'/>
                                 </list>
                             </field>
                         </page>
