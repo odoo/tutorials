@@ -11,6 +11,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="property_type_id"/>
             </list>
         </field>  
     </record>
@@ -21,10 +22,16 @@
         <field name="arch" type="xml">
             <form string="Add Detail">
                 <sheet>
+                    <div >
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
                     <group>
                         <group>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="property_type_id"/>
                         </group>
                         <group>    
                             <field name="expected_price"/>
@@ -43,6 +50,12 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Other Info">
+                           <group>
+                               <field name="salesman_id"/>
+                               <field name="partner_id"/>
+                           </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -54,9 +67,13 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <search string="Estate Property">
-                    <field name="name" string="name" />
-                    
+                    <field name="property_type_id"/>
+                    <field name="name" string="name" />  
                     <field name="postcode" string="Postcode" />
+                    <filter name="state" domain="[('state','=','new')]"/>
+                    <group expand="0" string="Group By">
+                       <filter name="group_by_postcode" string="Poscode" context="{'group_by':'postcode'}"/>
+                    </group>
                 </search>
             </field>
     </record>

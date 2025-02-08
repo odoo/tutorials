@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Name", required=False, copy=False)
     description = fields.Text(copy=True)
     postcode = fields.Char(string="Postcode")
-    date_availability = fields.Date(string="Available From", copy=False, default=fields.Date.add(fields.Date.today(), months=3))
+    date_availability = fields.Date(string="Available From", copy=False, default=lambda self:fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
@@ -37,3 +37,6 @@ class EstateProperty(models.Model):
             ("sold_cancelled", "Sold and Cancelled.")
         ]
     )
+    property_type_id = fields.Char(string="Property id")
+    salesman_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
+    partner_id = fields.Many2one('res.partner', string="Partner", copy=False)
