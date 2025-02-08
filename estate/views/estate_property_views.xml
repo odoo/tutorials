@@ -1,10 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">estate action</field>
+        <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list</field>
     </record>
 
+    <!-- list view  -->
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <!-- name of record  -->
+        <field name="name">estate_property_list</field>
+        <!-- model from which the fields will be imported  -->
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="name" string="Title" width="40px" />
+                <field name="postcode" string="Postcode" width="40px" />
+                <field name="bedrooms" string="Bedrooms" width="40px" />
+                <field name="living_area" string="Living Area (sqm)" width="40px" />
+                <field name="expected_price" string="Expected Lines" width="40px" />
+                <field name="selling_price" string="Selling Price" width="40px" />
+                <field name="date_availability" string="Available Form" width="40px" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate_property_form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Properties">
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="Property Name" nolabel="1" />
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+
+                                <field name="description" string="Description"
+                                    placeholder="when duplicated, status and date not copied" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" default="1" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
+                            </group>
+
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+
+        </field>
+    </record>
+
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Property Search">
+                <field string="Title" name="name" />
+                <field string="Postcode" name="postcode" />
+                <field string="Expected Price" name="expected_price" />
+                <field string="Bedrooms" name="bedrooms" />
+                <field string="Living Area (sqm)" name="living_area" />
+                <field string="Facades" name="facades" />
+                <filter string="Available" name="date_availability"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]" />
+                <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
+                <!-- added extra group by filter other than given exercise -->
+                <filter string="State" name="state" context="{'group_by':'state'}" />
+                <filter string="Bedrooms" name="bedrooms" context="{'group_by':'bedrooms'}" />
+            </search>
+        </field>
+    </record>
 
 </odoo>
