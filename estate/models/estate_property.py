@@ -1,9 +1,9 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class estateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property"
-    
+
 
     name= fields.Char("Property Name", required = True) # required make property not nullable 
     description =  fields.Text("Description")
@@ -29,3 +29,27 @@ class estateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tags")
 
     offer_ids = fields.One2many("estate.property.offer", "property_id", string = "Offers")
+
+    total_area = fields.Integer("Total Area (sqm)", compute = "_compute_total_area", help = "Calculate by adding Living area and Garden Area")
+    
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    best_price = fields.Float("Best Price",compute = "_compute_best_price")
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0 # sets best price only when record of offers are added
+
+    @api.onchange("garden")
+    def _onchange_(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+            # onchange can also be used to return warning
