@@ -1,5 +1,7 @@
 from odoo import fields, models, api
 from datetime import timedelta
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class Estateproperty(models.Model):
     _name = "estate.property"
@@ -25,8 +27,37 @@ class Estateproperty(models.Model):
 
     postcode= fields.Char('PostCode')
     date_availability= fields.Date('Available From',copy=False, default= lambda self: fields.Datetime.today() + timedelta(days=90))
+
     expected_price= fields.Float('Expected Price',required=True)
     selling_price= fields.Float('Selling Price',readonly=True, copy=False)
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+    ]
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price < 0:
+                raise ValidationError("The selling price must be positive.")
+            
+    @api.constrains('expected_price')
+    def _check_expected_price(self):
+        for record in self:
+            if record.expected_price < 0:
+                raise ValidationError("The expected price must be positive.")
+            
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        """Vérifie que le prix de vente n'est pas inférieur à 90% du prix attendu."""
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):  
+                min_acceptable_price = record.expected_price * 0.9
+                if float_compare(record.selling_price, min_acceptable_price, precision_digits=2) == -1:
+                    raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
     bedrooms= fields.Integer('Bedrooms',default=2)
     living_area= fields.Integer('Living Area')
     facades= fields.Integer('Facades')
@@ -63,5 +94,30 @@ class Estateproperty(models.Model):
     def _compute_best_price(self):
         for property in self:
             prices = property.offer_ids.mapped('price')
-            property.best_price = max(prices)
+            property.best_price = max(prices, default=0)
 
+    #onchange
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+        
+    #object type and action
+
+    def action_cancel(self):
+        for property in self:
+            if property.state== 'sold':
+                raise UserError("A sold property cannot be cancelled.")
+            property.state = 'cancel'
+
+    def action_sold(self):
+        for property in self:
+            if property.state == 'cancel':
+                raise UserError("A cancelled property cannot be sold.")
+            if not property.offer_ids:
+                raise UserError("Cannot sold without any offer.")
+            property.state = 'sold'
