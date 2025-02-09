@@ -1,17 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Created actions for the model estate.property -->
     <record id = "estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
     </record>    
     <!-- List view of property -->
     <record id = "estate_property_list_view" model= "ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string= "Properties" >
-                <field name="name" string ="Title"/>
+            <list string= "Properties">
+                <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -35,7 +36,7 @@
                 <sheet>
                         <group>
                             <h1 class="mb32">
-                                <field name="name" class="mb16"/>   
+                                <field name="name" class="mb16" placeholder="Property Name"/>   
                             </h1>
                         </group>
                     <group>
@@ -107,7 +108,7 @@
                 <filter string="Available" name="date_availability" domain="[('date_availability', '>=', context_today())]"/>
                 <filter string="New or Offer Recieved" name="state" domain="['|', ('state', '=', 'new'),('state', '=', 'offer_received')]"/>
                 <group expand="1" string="Group By">
-                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>

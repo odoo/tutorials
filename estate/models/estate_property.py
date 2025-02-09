@@ -6,9 +6,9 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Properties'
 
-    name = fields.Char(string='Name',required=True)
+    name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
-    postcode = fields.Char(string='Postcode')
+    postcode = fields.Char(string='Postcode', required=True)
     date_availability = fields.Date(string='Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price ', readonly=True, copy=False)
@@ -24,7 +24,7 @@ class EstateProperty(models.Model):
         ('south','South'),
         ('east','East'),
         ('west','West')])
-    active = fields.Boolean('Active',default=True)
+    active = fields.Boolean('Active', default=True)
     state = fields.Selection(
         selection=[
             ('new','New'),
@@ -35,13 +35,13 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default='new')
-    total_area = fields.Float(string='Total Aream(sqm)',compute='_compute_total_area')
+    total_area = fields.Float(string='Total Aream(sqm)', compute='_compute_total_area')
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     user_id=fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
-    partner_id = fields.Many2one('res.partner', string='Buyer',copy=False)
+    partner_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     tag_ids = fields.Many2many('estate.property.tags',string='Tags')
-    offer_ids = fields.One2many('estate.property.offer','property_id',string='Offers') #One2Many field
-    best_prices = fields.Float(string='Best Offer',compute='_compute_best_offer')
+    offer_ids = fields.One2many('estate.property.offer','property_id', string='Offers') #One2Many field
+    best_prices = fields.Float(string='Best Offer', compute='_compute_best_offer')
 
     _sql_constraints = [
         ('check_expected_price','CHECK(expected_price > 0)','Expected Price must be positive'),
