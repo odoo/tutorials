@@ -12,18 +12,18 @@ class EstateProperty(models.Model):
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
-        string="Date Availability",
+        string="Available From",
         copy=False,
         default=lambda self: fields.Datetime.today() + timedelta(days=90),
     )
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
-    living_area = fields.Integer(string="Living Area")
+    living_area = fields.Integer(string="Living Area(sqm)")
     facades = fields.Integer(string="Facades")
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden Area")
+    garden_area = fields.Integer(string="Garden Area(sqm)")
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
@@ -34,14 +34,14 @@ class EstateProperty(models.Model):
         ],
     )
     active = fields.Boolean(string="Active", default=True)
-    state = fields.Selection(
+    status = fields.Selection(
         selection=[
-            ("New", "New"),
-            ("Offer Received", "Offer Received"),
-            ("Offer Accepted", "Offer Accepted"),
-            ("Sold", "Sold"),
-            ("Cancelled", "Cancelled"),
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
-        default="New",
+        default="new",
         copy=False,
     )
