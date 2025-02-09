@@ -1,7 +1,7 @@
 {
     "name": "Real Estate",
     "version": "1.0",
-    "author": "jsum",
+    "author": "hsha",
     "license": "LGPL-3",
     "depends": ["base"],
     "application": True,
