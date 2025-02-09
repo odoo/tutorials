@@ -19,8 +19,8 @@ class EstateProperty(models.Model):
     facades = fields.Integer(string="Facades", default='4')
     bedroom = fields.Integer(string="Bedrooms", default='2')
     garage = fields.Boolean(string="Garage", default=True)
-    garden = fields.Boolean(string="Garden", default=True)
-    garden_area = fields.Integer(string="Garden Area (sqm)", default='3456', copy=False)
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
@@ -29,6 +29,18 @@ class EstateProperty(models.Model):
             ('east', 'East'),
             ('west', 'West')
         ], default='north', required=True)
+    
+
+    # Reserved field with default value True
+    active = fields.Boolean(default=True)
+    state = fields.Selection([
+        ('new', 'New'),
+        ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('cancelled', 'Cancelled')
+    ], copy=False, default='new', required=True)               # Reserved field with default state as New
+    
     
     # Chapter 7
     property_type_id = fields.Many2one(
@@ -55,30 +67,42 @@ class EstateProperty(models.Model):
         string="Offers"
     )
 
-    # Reserved field with default value True
-    active = fields.Boolean(default=True)
-    state = fields.Selection([
-        ('new', 'New'),
-        ('offer_received', 'Offer Received'),
-        ('offer_accepted', 'Offer Accepted'),
-        ('sold', 'Sold'),
-        ('cancelled', 'Cancelled')
-    ], copy=False, default='new', required=True)               # Reserved field with default state as New
 
 
     # Chapter-8
     # exercise-1
-    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
+    total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
  
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
     
-    # exercise-2
+    
+    # exercise-2, best offer 
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'))
+            if record.offer_ids:
+                record.best_price = max(record.mapped("offer_ids.price"))
+            else:
+                record.best_price = 0.0
+
+    
+    # exercise-3 (onchange function)
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        # automatically set or clear garden realted fields when garden is toggled
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = 'north'
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
+                # clear the selection as I have write False
+            
+
