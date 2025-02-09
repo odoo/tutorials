@@ -47,6 +47,13 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-secondary"
+                        modifiers="{'invisible': [('state', '=', 'cancelled')]}"/>
+                    <button name="action_sold" type="object" string="Sold" class="btn-primary"
+                        modifiers="{'invisible': [('state', '=', 'sold')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -174,12 +181,23 @@
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form>
-                <group>
-                    <field name="price"/>
-                    <field name="partner_id"/>
-                    <field name="status"/>
-                </group>
+            <form string="Property Offer">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="new,accepted,refused"/>
+                    <button name="action_accept" type="object" string="Accept" class="btn-primary"
+                            modifiers="{'invisible': [('status', '=', 'accepted')]}"/>
+                    <button name="action_refuse" type="object" string="Refuse" class="btn-secondary"
+                            modifiers="{'invisible': [('status', '=', 'refused')]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="validity"/>
+                        <field name="date_deadline" modifiers="{'readonly': [('validity', '=', False)]}"/>
+                        <field name="status" readonly="1"/>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
