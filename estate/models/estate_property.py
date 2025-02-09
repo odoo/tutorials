@@ -11,6 +11,7 @@ class EstateProperty(models.Model):
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
     ]
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -45,6 +46,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area", store=True)
     best_offer = fields.Float(compute="_compute_best_offer", store=True)
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
