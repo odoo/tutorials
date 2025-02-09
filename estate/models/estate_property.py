@@ -1,10 +1,16 @@
 from datetime import date, timedelta
 from odoo import api, models, fields, exceptions
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     # _inherit = "estate.property"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+    ]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -73,3 +79,13 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("No offers available to sell the property.")
             record.state = 'sold'
             record.selling_price = record.best_offer
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_compare(record.selling_price, 0, precision_rounding=0.01) > 0:  # Selling price is not zero
+                minimum_price = record.expected_price * 0.9
+                if float_compare(record.selling_price, minimum_price, precision_rounding=0.01) < 0:
+                    raise ValidationError(
+                        "The selling price cannot be lower than 90% of the expected price."
+                    )
