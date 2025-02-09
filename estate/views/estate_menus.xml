@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-    <menuitem id='estate_property_menu_root' name='Real Estate'>
-        <menuitem id='estate_property_first_level_menu' name='Advertisement'>
-            <menuitem id='estate_property_menu_action' action='estate_property_action' />
+<!-- <odoo>
+    <menuitem id="estate_property_menu_root" name="Real Estate" sequence="1"
+        groups="base.group_user">
+        <menuitem id="estate_property_advertisement_menu" name="Advertisement" sequence="1">
+            <menuitem id="estate_property_menu_action" name="Properties"
+                action="estate_property_action" sequence="1" />
+        </menuitem>
+        <menuitem id=" estate_property_type_setting_menu" name=" Settings" sequence=" 2">
+            <menuitem id=" estate_property_type_menu" name=" Property Type"
+                action=" estate_property_type_action" sequence="1" />
         </menuitem>
     </menuitem>
+</odoo> -->
+<odoo>
+    <menuitem id="estate_property_menu_root" name="Real Estate" sequence="1"
+        groups="base.group_user" />
+
+    <menuitem id="estate_property_advertisement_menu" name="Advertisement" sequence="1"
+        parent="estate_property_menu_root" />
+    <menuitem id="estate_property_menu_action" name="Properties" action="estate_property_action"
+        parent="estate_property_advertisement_menu" />
+
+    <menuitem id="estate_property_setting_menu" name="Settings" parent="estate_property_menu_root" />
+
+
+    <menuitem id="estate_property_type_menu" name="Property Type"
+        action="estate_property_type_action" parent="estate_property_setting_menu" sequence="1" />
+
+    <menuitem id="estate_property_tags_menu" name="Property Tags"
+        action="estate_property_tags_action" parent="estate_property_setting_menu" sequence="2" />
 </odoo>

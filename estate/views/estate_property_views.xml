@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- list view  -->
@@ -15,6 +15,7 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" string="Title" width="40px" />
+                <field name="property_type_id" width="40px" />
                 <field name="postcode" string="Postcode" width="40px" />
                 <field name="bedrooms" string="Bedrooms" width="40px" />
                 <field name="living_area" string="Living Area (sqm)" width="40px" />
@@ -31,11 +32,17 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <sheet>
-                    <h1>
-                        <field name="name" placeholder="Property Name" nolabel="1" />
-                    </h1>
+                    <div class="oe_title mt32 mb32">
+                        <h1 class="mb10 mt10">
+                            <field name="name" placeholder="Property Name" nolabel="1" />
+                        </h1>
+                        <!-- tag field for property tags -->
+                        <field name="tag_ids" widget="many2many_tags" />
+                    </div>
                     <group>
                         <group>
+                            <!-- type field for property type -->
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -58,7 +65,12 @@
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
                             </group>
-
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id" string="Salesman" />
+                                <field name="buyer_id" string="Buyer" />
+                            </group>
                         </page>
                     </notebook>
 
@@ -74,6 +86,7 @@
         <field name="arch" type="xml">
             <search string="Property Search">
                 <field string="Title" name="name" />
+                <field name="property_type_id" />
                 <field string="Postcode" name="postcode" />
                 <field string="Expected Price" name="expected_price" />
                 <field string="Bedrooms" name="bedrooms" />
