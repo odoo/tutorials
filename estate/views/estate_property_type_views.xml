@@ -11,8 +11,8 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="List Channel">
-                <field name="name" />
+            <list string="Property Types">
+                <field name="name"/>
             </list>
         </field>
     </record>
@@ -22,10 +22,10 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Form Channel">
+            <form string="Property Type">
                 <sheet>
                     <h1>
-                        <field name="name" />
+                        <field name="name"/>
                     </h1>
                 </sheet>
             </form>

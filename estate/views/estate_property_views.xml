@@ -1,7 +1,7 @@
 <odoo>
     
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Estate Property</field>
+        <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">kanban,list,form</field>
     </record>
@@ -11,7 +11,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="List Channel">
+            <list string="Estate Properties">
                 <field name="name"/>
                 <field name="estate_property_type_id"/>
                 <field name="postcode"/>
@@ -29,12 +29,14 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Form Channel">
+            <form string="Estate Property">
                 <sheet>
-                    <div>
-                        <h1><field name="name" placeholder="Ex. Belgium Home" /></h1>
+                    <group>
+                        <h1>
+                            <field name="name" placeholder="Ex. Belgium Home"/>
+                        </h1>
                         <field name="estate_property_tag_ids" widget="many2many_tags" placeholder="Tags"/>
-                    </div>
+                    </group>
                     <group>  
                         <group>
                             <field name="estate_property_type_id"/>
@@ -59,15 +61,7 @@
                                 </group>
                             </page>
                             <page string="Offers">
-                                <group>
-                                    <field name="estate_property_offer_ids">
-                                        <list editable="bottom">
-                                            <field name="price"/>
-                                            <field name="partner_id"/>
-                                            <field name="state"/>
-                                        </list>
-                                    </field>
-                                </group>
+                                <field name="estate_property_offer_ids" mode="list,form"/>
                             </page>
                             <page string="Other Info">
                                 <group>
@@ -82,7 +76,7 @@
         </field>
     </record>
 
-    <!-- Serach view Configuration -->
+    <!-- Search View Configuration -->
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -98,13 +92,13 @@
 
                 <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>         
                 <filter string="New State" name="new_state" domain="[('state', '=', 'new')]"/>
-                <filter string="Offer Recieved" name="offer_recieved" domain="[('state', '=', 'offer_received')]"/>
+                <filter string="Offer Received" name="offer_received" domain="[('state', '=', 'offer_received')]"/>
 
                 <group>
-                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="Group by Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
     </record>
- 
+
 </odoo>
