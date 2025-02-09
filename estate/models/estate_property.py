@@ -3,6 +3,7 @@ from odoo import models, fields
 class estateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property"
+    
 
     name= fields.Char("Property Name", required = True) # required make property not nullable 
     description =  fields.Text("Description")
@@ -26,3 +27,5 @@ class estateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string = "Salesman", default = lambda self: self.env.user) # a salesman is considered a internal entity - therefore in user relation
     
     tag_ids = fields.Many2many("estate.property.tags")
+
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string = "Offers")

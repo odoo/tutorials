@@ -1,6 +1,7 @@
 {
-    "name":"estate",
-    "version":"1.0",
+    "name" : "estate",
+    "version" : "1.0",
+    "license" : "LGPL-3",
     "depends" : ["base"],
 
     "data" : [
