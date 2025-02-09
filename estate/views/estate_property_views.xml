@@ -5,49 +5,67 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
+
     <record id="list_view" model="ir.ui.view">
         <field name="name">ListView</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="List">
-                <field name="name" string="Title"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
+                <field name="name" string="Title" />
+                <field name="tags_ids" widget="many2many_tags" />
+                <field name="property_type_id" />
+                <field name="postcode" />
+                <field name="bedrooms" />
                 <field name="living_area" />
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
             </list>
         </field>
     </record>
+
     <record id="form_view" model="ir.ui.view">
         <field name="name">FormView</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form">
                 <sheet>
-                    <h1><field name="name"/></h1>
+                    <h1>
+                        <field name="name" />
+                    </h1>
                     <group>
                         <group>
-                            <field name="postcode"/>
-                            <field name="date_availability"/>
+                            <field name="property_type_id" />
+                            <field name="tags_ids" widget="many2many_tags" />
+                            <field name="postcode" />
+                            <field name="date_availability" />
                         </group>
                         <group>
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="description" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"
+                                readonly="status in ('offer_accepted','cancelled','sold')" />
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="user_id" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
@@ -55,20 +73,23 @@
             </form>
         </field>
     </record>
+
     <record id="search_view" model="ir.ui.view">
         <field name="name">SearchView</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search">
-                <field name="name"/>
-                <field name="expected_price"/>
-                <field name="bedrooms"/>
-                <field name="postcode"/>
-                <field name="living_area"/>
-                <field name="facades"/>
-                <filter name='available_property' string='Available' domain="['|',('status','=','new'),('status','=','offer_received')]"/>
+                <field name="property_type_id" />
+                <field name="name" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="postcode" />
+                <field name="living_area" />
+                <field name="facades" />
+                <filter name='available_property' string='Available'
+                    domain="['|',('status','=','new'),('status','=','offer_received')]" />
                 <group string='Group By'>
-                    <filter name='postcode' context="{'group_by':'postcode'}"/>
+                    <filter name='postcode' context="{'group_by':'postcode'}" />
                 </group>
             </search>
         </field>
