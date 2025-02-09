@@ -10,24 +10,16 @@
       <field name="context">{}</field>      <!-- Context for the action, empty for now -->
     </record>
 
-
-
-    <record id="estate_property_tag_form_view" model="ir.ui.view">
-      <field name="name">estate.property.tag.form</field>
+    <record id="view_estate_property_tag_list" model="ir.ui.view">
+      <field name="name">estate.property.tag.list</field>
       <field name="model">estate.property.tag</field>
       <field name="arch" type="xml">
-        <form string="Property Tag Form">
-          <sheet>
-            <div class="oe_title">
-              <label for="name"/>
-              <h1>
-                <field name="name"/>
-              </h1>
-            </div>
-          </sheet>
-        </form>
+        <list editable="bottom">
+          <!-- Fields to be displayed in the list view -->
+          <field name="name"/>
+          <field name="color"/>
+        </list>
       </field>
     </record>
-
   </data>
 </odoo>

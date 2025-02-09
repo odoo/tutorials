@@ -7,14 +7,14 @@
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form,kanban</field>
             <field name="domain">[]</field>
-            <field name="context">{}</field>
+            <field name="context">{'search_default_available': True}</field>
         </record>
         <!-- List view for Estate Properties -->
         <record id="view_estate_property_list" model="ir.ui.view">
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list>
+                <list decoration-success="state in ['offer_received', 'offer_accepted'] " decoration-bf="state == 'offer_accepted'" decoration-muted="state=='sold'">
                     <!-- Columns to be displayed in the list view -->
                     <field name="name"/>
                     <field name="postcode"/>
@@ -23,7 +23,7 @@
                     <field name="living_area"/>
                     <field name="expected_price"/>
                     <field name="selling_price" />
-                    <field name="date_availability"/>
+                    <field name="date_availability" invisible="1"/>
                 </list>
             </field>
         </record>
@@ -34,10 +34,14 @@
             <field name="arch" type="xml">
                 <form string="Property Form">
                     <header>
-                        <button name="action_sold" type="object" string="Sold" class="btn-primary"/>
-                        <button name="action_cancel" type="object" string="Cancel" class="btn-secondary"/>
-                        <field name="state" widget="statusbar" state="new, offer_received, offer_accepted, sold, cancelled"/>
+                        <!-- "Sold" button: Only visible when the state is 'offer_accepted' -->
+                        <button name="action_sold" type="object" string="Sold" class="btn-primary" invisible="state != 'offer_accepted'"/>
+                        <!-- "Cancel" button: Only visible when the state is 'new' or 'offer_received' -->
+                        <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" invisible="state not in ['new', 'offer_received']"/>
+                        <!-- Statusbar for Property State -->
+                        <field name="state" widget="statusbar" />
                     </header>
+
                     <sheet>
                         <div class="oe_title mb-32">
                             <label for="name"/>
@@ -65,7 +69,7 @@
                         <notebook>
                             <page string="Description">
                                 <group>
-                                    <group>
+                                    <group >
                                         <field string="Description" name="description"/>
                                         <field string="Bedrooms" name="bedrooms"/>
                                         <field string="Living Area (sqm)" name="living_area"/>
@@ -75,8 +79,8 @@
                                     <group>
                                         <field string="Garage" name="garage"/>
                                         <field string="Garden" name="garden"/>
-                                        <field string="Garden Area (sqm)" name="garden_area"/>
-                                        <field string="Garden Orientation" name="garden_orientation"/>
+                                        <field string="Garden Area (sqm)" name="garden_area" invisible="garden != True"/>
+                                        <field string="Garden Orientation" name="garden_orientation" invisible="garden != True"/>
                                         <field string="Total Area" name="total_area"/>
                                     </group>
                                 </group>
@@ -90,15 +94,15 @@
                             </page>
                             <!-- Offers Page -->
                             <page string="Offers">
-                                <field name="offer_ids" widget="one2many_list" options="{'color_field':'color'}">
-                                    <list>
+                                <field name="offer_ids" widget="one2many_list" options="{'color_field':'color'}" readonly="state in ['offer_accepted', 'sold', 'cancelled']">
+                                    <list editable="top" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                         <field name="price"/>
                                         <field name="partner_id"/>
                                         <field name="validity"/>
                                         <field name="date_deadline"/>
-                                        <field name="status"/>
-                                        <button name="action_accept" string="Confirm" states="draft" type="object" icon="fa-check"/>
-                                        <button name="action_refuse" string="Refuse" states="draft" type="object" icon="fa-times"/>
+                                        <field name="status" invisible="1"/>
+                                        <button name="action_accept" string="Confirm" type="object" icon="fa-check" invisible="status != 'draft'"/>
+                                        <button name="action_refuse" string="Refuse" type="object" icon="fa-times" invisible="status != 'draft'"/>
                                     </list>
                                 </field>
                             </page>
@@ -119,7 +123,7 @@
                     <field string="Postcode" name="postcode"/>
                     <field string="Expected Price" name="expected_price"/>
                     <field string="Bedrooms" name="bedrooms"/>
-                    <field string="Living Area (sqm)" name="living_area"/>
+                    <field string="Living Area (sqm)" name="living_area" filter_domain="['>=', ('area'), (self)]"/>
                     <field string="Facades" name="facades"/>
                     <!-- Filters -->
                     <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
@@ -127,12 +131,12 @@
                     <filter string="Garden" name="garden" domain="[('garden', '=', 'True')]"/>
                     <separator/>
                     <filter string="Garage" name="garage" domain="[('garage', '=', 'True')]" />
-
                     <filter string="State" name="state" context="{'group_by':'state'}" />
                     <separator/>
                     <filter string="Garden Orientation" name="garden_orientation" context="{'group_by':'garden_orientation'}" />
                     <separator/>
                     <filter string="Bedrooms" name="bedrooms" context="{'group_by':'bedrooms'}" />
+                    <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 </search>
             </field>
         </record>

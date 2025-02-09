@@ -22,12 +22,17 @@
       </field>
     </record>
 
-    <!-- Form view for Property Types -->
     <record id="estate_property_type_form_view" model="ir.ui.view">
       <field name="name">estate.property.type.form</field>
       <field name="model">estate.property.type</field>
       <field name="arch" type="xml">
         <form string="Property Type Form">
+          <header>
+            <!-- Stat Button for Offers -->
+            <button name="%(estate_property_offer_action)d" type="action" class="oe_stat_button" icon="fa-money">
+              <field name="offer_ids" widget="statinfo" string="Offers"/>
+            </button>
+          </header>
           <sheet>
             <label for="name"/>
             <h1 class="mb32 w-50">
@@ -35,12 +40,13 @@
             </h1>
             <notebook>
               <page string="Properties">
-                <field name="property_ids"></field>
+                <field name="property_ids"/>
               </page>
             </notebook>
           </sheet>
         </form>
       </field>
     </record>
+
   </data>
 </odoo>

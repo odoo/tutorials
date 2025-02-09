@@ -13,13 +13,15 @@ class EstatePropertyOffer(models.Model):
 
     # Status of the offer
     status = fields.Selection([
+        ("draft", "Draft"),
         ("accepted", "Accepted"),
         ("refused", "Refused")
-    ], string="Status")
+    ], string="Status", default="draft")
 
     # Relations with partner and property
     partner_id = fields.Many2one("res.partner", string="Partner")
     property_id = fields.Many2one("estate.property", string="Property")
+    property_type_id = fields.Many2one(related="property_id.property_type", store=True)
 
     # Validity of the offer in days (default is 7)
     validity = fields.Integer("Validity", default=7)
@@ -58,9 +60,11 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - record.property_id.create_date.date()).days
 
     def action_accept(self):
-        """Ensures that Only one offer can be accepted per property!."""
+        """Ensures that same offer is not accepted and Only one offer can be accepted per property!."""
         for record in self:
-            if record.property_id.buyer_id:
+            if record.property_id.buyer_id == record.partner_id:
+                raise UserError("You cannot accept your the same offer!")
+            elif record.property_id.buyer_id:
                 raise UserError("Only one offer can be accepted per property!")
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
