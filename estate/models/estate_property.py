@@ -9,42 +9,17 @@ class EstateProperty(models.Model):
 
     # ..................fields attribute..................
     name = fields.Char(string="Name", required=True)
-    description = fields.Text(string="Description"
-    
-    )
-    postcode = fields.Char(
-        string="Postcode"
-    )
-    date_availability = fields.Date(
-        string="Date Availability", 
-        default=lambda self: fields.Date.add(fields.Date.today(), months=3)
-    )
-    expected_price = fields.Float(
-        string="Expected Price", 
-        required=True
-    )
-    selling_price = fields.Float(
-        string="Selling Price"
-    )
-    bedrooms = fields.Integer(
-        string="Bedrooms", 
-        default=2
-    )
-    living_area = fields.Integer(
-        string="Living Area"
-    )
-    facades = fields.Integer(
-        string="Facades"
-    )
-    garage = fields.Boolean(
-        string="Garage"
-    )
-    garden = fields.Boolean(
-        string="Garden"
-    )
-    garden_area = fields.Integer(
-        string="Garden Area"
-    )
+    description = fields.Text(string="Description")
+    postcode = fields.Char(string="Postcode")
+    date_availability = fields.Date(string="Date Availability", default=lambda self: fields.Date.add(fields.Date.today(), months=3))
+    expected_price = fields.Float(string="Expected Price", required=True)
+    selling_price = fields.Float(string="Selling Price")
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    living_area = fields.Integer(string="Living Area")
+    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area")
     garden_orientation = fields.Selection(
         selection=[
             ('n', 'North'),
@@ -67,12 +42,10 @@ class EstateProperty(models.Model):
         copy=False, 
         required=True
     )
-    active = fields.Boolean(
-        string="Active", 
-        default=True
-    )
+    active = fields.Boolean(string="Active", default=True)
 
-    # estate_property_type_id = fields.Many2one(
-    #     comodel_name="estate.property.type", 
-    #     string="Property Type"
-    # )
+    estate_property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type")
+    estate_property_tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
+    estate_property_offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="estate_property_id", string="Offers")
+    user_id = fields.Many2one(comodel_name='res.users', string="Salesman", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one(comodel_name='res.partner', string='Buyer', copy=False)

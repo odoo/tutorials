@@ -13,7 +13,7 @@
         <field name="arch" type="xml">
             <list string="List Channel">
                 <field name="name"/>
-                <!-- <field name="estate_property_type_id"/> -->
+                <field name="estate_property_type_id"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -32,12 +32,12 @@
             <form string="Form Channel">
                 <sheet>
                     <div>
-                        <h1><field name="name"/></h1>
-                        <!-- <field name="estate_property_tag_id" widget="many2many_tags"/> -->
+                        <h1><field name="name" placeholder="Ex. Belgium Home" /></h1>
+                        <field name="estate_property_tag_ids" widget="many2many_tags" placeholder="Tags"/>
                     </div>
                     <group>  
                         <group>
-                            <!-- <field name="estate_property_type_id"/> -->
+                            <field name="estate_property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -58,6 +58,23 @@
                                     <field name="garden_orientation"/>
                                 </group>
                             </page>
+                            <page string="Offers">
+                                <group>
+                                    <field name="estate_property_offer_ids">
+                                        <list editable="bottom">
+                                            <field name="price"/>
+                                            <field name="partner_id"/>
+                                            <field name="state"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <field name="user_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
+                            </page> 
                         </notebook>
                     </group>
                 </sheet>
@@ -77,7 +94,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
-                <!-- <field name="estate_property_type_id"/> -->
+                <field name="estate_property_type_id"/>
 
                 <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>         
                 <filter string="New State" name="new_state" domain="[('state', '=', 'new')]"/>
