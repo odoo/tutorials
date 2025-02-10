@@ -1,10 +1,11 @@
 from odoo import api, models, fields
-from odoo.exceptions import UserError
-
+from odoo.exceptions import UserError,ValidationError
+from odoo.tools import float_compare,float_is_zero
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
-    _description = 'Real Estate Property'
+    _description = "Real Estate Property"
+    _order = 'id desc'
 
     name = fields.Char(
         string="Name",
@@ -109,7 +110,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one(
         comodel_name='estate.property.type',
         string="Property Type",
-        help="The type of the property (e.g., apartment, house, etc.)"
+        help="The type of the property (e.g., apartment, house, etc.)",
     )
     
     buyer = fields.Many2one(
@@ -156,6 +157,19 @@ class EstateProperty(models.Model):
         ]
     )
 
+    _sql_constraints = [
+        (
+            'check_expected_price',
+            'CHECK(expected_price>0)',
+            "The Expected Price must be striclty positive"
+        ),
+        (
+            'check_selling_price',
+            'CHECK(selling_price>0)',
+            "The Selling Price must be strictly positve"
+        )
+    ]
+    
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for property in self:
@@ -180,8 +194,8 @@ class EstateProperty(models.Model):
     
     def action_cancel_button(self):
         if not self.status:
-            self.status='cancel'
-        elif self.status=='sold':
+            self.status = 'cancel'
+        elif self.status == 'sold':
             raise UserError("Sold Properties cannot be cancelled")
     
     def action_sold_button(self):
@@ -189,3 +203,11 @@ class EstateProperty(models.Model):
             self.status='sold'
         elif(self.status=='cancel'):
             raise UserError("Cancelled Properties cannot be Sold")
+
+    @api.constrains('selling_price','expected_price')
+    def check_selling_price(self):
+        for property in self:
+            if float_is_zero(value=property.selling_price,precision_rounding=0.01):
+                continue
+            if float_compare(value1=property.selling_price,value2=product.expected_price*0.1,precision_rounding=2) == -1:
+                raise ValidationError("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer")

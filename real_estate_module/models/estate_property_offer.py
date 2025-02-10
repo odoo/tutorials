@@ -4,7 +4,8 @@ from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
-    _description = 'Model for Property Offers where one property can have multiple offers'
+    _description = "Model for Property Offers where one property can have multiple offers"
+    _order = 'price desc'
 
     price = fields.Float(
         string="Offer Price",
@@ -48,28 +49,36 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
         store=True,
-        help="The deadline for the offer, computed as create_date + validity"
+        help="The deadline for the offer, computed by adding the creation date of offer with the mentioned validity of it"
     )
+
+    sql_constraints = [
+        (
+            'check_offer_price',
+            'CHECK(price>0)',
+            "The Offer Price must be striclty positive"
+        )
+    ]
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         """Computes date_deadline as create_date + validity days"""
-        for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date.date() + timedelta(days=record.validity)
+        for order in self:
+            if order.create_date:
+                order.date_deadline = fields.Date.add(order.create_date.date(), days=order.validity)
             else:
-                record.date_deadline = False
+                order.date_deadline = False
 
     def _inverse_date_deadline(self):
         """Sets validity based on date_deadline - create_date"""
-        for record in self:
-            if record.date_deadline and record.create_date:
-                record.validity = (record.date_deadline - record.create_date.date()).days
+        for order in self:
+            if order.date_deadline and order.create_date:
+                order.validity = (fields.Date.from_string(order.date_deadline) - fields.Date.from_string(order.create_date.date())).days
             else:
-                record.validity = 7
+                order.validity = 7
 
     def action_confirm(self):
-        for record in self:
+        for order in self:
             if record.property_id.state == 'sold':
                 raise UserError("Cannot accept an offer for a sold property.")
             if record.property_id.offer_ids.filtered(lambda o: o.status == 'accept' and o != record):
@@ -80,6 +89,6 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
 
     def action_reject(self):
-        for record in self:
+        for order in self:
             if not record.status:
-                record.status='reject'
+                record.status = 'reject'
