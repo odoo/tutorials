@@ -1,7 +1,19 @@
 <odoo>
+    <!-- second level menuitems -->
+
     <record id="public_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">public.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="public_property_type_action" model="ir.actions.act_window">
+        <field name="name">Propertie types</field>
+        <field name="res_model">public.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="public_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Propertie Tags</field>
+        <field name="res_model">public.property.tag</field>
         <field name="view_mode">list,form</field>
     </record>
 
@@ -18,6 +30,22 @@
                 <field name="expected_price" width="200" />
                 <field name="selling_price" width="200" />
                 <field name="date_availability" width="200" />
+                <field name="tags_ids" widget="many2many_tags" width="200" />
+            </list>
+        </field>
+    </record>
+    <!-- List view of public.property.offer table -->
+    <record id="public_property_offer_list_view" model="ir.ui.view">
+        <field name="name">public.property.offer.list</field>
+        <field name="model">public.property.offer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="price" width="200" />
+                <field name="partner_id" width="200" />
+                <field name="date_deadline" width="200" />
+                <button name="action_confirm" icon="fa-check" type="object" />
+                <button name="action_cancle" icon="fa-times" type="object" />
+                <field name="status" width="200" />
             </list>
         </field>
     </record>
@@ -28,34 +56,85 @@
         <field name="model">public.property</field>
         <field name="arch" type="xml">
             <form string="">
+                <header>
+                    <button name="sold" type="object" string="Sold" />
+                    <button name="cancelled" type="object" string="Cancel" />
+                </header>
                 <sheet>
-                        <h1>
-                            <field name="name" />
-                        </h1>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                    <p>
+                        <field name="tags_ids" widget="many2many_tags" />
+                    </p>
                     <group>
                         <group>
+                            <field name="state" string="Status" />
+                            <field name="propertytype_id" />
                             <field name="postcode" string="Post code" />
                             <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
+                            <field name="best_price" string="Best Offer" />
                             <field name="selling_price" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" height="50"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area" string="Living Area (sqm)"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation"/>
+                                <field name="description" height="50" />
+                                <field name="bedrooms" />
+                                <field name="living_area" string="Living Area (sqm)" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" string="Garden Area (sqm)" />
+                                <field name="garden_orientation" />
+                                <field name="total_area" string="Total area" />
+                                <field name="state" string="Status" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" />
+                            </group>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="buyer" />
+                                <field name="salesperson" />
                             </group>
                         </page>
                     </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Form view of Property type -->
+    <record id="public_property_type_view_form" model="ir.ui.view">
+        <field name="name">public.property.type.form</field>
+        <field name="model">public.property.type</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Form view of Property Tags -->
+    <record id="public_property_tag_view_form" model="ir.ui.view">
+        <field name="name">public.property.tag.form</field>
+        <field name="model">public.property.tag</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <h1>
+                        <field name="name" />
+                    </h1>
                 </sheet>
             </form>
         </field>
@@ -67,15 +146,19 @@
         <field name="model">public.property</field>
         <field name="arch" type="xml">
             <search string="">
-                <field name="name"/>
-                <field name="postcode"/>
+                <field name="name" />
+                <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
-                <separator/>
-                <filter name ="Available" domain = "['|',('state','=','new'),('state','=','offer_accepted')]"/>
-                <filter string="Postcode" name="name" context="{'group_by':'postcode'}"/>
+                <field name="propertytype_id" />
+                <separator />
+                <filter name="Available"
+                    domain="['|',('state','=','new'),('state','=','offer_accepted')]" />
+                <filter string="Postcode" name="name" context="{'group_by':'postcode'}" />
+                <filter string="Property Id" name="propertytype_id"
+                    context="{'group_by':'propertytype_id'}" />
             </search>
         </field>
     </record>
