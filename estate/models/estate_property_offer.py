@@ -4,6 +4,7 @@ from odoo import fields,models,api, exceptions
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers"
+    _order = "price desc"
 
     price = fields.Float(string="Price", required=True)
     status = fields.Selection(
@@ -17,9 +18,10 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property")
     validate = fields.Integer(string="Validity(days)", default=7)
     date_deadline = fields.Date(string="Deadline",
-                default=fields.Date.today(),
                 compute="_compute_deadline",
                 inverse="_update_validity")
+    property_type_id = fields.Many2one(related="property_id.property_type_id",store=True)
+
     
     _sql_constraints = [
         ('check_price','CHECK(price > 0)','Offer Price must be positive'),
@@ -28,16 +30,16 @@ class EstatePropertyOffer(models.Model):
     #Function of implementing comptue field and inverse function on validity days and date dadeline
     @api.depends("validate","create_date")
     def _compute_deadline(self):
-        for date in self:
-            if date.create_date:
-                date.date_deadline = date.create_date + relativedelta(days=date.validate)
+        for record in self:
+            if record.create_date:
+                record.date_deadline = record.create_date.date() + relativedelta(days=record.validate)
             else:
-                date.date_deadline = fields.Date.today() + relativedelta(days=date.validate)
+                record.date_deadline = fields.Date.today() + relativedelta(days=record.validate)
 
     def _update_validity(self):
         for offer in self:
             if offer.date_deadline:
-                offer.validate = (offer.date_deadline - fields.Date.today()).days
+                offer.validate = (offer.date_deadline - offer.create_date.date()).days
             else:
                 offer.validate = 7
     
@@ -51,6 +53,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.partner_id = record.partner_id
 
             record.status = 'accepted'
+            record.property_id.state = 'offer_accepted'
 
             other_offers = self.search([
                 ('property_id', '=', record.property_id.id),

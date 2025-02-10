@@ -5,6 +5,7 @@ from odoo import api,fields, models, exceptions
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Properties'
+    _order = 'id desc'
 
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
@@ -20,22 +21,24 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer(string='Garden Area(sqm)')
     garden_orientation = fields.Selection(
         string ='Garden Orientation',
-        selection=[('north','North'),
+        selection=[
+        ('north','North'),
         ('south','South'),
         ('east','East'),
         ('west','West')])
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
         selection=[
-            ('new','New'),
-            ('offer_received','Offer Received'),
-            ('offer_accepted','Offer Accepted'),
-            ('sold','Sold'),('cancelled','Cancelled')],
+        ('new','New'),
+        ('offer_received','Offer Received'),
+        ('offer_accepted','Offer Accepted'),
+        ('sold','Sold'),
+        ('cancelled','Cancelled')],
         string='State',
         required=True,
         copy=False,
         default='new')
-    total_area = fields.Float(string='Total Aream(sqm)', compute='_compute_total_area')
+    total_area = fields.Float(string='Total Area(sqm)', compute='_compute_total_area')
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     user_id=fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     partner_id = fields.Many2one('res.partner', string='Buyer', copy=False)
