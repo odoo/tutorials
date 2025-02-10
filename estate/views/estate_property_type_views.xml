@@ -11,11 +11,11 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <sheet>
+                    <h1>
+                        <field name="name" string="Property Name"/>
+                    </h1>
                     <group>
                         <group>
-                            <h1>
-                                <field name="name" string="Property Name"/>
-                            </h1>
                             <field name="postcode" string="Postcode"/>
                             <field name = "date_availability" string="Available From"/>
                         </group>
