@@ -1,6 +1,7 @@
-from odoo import api,models,fields , exceptions
+from odoo import api, exceptions, fields ,models
 from datetime import date , timedelta
 from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare , float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -22,13 +23,23 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area")
     garden_orientation = fields.Selection(
-        [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
-        string="Garden Orientation")
+                                [('north', 'North'), 
+                                ('south', 'South'),
+                                ('east', 'East'), 
+                                ('west', 'West')],
+                                string="Garden Orientation")
 
     state = fields.Selection([
-        ('new', 'New'),('offer_received', 'Offer Received'),('offer_accepted', 'Offer Accepted'),
-        ('sold', 'Sold'),('cancelled', 'Cancelled'),],
-        string="State", required=True, default='new', copy=False)
+                        ('new', 'New'),
+                        ('offer_received','Offer Received'),
+                        ('offer_accepted', 'Offer Accepted'),
+                        ('sold', 'Sold'),
+                        ('cancelled', 'Cancelled'),
+                        ],
+                        string="State",
+                        required=True,
+                        default='new',
+                        copy=False)
     
     # many2one
     property_type_id = fields.Many2one("estate.property.type",string="Property Type")
@@ -37,6 +48,7 @@ class EstateProperty(models.Model):
     
     #many2one 
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+
     #one2many
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
@@ -78,7 +90,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "sold":
                 raise exceptions.UserError("A sold property cannot be canceled!")
-            record.state = "cancelled"
+                record.state = "cancelled"
         return True
 
     def action_accept_offer(self):
@@ -100,12 +112,37 @@ class EstateProperty(models.Model):
          'The selling price must be positive.')
     ]
 
+    # @api.constrains('selling_price', 'expected_price')
+    # def _check_selling_price(self):
+    #     for record in self:
+    #         if record.selling_price > 0 and record.selling_price < record.expected_price * 0.9:
+    #             raise ValidationError(f"The selling price cannot be lower than 90% of the expected price.")
+
+
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if record.selling_price > 0 and record.selling_price < record.expected_price * 0.9:
-                raise ValidationError(f"The selling price cannot be lower than 90% of the expected price.")
+            if not float_is_zero(record.selling_price, 
+                                precision_digits=2):
+                if float_compare(record.selling_price, 
+                                record.expected_price * 0.9, 
+                                precision_digits=2) < 0:
 
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    # Sequence = fields.Integer('Sequence', default=10)
-    
+                    raise ValidationError(
+                        f"The selling price cannot be lower than 90% of the expected price.")
+
+
+    # @api.model
+    # def unlink(self):
+    #     for property in self:
+    #         if property.state not in ['New', 'Cancelled']:
+    #             raise ValidationError("You cannot delete a property unless its state is 'New' or 'Cancelled'.")
+    #     return super(Property, self).unlink()
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise exceptions.UserError(
+                    "You can only delete properties in 'New' or 'Cancelled' state."
+                    )

@@ -4,6 +4,9 @@
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_available_properties': 1}</field>
+
+        <!-- <field name="context">{'search_default_filter_currently_available': 1}</field> -->
     </record>
     <!-- list view -->
     <record id="my_property_list_view" model="ir.ui.view">
@@ -11,14 +14,17 @@
         <field name="model">estate.property</field>
         <field name="type">list</field> 
         <field name="arch" type="xml">
-            <list string="Properties">
+            <!-- <list string="Properties" decoration-success="payment_state in ('offer_accepted', 'offer_reversed')" > -->
+            <list string="Properties" >
                 <field name="name"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="living_area" string="Living Area(sqm)"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability" string="Available From"/>
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="property_type_id" widget="many2one" />
+                <field name="living_area" string="Living Area(sqm)"></field>
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" string="Available From" optional="True" invisible="1" />
             </list>
         </field>
     </record>
@@ -30,11 +36,11 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="action_set_sold" type="object" string="Sold" class="oe_highlight" visibility="{'invisible': [('state', '=', 'sold')]}"/>
-                    <button name="action_cancel_property" type="object" string="Cancel" class="oe_secondary" visibility="{'invisible': [('state', '=', 'cancelled')]}"/>
+                    <button name="action_set_sold" type="object" string="Sold" class="oe_highlight" invisible="state in ('cancelled', 'sold')"/>
+                    <button name="action_cancel_property" type="object" string="Cancel" class="oe_secondary" invisible="state in ('cancelled', 'sold')"/>
                 </header>
                 <header>
-                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                     <field name="state" widget="statusbar" options="{'clickable': '1'}" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                    <div class="oe_title">
@@ -45,9 +51,8 @@
 
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create': True}"/>
                             <field name="property_type_id" widget="many2one" options="{'no_create': True}"/>
-                            <!-- <field name="property_type_id"/> -->
                             <field name="postcode"/>
                             <field name="expected_price"/>
                         </group>
@@ -66,9 +71,9 @@
                                 <field name="living_area" help="living area in sqm"/>
                                 <field name="facades" help="facaes in the property"/>
                                 <field name="garage" help="garage in the property"/>
-                                <field name="garden" help="if there is garden in the property"/>
-                                <field name="garden_area" help="size of the garden as sqm"/>
-                                <field name="garden_orientation" help="facing of the garden"/>
+                                <field name="garden" help="if there is garden in the property" widget="boolean_toggle"/>
+                                <field name="garden_area" help="size of the garden as sqm"  invisible="not garden"/>
+                                <field name="garden_orientation" help="facing of the garden"  invisible="not garden"/>
                                 <field name="total_area" help="Total Area calculated by adding living area and garden area "/>
 
                             </group>
@@ -104,9 +109,14 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="living_area" string="Living Area" filter_domain="[('living_area', '>=', self)]"/>
+
+            
                 <!-- filter -->
                 <filter name="filter_available_properties" string="Available Properties" 
-                        domain="['|', ('state', '=', 'New'), ('state', '=', 'offer_received')]"/>
+                        domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+
+
                 <!-- groupby -->
                 <filter name="group_by_postcode" string="Group by Postcode" context="{'group_by': 'postcode'} " domain="[]"/>
             </search>
