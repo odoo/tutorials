@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -33,4 +33,23 @@ class EstateProperty(models.Model):
         ('sold_offer', 'Sold'),
         ('cancel_offer', 'Cancelled'),
     ], string='State', required=True, default='new_offer', copy=False)
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    saleperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
+    tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
+    total_area = fields.Integer(compute="_compute_total")
+    best_price = fields.Float(string='Best Offer', compute='_compute_best_price', store=True)
 
+    @api.depends('living_area', 'garden_area')
+    def _compute_total(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_price = 0.0
