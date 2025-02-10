@@ -8,4 +8,16 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <record id="view_estate_property_tag_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.list</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list string="Property Types" editable="bottom">
+                <field name="name" string = "Tags"/>
+            </list>
+        </field>
+    </record>
+
 </odoo>
+
+

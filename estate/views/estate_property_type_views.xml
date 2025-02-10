@@ -5,20 +5,52 @@
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form</field>   
     </record>
 
-     <record id="estate_property_type_list" model="ir.ui.view">
+    <record id="estate_property_type_list" model="ir.ui.view">
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Estate Properties Type">
+                <field name="sequence" widget='handle'/>
                 <field name="name" string="Title"/>  
             </list>
         </field>
     </record>   
 
+    <record id = "estate_property_type_form" model = "ir.ui.view">
+        <field name = "name">estate.property.type.form</field>
+        <field name = "model">estate.property.type</field>
+        <field name = "arch" type = "xml">
+            <form string = "Property Type">
+                <sheet> 
+                   <div name='button_box'>
+                    <button class="oe_stat_button" type='action'
+                            name='%(estate.estate_property_offer_action)d'
+                            icon="fa-pencil-square-o"
+                            invisible="offer_count == 0">
+                        <field name='offer_count' string='Offers' widget='statinfo'/>
+                    </button>
+                  </div>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                        <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list create="False" edit="False" delete="False">
+                                    <field name="name"  string = "Title"/>
+                                    <field name="expected_price" />
+                                    <field name="state"  string = "Status"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
 </odoo>
-
-
 
