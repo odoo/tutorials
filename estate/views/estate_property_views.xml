@@ -45,6 +45,7 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                         <notebook>
@@ -58,6 +59,7 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                 </group>
                             </page>
                             <page string="Offers">
@@ -95,7 +97,7 @@
                 <filter string="Offer Received" name="offer_received" domain="[('state', '=', 'offer_received')]"/>
 
                 <group>
-                    <filter string="Group by Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
