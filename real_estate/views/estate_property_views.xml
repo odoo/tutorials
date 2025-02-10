@@ -32,6 +32,8 @@
                         <h1>
                             <field name="name" />
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags" />
+                        <field name="property_type_id" />
                     </group>
                     <group>
                         <group>
@@ -56,28 +58,63 @@
                                 <field name="garden_orientation" />
                             </group>
                         </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" string="Offer">
+                                    <!--Offer List View -->
+                                    <list>
+                                        <field name="price" string="Price" />
+                                        <field name="partner_id" string="Partner" />
+                                        <field name="status" string="Status" />
+                                    </list>
+                                    <!--Offer Form View -->
+                                    <form>
+                                        <group>
+                                            <field name='price' />
+                                            <field name='partner_id' />
+                                            <field name='status' />
+                                        </group>
+                                    </form>
+                                </field>
+                            </group>
+                        </page>
+
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer_id" />
+                                <field name="salesperson_id" />
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-    <!-- Estate Search View-->
-    <!-- <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
+    <!-- search view -->
+    <record id='estate_properties_search' model='ir.ui.view'>
+        <field name='name'>estate.property.search</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
             <search string="Search Properties">
-                <field name="name" />
-                <field name="postcode" />
-                <field name="expected_price" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="facades" />
-                <filter string="Available Properties" name="available_properties_filter"
-                    domain="[('state', 'in', ('new', 'offer_received'))]" />
-                <filter string="Group by Postcode" context="{'group_by': 'postcode'}" />
+                <!-- Filter for available properties -->
+                <filter name='state'
+                    string="Available"
+                    domain="['|', 
+                    ('state', '=', 'new'),
+                    ('state', '=', 'offer_received')]" />
+                <field name='name' string="Title" />
+                <field name='postcode' />
+                <field name='expected_price' />
+                <field name='bedrooms' />
+                <field name='living_area' />
+                <field name='facades' />
+                <separator />
+                <!-- Postcode -->
+                <group expand='0' string="Group By">
+                    <filter string="Postcode" name='postcode'
+                        context="{'group_by':'postcode'}" />
+                </group>
             </search>
         </field>
-    </record> -->
+    </record>
 </odoo>
- 
