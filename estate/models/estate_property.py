@@ -9,27 +9,13 @@ class EstateProperty(models.Model):
     _description = "Contains all properties related to estate model"
     _order = "id desc"
 
-    # Basic Details
     name = fields.Char(string="Title", required=True)
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
         string="Available From", copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3)
     )
-    tag_ids = fields.Many2many(
-        string="Property Tags", comodel_name="estate.property.tag"
-    )
-    property_type_id = fields.Many2one(
-        string="Property Type", comodel_name="estate.property.type"
-    )
-    offer_ids = fields.One2many(
-        string="Offers", comodel_name="estate.property.offer", inverse_name="property_id"
-    )
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(
-        string="Selling Price", readonly=True, copy=False
-    )
-
-    # Description Fields
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     description = fields.Text(string="Description")
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     facades = fields.Integer(string="Facades")
@@ -46,21 +32,6 @@ class EstateProperty(models.Model):
             ("west", "West")
         ]
     )
-    total_area = fields.Integer(
-        string="Total Area (sqm)", compute="_compute_total_area"
-    )
-    best_price = fields.Float(
-        string="Best Price", compute="_compute_best_price")
-
-    # Other Info
-    buyer_id = fields.Many2one(string="Buyer", comodel_name="res.partner")
-    salesperson_id = fields.Many2one(
-        string="Salesperson",
-        comodel_name="res.users",
-        default=lambda self: self.env.user
-    )
-
-    # Reserved Fields Override
     state = fields.Selection(
         string="Status",
         selection=[
@@ -71,37 +42,50 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled")
         ],
         required=True,
-        default="new"
+        default="new",
+        copy=False
     )
     active = fields.Boolean(default=True)
 
-    _sql_constraints = [('check_expected_price', 'CHECK(expected_price > 0)',
-                         'Expected price must be strictly positive'),
-                        ('check_selling_price', 'CHECK(selling_price >= 0)',
-                         'Selling price must be positive')]
+    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
+    best_price = fields.Float(string="Best Price", compute="_compute_best_price")
 
-    @api.constrains('selling_price', 'expected_price')
+    tag_ids = fields.Many2many(string="Property Tags", comodel_name="estate.property.tag")
+    property_type_id = fields.Many2one(string="Property Type", comodel_name="estate.property.type")
+    offer_ids = fields.One2many(string="Offers", comodel_name="estate.property.offer", inverse_name="property_id")
+    buyer_id = fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False)
+    salesperson_id = fields.Many2one(string="Salesperson", comodel_name="res.users", default=lambda self: self.env.user)
+
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be strictly positive"),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "Selling price must be positive")
+    ]
+
+    @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
+        # selling_price should be atleast 90% of the expected_price, if offer is accepted
         for record in self:
-            is_offer_accepted = any([offer.status == 'accepted' for offer in record.offer_ids])
+            is_offer_accepted = any([offer.status == "accepted" for offer in record.offer_ids])
             if is_offer_accepted and fields.float_compare(record.selling_price, 0.9 * record.expected_price, 2) == -1:
-                raise ValidationError('Selling price must be atleast 90% of the expected price')
+                raise ValidationError("Selling price must be atleast 90% of the expected price")
 
-    @api.depends('garden_area', 'living_area')
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if (record.state not in ["new", "cancelled"]):
+                raise UserError("Only new / cancelled properties can be deleted!")
+
+    @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    @api.depends('offer_ids.price')
+    @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
             record.best_price = max([x.price for x in record.offer_ids], default=0)
 
-            # set state to offer received if offers are made
-            if len(record.offer_ids) > 0 and record.state == 'new':
-                record.state = 'offer_received'
-
-    @api.onchange('garden')
+    @api.onchange("garden")
     def _onchange_garden(self):
         for record in self:
             if record.garden:
@@ -113,12 +97,23 @@ class EstateProperty(models.Model):
 
     def action_sell_property(self):
         if self.state == "cancelled":
-            raise UserError('Cancelled property cannot be sold')
+            raise UserError("Cancelled property cannot be sold")
 
         self.state = "sold"
 
     def action_cancel_property(self):
         if self.state == "sold":
-            raise UserError('Sold property cannot be cancelled')
+            raise UserError("Sold property cannot be cancelled")
 
         self.state = "cancelled"
+
+
+class User(models.Model):
+    _inherit = "res.users"
+
+    property_ids = fields.One2many(
+        string="Properties",
+        comodel_name="estate.property",
+        inverse_name="salesperson_id",
+        domain="[('state', 'in', ['new', 'offer_received'])]"
+    )

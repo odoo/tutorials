@@ -17,19 +17,29 @@ class EstatePropertyOffer(models.Model):
             ("refused", "Refused")
         ]
     )
-    partner_id = fields.Many2one(
-        string="Partner", comodel_name="res.partner", required=True
-    )
-    property_id = fields.Many2one(
-        string="Property", comodel_name="estate.property", required=True
-    )
 
     validity = fields.Integer(string="Validity", default=7)
-    date_deadline = fields.Date(
-        string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
-    )
+    date_deadline = fields.Date(string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
 
-    _sql_constraints = [('check_offer_price', 'CHECK(price > 0)', 'Offer price must be stictly positive')]
+    partner_id = fields.Many2one(string="Partner", comodel_name="res.partner", required=True)
+    property_id = fields.Many2one(string="Property", comodel_name="estate.property", required=True)
+    property_type_id = fields.Many2one(string="Property Type", related="property_id.property_type_id", store=True)
+
+    _sql_constraints = [("check_offer_price", "CHECK(price > 0)", "Offer price must be stictly positive")]
+
+    @api.model_create_multi
+    def create(self, vals):
+        offer_list = list()
+        for val in vals:
+            property = self.env["estate.property"].browse(val["property_id"])
+            for offer in property.offer_ids:
+                if (offer.price > val["price"]):
+                    raise UserError(f"The offer must be higher than {offer.price}")
+            offer = super().create(val)
+            if (offer.property_id.state == "new"):
+                offer.property_id.state = "offer_received"
+            offer_list.append(offer)
+        return offer_list
 
     @api.depends("validity")
     def _compute_deadline(self):
@@ -60,7 +70,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         if any([x.status == "accepted" for x in self.property_id.offer_ids]):
-            raise UserError('An offer was already accepted')
+            raise UserError("An offer was already accepted")
 
         self.status = "accepted"
         self.property_id.selling_price = self.price

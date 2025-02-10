@@ -11,4 +11,4 @@ class EstatePropertyTag(models.Model):
     name = fields.Char(string="Property Tag", required=True)
     color = fields.Integer(string="Tag Color")
 
-    _sql_constraints = [('name_uniq', 'unique(name)', 'Property Tag already exists')]
+    _sql_constraints = [("name_uniq", "unique(name)", "Property Tag already exists")]

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <!-- Search View-->
-    <record id="estate_properties_search" model="ir.ui.view">
-        <field name="name">estate_properties.search</field>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
@@ -28,8 +28,8 @@
     </record>
 
     <!-- List View-->
-    <record id="estate_properties_view_list" model="ir.ui.view">
-        <field name="name">estate_properties.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list decoration-success="state in ['offer_received', 'offer_accepted']"
@@ -47,9 +47,34 @@
         </field>
     </record>
 
+    <!-- Kanban View-->
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="False">
+                <field name="state" />
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bolder" />
+                        <div> Expected Price: <field name="expected_price" />
+                        </div>
+                        <div t-if="record.state.raw_value == 'offer_received'"> Best Offer: <field
+                                name="best_price" />
+                        </div>
+                        <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
+                                name="selling_price" />
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags" />
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <!-- Form View-->
-    <record id="estate_properties_view_form" model="ir.ui.view">
-        <field name="name">estate_properties.form</field>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
@@ -133,11 +158,24 @@
     </record>
 
     <!-- Default Action-->
-    <record id="estate_properties_action" model="ir.actions.act_window">
+    <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
-        <field name="search_view_id" ref="estate_properties_search" />
+        <field name="view_mode">list,form,kanban</field>
+        <field name="search_view_id" ref="estate_property_view_search" />
         <field name="context">{'search_default_property_available': True}</field>
+    </record>
+
+    <record id="res_users_view_form" model="ir.ui.view">
+        <field name="name">res.users.view.form.inherit.estate.property</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='account_security']" position="after">
+                <page string="Properties">
+                    <field name="property_ids" />
+                </page>
+            </xpath>
+        </field>
     </record>
 </odoo>

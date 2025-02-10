@@ -9,30 +9,30 @@
 
     <!-- Advertisements Sub-Menu -->
     <menuitem
-        id="estate_menu_advertisements"
+        id="estate_menu_advertisement"
         name="Advertisements"
         parent="estate_menu_root"
     />
     <menuitem
-        id="estate_menu_advertisements_properties"
-        parent="estate_menu_advertisements"
-        action="estate_properties_action"
+        id="estate_menu_advertisement_property"
+        parent="estate_menu_advertisement"
+        action="estate_property_action"
     />
 
     <!-- Settings Sub-Menu -->
     <menuitem
-        id="estate_menu_settings"
+        id="estate_menu_setting"
         name="Settings"
         parent="estate_menu_root"
     />
     <menuitem
-        id="estate_menu_property_types"
-        parent="estate_menu_settings"
-        action="estate_property_types_action"
+        id="estate_menu_property_type"
+        parent="estate_menu_setting"
+        action="estate_property_type_action"
     />
     <menuitem
-        id="estate_menu_property_tags"
-        parent="estate_menu_settings"
-        action="estate_property_tags_action"
+        id="estate_menu_property_tag"
+        parent="estate_menu_setting"
+        action="estate_property_tag_action"
     />
 </odoo>
