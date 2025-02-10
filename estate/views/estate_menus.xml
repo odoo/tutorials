@@ -8,5 +8,11 @@
         <menuitem id="menu_advertisement" name="Advertisement">
             <menuitem id="menu_advertisement_property" name="Properties" action="action_estate_property" />
         </menuitem>
+
+        <!-- Settings Submenu -->
+        <menuitem id="menu_settings" name="Settings">
+            <menuitem id="menu_settings_property_type" name="Property Types" action="action_estate_property_type" />
+            <menuitem id="mednu_setings_property_tags" name="Property Tag" action="action_estate_property_tag" />
+        </menuitem>
     </menuitem>
 </odoo>

@@ -27,18 +27,25 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_property_sold" type="object" string="Sold"/>
+                    <button name="action_property_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" />
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags" string="Tags" />
                     <group>
                         <group>
+                            <field name="property_type" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
+                            <field name="best_price" string="Best Offer"/>
                         </group>
                     </group>
 
@@ -55,8 +62,23 @@
                                 <field name="garden_orientation" />
                                 <field name="active" />
                                 <field name="state" />
+                                <field name="total_area"/>
                             </group>
                         </page>
+
+                        <page string="Offer">
+                            <group>
+                                <field name="offer_ids"  widget="many2many_offer" nolabel="1"/>
+                            </group>
+                        </page>
+
+                        <page string="Other Info">
+                            <group>
+                                <field name="seller" />
+                                <field name="buyer" />
+                            </group>
+                        </page>
+
                     </notebook>
                 </sheet>
             </form>
