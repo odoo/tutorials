@@ -1,5 +1,6 @@
 from datetime import timedelta
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -12,6 +13,12 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        store="True",
+        string="Property Type",
+    )
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True
@@ -39,45 +46,48 @@ class EstatePropertyOffer(models.Model):
                 record.validity = delta.days
 
     def action_confirm(self):
-        self.status = "accepted"
-        self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.partner_id
-        self.property_id.state = "offer_accepted"
+        if self.property_id.state != "offer_accepted":
+            self.status = "accepted"
+            self.property_id.selling_price = self.price
+            self.property_id.buyer_id = self.partner_id
+            self.property_id.state = "offer_accepted"
+        else:
+            raise UserError("You can not accept another offer.")
 
     def action_refuse(self):
         self.status = "refused"
 
     @api.model_create_multi
     def create(self, vals_list):
-        # Create offers
-        offers = super(EstatePropertyOffer, self).create(vals_list)
+        for vals in vals_list:
+            # Validate that the new offer amount is greater than existing offers
+            property_id = self.env["estate.property"].browse(vals.get("property_id"))
+            if property_id.offer_ids and any(
+                offer.price >= vals["price"] for offer in property_id.offer_ids
+            ):
+                raise UserError(
+                    "You cannot create an offer with an amount lower than or equal to an existing offer."
+                )
 
-        # Update the state of related properties
-        offers.mapped("property_id").update_state_based_on_offers()
+        # Create offers (no need to manually update property state anymore)
+        return super(EstatePropertyOffer, self).create(vals_list)
 
-        return offers
-
-    # Override write method
     def write(self, vals):
-        # Update offers
-        res = super(EstatePropertyOffer, self).write(vals)
+        if "price" in vals:
+            for record in self:
+                # Validate that the new offer amount is greater than existing offers
+                if record.property_id.offer_ids and any(
+                    offer.price >= vals["price"]
+                    for offer in record.property_id.offer_ids
+                ):
+                    raise UserError(
+                        "You cannot update an offer with an amount lower than or equal to an existing offer."
+                    )
 
-        # Update the state of related properties
-        self.mapped("property_id").update_state_based_on_offers()
+        # Update offers (property state will update automatically due to compute)
+        return super(EstatePropertyOffer, self).write(vals)
 
-        return res
-
-    # Override unlink method
     def unlink(self):
-        # Store related properties before unlinking
-        properties = self.mapped("property_id")
-
-        # Delete offers
-        res = super(EstatePropertyOffer, self).unlink()
-
-        # Update the state of related properties
-        properties.update_state_based_on_offers()
-
-        return res
-
+        # No need to manually update property state; it will be computed automatically
+        return super(EstatePropertyOffer, self).unlink()
 
