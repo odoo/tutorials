@@ -12,14 +12,16 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" editable="bottom">
                 <field name="name" width="20%" />
                 <field name="postcode" width="20%" />
                 <field name="bedrooms" width="20%" />
                 <field name="living_area" width="20%" />
+                <field name="garden_area" />
                 <field name="expected_price" width="20%" />
                 <field name="selling_price" width="20%" />
                 <field name="date_availability" width="20%" />
+                <field name="total_area"/>
             </list>
         </field>
     </record>
@@ -43,6 +45,7 @@
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
+                            <field name="best_price" />
                         </group>
                     </group>
                     <notebook>
@@ -63,6 +66,7 @@
                                     <field name="garden_area" />
                                     <field name="garden_orientation" />
                                     <field name="state" />
+                                    <field name="total_area" />
                                 </group>
                             </group>
                         </page>
@@ -78,6 +82,8 @@
                                     <field name="partner_id" width="40%" />
                                     <field name="price" width="30%" />
                                     <field name="status" width="30%" />
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
                                 </list>
                             </field>
                         </page>
