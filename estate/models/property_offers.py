@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from datetime import timedelta
 
 
@@ -40,3 +41,22 @@ class PropertyOffers(models.Model):
                 ).days
             else:
                 record.validity = 7
+
+    def action_accept(self):
+        for offer in self:
+            if offer.status == "accepted":
+                raise UserError("This offer is already accepted.")
+
+            offer.status = "accepted"
+
+            for other_offer in offer.property_id.offer_ids:
+                if other_offer.status == "accepted" and other_offer.id != offer.id:
+                    other_offer.status = "refused"
+
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id
+        return True
+
+    def action_refuse(self):
+        self.status = "refused"
+        return True

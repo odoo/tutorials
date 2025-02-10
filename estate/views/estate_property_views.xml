@@ -30,11 +30,16 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
+                <header>
+                    <button name="sold_action" type="object" string="SOLD"/>
+                    <button name="cancel_action" type="object" string="CANCLE"/>
+                </header>
                 <sheet>
                     <group>
                         <h1>
                             <field name="name" />
                         </h1>
+                        <field name="state" />
                         <field name="tags_ids" widget="many2many_tags"/>
                     </group>
                     <group>
@@ -68,9 +73,11 @@
                                 <list>
                                     <field name="partner_id"/>
                                     <field name="price"/>
-                                    <field name="status"/>
                                     <field name="validity" />
                                     <field name="date_deadline" />
+                                    <button name="action_accept" string="Accept" type="object" icon="fa-check"/>
+                                    <button name="action_refuse" string="Refuse" type="object" icon="fa-times"/>
+                                    <field name="status"/>
                                 </list>
                             </field>
                         </page>
