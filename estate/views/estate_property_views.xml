@@ -6,6 +6,10 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <sheet>
+                    <header>
+                        <button name="action_sold" type="object" string="Mark as Sold"/>
+                        <button name="action_cancel" type="object" string="Cancel"/>
+                    </header>
                     <div class="oe_title">
                         <h1>
                             <field name="title"/>
@@ -16,6 +20,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="available_from"/>
@@ -40,7 +45,6 @@
                         <group>
                             <field name="garden_area"/>
                             <field name="garden_orientation"/>
-                            <field name="state"/>
                             <field name="active"/>
                             <field name="total_area"/>
                         </group>
@@ -58,6 +62,9 @@
                                     <field name="price"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
+                                    <field name="status"/>
+                                    <button name="action_accept" type="object" icon="fa-check" title="Accept Offer"/>
+                                    <button name="action_refuse" type="object" icon="fa-times" title="Refuse Offer"/>
                                 </list>
                             </field>
                         </group>
