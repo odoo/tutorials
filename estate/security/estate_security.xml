@@ -4,10 +4,12 @@
         <field name="name">Estate Category</field>
         <field name="description">This is group</field>
     </record>
+
     <record id="estate_property_group_agent" model="res.groups">
         <field name="name">Agent</field>
         <field name="category_id" ref="estate.estate_property_category"/>
     </record>
+
     <record id="estate_property_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="estate.estate_property_category"/>

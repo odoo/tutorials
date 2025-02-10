@@ -52,14 +52,16 @@
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
             <form>
+                <header>
+                    <button name="sold_property" string="Mark as Sold" type="object" class="btn-primary"/>
+                    <button name="cancel_property" string="Cancel Property" type="object" class="btn-secondary"/>
+                </header>
                 <sheet>
                     <group>
-                        <group>
                             <h1>
                                 <field name='name'/>
                             </h1>
                                 <field name='tag_ids' widget="many2many_tags"/>
-                        </group>
                         <newline/>
                         <group>
                             <group>
@@ -69,6 +71,7 @@
                             </group>
                             <group>
                                 <field name='expected_price'/>
+                                <field name='best_offer'/>
                                 <field name='selling_price'/>
                             </group>
                         </group>
@@ -85,6 +88,7 @@
                                             <field name='is_garage'/>
                                             <field name='is_garden'/>
                                             <field name='garden_area'/>
+                                            <field name='total_area'/>
                                             <field name='garden_orientation'/>
                                         </group>
                                         <group>
@@ -95,7 +99,17 @@
                                 </page>
                                 <page string='Offers'>
                                     <group>
-                                        <field name='offer_ids'/>
+                                        <field name='offer_ids'>
+                                            <list >
+                                                <field name='price'></field>
+                                                <field name='partner_id'></field>
+                                                <field name='validity'></field>
+                                                <field name='deadline'></field>
+                                                <button name='action_accept_offer' string=' ' type='object' icon='fa-check' invisible="status in ['accepted']" />
+                                                <button name='action_refuse_offer' string=' ' type='object' icon='fa-times' invisible="status in ['refused']"/>
+                                                <field name='status'></field>
+                                            </list>
+                                        </field>
                                     </group>
                                 </page>
                                 <page string='Other Info'>

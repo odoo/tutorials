@@ -1,26 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='estate_property_offer_view_list' model='ir.ui.view'>
-        <field name='name'>estate.property.offer.view.list</field>
-        <field name='model'>estate.property.offer</field>
-        <field name='arch' type='xml'>
-            <list>
-                <field name='price'></field>
-                <field name='partner_id'></field>
-                <field name='status'></field>
-            </list>
-        </field>
-    </record>
-
     <record id='estate_property_offer_view_form' model='ir.ui.view'>
         <field name='name'>estate.property.offer.view.form</field>
         <field name='model'>estate.property.offer</field>
         <field name='arch' type='xml'>
-            <form>
+            <form string='Offer'>
                 <sheet>
                     <group>                    
                         <field name='price'></field>
                         <field name='partner_id'></field>
+                        <field name='validity'></field>
+                        <field name='deadline'></field>
                         <field name='status'></field>
                     </group>
                 </sheet>
