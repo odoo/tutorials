@@ -1,6 +1,7 @@
 from datetime import datetime
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -79,3 +80,16 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many(
         "estate.property.offer", "property_id", string="Offer Id"
     )
+
+    def action_cancel(self):
+        for record in self:
+            if record.status == "sold":
+                raise UserError("A sold property cannot be cancelled!")
+            record.status = "cancelled"
+
+    def action_sold(self):
+        for record in self:
+            if record.status == "cancelled":
+                raise UserError("A cancelled property cannot be sold!")
+            record.status = "sold"
+

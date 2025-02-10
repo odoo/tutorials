@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
         [("accepted", "Accepted"), ("refused", "Refused")],
         string="Status",
         copy=False,
-        default="accepted",
+        default=False,
     )
     partner_id = fields.Many2one("res.partner", string="Partner Id", required=True)
     property_id = fields.Many2one(
@@ -43,3 +43,19 @@ class EstatePropertyOffer(models.Model):
                     ).days
                 else:
                     record.validity = 7
+
+    def action_accepted(self):
+        for offer in self:
+            offer.state = "accepted"
+            for other_offers in offer.property_id.offer_ids:
+                if other_offers.state == "accepted" and other_offers.id != offer.id:
+                    other_offers.state = "refused"
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id
+        return True
+
+    def action_refused(self):
+        for offer in self:
+            offer.state = "refused"
+        return True
+
