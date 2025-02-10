@@ -27,13 +27,13 @@
       <field name="model">estate.property.type</field>
       <field name="arch" type="xml">
         <form string="Property Type Form">
-          <header>
-            <!-- Stat Button for Offers -->
-            <button name="%(estate_property_offer_action)d" type="action" class="oe_stat_button" icon="fa-money">
-              <field name="offer_ids" widget="statinfo" string="Offers"/>
-            </button>
-          </header>
           <sheet>
+            <!-- stats button -->
+            <div class="oe_button_box" name="button_box">
+              <button name="%(estate_property_offer_action)d" type="action" class="oe_stat_button" icon="fa-money">
+                <field name="offer_ids" widget="statinfo" string="Offers"/>
+              </button>
+            </div>
             <label for="name"/>
             <h1 class="mb32 w-50">
               <field name="name" class="mb16"/>

@@ -9,7 +9,7 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     # Offer details
-    price = fields.Float("Price")
+    price = fields.Float("Price", required=True)
 
     # Status of the offer
     status = fields.Selection([
@@ -89,3 +89,18 @@ class EstatePropertyOffer(models.Model):
                     raise models.ValidationError(
                         "The selling price cannot be lower than 90% of the expected price!"
                     )
+
+    @api.model_create_multi
+    def create(self, vals):
+        """ Prevents creating an offer lower than an existing offer. """
+        property_id = self.env["estate.property"].browse(vals["property_id"])
+
+        # Check if there are existing offers and compare prices
+        if property_id.offer_ids and vals["price"] <= max(property_id.offer_ids.mapped("price")):
+            raise UserError("You cannot create an offer lower than an existing offer!")
+
+        # Set property state to 'Offer Received'
+        property_id.state = "offer_received"
+
+        # Explicitly calling the parent class' create method
+        return super(EstatePropertyOffer, self).create(vals)

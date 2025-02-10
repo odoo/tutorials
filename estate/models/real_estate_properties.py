@@ -159,3 +159,10 @@ class RealEstateProperty(models.Model):
             if record.selling_price <= 0:
                 raise UserError("Selling price must be set before marking as sold!")
             record.state = "sold"
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_delete(self):
+        """ Prevent deletion of properties if no in 'new' or 'cancelled' state. """
+        for record in self:
+            if record.state not in["new", "cancelled"]:
+                raise UserError("You can only delete new or cancelled properties!")

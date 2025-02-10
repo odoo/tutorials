@@ -15,6 +15,7 @@
          'views/estate_property_offer_action.xml',
          'views/estate_property_type_action.xml',
          'views/estate_property_view.xml',
+         'views/res_users_inherit.xml',
          'views/estate_menu.xml'
     ],
     'installable': True,
