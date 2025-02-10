@@ -12,3 +12,4 @@
     "sequence": 1,
     "description": "This is a real estate app",
 }
+
