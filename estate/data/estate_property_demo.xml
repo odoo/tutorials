@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
     <record id="property_4" model="estate.property">
         <field name="name">Maple Heights</field>
         <field name="description">Penthouse apartment with panoramic views and private terrace.</field>
@@ -169,4 +170,5 @@
         <field name="garden_orientation">south</field>
         <field name="state">new</field>
     </record>
+
 </odoo>

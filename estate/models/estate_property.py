@@ -9,7 +9,11 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postal Code")
-    date_availability = fields.Date("Availability Date", copy=False, default= lambda self: fields.Datetime.now() + relativedelta(months=3))
+    date_availability = fields.Date(
+        "Availability Date",
+        copy=False,
+        default= lambda self: fields.Datetime.now() + relativedelta(months=3)
+    )
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Number of bedrooms", default=2)
@@ -18,6 +22,29 @@ class EstateProperty(models.Model):
     garage = fields.Boolean("Garage")
     garden = fields.Boolean("Garden")
     garden_area = fields.Integer("Garden Area (sqm)")
+    buyer = fields.Many2one(
+        "res.partner",
+        string="Buyer",
+        copy=False
+    )
+    tag_ids = fields.Many2many(
+        "estate.property.tag",
+        string="Property Tag"
+    )
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        string="Property Type"
+    )
+    offer_ids = fields.One2many(
+        "estate.property.offer",
+        "property_id",
+        string="Offers"
+    )
+    salesman = fields.Many2one(
+        "res.users",
+        string="Salesman",
+        default=lambda self: self.env.user
+    )
     garden_orientation = fields.Selection(
         selection = [
             ('north', 'North'),
