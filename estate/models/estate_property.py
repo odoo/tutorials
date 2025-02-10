@@ -1,5 +1,6 @@
 from datetime import timedelta
 from odoo import fields, models,api
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -26,16 +27,6 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
     )
-
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
-
     status = fields.Selection(
         string="Status",
         default = "new",
@@ -54,13 +45,33 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     tags_ids = fields.Many2many("estate.property.tag", string="Tags")
     total_area = fields.Integer(string="Total area (sqm)" ,compute="_compute_total_area", store= True)
+    best_price = fields.Float("Best Offer", compute="_compute_best_price", store=True)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    def action_cancel(self):
+        if self.status == "sold":
+            raise UserError("A sold property cannot be cancelled.")
+        else:
+            self.status = "cancelled"
+
+    def action_sold(self):
+        if self.status == "cancelled":
+            raise UserError("A cancelled property cannot be sold.")
+        else:
+            self.status = "sold"
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
-
-    best_price = fields.Float("Best Offer", compute="_compute_best_price", store=True)
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
