@@ -6,27 +6,21 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="estate_property_type_view_list" model="ir.ui.view">
-        <field name="name">Properties</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <list>
-
-                <field name="name" string="Name"/>
-            </list>
-        </field>
-    </record>
-
     <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">Properties</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
-                <sheet>
-                    <group>
-                        <field name="name" string="Name"/>
-                    </group>
-                </sheet>
+                <field name="name" string="Title" />
+
+                <field name="property_ids">
+                    <list editable="bottom">
+                        <field name="name" string="Title" />
+                        <field name="expected_price" string="Expected Price"/>
+                        <field name="status" string="Status" />
+                    </list>
+                </field>
+
             </form>
         </field>
     </record>

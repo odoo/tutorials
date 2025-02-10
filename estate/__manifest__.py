@@ -1,7 +1,6 @@
 {
     "name": "estate app",
     "summary": "Estate module",
-    "description": "Estate module",
     "author": "Odoo",
     "category": "Tutorials/estate",
     "version": "1.0",

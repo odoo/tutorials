@@ -10,10 +10,14 @@
         <field name="name">Offers</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="top" open_form_view="True">
                 <field name="price" string="Price"/>
                 <field name="partner_id" string="Partner"/>
                 <field name="status" string="Status"/>
+                <field name="validity" string="Validity(days)"/>
+                <button name="action_offer_accept" type="object" icon="fa-check" invisible="status == 'accepted'"/>
+                <button name="action_offer_reject" type="object" icon="fa-times" invisible="status == 'refused'"/>
+                <field name="deadline" string="Deadline"/>
             </list>
         </field>
     </record>
@@ -28,6 +32,8 @@
                         <field name="price" string="Price"/>
                         <field name="partner_id" string="Partner"/>
                         <field name="status" string="Status"/>
+                        <field name="validity" string="Validity(days)"/>
+                        <field name="deadline" string="Deadline"/>
                     </group>
                 </sheet>
             </form>

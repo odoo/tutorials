@@ -5,28 +5,38 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Description">
+                <header>
+                    <button name="action_sold" type="object" string="SOLD" invisible="status in ('sold','cancelled')"/>
+                    <button name="action_cancel" type="object" string="CANCEL" invisible="status in ('sold','cancelled')"/>
+                    <field name="status" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold,cancelled"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+
+                            <field name="tag_ids" widget="many2many_tags" nolabel="1"/>
+
                             <group>
-                                <h1>
-                                    <field name="name"/>
-                                </h1>
-                            </group>
-                            <newline/>
-                            <group>
-                                <field name="tag_ids" widget="many2many_tags" nolabel="1"/>
                                 <field name="property_type_id" string="Property Type"/>
+                                <field name="best_offer" string="Best Offer"/>
                             </group>
+
                             <newline/>
 
                             <group>
-                                <field name="postcode" string="Postcode"/>
+                                <field name="status" string="Status" />
                                 <field name="expected_price" string="Expected Price"/>
+                            </group>
+
+                            <group>
+                                <field name="postcode" string="Postcode"/>
+                                <field name="selling_price" string="Selling Price"/>
                             </group>
                             <group>
                                 <field name="date_availability" string="Available From"/>
-                                <field name="selling_price" string="Selling Price"/>
                             </group>
                         </group>
                         <notebook>
@@ -40,7 +50,7 @@
                                     <field name="is_garden" string="Garden"/>
                                     <field name="garden_area" string="Garden Area(sqm)"/>
                                     <field name="garden_orientation" string="Garden Orientation"/>
-                                    <field name="status" string="Status" />
+                                    <field name="total_area" string="Total Area(sqm)" />
                                 </group>
                             </page>
 
@@ -52,11 +62,10 @@
 
                             <page string="Other Info">
                                 <group>
-                                    <field name="seller" string="Salesman"/>
-                                    <field name="buyer" string="Buyer"/>
+                                    <field name="seller_id" string="Salesman"/>
+                                    <field name="buyer_id" string="Buyer"/>
                                 </group>
                             </page>
-
                         </notebook>
                     </group>
                 </sheet>
@@ -77,9 +86,35 @@
                 <field name="selling_price" string="Selling Price"/>
                 <field name="date_availability" string="Available From"/>
                 <field name="property_type_id" string="Property Type"/>
-
                 <field name="tag_ids" widget="many2many_tags" nolabel="1"/>
             </list>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">Properties</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div>
+                                <b>Name: <field name="name" string="Title"/></b>
+                            </div>
+                            <div>Postcode: <field name="postcode"/>
+                            </div>
+                            <div>Bedrooms: <field name="bedrooms"/>
+                            </div>
+                            <div>Living Area: <field name="living_area"/>
+                            </div>
+                            <div>Expected Price: <field name="expected_price"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
@@ -88,7 +123,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search">
-                <filter string="Available" name="available" domain="['|',('status','=','new'),('status','=','offer received')]"/>
+                <filter string="Available" name="available" domain="([ ('status', 'in', ('new','offer received'))])"/>
                 <filter string="Availablity by Date" name="date_availability" domain="[('date_availability','&gt;',datetime.datetime.now())]"/>
                 <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
             </search>
@@ -98,6 +133,6 @@
     <record id="estate_properties_view" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
     </record>
 </odoo>
