@@ -18,6 +18,11 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" />
+                <field name="property_type_id">
+                    <list>
+                        <field name="name" />
+                    </list>
+                </field>
             </list>
         </field>
     </record>
@@ -27,6 +32,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Form">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" />
+                    <button name="action_cancel" type="object" string="Cancel" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new, offer_received, offer_accepted, sold, cancelled" />
+                </header>
                 <sheet>
                     <group>
                         <h1>
@@ -49,11 +60,16 @@
                             <field name="postcode" />
                         </group>
                         <group>
-                            <field name="selling_price" />
+                            <field name="best_price" />
                         </group>
                     </group>
                     <group>
-                        <field name="date_availability" />
+                        <group>
+                            <field name="date_availability" />
+                        </group>
+                        <group>
+                            <field name="selling_price" />
+                        </group>
                     </group>
                     <notebook>
                         <page string="Description">
@@ -66,6 +82,7 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                                <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
@@ -73,6 +90,14 @@
                                 <list>
                                     <field name="price" />
                                     <field name="partner_id" />
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
+                                    <button name="action_accept" states="draft" type="object"
+                                        title='accept'
+                                        icon="fa-check" />
+                                    <button name="action_reject" states="draft,open" type="object"
+                                        title='reject'
+                                        icon="fa-times" />
                                     <field name="status" />
                                 </list>
                             </field>
