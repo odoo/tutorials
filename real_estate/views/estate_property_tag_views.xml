@@ -1,22 +1,35 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id='estate_property_tag' model='ir.actions.act_window'>
-        <field name='name'>Property Tag</field>
-        <field name='res_model'>estate.property.tag</field>
-        <field name='view_mode'>list,form</field>
+    <record id="estate_property_tag" model="ir.actions.act_window">
+        <field name="name">Property Tag</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- List View -->
+    <record id="estate_property_tag_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.list</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list string="Tags" editable="bottom" sample="1">
+                <field name="name"/>
+                <field name="color" widget="color_picker" />
+            </list>
+        </field>
     </record>
 
     <!-- Form View -->
-    <record id='estate_property_tag_form' model='ir.ui.view'>
-        <field name='name'>estate.property.tag.form</field>
-        <field name='model'>estate.property.tag</field>
-        <field name='arch' type='xml'>
+    <record id="estate_property_tag_form" model="ir.ui.view">
+        <field name="name">estate.property.tag.form</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
             <form string="Property Tag">
                 <sheet>
                     <group>
                         <h1>
-                            <field name='name' string="Name"/>
+                            <field name="name" string="Name"/>
                         </h1>
+                        <field name="color"/>
                     </group>
                 </sheet>
             </form>
