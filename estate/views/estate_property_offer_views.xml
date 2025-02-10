@@ -4,14 +4,13 @@
         <field name="name">Estate Property Offer View</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offers">
+            <list string="Property Offers" editable="bottom" decoration-bf="status == 'accept'" decoration-success=" status == 'accept'" decoration-danger=" status == 'refuse' ">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <button name="action_accept" type="object" title="Accept" icon="fa-check" invisible="status == 'accept' or status == 'refuse'"/>
-                <button name="action_reject" type="object" title="Refuse" icon="fa-times" invisible="status == 'accept' or status == 'refuse'"/>
-                <field name="status"/>
                 <field name="validity"/>
                 <field name="offer_deadline"/>
+                <button name="action_accept" type="object" title="Accept" icon="fa-check" invisible="status == 'accept' or status == 'refuse'"/>
+                <button name="action_reject" type="object" title="Refuse" icon="fa-times" invisible="status == 'accept' or status == 'refuse'"/>
             </list>
         </field>
     </record>
@@ -34,5 +33,12 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id','=', active_id)]</field>
     </record>
 </odoo>

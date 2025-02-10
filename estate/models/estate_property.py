@@ -50,7 +50,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id")
 
-    total_area = fields.Float(compute="_total_area")
+    total_area = fields.Float(compute="_total_area" ,store=True)
     best_price = fields.Integer(compute="_compute_best_price")
 
     _sql_constraints = [
@@ -79,12 +79,12 @@ class EstateProperty(models.Model):
             self.garden_area = None
             self.garden_orientation = None
 
-    @api.onchange("offer_ids")
-    def _update_status(self):
-        if (len(self.offer_ids) > 0):
-            self.state = "offer_received"
-        else:
-            self.state = "new"
+    # @api.onchange("offer_ids")
+    # def _update_status(self):
+    #     if (len(self.offer_ids) > 0):
+    #         self.state = "offer_received"
+    #     else:
+    #         self.state = "new"
     
     @api.constrains("selling_price", "expected_price")
     def is_selling_price_fine(self):
@@ -110,6 +110,13 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state != "cancelled":
                 record.state = "sold"
+                print("Check")
             else:
                 raise exceptions.UserError("Sorry! This listing is cancelled.")
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def prevent_delete(self):
+        for record in self:
+            if(record.state=="new" or record.state=="cancelled"):
+                raise exceptions.UserError("This property cannot be deleted!")
