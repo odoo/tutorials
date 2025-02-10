@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
 
@@ -44,9 +44,9 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(string="Active", default=True)
 
-    estate_property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type")
-    estate_property_tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
-    estate_property_offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="estate_property_id", string="Offers")
+    property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type")
+    property_tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
+    property_offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string="Offers", default=[])
     user_id = fields.Many2one(comodel_name='res.users', string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one(comodel_name='res.partner', string='Buyer', copy=False)
 
@@ -58,10 +58,10 @@ class EstateProperty(models.Model):
         for property in self:
             property.total_area = property.living_area + property.garden_area
 
-    @api.depends("estate_property_offer_ids.price")
+    @api.depends("property_offer_ids.price")
     def _compute_best_price(self):
         for property in self:
-            property.best_price = max(property.estate_property_offer_ids.mapped("price")) if property.estate_property_offer_ids else 0.0
+            property.best_price = max(property.property_offer_ids.mapped("price")) if property.property_offer_ids else 0.0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -71,3 +71,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_sold(self):
+        if self.state == "cancelled":
+            raise UserError("Cancelled properties cannot be sold")
+        else:
+            self.state = "sold"
+        return True
+
+    def action_cancel(self):
+        if self.state == "sold":
+            raise UserError("Sold properties cannot be cancelled")
+        else:
+            self.state = "cancelled"
+        return True
