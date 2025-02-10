@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Property Types -->
+    <record id="property_type_apartment" model="estate.property.type">
+        <field name="name">Apartment</field>
+    </record>
+
+    <record id="property_type_cottage" model="estate.property.type">
+        <field name="name">Cottage</field>
+    </record>
+
+    <record id="property_type_villa" model="estate.property.type">
+        <field name="name">Villa</field>
+    </record>
+
+    <record id="property_type_mansion" model="estate.property.type">
+        <field name="name">Mansion</field>
+    </record>
+
+    <record id="property_type_retreat" model="estate.property.type">
+        <field name="name">Retreat</field>
+    </record>
+
+    <record id="property_type_condo" model="estate.property.type">
+        <field name="name">Condo</field>
+    </record>
+
+    <!-- Property Tags -->
+    <record id="property_tag_new" model="estate.property.tag">
+        <field name="name">New</field>
+    </record>
+
+    <record id="property_tag_luxury" model="estate.property.tag">
+        <field name="name">Luxury</field>
+    </record>
+
+    <record id="property_tag_beachfront" model="estate.property.tag">
+        <field name="name">Beachfront</field>
+    </record>
+
+    <record id="property_tag_nature" model="estate.property.tag">
+        <field name="name">Nature</field>
+    </record>
+
+    <record id="property_tag_riverside" model="estate.property.tag">
+        <field name="name">Riverside</field>
+    </record>
+
+    <record id="property_tag_mountain" model="estate.property.tag">
+        <field name="name">Mountain</field>
+    </record>
 
     <record model="estate.property" id="property_1">
         <field name="name">Modern Apartment</field>
@@ -8,7 +57,10 @@
         <field name="expected_price">3000000</field>
         <field name="facades">2</field>
         <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_apartment"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_new'))]"/>
     </record>
+
     <record model="estate.property" id="property_2">
         <field name="name">Cozy Cottage</field>
         <field name="postcode">123454</field>
@@ -16,6 +68,8 @@
         <field name="expected_price">200000</field>
         <field name="facades">1</field>
         <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_cottage"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_nature'))]"/>
     </record>
 
     <record model="estate.property" id="property_3">
@@ -25,6 +79,8 @@
         <field name="expected_price">1000000</field>
         <field name="facades">4</field>
         <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_villa"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_luxury'))]"/>
     </record>
 
     <record model="estate.property" id="property_4">
@@ -34,6 +90,8 @@
         <field name="expected_price">5000000</field>
         <field name="facades">6</field>
         <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_mansion"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_riverside'))]"/>
     </record>
 
     <record model="estate.property" id="property_5">
@@ -43,6 +101,8 @@
         <field name="expected_price">300000</field>
         <field name="facades">2</field>
         <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_retreat"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_mountain'))]"/>
     </record>
 
     <record model="estate.property" id="property_6">
@@ -52,7 +112,8 @@
         <field name="expected_price">400000</field>
         <field name="facades">1</field>
         <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_condo"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_beachfront'))]"/>
     </record>
-
 
 </odoo>

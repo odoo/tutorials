@@ -21,7 +21,6 @@ class EstateProperty(models.Model):
     garage = fields.Boolean("Garage")
     garden = fields.Boolean("Garden")
     garden_area = fields.Integer("Garden Area")
-    color = fields.Integer(string='Color')
     garden_orientation = fields.Selection(string='Garden Orientation',
         selection=[
             ('north', 'North'),
@@ -39,3 +38,10 @@ class EstateProperty(models.Model):
         ],
         required=True, copy=False, default="new"
     )
+    color = fields.Integer(string='Color')
+    #Relational Fields
+    property_type_id = fields.Many2one('estate.property.type', string = 'Property Type')
+    salesman_id = fields.Many2one('res.users',string='Salesman',default=lambda self: self.env.user, required=True)
+    buyer_id = fields.Many2one('res.partner',string='Buyer',readonly=True)
+    property_tag_ids = fields.Many2many('estate.property.tag', string='Property Tag', readonly=False)
+    offers_ids = fields.One2many('estate.property.offer', 'property_id')

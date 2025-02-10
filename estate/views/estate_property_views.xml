@@ -45,6 +45,7 @@
                         </group>
                     </group>
                     <notebook>
+                        <!-- Discription Page -->
                         <page string="Discription">
                             <group>
                                 <group>
@@ -56,6 +57,29 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                </group>
+                            </group>
+                        </page>
+                        <!-- Offers Page -->
+                        <page string="Offers">
+                            <field name="offers_ids" readonly="state in ('offer_accepted','sold','cancelled')">
+                                <list string="Estate Property List" editable="top" decoration-success="status == 'accepted'" decoration-danger="status == 'rejected'">
+                                    <field name="partner_id"/>
+                                    <field name="price"/>
+                                    <button name="action_status_accept" type="object" class="fa fa-check" title="Accept Offer" invisible="status in ('accepted', 'refused')"/>
+                                    <button name="action_status_reject" type="object" class="fa fa-times" title="Reject Offer" invisible="status in ('accepted', 'refused')"/>
+                                    <field name="status" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                        <!-- Other Info Page -->
+                        <page string="Other Info">
+                            <group>
+                                <group>
+                                    <field name="salesman_id"/>
+                                </group>
+                                <group>
+                                    <field name="buyer_id"/>
                                 </group>
                             </group>
                         </page>
@@ -71,16 +95,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Properties">
-                <field name="name" filter_domain="['|',('name','like','self'),('state','=','offer_received')]"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="('living_area','&gt;=','self')"/>
                 <field name="facades"/>
                 <filter string= "Available" name="state" domain="['|',('state','=','new'),('state','=','offer')]"/>
-                <!-- <field name="garage" domain ="[('garage','=','True')]"/>
-                <field name="garden" domain ="[('garden','=','True')]"/>
-                <field name="active" domain ="[('active','=','True')]"/> -->
                 <filter name="postcode" string="postcode"  context="{'group_by': 'postcode'}"/>
             </search>
         </field>
