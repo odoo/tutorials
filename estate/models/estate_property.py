@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -35,7 +35,7 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ("canceled", "Canceled"),
         ])
     active = fields.Boolean(default = True)
     property_type_id = fields.Many2one("estate.property.type",string="Property Type")
@@ -64,3 +64,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def property_sold(self):
+        for record in self:
+            if record.status == 'canceled':
+                raise exceptions.UserError("A sold property cannot be cancelled!")
+            record.status = "sold"
+        return True
+
+    def property_cancel(self):
+        for record in self:
+            if record.status == 'sold':
+                raise exceptions.UserError("A sold property cannot be cancelled!")
+            record.status = "canceled"
+        return True

@@ -26,11 +26,16 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form">
+                <header>
+                    <button name="property_sold" type="object" string="Sold"/>
+                    <button name="property_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1><field name="name"/></h1>
                     <h3><field name="property_tag_id" widget='many2many_tags'/></h3>
                     <group>
                         <group>
+                            <field name="status"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>

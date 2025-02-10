@@ -1,4 +1,4 @@
-from odoo import models,fields, api
+from odoo import models,fields, api, exceptions
 from datetime import timedelta
 
 class EstatePropertyOffer(models.Model):
@@ -26,3 +26,19 @@ class EstatePropertyOffer(models.Model):
             if record.date_deadline and record.create_date:
                 delta = record.date_deadline - record.create_date
                 record.validity = delta.days
+
+    def action_accept(self):
+        for record in self:
+            accepted_offer = self.search([
+                    ('property_id', '=', record.property_id.id),
+                    ('status', '=', 'accepted')
+                ]   )
+            if accepted_offer:
+                raise exceptions.UserError("Only one offer can be accepted per property!")
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+
+    def action_refuse(self):
+        for record in self:
+            record.status = "refused"
