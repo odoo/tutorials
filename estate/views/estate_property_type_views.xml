@@ -23,10 +23,10 @@
     <form string="Test">
         <sheet>
         <div class="oe_button_box" name="button_box">
-            <button name="view_estate_property_offer_form" class="oe_stat_button"  icon="fa-money" type="action">
+            <button name="%(estate.estate_property_offer_action)d" class="oe_stat_button"  icon="fa-money fa-4x" type="action">
                 <div class="o_stat_info"> 
-                    <span class="o_stat_text" string="Offers:">
-                        <field name="offer_count" />
+                    <span class="o_stat_text">
+                       <field name="offer_count" widget="statinfo" string="Offers"/>
                     </span> 
                 </div>
             </button>

@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=date.today() + relativedelta(months=3)
+        copy=False, default=fields.Datetime.today() + relativedelta(months=3)
     )
     expected_price = fields.Float(required=True, allow_negative=False)
     selling_price = fields.Integer(readonly=True, copy=False, allow_negative=False)
@@ -55,9 +55,12 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_area")
-    best_price = fields.Float(compute="_compute_best_offer", default=0)
+    best_price = fields.Float(compute="_compute_best_offer")
     cancelation = fields.Boolean(store=True, default=False)
     solded = fields.Boolean(store=True, default=False)
+    seller_id = fields.Many2one(
+        "res.users", string="Salesman", default=lambda self: self.env.user
+    )
     _sql_constraints = [
         (
             "name_uniq",
@@ -110,3 +113,12 @@ class EstateProperty(models.Model):
         for record in self:
             if record.expected_price < 0:
                 raise ValidationError("Expected Price cannot be negative!")
+
+    # using api.model because ondelte method is returning recursion errors
+    def unlink(self):
+        for property in self:
+            if property.state not in ["new", "cancelled"]:
+                raise ValidationError("Only new and cancelled property can be deleted")
+
+        # Call the super method to actually delete the property
+        return super(EstateProperty, self).unlink()

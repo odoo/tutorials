@@ -74,9 +74,12 @@ class EstatePropertyOffer(models.Model):
         # Set property state to 'offer received' when creating an offer
         property = self.env["estate.property"].browse(vals.get("property_id"))
         if property:
-            property.state = (
-                "offer received"  # Set the property state when an offer is created
-            )
+            if vals["price"] > property.best_price:
+                property.state = (
+                    "offer received"  # Set the property state when an offer is created
+                )
+            else:
+                raise ValidationError("Bidding Price should be more than best price")
         return super(EstatePropertyOffer, self).create(vals)
 
     @api.model

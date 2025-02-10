@@ -91,8 +91,8 @@
                         <field name="partner_id"/>
                         <field name="validity"/>
                         <field name="date_deadline"/>
-                        <button name="offer_accept" states="draft" type="object" icon="fa-check" invisible="status in ['accepted', 'refused']" />
-                        <button name="offer_refuse" states="draft" type="object" icon="fa-times" invisible="status in ['accepted', 'refused']"/>
+                        <button name="offer_accept" states="draft" type="object" icon="fa-check" invisible="status in ['accepted', 'refused'] or parent.state in ['offer_accepted', 'sold', 'cancelled']" />
+                        <button name="offer_refuse" states="draft" type="object" icon="fa-times" invisible="status in ['accepted', 'refused']or parent.state in ['offer_accepted', 'sold', 'cancelled']"/>
                     </list>
                     </field>
                 </page>
