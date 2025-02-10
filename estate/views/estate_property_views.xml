@@ -61,12 +61,16 @@
                                         <field name="validity" />
                                         <field name="date_deadline" />
                                         <button name="action_accept_offer" type="object"
-                                            help="Accepte"
+                                            help="Accept"
                                             title="accept"
+                                            class="oe_highlight"
+                                            confirm="are you sure"
                                             icon="fa-check" />
                                         <button name="action_refuse_offer" type="object"
                                             help="Refuse"
                                             title="refuse"
+                                            class="btn-danger"
+                                            confirm="are you sure"
                                             icon="fa-times" />
                                         <field name="status" readonly="1" />
                                     </list>

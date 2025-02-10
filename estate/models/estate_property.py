@@ -123,3 +123,4 @@ class EstateProperty(models.Model):
                 record.state = "cancelled"
 
         return True
+        
