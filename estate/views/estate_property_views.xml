@@ -14,6 +14,8 @@
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
+                <field name="property_type_id"/>
+                <field name="tag_ids"/>
                 <field name="expected_price"/>
                 <field name="date_availability"/>
             </list>
@@ -32,9 +34,14 @@
                         </h1>
                     </div>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <group>
+                            <field name="property_type_id"/>
+                            <field name="expected_price"/>
+                        </group>
                         <group>
                             <field name="postcode"/>
-                            <field name="expected_price"/>
+                            <field name="best_offer"/>
                         </group>
                         <group>
                             <field name="date_availability"/>
@@ -51,9 +58,22 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
+                                    <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                     <field name="active"/>
                                     <field name="state"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <group>
+                                    <field name="salesman"/>
+                                    <field name="buyer"/>
                                 </group>
                             </group>
                         </page>
@@ -74,6 +94,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
                 <separator/>
                 <filter string="Available" name="state" domain="[('state', 'in', ['new','offer received'])]"/>
                 <group expand="1" string="Group By">
