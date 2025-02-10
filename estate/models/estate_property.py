@@ -1,5 +1,7 @@
 from odoo import fields,models,api
+from odoo.tools import float_compare,float_is_zero
 from datetime import datetime, timedelta
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -18,6 +20,10 @@ class EstateProperty(models.Model):
     facades=fields.Integer()
     garage= fields.Boolean()
     garden= fields.Boolean()
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+    ]
     garden_orientation= fields.Selection(string='Garden orientation',
         selection=[
             ('North', 'North'),
@@ -65,3 +71,32 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
+
+    def sold_property(self):
+        for record in self:
+            if record.state=='cancelled':
+                raise UserError("Property is already cancelled,you cannot sell this property")
+            else:
+                record.state='sold'
+        return True
+
+    def cancel_property(self):
+        for record in self:
+            if record.state=='sold':
+                raise UserError("Property is already sold ,it cannot be cancelled")
+            else:
+                record.state='cancelled'
+        return True
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_offer_price_slab(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+
+            min_acceptable_price= 0.9*record.expected_price
+
+            if float_compare(record.selling_price,min_acceptable_price, precision_digits=2)==-1:
+                raise UserError(
+                    "Selling price must be greater than 90% of expected price. It should be more than {:.2f}".format(min_acceptable_price)
+                )
