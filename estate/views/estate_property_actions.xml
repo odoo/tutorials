@@ -6,7 +6,7 @@
     </record>
     
     <record id="estate_property_list_view" model="ir.ui.view">
-        <field name="name">List view</field>
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties List" >
@@ -22,7 +22,7 @@
     </record>
 
      <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">Form View</field>
+        <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties Form" >
@@ -30,6 +30,7 @@
                     <h1>Property Detail</h1>
                     <group>
                         <group>
+                            <field name="property_tag_id" widget="many2many_tags"/> <!-- widget display this field in tag-style UI-->
                             <field name="name"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
@@ -37,6 +38,7 @@
                         <group>
                             <field name="date_availability"/>
                             <field name="expected_price"/>
+                            <field name="best_offer"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -45,10 +47,11 @@
                         <page string="Description">
                             <group>
                                 <group>
-                                <field name="description"/>
+                                    <field name="description"/>
                                     <field name="bedrooms"/>
                                     <field name="living_area"/>
                                     <field name="facades"/>
+                                    <field name="total_area"/>
                                 </group>
                                 <group>
                                     <field name="garage"/>
@@ -61,9 +64,12 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesmen"/>
-                                <field name="buyer"/>
+                                <field name="salesmen_id"/>
+                                <field name="buyer_id"/>
                             </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -72,7 +78,7 @@
     </record>
     
     <record id="estate_property_search_view" model="ir.ui.view">
-            <field name="name">Search View</field>
+            <field name="name">estate.property.search</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <search string="Properties Search">

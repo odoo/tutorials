@@ -1,30 +1,36 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import math
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from odoo import api
 from odoo import fields, models
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
-    name = fields.Char(string="Property Name", required=True,default="Unknown name")
-    property_type_id = fields.Many2one("estate.property.type",string="Property Type") # all many2one filed have prefix _id
-    salesmen = fields.Many2one("res.users",string="Salesmen") # many2one filed by default display name field of other model
-    buyer = fields.Many2one("res.partner",string="Buyer")
+    name = fields.Char(string="Property Name", required=True, default="Unknown name")
+    property_tag_id = fields.Many2many("estate.property.tag", string="Property Condition") # all many2many fields have suffix _id.
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type" ) # all many2one field have suffix _id, and it display by default name of estate.property.type
+    salesmen_id = fields.Many2one("res.users", string="Salesmen", default=lambda self: self.env.user) # many2one field by default display name field of other model, self.env.user return current user's name
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     active=fields.Boolean(default=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Available From", default=lambda self: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price")
-    bedrooms = fields.Integer(string="Number of Bedrooms",default=2)
+    bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer(string="Number of Facades")
     garage = fields.Boolean(string="Has Garage?")
     garden = fields.Boolean(string="Has Garden?")
     garden_area = fields.Integer(string="Garden Area (sqm)")
+    best_offer = fields.Float(compute="_compute_best_price", string="Best Offer")
+    total_area = fields.Float(compute="_compute_total_area", string="Total Area (sqm)")
     garden_orientation = fields.Selection(
         selection=[
             ('north', 'North'),
@@ -45,3 +51,16 @@ class EstateProperty(models.Model):
         string="state", default="new",
         copy=False, required=True
     )
+ 
+
+    @api.depends("living_area", "garden_area")  # this method call when living_area or garden_area change.
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area+record.garden_area
+            
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        maxprice = 0
+        for record in self:
+            record.best_offer=max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0

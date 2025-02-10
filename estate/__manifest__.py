@@ -17,6 +17,8 @@
         'security/ir.model.access.csv',
         'views/estate_property_actions.xml', # Maintain the sequance for loading of the data files
         'views/estate_property_type_actions.xml', 
+        'views/estate_property_tag_actions.xml', 
+        'views/estate_property_offer_actions.xml', 
         'views/estate_property_menus.xml'
     ]
 }
