@@ -16,7 +16,8 @@ class EstateOffer(models.Model):
     _order = "id desc"
 
     partner_id = fields.Many2one('res.partner', string="Buyer", copy=False)
-    property_id = fields.Many2one('estate.property', string="Property", required=True)
+    property_id = fields.Many2one('estate.property', string="Property", required=True,ondelete='cascade')
+    property_type_id=fields.Many2one('estate.property.type',related='property_id.property_type_id',store=True)
 
     validity = fields.Integer(string="Validity (Days)", store=True)
     date_deadline = fields.Date(string="Date-Deadline", compute="_compute_date_deadline", inverse="_set_date_deadline", store=True)
@@ -57,6 +58,7 @@ class EstateOffer(models.Model):
             record.status_offer = "accepted"
             record.property_id.selling_price=record.price
             record.property_id.property_buyer_id=record.partner_id
+            record.property_id.status="offer_accepted"
         return True
 
     def reject_offer(self):
@@ -65,3 +67,25 @@ class EstateOffer(models.Model):
             record.status_offer = "refused"
             record.property_id.selling_price=0.000
         return True
+
+    @api.model
+    def create(self, vals):
+        # Step 1: Set the property state to 'Offer Received' when a new offer is created
+        property_id = vals.get('property_id')
+        if property_id:
+            property_record = self.env['estate.property'].browse(property_id)
+            if property_record:
+                # Update the property status to 'offer_received'
+                property_record.write({'status': 'offer_received'})
+
+        # Step 2: Raise an error if the new offer price is lower than an existing offer
+        if vals.get('price') is not None:
+            existing_offers = self.env['estate.property.offer'].search([
+                ('property_id', '=', vals.get('property_id'))
+            ])
+            highest_offer = max(existing_offers.mapped('price'), default=0)
+            if vals['price'] < highest_offer:
+                raise UserError(f"The offer price must be higher than the existing offer of {highest_offer}.")
+        
+        # Call the super class to create the record
+        return super().create(vals)

@@ -48,6 +48,15 @@ class EstateProperty(models.Model):
         copy=False,
     )
 
+    
+    def unlink(self):
+        for record in self:
+            if record.status not in ['new', 'canceled']:
+                raise UserError(f"Cannot delete the property '{record.name}' because its state is '{record.state}'.")
+        
+        # After applying the business logic, call the parent unlink() method
+        return super(EstateProperty, self).unlink()
+
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     # property_seller_id=fields.Many2one('estate.property.seller',string="Salesman")
     # property_buyer_id=fields.Many2one('estate.property.buyer',string="Buyer")
