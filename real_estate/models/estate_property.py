@@ -1,12 +1,15 @@
 import datetime
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
+
 
 class EstateProperty(models.Model):
 
     _name = 'estate.property'
     _description = "Real Estate Property"
+    _order = 'id desc'
 
     name = fields.Char(
         string="Name",
@@ -73,13 +76,14 @@ class EstateProperty(models.Model):
     )
     garden_orientation = fields.Selection(
         selection=[
-            ('north', 'North'),
-            ('south', 'South'),
-            ('east', 'East'),
-            ('west', 'West')
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West")
         ],
         string="Garden Orientation",
-        required=True, help="Select the orientation of the garden"
+        required=True, 
+        help="Select the orientation of the garden"
     )
     active = fields.Boolean(
         string="Active",
@@ -88,11 +92,11 @@ class EstateProperty(models.Model):
     )
     state = fields.Selection(
         selection=[
-            ('new', 'New'),
-            ('offer_received', 'Offer Received'),
-            ('offer_accepted', 'Offer Accepted'),
-            ('sold', 'Sold'),
-            ('cancelled', 'Cancelled'),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
         ],
         string="State",
         required=True,
@@ -133,8 +137,8 @@ class EstateProperty(models.Model):
     )
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.garden_area + record.living_area
+        for Property in self:
+            Property.total_area = Property.garden_area + Property.living_area
 
     best_price = fields.Float(
         string="Best Offer",
@@ -142,11 +146,11 @@ class EstateProperty(models.Model):
     )
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        for record in self:
-            if(record.offer_ids):
-                record.best_price = max(record.offer_ids.mapped('price'))
+        for Property in self:
+            if(Property.offer_ids):
+                Property.best_price = max(Property.offer_ids.mapped('price'))
             else:
-                record.best_price = 0.0
+                Property.best_price = 0.0
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -158,13 +162,38 @@ class EstateProperty(models.Model):
             self.garden_area = 0
 
     def action_set_sold(self):
-        for record in self:
-            if (record.state == "cancelled" or record.state == "Cancelled"):
-                raise UserError('Cancelled Property can not be sold')
-            record.state = 'sold'
+        for Property in self:
+            if (Property.state == "cancelled"):
+                raise UserError("Cancelled Property can not be sold")
+            Property.state = 'sold'
         
     def action_set_cancel(self):
-        for record in self:
-            if(record.state == "sold" or record.state == "Sold"):
-                raise UserError('Sold Property can not be cancel')
-            record.state = 'cancelled'
+        for Property in self:
+            if(Property.state == "sold"):
+                raise UserError("Sold Property can not be cancel")
+            Property.state = 'cancelled'
+
+    # SQL CONSTRAINTS
+    _sql_constraints = [
+        (
+            'check_expected_price',
+            'CHECK(expected_price>0)',
+            'Expected price must be strictly positive'
+        ),
+        (
+            'check_selling_price',
+            'CHECK(selling_price>0)',
+            'Selling price must be positive'
+        )
+    ]
+
+    # PYTHON CONSTRAINTS
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        for product in self:
+            if float_is_zero(product.selling_price, precision_digits=2):
+                continue
+
+            min_selleing_price = 0.9 * product.expected_price
+            if float_compare(product.selling_price, min_selleing_price, precision_rounding=2) == -1:
+                raise ValidationError("Selling Price cannot be lower than 90% of the Expected Price.")

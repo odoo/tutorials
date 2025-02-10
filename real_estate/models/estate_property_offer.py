@@ -1,10 +1,12 @@
 from datetime import date, timedelta
 from odoo import models, fields, api
 
+
 class EstatePropertyOffer(models.Model):
 
     _name = 'estate.property.offer'
     _description = "Offers on Property"
+    _order = 'price desc'
 
     create_date = fields.Date(
         string="Create Date",
@@ -45,25 +47,34 @@ class EstatePropertyOffer(models.Model):
     )
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date + timedelta(days=record.validity)
+        for offer in self:
+            if offer.create_date:
+                offer.date_deadline = offer.create_date + timedelta(days=offer.validity)
             else:
-                record.date_deadline = False
+                offer.date_deadline = False
 
     def _inverse_date_deadline(self):
-        for record in self:
-            if record.create_date and record.date_deadline:
-                record.validity = (record.date_deadline - record.create_date).days
-            elif record.date_deadline:
-                record.validity = 7
+        for offer in self:
+            if offer.create_date and offer.date_deadline:
+                offer.validity = (offer.date_deadline - offer.create_date).days
+            elif offer.date_deadline:
+                offer.validity = 7
 
     def action_accept_offer(self):
-        for record in self:
-            record.status = 'accepted'
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
+        for offer in self:
+            offer.status = 'accepted'
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
 
     def action_refuse_offer(self):
-        for record in self:
-            record.status = 'refused'
+        for offer in self:
+            offer.status = 'refused'
+
+    # SQL CONSTRAINTS   
+    _sql_constraints = [
+        (
+            'check_offer_price',
+            'CHECK(price>0)',
+            'Offer Price must be positive'
+        )
+    ] 
