@@ -17,4 +17,3 @@
     'application': True
 }
 
-
