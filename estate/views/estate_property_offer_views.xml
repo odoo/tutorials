@@ -5,9 +5,10 @@
         <field name='model'>estate.property.offer</field>
         <field name='arch' type='xml'>
             <list string='Channel'>
-                <field name='price' string="Title"/>
-                <field name='partner_id'/>
-                <field name='status'/>
+                <field name='price' string="Price"/>
+                <field name='partner_id' string='Partner'/>
+                <field name='validity'/>
+                <field name='date_deadline'/>
             </list>
         </field>
     </record>
