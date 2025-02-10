@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from datetime import timedelta
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -34,7 +35,7 @@ class EstateProperty(models.Model):
         help = 'Mark if you want it as Active'
     )
     garden_orientation = fields.Selection(
-        string = 'Type',
+        string = 'Garden Orientation',
         selection = [
             ('north', 'North'),
             ('south', 'South'),
@@ -42,7 +43,7 @@ class EstateProperty(models.Model):
             ('west', 'West')]
     )
     state = fields.Selection(
-        string = "State",
+        string = "Status",
         required = True,
         default = "new",
         copy = False,
@@ -63,6 +64,7 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute = '_compute_total_area', string = 'Total area(sqm)', store = True)
     best_price = fields.Float(compute = '_compute_best_offer', string = 'Best Offer', store = True)
 
+
     @api.depends('living_area','garden_area')
     def _compute_total_area(self):
             self.total_area = self.living_area + self.garden_area
@@ -73,10 +75,10 @@ class EstateProperty(models.Model):
         for record in self:
             if record.offer_ids:
                 record.best_price = max(record.offer_ids.mapped('price'))
-        else:
-            record.best_price = 0.0
+            else:
+                record.best_price = 0.0
 
-    @api.onchange("garden")
+    @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
@@ -84,3 +86,23 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_set_canceled(self):
+        for record in self:
+            if record.state != 'sold':
+                record.state = 'cancelled'
+            elif record.state == 'sold':
+                raise UserError('It cannot be canceled once sold')
+            elif record.state == 'cancelled':
+                raise UserError('It is already canceled')
+            return True
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state != 'cancelled':
+                record.state = 'sold'
+            elif record.state == 'cancelled':
+                raise UserError('It cannot be sold once cancelled')
+            elif record.state == 'sold':
+                raise UserError('It is already sold')
+
