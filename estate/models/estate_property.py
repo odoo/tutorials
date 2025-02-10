@@ -1,5 +1,6 @@
-from datetime import timedelta
 from odoo import api, models,fields
+from datetime import timedelta
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -47,7 +48,6 @@ class EstateProperty(models.Model):
     property_tag_id = fields.Many2many("estate.property.tag",string="Property Tag")
     buyer_id = fields.Many2one("res.partner",string="Buyer",copy=False)
     salesperson_id = fields.Many2one("res.users",string="Salesman",default=lambda self:self.env.user)
-    salesperson_id = fields.Many2one("res.users",string="Salesman",default=lambda self:self.env.user)
     offer_ids = fields.One2many("estate.property.offer","property_id")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price", store=True)
 
@@ -70,3 +70,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_set_sold(self):
+        for record in self:
+            if record.status == 'cancelled':
+                raise UserError("A cancelled property cannot be set as sold.")
+            record.status = 'sold'
+
+    def action_cancel(self):
+        for record in self:
+            if record.status == 'sold':
+                raise UserError("A sold property cannot be cancelled.")
+            record.status = 'cancelled'

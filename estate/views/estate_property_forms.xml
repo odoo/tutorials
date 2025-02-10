@@ -5,6 +5,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+               <header>
+                    <button name="action_set_sold" type="object" string="Mark as Sold"
+                        class="btn-primary" if="status != 'cancelled'"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                        class="btn-secondary" if="status != 'sold'"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -14,6 +21,7 @@
                     </h3>
                 <group>
                     <group>
+                        <field name="status"/>
                         <field name="property_type_id"/>
                         <field name="postcode"/>
                         <field name="date_availability"/>

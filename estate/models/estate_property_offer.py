@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 from datetime import timedelta
-
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -11,7 +11,7 @@ class EstatePropertyOffer(models.Model):
         string="Status",
         copy = False,
         selection=[
-            ("offer_accepted", "Accepted"),
+            ("accepted", "Accepted"),
             ("refused","Refused")
         ])
     partner_id = fields.Many2one('res.partner', string='Partner', index=True, required = True)
@@ -33,3 +33,19 @@ class EstatePropertyOffer(models.Model):
                 offer.validity = (offer.date_deadline - offer.create_date.date()).days
             else:
                 offer.validity = (offer.date_deadline - fields.Date.today()).days
+
+    def action_accept(self):
+        for record in self:
+            accepted_offer = self.search([
+                ('property_id', '=', record.property_id.id),
+                ('status', '=', 'accepted')
+            ], limit=1)
+            if accepted_offer:
+                raise UserError("Only one offer can be accepted per property!")
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+
+    def action_refuse(self):
+        for record in self:
+            record.status = "refused"
