@@ -12,8 +12,8 @@
         </field>
     </record>
 
-    <record id="estate_property_offer_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.offer.view.tree</field>
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list decoration-success="status=='accepted'" decoration-danger="status=='refused'">

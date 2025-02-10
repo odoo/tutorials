@@ -22,15 +22,15 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
-                <div name="button_box" class="oe_button_box">
-                    <button name="%(estate.estate_property_offer_action)d" class="oe_stat_button" icon="fa-money" type="action">
-                        <div class="o_stat_info" style="text-align: center;">
-                            <field name="offer_count"/>
-                            Offers
-                        </div>
-                    </button>
-                </div>
                 <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button name="%(estate.estate_property_offer_action)d" class="oe_stat_button" icon="fa-money" type="action">
+                            <div class="o_stat_info" style="text-align: center;">
+                                <field name="offer_count"/>
+                                Offers
+                            </div>
+                        </button>
+                    </div>
                     <h1><field name="name" placeholder="House"/></h1>
                     <notebook>
                         <page string="Properties">
