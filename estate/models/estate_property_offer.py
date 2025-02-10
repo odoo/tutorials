@@ -4,6 +4,7 @@ from datetime import timedelta
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property offer'
+    _order = "price desc"
     
     price = fields.Float(string='Price', required=True)
     status = fields.Selection(
@@ -33,13 +34,17 @@ class EstatePropertyOffer(models.Model):
 
     def property_action_accept(self):
         for record in self:
-            record.status = 'accepted'
-            record.property_id.state = 'offer_accepted'
-            record.property_id.partner_id = record.partner_id
-            record.property_id.selling_price = record.price
+            if not any(rec.status == "accepted" for rec in self):
+                record.status = 'accepted'
+                record.property_id.state = 'offer_accepted'
+                record.property_id.partner_id = record.partner_id
+                record.property_id.selling_price = record.price
 
     def property_action_refuse(self):
         for record in self:
             record.status = 'refused'
             record.property_id.state = 'new'
             
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
+    ]
