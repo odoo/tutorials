@@ -5,6 +5,8 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer's"
+    # ch-11 ex-3
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(

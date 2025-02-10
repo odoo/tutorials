@@ -6,6 +6,8 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    # ch-11 ex-3
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Property Description")
@@ -38,8 +40,8 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         [
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -65,7 +67,7 @@ class EstateProperty(models.Model):
         string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(
         string="Best Offer", compute="_compute_best_price")
-    property_type_id = fields.Many2one("estate.property.type")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price >= 0)',

@@ -6,6 +6,19 @@
             <field name="view_mode">list,form</field>
         </record>
 
+        <record id="estate_type_model_action_list_view" model="ir.ui.view">
+            <field name="name">estate.property.type.list</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <list string="Name">
+                    <field name="name" />
+                    <!-- ch-11 ex-4 -->
+                    <field name="sequence" widget="handle" />
+                    <field name="sequence" />
+                </list>
+            </field>
+        </record>
+
         <record id="estate_type_model_action_form_view" model="ir.ui.view">
             <field name="name">estate.property.type.form</field>
             <field name="model">estate.property.type</field>
@@ -20,6 +33,7 @@
                             </div>
                         </group>
                         <notebook>
+                            <!-- chapter-11 exercise-11 -->
                             <page string="Properties">
                                 <field id="properties_list" name="property_ids">
                                     <list create="False">

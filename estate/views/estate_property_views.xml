@@ -14,6 +14,8 @@
                     <header>
                         <button type="object" name="action_sold_property">SOLD</button>
                         <button type="object" name="action_cancel_property">CANCEL</button>
+                        <!-- status bar, chatper-11 exercise-2 -->
+                        <field name="state" widget="statusbar"  statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': True}"/>
                     </header>
                     <sheet>
                         <group>
@@ -23,13 +25,16 @@
                                         <field name="name" class="oe_inline" />
                                     </h1>
                                 </div>
-                                <field name="tag_ids" widget="many2many_tags" />
+                                <!-- ch-11 ex-5 -->
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                             </group>
                         </group>
                         <group>
                             <group>
                                 <field name="state" string="Status" />
-                                <field name="property_type_id" />
+                                <!-- <field name="property_type_id" /> -->
+                                <!-- ch-11 ex-5 -->
+                                <field name="property_type_id" widget="many2one" />
                                 <field name="postcode" />
                                 <field name="date_availability" />
                             </group>
