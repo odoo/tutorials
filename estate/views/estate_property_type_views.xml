@@ -10,10 +10,10 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Estate Properties Types">
+            <list string="Estate Property Types">
                 <field name="sequence" widget="handle" />
                 <field name="name" string="Property Type Name" />
-                <field name="sequence" string="seq"/>
+                <field name="sequence" string="seq" />
             </list>
         </field>
     </record>
@@ -39,6 +39,14 @@
         <field name="arch" type="xml">
             <form string="Estate Property Type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_estate_property_offer)d"
+                            type="action"
+                            icon="fa-money"
+                        >
+                            <field name="offer_count" string="offers" widget="statinfo" />
+                        </button>
+                    </div>
                     <h1>
                         <field name="name" string="Property Type Name" required="1" />
                     </h1>

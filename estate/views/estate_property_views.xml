@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="action_estate_property" model="ir.actions.act_window">
+        <field name="name">Estate Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="context">{"search_default_filter_available": 1}</field>
+    </record>
     <!-- Define the List View -->
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Properties">
-                <field name="name" string="Property Name" />
-                <field name="postcode" string="Postcode" />
-                <field name="bedrooms" string="Bedrooms" />
-                <field name="living_area" string="Living Area" />
-                <field name="expected_price" string="Expected Price" />
-                <field name="selling_price" string="Selling Price" />
-                <field name="date_availability" string="Available From" />
+            <list string="Estate Properties" decoration-danger="state == 'cancelled'"
+                decoration-success="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <field name="name" string="Property Name" readonly="1"/>
+                <field name="tag_ids" widget="many2many_tags"
+                            options="{'color_field': 'color'}"/>
+                <field name="postcode" string="Postcode" readonly="1"/>
+                <field name="bedrooms" string="Bedrooms" readonly="1"/>
+                <field name="living_area" string="Living Area" readonly="1"/>
+                <field name="expected_price" string="Expected Price" readonly="1"/>
+                <field name="selling_price" string="Selling Price" readonly="1"/>
+                <field name="date_availability" string="Available From" optional="hide" readonly="1"/>
             </list>
         </field>
     </record>
@@ -26,25 +35,30 @@
                 <!-- Header Section -->
                 <header>
                     <button name="set_sold" string="Sold" type="object"
-                        class="btn btn-outline-primary o_form_button_create" />
+                        class="btn btn-outline-primary o_form_button_create"
+                        invisible="state == 'sold' or state == 'cancelled'" />
                     <button name="cancel_property" string="Cancel" type="object"
-                        class="btn btn-outline-primary o_form_button_create btn-danger" />
-
-                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold, cancle"/>
+                        class="btn btn-outline-primary o_form_button_create btn-danger"
+                        invisible="state == 'cancelled' or state == 'sold'" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new, offer_received, offer_accepted, sold, cancle" />
                 </header>
                 <sheet>
                     <h1>
                         <field name="name" string="Property Name" required="1" />
                     </h1>
-                    <groupt>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                    </groupt>
+                    <group>
+                        <field name="tag_ids" widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
+                    </group>
                     <!-- Basic Information in Flex Layout -->
                     <group class="mb32">
                         <!-- First Row -->
                         <group>
                             <field name="state" string="Status" />
-                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}" string="Property Type" />
+                            <field name="property_type_id"
+                                options="{'no_create': True, 'no_open': True}"
+                                string="Property Type" />
                             <field name="postcode" string="Postcode" />
                             <field name="date_availability" string="Available From" />
                         </group>
@@ -72,8 +86,10 @@
                             </group>
                             <group>
                                 <field name="garden" string="Garden" widget="checkbox" />
-                                <field name="garden_area" string="Garden Area" />
-                                <field name="garden_orientation" string="Garden Orientation" />
+                                <field name="garden_area" string="Garden Area"
+                                    invisible="not garden" />
+                                <field name="garden_orientation" string="Garden Orientation"
+                                    invisible="not garden" />
                             </group>
                             <group>
                                 <!-- Add Total Area Field -->
@@ -83,16 +99,21 @@
                         <!-- Offers Tab-->
                         <page string="Offers">
                             <field name="offer_ids" widget="one2many_list"
-                                options="{'no_create': True}">
-                                <list>
+                                options="{'no_create': True}"
+                                readonly="state in ['offer_accepted', 'sold', 'cancelled']"
+                            >
+                                <list decoration-success="status == 'accepted'"
+                                    decoration-danger="status == 'refused'">
                                     <field name="price" string="Price" />
                                     <field name="partner_id" string="Partner" />
                                     <field name="validity" />
                                     <field name="date_deadline" />
                                     <button name="accept_offer" type="object"
-                                        help="Accept" icon="fa-check" />
+                                        help="Accept" icon="fa-check"
+                                        invisible="status == 'accepted'" />
                                     <button name="refuse_offer" type="object"
-                                        help="Refuse" icon="fa-times" />
+                                        help="Refuse" icon="fa-times"
+                                        invisible="status == 'refused'" />
                                     <field name="status" string="Status" />
                                 </list>
                             </field>
@@ -122,7 +143,9 @@
                     string="Available Properties"
                     domain="[('state', 'in', ['new', 'offer_received'])]"
                 />
-
+                <!-- Add a Filter for Living Area -->
+                <field name="living_area" string="Living Area(sqm)"
+                    filter_domain="[('living_area', '>=', self)]" />
                 <!-- Group By Postcode -->
                 <group expand="0" string="Group By">
                     <filter name="group_by_postcode" string="Postcode"
@@ -130,11 +153,5 @@
                 </group>
             </search>
         </field>
-    </record>
-
-    <record id="action_estate_property" model="ir.actions.act_window">
-        <field name="name">Estate Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form,kanban</field>
     </record>
 </odoo>

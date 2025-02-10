@@ -5,17 +5,29 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <!-- Define the List View -->
+    <record id="estate_property_tag_view_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.list</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list string="Estate Property Tags" editable="bottom">
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+
     <!-- Define the Search View for Property Tag -->
     <record id="estate_property_Tag_view_search" model="ir.ui.view">
-     <field name="name">estate.property.tag.search</field>
-     <field name="model">estate.property.tag</field>
-     <field name="arch" type="xml">
-        <search string="Search Estate Property Tags">      
-            <!-- Group By Property Tag Name -->
-            <group expand="0" string="Group By">
-                <filter name="group_by_name" string="Name" context="{'group_by': 'name'}"/>
-            </group>
-        </search>
-     </field>
+        <field name="name">estate.property.tag.search</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <search string="Search Estate Property Tags">
+                <!-- Group By Property Tag Name -->
+                <group expand="0" string="Group By">
+                    <filter name="group_by_name" string="Name" context="{'group_by': 'name'}" />
+                </group>
+            </search>
+        </field>
     </record>
 </odoo>
