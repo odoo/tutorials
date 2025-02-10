@@ -1,14 +1,14 @@
 from odoo import fields, models
 
 
-class EstatePropertyType(models.Model):
-    _name = "estate.property.type"
-    _description = "Real Estate Property Type"
+class EstatePropertyTag(models.Model):
+    _name = "estate.property.tag"
+    _description = "Real Estate Property Tag"
 
     name = fields.Char(
         string="Name",
-        help="The name of the property type.",
-        required=True
+        help="The name of the property tag.",
+        required=True,
     )
 
     # -------------------------------------------------------------------------
@@ -16,5 +16,5 @@ class EstatePropertyType(models.Model):
     # -------------------------------------------------------------------------
 
     _sql_constraints = [
-        ('uniq_name', 'unique(name)', 'The name of the type must be unique.')
+        ('uniq_name', 'unique(name)', 'The name of the tag must be unique.')
     ]

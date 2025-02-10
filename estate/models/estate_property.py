@@ -1,6 +1,7 @@
-from odoo import fields, models
-
 from datetime import datetime, timedelta
+
+from odoo import fields, models, api
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -103,8 +104,84 @@ class EstateProperty(models.Model):
         comodel_name="res.partner"
     )
     salesperson_id = fields.Many2one(
-        string="Salesperson",
+        string="Salesman",
         help="The salesperson responsible for the property.",
         default=lambda self: self.env.user,
         comodel_name="res.users"
     )
+
+    # Many2many field for property tags
+    tag_ids = fields.Many2many(
+        string="Tags",
+        help="Tags related to the property.",
+        comodel_name="estate.property.tag"
+    )
+
+    # One2many field for offers
+    offer_ids = fields.One2many(
+        string="Offers",
+        comodel_name="estate.property.offer",
+        inverse_name="property_id"
+    )
+
+    best_price = fields.Float(
+        string="Best Price",
+        help="The best offer received for the property.",
+        compute="_compute_best_price",
+        store=True
+    )
+    total_area = fields.Integer(
+        string="Total Area (sqm)",
+        help="Total area of the property in square meters, calculated as the sum of living and garden areas.",
+        compute="_compute_total_area",
+        store=True
+    )
+
+    # -------------------------------------------------------------------------
+    # SQL QUERIES
+    # -------------------------------------------------------------------------
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)', 'The expected price must be positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+    ]
+
+    # -------------------------------------------------------------------------
+    # COMPUTE METHODS
+    # -------------------------------------------------------------------------
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        self.total_area = self.living_area + self.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        self.best_price = max(self.offer_ids.mapped('price'), default=0)
+
+    # -------------------------------------------------------------------------
+    # ONCHANGE METHODS
+    # -------------------------------------------------------------------------
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    # -------------------------------------------------------------------------
+    # ACTION METHODS
+    # -------------------------------------------------------------------------
+
+    def action_sold(self):
+        if self.state == 'canceled':
+            raise UserError("Canceled properties cannot be sold.")
+
+        self.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        self.state = 'canceled'
+        return True

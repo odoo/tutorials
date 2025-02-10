@@ -27,6 +27,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form View">
+                <header>
+                    <button name="action_sold" string="Sold" type="object" class="btn-primary" error="Are you sure you want to mark this property as sold?"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="btn-danger"/>
+                </header>
                 <sheet>
                     <group>
                         <h1>
@@ -34,12 +38,20 @@
                         </h1>
                     </group>
                     <group>
+                        <h3>
+                            <field name="tag_ids" widget="many2many_tags" nolabel="1"/>
+                        </h3>
+                    </group>
+                    <group>
                         <group>
+                            <field name="state" string="Status"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -69,14 +81,23 @@
                             <group>
                                 <field name="garden_orientation"/>
                             </group>
+                            <group>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" widget="one2many_offer" nolabel="1"/>
+                            </group>
                         </page>
 
                         <page string="Other info">
                             <group>
-                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
                             </group>
                             <group>
-                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
