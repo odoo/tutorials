@@ -6,13 +6,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
-                <field name="name" width="20%" />
-                <field name="postcode" width="10%" />
-                <field name="bedrooms" width="10%" />
-                <field name="living_area" width="15%" />
-                <field name="expected_price" width="15%" />
-                <field name="selling_price" width="15%" />
-                <field name="date_availability" width="15%" />
+                <field name="name" width="20%"/>
+                <field name="postcode" width="10%"/>
+                <field name="bedrooms" width="10%"/>
+                <field name="living_area" width="15%"/>
+                <field name="expected_price" width="15%"/>
+                <field name="selling_price" width="15%"/>
+                <field name="date_availability" width="15%"/>
             </list>
         </field>
     </record>
@@ -23,37 +23,43 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold"/>
+                    <button name="action_cancelled" type="object" string="Cancelled"/>
+                </header>
                 <sheet>
                     <group>
                         <h1>
-                            <field name="name" />
+                            <field name="name"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags_avatar" />
+                        <field name="tag_ids" widget="many2many_tags_avatar"/>
                     </group>
                     <group>
                         <group>
-                            <field name="property_type" />
-                            <field name="postcode" />
-                            <field name="date_availability" />
+                            <field name="property_type_id"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price" />
-                            <field name="selling_price" />
-                            <field name="state" />
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="best_offer"/>
+                            <field name="state"/>
                         </group>
                     </group>
                     <notebook>
                         <page name="description" string="Description">
                             <group>
                                 <field name="description"
-                                    placeholder="When duplicated, status and date are not copied" />
-                                <field name="bedrooms" />
-                                <field name="living_area" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                    placeholder="When duplicated, status and date are not copied"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="total_area"/>
+                                <field name="garden_orientation"/>
                             </group>
                         </page>
 
@@ -65,8 +71,8 @@
 
                         <page name="other_info" string="Other Info">
                             <group>
-                                <field name="seller" />
-                                <field name="buyer" />
+                                <field name="seller_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -81,17 +87,17 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Tests">
-                <field name="name" />
-                <field name="postcode" />
-                <field name="expected_price" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="facades" />
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
                 <filter string="Available" name="available"
-                    domain="[('state', 'in', ['new', 'offer received'])]" />
+                    domain="[('state', 'in', ['new', 'offer received'])]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="group_by_postcode"
-                        context="{'group_by': 'postcode'}" />
+                        context="{'group_by': 'postcode'}"/>
                 </group>
             </search>
         </field>
