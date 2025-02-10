@@ -10,7 +10,11 @@ class EstateProperty(models.Model):
     postcode = fields.Char('Postcode', size=6)
     date_availability = fields.Date('Date Availability',default=fields.Date.today() + timedelta(days=90), copy=False)
     expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    selling_price = fields.Integer('Selling Price', 
+        readonly=True, 
+        copy=False,
+        default=1000000
+    )
     bedrooms = fields.Integer('Bedrooms', default="2")
     living_area = fields.Integer('Living Area')
     facades = fields.Integer('Facedes')
@@ -28,7 +32,7 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean('Active', 
         default=True, 
-        help='if you wan to active'
+        help='if you want to active'
         )
     state = fields.Selection(
         required=True,
@@ -42,3 +46,7 @@ class EstateProperty(models.Model):
             ('cancelled', 'Cancelled')
         ]
     )
+    salesman_id = fields.Many2one('res.users',default=lambda self: self.env.user, string='Salesman')
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=True)
+    tags_ids = fields.Many2many('estate.property.tag', string='Tags')
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")

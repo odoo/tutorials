@@ -55,11 +55,27 @@
                                 <field name="state" string="State"/>
                             </group>
                         </page>
+                        <page string='Other info'>
+                            <group>
+                                <field name='salesman_id'/>
+                                <field name='buyer_id'/>
+                            </group>
+                        </page>
+                        <page string='Offers'>
+                            <field name='offer_ids'>
+                                <list>  
+                                    <field name="price" string='Price' width="20%"/>
+                                    <field name="property_id" string='Partner' width="20%"/>
+                                    <field name="status" string='Status'  width="20%"/>
+                                </list>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
+<!-- Search View-->
     <record id="estate_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>

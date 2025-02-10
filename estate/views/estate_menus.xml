@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="estate_first_level" name="Real Estate">
+        <menuitem id="estate_second_level" name="Adverstisement">
+            <menuitem id="estate_menu_action" action="action_my_pipeline"/>
+        </menuitem>
+        <menuitem id="estate_types_level" name="Settings">
+            <menuitem id="estate_menu_action_type" action="action_property_type"/>
+            <menuitem id="estate_menu_action_tag" action="action_property_tag"/>
+        </menuitem>
+    </menuitem>
+</odoo>
