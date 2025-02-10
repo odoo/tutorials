@@ -1,5 +1,6 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -17,6 +18,8 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    total_area = fields.Integer(compute="_compute_total_area", store=True)
+    best_offer = fields.Float(compute="_compute_best_offer", store=True)
     garden_orientation = fields.Selection(
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         string="Garden Orientation"
@@ -40,34 +43,19 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one("res.users", string="Seller", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-
-# class EstatePropertyType(models.Model):
-#     _name = "estate.property.type"
-#     _description = "Property Type"
-
-#     name = fields.Char(required=True)
-
-# class EstatePropertyTag(models.Model):
-#     _name = "estate.property.tag"
-#     _description = "Real Estate Property Tags"
-#     _order = "name"
-
-#     name = fields.Char(required=True, string="Tag")
-#     #color = fields.Integer(string="Color")
-
-#     _sql_constraints = [
-#         ('unique_tag_name', 'unique(name)', 'Tag name must be unique.')
-#     ]
-# class EstatePropertyOffer(models.Model):
-#     _name = "estate.property.offer"
-#     _description = "Estate Property Offer"
-
-#     price = fields.Float(string="Offer Price", required=True)
-#     status = fields.Selection([
-#         ('accepted', 'Accepted'),
-#         ('refused', 'Refused')
-#     ], string="Status", copy=False)
-
-#     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
-#     property_id = fields.Many2one("estate.property", string="Property", required=True)
-
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+    @api.depends("offer_ids.price")
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped("price"), default=0)
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False   

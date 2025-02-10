@@ -26,6 +26,7 @@
                 <field name="date_availability" optional="hide"/>
                 <field name="buyer_id"/>
                 <field name="seller_id"/>
+                <field name="total_area"/> 
                 <field name="tag_ids" widget="many2many_tags"/>
             </list>
         </field>
@@ -47,6 +48,7 @@
                             <field name="tag_ids" widget="many2many_tags"/>
                         </group>
                         <group>
+                        <field name="best_offer"></field>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                         </group>
@@ -64,6 +66,8 @@
                                     <field name="living_area"/>
                                     <field name="state"/>
                                     <field name="active"/>
+                                    <field name="garden_area"/>
+                                    <field name="total_area" readonly="1"/> 
                                 </group>
                             </group>
                         </page>
@@ -101,6 +105,7 @@
                 <field name="selling_price"/>
                 <field name="buyer_id"/>
                 <field name="seller_id"/>
+                <field name="garden_area"/>
                 <separator/>
                 <filter name="available_properties" string="Available Properties"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
