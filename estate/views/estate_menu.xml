@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
-    <menuitem id="advertisement" name="Advertisement" parent="menu_estate_property"/>
-    <menuitem id="property_action_menu" name="Properties" parent="advertisement" action="action_estate_property"/>
-
-    <menuitem id="buy" name="Buy" parent="menu_estate_property"/>
-    <menuitem id="buy_sub" name="Buy Sub" parent="buy" action="action_estate_property"/>
-
-    <menuitem id="rent" name="Rent" parent="menu_estate_property"/>
-    <menuitem id="rent_sub" name="Rent Sub" parent="rent" action="action_estate_property"/>
-
+    <!-- Menu Items -->
+    <menuitem id="menu_estate_property" name="Real Estate"/>
+    <!-- Dashbord menu's -->
+    <menuitem id="advertisement" name="Advertisement" parent="menu_estate_property">
+        <menuitem id="property_action_menu" name="Properties" action="action_estate_property"/>
+    </menuitem>
+    <menuitem id="setting" name="Setting" parent="menu_estate_property">
+        <menuitem id="property_type" name="Property Types" action="action_estate_property_type"/>
+        <menuitem id="property_tag" name="Property Tags" action="action_estate_property_tag"/>
+    </menuitem>
 </odoo>
