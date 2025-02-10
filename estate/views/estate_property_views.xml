@@ -26,17 +26,23 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
+                <header>
+                    <button name="action_property_sold" type="object" string="Sold"/>
+                    <button name="action_property_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1><field name="name"/></h1>
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="status"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -51,6 +57,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -58,6 +65,10 @@
                                 <list>
                                     <field name="price"/>
                                     <field name="partner_id" string="Partner"/>
+                                    <field name="validity" string="Validity (Days)"/>
+                                    <field name="date_deadline" string="Deadline"/>
+                                    <button name="action_accept" title="Accept" type="object" icon="fa-check"/>
+                                    <button name="action_refuse" title="Refuse" type="object" icon="fa-times"/>
                                     <field name="status"/>
                                 </list>
                         </field>
