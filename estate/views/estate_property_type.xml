@@ -13,6 +13,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Type List">
+                <field name="sequence" widget="handle" />
                 <field name="name" string="Title"/>
             </list>
         </field>
@@ -24,6 +25,11 @@
         <field name="arch" type="xml">
             <form string="Property Type Form">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_estate_property_offer_filtered)d" type="action" icon="fa-money" string=" " >
+                                <field name="offer_count" string=" Offers" widget="statinfo"/>
+                        </button>  
+                    </div>  
                     <label for="name"/>
                     <h1 class="mb16">
                         <field name="name"/>

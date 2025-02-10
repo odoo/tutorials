@@ -6,21 +6,23 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_date_availability': True}</field>
     </record>
 
     <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Property List">
+            <list string="Property List" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-danger="state == 'cancelled'" decoration-muted="state == 'sold'" >
                 <field name="name" string="Title"/>
-                <field name="tag_ids" widget="many2many_tags" string="Tags"/>
+                <field name="property_type_id" />
                 <field name="postcode" string="Postcode"/>
+                <field name="tag_ids" widget="many2many_tags" string="Tags" options="{'color_field': 'color'}" />
                 <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area"/>
+                <field name="living_area" string="Living Area" />
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide" />
             </list>
         </field>
     </record>
@@ -31,22 +33,21 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="action_set_sold" type="object" string="Sold" class="btn-primary" />
-                    <button name="action_set_cancelled" type="object" string="Cancel"/>
+                    <button name="action_set_sold" type="object" string="Sold" invisible="state=='sold' or state=='cancelled'" class="btn-primary" />
+                    <button name="action_set_cancelled" type="object" string="Cancel" invisible="state=='sold' or state=='cancelled'" />
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold" />
                 </header>
                 <sheet>
                     <label for="name"/>
                     <h1>
                         <field name="name" class="mb16"/>
                     </h1>
-                    <label for="tag_ids"/>
-                    <field class="mb32" name="tag_ids" string="Tags" widget="many2many_tags"/>
                     <group>
                         <group class="mb32">
-                            <field string="State" name="state"/>
-                            <field name="property_type_id"/>
+                            <field name="tag_ids" string="Tags" widget="many2many_tags" options="{'color_field': 'color', }" />
+                            <field name="property_type_id" options="{'no_create': true}" />
                             <field name="postcode" />
-                            <field name="date_availability" string="Available From"/>
+                            <field name="date_availability" string="Available From" />
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -60,21 +61,21 @@
                                <group>
                                     <field string="Description" name="description"/>
                                     <field string="Bedrooms" name="bedrooms"/>
-                                    <field string="Living Area (sqm)" name="living_area"/>
-                                    <field string="Garden Area (sqm)" name="garden_area"/>
-                                    <field string="Total Area (sqm)" name="total_area" />
+                                    <field string="Garden" name="garden"/>
+                                    <field string="Garden Orientation" name="garden_orientation" invisible="not garden" />
+                                    <field string="Garden Area (sqm)" name="garden_area" invisible="not garden" />
                                 </group>
                                 <group>
                                     <field name="facades"/>
                                     <field string="Garage" name="garage"/>
-                                    <field string="Garden" name="garden"/>
-                                    <field string="Garden Orientation" name="garden_orientation"/>
-                                    <field string="Visible" invisible="1" name="active"/>
+                                    <field string="Living Area (sqm)" name="living_area"/>
+                                    <field string="Total Area (sqm)" name="total_area" />
+                                    <field string="Visible" name="active" invisible="1" />
                                </group>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" widget="one2many_list"/>
+                            <field name="offer_ids" widget="one2many_list" readonly="state in ('offer_accepted', 'sold', 'cancelled')" />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -99,10 +100,10 @@
                 <field string="Postcode" name="postcode"/>
                 <field string="Expected Price" name="expected_price"/>
                 <field string="Bedrooms" name="bedrooms"/>
-                <field string="Living Area (sqm)" name="living_area"/>
+                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]" />
                 <field string="Facades" name="facades"/>
                 
-                <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"/>
+                <filter string="Available" name="date_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" help="Available Properties" />
                 <separator/>
                 <filter string="Garden" name="garden" domain="[('garden', '=', 'True')]"/>
                 <separator/>

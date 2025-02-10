@@ -5,6 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price>0)', 'The expected price must be strictly positive!'),
         ('check_selling_price', 'CHECK(selling_price>=0)', 'The selling price must be positive!')
@@ -13,7 +14,7 @@ class EstateProperty(models.Model):
     name = fields.Char("Property Name", required=True, help="Property Name")
     description = fields.Char()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=fields.Date.add(fields.Date.today(), days=30))
+    date_availability = fields.Date(copy=False, default=fields.Date.add(fields.Date.today(), days=90))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -36,6 +37,7 @@ class EstateProperty(models.Model):
         default="new", copy=False, string="State",
         selection = [
             ("new", "New"), 
+            ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled")
@@ -67,23 +69,27 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
-
+            
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
             min_price = record.expected_price * 0.9 
             if not fields.float_is_zero(record.selling_price, precision_digits=2) and fields.float_compare(record.selling_price, min_price, precision_rounding=2) < 0:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
+                raise ValidationError("The selling price can't be lower than 90% of the expected price!")
             
     def action_set_sold(self):
         for record in self:
-            if record.state == "cancelled":
-                raise UserError(("Cancelled Property can't be Sold!"))
-            record.state = "sold"
+            if record.state != "offer_accepted":
+                raise ValidationError("There isn't any offer accepted! please accept any offer to sold this property.")
+            elif record.state == "offer_accepted":
+                record.state = "sold"
             
     def action_set_cancelled(self):
         for record in self:
-            if record.state == "sold":
-                raise UserError(("Sold Property can't be Cancelled!"))
             record.state = "cancelled"
             
+    @api.ondelete(at_uninstall=False)
+    def _check_property_before_delete(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError(f"You can't delete property {record.name} because only New or Cancelled property can be deleted!")

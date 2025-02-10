@@ -1,5 +1,5 @@
 {
-    'name': 'Estate',
+    'name': 'Real Estate',
     'description': "Real Estate Management",
     'depends': [
         'base'
