@@ -1,4 +1,4 @@
-from odoo import fields,models
+from odoo import fields, models
 
 class EsatePropertyTag(models.Model):
     _name = 'estate.property.tag'
