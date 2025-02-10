@@ -15,4 +15,6 @@
     <!-- Types Menuitem -->
     <menuitem id="estate_model_menu_type" action="estate_model_property_type"
     parent="estate_model_setting_menu"/>
+    <menuitem id="estate_mdoel_menu_tag" action="estate_model_property_tag"
+    parent="estate_model_setting_menu"/>
 </odoo>
