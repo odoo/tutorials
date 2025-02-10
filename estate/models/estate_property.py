@@ -51,7 +51,6 @@ class Estateproperty(models.Model):
 
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
-        """Vérifie que le prix de vente n'est pas inférieur à 90% du prix attendu."""
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2):  
                 min_acceptable_price = record.expected_price * 0.9
@@ -75,6 +74,7 @@ class Estateproperty(models.Model):
         required=True,
         copy=False,
         default='new'
+        # compute = '_compute_offer_state'
         
     )
 
@@ -112,7 +112,8 @@ class Estateproperty(models.Model):
         for property in self:
             if property.state== 'sold':
                 raise UserError("A sold property cannot be cancelled.")
-            property.state = 'cancel'
+            else:
+                property.state = 'cancel'
 
     def action_sold(self):
         for property in self:
@@ -120,4 +121,19 @@ class Estateproperty(models.Model):
                 raise UserError("A cancelled property cannot be sold.")
             if not property.offer_ids:
                 raise UserError("Cannot sold without any offer.")
-            property.state = 'sold'
+            else:
+                property.state = 'sold'
+
+
+    #offer recieved
+    offer_recieved = fields.Boolean(compute="_compute_offer_recieved", store=True)
+
+    @api.depends('offer_ids')
+    def _compute_offer_recieved(self):
+        for record in self:
+            record.offer_recieved = bool(record.offer_ids)
+    
+    # @api.depends('offer_recieved')
+    # def _compute_offer_state(self):
+    #     if self.offer_recieved:
+    #         self.state = 'offered_rec'

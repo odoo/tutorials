@@ -19,7 +19,7 @@ class EstatePropertyOffer(models.Model):
         copy=False
     )
     partner_id = fields.Many2one('res.partner', required=True)
-    property_id = fields.Many2one('estate.property', required=True)
+    property_id = fields.Many2one('estate.property', required=True, ondelete="cascade")
     create_date = fields.Date()
     
     validity =fields.Integer('Validity', default=7)
@@ -52,8 +52,11 @@ class EstatePropertyOffer(models.Model):
             offer.status = 'accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.state = 'offered_rec'
+            offer.property_id.state = 'offer_acc'
 
     def action_refuse(self):
         for offer in self:
             offer.status = 'refused'
+            offer.property_id.selling_price = 0.00
+            offer.property_id.buyer_id = False
+            offer.property_id.state = 'new'
