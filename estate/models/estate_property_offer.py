@@ -14,6 +14,12 @@ class EstatePropertyOfferModel(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
+    property_state = fields.Selection(
+        related="property_id.state", string="property state", store=True
+    )
 
     _sql_constraints = [
         (
@@ -28,6 +34,17 @@ class EstatePropertyOfferModel(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
+
+    @api.model
+    def create_multi(self, vals_list):
+        for vals in vals_list:
+            property_obj = self.env["estate.property"].browse(vals["property_id"])
+            property_obj.state = "offer_received"
+            if vals["price"] < property_obj.best_offer:
+                raise UserError(
+                    f"The offer must be higher then {property_obj.best_offer}"
+                )
+        return super().create(vals)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):

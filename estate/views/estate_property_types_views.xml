@@ -4,8 +4,8 @@
         <field name="model">estate.property.types</field>
         <field name="arch" type="xml">
             <list string="estate type list">
-                <field name="sequence" widget="handle" />
-                <field name="name" />
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
             </list>
         </field>
     </record>
@@ -15,18 +15,24 @@
         <field name="model">estate.property.types</field>
         <field name="arch" type="xml">
             <form string="estate type form">
+            <header>
+                <button type="action" name="%(estate_property_offer_action)d" class="oe_stat_button" icon="fa-moneyf">
+                    <field name="offer_count"></field>
+                    <span class="o_stat_text">Offers</span>
+                </button>
+            </header>
                 <sheet>
                     <h1>
-                        <field name="name" String="Title" />
+                        <field name="name" String="Title"/>
                     </h1>
                     <notebook>
                         <page string="Properties">
                             <group>
-                                <field name="property_ids" string="">
+                                <field name="property_ids" nolabel="True">
                                     <list string="estate form">
-                                        <field name="name" />
-                                        <field name="expected_price" />
-                                        <field name="state" />
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="state"/>
                                     </list>
                                 </field>
                             </group>
@@ -41,5 +47,10 @@
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.types</field>
         <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create an property type to start playing.
+            </p>
+        </field>
     </record>
 </odoo>

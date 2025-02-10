@@ -4,16 +4,16 @@
         <field name="name">Estate property List view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="estate list">
-                <field name="name" string="Title" />
-                <field name="postcode" />
+            <list string="estate list" decoration-success="state=='offer_received' or state=='offer_accepted'" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"
-                    string="" />
-                <field name="bedrooms" />
-                <field name="living_area" string="Living Area(sqm)" />
-                <field name="expected_price" />
-                <field name="selling_price" />
-                <field name="date_availability" string="Available Form" />
+                    string=""/>
+                <field name="bedrooms"/>
+                <field name="living_area" string="Living Area(sqm)"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability" string="Available Form" optional="hide"/>
             </list>
         </field>
     </record>
@@ -23,17 +23,17 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="estate search">
-                <field name="name" string="Title" />
-                <field name="postcode" />
-                <field name="expected_price" />
-                <field name="bedrooms" />
-                <field name="living_area" string="Living Area(sqm)" />
-                <field name="facades" />
-                <separator />
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area','>=', self)]"/>
+                <field name="facades"/>
+                <separator/>
                 <filter string="available" name="available"
-                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
-                <separator />
-                <filter string="postcode" name="postcode" context="{'group_by':'postcode'}" />
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <separator/>
+                <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
     </record>
@@ -49,27 +49,27 @@
                     <button name="action_set_cancel" type="object" string="Cancel"
                         invisible="state=='sold'"></button>
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new, offer_received, offer_accepted, sold, cancelled" />
+                        statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
                 <sheet>
                     <h1>
-                        <field name="name" />
+                        <field name="name"/>
                     </h1>
                     <group>
                         <field name="tag_ids" widget="many2many_tags"
-                            options="{'color_field':'color'}" string="" />
+                            options="{'color_field':'color'}" string=""/>
                     </group>
                     <group>
                         <group>
-                            <field name="property_type_id" options="{'no_create':true}" />
-                            <field name="postcode" />
-                            <field name="date_availability" string="Available Form" />
-                            <field name="state" />
+                            <field name="property_type_id" options="{'no_create':true}"/>
+                            <field name="postcode"/>
+                            <field name="date_availability" string="Available Form"/>
+                            <field name="state"/>
                         </group>
                         <group>
-                            <field name="expected_price" />
-                            <field name="best_offer" />
-                            <field name="selling_price" />
+                            <field name="expected_price"/>
+                            <field name="best_offer"/>
+                            <field name="selling_price"/>
                         </group>
                         <!-- <group>
                             <field name="active" />
@@ -81,16 +81,16 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" />
-                                <field name="bedrooms" />
-                                <field name="living_area" string="Living Area(sqm)" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area" string="Living Area(sqm)"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
                                 <field name="garden_area" string="Garden Area(sqm)"
-                                    invisible="not garden" />
-                                <field name="garden_orientation" invisible="not garden" />
-                                <field name="total_area" />
+                                    invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area"/>
                             </group>
                             <!-- <group>
                                 <field name="tag_ids"/>
@@ -99,15 +99,15 @@
                         <page string="Offers">
                             <group>
                                 <field name="offer_ids" string=""
-                                    readonly="state in ('offer_accepted','sold', 'cancelled')" />
+                                    readonly="state in ('offer_accepted','sold', 'cancelled')"/>
                             </group>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="buyer_id" />
+                                <field name="buyer_id"/>
                             </group>
                             <group>
-                                <field name="salesperson_id" />
+                                <field name="salesperson_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -119,5 +119,11 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available':True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create an property to start playing.
+            </p>
+        </field>
     </record>
 </odoo>
