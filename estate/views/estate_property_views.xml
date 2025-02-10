@@ -21,6 +21,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_sell_property" type="object" string="Sold" class="oe_highlight"/>
+                    <button name="action_cancel_property" type="object" string="Cancel" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
+                </header>
                 <sheet class="oe_full_width">
                     <h1>
                         <field name="name"/>
@@ -37,6 +42,7 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price" readonly="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -50,6 +56,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area" readonly="1"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -57,6 +64,10 @@
                                 <list>
                                     <field name="price"/>
                                     <field name="partner_id"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
+                                    <button name="action_accept" type="object" icon="fa-check" class="oe_link" title="Accept Offer"/>
+                                    <button name="action_refuse" type="object" icon="fa-times" class="oe_link" title="Refuse Offer"/>
                                     <field name="status"/>
                                 </list>
                             </field>
