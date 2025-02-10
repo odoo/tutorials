@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class estateProperty(models.Model):
     _name = "estate.property"
@@ -53,3 +54,22 @@ class estateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
             # onchange can also be used to return warning
+
+    # functions to set status of property to sold or cancelled 
+    def action_set_property_status_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                message = "Cancelled Property cannot be Sold"
+                raise UserError(message)
+            else:
+                record.state = "sold"
+            return True
+    
+    def action_set_property_status_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                message = "Sold Property cannot be Cancelled"
+                raise UserError(message)
+            else:
+                record.state = "cancelled"
+            return True
