@@ -1,5 +1,8 @@
-from odoo import api, fields, models
+from datetime import timedelta
+from odoo import api, exceptions, fields, models
+from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -49,3 +52,7 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = False
             record.status = 'refuse'
         return True
+    #SQL Constraints
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.')
+    ]

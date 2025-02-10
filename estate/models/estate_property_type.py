@@ -1,5 +1,8 @@
-from odoo import fields, models
 from datetime import timedelta
+from odoo import api, exceptions, fields, models
+from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
@@ -29,3 +32,7 @@ class EstatePropertyType(models.Model):
         default = 1000000
     )
     expected_price = fields.Float('Expected price', required = True)
+    #SQLonstaints
+    _sql_constraints = [
+        ('unique_property_type_name', 'UNIQUE(name)', 'The property type name must be unique.')
+    ]
