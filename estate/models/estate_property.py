@@ -1,23 +1,24 @@
 from odoo import api, fields, models
 from datetime import timedelta
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property Name"
 
     name = fields.Char('Property Name', required = True, size = 30)
-    description = fields.Text('Description', size = 50)
+    description = fields.Text('Description')
     postcode = fields.Char('Postcode', size = 6)
     date_availability = fields.Date('Date Availability',default=fields.Date.today() + timedelta(days=90), copy=False)
     expected_price = fields.Float('Expected Price', required = True)
-    selling_price = fields.Integer('Selling Price', 
+    selling_price = fields.Float('Selling Price', 
         readonly=True, 
         copy=False,
         default=1000000
     )
-    bedrooms = fields.Integer('Bedrooms', default = "2")
+    bedrooms = fields.Integer('Bedrooms', default = 2)
     living_area = fields.Integer('Living Area')
-    facades = fields.Integer('Facedes')
+    facades = fields.Integer('Facades')
     garage = fields.Boolean('Garage')
     garden = fields.Boolean('Garden', default=False)
     garden_area = fields.Integer('Garden Area(sqm)', default = 0)
@@ -52,7 +53,7 @@ class EstateProperty(models.Model):
     tags_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store=True)
-
+    #computed fields
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -62,7 +63,7 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
-
+    #onchange
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -70,4 +71,21 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = False
+            self.garden_orientation = False 
+    #function for Sold and Cancelled Button 
+    def action_set_status_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled Property cannot be Sold")
+            record.state = "sold"
+        return True
+
+    
+    def action_set_status_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                message = "Sold Property cannot be Cancelled"
+                raise UserError(message)
+            else:
+                record.state = "cancelled"
+            return True
