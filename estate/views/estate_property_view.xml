@@ -6,7 +6,6 @@
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form,kanban,pivot,graph</field>
         </record>
-
         <record id="estate_property_list_view" model="ir.ui.view">
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
@@ -17,6 +16,7 @@
                     <field name="bedrooms" />
                     <field name="living_area" />
                     <field name="expected_price" />
+
                     <field name="selling_price" />
                     <field name="date_availability" />
                 </list>
@@ -33,7 +33,7 @@
                     <field name="bedrooms"/>
                     <field name="living_area"/>
                     <field name="facades"/>
-                    <filter string="Status" name="status" domain="['|', ('status', '=', 'new'), ('status', '=', 'offer_received')]"/>
+                    <filter string="Status" name="status" domain="[('status','in',['new','offer_received'])]"/>
                     <separator />
                     <filter string="Garden" name="is_garden" domain="[('is_garden', '=', True)]"/>
                     <separator />
@@ -49,55 +49,102 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form string="Test">
+                    <header>
+                        <button name="property_sold" type="object" string="Sold"/>
+                        <button name="property_canceled" type="object" string="Cancel"/>
+                    </header>
                     <sheet>
                         <h1>
                             <field name="name" class="oe_title"/>
                         </h1>
-
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                        </group>
                         <group>
                             <group>
+                                <field name="status"/>
+                                <field name="property_type_id"/>
                                 <field name="postcode"/>
-                            </group>
-                            <group>
                                 <field name="expected_price"/>
                             </group>
                             <group>
                                 <field name="date_availability"/>
-                            </group>
-                            <group>
                                 <field name="selling_price"/>
+                                <field name="total_area"/>
+                                <field name="best_price"/>
                             </group>
                         </group>
                         <notebook>
                             <page name="description" string="Description">
                                 <group>
                                     <field name="description"/>
-                                </group>
-                                <group>
                                     <field name="bedrooms"/>
-                                </group>
-                                <group>
                                     <field name="living_area"/>
-                                </group>
-                                <group>
                                     <field name="facades"/>
-                                </group>
-                                <group>
                                     <field name="is_garage"/>
-                                </group>
-                                <group>
                                     <field name="is_garden"/>
-                                </group>
-                                <group>
                                     <field name="garden_area"/>
-                                </group>
-                                <group>
                                     <field name="garden_orientation"/>
                                 </group>
+                            </page>
+                            <page name="other_info" string="Other Info">
+                                <group>
+                                    <field name="seller_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
+                            </page>
+                            <page name="offer" string="Offers">
+                                <field name="offer_ids"></field>
                             </page>
                         </notebook>
                     </sheet>
                 </form>
+            </field>
+        </record>
+        <record id="estate_property_view_kanban" model="ir.ui.view">
+            <field name="name">estate.property.view.kanban</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name" />
+                    <field name="postcode"/>
+                    <field name="expected_price"/>
+                    <field name="bedrooms"/>
+                    <field name="date_availability"/>
+                    <field name="living_area"/>
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card">
+                                <div class="oe_kanban_details">
+                                    <strong>
+                                        <t t-esc="record.name.value"/>
+                                    </strong>
+                                    <div>
+                                        <span>Status:</span>
+                                        <t t-esc="record.status.value"/>
+                                    </div>
+                                    <div>
+                                        <span>Expected Price:</span>
+                                        <t t-esc="record.expected_price.value"/>
+                                    </div>
+                                    <div>
+                                        <span>Best Offer:</span>
+                                        <t t-esc="record.best_price.value"/>
+                                    </div>
+                                    <div>
+                                        <span>Seller:</span>
+                                        <t t-esc="record.seller_id.value"/>
+                                    </div>
+                                    <div>
+                                        <span>Available From:</span>
+                                        <t t-esc="record.date_availability.value"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
             </field>
         </record>
     </data>
