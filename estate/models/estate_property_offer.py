@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -10,6 +10,7 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ("check_price", "CHECK(price > 0)", "Offer price must be strictly positive."),
     ]
+    _order = "price desc"
 
     price = fields.Float(string="Price", required=True)
     status = fields.Selection(
@@ -19,13 +20,35 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        string="Property Type",
+        related="property_id.property_type_id",
+    )
     validity = fields.Integer(default=7, string="Validity (days)")
     deadline = fields.Date(
-        string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline", store="True"
+        string="Deadline",
+        compute="_compute_deadline",
+        inverse="_inverse_deadline",
+        store="True",
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for record in records:
+            property_id = record.property_id
+            if property_id.best_price and record.price <= property_id.best_price:
+                raise ValidationError(
+                    "The new offer must be higher than the existing best offer."
+                )
+            property_id.state = "offer_recieved"
+
+        return records
 
     @api.depends("validity")
     def _compute_deadline(self):
+        """This function helps to automatically set the deadline date acc. to the validity days entered"""
         for offer in self:
             if offer.create_date:
                 offer.deadline = fields.Date.add(offer.create_date, days=offer.validity)
@@ -33,6 +56,7 @@ class EstatePropertyOffer(models.Model):
                 offer.deadline = fields.Date.today()
 
     def _inverse_deadline(self):
+        """This function sets validity(days) acc. to the deadline date entered"""
         for offer in self:
             if offer.create_date:
                 offer.validity = (offer.deadline - offer.create_date.date()).days

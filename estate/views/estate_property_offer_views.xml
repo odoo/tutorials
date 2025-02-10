@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- List View for Offers -->
+    <record id="view_estate_property_offer_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offers">
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="status" />
+                <field name="property_id" />
+                <field name="property_type_id" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View for Offers -->
+    <record id="view_estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Offer">
+                <sheet>
+                    <group>
+                        <field name="property_id" />
+                        <field name="partner_id" />
+                        <field name="price" />
+                        <field name="validity" />
+                        <field name="deadline" readonly="1" />
+                        <field name="status" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[("property_type_id", "=", active_id)]</field>
+    </record>
+</odoo>

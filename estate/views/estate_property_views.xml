@@ -1,43 +1,59 @@
 <?xml version="1.0"?>
 <odoo>
 
+    <!-- List View  -->
     <record id="view_estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties"
+                decoration-success="state in ('offer_accepted', 'offer_recieved')">
                 <field name="name" />
+                <field name="property_type_id" />
+                <field name="postcode" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                <field name="bedrooms" />
+                <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="state" />
-                <field name="postcode" />
-                <field name="date_availability" />
-                <field name="active" />
-                <field name="property_type_id" />
-                <field name="tag_ids" widget="many2many_tags" />
+                <field name="date_availability" optional="hide" />
             </list>
         </field>
     </record>
 
+    <!-- Form View  -->
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" class="oe_highlight" />
-                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight" />
+                    <button name="action_sold"
+                        type="object"
+                        string="Sold"
+                        class="oe_highlight"
+                        invisible="state in ('new', 'offer_recieved', 'sold', 'cancelled')" />
+                    <button name="action_cancel"
+                        type="object"
+                        string="Cancel"
+                        class="oe_highlight"
+                        invisible="state in ('new', 'offer_recieved', 'sold', 'cancelled')" />
+                    <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
                     <h1>
                         <field name="name" />
                     </h1>
                     <div class="mb16">
-                        <field name="tag_ids" widget="many2many_tags" />
+                        <field name="tag_ids"
+                            widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
                     </div>
                     <group>
                         <group>
-                            <field name="property_type_id" />
+                            <field name="property_type_id"
+                                widget="many2one"
+                                options="{'no_open': True, 'no_create': True}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -56,23 +72,33 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list>
+                            <field name="offer_ids"
+                                readonly="state in ('offer_accepted', 'sold', 'cancelled')">
+                                <list editable="bottom"
+                                    decoration-danger="status == 'refused'"
+                                    decoration-success="status == 'accepted'">
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="validity" />
                                     <field name="deadline" />
-                                    <field name="status" />
-                                    <button name="action_accept" type="object" icon="fa-check"
-                                        title="Accept Offer" />
-                                    <button name="action_refuse" type="object" icon="fa-times"
-                                        title="Refuse Offer" />
+                                    <button name="action_accept"
+                                        type="object"
+                                        icon="fa-check"
+                                        title="Accept Offer"
+                                        invisible="status in ('accepted', 'refused')"
+                                    />
+                                    <button name="action_refuse"
+                                        type="object"
+                                        icon="fa-times"
+                                        title="Refuse Offer"
+                                        invisible="status in ('accepted', 'refused')"
+                                    />
                                 </list>
                             </field>
                         </page>
@@ -88,6 +114,37 @@
         </field>
     </record>
 
+    <!-- Kanban View -->
+    <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" disable_drag_drop="1">
+                <field name="state" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="offer_ids" />
+                <field name="property_type_id" />
+
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bolder" />
+                        <div> Expected Price: <field name="expected_price" />
+                        </div>
+                        <div t-if="record.state.raw_value == 'offer_received'"> Best Offer: <field
+                                name="best_price" />
+                        </div>
+                        <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
+                                name="selling_price" />
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags" />
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Search View  -->
     <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -95,9 +152,11 @@
             <search string="Search Properties">
                 <field name="name" />
                 <field name="property_type_id" />
-                <filter string="Archived" name="inactive"
+                <filter name="inactive"
+                    string="Archived"
                     domain="[('active', '=', False)]" />
-                <filter string="Available" name="status"
+                <filter name="status"
+                    string="Available"
                     domain="[('state', 'in', ['New', 'Offer Received'])]" />
                 <filter name="postcode"
                     string="Postcode"
@@ -109,6 +168,6 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
     </record>
 </odoo>
