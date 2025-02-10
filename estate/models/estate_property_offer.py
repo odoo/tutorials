@@ -19,6 +19,12 @@ class EstatePropertyOffer(models.Model):
     )
     property_type_id = fields.Many2one(related='property_id.property_type_id',store=True)
 
+    property_state = fields.Selection(
+        related="property_id.state",
+        string="Property State",
+        store=True
+    )
+
     _sql_constraints = [
         (
             "offer_price_positive",
@@ -53,3 +59,12 @@ class EstatePropertyOffer(models.Model):
             if record.status == "accepted":
                 record.property_id.state = "offer_received"
             record.status = "refused"
+
+    @api.model_create_multi
+    def create(self,vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            property.state = 'offer_received'
+            if vals['price'] < property.best_price:
+                raise UserError(f"Offer should be higher than {property.best_price}")
+        return super().create(vals_list)
