@@ -29,12 +29,15 @@
         <field name="arch" type="xml">
             <form string="Estate Property Form">
                 <sheet>
+                    <button name="action_sold_property" type="object" string="Sold"/>
+                    <button name="action_cancelled_property" type="object" string="Cancelled"/>
                     <h1 class="fw-bolder">
                         <field name="name"/>
                     </h1>
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -57,7 +60,6 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="active"/>
-                                <field name="state"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
