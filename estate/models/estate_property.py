@@ -16,8 +16,7 @@ class EstateProperty(models.Model):
         default=fields.datetime.today() + fields.date_utils.relativedelta(months=3),
     )
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(
-        string="Selling Price", readonly=True, copy=False)
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     fascades = fields.Integer(string="Fascades")
@@ -102,9 +101,16 @@ class EstateProperty(models.Model):
     @api.constrains("expected_price", "selling_price")
     def _check_best_price(self):
         for record in self:
-            if float_compare(record.expected_price * 0.9, record.selling_price, 2) == 1 and not float_is_zero(record.best_price, 2):
+            # if selling is zero, allow it (because no offer is validated yet)
+            if float_is_zero(record.selling_price, precision_rounding=0.01):
+                continue
+            
+            # if selling price is less than 90% of expected price, raise error
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=0.01) == -1:
                 raise ValidationError(
-                    "The selling price must be at least 90% of the expected price!You must reduce the expected price if you want to accept this offer.")
+                "The selling price must be at least 90% of the expected price! "
+                "You must reduce the expected price if you want to accept this offer."
+            )
 
     def action_sold_property(self):
         for record in self:
