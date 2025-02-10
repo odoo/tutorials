@@ -5,8 +5,8 @@
     'author': 'matd',
     'category': 'Category',
     'description': """
-    It provides real estate module
-    """,
+It provides real estate module
+""",
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',

@@ -1,41 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!-- Estate property list view -->
     <record id="view_estate_property_list" model="ir.ui.view">
         <field name="name">view.estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="List Properties">
-                <field name="name" width="10%" />
-                <field name="postcode" width="10%" />
-                <field name="bedrooms" width="10%" />
-                <field name="living_area" width="10%" />
-                <field name="expected_price" width="10%" />
-                <field name="selling_price" width="10%" />
-                <field name="date_availability" width="10%" />
+                <field name="name" width="10%"/>
+                <field name="postcode" width="10%"/>
+                <field name="bedrooms" width="10%"/>
+                <field name="living_area" width="10%"/>
+                <field name="expected_price" width="10%"/>
+                <field name="selling_price" width="10%"/>
+                <field name="date_availability" width="10%"/>
             </list>
         </field>
     </record>
 
+    <!-- Estate property form view -->
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">view.estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form property">
+                <header>
+                    <button name="order_status_sold" type="object" string="SOLD"/>
+                    <button name="order_status_cancel" type="object" string="CANCEL"/>
+                </header>
                 <sheet>
                     <group>
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags"/>
                     </group>
                     <group>
                         <group>
+                            <field name="state"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_offer"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -51,6 +59,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
 
@@ -72,6 +81,7 @@
         </field>
     </record>
 
+    <!-- Estate property search view -->
     <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">view.estate.property.search</field>
         <field name="model">estate.property</field>
@@ -91,6 +101,7 @@
         </field>
     </record>
 
+    <!-- Estate property action -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Property action</field>
         <field name="res_model">estate.property</field>
