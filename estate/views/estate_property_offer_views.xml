@@ -6,6 +6,10 @@
             <list string="Property Offer List">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <button name="action_offer_accept_btn" type="object" icon="fa-check" help="Accept Offer"/>
+                <button name="action_offer_reject_btn" type="object" icon="fa-times" help="Reject Offer"/>
                 <field name="status"/>
             </list>
         </field>
@@ -20,6 +24,8 @@
                     <group>
                         <field name="price"/>
                         <field name="partner_id" />
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
                         <field name="status" />
                     </group>
                 </sheet>
