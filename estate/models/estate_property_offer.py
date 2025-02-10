@@ -24,7 +24,7 @@ class EstatePropertyOffer(models.Model):
         comodel_name='estate.property',
         required=True,
     )
-
+    
     @api.depends('validity','property_id.create_date')
     def _compute_deadline(self):
         for record in self:

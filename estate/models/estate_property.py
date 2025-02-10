@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string='Title', required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availablity = fields.Date(string='Available From', copy=False, default=fields.Date.today()+ relativedelta(months=3))
+    date_availability = fields.Date(string='Available From', copy=False, default=fields.Date.today()+ relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -79,7 +79,7 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
                 record.best_price = 0
-
+    
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden == True:
@@ -96,9 +96,9 @@ class EstateProperty(models.Model):
             record.state = 'sold'
         return True
 
-    def action_cancle_property(self):
+    def action_cancel_property(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError(_('Sold properties cannot be cancle'))
+                raise UserError(_('Sold properties cannot be cancel'))
             record.state = 'cancelled'
         return True

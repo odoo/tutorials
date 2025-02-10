@@ -27,7 +27,7 @@
             <form string="Property">
                 <header>
                     <button name="action_sold_property" string="SOLD" type="object" class="oe_highlight" />
-                    <button name="action_cancle_property" string="CANCLE" type="object" />
+                    <button name="action_cancel_property" string="CANCEL" type="object" />
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -40,7 +40,7 @@
                         <group>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
-                            <field name="date_availablity"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -90,14 +90,49 @@
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availablity"/>
+                <field name="date_availability"/>
             </list>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban string="Property">
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="fw-bold"><field name="name"/></h4>
+                                <span class="badge" t-att-class="
+                                    record.state.raw_value == 'new' and 'bg-warning text-dark' or
+                                    record.state.raw_value == 'sold' and 'bg-success text-white' or
+                                    record.state.raw_value == 'cancelled' and 'bg-danger text-white'
+                                "><field name="state"/></span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span class="fw-bold text-primary">Expected: <field name="expected_price"/></span>
+                                <span class="fw-bold text-primary">Best: <field name="best_price"/></span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <small class="text-muted">Available: <field name="date_availability"/></small>
+                                <small class="text-muted">Type: <field name="property_type_id"/></small>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span><i class="fa fa-bed" title="bedroom"></i> <field name="bedrooms"/> Bedrooms</span>
+                                <span><i class="fa fa-expand" title="living_area"></i> <field name="living_area"/> sqm</span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
     </record>
 </odoo>
