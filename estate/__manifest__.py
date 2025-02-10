@@ -1,5 +1,5 @@
 {
-    "name":"estate",
+    "name":"Real estate",
     "summary": "Create Real Estate leads and close opportunities",
     "depends": [
         "base"
