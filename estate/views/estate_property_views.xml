@@ -45,7 +45,7 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" placeholder="write sort description about property" string="Description"/>
+                                <field name="description" placeholder="write short description about property"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
                                 <field name="facades"/>
@@ -60,8 +60,8 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesman"/>
-                                <field name="buyer"/>
+                                <field name="user_id"/>
+                                <field name="partner_id"/>
                             </group>
                         </page>
                     </notebook>
