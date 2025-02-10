@@ -28,9 +28,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property Form">
-                <sheet>
+                <group>
                     <button name="action_sold_property" type="object" string="Sold"/>
-                    <button name="action_cancelled_property" type="object" string="Cancelled"/>
+                    <button name="action_cancelled_property" type="object" string="Cancel"/>
+                </group>
+                <sheet>
                     <h1 class="fw-bolder">
                         <field name="name"/>
                     </h1>
