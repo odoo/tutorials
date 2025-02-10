@@ -6,6 +6,58 @@ from odoo.tools import float_compare, float_is_zero
 class PropertyPlan(models.Model):
     _name = "estate.property"
     _description = "Estate property tables"
+    _order = "id desc"
+
+    name = fields.Char(string="Title", required=True)
+    description = fields.Text(string="Description")
+    postcode = fields.Char(string="Postcode")
+    date_availability = fields.Date(
+        string="Available From",
+        copy=False,
+        default=(fields.Date.today() + relativedelta(months=+3)),
+    )
+    expected_price = fields.Float(string="Expected Price", required=True)
+    selling_price = fields.Float(string="Selling Price", readonly=True)
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    living_area = fields.Integer(string="Living Area (sqm)")
+    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
+    active = fields.Boolean(string="Active", default=True)
+    state = fields.Selection(
+        string="State",
+        required=True,
+        default="new",
+        copy=False,
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        help="Sate of Offer",
+    )
+    garden_orientation = fields.Selection(
+        string="Garden Orientation",
+        selection=[
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
+        ],
+        help="Used to decide the direction of Garden",
+    )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
+    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    sales_person = fields.Many2one(
+        "res.users", string="Salesman", default=lambda self: self.env.user
+    )
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Price")
+    total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
+    best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -13,7 +65,7 @@ class PropertyPlan(models.Model):
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
-    def _computer_best_price(self):
+    def _compute_best_price(self):
         for record in self:
             if record.offer_ids:
                 record.best_price = max(record.offer_ids.mapped("price"))
@@ -73,54 +125,3 @@ class PropertyPlan(models.Model):
                     raise ValidationError(
                         "The selling price must be at least 90% of the expected price!You must reduce the expected price if you want to accept this offer."
                     )
-
-    name = fields.Char(string="Title", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
-    date_availability = fields.Date(
-        string="Available From",
-        copy=False,
-        default=(fields.Date.today() + relativedelta(months=+3)),
-    )
-    expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True)
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
-    living_area = fields.Integer(string="Living Area (sqm)")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden Area (sqm)")
-    active = fields.Boolean(string="Active", default=True)
-    state = fields.Selection(
-        string="State",
-        required=True,
-        default="new",
-        copy=False,
-        selection=[
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
-        ],
-        help="Used to decide the state of Garden",
-    )
-    garden_orientation = fields.Selection(
-        string="Garden Orientation",
-        selection=[
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
-        ],
-        help="Used to decide the direction of Garden",
-    )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    tag = fields.Many2many("estate.property.tag", string="Property Tag")
-    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    sales_person = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user
-    )
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Price")
-    total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
-    best_price = fields.Float(string="Best Offer", compute="_computer_best_price")

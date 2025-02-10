@@ -2,6 +2,7 @@
     'name': "Real Estate",
     'depends': ['base'],
     'application': True,
+    'author': 'Parth Pujara',
     'data':[
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
