@@ -97,22 +97,28 @@ class EstateProperty(models.Model):
 
     def sold(self):
         for record in self:
-            if self.state == "cancelled":
+            if record.state == "cancelled":
                 raise UserError("Cancelled property cannot be sold.")
-            self.state = "sold"
+            record.state = "sold"
 
     def cancel(self):
         for record in self:
-            if self.state == "sold":
+            if record.state == "sold":
                 raise UserError("Sold property cannot be cancelled.")
-            self.state = "cancelled"
+            record.state = "cancelled"
 
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
-            if self.selling_price < self.expected_price * 0.9:
+            if record.selling_price < record.expected_price * 0.9:
                 raise ValidationError(
                     "Price cannot be less than 90 percent of the expected price"
                 )
             else:
-                self.state = "sold"
+                record.state = "sold"
+
+    def unlink(self):
+        for record in self:
+            if record.state not in ['new','cancelled']:
+                raise ValidationError("Cant Delete a property that is not New or Cancelled")
+        return super(EstateProperty, self).unlink()
