@@ -39,25 +39,26 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     status = fields.Selection(
-        string="State",
-        selection=[
+        [
             ("new", "New"),
             ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
+            ("offer_accepted", "Offer Accepted"),  
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        default="new",
-        required=True,
-        copy=False,
+        string="Status",
+        default="new"
     )
     total_area = fields.Float(string="Total Aream(sqm)", compute="_compute_total_area")
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type" ,ondelete="cascade")
     sequence = fields.Integer("Sequence", default=1)
     user_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+        "res.users",
+        string="Salesperson",
+        ondelete="restrict",
+        default=lambda self: self.env.user
     )
-    partner1_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", ondelete="restrict", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     image = fields.Image("Image")
     offer_ids = fields.One2many(
@@ -76,7 +77,7 @@ class EstateProperty(models.Model):
             "Selling Price must be strictly positive!",
         ),
     ]
-
+    
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_new_canceled(self):
         for record in self:

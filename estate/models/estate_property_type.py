@@ -6,6 +6,11 @@ class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Property Types"
     _order = "name"
+
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)
+
     property_ids = fields.One2many(
         "estate.property", "property_type_id", string="Properties"
     )
@@ -19,8 +24,4 @@ class EstatePropertyType(models.Model):
         ("name_uniq", "unique(name)", "Type must be unique"),
     ]
 
-    def _compute_offer_count(self):
-        for record in self:
-            record.offer_count = len(record.offer_ids)
 
-  

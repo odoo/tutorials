@@ -27,24 +27,23 @@ class EstatePropertyOffer(models.Model):
         related="property_id.property_type_id", store=True
     )  #!This field is for stat button
 
-    @api.depends("validate", "create_date")
-    def _compute_deadline(self):
-        for date in self:
-            if date.create_date:
-                date.date_deadline = date.create_date + relativedelta(
-                    days=date.validate
-                )
-            else:
-                date.date_deadline = fields.Date.today() + relativedelta(
-                    days=date.validate
+    @api.model_create_multi
+    def create(self, vals_list):
+        """
+        - Updates property status to 'offer_received' on offer creation.
+        - Prevents creating an offer lower than the existing best offer.
+        """
+        for vals in vals_list:
+            prop = self.env["estate.property"].browse(vals["property_id"])
+
+            if vals["price"] < prop.best_prices:
+                raise ValidationError(
+                    "Offer price cannot be lower than the best offer."
                 )
 
-    def _update_validity(self):
-        for days in self:
-            if days.date_deadline:
-                days.validate = (days.date_deadline - fields.Date.today()).days
-            else:
-                days.validate = 7
+            prop.status = "offer_received"  # Update property status
+
+        return super().create(vals_list)
 
     @api.depends("validate")
     def _compute_date_deadline(self):
@@ -70,7 +69,7 @@ class EstatePropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.status = "offer_accepted"
             record.property_id.selling_price = record.price
-            record.property_id.partner1_id = record.partner_id
+            record.property_id.buyer_id = record.partner_id
 
     def action_refuse(self):
         for record in self:
@@ -95,4 +94,4 @@ class EstatePropertyOffer(models.Model):
                     "The accepted offer price cannot be less than 90% of the expected price!"
                 )
 
-                
+
