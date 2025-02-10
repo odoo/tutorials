@@ -8,3 +8,5 @@ class PropertyType(models.Model):
         "Property Type", required = True,
         help = "This is a Many2One Field that defines the type of a property."
     )
+
+    _sql_constraints = [('type_unique', 'unique(name)', 'Property Type should be unique.')]

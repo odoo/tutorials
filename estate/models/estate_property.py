@@ -1,4 +1,4 @@
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models, exceptions, tools
 from dateutil.relativedelta import relativedelta
 
 class Property(models.Model):
@@ -100,6 +100,13 @@ class Property(models.Model):
         help="This field specifies the best offered price for the property.",
     )
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+        'The selling price must be strictly positive.'),
+    ]
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for line in self:
@@ -138,3 +145,9 @@ class Property(models.Model):
             self.state = 'sold'
 
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for line in self:
+            if tools.float_utils.float_compare(line.selling_price, line.expected_price * 0.9, precision_digits=2) == -1:
+                raise exceptions.ValidationError('The selling price must be atleast 90% of the expected price. You must reduce the expected price if you want to accept this offer.')
