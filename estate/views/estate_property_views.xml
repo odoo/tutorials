@@ -93,10 +93,17 @@
                             <field name="description"/>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="['|', ('state', 'in', ['offer_accepted', 'sold', 'cancelled']), ('state', '=', False)]">
+                            <field name="offer_ids">
                                 <list decoration-danger="status == 'refused'" decoration-success="status == 'accepted'" editable="bottom">
                                     <field name="price"/>
                                     <field name="partner_id"/>
+                                    <field name="date_deadline" />
+                                    <button name="action_accepted" string="Accepted" type="object"
+                                        icon="fa-check"
+                                        invisible="status in ['accepted', 'cancelled'] or parent.state in ['offer_accepted', 'sold', 'cancelled']" />
+                                    <button name="action_refused" string="Refused" type="object"
+                                        icon="fa-times"
+                                        invisible="status in ['accepted', 'cancelled'] or parent.state in ['offer_accepted', 'sold', 'cancelled']" />
                                     <!-- <field name="status"/> -->
                                 </list>
                             </field>
@@ -215,9 +222,9 @@
             <form string="Property Offer">
                 <header>
                     <field name="status" widget="statusbar" statusbar_visible="new,accepted,refused"/>
-                    <button name="action_accept" type="object" string="Accept" class="btn-primary"
+                    <button name="action_accepted" type="object" string="Accepted" class="btn-primary"
                             modifiers="{'invisible': [('status', '=', 'accepted')]}"/>
-                    <button name="action_refuse" type="object" string="Refuse" class="btn-secondary"
+                    <button name="action_refused" type="object" string="Refused" class="btn-secondary"
                             modifiers="{'invisible': [('status', '=', 'refused')]}"/>
                 </header>
                 <sheet>
@@ -230,6 +237,24 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+    <record id="view_res_users_form_inherit_estate" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Properties">
+                    <field name="property_ids">
+                        <list>
+                            <field name="name"/>
+                            <field name="expected_price"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
         </field>
     </record>
 </odoo>

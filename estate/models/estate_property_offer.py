@@ -30,7 +30,7 @@ class EstatePropertyOffer(models.Model):
                 delta = record.date_deadline - record.create_date
                 record.validity = delta.days
     
-    def action_accept(self):
+    def action_accepted(self):
         for record in self:
             if record.property_id.offer_ids.filtered(lambda offer: offer.status == 'accepted'):
                 raise exceptions.UserError("Only one offer can be accepted for a property.")
@@ -38,8 +38,23 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer_accepted'
-
-
-    def action_refuse(self):
-        for record in self:
+            return True
+        def action_refused(self):
+          for record in self:
             record.status = 'refused'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if "property_id" not in vals:
+                raise exceptions.ValidationError("Property ID is required to create an offer.")
+            property_id = self.env["estate.property"].browse(vals["property_id"])
+            if vals["price"] < property_id.best_offer:
+                raise exceptions.ValidationError(
+                     f"The offer must be higher than {property_id.best_offer:.2f}."
+                )
+            property_id.state = "offer_received"
+        return super(EstatePropertyOffer, self).create(vals_list)
+    # def create (self , no operation);
+    #  for vals in vals list:
+    #     if "property_id " not in vars list :

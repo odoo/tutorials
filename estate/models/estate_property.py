@@ -1,6 +1,6 @@
 from datetime import date, timedelta
-from odoo import api, models, fields, exceptions
-from odoo.exceptions import ValidationError
+from odoo import api, models, fields, exceptions, _
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
@@ -91,3 +91,8 @@ class EstateProperty(models.Model):
                     raise ValidationError(
                         "The selling price cannot be lower than 90% of the expected price."
                     )
+    @api.ondelete(at_uninstall=False)
+    def _check_state_on_delete(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(_("You can only delete properties in the 'New' or 'Cancelled' state."))
