@@ -1,4 +1,8 @@
+from dateutil.relativedelta import relativedelta
+from datetime import date
+
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -10,7 +14,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char(string='PostCode', index=True)
     date_availability=fields.Date(
         string='Available Date',
-        default=lambda self: fields.Date.add(fields.Date.today(), months=3),
+        default=lambda self: date.today()+relativedelta(months=3),
         copy=False
     )
     expected_price = fields.Float(string='Expected Price', required=True)
@@ -49,7 +53,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
     user_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     property_offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store="True")
@@ -62,7 +66,7 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
-    total_area = fields.Integer(string="Total Area(sqm)", compute="_compute_total_area")
+    total_area = fields.Integer(string="Total Area(sqm)", compute="_compute_total_area", store="True")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -77,3 +81,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_sold_button(self):
+        for record in self:
+            if record.state != 'cancelled':
+                record.state = 'sold'
+            else:
+                raise UserError('Property Is already Cancelled')
+        return True
+
+    def action_cancel_button(self):
+        for record in self:
+            if record.state != 'sold':
+                record.state = 'cancelled'
+            else:
+                raise UserError('Property Is already Sold')
+        return True
