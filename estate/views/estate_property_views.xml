@@ -4,20 +4,21 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Property">
+            <list string="Property" decoration-success="state=='offer received' or state=='offer accepted'" decoration-bf="state=='offer accepted'" decoration-muted="state=='sold'">
                 <field name="name"/>
                 <field name="postcode"/>
-                <field name="tags_ids" widget="many2many_tags"/>
+                <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -44,7 +45,6 @@
                     </group>
                     <group>
                         <group>
-                            <!-- <field name="state" class="w-25"/> -->
                             <field name="property_type" class="w-25" options="{'no_create': true}"/>
                             <field name="postcode" class="w-25"/>
                             <field name="date_availability" class="w-25"/>
@@ -53,6 +53,7 @@
                             <field name="expected_price" class="w-25"/>
                             <field name="best_offer" class="w-25"/>
                             <field name="selling_price" class="w-25"/>
+                            <field name="state"/>
                         </group>
                     </group>
                     <notebook>
@@ -67,8 +68,6 @@
                                 <field name="garden_area" invisible="not garden"/>
                                 <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
-                                <!-- <field name="active"/> -->
-                                <!-- <field name="state"/> -->
                             </group>
                         </page>
                         <page string="Offers">
@@ -94,7 +93,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <field name="facades"/>
                 <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
                 <!-- <separator/>

@@ -10,6 +10,7 @@ class EstateProperty(models.Model):
     name = fields.Char('Title', required=True, translate=True)
     tags_ids = fields.Many2many('estate.property.tag', string='Tags')
     property_type = fields.Many2one('estate.property.type', string='Property Type')
+    property_type_id = fields.Integer('Property Type ID', related='property_type.id', store=True)
     salesman = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     buyer = fields.Many2one('res.partner', string='Buyer', copy=False)
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')  # we have give the Many2one field defined in the comodel in the One2many field, because One2many relationship is virtual, it only exist when corrensponding Many2one field exist in the comodel.
@@ -72,7 +73,24 @@ class EstateProperty(models.Model):
         elif self.garden == False:
             self.garden_area = None
             self.garden_orientation = None
-    
+
+    # @api.onchange('offer_ids')
+    # def _onchange_offer_ids(self):
+    #     if len(self.offer_ids) > 0:
+    #         self.state = 'offer received'
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price <= (0.9 * record.expected_price) and len(record.offer_ids) > 0:
+                raise exceptions.ValidationError("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_is_new_or_cancelled(self):
+        for record in self:
+            if record.state == 'offer received' or record.state == 'offer accepted' or record.state == 'sold':
+                raise exceptions.UserError("Only new and cancelled properties can be deleted.")
+
     def action_sold_property(self):
         for record in self:
             if record.state == "cancelled":
@@ -88,9 +106,3 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if record.selling_price <= (0.9 * record.expected_price) and len(record.offer_ids) > 0:
-                raise exceptions.ValidationError("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")

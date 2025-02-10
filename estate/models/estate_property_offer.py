@@ -17,7 +17,7 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date('Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
-    # base_date = fields.Date() # This is temporory date field for type conversion.
+    property_type_id = fields.Integer('Property Type ID', related='property_id.property_type_id', store=True)
 
     _sql_constraints = [
         ('check_offered_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.')
@@ -28,6 +28,13 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             base_date = record.create_date or fields.Date.today()
             record.date_deadline = base_date + relativedelta(days=record.validity)
+    
+    @api.model
+    def create(self, vals):
+        self.env['estate.property'].browse(vals['property_id']).state = 'offer received'
+        if float(self.env['estate.property.offer'].browse(vals['price'])) < self.env['estate.property'].browse(vals['property_id']).best_offer:
+            raise exceptions.UserError(f"The offer must be higher than {self.env['estate.property'].browse(vals['property_id']).best_offer}")
+        return super(EstatePropertyOffer, self).create(vals)
 
     def _inverse_date_deadline(self):
         for record in self:
