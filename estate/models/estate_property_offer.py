@@ -47,14 +47,16 @@ class EstatePropertyOffer(models.Model):
         raise UserError(f"An offer with {first_accepted_offer.partner_id.name} at a price of {first_accepted_offer.price} has already been accepted.")
 
       record.status = 'accepted'
+      record.property_id.state = 'offer accepted'
       record.property_id.buyer = record.partner_id
       record.property_id.selling_price = record.price
 
   def action_refused(self):
     for record in self:
       if record.status == 'accepted':
-        record.property_id.selling_price = 0
+        record.property_id.selling_price = 0.00
         record.property_id.buyer = False
+        record.property_id.state = 'new'
 
       record.status = 'refused'
 
@@ -62,7 +64,9 @@ class EstatePropertyOffer(models.Model):
 ########## constraints ##########
 
   _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0)',
-         'The Expected price must be Positive.')
+        ('check_offer_price', 'CHECK(price > 0.00)',
+         'The Offer price must be Positive.')
     ]  
+  
+
   
