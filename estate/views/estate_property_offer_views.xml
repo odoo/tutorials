@@ -6,11 +6,25 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list editable="bottom"
-              decoration-danger="status == 'refused'" 
-              decoration-success="status == 'accepted'">
+            <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_list_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.list.view</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="property_id"/>
+                <field name="property_type_id"/>
+                <button name="action_accept" type="object" help="Accepted" title="accept" icon="fa-check" invisible="status=='accepted' or status=='refused'"/>
+                <button name="action_refuse" type="object" help="Refuse" title="refuse" icon="fa-times" invisible="status=='accepted' or status=='refused'"/>
                 <field name="status"/>
             </list>
         </field>
