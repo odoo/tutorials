@@ -18,7 +18,7 @@ class EstatePropertyOffer(models.Model):
         copy=False
     )
     partner_id = fields.Many2one('res.partner', string="Buyer", required=True)
-    property_id = fields.Many2one('estate.property', string="Property", required=True, ondelete='restrict')
+    property_id = fields.Many2one('estate.property', string="Property", required=True, ondelete='cascade')
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
 
@@ -60,3 +60,7 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.status = 'refused'
         return True
+
+    _sql_constraints = [
+        ('positive_offer_price', 'CHECK(price > 0)', 'Offer price must be greater than zero!')
+    ]

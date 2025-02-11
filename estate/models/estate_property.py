@@ -2,7 +2,9 @@ from dateutil.relativedelta import relativedelta
 from datetime import date
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.sql_db import re_into
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -97,3 +99,18 @@ class EstateProperty(models.Model):
             else:
                 raise UserError('Property Is already Sold')
         return True
+
+    _sql_constraints = [
+        ('positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be greater than zero!'),
+        ('positive_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be greater than zero!')
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=6):
+                return
+
+            min_selling_price = record.expected_price * 0.9
+            if float_compare(record.selling_price, min_selling_price, precision_digits=6) < 0:
+                raise ValidationError("Selling price cannot be less than 90% of the expected price!")

@@ -6,7 +6,6 @@
         <field name="postcode">560001</field>
         <field name="date_availability">2025-06-15</field>
         <field name="expected_price">1600000.0</field>
-        <field name="selling_price">0.0</field>
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
         <field name="facades">4</field>
