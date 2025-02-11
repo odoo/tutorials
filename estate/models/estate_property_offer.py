@@ -72,6 +72,7 @@ class EstatePropertyOffer(models.Model):
                 property_id.state = "offer_received"
 
         super(EstatePropertyOffer, self).create(vals_list)
+        
 
 
    

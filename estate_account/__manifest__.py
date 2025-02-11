@@ -10,3 +10,4 @@
     'installable': True,
     'application': True,
 }
+

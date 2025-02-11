@@ -46,3 +46,4 @@ class InheritEstateProperty(models.Model):
             }
             self.env["account.move"].create(invoice_vals)
         return  super().action_sold()
+        

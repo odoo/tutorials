@@ -103,4 +103,5 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError(f"You cannot delete the property '{record.name}' because its state is '{record.state}'.")
+                
 
