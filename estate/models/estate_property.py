@@ -52,8 +52,6 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("canceled", "Canceled"),
         ],
-        compute="_compute_state",
-        store=True,
     )
 
     salesman_id = fields.Many2one(
@@ -143,10 +141,10 @@ class EstateProperty(models.Model):
                     "The selling price cannot be lower than 90% of the expected price!"
                 )
 
-    @api.depends('offer_ids')
-    def _compute_state(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_allowed(self):
         for record in self:
-            if record.offer_ids:
-                record.state = 'offer received'
-            else:
-                record.state = 'new'
+            if record.state not in ["New", "Canceled"]:
+                raise UserError(
+                    "You can only delete properties in 'New' or 'Cancelled' state."
+                )

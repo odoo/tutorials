@@ -15,7 +15,12 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type",related="property_id.property_type_id", store=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        string="Property Type",
+        related="property_id.property_type_id",
+        store=True,
+    )
     validity = fields.Integer("Validity(Days)", default=7)
 
     date_deadline = fields.Date(
@@ -74,3 +79,13 @@ class EstatePropertyOffer(models.Model):
             "The expected price must be strictly positive.",
         ),
     ]
+
+    @api.model
+    def create(self, vals):
+        property = self.env["estate.property"].browse(vals["property_id"])
+
+        max_offer_price = max(property.offer_ids.mapped("price"), default=0.0)
+        if vals["price"] < max_offer_price:
+            raise UserError("The offer must be higher than an existing offer!")
+        property.state = "offer received"
+        return super().create(vals)
