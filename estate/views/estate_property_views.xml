@@ -33,11 +33,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list decoration-success="state in ['offer_received', 'offer_accepted']"
-                decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
-                <field name="name" width="200px" />
-                <field name="property_type_id" width="150px" />
-                <field name="postcode" width="150px" />
-                <field name="tag_ids" widget="many2many_tags" width="200px" />
+                decoration-bf="state == 'offer_accepted'"
+                decoration-muted="state == 'sold'"
+            >
+                <field name="name" />
+                <field name="property_type_id" />
+                <field name="postcode" />
+                <field name="tag_ids" widget="many2many_tags" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="expected_price" optional="show" />
@@ -55,15 +57,16 @@
             <kanban default_group_by="property_type_id" records_draggable="False">
                 <field name="state" />
                 <templates>
-                    <t t-name="card">
+                   <t t-name="card">
                         <field name="name" class="fw-bolder" />
-                        <div> Expected Price: <field name="expected_price" />
+                        <div>
+                            Expected Price: <field name="expected_price" />
                         </div>
-                        <div t-if="record.state.raw_value == 'offer_received'"> Best Offer: <field
-                                name="best_price" />
+                        <div t-if="record.state.raw_value == 'offer_received'">
+                            Best Offer: <field name="best_price" />
                         </div>
-                        <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
-                                name="selling_price" />
+                        <div t-if="record.state.raw_value == 'offer_accepted'">
+                            Selling Price: <field name="selling_price" />
                         </div>
                         <field name="tag_ids" widget="many2many_tags" />
                     </t>
@@ -80,16 +83,27 @@
             <form string="Properties">
                 <header>
                     <!-- Sold button -->
-                    <button name="action_sell_property" type="object" string="Sold"
-                        invisible="state in ['offer_accepted', 'sold', 'cancelled']" />
-                    <button name="action_sell_property" type="object" string="Sold"
+                    <button name="action_sell_property"
+                        type="object"
+                        string="Sold"
+                        invisible="state in ['offer_accepted', 'sold', 'cancelled']"
+                    />
+                    <button name="action_sell_property"
+                        type="object"
+                        string="Sold"
                         invisible="state in ['new', 'offer_received', 'sold', 'cancelled']"
-                        class="btn-primary" />
+                        class="btn-primary"
+                    />
                     <!-- Cancel button-->
-                    <button name="action_cancel_property" type="object" string="Cancel"
-                        invisible="state in ['sold', 'cancelled']" />
+                    <button name="action_cancel_property"
+                        type="object"
+                        string="Cancel"
+                        invisible="state in ['sold', 'cancelled']"
+                    />
                     <!-- Statusbar-->
-                    <field name="state" readonly="True" widget="statusbar"
+                    <field name="state"
+                        readonly="True"
+                        widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold"
                         invisible="state == 'cancelled'"
                     />
@@ -98,8 +112,11 @@
                     <h1>
                         <field name="name" placeholder="Property name" />
                     </h1>
-                    <field name="tag_ids" placeholder="Property Tags" widget="many2many_tags"
-                        options="{'color_field': 'color'}" />
+                    <field name="tag_ids"
+                        placeholder="Property Tags"
+                        widget="many2many_tags"
+                        options="{'color_field': 'color'}"
+                    />
                     <group string="Basic Details">
                         <group>
                             <field name="property_type_id" options="{'no_create': True}" />
@@ -127,21 +144,31 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" mode="form,list"
-                                readonly="state in ['offer_accepted', 'sold', 'cancelled']">
-                                <list string="Offers" editable="bottom"
+                            <field name="offer_ids"
+                                mode="form,list"
+                                readonly="state in ['offer_accepted', 'sold', 'cancelled']"
+                            >
+                                <list string="Offers"
+                                    editable="bottom"
                                     decoration-success="status == 'accepted'"
-                                    decoration-danger="status == 'refused'">
+                                    decoration-danger="status == 'refused'"
+                                >
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="validity" />
                                     <field name="date_deadline" />
-                                    <button name="action_accept_offer" string="Accept" type="object"
+                                    <button name="action_accept_offer"
+                                        string="Accept"
+                                        type="object"
                                         icon="fa-check"
-                                        invisible="status in ['accepted', 'cancelled'] or parent.state in ['offer_accepted', 'sold', 'cancelled']" />
-                                    <button name="action_refuse_offer" string="Refuse" type="object"
+                                        invisible="status in ['accepted', 'cancelled'] or parent.state in ['offer_accepted', 'sold', 'cancelled']"
+                                    />
+                                    <button name="action_refuse_offer"
+                                        string="Refuse"
+                                        type="object"
                                         icon="fa-times"
-                                        invisible="status in ['accepted', 'cancelled'] or parent.state in ['offer_accepted', 'sold', 'cancelled']" />
+                                        invisible="status in ['accepted', 'cancelled'] or parent.state in ['offer_accepted', 'sold', 'cancelled']"
+                                    />
                                 </list>
                             </field>
                         </page>
@@ -153,6 +180,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>

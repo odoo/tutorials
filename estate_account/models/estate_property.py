@@ -9,8 +9,11 @@ class EstateProperty(models.Model):
 
     def action_sell_property(self):
         if not self.buyer_id.id:
-            raise UserError("Property without buyer cannot be sold")
-
+            raise UserError("Property without buyer cannot be sold.")
+        try:
+            self.env["estate.property"].check_access("write")
+        except:
+            raise UserError("You do not have the necessary permissions to sell this property.")
         self.sudo().env["account.move"].create({
             "move_type": "out_invoice",
             "partner_id": self.buyer_id.id,
@@ -19,5 +22,4 @@ class EstateProperty(models.Model):
                 Command.create({"name": "Administrative Fees", "quantity": 1, "price_unit": 100.0})
             ]
         })
-
         return super().action_sell_property()

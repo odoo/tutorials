@@ -24,6 +24,7 @@
         id="estate_menu_setting"
         name="Settings"
         parent="estate_menu_root"
+        groups="estate.estate_group_manager"
     />
     <menuitem
         id="estate_menu_property_type"
