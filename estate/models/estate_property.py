@@ -9,7 +9,6 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property models"
     _order = "id desc"
-
     _sql_constraints = [
         (
             "expected_price_positive",
@@ -120,8 +119,10 @@ class EstateProperty(models.Model):
         if self.state == "cancelled":
             raise UserError("A cancelled property cannot be sold.")
         self.state = "sold"
+        return True
 
     def action_set_cancelled(self):
         if self.state == "sold":
             raise UserError("A Sold property cannot to be cancelled.")
         self.state = "cancelled"
+        return True

@@ -12,7 +12,7 @@
                     <list>
                         <field name="name"></field>
                         <field name="expected_price"></field>
-                        <!-- <field name="status"></field> -->
+                        <field name="state"></field>
                     </list>
                 </field>
              </page>

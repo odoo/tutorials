@@ -8,6 +8,9 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property offers"
     _order = "price desc"
+    _sql_constraints = [
+        ("offer_price_positive", "CHECK(price > 0)", "Offer price must be positive!")
+    ]
 
     price = fields.Float()
     status = fields.Selection(
@@ -28,9 +31,6 @@ class EstatePropertyOffer(models.Model):
         related="property_id.property_type_id",
         store=True,
     )
-    _sql_constraints = [
-        ("offer_price_positive", "CHECK(price > 0)", "Offer price must be positive!")
-    ]
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
