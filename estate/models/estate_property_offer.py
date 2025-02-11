@@ -32,7 +32,7 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         self.env['estate.property'].browse(vals['property_id']).state = 'offer received'
-        if float(self.env['estate.property.offer'].browse(vals['price'])) < self.env['estate.property'].browse(vals['property_id']).best_offer:
+        if int(self.env['estate.property.offer'].browse(vals['price'])) < self.env['estate.property'].browse(vals['property_id']).best_offer:
             raise exceptions.UserError(f"The offer must be higher than {self.env['estate.property'].browse(vals['property_id']).best_offer}")
         return super(EstatePropertyOffer, self).create(vals)
 
