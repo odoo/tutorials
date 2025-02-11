@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from datetime import date, timedelta
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -59,6 +60,14 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
 
+    _sql_constraints = [
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "Selling Price of the property should be positive",
+        )
+    ]
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -80,3 +89,43 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_estate_property_sold(self):
+        print("Sold button clicked")
+        for record in self:
+            if (
+                record.status == "new"
+                or record.status == "offer_accept"
+                or record.status == "offer_reject"
+            ):
+                record.status = "sold"
+            elif record.status == "cancelled":
+                raise UserError("Cancelled property can't be sold")
+            else:
+                raise UserError("Property already sold")
+
+        return True
+
+    def action_estate_property_cancel(self):
+        print("Cancel Button Clicked")
+        for record in self:
+            if (
+                record.status == "new"
+                or record.status == "offer_accept"
+                or record.status == "offer_reject"
+            ):
+                record.status = "cancelled"
+            elif record.status == "sold":
+                raise UserError("Sold property can't be cancelled")
+            else:
+                raise UserError("Property already cancelled")
+
+        return True
+
+    @api.constrains(
+        "expected_price",
+    )
+    def _check_expected_price(self):
+        for record in self:
+            if record.expected_price <= 0:
+                raise ValidationError("Expected Price should be strictly positive")
