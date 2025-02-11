@@ -5,6 +5,10 @@ from odoo import fields, models
 
 class EstatePropertyTag(models.Model):
     _name="estate.property.tag"
-    _description="Estate property Tag"
+    _description = "Estate property Tag"
     
     name=fields.Char("Name", required=True)
+    
+    _sql_constraints=[
+        ("check_tag_name", "UNIQUE(name)", "Please add differant tag name")
+    ]

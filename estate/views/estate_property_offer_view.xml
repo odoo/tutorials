@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="estate_property_offer_view_list" model="ir.ui.view">
-          <field name="name">estate.property.offer.view.list</field>
-          <field name="model">estate.property.offer</field>
-          <field name="arch" type="xml">
-                 <list>
-                    <field name="price"/>
-                    <field name="partner_id"/>
-                    <field name="date_deadline"/>
-                    <button name="action_accepted" type="object" icon="fa-check" title="Accept Offer"/>
-                    <button name="action_refused" type="object" icon="fa-times" title="Refused Offer"/>
-                    <field name="status"/>
-                    <field name="validity"/>
-                 </list>
-          </field>
-    </record>
+  <record id="estate_property_offer_view_list" model="ir.ui.view">
+    <field name="name">estate.property.offer.view.list</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="price" />
+        <field name="partner_id" />
+        <field name="date_deadline" />
+        <button name="action_accepted" type="object" icon="fa-check" title="Accept Offer" />
+        <button name="action_refused" type="object" icon="fa-times" title="Refused Offer" />
+        <field name="status" />
+        <field name="validity" />
+      </list>
+    </field>
+  </record>
 
-    <record id="estate_property_offer_view_form" model="ir.ui.view">
-        <field name="name">estate.property.offer.view.form</field>
-        <field name="model">estate.property.offer</field>
-        <field name="arch" type="xml">  
-            <form string="Add Detail">
-                <sheet>
-                  <group>
-                    <field name="price"/>
-                    <field name="status"/>
-                    <field name="partner_id"/>
-                    <field name="date_deadline"/>
-                    <field name="validity"/>
-                  </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+  <record id="estate_property_offer_view_form" model="ir.ui.view">
+    <field name="name">estate.property.offer.view.form</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+      <form string="Add Detail">
+        <sheet>
+          <group>
+            <field name="price" />
+            <field name="status" />
+            <field name="partner_id" />
+            <field name="date_deadline" />
+            <field name="validity" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
 </odoo>

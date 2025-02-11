@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api
+from odoo import api, fields, models, _
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name="estate.property.offer"
-    _description="Eastate Property Offer"
+    _description = "Estate Property Offer"
     
     price=fields.Float(string="Price")
     status=fields.Selection(
@@ -42,3 +42,9 @@ class EstatePropertyOffer(models.Model):
             
     def action_refused(self):
             self.status="refused"   
+       
+    @api.constrains('price')        
+    def _check_price(self):
+            for rec in self:
+                    if(rec.price < (rec.property_id.expected_price * 90) / 100):
+                           raise UserError(_("The price should be at least 90% of the expected price, which is {}.").format((rec.property_id.expected_price * 90) / 100))

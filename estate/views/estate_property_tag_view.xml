@@ -4,9 +4,9 @@
           <field name="name">estate.property.tag.view.tree</field>
           <field name="model">estate.property.tag</field>
           <field name="arch" type="xml">
-                 <list string="Tags" editable="top">
-                    <field name="name"/>
-                 </list>
+               <list string="Tags" editable="top">
+                    <field name="name" />
+               </list>
           </field>
      </record>
      <record id="estate_property_tag_action" model="ir.actions.act_window">
