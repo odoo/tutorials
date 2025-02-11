@@ -15,7 +15,8 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string="Validity (in days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_validity", store=True)
     create_date = fields.Date(readonly=True, default=fields.Date.today)
-
+    _order = "price desc"
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type", related='property_id.property_type_id', store=True)  # related field: Automatically fetches the property type.
 
 
     # -------------------------------------------------------------------------
@@ -60,3 +61,12 @@ class EstatePropertyOffer(models.Model):
     def action_offer_refuse(self):
         self.status = "refused"
         return True
+
+
+    # -------------------------------------------------------------------------
+    # SQL CONSTRAINTS QUERIES
+    # -------------------------------------------------------------------------
+
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)', 'The price must be positive'),
+    ]
