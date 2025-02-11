@@ -7,6 +7,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate property'
+    _order = 'id desc'
 
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
@@ -43,8 +44,7 @@ class EstateProperty(models.Model):
     best_offer = fields.Float(string='Best Offer', compute='_compute_best_price')
 
     _sql_constraints = [('expected_price_check', 'CHECK(expected_price >= 0)', 'Expected price must be strickly possitive.'),
-                        ('selling_price_check', 'CHECK(selling_price >= 0)', 'Selling price must be possitive.'),
-                        ('best_offer_check', 'CHECK(best_offer > 0)', 'Offer price must be strickly possitive.')]
+                        ('selling_price_check', 'CHECK(selling_price >= 0)', 'Selling price must be possitive.')]
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -77,8 +77,8 @@ class EstateProperty(models.Model):
                 raise UserError("sold properties cannot be cancelled.")
             record.state = 'cancelled'
                 
-    @api.constrains('selling_price', 'exptected_price')
+    @api.constrains('selling_price', 'expected_price')
     def check_range_selling_price(self):
         for record in self:
-            if record.expected_price * 0.9 > record.selling_price:
+            if record.selling_price > 0 and record.expected_price * 0.9 > record.selling_price:
                 raise ValidationError("Selling price is less than 90% of expected price. you must have set selling price more than 90% of expected price.")

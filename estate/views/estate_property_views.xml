@@ -24,8 +24,9 @@
         <field name="arch" type="xml">
             <form string="Form property">
                 <header>
-                    <button name="order_status_sold" type="object" string="SOLD"/>
-                    <button name="order_status_cancel" type="object" string="CANCEL"/>
+                    <button invisible="state in ['sold', 'cancelled']" name="order_status_sold" type="object" string="SOLD"/>
+                    <button invisible="state in ['sold', 'cancelled']" name="order_status_cancel" type="object" string="CANCEL"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <group>
@@ -35,9 +36,8 @@
                     </group>
                     <group>
                         <group>
-                            <field name="state"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="property_type_id"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field' : 'color'}"/>
+                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -57,8 +57,8 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>

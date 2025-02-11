@@ -9,9 +9,9 @@
                 <field name="partner_id" width="10%"/>
                 <field name="validity" width="10%"/>
                 <field name="deadline_date" width="10%"/>
-                <button name="action_order_accepted" title="Accepted" type="object" icon="fa-check" width="3%"/>
-                <button name="action_order_refused" title="Refused" type="object" icon="fa-times" width="3%"/>
-                <field name="status" width="10%"/>
+                <button invisible="status" name="action_order_accepted" title="Accepted" type="object" icon="fa-check" width="3%"/>
+                <button invisible="status" name="action_order_refused" title="Refused" type="object" icon="fa-times" width="3%"/>
+                <field name="status" readonly="1" width="10%"/>
             </list>
         </field>
     </record>
@@ -28,7 +28,7 @@
                     <field name="deadline_date"/>
                     <button name="action_order_accepted" title="Accepted" type="object" icon="fa-check"/>
                     <button name="action_order_refused" title="Refused" type="object" icon="fa-times"/>
-                    <field name="status"/>
+                    <field name="status" readonly="1"/>
                 </group>
             </form>
         </field>

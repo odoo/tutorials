@@ -16,4 +16,5 @@ It provides real estate module
         'views/estate_property_menus.xml',
     ],
     'application': True,
+    'license': 'LGPL-3',
 }

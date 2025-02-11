@@ -4,6 +4,7 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate property offer'
+    _order = 'price desc'
 
     price = fields.Float(string="price")
     status = fields.Selection([
@@ -18,10 +19,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends('create_date', 'validity')
     def _compute_deadline_date(self):
         for record in self:
-            if record.create_date:
-                record.deadline_date = fields.Date.add(record.create_date, days=record.validity)
-            else:
-                record.deadline_date = fields.Date.add(fields.Date.today(), days=record.validity)
+            record.deadline_date = fields.Date.add((record.create_date or fields.Date.today()), days=record.validity)
 
     def _inverse_deadline_date(self):
         for record in self:
@@ -30,6 +28,7 @@ class EstatePropertyOffer(models.Model):
     def action_order_accepted(self):
         for record in self:
             record.status = 'accepted'
+            record.property_id.state = 'offer_accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             for offer in record.property_id.offer_ids:
@@ -39,5 +38,3 @@ class EstatePropertyOffer(models.Model):
     def action_order_refused(self):
         for record in self:
             record.status = 'refused'
-            record.property_id.selling_price = 0
-     
