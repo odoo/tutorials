@@ -1,11 +1,18 @@
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
+
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
 
     # ..................private attribute..................
     _name = "estate.property"
     _description = "These are Estate Module Properties"
+    _sql_constraints = [
+        ('check_expected_price','CHECK(expected_price > 0)', 'The expected price must be strictly positive!'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive!')
+    ]
 
     # ..................fields attribute..................
     name = fields.Char(string="Name", required=True)
@@ -85,3 +92,15 @@ class EstateProperty(models.Model):
         else:
             self.state = "cancelled"
         return True
+
+    @api.constrains("expected_price", "expected_price")
+    def check_price_difference(self):
+        for property in self:
+            if(
+                not float_is_zero(property.selling_price, precision_rounding=0.01) and
+                float_compare(property.selling_price, (property.expected_price * 90.0)/100.0, precision_rounding=0.01) < 0
+            ):
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price! "
+                    "You must reduce the expected price if you want to accept this offer."
+                )
