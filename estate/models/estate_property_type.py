@@ -1,10 +1,9 @@
 from odoo import api, models, fields
 
-class EstatePropertyType(models.Model):
+class estatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Property Type"
     _order="sequence, name"
-
 
     name = fields.Char("Name", required=True)
     sequence=fields.Integer("sequence", default=1)

@@ -6,9 +6,7 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
-
     </record>
-    <menuitem id="menu_estate_root" name="Estate" sequence="1" />
 
     <!-- Define the List View for the "estate.property" model -->
     <record id="estate_property_list_view" model="ir.ui.view">
@@ -39,7 +37,6 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-
             <form string="Property Form">
                 <header>
                     <button name="action_cancel_property" string="Cancel" type="object"
@@ -56,7 +53,6 @@
                         </div>
                         <h1 class="mb32">
                             <field name="name" class="mb16" />
-
                         </h1>
                     </div>
                     <group>
@@ -103,8 +99,6 @@
                                 <field string="salesperson_id" name="salesperson_id"
                                     options="{'no_create':true}"></field>
                             </group>
-
-
                         </page>
                         <page string="offer">
                             <group>
@@ -121,7 +115,6 @@
                                         <button name="action_refuse_offer" type="object"
                                             string="Refuse"
                                             icon="fa-remove" />
-
                                         <field name="date_deadline" />
                                     </list>
                                 </field>
@@ -131,6 +124,44 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+   <!-- define the kanban view of the property type -->
+    <record id="estate_properties_view_kanban" model="ir.ui.view">
+      <field name="name">estate.property.kanban</field>
+      <field name="model">estate.property</field>
+      <field name="arch" type="xml">
+      <kanban default_group_by='property_type_id' records_draggable="true">
+        <templates>
+          <field name="state"/>
+          <t t-name="kanban-box">
+            <div class="oe_kanban_global_click">
+              <h3>
+                <field name="name"/>
+              </h3>
+              <p>Expected Price:
+                <field name="expected_price"/>
+              </p>
+              <div>
+                <t t-if="record.state.raw_value=='offer_recieved'">
+                  <p>Best Offer:
+                    <field name="best_price"/>
+                  </p>
+                </t>
+                <t t-elif="record.state.raw_value=='offer_accepted'">
+                  <p>Selling Price:
+                    <field name="selling_price"/>
+                  </p>
+                </t>
+              </div>
+              <p>Tags:
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
+              </p>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+     </field>
     </record>
 
     <!-- Define the Search View for the "estate.property" model -->
@@ -148,14 +179,12 @@
                 <field name="salesperson_id" />
                 <field name="bedrooms" string="Bedrooms" />
                 <field name="selling_price" string="Selling Price" />
-
                 <filter string="Available" name="date_availability"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]" />
                 <separator />
                 <filter string="Garden" name="garden" domain="[('garden', '=', 'True')]" />
                 <separator />
                 <filter string="Garage" name="garage" domain="[('garage',  '=', 'True')]" />
-
                 <filter string="State" name="state" context="{'group_by':'state'}" />
                 <separator />
                 <filter string="Garder Orientation" name="garden_orientation"

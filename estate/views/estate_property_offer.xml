@@ -7,7 +7,6 @@
         <field name="view_mode">list,form</field>
     </record>
 
-
     <!-- Estate Property Offer list View -->
     <record id="view_estate_property_offer_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>

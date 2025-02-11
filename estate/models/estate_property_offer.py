@@ -1,9 +1,9 @@
 from odoo import api, models, fields
+from odoo.tools.float_utils import float_compare
 from datetime import timedelta,datetime
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_compare
 
-class EstatePropertyOffer(models.Model):
+class estatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order="price desc"
@@ -22,10 +22,14 @@ class EstatePropertyOffer(models.Model):
         related="property_id.property_type_id",
         store=True,
     )
+    validity = fields.Integer(string="validity", default=7)
+    date_deadline = fields.Date(string="date_deadline", compute="compute_date_deadline", inverse="inverse_date_deadline" , store="true")
 
-
-    validity=fields.Integer(string="validity", default=7)
-    date_deadline=fields.Date(string="date_deadline", compute="compute_date_deadline", inverse="inverse_date_deadline" , store="true")
+    def inverse_date_deadline(self):
+        for record in self:
+            if record.date_deadline:
+                if record.create_date:
+                    record.validity = (record.date_deadline - record.create_date.date()).days
 
     @api.depends("create_date", "validity")
     def compute_date_deadline(self):
@@ -34,13 +38,19 @@ class EstatePropertyOffer(models.Model):
                 # Compute the deadline by adding the validity (days) to the creation date
                 record.date_deadline = (record.create_date.date() + timedelta(days=record.validity))
      
+    @api.model_create_multi
+    def create(self, vals_list):
+        for val in vals_list:
+            if val.get("property_id") and val.get("price"):
+                prop = self.env["estate.property"].browse(val["property_id"])
 
-    def inverse_date_deadline(self):
-        for record in self:
-            if record.date_deadline:
-                if record.create_date:
-                    record.validity = (record.date_deadline - record.create_date.date()).days
-
+                if prop.offer_ids:
+                    max_offer = max(prop.mapped("offer_ids.price"))
+                    if float_compare(val["price"], max_offer, precision_rounding=0.01) <= 0:
+                        raise UserError("The offer must be higher than %.2f" % max_offer)
+                prop.state = "offer_received"
+        return super().create(vals_list)
+    
     def action_accept_offer(self):
         for record in self:
             if record.property_id.state == "sold":
@@ -59,17 +69,3 @@ class EstatePropertyOffer(models.Model):
             record.property_id.state="not sold"
             record.property_id.buyer_id =False
             record.property_id.selling_price =False
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        for val in vals_list:
-            if val.get("property_id") and val.get("price"):
-                prop = self.env["estate.property"].browse(val["property_id"])
-
-                if prop.offer_ids:
-                    max_offer = max(prop.mapped("offer_ids.price"))
-                    if float_compare(val["price"], max_offer, precision_rounding=0.01) <= 0:
-                        raise UserError("The offer must be higher than %.2f" % max_offer)
-                prop.state = "offer_received"
-        return super().create(vals_list)
-    

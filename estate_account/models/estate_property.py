@@ -5,7 +5,6 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         print("I am here")
-        breakpoint()
         self.ensure_one()
         self.env["account.move"].create(
             {

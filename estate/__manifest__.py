@@ -14,12 +14,10 @@
         'views/estate_property_tags.xml',
         'views/estate_property_views.xml',  
         'views/estate_menus.xml',
-      
     ],
     'category': 'Test',
     'installable': True,
     'application': True,
-    # 'auto_install': False,
     'license': 'LGPL-3',
      
 }
