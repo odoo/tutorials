@@ -14,9 +14,11 @@
         <field name="arch" type="xml">
             <list>
                 <field name="price"/>
-                <field name="seller_id"/>
+                <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="deadline_date"/>
+                <button name="offer_accept_action" type="object" icon="fa-check" />
+                <button name="offer_reject_action" type="object" icon="fa-times"/>
                 <field name="state"/>
             </list>
         </field>

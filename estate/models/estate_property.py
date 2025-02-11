@@ -1,21 +1,26 @@
-from odoo import fields, models, api
+from odoo import fields, models, api # type: ignore
+from odoo.exceptions import ValidationError, UserError # type: ignore
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate App"
+    _sql_constraints = [
+        ("check_selling_price","CHECK(selling_price > 0)","Selling Price must be a positive amount"),
+        ("check_expected_price","CHECK(expected_price >= 0)","Expected Price must be a positive amount")
+    ]
     
     #---------------------------------------------Basic Fields----------------------------------------#
-    name = fields.Char(required=True)
-    description = fields.Text() 
-    postcode = fields.Char()
+    name = fields.Char(required=True, default='MY HOME')
+    description = fields.Text(default="Big House in Mumbai") 
+    postcode = fields.Char(default='123456')
     date_availability = fields.Date(copy=False, default= lambda self: fields.Date.today() + relativedelta(months=3))
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(required=True, default=1000000)
     selling_price = fields.Float(copy=False, readonly=True)
     bedrooms = fields.Integer(default=2)
-    facades = fields.Integer()
-    is_garage = fields.Boolean()
-    is_garden = fields.Boolean()
+    facades = fields.Integer(default=1)
+    is_garage = fields.Boolean(default=False)
+    is_garden = fields.Boolean(default=False)
     active = fields.Boolean(default=True)
 
     #--------------------------------------------Selection Fields---------------------------------------#
@@ -28,16 +33,16 @@ class EstateProperty(models.Model):
         ('sold', 'Sold'), ('cancelled', 'Cancelled')
     ], default='new')
     
-    display_unit = fields.Selection([
+    measurement_unit = fields.Selection([
         ('sqm', 'Square Meters'),
         ('sqft', 'Square Feet')
-    ], default='sqm', string="Display Unit")  
+    ], default='sqm', string="Measurement Unit")  
 
     #-------------------------------------------Computed Fields--------------------------------------------# 
-    living_area = fields.Float(compute="_compute_display_areas", inverse="_inverse_living_area", string="Living Area", default = 0.0, store=True)
-    garden_area = fields.Float(compute="_compute_display_areas", inverse="_inverse_garden_area", string="Garden Area", default = 0.0, store=True)
-    total_area = fields.Float(compute="_compute_display_areas", string= "Total Area", store=True)
-    best_price = fields.Float(compute="_compute_best_price", string= "Best Price")
+    living_area = fields.Float(string="Living Area", default = 0.0)
+    garden_area = fields.Float(string="Garden Area", default = 0.0)
+    total_area = fields.Float(compute = "_compute_total_area", string= "Total Area")
+    best_price = fields.Float(string= "Best Price")
 
     #--------------------------------------------Relational Fields------------------------------------------#
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -46,36 +51,35 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")  
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     
-    # --------------------------------------------Decorator Methods----------------------------------------#
-    @api.depends("living_area", "garden_area", "display_unit")
-    def _compute_display_areas(self):  
+    # --------------------------------------------Compute Methods----------------------------------------#
+    @api.depends("living_area", "garden_area", "measurement_unit")
+    def _compute_total_area(self):  
         for property in self:
-            if property.display_unit == "sqft":
-                property.living_area = property.living_area * 10.764
-                property.garden_area = property.garden_area * 10.764
-            else:
-                property.living_area = property.living_area / 10.764
-                property.garden_area = property.garden_area / 10.764
-
             property.total_area = property.living_area + property.garden_area
-
-    def _inverse_living_area(self):
-        for property in self:
-            if property.display_unit == "sqft":
-                property.living_area /= 10.764
-              
-
-    def _inverse_garden_area(self):
-        for property in self:
-            if property.display_unit == "sqft":
-                property.garden_area /= 10.764  
+            if property.measurement_unit == 'sqft':
+                property.total_area *= 10.764
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for prop in self:
             prop.best_price=max(prop.offer_ids.mapped("price")) if prop.offer_ids else 0.0
             
-# --------------------------------------------Onchange methods------------------------------------#
+#---------------------------------------------------- Action Methods----------------------------------------#
+    def property_sold_action(self):  
+        for property in self:
+            print (f'property:{property} self:{self}')
+            if property.state in ['sold']:
+                raise UserError('Property is Already sold')
+            property.state = "sold"
+        return True
+
+    def property_cancel_action(self):
+        for property in self:
+            property.state = "cancelled"
+            print(property.state)
+        return True
+    
+    # --------------------------------------------Constrain and Onchange Methods------------------------------------------------#
     @api.onchange("is_garden")
     def _onchange_garden_present(self):
         if self.is_garden :
@@ -84,3 +88,9 @@ class EstateProperty(models.Model):
         else :
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price(self):
+        for prices in self:
+            if fields.Float.compare (self.selling_price, self.expected_price * 90/100, precision_rounding=0.01) < 0 and not fields.Float.is_zero(self.selling_price, precision_rounding=0.01):
+                raise ValidationError ("Selling Price cannot be lower than '90%'of the expected price.")

@@ -12,16 +12,16 @@
         <field name="name">estate.list.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list multi_edit="1">
                 <field name="name" string="Name"/>
                 <field name="property_type_id" string="Property Type"/>
-                <field name="postcode" string="Postcode"/>
+                <field name="postcode" string="Postcode"/> 
                 <field name="bedrooms" string="Bedrooms"/>
-                <field name="display_unit" string="Unit" widget="selection"/>
+                <field name="measurement_unit" string="Unit" widget="selection"/> 
                 <field name="living_area" string="Living Area"/>
                 <field name="garden_area" string="Garden Area"/>
-                <field name="total_area" string="Total Area"/>
-                <field name="expected_price" string="Expected Price"/>
+                <field name="total_area" string="Total Area" /> 
+                <field name="expected_price" string="Expected Price" />
                 <field name="selling_price" string="Selling Price"/>
                 <field name="date_availability" string="Available From"/>
                 <field name="tag_ids" string="Tags" widget="many2many_tags"/>
@@ -35,9 +35,15 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
+                <header>
+                <button name="property_sold_action" type="object" string="Sold"/>
+                <button name="property_cancel_action" type="object" string="Cancelled"/>
+                <!-- <field name="state" widget="statusbar" statusbar_visible="new, sold, offer_recived, offer_accepted" /> -->
+                </header>
                 <sheet>
                     <group>
                         <group>
+                            <field name="state" string="State"/>
                             <field name="name" string="Name"/>
                             <field name="property_type_id" string="Property Type"/>
                             <field name="postcode" string="Post Code"/>
@@ -56,7 +62,7 @@
                                 <group>
                                     <field name="description"/>
                                     <field name="bedrooms" string="Bedrooms"/>
-                                    <field name="display_unit" string="Unit of Measurement" widget="selection"/>   <!-- Dropdown for unit selection -->
+                                    <field name="measurement_unit" string="Unit of Measurement" widget="selection"/>   <!-- Dropdown for unit selection -->
                                     <field name="living_area" string="Living Area"/>
                                     <field name="facades" string="Facades"/>
                                     <field name="is_garage" string="Garage"/>
