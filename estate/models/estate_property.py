@@ -2,7 +2,8 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -61,6 +62,11 @@ class EstateProperty(models.Model):
     total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area')
     best_price = fields.Integer(string='Best Offer', compute='_compute_best_price')
 
+    _sql_constraints = [
+        ('expected_price_check', 'CHECK( expected_price >= 0 )', 'A property expected price must be strictly positive'),
+        ('selling_price_check', 'CHECK( selling_price >= 0 )', 'A property selling price must be positive')
+    ]
+
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -72,6 +78,14 @@ class EstateProperty(models.Model):
         for record in self:
             best_prices = record.offer_ids.mapped('price')
             record.best_price = max(best_prices) if best_prices else 0
+
+    @api.constrains('selling_price', 'expected_price')
+    def _validate_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=3):
+                return
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=3) < 0:
+                raise ValidationError("the selling price cannot be lower than 90 percentage of the expected price")
 
     @api.onchange('garden')
     def _onchange_garden(self):

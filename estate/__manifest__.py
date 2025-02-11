@@ -27,8 +27,7 @@
 
     'demo':[
         'demo/estate_property_demo.xml',
-        'demo/estate_property_offer_demo.xml',
-        'demo/estate_property_tag_demo.xml'
+        'demo/estate_property_offer_demo.xml'
     ],
 
     'license': 'AGPL-3'
