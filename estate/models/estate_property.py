@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class Property(models.Model):
     _name = "estate.property"
@@ -89,7 +89,7 @@ class Property(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if float_compare(
+            if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(
                         record.selling_price,
                         0.9 * record.expected_price,
                         precision_digits=2,

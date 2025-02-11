@@ -20,8 +20,10 @@ class PropertyOffers(models.Model):
     date_deadline = fields.Date(compute='_compute_date_deadline',  inverse="_inverse_date_deadline", string='Deadline')
 
     _sql_constraints = [
-        ('check_offer_price_positive', 'CHECK(price >= 0)', 'Offer price must be strictly positive.'),
-        ]
+        ('check_offer_price_positive', 
+        'CHECK(price >= 0)', 
+        'Offer price must be strictly positive.'),
+    ]
 
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
@@ -35,18 +37,15 @@ class PropertyOffers(models.Model):
         for record in self:
             if record.date_deadline and record.create_date:
                 record.validity = (record.date_deadline - record.create_date.date()).days
-            else:
+            if record.validity < 0:
                 record.validity = 0
 
     def action_accept(self):
-        for record in self:
-            record.status = 'accepted'
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-            
-            for offer in record.property_id.offer_ids:
-                if offer != record:
-                    offer.status = 'rejected'
+        self.property_id.offer_ids.status = 'rejected'
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = 'offer_accepted'
 
     def action_reject(self):
         for record in self:
