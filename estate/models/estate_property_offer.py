@@ -34,6 +34,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
+        """Computes the deadline date based on create_date and validity period."""
         for record in self:
             if record.create_date:
                 record.date_deadline = record.create_date.date() + timedelta(days=record.validity)

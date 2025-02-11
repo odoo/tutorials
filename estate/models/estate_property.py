@@ -92,11 +92,15 @@ class EstateProperty(models.Model):
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
+        """ Computes the total area as the sum of living_area and garden_area.
+        This method is triggered when either of these fields is updated."""
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends("offer_ids.price")
+    @api.depends("offer_ids")
     def _compute_best_price(self):
+        """Computes the best (highest) offer price from the related offers.
+        If there are no offers, defaults to 0.0."""
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
@@ -104,7 +108,7 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = 'north'
+            self.garden_orientation = "north"
         else:
             self.garden_area = 0
             self.garden_orientation = False

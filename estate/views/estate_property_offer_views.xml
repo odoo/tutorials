@@ -1,4 +1,5 @@
 <odoo>
+
     <record id="view_estate_property_offer_form" model="ir.ui.view">
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
@@ -21,7 +22,7 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offers">
+            <list string="Property Offers" editable="bottom">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
@@ -30,4 +31,5 @@
             </list>
         </field>
     </record>
+
 </odoo>
