@@ -24,5 +24,12 @@
         'views/estate_menus.xml',
     ],
 
+    'demo' : [
+        'demo/demo_property.xml',
+        'demo/demo_property_offer.xml',
+        'demo/demo_property_tag.xml',
+        'demo/demo_property_type.xml'
+    ],
+
     'license': 'AGPL-3'
 }

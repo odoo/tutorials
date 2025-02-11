@@ -1,2 +1,31 @@
 <odoo>
+    <record id="demo_property_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">560001</field>
+        <field name="date_availability">2025-06-15</field>
+        <field name="expected_price">1600000.0</field>
+        <field name="selling_price">0.0</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">north</field>
+    </record>
+    <record id="demo_property_2" model="estate.property">
+        <field name="name">Trailer Home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in trailer park</field>
+        <field name="postcode">560001</field>
+        <field name="date_availability">2025-09-15</field>
+        <field name="expected_price">100000.0</field>
+        <field name="selling_price">120000.0</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+    </record>
 </odoo>
