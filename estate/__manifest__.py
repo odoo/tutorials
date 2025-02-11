@@ -22,6 +22,13 @@
         'views/estate_menus.xml'
     ],
 
+    'demo':[
+        'data/estate_property_data.xml',
+        'data/estate_property_offer_data.xml',
+        'data/estate_property_tag_data.xml',
+        'data/estate_property_type_data.xml'
+    ],
+
     'installable':True,
     'application':True,
     'license': "LGPL-3"

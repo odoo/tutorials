@@ -1,9 +1,9 @@
 <odoo>
     
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Estate Properties</field>
+        <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">kanban,list,form</field>
+        <field name="view_mode">list,kanban,form</field>
     </record>
 
     <!-- List View Configuration -->

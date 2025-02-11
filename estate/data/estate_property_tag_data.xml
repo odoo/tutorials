@@ -1,0 +1,23 @@
+<odoo>
+
+    <record id="property_tag_1" model="estate.property.tag">
+        <field name="name">Furnitured</field>
+    </record>
+
+    <record id="property_tag_2" model="estate.property.tag">
+        <field name="name">Reconstructed</field>
+    </record>
+
+    <record id="property_tag_3" model="estate.property.tag">
+        <field name="name">Top Floor</field>
+    </record>
+
+    <record id="property_tag_4" model="estate.property.tag">
+        <field name="name">Ground Floor</field>
+    </record>
+
+    <record id="property_tag_5" model="estate.property.tag">
+        <field name="name">Painted</field>
+    </record>
+
+</odoo>
