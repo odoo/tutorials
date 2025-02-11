@@ -1,5 +1,6 @@
-from odoo import api, fields, models, exceptions, tools, exceptions
-from dateutil.relativedelta import relativedelta
+from odoo import api, fields, models, exceptions
+from odoo.tools import float_compare, float_is_zero
+
 
 class Property(models.Model):
     _name = "estate.property"
@@ -18,7 +19,7 @@ class Property(models.Model):
         "Postcode", help="This field specifies the postcode of the property address."
     )
     date_availability = fields.Date(
-        "Available From", readonly=False, default=fields.Date.today() + relativedelta(months=3),
+        "Available From", readonly=False, default=fields.Date.add(fields.Date.today(),months=3),
         help="This field specifies the date when the property will be available.",
     )
     expected_price = fields.Float(
@@ -67,8 +68,8 @@ class Property(models.Model):
         string="Property Status", copy=False, required=True, default="new",
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -82,11 +83,11 @@ class Property(models.Model):
         "estate.property.type", string="Property Type",
         help="This specifies the type of the property."
     )
-    buyer = fields.Many2one(
+    buyer_id = fields.Many2one(
         "res.partner", string="Buyer", copy=False,
         help="Buyer of the property."
     )
-    salesperson = fields.Many2one(
+    salesperson_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user,
         help="Sales Person associated with the property."
     )
@@ -116,11 +117,8 @@ class Property(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for line in self:
-            offer_prices = line.mapped('offer_ids.price')
-            if offer_prices:
-                line.best_price = max(offer_prices)
-            else:
-                line.best_price = 0
+            line.best_price = max(line.mapped('offer_ids.price'), default=0)
+
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -150,8 +148,8 @@ class Property(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for line in self:
-            if (tools.float_utils.float_compare(line.selling_price, line.expected_price * 0.9, precision_digits=2) == -1
-                and line.selling_price != 0):
+            if (float_compare(line.selling_price, line.expected_price * 0.9, precision_digits=2) == -1
+                and not float_is_zero(line.selling_price, precision_rounding=2)):
                 raise exceptions.ValidationError('The selling price must be atleast 90% of the expected price. You must reduce the expected price if you want to accept this offer.')
 
     @api.ondelete(at_uninstall=False)

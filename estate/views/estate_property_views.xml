@@ -13,8 +13,8 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties"
-                decoration-success="state in ('offer received', 'offer accepted')"
-                decoration-bf="state == 'offer accepted'"
+                decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'">
                 <field name="name" />
                 <field name="property_type_id" />
@@ -42,7 +42,7 @@
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]" />
                 <field name="facades" />
 
-                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"></filter>
+                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]"></filter>
                 <group string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}" />
                     <filter string="Property Type" name="property_type_id" context="{'group_by': 'property_type_id'}" />
@@ -60,7 +60,7 @@
                 <header>
                     <button name="sold_property" type="object" string="Sold" invisible="state in ('sold','cancelled')" />
                     <button name="cancel_property" type="object" string="Cancel" invisible="state in ('sold','cancelled')" />
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold" options="{'clickable': True}" />
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': True}" />
                 </header>
 
                 <sheet>
@@ -107,15 +107,15 @@
                         </page>
 
                         <page name="Offers">
-                            <field name="offer_ids" readonly="state in ('offer accepted
+                            <field name="offer_ids" readonly="state in ('offer_accepted
                             ', 'sold', 'cancelled')" />
                         </page>
 
                         <page name="Other Info">
                             <group>
                                 <group>
-                                    <field name="salesperson" />
-                                    <field name="buyer" />
+                                    <field name="salesperson_id" />
+                                    <field name="buyer_id" />
                                 </group>
                             </group>
                         </page>

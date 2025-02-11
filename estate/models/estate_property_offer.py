@@ -1,5 +1,6 @@
 from odoo import api, fields, models, exceptions
 
+
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
@@ -59,7 +60,7 @@ class PropertyOffer(models.Model):
         other_offers.write({"status": "refused"})
 
         self.status = "accepted"
-        self.property_id.buyer = self.partner_id
+        self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
         return True
 
@@ -67,14 +68,15 @@ class PropertyOffer(models.Model):
         self.status = "refused"
         return True
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
-        property_id = self.env['estate.property'].browse(vals['property_id'])
+        for val in vals:
+            property_id = self.env['estate.property'].browse(val['property_id'])
 
-        if property_id.state == "new":
-            property_id.state = "offer received"
+            if property_id.state == "new":
+                property_id.state = "offer_received"
 
-        if self.price < property_id.best_price:
-            raise exceptions.UserError(f"The offer must be higher than {property_id.best_price}")
-        else:
-            return super(PropertyOffer, self).create(vals)
+            if val['price'] <= property_id.best_price:
+                raise exceptions.UserError(f"The offer must be higher than {property_id.best_price}")
+            else:
+                return super().create(val)
