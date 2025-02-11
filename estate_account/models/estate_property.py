@@ -5,7 +5,7 @@ class InheritedEstateProperty(models.Model):
     _inherit="estate.property"
     
     def action_mark_property_sold(self):
-        move = self.env["account.move"].create({
+        self.env["account.move"].create({
             "partner_id": self.buyer.id,
             "move_type": "out_invoice",
             "journal_id": self.env["account.journal"].search([("type", "=", "sale")], limit=1).id,

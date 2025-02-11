@@ -93,6 +93,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
     
+    @api.constrains("selling_price", "expected_price")
+    def _check_valid_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, record.expected_price*0.9, precision_digits=2) < 0:
+                raise ValidationError("Selling price must be atleast 90% of the expected price")
+    
     @api.onchange("garden")
     def _onchange_garden_availability(self):
         if self.garden:
@@ -101,6 +107,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area=0
             self.garden_orientation=""
+    
+    @api.ondelete(at_uninstall=False)
+    def _check_property_before_unlink(self):
+        for record in self:
+            if record.state != 'new' and record.state != 'cancelled':
+                raise UserError("Can only delete new or cancelled properties")
     
     def action_mark_property_sold(self):
         for record in self:
@@ -121,15 +133,3 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_valid_selling_price(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, record.expected_price*0.9, precision_digits=2) < 0:
-                raise ValidationError("Selling price must be atleast 90% of the expected price")
-
-    @api.ondelete(at_uninstall=False)
-    def _check_property_before_unlink(self):
-        for record in self:
-            if record.state != 'new' and record.state != 'cancelled':
-                raise UserError("Can only delete new or cancelled properties")

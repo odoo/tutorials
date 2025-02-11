@@ -35,17 +35,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
     
-    def action_accept_offer(self):
-        self.status = "accepted"
-        self.property_id.state = "offer_accepted"
-        self.property_id.selling_price = self.price
-        self.property_id.buyer = self.partner_id
-        return True
-
-    def action_refuse_offer(self):
-        self.status = "refused"
-        return True
-    
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -58,3 +47,28 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(f"The offer price must be higher than {best_offer.price}")
         
         return super().create(vals_list)
+
+    def unlink(self):
+        print(self)
+        properties = self.mapped("property_id")
+        res = super().unlink();
+        
+        for property in properties:
+            linked_offers = self.search_count([('property_id', '=', property.id)])
+            
+            if(linked_offers == 0):
+                property.state = 'new'
+                property.buyer = ''
+                property.selling_price = 0
+        return res
+    
+    def action_accept_offer(self):
+        self.status = "accepted"
+        self.property_id.state = "offer_accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer = self.partner_id
+        return True
+
+    def action_refuse_offer(self):
+        self.status = "refused"
+        return True
