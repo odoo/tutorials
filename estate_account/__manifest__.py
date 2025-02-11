@@ -2,10 +2,7 @@
 
 {
     "name": "Real Estate Accounting",
-    "author": "nmak",
-    "category": "Tutorials/estate_account",
     "depends": ["estate", "account"],
-    "data": [],
     "installable": True,
     "application": True,
     "auto_install": True,

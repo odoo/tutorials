@@ -5,7 +5,9 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offers">
+            <list string="Offers" editable="bottom"
+                decoration-success="status == 'accepted'"
+                decoration-danger="status == 'refused'">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="status" />
@@ -35,6 +37,7 @@
         </field>
     </record>
 
+    <!-- Default Action -->
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Offers</field>
         <field name="res_model">estate.property.offer</field>

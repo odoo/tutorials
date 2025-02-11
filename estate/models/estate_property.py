@@ -44,7 +44,7 @@ class EstateProperty(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
-        string="Garden Orientation"
+        string="Garden Orientation",
     )
     total_area = fields.Float(string="Total Area (sqft)", compute="_compute_total_area")
     active = fields.Boolean(default=True)
@@ -74,24 +74,27 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         compute="_compute_best_price", string="Best Offer", store=True
     )
-
+    company_id = fields.Many2one(
+        "res.company",
+        required=True,
+        default=lambda self: self.env.company
+    )
+    
     @api.ondelete(at_uninstall=False)
     def _check_property_deletion(self):
         for record in self:
             if record.state not in ["new", "cancelled"]:
-                raise UserError(
-                    "You can only delete properties in 'New' or 'Cancelled' state"
-                )
+                raise UserError("You can only delete properties in 'New' or 'Cancelled' state")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        """this function adds the value of living_area and garden_area to total_area field"""
+        """Computes total area by adding living_area and garden_area"""
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids")
     def _compute_best_price(self):
-        """this function computes the best_price field by looking for the maximum price offered"""
+        """Computes the best_price field by looking for the maximum price offered"""
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
@@ -109,9 +112,7 @@ class EstateProperty(models.Model):
             if record.state == "cancelled":
                 raise UserError("Cancelled property cannot be sold")
             if not record.buyer_id or not record.selling_price:
-                raise UserError(
-                    "Property must have an accepted offer before being sold"
-                )
+                raise UserError("Property must have an accepted offer before being sold")
             record.state = "sold"
 
     def action_cancel(self):
@@ -123,10 +124,5 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if (
-                record.selling_price > 0
-                and record.selling_price < record.expected_price * 0.9
-            ):
-                raise ValidationError(
-                    "The selling price of the property cannot be less than 90% of the expected price"
-                )
+            if 0 < record.selling_price < record.expected_price * 0.9:
+                raise ValidationError("The selling price of the property cannot be less than 90% of the expected price")

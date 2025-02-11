@@ -7,7 +7,8 @@
         action="estate_property_action" />
     <menuitem id="estate_settings_menu"
         name="Settings"
-        parent="estate_property_root" />
+        parent="estate_property_root"
+        groups="estate.estate_group_manager" />
     <menuitem id="estate_property_type_menu"
         name="Property Types"
         parent="estate_settings_menu"

@@ -35,20 +35,30 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        records = super().create(vals_list)
-        for record in records:
-            property_id = record.property_id
-            if property_id.best_price and record.price <= property_id.best_price:
-                raise ValidationError(
-                    "The new offer must be higher than the existing best offer."
-                )
-            property_id.state = "offer_recieved"
+        offers = super().create(vals_list)
 
-        return records
+        for offer in offers:
+            property_id = offer.property_id
+            existing_offers = property_id.offer_ids - offer
+            previous_best_price = 0
+
+            for existing_offer in existing_offers:
+                if existing_offer.price > previous_best_price:
+                    previous_best_price = existing_offer.price
+
+            if previous_best_price and offer.price <= previous_best_price:
+                raise UserError(
+                    f"The new offer must be higher than {previous_best_price}"
+                )
+
+            if property_id.state == "new":
+                property_id.state = "offer_recieved"
+
+        return offers
 
     @api.depends("validity")
     def _compute_deadline(self):
-        """This function helps to automatically set the deadline date acc. to the validity days entered"""
+        """computes deadline date acc. to the validity days entered"""
         for offer in self:
             if offer.create_date:
                 offer.deadline = fields.Date.add(offer.create_date, days=offer.validity)
@@ -56,7 +66,7 @@ class EstatePropertyOffer(models.Model):
                 offer.deadline = fields.Date.today()
 
     def _inverse_deadline(self):
-        """This function sets validity(days) acc. to the deadline date entered"""
+        """computes validity(days) acc. to the deadline date entered"""
         for offer in self:
             if offer.create_date:
                 offer.validity = (offer.deadline - offer.create_date.date()).days
