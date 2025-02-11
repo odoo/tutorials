@@ -26,13 +26,14 @@
                 <header>
                     <button name="action_cancel" type="object" string="Cancel"></button>
                     <button name="action_sold" type="object" string="Sold"></button>
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <h1 class="mb32">
                     <field name="name" class="mb16"></field>
                 </h1>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" nolabel="1"></field>
                 <group>
                     <group>
-                        <field name="tag_ids" widget="many2many_tags" nolabel="1"></field>
                         <field name="state"></field>
                         <field name="property_type_id"></field>
                         <field name="postcode" string="Postcode"></field>
@@ -53,15 +54,15 @@
                             <field name="facades"></field>
                             <field name="garage"></field>
                             <field name="garden"></field>
-                            <field name="garden_area"></field>
-                            <field name="garden_orientation"></field>
+                            <field name="garden_area" invisible="garden == False"></field>
+                            <field name="garden_orientation" invisible="garden == False"></field>
                             <field name="state"></field>
                             <field name="total_area"></field>
                         </group>
                     </page>
                     <page name="offers" string="Offers">
                         <group>
-                            <field name="offer_ids" nolabel="1"></field>
+                            <field name="offer_ids" nolabel="1" readonly="state in ['offer_accepted', 'sold', 'cancelled']"></field>
                         </group>
                     </page>
                     <page name="other_info" string="Other Info">

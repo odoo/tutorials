@@ -1,5 +1,39 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="estate_property_type_list_view" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list name="estate_property_type_list" string="Estate Property Type">
+                <field name="name"></field>
+                <field name="sequence" widget="handle"></field>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_type_form_view" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form name="estate_property_type_form" string="Estate Property Type">
+                <h1 class="mb32">
+                    <field name="name" class="mb16"></field>
+                </h1>
+                <notebook>
+                    <page name="properties" string="Properties">
+                        <field name="property_ids" nolabel="1">
+                            <list>
+                                <field name="name" width="20%"></field>
+                                <field name="expected_price" width="20%"></field>
+                                <field name="state" width="20%"></field>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>

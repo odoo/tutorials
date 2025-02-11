@@ -15,5 +15,6 @@ Real Estate module is for training
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml'
     ],
-    'application' : True
+    'application' : True,
+    'license' : 'LGPL-3'
 }

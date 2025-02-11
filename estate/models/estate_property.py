@@ -6,6 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property model'
+    _order = 'id desc'
 
     name = fields.Char(string='Title', required=True)
     description = fields.Text(string='Description')
@@ -67,7 +68,7 @@ class EstateProperty(models.Model):
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
-        if self.selling_price < 0.9 * self.expected_price:
+        if self.selling_price and self.selling_price < 0.9 * self.expected_price:
             raise ValidationError("Selling price must be atleast 90% of expected price")
 
     def action_cancel(self):
