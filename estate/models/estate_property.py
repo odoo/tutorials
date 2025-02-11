@@ -7,6 +7,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     # Basic property details
     name = fields.Char(
@@ -178,6 +179,8 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if self.state == 'canceled':
             raise UserError("Canceled properties cannot be sold.")
+        elif self.state != 'offer_accepted':
+            raise UserError("Only properties with accepted offers can be sold.")
 
         self.state = 'sold'
         return True

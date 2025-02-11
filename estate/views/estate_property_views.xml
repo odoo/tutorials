@@ -3,21 +3,28 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available_property': True}</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="List View"
+                  decoration-success="state in ['offer_received', 'offer_accepted']"
+                  decoration-bf="state == 'offer_accepted'"
+                  decoration-danger="state == 'canceled'"
+                  decoration-muted="state == 'sold'"
+            >
                 <field name="name" string="Title"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
-                <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -28,8 +35,13 @@
         <field name="arch" type="xml">
             <form string="Form View">
                 <header>
-                    <button name="action_sold" string="Sold" type="object" class="btn-primary" error="Are you sure you want to mark this property as sold?"/>
-                    <button name="action_cancel" string="Cancel" type="object" class="btn-danger"/>
+                    <button name="action_sold" class="btn-primary"
+                            string="Sold" type="object"
+                            invisible="state in ['sold', 'canceled']"/>
+                    <button name="action_cancel" class="btn-danger"
+                            string="Cancel" type="object"
+                            invisible="state == 'canceled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <group>
@@ -39,13 +51,13 @@
                     </group>
                     <group>
                         <h3>
-                            <field name="tag_ids" widget="many2many_tags" nolabel="1"/>
+                            <field name="tag_ids" widget="many2many_tags" nolabel="1" options="{'color_field': 'color'}"/>
                         </h3>
                     </group>
                     <group>
                         <group>
                             <field name="state" string="Status"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true, 'no_open': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -76,10 +88,10 @@
                                 <field name="garden"/>
                             </group>
                             <group>
-                                <field name="garden_area"/>
+                                <field name="garden_area" invisible="not garden"/>
                             </group>
                             <group>
-                                <field name="garden_orientation"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                             </group>
                             <group>
                                 <field name="total_area"/>
@@ -88,7 +100,7 @@
 
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" widget="one2many_offer" nolabel="1"/>
+                                <field name="offer_ids" widget="one2many_offer" nolabel="1" readonly="state in ['offer_accepted', 'sold', 'canceled']" editable="bottom"/>
                             </group>
                         </page>
 
@@ -115,12 +127,12 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
                 <field name="facades"/>
                 <separator/>
-                <filter name = 'available_property' string = 'Available Properties' domain = "['|',('state','=','new'),('state','=','offer_received')]"/>
-                <group string = 'Group By'>
-                    <filter name = 'postcode' context="{'group_by':'postcode'}"/>
+                <filter name='available_property' string='Available' domain="['|',('state','=','new'),('state','=','offer_received')]"/>
+                <group string='Group By'>
+                    <filter name='postcode' context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>

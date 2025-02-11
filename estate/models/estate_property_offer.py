@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(
         string="Price",
@@ -47,8 +48,14 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         string="Deadline",
         help="The date the offer expires.",
-        compute="_compute_validity",
-        inverse="_inverse_validity",
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+    )
+
+    property_type_id = fields.Many2one(
+        string="Property Type",
+        help="The type of the property.",
+        related="property_id.property_type_id"
     )
 
     # -------------------------------------------------------------------------
@@ -64,10 +71,15 @@ class EstatePropertyOffer(models.Model):
     # -------------------------------------------------------------------------
 
     @api.depends("validity")
-    def _compute_validity(self):
+    def _compute_date_deadline(self):
         for record in self:
             record.create_date = record.create_date or datetime.now().date()
             record.date_deadline = datetime.now().date() + timedelta(days=record.validity)
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            record.create_date = record.create_date or datetime.now().date()
+            record.validity = (record.date_deadline - datetime.now().date()).days
 
     # -------------------------------------------------------------------------
     # ONCHANGE METHODS
@@ -84,27 +96,15 @@ class EstatePropertyOffer(models.Model):
     # ACTION METHODS
     # -------------------------------------------------------------------------
 
-    def _inverse_validity(self):
-        for record in self:
-            record.create_date = record.create_date or datetime.now().date()
-            record.validity = (record.date_deadline - datetime.now().date()).days
-
     def action_confirm(self):
-        if any(offer.status == "accepted" for offer in self.property_id.offer_ids):
-            raise UserError("Offer already accepted.")
-
+        self.property_id.offer_ids.status = "refused"
         self.status = "accepted"
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
-        for offer in self.property_id.offer_ids.filtered(lambda o: o != self):
-            offer.status = "refused"
+        self.property_id.state = "offer_accepted"
 
     def action_cancel(self):
         self.status = "refused"
-        if any(offer.status == "accepted" for offer in self.property_id.offer_ids):
-            return
-        self.property_id.selling_price = 0.0
-        self.property_id.buyer_id = False
 
     # -------------------------------------------------------------------------
     # CONSTRAINTS METHODS
@@ -115,5 +115,7 @@ class EstatePropertyOffer(models.Model):
     def _check_price(self):
         compare_value = float_compare(self.price,0.9*self.property_id.expected_price,precision_digits=2)
         if compare_value == -1:
-                raise UserError("Offer Price must be atleast 90% of the expected price.")
+            raise UserError("Offer Price must be atleast 90% of the expected price.")
+
+        self.property_id.state = 'offer_received'
         return True
