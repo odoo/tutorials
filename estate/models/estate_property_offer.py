@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from dateutil.relativedelta import relativedelta
 
 
@@ -56,16 +56,8 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.partner_id = record.partner_id
                 record.property_id.selling_price = record.price
                 record.property_id.state = "offer_accepted"
-                other_offers = self.search(
-                    [
-                        ("property_id", "=", record.property_id.id),
-                        ("id", "!=", record.id),
-                        "|",
-                        ("status", "=", ""),
-                        ("status", "=", "accepted"),
-                    ]
-                )
-            other_offers.write({"status": "refused"})
+                other_offers = record.property_id.offer_ids - record
+                other_offers.write({"status": "refused"})
         return True
 
     def action_refuse(self):
@@ -79,3 +71,15 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ("check_price", "CHECK(price > 0)", "Price must be positive."),
     ]
+
+    @api.model
+    def create(self, vals):
+        if (
+            self.env["estate.property"].browse(vals["property_id"]).expected_price
+            > vals.get("price")
+            or vals.get("price")
+            < self.env["estate.property"].browse(vals["property_id"]).best_price
+        ):
+            raise UserError("Price is low !!")
+        self.env["estate.property"].browse(vals["property_id"]).state = "offer_received"
+        return super(EstatePropertyOffer, self).create(vals)

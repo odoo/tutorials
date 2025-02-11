@@ -1,7 +1,8 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from dateutil.relativedelta import relativedelta
 from odoo.tools import float_compare, float_is_zero
+
 
 class PropertyPlan(models.Model):
     _name = "estate.property"
@@ -125,3 +126,8 @@ class PropertyPlan(models.Model):
                     raise ValidationError(
                         "The selling price must be at least 90% of the expected price!You must reduce the expected price if you want to accept this offer."
                     )
+
+    @api.ondelete(at_uninstall=False)
+    def _deleting_record(self):
+        if self.state != "new" and self.state != "cancelled":
+            raise UserError("Only new and cancelled properties can be deleted!")

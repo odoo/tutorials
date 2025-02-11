@@ -9,6 +9,7 @@
         'views/estate_property_type_menu.xml',
         'views/estate_property_tag_menu.xml',
         'views/estate_menus.xml',
+        'views/estate_property_res_user_views.xml',
     ],
     'license': 'LGPL-3'
 }

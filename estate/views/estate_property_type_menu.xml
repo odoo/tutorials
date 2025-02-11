@@ -15,12 +15,12 @@
         <field name="name">estate_property_offer.view.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger = "status == 'refused'">
+            <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="validity" />
                 <field name="date_deadline" />
-            </list>
+            </list> 
         </field>
     </record>
     <record id="estate_property_type_view_form" model="ir.ui.view">
