@@ -27,9 +27,8 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline and record.create_date:
-                delta = record.date_deadline - record.create_date
-                record.validity = delta.days
-    
+               delta = record.date_deadline - record.create_date
+               record.validity = delta.days
     def action_accepted(self):
         for record in self:
             if record.property_id.offer_ids.filtered(lambda offer: offer.status == 'accepted'):
@@ -39,10 +38,9 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer_accepted'
             return True
-        def action_refused(self):
-          for record in self:
+    def action_refused(self):
+        for record in self:
             record.status = 'refused'
-
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:

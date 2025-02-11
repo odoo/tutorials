@@ -1,4 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <menuitem
+        id="menu_real_estate_root"
+        name="Real Estate"
+        web_icon="estate,static/description/icon.png"
+    />
     <!-- Action -->
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Real Estate</field>
