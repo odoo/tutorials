@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         selection=[
             ('accepted', 'Accepted'),
-            ('refused', 'Rejected')
+            ('rejected', 'Rejected')
         ],
         copy=False
     )
@@ -20,19 +20,19 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date("Deadline", compute="_compute_deadline_date", inverse="_inverse_deadline_date")
 
     def action_accept_offer(self):
-        for offer in self:
-            offer.status = 'accepted'
-            offer.property_id.selling_price = offer.price
-            offer.property_id.state = 'offer_accepted'
-            offer.property_id.buyer = offer.partner_id
+        for record in self:
+            record.status = 'accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.state = 'offer_accepted'
+            record.property_id.buyer = record.partner_id
             rejected_offers = self.search([
-                ('property_id', '=', offer.property_id.id), ('id', '!=', offer.id)
+                ('property_id', '=', record.property_id.id), ('id', '!=', record.id)
             ])
-            rejected_offers.write({'status':'refused'})
+            rejected_offers.write({'status':'rejected'})
 
     def action_reject_offer(self):
         for offer in self:
-            offer.status = 'refused'
+            offer.status = 'rejected'
 
     @api.depends("create_date","validity")
     def _compute_deadline_date(self):

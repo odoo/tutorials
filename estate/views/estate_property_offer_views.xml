@@ -11,17 +11,17 @@
                         title="Accept"
                         type="object"
                         icon="fa-check"
-                        invisible="status in ('accepted', 'refused')"
+                        invisible="status in ('accepted', 'rejected')"
                     />
                     <button name="action_reject_offer"
                         title="Reject"
                         type="object"
                         icon="fa-times"
-                        invisible="status in ('accepted', 'refused')"
+                        invisible="status in ('accepted', 'rejected')"
                     />
                     <field name="status" widget="badge"
                         decoration-success="status == 'accepted'"
-                        decoration-danger="status == 'refused'"
+                        decoration-danger="status == 'rejected'"
                     />
                     <field name="validity" />
                     <field name="date_deadline" optional="hide" />
@@ -40,18 +40,6 @@
                         <field name="partner_id" />
                         <field name="validity" />
                         <field name="date_deadline" />
-                        <button name="action_accept_offer"
-                            string="Accept"
-                            class="btn-primary"
-                            type="object"
-                            invisible="status in ('accepted', 'refused')"
-                        />
-                        <button name="action_reject_offer"
-                            string="Reject"
-                            class="btn-danger"
-                            type="object"
-                            invisible="status in ('accepted', 'refused')"
-                        />
                     </group>
                 </sheet>
             </form>
