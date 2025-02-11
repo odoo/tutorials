@@ -1,12 +1,12 @@
-from odoo import api, models, fields
-from datetime import timedelta, date
+from odoo import api, fields, models
+from datetime import date, timedelta
 from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
   _name = 'estate.property.offer'
   _description = 'this is estate property offer Database model created by meem (meet moradiya)...'
 
-  price = fields.Float('Price')
+  price = fields.Float(string='Price')
   status = fields.Selection(
     string='Status',
     copy='False',
@@ -15,14 +15,11 @@ class EstatePropertyOffer(models.Model):
       ('refused', 'Refused')
     ]
   )
-  partner_id = fields.Many2one('res.partner', 'Partner', required=True)
-  property_id = fields.Many2one('estate.property', 'Property ID', required=True)
-  validity = fields.Integer('Validity (days)', default=7)
-  date_deadline = fields.Date('Deadline', compute='_compute_deadline', inverse='_inverse_deadline')
-
-
-
-
+  partner_id = fields.Many2one('res.partner', string='Partner', required=True)
+  property_id = fields.Many2one('estate.property', string='Property ID', required=True)
+  validity = fields.Integer(string='Validity (days)', default=7)
+  date_deadline = fields.Date(string='Deadline', compute='_compute_deadline', inverse='_inverse_deadline')
+  property_type_id = fields.Many2one('estate.property.type', string='Property Type', related='property_id.property_type_id')
 
   ########## Compute Methods ##########
 
@@ -35,6 +32,22 @@ class EstatePropertyOffer(models.Model):
     for record in self:
       record.validity = max((record.date_deadline - date.today()).days, 0)
 
+  # @api.model_create_multi
+  # def create(self, vals):
+  #   # Get the property record from property_id (which is an integer in vals)
+  #   property_record = self.env['estate.property'].browse(vals.get('property_id'))
+
+  #   # # Ensure the new offer price is higher than any existing offer
+  #   # existing_best_price = max(property_id.offer_ids.mapped('price'), default=0)
+  #   # new_offer_price = vals.get('price', 0)
+
+  #   if vals['price'] < property_record.best_price:
+  #     raise UserError(f"New offer price ({vals['price']}) must be higher than the existing best offer ({property_record.best_price}).")
+
+  #   if property_record.state == 'new':
+  #     property_record.state = 'offer received'
+
+  #   return super().create(vals)
 
 
   ########## Normal Methods ##########
@@ -60,13 +73,10 @@ class EstatePropertyOffer(models.Model):
 
       record.status = 'refused'
 
-
 ########## constraints ##########
 
   _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0.00)',
          'The Offer price must be Positive.')
     ]  
-  
-
   

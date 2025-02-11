@@ -1,14 +1,12 @@
-from odoo import models, fields
+from odoo import fields, models
 
 class EstatePropertyTag(models.Model):
   _name = 'estate.property.tag'
   _description = 'this is estate property tag Database model created by meem (meet moradiya)...'
   _order = 'name asc'
 
-  name = fields.Char('Property Tag', required=True)
-  color = fields.Integer('Color')
-
-
+  name = fields.Char(string='Property Tag', required=True)
+  color = fields.Integer(string='Color')
 
 ########## constraints ##########
 
