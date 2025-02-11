@@ -1,4 +1,5 @@
-from odoo import fields, models
+from odoo import api, fields, models
+from datetime import timedelta
 
 
 class EstatePropertyOffer(models.Model):
@@ -9,9 +10,39 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         selection=[
             ('accepted', 'Accepted'),
-            ('refused', 'Refused')
+            ('refused', 'Rejected')
         ],
         copy=False
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    validity = fields.Integer("Validity", default=7)
+    date_deadline = fields.Date("Deadline", compute="_compute_deadline_date", inverse="_inverse_deadline_date")
+
+    def action_accept_offer(self):
+        for offer in self:
+            offer.status = 'accepted'
+            offer.property_id.selling_price = offer.price
+            offer.property_id.state = 'offer_accepted'
+            offer.property_id.buyer = offer.partner_id
+            rejected_offers = self.search([
+                ('property_id', '=', offer.property_id.id), ('id', '!=', offer.id)
+            ])
+            rejected_offers.write({'status':'refused'})
+
+    def action_reject_offer(self):
+        for offer in self:
+            offer.status = 'refused'
+
+    @api.depends("create_date","validity")
+    def _compute_deadline_date(self):
+        for record in self:
+            create_date = record.create_date or fields.Date.today()
+            record.date_deadline = create_date + timedelta(days=record.validity)
+
+    def _inverse_deadline_date(self):
+        for record in self:
+            if record.create_date and record.date_deadline:
+                record.validity = (record.date_deadline - record.create_date.date()).days
+            else:
+                record.validity = 7

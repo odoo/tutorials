@@ -1,5 +1,6 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -17,11 +18,11 @@ class EstateProperty(models.Model):
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Number of bedrooms", default=2)
-    living_area = fields.Integer("Living Area (sqm)")
+    living_area = fields.Float("Living Area (sqm)")
     facades = fields.Integer("Facades")
     garage = fields.Boolean("Garage")
     garden = fields.Boolean("Garden")
-    garden_area = fields.Integer("Garden Area (sqm)")
+    garden_area = fields.Float("Garden Area (sqm)")
     buyer = fields.Many2one(
         "res.partner",
         string="Buyer",
@@ -63,3 +64,25 @@ class EstateProperty(models.Model):
         ],
         required=True, copy=False, default="new"
     )
+    total_area = fields.Float("Total Area(sqm)", compute="_compute_total_area")
+    best_price = fields.Float("Best Price", compute="_compute_best_price")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            max_price=0
+            for offer in record.offer_ids:
+                if offer.price > max_price:
+                    max_price = offer.price
+            record.best_price = max_price
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
