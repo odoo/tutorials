@@ -12,7 +12,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" editable="bottom">
+            <list string="Properties">
                 <field name="name" width="20%" />
                 <field name="postcode" width="20%" />
                 <field name="bedrooms" width="20%" />
@@ -21,7 +21,7 @@
                 <field name="expected_price" width="20%" />
                 <field name="selling_price" width="20%" />
                 <field name="date_availability" width="20%" />
-                <field name="total_area"/>
+                <field name="total_area" />
             </list>
         </field>
     </record>
@@ -32,6 +32,14 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <group>
+                    <header>
+                        <button name="mark_sold" type="object" string="SOLD" />
+                    </header>
+                    <header>
+                        <button name="mark_cancel" type="object" string="CANCEL" />
+                    </header>
+                </group>
                 <sheet>
                     <h1>
                         <field name="name" />
@@ -78,12 +86,24 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids">
-                                <list editable="bottom">
-                                    <field name="partner_id" width="40%" />
-                                    <field name="price" width="30%" />
-                                    <field name="status" width="30%" />
+                                <list>
+                                    <field name="partner_id" />
+                                    <field name="price" />
+                                    <field name="status" />
                                     <field name="validity" />
                                     <field name="date_deadline" />
+                                    <button
+                                        type="object"
+                                        name="accept_offer"
+                                        icon="fa-check"
+                                        title="acctep"
+                                    />
+                                    <button
+                                        type="object"
+                                        name="reject_offer"
+                                        icon="fa-times text-danger"
+                                        title="reject"
+                                    />
                                 </list>
                             </field>
                         </page>

@@ -1,6 +1,8 @@
 from odoo import api, fields, models
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -57,6 +59,19 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total", string="Total Area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price always be > 0",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price > 0)",
+            "Selling price always be > 0",
+        ),
+    ]
+
     @api.depends("garden_area", "living_area")
     def _compute_total(self):
         for record in self:
@@ -78,3 +93,36 @@ class EstateProperty(models.Model):
         else:
             self.garden_orientation = False
             self.garden_area = 0
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            min_selling_price = record.expected_price * 0.9
+
+            if (
+                float_compare(
+                    record.selling_price, min_selling_price, precision_digits=2
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    "Selling price cannot be lower than 90% of expected price"
+                )
+
+    def mark_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled property can not be sold")
+            else:
+                record.state = "sold"
+        return True
+
+    def mark_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold property can not be Cancelled")
+            else:
+                record.state = "Cancelled"
+        return True

@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from datetime import timedelta
+from odoo.exceptions import UserError
 
 
 class estatePropertyOffer(models.Model):
@@ -10,7 +11,7 @@ class estatePropertyOffer(models.Model):
     status = fields.Selection(
         copy="False",
         selection=[
-            ("acctepted", "Acctepted"),
+            ("accepted", "Accepted"),
             ("refused", "Refused"),
         ],
     )
@@ -24,13 +25,25 @@ class estatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
 
+    _sql_constraints = [
+        (
+            'check_offer_price',
+            'CHECK(price > 0)',
+            'Offer price must be > 0'
+        )
+    ]
+
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
         for offer in self:
             if offer.create_date:
-                offer.date_deadline = offer.create_date.date() + timedelta(days=offer.validity)
+                offer.date_deadline = offer.create_date.date() + timedelta(
+                    days=offer.validity
+                )
             else:
-                offer.date_deadline = fields.Date.today() + timedelta(days=offer.validity)
+                offer.date_deadline = fields.Date.today() + timedelta(
+                    days=offer.validity
+                )
 
     def _inverse_deadline(self):
         for offer in self:
@@ -38,3 +51,31 @@ class estatePropertyOffer(models.Model):
                 offer.validity = (offer.date_deadline - offer.create_date.date()).days
             else:
                 offer.validity = (offer.date_deadline - fields.Date.today()).days
+
+    def accept_offer(self):
+        for offer in self:
+            if offer.status == "accepted":
+                raise UserError("This offer has already been accepted.")
+
+            # Accept the current offer
+            offer.status = "accepted"
+            offer.property_id.selling_price = offer.price
+            offer.property_id.partner_id = offer.partner_id.id
+
+            # Reject all other offers for the same property
+            for other_offer in offer.property_id.offer_ids:
+                if other_offer.id != offer.id:
+                    other_offer.status = "refused"
+        return True
+
+    def reject_offer(self):
+        for offer in self:
+            if offer.status == "refused":
+                raise UserError(f"Offer {offer.id} is already refused.")
+            
+            if offer.status == "accepted":
+                offer.property_id.selling_price = 0
+                offer.property_id.partner_id = False
+
+            offer.status = "refused"
+        return True
