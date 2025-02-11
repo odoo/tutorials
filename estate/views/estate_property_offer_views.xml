@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
-     <record id="estate_property_offer_view_list" model="ir.ui.view">
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Property Types">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <button name="action_accept" type="object" title="Accept Offer" icon="fa-check"/>
+                <button name="action_refuse" type="object" title="Refuse Offer" icon="fa-times"/>
                 <field name="status"/>
             </list>
         </field>
@@ -22,11 +25,12 @@
                     <group>
                         <field name="price"/>
                         <field name="partner_id"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
                         <field name="status"/>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
-
 </odoo>

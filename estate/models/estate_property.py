@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -32,7 +33,7 @@ class EstateProperty(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold_offer', 'Sold'),
         ('cancel_offer', 'Cancelled'),
-    ], string='State', required=True, default='new_offer', copy=False)
+    ], string='Status', required=True, default='new_offer', copy=False)
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     saleperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
@@ -53,3 +54,26 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
                 record.best_price = 0.0
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    def action_sold(self):
+        if 'cancel_offer' in self.mapped('state'):
+            raise UserError("Cancelled property can't be sold!")
+        for record in self:
+            record.state = 'sold_offer'
+        return True
+
+    def action_cancel(self):
+        if 'sold_offer' in self.mapped('state'):
+            raise UserError("Sold property can't be cancelled!")
+        for record in self:
+            record.state = 'cancel_offer'
+        return True
