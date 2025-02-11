@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection([
@@ -20,11 +21,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for record in self:
-            # create_date = record.create_date if record.create_date else fields.Date.today()
-            if record.create_date:
-                record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
-            else:
-                record.date_deadline = fields.Date.add(fields.Date.today(), days=record.validity)
+            record.date_deadline = fields.Date.add((record.create_date or fields.date.today()), days=record.validity)
     
     def _inverse_date_deadline(self):
         for record in self:
@@ -32,14 +29,18 @@ class EstatePropertyOffer(models.Model):
 
     # === Actions === #
     def action_accepted(self):
-        accepted_offer = self.search([('property_id', '=', self.property_id.id),('status', '=', 'accepted')])
+        accepted_offer = self.search([('property_id', '=', self.property_id.id),('status', '=', 'accepted')], limit=1)
         if accepted_offer:
             raise UserError("An offer is already accepted, you cannot accept two offer for the same advertisement.")
         self.status = "accepted"
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
+        self.property_id.state = 'offeraccepted'
 
     def action_refused(self):
-        self.status = "refused"
-        self.property_id.buyer_id = False
-        self.property_id.selling_price = False      
+        self.status = "refused" 
+
+    # === SQL Constraints === #
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "Offer price must be strictly positive")
+    ]

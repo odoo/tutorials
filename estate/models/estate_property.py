@@ -7,6 +7,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
@@ -38,7 +39,7 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
     property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type")
     tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
-    offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id")
+    offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string="Offer Id")
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_offer = fields.Integer(string="Best Offer", compute="_compute_best_offer")
 
@@ -69,6 +70,7 @@ class EstateProperty(models.Model):
                 raise UserError("Cancelled properties cannot be sold")
             else:
                 record.state = "sold"
+                
     def action_cancelled(self):
         for record in self:
             if record.state== "sold":

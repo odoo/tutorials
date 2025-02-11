@@ -1,11 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+    <!-- Custom list view -->
+    <record id="view_estate_property_type_list" model="ir.ui.view">
+            <field name="name">view.estate.property.type.list</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <list string="Property Types">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+    <!-- Custom form view -->
+        <record id="view_estate_property_type_form" model="ir.ui.view">
+            <field name="name">view.estate.property.type.form</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </group>
+                    <notebook>
+                        <page name="properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
     <!-- Actions-->
         <record id="estate_property_type_action" model="ir.actions.act_window">
             <field name="name">Property Type</field>
             <field name="res_model">estate.property.type</field>
-            <field name="view_mode">list</field>
+            <field name="view_mode">list,form</field>
         </record>
     </data>
 </odoo>
