@@ -8,6 +8,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is a estate property app"
+    _order = 'id desc'
     
     @api.depends("garden_area","living_area")
     def _compute_area(self):
@@ -36,7 +37,10 @@ class EstateProperty(models.Model):
             if(record.status == 'cancelled'):
                raise UserError('Cancelled property cannot be sold')
             else:
-                record.status='sold'
+                if(record.selling_price <=0):
+                    raise UserError('Selling price must be positive')
+                else:
+                    record.status='sold'
         
     def cancel_property(self):
         for record in self:
@@ -44,6 +48,17 @@ class EstateProperty(models.Model):
                 raise UserError('Sold property cannot be cancelled')
             else:
                 record.status='cancelled'
+    
+    _sql_constraints =[
+        ('_check_expected_price','CHECK(expected_price > 0)','Expected Price must be positive'),
+    ]
+    
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if(record.selling_price < 0.9*record.expected_price):
+                raise UserError('Selling price can not be lesser than 90% of the expected price')
+    
             
     name = fields.Char(required=True)
     description = fields.Text()

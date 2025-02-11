@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "estate property offer"
+    _order = 'price desc'
 
     @api.depends("validity")
     def _compute_deadline(self):
@@ -38,6 +39,10 @@ class EstatePropertyOffer(models.Model):
                 raise UserError('Offer Already refused')
             else:
                 record.status = 'refused'
+    
+    _sql_constraints =[
+        ('_check_price','CHECK(price > 0)','Offer Price must be positive'),
+    ]
     
     price = fields.Float()
     validity = fields.Integer("Validity (days)", default=7)
