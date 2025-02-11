@@ -6,6 +6,7 @@ from odoo.exceptions import ValidationError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Real Estate Property Offer'
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
@@ -18,6 +19,7 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
         store=True,
     )
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
 
     _sql_constraints = [(
         "estate_property_offer_check_price",
@@ -38,18 +40,16 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - fields.Date.today()).days
 
     def action_estate_property_offer_accept(self):
-        for record in self:
-            if record.status == 'accepted':
-                raise ValidationError("This offer has already been accepted.")
-            record.property_id.write({'buyer_id': record.partner_id.id})
-            record.property_id.write({'selling_price': record.price})
-            record.property_id.offer_ids.write({'status': 'refused'})  # Refuse all offers
-            record.status = 'accepted'  # Accept this offer
+        if self.status == 'accepted':
+            raise ValidationError("This offer has already been accepted.")
+        self.property_id.buyer_id = self.partner_id.id
+        self.property_id.selling_price = self.price
+        self.property_id.offer_ids.status = 'refused'  # Refuse all offers
+        self.status = 'accepted'  # Accept this offer
 
     def action_estate_property_offer_refuse(self):
-        for record in self:
-            if record.status == 'refused':
-                raise ValidationError("This offer has already been refused.")
-            record.property_id.write({'buyer_id': False})
-            record.property_id.write({'selling_price': 0})
-            record.status = 'refused'
+        if self.status == 'refused':
+            raise ValidationError("This offer has already been refused.")
+        self.property_id.buyer_id = False
+        self.property_id.selling_price = 0
+        self.status = 'refused'
