@@ -8,6 +8,8 @@
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="status"/>
+                <field name="validity"/>
+                <field name="deadline"/>
             </list>
         </field>
     </record>
@@ -23,6 +25,8 @@
                                 <field name="price" />
                                 <field name="partner_id"/>
                                 <field name="property_id"/>
+                                <field name="validity"/>
+                                <field name="deadline"/>
                             </group> 
                         </page>
                     </notebook>
