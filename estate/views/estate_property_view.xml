@@ -27,6 +27,25 @@
                 </list>
             </field>
         </record>
+        <!-- Kanban view for Estate Properties -->
+        <record id="view_estate_property_kanban" model="ir.ui.view">
+            <field name="name">estate.property.kanban</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="property_type">
+                    <templates>
+                        <t t-name="card">
+                            <field name="state"/>
+                            <field name="name"/>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
+                            <field name="tags_ids"/>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
         <!-- Form view for Estate Properties -->
         <record id="estate_property_form_view" model="ir.ui.view">
             <field name="name">estate.property.form</field>

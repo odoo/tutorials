@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <data>
-    <!-- Define the action for the Property Tags model -->
-    <record id="estate_property_tag_action" model="ir.actions.act_window">
-      <field name="name">Property Tags</field>      <!-- Name that will appear in the menu -->
-      <field name="res_model">estate.property.tag</field>      <!-- Model associated with the action -->
-      <field name="view_mode">list,form</field>      <!-- View modes: List and Form view -->
-      <field name="domain">[]</field>      <!-- Filter applied to the records in the action (empty means no filter) -->
-      <field name="context">{}</field>      <!-- Context for the action, empty for now -->
-    </record>
-
-    <record id="view_estate_property_tag_list" model="ir.ui.view">
-      <field name="name">estate.property.tag.list</field>
-      <field name="model">estate.property.tag</field>
-      <field name="arch" type="xml">
-        <list editable="bottom">
-          <!-- Fields to be displayed in the list view -->
-          <field name="name"/>
-          <field name="color"/>
-        </list>
-      </field>
-    </record>
-  </data>
+	<data>
+		<!-- Define the action for the Property Tags model -->
+		<record id="estate_property_tag_action" model="ir.actions.act_window">
+			<field name="name">Property Tags</field>			<!-- Name that will appear in the menu -->
+			<field name="res_model">estate.property.tag</field>			<!-- Model associated with the action -->
+			<field name="view_mode">list,form</field>			<!-- View modes: List and Form view -->
+			<field name="domain">[]</field>			<!-- Filter applied to the records in the action (empty means no filter) -->
+			<field name="context">{}</field>			<!-- Context for the action, empty for now -->
+		</record>
+		<!-- Property tag list view -->
+		<record id="view_estate_property_tag_list" model="ir.ui.view">
+			<field name="name">estate.property.tag.list</field>
+			<field name="model">estate.property.tag</field>
+			<field name="arch" type="xml">
+				<list editable="bottom">
+					<field name="name"/>
+					<field name="color"/>
+				</list>
+			</field>
+		</record>
+	</data>
 </odoo>

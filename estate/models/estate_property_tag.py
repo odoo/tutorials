@@ -6,7 +6,7 @@ class estatePropertyTag(models.Model):
     _order = "name"
 
     name = fields.Char(required=True)
-    color = fields.Char(string="Color", default="#FFFFFF")  # Store HEX values
+    color = fields.Integer(string="Color", default="1")  # Store HEX values
 
     _sql_constraints = [
           ("unique_property_tag", "UNIQUE(name)",

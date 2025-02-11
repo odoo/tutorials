@@ -1,8 +1,6 @@
 import logging
-from odoo import models, fields, api
+from odoo import models, fields
 from odoo.exceptions import UserError
-
-_logger = logging.getLogger(__name__)
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"

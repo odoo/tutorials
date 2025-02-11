@@ -8,31 +8,23 @@ class EstatePropertyOffer(models.Model):
     _description = "Estate Property Offer"
     _order = "price desc"
 
-    # Offer details
-    price = fields.Float("Price", required=True)
-
-    # Status of the offer
+    price = fields.Float("Price", required=True) # Offer details
     status = fields.Selection([
         ("draft", "Draft"),
         ("accepted", "Accepted"),
         ("refused", "Refused")
-    ], string="Status", default="draft")
-
-    # Relations with partner and property
+    ], string="Status", default="draft") # Status of the offer
     partner_id = fields.Many2one("res.partner", string="Partner")
     property_id = fields.Many2one("estate.property", string="Property")
     property_type_id = fields.Many2one(related="property_id.property_type", store=True)
 
-    # Validity of the offer in days (default is 7)
     validity = fields.Integer("Validity", default=7)
 
-    # expected price
     _sql_constraints = [
         ("positive_offer_price", "CHECK(price > 0)",
          "A property offer price must be strictly positive.")
     ]
 
-    # Computed field for offer deadline with inverse function
     date_deadline = fields.Date(
         string="Date Deadline",
         compute="_compute_date_deadline",
@@ -72,12 +64,14 @@ class EstatePropertyOffer(models.Model):
             record.property_id.state = "offer_accepted"
 
     def action_refuse(self):
-        """Ensures that An accepted offer cannot be refused!"""
+        """Ensures an accepted offer cannot be refused!"""
         for record in self:
             if record.status == "accepted":
                 raise UserError("An accepted offer cannot be refused!")
             record.status = "refused"
-            record.property_id.state = ""
+            if not record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
+                record.property_id.state = "offer_received"  # Fallback to previous state
+
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
