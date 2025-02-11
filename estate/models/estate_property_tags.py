@@ -1,4 +1,5 @@
-from odoo import fields,models
+from odoo import fields, models
+
 
 class EstatePropertyTyags(models.Model):
     _name = "estate.property.tags"
@@ -9,5 +10,5 @@ class EstatePropertyTyags(models.Model):
     color = fields.Integer(string="Color Index")
 
     _sql_constraints = [
-        ('name_uniq', 'unique (name)', "Tag name already exists!"),
+        ("name_uniq", "unique (name)", "Tag name already exists!"),
     ]

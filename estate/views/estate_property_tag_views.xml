@@ -16,7 +16,7 @@
                     <group>
                         <h1 class="mb32">
                             <field name="name" class="mb16" placeholder="Property Tag"/>
-                        </h1>   
+                        </h1>
                     </group>
                 </sheet>
             </form>

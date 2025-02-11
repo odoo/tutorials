@@ -3,14 +3,14 @@
     <!-- Basic menu items -->
     <menuitem id="estate_property_menu_root" name="Real Estate">
         <menuitem id="estate_property_advertisement_menu" name="Advertisements">
-            <menuitem id="estate_property_advertisement_action"  action="estate_property_action"/>
+            <menuitem id="estate_property_advertisement_action" action="estate_property_action"/>
         </menuitem>
         <!-- Settings Menu -->
         <menuitem id="estate_property_settings_menu" name="Settings">
             <!-- Property Type-->
-            <menuitem id="estate_property_settings_types_action"  action="estate_property_type_action"/> 
+            <menuitem id="estate_property_settings_types_action" action="estate_property_type_action"/>
             <!-- Property Tags-->
-            <menuitem id="estate_property_settings_tags_action"  action="estate_property_tag_action"/> 
+            <menuitem id="estate_property_settings_tags_action" action="estate_property_tag_action"/>
         </menuitem>
     </menuitem>
 </odoo>

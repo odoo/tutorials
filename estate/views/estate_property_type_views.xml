@@ -7,7 +7,7 @@
         <field name="view_mode">list,form</field>
     </record>
     <!-- Action to show offers related to property type -->
-     <record id="show_estate_property_offers" model="ir.actions.act_window">
+    <record id="show_estate_property_offers" model="ir.actions.act_window">
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
@@ -20,10 +20,7 @@
         <field name="arch" type="xml">
             <form string="Property Types">
                 <header class="oe_button_box">
-                    <button name="%(show_estate_property_offers)d" 
-                            type="action" 
-                            class="oe_stat_button d-flex justify-content-center align-items-center gap-2" 
-                            icon="fa-money">
+                    <button name="%(show_estate_property_offers)d" type="action" class="oe_stat_button d-flex justify-content-center align-items-center gap-2" icon="fa-money">
                         <div class="o_stat_info d-flex flex-column align-items-start">
                             <div class="o_stat_text">
                                 <field name="offer_count"/>
@@ -38,7 +35,7 @@
                     <group>
                         <h1 class="mb32">
                             <field name="name" class="mb16" placeholder="Property Type"/>
-                        </h1>   
+                        </h1>
                     </group>
                     <notebook>
                         <page string="Properties">
@@ -71,9 +68,7 @@
         <field name="name">estate.property.offer.view.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list editable="bottom" 
-                  decoration-danger="status == 'refused'"
-                  decoration-success="status == 'accepted'">
+            <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validate"/>
