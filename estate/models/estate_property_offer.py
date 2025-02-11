@@ -35,6 +35,8 @@ class EstatePropertyOffer(models.Model):
                 ]   )
             if accepted_offer:
                 raise exceptions.UserError("Only one offer can be accepted per property!")
+            if record.price < (record.property_id.expected_price*0.9):
+                raise exceptions.UserError("The selling price cannot be lower than 90% of the expected price.")
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
@@ -42,3 +44,9 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             record.status = "refused"
+            record.property_id.buyer_id = None
+            record.property_id.selling_price = 0
+
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
+    ]

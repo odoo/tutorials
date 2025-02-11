@@ -1,16 +1,22 @@
 from datetime import timedelta
 from odoo import fields, models, api, exceptions
+from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+    ]
 
     name = fields.Char(required = True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy = False,string="Available Form",default = lambda self: fields.Datetime.today() + timedelta(days=90))
     expected_price = fields.Float(required = True)
-    selling_price = fields.Float(readonly = True,copy = False, default = 7000000)
+    selling_price = fields.Float(readonly = True,copy = False, default = 0)
     bedrooms = fields.Integer(default = 2)
     living_area = fields.Integer(string = "Living Area (sqm)")
     facades = fields.Integer()
@@ -35,7 +41,7 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("canceled", "Canceled"),
+            ("cancelled", "Cancelled"),
         ])
     active = fields.Boolean(default = True)
     property_type_id = fields.Many2one("estate.property.type",string="Property Type")
@@ -66,15 +72,24 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def property_sold(self):
-        for record in self:
-            if record.status == 'canceled':
-                raise exceptions.UserError("A sold property cannot be cancelled!")
-            record.status = "sold"
+        if self.status == 'cancelled':
+            raise exceptions.UserError("A Cancelled property cannot be sold!")
+        self.status = "sold"
         return True
 
     def property_cancel(self):
-        for record in self:
-            if record.status == 'sold':
-                raise exceptions.UserError("A sold property cannot be cancelled!")
-            record.status = "canceled"
+        if self.status == 'sold':
+            raise exceptions.UserError("A Sold property cannot be cancelled!")
+        self.status = "cancelled"
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if fields.float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            min_allowed_price = record.expected_price * 0.9
+            if fields.float_compare(record.selling_price, min_allowed_price, precision_digits=2) == -1:
+                raise models.ValidationError(
+                    "Selling price cannot be lower than 90% of the expected price!"
+                )
