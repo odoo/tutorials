@@ -45,23 +45,29 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        "State",
+        string="State",
         required=True,
         default="new",
     )
+
     # Relational Field for defining type of property (Many2one)
     property_type_id = fields.Many2one(
         "estate.property.type", string="Property Type")
+    
     # Relational Field for defining sales person and buyer for property
     property_buyer_id = fields.Many2one(
         "res.partner", string="Buyer", copy=False)
     property_seller_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
+    
+    
     # Relational Field for tag's (Many2Many)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    
     # Relation Field for offer (one2Many)
     offer_ids = fields.One2many("estate.property.offer", "property_id")
+    
     # computed field total area which is just some of two areas
     total_area = fields.Float(
         string="Total Area (sqm)", compute="_compute_total_area")

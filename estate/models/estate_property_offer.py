@@ -51,30 +51,30 @@ class EstatePropertyOffer(models.Model):
                                        fields.Datetime.now()).days
 
     def action_accept_offer(self):
+        """Accept an offer and update the property's state"""
         for record in self:
-            if record.property_id.state == "offer accepted":
-                raise UserError("An offer Already Accepted for this Property")
+            if record.property_id.selling_price and record.property_id.state == "offer_accepted":
+                raise UserError("An offer has already been accepted for this property!")
 
-        if self.status == "accepted":
-            raise UserError(
-                (f"You can't Accept an offer it's already {self.status}"))
-        elif self.property_id.state == "sold":
-            raise UserError("Property Already Sold")
+            if record.status == "accepted":
+                raise UserError("This offer has already been accepted!")
 
-        self.property_id.state = "offer accepted"
-        self.status = "accepted"
-        self.property_id.selling_price = self.price
-        self.property_id.property_buyer_id = self.partner_id.id
+            if record.property_id.state == "sold":
+                raise UserError("This property has already been sold!")
+
+            record.property_id.state = "offer_accepted"
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.property_buyer_id = record.partner_id.id
         return True
 
     def action_refuse_offer(self):
-        if self.status == "refused":
-            raise UserError(
-                (f"You can't Refuse an offer it's already {self.status.capitalize()}"))
-        elif self.status == "accepted":
-            self.property_id.state = "offer received"
-            self.property_id.selling_price = None
-            self.property_id.property_buyer_id = None
+        """Refuse an offer and reset the property state if necessary"""
+        for record in self:
+            if record.status == "accepted":
+                record.property_id.state = "offer_received"
+                record.property_id.selling_price = None
+                record.property_id.property_buyer_id = None
 
-        self.status = "refused"
+            record.status = "refused"
         return True
