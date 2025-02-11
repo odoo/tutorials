@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta  # Import required libraries
+from datetime import  timedelta  # Import required libraries
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -103,4 +103,4 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError(f"You cannot delete the property '{record.name}' because its state is '{record.state}'.")
-                
+

@@ -14,5 +14,6 @@
         
         <!-- Property Tags Action Menu -->
         <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"/>
+
     </menuitem>
 </odoo>

@@ -37,9 +37,9 @@
                 <field name="date_deadline"/>
                 <field name="status" optional="1"/>
                 <button name="action_offer_confirm" string="Confirm" type="object" icon="fa-check" 
-                       invisible="status in ['refused'] or parent.state in ['offer_accepted', 'sold', 'cancelled']"/>
+                       invisible="status in ['accepted','refused'] or parent.state in ['offer_accepted', 'sold', 'cancelled']"/>
                 <button name="action_offer_cancel" string="Cancel" type="object" icon="fa-times" 
-                       invisible="status in ['refused'] or parent.state in ['offer_accepted', 'sold', 'cancelled']"/>
+                       invisible="status in ['accepted','refused'] or parent.state in ['offer_accepted', 'sold', 'cancelled']"/>
             </list>
         </field>
     </record>

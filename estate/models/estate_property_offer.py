@@ -17,7 +17,6 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline" )
     property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id', store="True" ,string="Property Type")
-
      # SQL constraints
     _sql_constraints = [
         (
