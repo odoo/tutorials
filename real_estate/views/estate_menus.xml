@@ -3,7 +3,12 @@
         <menuitem id="test_menu_root" name="Real Estate" web_icon="real_estate,static/description/estate_icon.png">
             <menuitem id="test_first_level_menu" name="Advertisement">
                 <menuitem id="test_model_menu_action" action="test_model_action" name="Properties"/>
-            </menuitem>   
+            </menuitem>
+            <menuitem id="test_first_level_menu_new" name="Setting">
+                <menuitem id="model_menu_offers" action="estate_offer_model_action" name="Property Offers"/>
+                <menuitem id="test_model_menu_action_type" action="type_model_action_1" name="Property Type"/>
+                <menuitem id="model_menu_tags" action="tags_model_action" name="Property Tags"/>
+            </menuitem>
         </menuitem>
     </data>
 </odoo>
