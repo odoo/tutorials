@@ -47,6 +47,7 @@ class EstateProperty(models.Model):
     partner_id = fields.Many2one("res.partner", string="Buyer", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    offer_count = fields.Integer(string="Count")
     
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     @api.depends('living_area', 'garden_area')
@@ -83,13 +84,17 @@ class EstateProperty(models.Model):
                 raise UserError("A cancelled property cannot be sold.")
             record.state = 'sold'
 
+    @api.onchange('offer_ids')
+    def _onchange_offer(self):
+        self.offer_count = len(self.offer_ids)
+
     sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive.'),
         ('check_bedroom', 'CHECK( bedroom >= 0)', ' Bedroom must be positive.'),
-        ('check_living_area', 'CHECK(living_area >= 0)', 'Living_area must be positive.'),
+        ('check_living_area', 'CHECK(living_area > 0)', 'Living_area must be positive.'),
         ('check_facades', 'CHECK(facades >= 0)', 'Facades must be positive.'),
-        ('check_garden_area', 'CHECK(garden_area >= 0)', 'Garden_area must be positive.'),
+        ('check_garden_area', 'CHECK(garden_area > 0)', 'Garden_area must be positive.'),
     ]
 
     @api.constrains('selling_price', 'expected_price')

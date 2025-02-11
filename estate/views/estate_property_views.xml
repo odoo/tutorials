@@ -7,6 +7,8 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
+
     </record>
 
     <record id="estate_property_list_view" model="ir.ui.view">
@@ -62,6 +64,7 @@
                             <field name="expected_price" />
                             <field name="best_price" />
                             <field name="selling_price" readonly="1" />
+                            <field name="offer_count" />
                         </group>
                     </group>
 
@@ -84,22 +87,6 @@
                         <page string="Offers">
                             <field name="offer_ids"
                                 readonly="state in ['offer_accepted', 'sold', 'cancelled']">
-                                <list editable="bottom" decoration-danger="status == 'refused'"
-                                    decoration-success="status == 'accepted'">
-                                    <field name="price" />
-                                    <field name="partner_id" />
-                                    <field name="validity" />
-                                    <field name="date_deadline" />
-                                    <!-- <field name="status" invisible='1'/> -->
-                                    <button name="property_action_accept" type="object"
-                                        string="Accept"
-                                        icon="fa-check" states="new"
-                                        invisible="status == 'accepted' or status == 'refused'" />
-                                    <button name="property_action_refuse" type="object"
-                                        string="Refuse"
-                                        icon="fa-times" states="new"
-                                        invisible="status == 'accepted' or status == 'refused'" />
-                                </list>
                             </field>
                         </page>
 
@@ -127,12 +114,11 @@
                 <field name="selling_price" />
                 <field name="date_availability" />
                 <field name="bedrooms" />
-                <field name="living_area" />
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades" />
                 <field name="garage" />
                 <field name="garden" />
-                <filter name="available" string="Available"
-                    domain="[('date_availability', '>=', context_today())]" />
+                <filter name="available" string="Available" domain="[('date_availability', '&lt;=', context_today())]"/>
                 <filter name="has_garden" string="Has Garden" domain="[('garden', '=', True)]" />
                 <group string="Group By">
                     <filter string="Postcode" name="postcode"
