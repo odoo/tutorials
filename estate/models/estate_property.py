@@ -44,6 +44,7 @@ class EstateProperty(models.Model):
         ],
         default="new",
         copy=False,
+        # readonly=True
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
@@ -77,6 +78,11 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status == "cancelled":
                 raise exceptions.UserError("A cancelled property cannot be sold!")
+
+            accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
+            if not accepted_offer:
+                raise exceptions.UserError("You need to accept an offer first!")
+
             record.status = 'sold'
         return True
 
