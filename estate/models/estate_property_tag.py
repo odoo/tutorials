@@ -7,7 +7,5 @@ class EstatePropertyTag(models.Model):
     _description = "Real Estate Property Tag"
 
     # --------------------------------------- Fields Declaration ----------------------------------
-
     # Basic Fields
     name = fields.Char("Tag", required=True)
-    

@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
+    <!-- List View -->
+    <!-- <record id="view_estate_property_offer_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="status" />
+            </list>
+        </field>
+    </record> -->
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">Property Offers</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Property Offer">
+                <group>
+                    <field name="price" />
+                    <field name="partner_id" />
+                    <field name="state" />
+                    <field name="validity" />
+                </group>
+            </form>
+        </field>
+    </record>
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>

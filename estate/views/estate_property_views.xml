@@ -8,8 +8,9 @@
             <list string="Records" delete="0">
                 <field name="name" />
                 <field name="postcode" />
-                <field name="expected_price" />
+                <field name="expected_price" sum="Total" />
                 <field name="selling_price" />
+                <field name="living_area" />
             </list>
         </field>
     </record>
@@ -29,10 +30,12 @@
                         <group>
                             <field name="postcode" />
                             <field name="expected_price" />
+                            <field name="best_price" />
                         </group>
                         <group>
                             <field name="selling_price" />
                             <field name="date_availability" />
+                            <field name="property_type_id" widget="many2one" />
                             <field name="tag_ids" widget="many2many_tags" />
                         </group>
                     </group>
@@ -52,6 +55,25 @@
                                     <field name="garden_orientation" />
                                     <field name="state" />
                                     <field name="active" />
+                                    <field name="total_area" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="state" />
+                                    <field name="validity" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <group>
+                                    <field name="user_id" />
+                                    <field name="buyer_id" />
                                 </group>
                             </group>
                         </page>
@@ -77,7 +99,7 @@
                 <field name="is_garden" />
                 <filter name="state" string="Available"
                     domain="[('state', 'in', ('new', 'offer_received'))]" />
-                <group expand="1" string="Group By1">
+                <group expand="1" string="Group By">
                     <filter name='postcode' context="{'group_by':'postcode'}" />
                 </group>
             </search>

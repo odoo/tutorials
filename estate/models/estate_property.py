@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from datetime import datetime, timedelta
 
 
@@ -8,7 +8,6 @@ class EstateProperty(models.Model):
     _description = "Declare property for Real estate"
 
     # --------------------------------------- Fields Declaration ----------------------------------
-
     name = fields.Char(required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
@@ -31,7 +30,7 @@ class EstateProperty(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
-        help="Type is used to separate garden orientation uses",
+        help="Choose the orientation of a garden from the options: North, South, East, or West.",
     )
     state = fields.Selection(
         selection=[
@@ -57,3 +56,31 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     # Relation Field for offer (one2Many)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
+    best_price = fields.Float(
+        string="Best Offer", compute="_compute_best_price", help="Best offer so far."
+    )
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        # breakpoint()
+        for value in self:
+            value.total_area = value.living_area + value.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        # breakpoint()
+        for value in self:
+            if value.offer_ids:
+                value.best_price = max(value.mapped("offer_ids.price"))
+            else:
+                value.best_price = 0.00
+
+    @api.onchange("is_garden")
+    def _onchange_garden(self):
+        if self.is_garden:
+            self.garden_area = 20
+            self.garden_orientation = "south"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False

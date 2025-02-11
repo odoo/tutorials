@@ -7,9 +7,7 @@ class EstatePropertyType(models.Model):
     _description = "Real Estate Property Type"
 
     # --------------------------------------- Fields Declaration ----------------------------------
-
-    # Basic Fields    
+    # Basic Fields
     name = fields.Char(string="Type", required=True)
     # Relational view
-    property_ids = fields.One2many("estate.property","property_type_id")
-    
+    property_ids = fields.One2many("estate.property", "property_type_id")
