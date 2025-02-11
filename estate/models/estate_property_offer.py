@@ -14,8 +14,10 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True,ondelete="cascade")
-    property_type_id = fields.Many2one("estate.property.type",related="property_id.property_type_id", store=True)
+    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
+    property_type_id = fields.Many2one(
+        "estate.property.type", related="property_id.property_type_id", store=True
+    )
     validity = fields.Integer(default=7, store=True)
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True
@@ -50,18 +52,33 @@ class EstatePropertyOffer(models.Model):
             record.status = "refused"
         return True
 
-    @api.model
-    def create(self,vals):
-        property_id = vals.get('property_id')
-        if property_id:
-            property_record = self.env['estate.property'].browse(property_id)
-            if property_record:
-                property_record.write({"state":"offer received"})
+    @api.model_create_multi
+    def create(self, vals_list):
+        if isinstance(vals_list, list):
+            for vals in vals_list:
+                property_id = vals.get("property_id")
+                if property_id:
+                    property_record = self.env["estate.property"].browse(property_id)
+                    if property_record:
+                        property_record.write({"state": "offer received"})
 
-        if vals['price'] is not None:
-            existing_offers = self.env['estate.property.offer'].search([('property_id',"=",property_record.id)
-            ])
-            highest_price=property_record.best_price
-            if vals['price']<highest_price:
-                raise UserError(f"Error: the price cannot be less than maximum price {highest_price}.")       
+                if vals["price"] is not None:
+                    highest_price = property_record.best_price
+                    if vals["price"] < highest_price:
+                        raise UserError(
+                            f"Error: the price cannot be less than maximum price {highest_price}."
+                        )
+        else:
+            property_id = vals.get("property_id")
+            if property_id:
+                property_record = self.env["estate.property"].browse(property_id)
+                if property_record:
+                    property_record.write({"state": "offer received"})
+
+            if vals["price"] is not None:
+                highest_price = property_record.best_price
+                if vals["price"] < highest_price:
+                    raise UserError(
+                        f"Error: the price cannot be less than maximum price {highest_price}."
+                    )
         return super().create(vals)

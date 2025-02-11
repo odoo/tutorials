@@ -1,0 +1,12 @@
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
+        <field name="implied_ids" eval="[(4, ref('group_estate_user'))]"></field>
+    </record>
+</odoo>

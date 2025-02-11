@@ -119,6 +119,8 @@ class EstateProperty(models.Model):
 
     def unlink(self):
         for record in self:
-            if record.state not in ['new','cancelled']:
-                raise ValidationError("Cant Delete a property that is not New or Cancelled")
+            if record.state not in ["new", "cancelled"]:
+                raise ValidationError(
+                    "Cant Delete a property that is not New or Cancelled"
+                )
         return super(EstateProperty, self).unlink()

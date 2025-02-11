@@ -40,7 +40,6 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"></field>
                 </header>
                 <sheet>
-                    <group>
                         <group>
                             <h1><field name="name"/></h1>
                         </group>
@@ -56,11 +55,11 @@
                                 <field name="best_price"/>
                                 <field name="state"/>
                             </group>
-                        </group>
-                    </group>
+                          </group>
                     <notebook>
                         <page string="Description">
                             <group>
+                                <field name="property_type_id" can_create="False"></field>    
                                 <field name="description"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
@@ -75,8 +74,7 @@
                         <page string="Other Info">
                             <group>
                                 <field name="buyer_id"></field>
-                                <field name="salesperson_id"></field>
-                                <field name="property_type_id" can_create="False"></field>                           
+                                <field name="salesperson_id"></field>                       
                             </group>
                         </page>
                         <page string="Offers">
