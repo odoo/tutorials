@@ -11,13 +11,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
-                <field name="name" width="300" />
-                <field name="postcode" width="150" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="expected_price" />
-                <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
             </list>
         </field>
     </record>
@@ -30,49 +30,57 @@
                 <sheet>
                     <group>
                         <h1>
-                            <field name="name" />
+                            <field name="name"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags" />
-                        <field name="property_type_id" />
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="property_type_id"/>
                     </group>
                     <group>
                         <group>
-                            <field name="postcode" />
-                            <field name="date_availability" />
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price" />
-                            <field name="selling_price" />
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" />
-                                <field name="bedrooms" />
-                                <field name="living_area" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
                                 <field name="offer_ids" string="Offer">
-                                    <!--Offer List View -->
+                                    <!--Offer
+                                    List View -->
                                     <list>
-                                        <field name="price" string="Price" />
-                                        <field name="partner_id" string="Partner" />
-                                        <field name="status" string="Status" />
+                                        <field name="price" string="Price"/>
+                                        <field name="partner_id" string="Partner"/>
+                                        <field name="validity" string="Validity"/>
+                                        <field name="date_deadline" string="Date Deadline"/>
+                                        <field name="status" string="Status"/>
                                     </list>
-                                    <!--Offer Form View -->
+                                    <!--Offer
+                                    Form View -->
                                     <form>
                                         <group>
-                                            <field name='price' />
-                                            <field name='partner_id' />
-                                            <field name='status' />
+                                            <field name='price'/>
+                                            <field name='partner_id'/>
+                                            <field name="validity" string="Validity"/>
+                                            <field name="date_deadline" string="Date Deadline"/>
+                                            <field name='status'/>
                                         </group>
                                     </form>
                                 </field>
@@ -81,8 +89,8 @@
 
                         <page string="Other Info">
                             <group>
-                                <field name="buyer_id" />
-                                <field name="salesperson_id" />
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -101,18 +109,18 @@
                     string="Available"
                     domain="['|', 
                     ('state', '=', 'new'),
-                    ('state', '=', 'offer_received')]" />
-                <field name='name' string="Title" />
-                <field name='postcode' />
-                <field name='expected_price' />
-                <field name='bedrooms' />
-                <field name='living_area' />
-                <field name='facades' />
+                    ('state', '=', 'offer_received')]"/>
+                <field name='name' string="Title"/>
+                <field name='postcode'/>
+                <field name='expected_price'/>
+                <field name='bedrooms'/>
+                <field name='living_area'/>
+                <field name='facades'/>
                 <separator />
                 <!-- Postcode -->
                 <group expand='0' string="Group By">
                     <filter string="Postcode" name='postcode'
-                        context="{'group_by':'postcode'}" />
+                        context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>

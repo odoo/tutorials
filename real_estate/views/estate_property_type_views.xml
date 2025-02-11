@@ -11,7 +11,7 @@
         <field name='model'>estate.property.type</field>
         <field name='arch' type='xml'>
             <list string="Property Types">
-                <field name="name" />
+                <field name="name"/>
             </list>
         </field>
     </record>
@@ -24,7 +24,7 @@
                 <sheet>
                     <group>
                         <h1>
-                            <field name='name' />
+                            <field name='name'/>
                         </h1>
                     </group>
                 </sheet>
