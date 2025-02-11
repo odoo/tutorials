@@ -1,24 +1,15 @@
 <odoo>
-<record id="estate_property_user_action" model="ir.actions.act_window">
-    <field name="name">User</field>
-    <field name="res_model">res.users</field>
-    <field name="view_mode">list,form</field>
-</record>
-
-
 <record id="view_users_form_inherit" model="ir.ui.view">
         <field name="name">res.users.form.inherit</field>
         <field name="model">res.users</field>
-        <field name="inherit_id" ref="base.view_users_simple_form"/>
+        <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <!-- Add Real Estate Properties as a new tab -->
-            <xpath expr="//field[@name='mobile']" position="after">
-            <notebook>
-                <page string="Real Estate Properties">
-                <field name="property_ids"/>
-                </page>
-                </notebook>
+            <xpath expr="//sheet/notebook" position="inside">
+                    <page string="Real Estate Properties">
+                        <field name="property_ids"/>
+                    </page>
             </xpath>
         </field>
-    </record>
-    </odoo>
+</record>
+</odoo>

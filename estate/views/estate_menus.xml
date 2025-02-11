@@ -6,7 +6,6 @@
     <menuitem id="estate_first_level_menu_settings" name="Settings">
         <menuitem id="estate_property_type_menu_action" action="estate_property_type_action"/>
         <menuitem id="estate_property_tag_menu_action" action ="estate_property_tag_action"/>
-        <menuitem id="estate_property_user_menu_action" action = "estate_property_user_action"/>
 </menuitem>
 </menuitem>
 </odoo>

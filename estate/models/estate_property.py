@@ -49,16 +49,11 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one("estate.property.type")
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
-    seller = fields.Many2one(
-        "res.partner", string="Seller", default=lambda self: self.env.company.id
-    )
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_area")
     best_price = fields.Float(compute="_compute_best_offer")
-    cancelation = fields.Boolean(store=True, default=False)
-    solded = fields.Boolean(store=True, default=False)
-    seller_id = fields.Many2one(
+    seller = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
     _sql_constraints = [
@@ -95,15 +90,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     def sold(self):
-        if not self.cancelation:
-            self.solded = True
+        if self.state != "cancelled":
             self.state = "sold"
         else:
             raise UserError("Cancelled Property cannot be sold!")
 
     def cancel(self):
-        if not self.solded:
-            self.cancelation = True
+        if self.state !="sold":
             self.state = "cancelled"
         else:
             raise UserError("Sold Property cannot be cancelled!")
