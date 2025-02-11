@@ -13,6 +13,14 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <sheet>
+                    <div  name="button_box" position="before">
+                        <button name="%(action_estate_property_offer)d" 
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-money">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>   
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
@@ -47,6 +55,4 @@
             </list>
         </field>
     </record>
-
-
 </odoo>

@@ -8,6 +8,10 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Property"
     _order = 'id desc'
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >0)', 'The Expected Price must be strickly Positive.'),
+        ('check_selling_price', 'CHECK(selling_price >=0)', 'The Selling Price must be Positive.')
+    ]
 
     # Description
     name = fields.Char(string="Property Name", required=True)
@@ -34,7 +38,7 @@ class EstateProperty(models.Model):
             ('west', "West")
         ]
     )
-    total_area = fields.Float(compute='_compute_total_area')
+    total_area = fields.Integer(compute='_compute_total_area')
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(string='State',
         selection=[
@@ -44,18 +48,19 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled")
         ],
-        required=True,default="new",copy=False
+        required=True,
+        default="new",
+        copy=False
     )
     
     property_type_id = fields.Many2one('estate.property.type',string="Property Type")
     property_tag_ids = fields.Many2many('estate.property.tag',string="Property Tags")
     offer_ids = fields.One2many('estate.property.offer','property_id')
-    user_id = fields.Many2one('res.users', string='Salesperson',index=True, tracking=True,
+    user_id = fields.Many2one('res.users', string='Salesperson',
         default=lambda self: self.env.user
     )
-    buyer_id = fields.Many2one('res.partner',string="Buyers",index=True, tracking=True)
+    buyer_id = fields.Many2one('res.partner',string="Buyers")
     best_offer = fields.Float(string="Best Offer", compute='_compute_best_offer', store=True)
-
 
     # Computing Total Area from living_area and garden_area
     @api.depends('living_area','garden_area')
@@ -85,24 +90,24 @@ class EstateProperty(models.Model):
 
     # action to change state:sold
     def action_sold(self):
-        if self.state == "cancelled":
+        if self.state == 'cancelled':
             raise UserError("Cancelled Property can not be sold")
         else:
             self.state = 'sold'
 
 
-    #Constraints
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >0)', 'The Expected Price must be strickly Positive.'),
-        ('check_selling_price', 'CHECK(selling_price >=0)', 'The Selling Price must be Positive.')
-    ]
-
+    # checks that selling price cannot be lower than 90% of the expected price.
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
         for property in self:
-            if not float_is_zero(property.selling_price, precision_rounding=0.01):
-                accepted_price = property.expected_price * 0.9
-                if float_compare(property.selling_price, accepted_price, precision_rounding=0.01) == -1:
-                    raise ValidationError(
-                        "The selling price cannot be lower than 90% of the expected price."
-                    )
+            if (
+                not float_is_zero(property.selling_price, precision_rounding=0.01)
+                and float_compare(
+                    property.selling_price,
+                    property.expected_price * 0.9, # 90% of the expected price
+                    precision_rounding=0.01
+                ) == -1
+            ):
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
