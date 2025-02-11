@@ -5,7 +5,6 @@
             <field name="name">Property Types</field>
             <field name="res_model">estate.property.type</field>
             <field name="view_mode">list,form</field>
-
         </record>
 
         <record id="estate_type_model_action_form_view" model="ir.ui.view">
@@ -43,15 +42,15 @@
             </field>
         </record>
 
-        <!-- <record id="estate_type_model_action_list_view" model="ir.ui.view">
+        <record id="estate_type_model_action_list_view" model="ir.ui.view">
             <field name="name">estate.property.type.list</field>
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
-                <list editable="bottom">
+                <list>
                     <field name="name" />
                     <field name="sequence" widget="handle" />
                 </list>
             </field>
-        </record> -->
+        </record>
     </data>
 </odoo>

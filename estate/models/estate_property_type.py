@@ -1,6 +1,4 @@
-from odoo import models, fields
-from odoo import api
-
+from odoo import api, fields, models
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
@@ -8,10 +6,10 @@ class EstatePropertyType(models.Model):
     _order = "name"
 
     name = fields.Char(string="Type", required=True)
-    property_ids = fields.One2many("estate.property", "property_type_id")
-    sequence = fields.Integer("Sequence", default=1)
+    property_ids = fields.One2many(comodel_name="estate.property", inverse_name="property_type_id")
+    sequence = fields.Integer(string="Sequence", default=1)
     offer_ids = fields.One2many(
-        "estate.property.offer", inverse_name="property_type_id")
+        comodel_name="estate.property.offer", inverse_name="property_type_id")
     offer_count = fields.Integer(compute="_compute_offer_count")
 
     @api.depends("offer_ids")

@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -36,7 +36,7 @@ class EstateProperty(models.Model):
         ],
     )
     # Following active field refer to the visiblity of field in search
-    active = fields.Boolean("Active", default=True)
+    active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(
         [
             ("new", "New"),
@@ -45,29 +45,28 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        "State",
+        string="State",
         required=True,
         default="new",
     )
     # Relational Field for defining type of property (Many2one)
     property_type_id = fields.Many2one(
-        "estate.property.type", string="Property Type")
+        comodel_name="estate.property.type", string="Property Type")
     # Relational Field for defining sales person and buyer for property
     property_buyer_id = fields.Many2one(
-        "res.partner", string="Buyer", copy=False)
+        comodel_name="res.partner", string="Buyer", copy=False)
     property_seller_id = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user
+        comodel_name="res.users", string="Salesman", default=lambda self: self.env.user
     )
     # Relational Field for tag's (Many2Many)
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
     # Relation Field for offer (one2Many)
-    offer_ids = fields.One2many("estate.property.offer", "property_id")
+    offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id")
     # computed field total area which is just some of two areas
     total_area = fields.Float(
         string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(
         string="Best Offer", compute="_compute_best_price")
-    property_type_id = fields.Many2one("estate.property.type")
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price >= 0)',
@@ -124,3 +123,8 @@ class EstateProperty(models.Model):
                 record.state = "cancelled"
 
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_state_not_new_or_cancelled(self):
+        if not any(record.state in ('new', 'cancelled') for record in self):
+            raise UserError("Only New and Cancelled Property can be deleted.")

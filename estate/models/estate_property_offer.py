@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api,fields,models
 from odoo.exceptions import UserError
 
 
@@ -11,14 +11,14 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
-    partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    partner_id = fields.Many2one(comodel_name="res.partner", required=True)
+    property_id = fields.Many2one(comodel_name="estate.property", required=True)
     validity = fields.Integer(string="Validity (Days)", default=7)
     date_deadline = fields.Date(
         string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
     )
     property_type_id = fields.Many2one(
-        "estate.property.type", related="property_id.property_type_id", store=True)
+        comodel_name="estate.property.type", related="property_id.property_type_id", store=True)
 
     _sql_constraints = [
         ('check_price', 'CHECK(price > 0)',
@@ -79,3 +79,16 @@ class EstatePropertyOffer(models.Model):
 
         self.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        property = self.env["estate.property"].browse(
+            vals["property_id"])
+
+        if vals['price'] < property.expected_price:
+            raise UserError(
+                (f"The Offer must higher then {property.expected_price}"))
+
+        property.state = "offer received"
+
+        return super().create(vals)
