@@ -1,6 +1,4 @@
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError
-
+from odoo import models, fields
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
@@ -23,5 +21,5 @@ class EstatePropertyType(models.Model):
     _sql_constraints = [
         ("name_uniq", "unique(name)", "Type must be unique"),
     ]
-
-
+    
+    

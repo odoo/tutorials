@@ -1,14 +1,14 @@
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare
-from datetime import datetime
-
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers"
     _order = "price desc"
+
     price = fields.Float(string="Price", required=True)
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one(
@@ -17,7 +17,7 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         selection=[("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
-    validate = fields.Integer(string="Validity(days)", default=7)
+    validate = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
@@ -25,23 +25,33 @@ class EstatePropertyOffer(models.Model):
     property_status = fields.Selection(related="property_id.status", store=True)
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
-    )  #!This field is for stat button
+    )
+
+    @api.constrains("price", "status")
+    def _check_accepted_offer_price(self):
+        for record in self:
+            if (
+                record.status == "accepted"
+                and float_compare(
+                    record.price, record.property_id.expected_price * 0.9, 2
+                )
+                == -1
+            ):
+                raise ValidationError(
+                    "The accepted offer price cannot be less than 90% of the expected price!"
+                )
 
     @api.model_create_multi
     def create(self, vals_list):
-        """
-        - Updates property status to 'offer_received' on offer creation.
-        - Prevents creating an offer lower than the existing best offer.
-        """
         for vals in vals_list:
-            prop = self.env["estate.property"].browse(vals["property_id"])
+            property_obj = self.env["estate.property"].browse(vals["property_id"])
 
-            if vals["price"] < prop.best_prices:
+            if vals["price"] < property_obj.best_prices:
                 raise ValidationError(
                     "Offer price cannot be lower than the best offer."
                 )
 
-            prop.status = "offer_received"  # Update property status
+            property_obj.status = "offer_received"
 
         return super().create(vals_list)
 
@@ -80,18 +90,5 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.status = "offer_received"
             record.status = "refused"
 
-    @api.constrains("price", "status")
-    def _check_accepted_offer_price(self):
-        for record in self:
-            if (
-                record.status == "accepted"
-                and float_compare(
-                    record.price, record.property_id.expected_price * 0.9, 2
-                )
-                == -1
-            ):
-                raise ValidationError(
-                    "The accepted offer price cannot be less than 90% of the expected price!"
-                )
-
+    
 

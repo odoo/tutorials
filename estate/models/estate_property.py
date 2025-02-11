@@ -1,7 +1,6 @@
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models, api, exceptions
+from odoo import api, fields, models
 from odoo.exceptions import UserError
-
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -77,7 +76,7 @@ class EstateProperty(models.Model):
             "Selling Price must be strictly positive!",
         ),
     ]
-    
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_new_canceled(self):
         for record in self:
@@ -112,28 +111,19 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            if (
-                record.status == "new"
-                or record.status == "offer_accepted"
-                or record.status == "offer_received"
-            ):
+            if not record.offer_ids:
+                raise UserError("A property cannot be sold without receiving at least one offer.")
+            if record.status in ["new", "offer_accepted", "offer_received"]:
                 record.status = "sold"
             elif record.status == "cancelled":
-                raise UserError("Canceled property can't be sold")
+                raise UserError("Cancelled property can't be sold.")
             else:
-                raise UserError("Property already sold")
+                raise UserError("Property already sold.")
 
     def action_cancel(self):
         for record in self:
-            if (
-                record.status == "new"
-                or record.status == "offer_accepted"
-                or record.status == "offer_received"
-            ):
-                record.status = "cancelled"
-            elif record.status == "sold":
+            if record.status == "sold":
                 raise UserError("Sold property can't be canceled")
-            else:
+            if record.status == "cancelled":
                 raise UserError("Property already canceled")
-
-                
+            record.status = "cancelled"
