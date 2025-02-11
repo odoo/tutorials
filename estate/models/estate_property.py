@@ -1,4 +1,4 @@
-from datetime import timedelta, date
+from datetime import timedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo import models, fields, api
@@ -14,8 +14,8 @@ class EstateProperty(models.Model):
             ("new", "New"),
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
-            ("cancelled", "Cancelled"),
             ("sold", "Sold"),
+            ("cancelled", "Cancelled")
         ],
         default="new",
         store="True",
@@ -118,7 +118,6 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.status")
     def _compute_state(self):
         for property in self:
-            print("hellooooooo")
             if not property.offer_ids:
                 property.state = "new"
             elif all(offer.status == "refused" for offer in property.offer_ids):
@@ -133,5 +132,4 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "You can only delete properties in the 'New' or 'Cancelled' state."
                 )
-
 

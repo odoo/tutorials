@@ -3,6 +3,11 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define a new Property
+            </p>
+        </field>
         <field name="context">{'search_default_filter_available_today': True}</field>
         <field name="view_id" />
     </record>
@@ -15,7 +20,7 @@
                 decoration-success="state in ('offer_received','offer_accepted')"
                 decoration-muted="state == 'sold'"
                 decoration-bf="state == 'offer_accepted'">
-                <field name="name" />
+                <field name="name"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="property_type_id" />
                 <field name="postcode" />
@@ -35,10 +40,10 @@
             <form string="Test">
                 <header>
                     <button name="action_sold" type="object" string="Sold"
-                        invisible="state == 'offer_accepted'" />
+                        invisible="state in ('offer_accepted','sold','cancelled')" />
                     <button name="action_sold" type="object" string="Sold" class="btn-primary"
-                        invisible="state != 'offer_accepted'" />
-                    <button name="action_cancel" type="object" string="Cancel" />
+                        invisible="state in ('new','offer_received','sold','cancelled')" />
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold','cancelled')"  />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
@@ -117,3 +122,4 @@
         </field>
     </record>
 </odoo>
+

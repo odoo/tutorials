@@ -6,7 +6,6 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        result = super(EstateProperty, self).action_sold()
         for property in self:
             if not property.buyer_id:
                 raise ValidationError(
@@ -45,6 +44,6 @@ class EstateProperty(models.Model):
                 ],
             }
             self.env["account.move"].create(invoice_vals)
-        return result
+        return super().action_sold()
 
 

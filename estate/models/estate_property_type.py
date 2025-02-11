@@ -16,11 +16,10 @@ class EstatePropertyType(models.Model):
     _sql_constraints = [
         ("unique_type_name", "UNIQUE(name)", "The property type name must be unique."),
     ]
-    offer_count = fields.Integer(compute="_compute_offer_count", string="Offer Count")
+    offer_count = fields.Integer(compute="_compute_offer_count", string="Offer Count",store=True)
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
-
 
