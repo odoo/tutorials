@@ -21,6 +21,15 @@ class EstatePropertyType(models.Model):
         inverse_name='property_type_id',
         string="Properties"
     )
+    offer_ids=fields.One2many(
+        comodel_name='estate.property.offer',
+        inverse_name='property_type_id',
+        string="Offer"
+    )
+    offer_count=fields.Integer(
+        string="Offer Count",
+        compute='_compute_offer_count'
+    )
 
     # SQL CONSTRAINTS
     _sql_constraints = [
@@ -30,3 +39,7 @@ class EstatePropertyType(models.Model):
             'Property Type name must be Unique.'
         )
     ]
+
+    def _compute_offer_count(self):
+        for offer in self:
+            offer.offer_count = len(offer.offer_ids)

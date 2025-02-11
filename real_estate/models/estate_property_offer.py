@@ -18,8 +18,8 @@ class EstatePropertyOffer(models.Model):
     )
     status = fields.Selection(
         selection = [
-            ('accepted', 'Accepted'),
-            ('refused', 'Refused')
+            ('accepted', "Accepted"),
+            ('refused', "Accepted")
         ],
         string="Status",
         copy=False
@@ -39,12 +39,18 @@ class EstatePropertyOffer(models.Model):
         string="Property",
         required=True
     )
+    property_type_id = fields.Many2one(
+        comodel_name='estate.property.type',
+        string="Property Type",
+        related='property_id.property_type_id'
+    )
 
     date_deadline = fields.Date(
         string="Deadline Date",
         compute='_compute_date_deadline', 
         inverse='_inverse_date_deadline', 
     )
+    
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for offer in self:
