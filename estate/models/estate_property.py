@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(
         "Title", required=True,
@@ -149,5 +150,6 @@ class Property(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for line in self:
-            if tools.float_utils.float_compare(line.selling_price, line.expected_price * 0.9, precision_digits=2) == -1:
+            if (tools.float_utils.float_compare(line.selling_price, line.expected_price * 0.9, precision_digits=2) == -1
+                and line.selling_price != 0):
                 raise exceptions.ValidationError('The selling price must be atleast 90% of the expected price. You must reduce the expected price if you want to accept this offer.')

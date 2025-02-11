@@ -3,6 +3,7 @@ from odoo import api, fields, models
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(
         "Price",
@@ -24,6 +25,10 @@ class PropertyOffer(models.Model):
     date_deadline = fields.Date(
         "Deadline", compute="_compute_deadline", inverse="_inverse_deadline",
         help="This shows the offer validity date.",
+    )
+    property_type_id = fields.Many2one(
+        "estate.property.type", string="Property Type",
+        store=True, related="property_id.property_type_id"
     )
 
     _sql_constraints = [
