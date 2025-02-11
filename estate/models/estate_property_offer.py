@@ -2,9 +2,12 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, models, fields
 from odoo.exceptions import UserError
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "This is the estate property offer model"
+    _order = "price desc"
+
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -38,11 +41,12 @@ class EstatePropertyOffer(models.Model):
     def action_offer_accepted(self):
         for record in self:
             if record.property_id:
-                if record.status == "accepted":
+                if record.status == "accepted" or record.property_id.state == "offer_accepted":
                     raise UserError("The offer is already accepted!!!")
                 else:
                     record.property_id.offer_ids.write({"status":"refused"})
                     record.status = "accepted"
+                    record.property_id.state = "offer_accepted"
                     record.property_id.buyer_id = record.partner_id
                     record.property_id.selling_price = record.price
 
@@ -55,4 +59,3 @@ class EstatePropertyOffer(models.Model):
                     record.status = "refused"
                     record.property_id.buyer_id = False
                     record.property_id.selling_price = 0
-
