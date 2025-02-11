@@ -2,10 +2,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api,fields, models
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'Property expected price must be strictly positive!'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'Property selling price must be positive!'),
+    ]
 
     name = fields.Char(string='Title', required=True)
     description = fields.Text(string='Description', translate=True)
@@ -60,10 +67,33 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        print("\n\n\nOnchange Garden \n\n\n")
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancelled properties cannot be sold.")
+            else:
+                record.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties cannot be cancelled.")
+            else:
+                record.state = 'cancelled'
+        return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.offer_ids:
+                difference_in_price = float_compare(record.selling_price, record.expected_price*90/100, precision_digits=0)
+                if difference_in_price < 0:
+                    raise ValidationError(r"Selling price cannot be less than 90% of the expected price.")

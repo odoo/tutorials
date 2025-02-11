@@ -8,9 +8,11 @@
             <list string="Estate Property Offer List View" editable="bottom">
                 <field name="price" />
                 <field name="partner_id" />
-                <field name="status" />
                 <field name="validity" />
                 <field name="date_deadline" />
+                <button name="action_accept_offer" type="object" icon="fa-check" title="Accept Offer" />
+                <button name="action_refuse_offer" type="object" icon="fa-times" title="Refuse Offer" />
+                <field name="status" />
             </list>
         </field>
     </record>

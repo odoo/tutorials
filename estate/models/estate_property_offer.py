@@ -2,10 +2,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)', 'Offer price must be strictly positive!'),
+    ]
 
     price = fields.Float(string='Price')
     status = fields.Selection(
@@ -32,3 +37,16 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.to_date(record.create_date)).days
+
+    def action_accept_offer(self):
+        for record in self:
+            if 'accepted' not in record.property_id.offer_ids.mapped('status'):
+                record.status = 'accepted'
+                record.property_id.selling_price = record.price
+                record.property_id.partner_id = record.partner_id
+            else:
+                raise UserError("This property already has an accepted offer.")
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = 'refused'
