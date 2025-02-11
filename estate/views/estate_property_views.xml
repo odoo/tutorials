@@ -1,9 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
         <record id="estate_model_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form,kanban</field>
+            <field name="context">{'search_default_available':True}</field>
+           
         </record>
 
         <record id="estate_model_action_form_view" model="ir.ui.view">
@@ -12,8 +15,14 @@
             <field name="arch" type="xml">
                 <form string="Property">
                     <header>
-                        <button type="object" name="action_sold_property">SOLD</button>
-                        <button type="object" name="action_cancel_property">CANCEL</button>
+                        <button type="object" string="SOLD" name="action_sold_property"
+                            invisible="state in ('sold','cancelled')" />
+
+                        <button type="object" string="CANCEL" name="action_cancel_property"
+                            invisible="state in ('sold','cancelled')" />
+
+                        <field name="state" string="Status" widget="statusbar"
+                            statusbar_visible="new,offer received,offer accepted,sold" />
                     </header>
                     <sheet>
                         <group>
@@ -23,13 +32,15 @@
                                         <field name="name" class="oe_inline" />
                                     </h1>
                                 </div>
-                                <field name="tag_ids" widget="many2many_tags" />
+                                <field name="tag_ids" widget="many2many_tags"
+                                    options="{'color_field': 'color'}"
+                                />
                             </group>
                         </group>
                         <group>
                             <group>
-                                <field name="state" string="Status" />
-                                <field name="property_type_id" />
+                                <field name="property_type_id"
+                                    options="{'no_create':true}" />
                                 <field name="postcode" />
                                 <field name="date_availability" />
                             </group>
@@ -47,15 +58,19 @@
                                     <field name="fascades" />
                                     <field name="garage" />
                                     <field name="garden" />
-                                    <field name="garden_area" />
-                                    <field name="garden_orientation" />
+                                    <field name="garden_area" invisible="not garden" />
+                                    <field name="garden_orientation" invisible="not garden" />
                                     <field name="total_area" />
                                 </group>
                             </page>
                             <page string="Offers">
-                                <field id="offers" name="offer_ids">
+                                <field id="offers" name="offer_ids"
+                                    readonly="state in ('sold','cancelled','offer accepted')">
                                     <list editable="bottom"
-                                        edit="True">
+                                        edit="True"
+                                        decoration-success="status == 'accepted'"
+                                        decoration-danger="status == 'refused'"
+                                    >
                                         <field name="price" />
                                         <field name="partner_id" />
                                         <field name="validity" />
@@ -63,10 +78,12 @@
                                         <button name="action_accept_offer" type="object"
                                             help="Accepte"
                                             title="accept"
+                                            invisible="status"
                                             icon="fa-check" />
                                         <button name="action_refuse_offer" type="object"
                                             help="Refuse"
                                             title="refuse"
+                                            invisible="status"
                                             icon="fa-times" />
                                         <field name="status" readonly="1" />
                                     </list>
@@ -89,7 +106,9 @@
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Name">
+                <list string="Name"
+                    decoration-success="state in ('offer received','offer accepted')"
+                    decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
                     <field name="name" />
                     <field name="property_type_id" />
                     <field name="postcode" />
@@ -97,7 +116,7 @@
                     <field name="living_area" />
                     <field name="expected_price" />
                     <field name="selling_price" />
-                    <field name="date_availability" />
+                    <field name="date_availability" optional="True" />
                 </list>
             </field>
         </record>
@@ -112,12 +131,10 @@
                     <field name="postcode" />
                     <field name="expected_price" />
                     <field name="bedrooms" />
-                    <field name="living_area" />
+                    <field name="living_area" filter_domain="[('living_area','>=',self)]" />
                     <field name="fascades" />
-
-                    <filter name="Status Filter"
+                    <filter name="available" string="Available"
                         domain="['|',('state','=','new'),('state','=','offer received')]" />
-
                     <group string="Group By">
                         <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
                     </group>
