@@ -7,16 +7,17 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="Name", required=True)
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection([
         ('new', 'New'), 
-        ('offer received', 'Offer Received'), 
-        ('offer accepted', 'Offer Accepted'), 
+        ('offer_received', 'Offer Received'), 
+        ('offer_accepted', 'Offer Accepted'), 
         ('sold', 'Sold'), 
         ('cancelled', 'Cancelled')
-        ], default="new", string="State")
+    ], default="new", string="State")
     last_seen = fields.Datetime(string="Last Seen", default=fields.Datetime.now)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -34,7 +35,7 @@ class EstateProperty(models.Model):
         ('south', 'South'), 
         ('east', 'East'), 
         ('west', 'West')
-        ], string="Garden Orientation", help="Orientation of the garden")  
+    ], string="Garden Orientation", help="Orientation of the garden")  
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_offer = fields.Integer(string="Best Offer", compute="_compute_best_offer")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -76,13 +77,13 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'cancelled'
 
-    @api.constrains('selling_price')
-    def _check_sellings_price(self):
-        for record in self:
-            if record.selling_price < record.expected_price * 0.9:
-                raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
-
     _sql_constraints = [
         ('expected_price_positive', 'CHECK(expected_price >= 1)', 'The expected price must be strictly positive.'),
         ('selling_price_positive', 'CHECK(selling_price >= 1)', 'The selling price must be strictly positive.')
     ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_sellings_price(self):
+        for record in self:
+            if record.selling_price and record.selling_price < record.expected_price * 0.9:
+                raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
