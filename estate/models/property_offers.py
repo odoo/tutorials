@@ -7,7 +7,7 @@ class PropertyOffers(models.Model):
     _name = "property.offers"
     _description = "Property Offers"
 
-    price = fields.Float(string="Price")
+    price = fields.Float(string="Price", required=True)
     status = fields.Selection(
         string="Status",
         selection=[("accepted", "Accepted"), ("refused", "Refused")],
@@ -26,6 +26,7 @@ class PropertyOffers(models.Model):
         inverse="_inverse_date_deadline",
     )
 
+    # compute deadline date using (validity days)
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -33,6 +34,7 @@ class PropertyOffers(models.Model):
             create_date = record.create_date or fields.Datetime.now()
             record.date_deadline = create_date + timedelta(days=record.validity)
 
+    # compute validity (days) using deadline date with inverse function
     def _inverse_date_deadline(self):
         for record in self:
             if record.create_date:
@@ -42,6 +44,7 @@ class PropertyOffers(models.Model):
             else:
                 record.validity = 7
 
+    # action method when offer is accepted (accept button is clicked)
     def action_accept(self):
         for offer in self:
             if offer.status == "accepted":
@@ -49,14 +52,21 @@ class PropertyOffers(models.Model):
 
             offer.status = "accepted"
 
+            # set other offers status to refused
             for other_offer in offer.property_id.offer_ids:
-                if other_offer.status == "accepted" and other_offer.id != offer.id:
+                if other_offer.id != offer.id:
                     other_offer.status = "refused"
 
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
         return True
 
+    # action method when offer is refused
     def action_refuse(self):
         self.status = "refused"
         return True
+
+    # sql constraints
+    _sql_constraints = [
+        ("price", "CHECK(price >= 0)", "Price must be strictly positive")
+    ]
