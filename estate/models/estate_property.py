@@ -1,6 +1,7 @@
-from odoo import models, fields, api
 from datetime import timedelta
-from odoo.exceptions import UserError,ValidationError
+
+from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
 
 
@@ -48,12 +49,13 @@ class EstateProperty(models.Model):
         copy=False,
     )
 
-    
     def unlink(self):
         for record in self:
-            if record.status not in ['new', 'canceled']:
-                raise UserError(f"Cannot delete the property '{record.name}' because its state is '{record.state}'.")
-        
+            if record.status not in ["new", "canceled"]:
+                raise UserError(
+                    f"Cannot delete the property '{record.name}' because its state is '{record.state}'."
+                )
+
         # After applying the business logic, call the parent unlink() method
         return super(EstateProperty, self).unlink()
 
@@ -69,14 +71,23 @@ class EstateProperty(models.Model):
     total_area = fields.Float(string="Total Area", compute="_compute_total_area")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
 
-    @api.constrains('selling_price', 'expected_price')
+    @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2):
-                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
-                    raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+                if (
+                    float_compare(
+                        record.selling_price,
+                        record.expected_price * 0.9,
+                        precision_digits=2,
+                    )
+                    < 0
+                ):
+                    raise ValidationError(
+                        "The selling price cannot be lower than 90% of the expected price."
+                    )
 
-    '''@api.constrains('expected_price')
+    """@api.constrains('expected_price')
     def _check_expected_price(self):
         for record in self:
             if record.expected_price<=0:
@@ -86,13 +97,20 @@ class EstateProperty(models.Model):
     def _check_expected_price(self):
         for record in self:
             if record.selling_price<=0:
-                raise ValidationError("Expected price should strictly be positive")'''
+                raise ValidationError("Expected price should strictly be positive")"""
 
     _sql_constraints = [
-    ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price should strictly be positive'),
-    ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price should strictly be positive')
-        ]
-
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price should strictly be positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "Selling price should strictly be positive",
+        ),
+    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -114,17 +132,15 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def sold_event(self):
-        for record in self:
-            if record.status != 'sold':  # Prevent selling if already sold
-                record.status = 'sold'
-            else:
-                raise UserError("This property is already sold.")
+        if self.status != "sold":  # Prevent selling if already sold
+            self.status = "sold"
+        else:
+            raise UserError("This property is already sold.")
         return True
 
     def cancel_event(self):
-        for record in self:
-            if record.status != 'canceled':  # Only allow cancel if not canceled
-                record.status = 'canceled'
-            else:
-                raise UserError("This property is already canceled.")
+        if self.status != "canceled":  # Only allow cancel if not canceled
+            self.status = "canceled"
+        else:
+            raise UserError("This property is already canceled.")
         return True

@@ -7,12 +7,6 @@
     <menuitem id="type_action" action="estate_property_type_action"/>
     <menuitem id="menu_property_tags" action="estate_property_tag_action"/>
     </menuitem>
-    <menuitem id="seller_menu" name="Sell">
-        <menuitem id="sell_action" action="estate_property_seller_action"/>
-    </menuitem>
-    <menuitem id="buyer_menu" name="Buyer">
-        <menuitem id="buy_action" action="estate_property_buyer_action"/>
-    </menuitem>
 </menuitem>
 <record id="main_menu_root" model="ir.ui.menu">
     <field name="web_icon">estate,static/dependencies/real_estate_icon.png</field>

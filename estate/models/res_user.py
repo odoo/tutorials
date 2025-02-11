@@ -8,3 +8,4 @@ class ResUser(models.Model):
         string='Properties',
         domain="[('status', 'in', ['new', 'offer_received'])]"
     )
+
