@@ -36,6 +36,9 @@
                     <group>
                         <field name="tag_ids" widget="many2many_tags"/>
                         <group>
+                            <field name="state"/>
+                        </group>
+                        <group>
                             <field name="property_type_id"/>
                             <field name="expected_price"/>
                         </group>
@@ -62,7 +65,6 @@
                                     <field name="garden_orientation"/>
                                     <field name="total_area"/>
                                     <field name="active"/>
-                                    <field name="state"/>
                                 </group>
                             </group>
                         </page>
