@@ -4,7 +4,7 @@
     'description': "This is the real estate module used for buying and selling properties!",
     'version': '0.1',
     'application': True,
-    'category': 'Tutorials',
+    'category': "Tutorials",
     'installable': True,
     'depends': ['base'],
     'data': [
