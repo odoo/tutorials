@@ -15,5 +15,6 @@ Real Estate Properties With all the information
         'views/estate_property_offer_views.xml',
         'views/estate_property_menus.xml',
     ],
+    'license': 'LGPL-3',
     'application': True,
 }

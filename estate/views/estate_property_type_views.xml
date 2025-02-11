@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <list name="estate_property_type_list" string="Property Types">
                 <field name="name"/>
+                <field name="sequence" widget="handle"/>
             </list>
         </field>
     </record>
@@ -21,6 +22,17 @@
                             <field name="name" class="mb16"/>
                         </h1>
                     </div>
+                    <notebook>
+                        <page name="properties" string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" width="40%"/>
+                                    <field name="expected_price" width="30%"/>
+                                    <field name="state" width="40%"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

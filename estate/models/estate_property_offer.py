@@ -1,16 +1,17 @@
-from odoo import api,fields,models
+from odoo import api,exceptions,fields,models
 from datetime import timedelta
 
 
 class EstatePropertyOffer(models.Model):
     _name="estate.property.offer"
     _description="Estate Property Offer"
+    _order = "price desc"
  
     price = fields.Float(string="Price")
     status = fields.Selection([
         ('accepted','Accepted'),
         ('refused','Refused'),
-    ], string="Status", copy=False)
+    ], string="Status", copy=False, readonly=True)
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
     property_id = fields.Many2one('estate.property', string="Property ID", required=True)
     validity = fields.Integer(string="Validity(days)", default=7)
@@ -23,19 +24,28 @@ class EstatePropertyOffer(models.Model):
     @api.depends("create_date","validity")
     def _compute_date_deadline(self):
         for record in self:
-           create_date = record.create_date.date() if record.create_date else fields.Date.today()
-           record.date_deadline = create_date + timedelta(days=record.validity)
+           record.date_deadline = fields.Date.add((record.create_date or fields.date.today()), days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
-            create_date = record.create_date.date() if record.create_date else fields.Date.today()
-            days = (record.date_deadline - create_date).days
-            record.validity = days if days>=0 else 0
+            record.validity = (record.date_deadline - record.create_date.date()).days if record.date_deadline else 0
 
     def action_accepted(self):
-        self.status = 'accepted'
-        self.property_id.buyer_id = self.partner_id
-        self.property_id.selling_price = self.price
+        existing_accepted_offer = self.property_id.offer_ids.filtered(lambda o: o.status == 'accepted')
+        if existing_accepted_offer:
+            if self.price > existing_accepted_offer.price:
+                existing_accepted_offer.status = 'refused'
+                self.status = 'accepted'
+                self.property_id.state = 'offer accepted'
+                self.property_id.buyer_id = self.partner_id
+                self.property_id.selling_price = self.price
+            else:   
+                raise exceptions.UserError("One offer can only be accepted at a time")
+        else:
+            self.status = 'accepted'
+            self.property_id.state = 'offer accepted'
+            self.property_id.buyer_id = self.partner_id
+            self.property_id.selling_price = self.price
     
     def action_refused(self):
         self.status = 'refused'

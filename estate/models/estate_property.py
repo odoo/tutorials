@@ -1,10 +1,11 @@
 from datetime import timedelta
-from odoo import _,api,exceptions,fields,models
+from odoo import _, api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
     _name="estate.property"
     _description="Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
@@ -31,10 +32,10 @@ class EstateProperty(models.Model):
             ('offer accepted','Offer Accepted'),
             ('sold','Sold'),
             ('cancelled','Cancelled'),
-        ], string="State", default='new', required=True, copy=False)
+        ], string="Status", default='new', required=True, copy=False)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    seller_id = fields.Many2one("res.users", string="Seller", index=True, tracking=True, default=lambda self: self.env.user)
+    seller_id = fields.Many2one("res.users", string="Seller", index=True, default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area", string="Total area")
@@ -68,9 +69,9 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ''
 
-    @api.constrains("selling_price","expected_price")
+    @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-        if self.selling_price < self.expected_price *0.9:
+        if self.selling_price and self.selling_price < self.expected_price *0.9:
             raise exceptions.ValidationError("Selling price cannot be lower than 90% of the expected price")
 
     def action_sold(self):
