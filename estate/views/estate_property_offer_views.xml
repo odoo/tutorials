@@ -5,9 +5,11 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Property Offers">
-                <field name="price"/>
+                <field name="price" string="Price"/>
                 <field name="partner_id"/>
                 <field name="status"/>
+                <button name="action_accept_offer" type="object" class="fa fa-check" invisible="status == 'accepted'"/>
+                <button name="action_refuse_offer" type="object" class="fa fa-times" invisible="status == 'refused'"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
             </list>
@@ -31,5 +33,5 @@
             </form>
         </field>
     </record> 
-
 </odoo>
+
