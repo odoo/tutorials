@@ -115,5 +115,4 @@
         <field name="property_type_id" ref="property_type_condo"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_beachfront'))]"/>
     </record>
-
 </odoo>

@@ -29,18 +29,27 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property Form">
-                
+                <header>
+                    <button name="action_sold_property" type="object" string="Sold" class="oe_highlight" invisible="state in ('sold', 'canceled')"/>
+                    <button name="action_cancle_property" type="object" string="Cancel" invisible="state in ('sold', 'canceled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold "/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" />
                     </h1>
+                    <p>
+                        <field name="property_tag_ids" widget='many2many_tags'/>
+                    </p>
                     <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability"/>
                         </group>
                         <group >
                             <field name="expected_price"/>
+                            <field name="best_offer"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -52,11 +61,13 @@
                                     <field name="description"/>
                                     <field name="state"/>
                                     <field name="bedrooms"/>
+                                    <field name="living_area"/>
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                 </group>
                             </group>
                         </page>
@@ -66,8 +77,10 @@
                                 <list string="Estate Property List" editable="top" decoration-success="status == 'accepted'" decoration-danger="status == 'rejected'">
                                     <field name="partner_id"/>
                                     <field name="price"/>
-                                    <button name="action_status_accept" type="object" class="fa fa-check" title="Accept Offer" invisible="status in ('accepted', 'refused')"/>
-                                    <button name="action_status_reject" type="object" class="fa fa-times" title="Reject Offer" invisible="status in ('accepted', 'refused')"/>
+                                    <button name="action_status_accept" type="object" class="fa fa-check" title="Accept Offer" invisible="status in ('accepted', 'rejected')"/>
+                                    <button name="action_status_reject" type="object" class="fa fa-times" title="Reject Offer" invisible="status in ('accepted', 'rejected')"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
                                     <field name="status" optional="hide"/>
                                 </list>
                             </field>
@@ -76,10 +89,10 @@
                         <page string="Other Info">
                             <group>
                                 <group>
-                                    <field name="salesman_id"/>
+                                    <field name="user_id"/>
                                 </group>
                                 <group>
-                                    <field name="buyer_id"/>
+                                    <field name="partner_id"/>
                                 </group>
                             </group>
                         </page>
@@ -135,7 +148,7 @@
 
                                 <!-- Expected Price with Currency Formatting -->
                                 <div class="fw-bold text-success">
-                                    <span class="fa fa-dollar-sign me-1"></span>
+                                    <span class="fa fa-dollar-sign me-1" title="Expected Price"></span>
                                     <field name="expected_price"/>
                                 </div>
                             </div>
@@ -146,5 +159,4 @@
             </kanban>
         </field>
     </record>
-    
 </odoo>
