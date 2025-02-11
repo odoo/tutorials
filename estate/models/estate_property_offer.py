@@ -18,6 +18,7 @@ class EstatePropertyOffer(models.Model):
      validity = fields.Integer("Validity", default=7)
      date_deadline = fields.Date("Date Dealine",compute="_compute_date_deadline" ,  inverse="_inverse_date_deadline")
      property_type_id = fields.Many2one(related='property_id.property_type_id' , store = True)
+     
      _sql_constraints = [
         (
             "check_offer_price_positive",
@@ -62,9 +63,16 @@ class EstatePropertyOffer(models.Model):
          return True
      
      def set_offer_accepted(self):
-         for record in self:
+        for record in self:
              record.status = "accepted"
              record.property_id.state = "offer_accepted"
              record.property_id.selling_price = record.price
              record.property_id.buyer_id = record.partner_id
-         return True
+
+        other_offer = self.env['estate.property.offer'].search([
+
+            ('property_id' , '=' , self.property_id.id),
+            ('id' , '!=' , self.id),
+            ('status' , '!=' , 'rejected')  
+        ])
+        other_offer.write({'status' : 'rejected'})

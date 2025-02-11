@@ -1,8 +1,9 @@
 <odoo>
+
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name = "context">{'search_default_availible_property': 1}</field>
     </record>
 
@@ -32,7 +33,7 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <header>
-                <button name = "action_property_sold" type="object" string = "SOLD"  class="btn btn-primary" invisible="state == 'sold' or state == 'canceled'"/> 
+                <button name = "action_property_sold" type="object" string = "SOLD"  class="btn btn-primary" invisible="state == 'sold' or state == 'canceled'" /> 
                 <button name = "action_property_cancel" type="object" string = "CANCEL"  class="btn btn-secondary"  invisible="state == 'sold' or state == 'canceled'"/> 
                 <field name="state"  type ="object" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
@@ -102,5 +103,43 @@
             </search>
         </field>
     </record>
-    
+        
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id"  records_draggable='0'>
+               <field name = "state" />
+                <templates>
+                    <t t-name="card">
+                        <h3>
+                            <field name="name" />
+                        </h3>
+                        <div class="flex-row">
+                            <text>Expected price:</text>
+                            <field name="expected_price" />
+                        </div>
+                        <t t-if="record.state.raw_value == 'offer_received'">
+                            <div class="flex-row">
+                                <text>Best offer:</text>
+                                <field name="best_price" />
+                            </div>
+                        </t>
+                        <t t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold' ">
+                            <div class="flex-row">
+                                <text>Selling price:</text>
+                                <field name="selling_price" />
+                            </div>
+                        </t>
+                        <footer class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
 </odoo>
