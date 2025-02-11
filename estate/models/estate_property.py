@@ -1,8 +1,9 @@
 from datetime import timedelta
+
 from odoo import api, exceptions, fields, models
-from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class estateProperty(models.Model):
     _name = "estate.property"

@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from odoo import api, exceptions, fields, models
 from odoo.exceptions import UserError
 
@@ -90,9 +91,4 @@ class estatePropertyOffer(models.Model):
             if not property.offer_ids:
                 property.state = "new"
         return result    
-
-
-
-            
-
             

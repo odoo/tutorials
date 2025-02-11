@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="action_estate_property" model="ir.actions.act_window">
+    <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
@@ -15,7 +15,7 @@
                 decoration-success="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name" string="Property Name" readonly="1"/>
                 <field name="tag_ids" widget="many2many_tags"
-                            options="{'color_field': 'color'}"/>
+                    options="{'color_field': 'color'}"/>
                 <field name="postcode" string="Postcode" readonly="1"/>
                 <field name="bedrooms" string="Bedrooms" readonly="1"/>
                 <field name="living_area" string="Living Area" readonly="1"/>
@@ -36,37 +36,37 @@
                 <header>
                     <button name="set_sold" string="Sold" type="object"
                         class="btn btn-outline-primary o_form_button_create"
-                        invisible="state == 'sold' or state == 'cancelled'" />
+                        invisible="state == 'sold' or state == 'cancelled'"/>
                     <button name="cancel_property" string="Cancel" type="object"
                         class="btn btn-outline-primary o_form_button_create btn-danger"
-                        invisible="state == 'cancelled' or state == 'sold'" />
+                        invisible="state == 'cancelled' or state == 'sold'"/>
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new, offer_received, offer_accepted, sold, cancle" />
+                        statusbar_visible="new, offer_received, offer_accepted, sold, cancle"/>
                 </header>
                 <sheet>
                     <h1>
-                        <field name="name" string="Property Name" required="1" />
+                        <field name="name" string="Property Name" required="1"/>
                     </h1>
                     <group>
                         <field name="tag_ids" widget="many2many_tags"
-                            options="{'color_field': 'color'}" />
+                            options="{'color_field': 'color'}"/>
                     </group>
                     <!-- Basic Information in Flex Layout -->
                     <group class="mb32">
                         <!-- First Row -->
                         <group>
-                            <field name="state" string="Status" />
+                            <field name="state" string="Status"/>
                             <field name="property_type_id"
                                 options="{'no_create': True, 'no_open': True}"
-                                string="Property Type" />
-                            <field name="postcode" string="Postcode" />
-                            <field name="date_availability" string="Available From" />
+                                string="Property Type"/>
+                            <field name="postcode" string="Postcode"/>
+                            <field name="date_availability" string="Available From"/>
                         </group>
                         <!-- Second Row -->
                         <group>
-                            <field name="expected_price" string="Expected Price" required="1" />
-                            <field name="best_price" string="Best Offer" readonly="1" />
-                            <field name="selling_price" string="Selling Price" readonly="1" />
+                            <field name="expected_price" string="Expected Price" required="1"/>
+                            <field name="best_price" string="Best Offer" readonly="1"/>
+                            <field name="selling_price" string="Selling Price" readonly="1"/>
                         </group>
                     </group>
                     <!-- Tabs Section -->
@@ -74,26 +74,26 @@
                         <!-- Description Tab -->
                         <page string="Description">
                             <group>
-                                <field name="description" string="Description" />
+                                <field name="description" string="Description"/>
                             </group>
                             <group>
-                                <field name="bedrooms" string="Bedrooms" />
-                                <field name="living_area" string="Living Area" />
-                                <field name="facades" string="Facades" />
+                                <field name="bedrooms" string="Bedrooms"/>
+                                <field name="living_area" string="Living Area"/>
+                                <field name="facades" string="Facades"/>
                             </group>
                             <group>
-                                <field name="garage" string="Garage" widget="checkbox" />
+                                <field name="garage" string="Garage" widget="checkbox"/>
                             </group>
                             <group>
-                                <field name="garden" string="Garden" widget="checkbox" />
+                                <field name="garden" string="Garden" widget="checkbox"/>
                                 <field name="garden_area" string="Garden Area"
-                                    invisible="not garden" />
+                                    invisible="not garden"/>
                                 <field name="garden_orientation" string="Garden Orientation"
-                                    invisible="not garden" />
+                                    invisible="not garden"/>
                             </group>
                             <group>
                                 <!-- Add Total Area Field -->
-                                <field name="total_area" string="Total Area" readonly="1" />
+                                <field name="total_area" string="Total Area" readonly="1"/>
                             </group>
                         </page>
                         <!-- Offers Tab-->
@@ -104,25 +104,25 @@
                             >
                                 <list decoration-success="status == 'accepted'"
                                     decoration-danger="status == 'refused'">
-                                    <field name="price" string="Price" />
-                                    <field name="partner_id" string="Partner" />
-                                    <field name="validity" />
-                                    <field name="date_deadline" />
+                                    <field name="price" string="Price"/>
+                                    <field name="partner_id" string="Partner"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
                                     <button name="accept_offer" type="object"
                                         help="Accept" icon="fa-check"
-                                        invisible="status == 'accepted'" />
+                                        invisible="status == 'accepted'"/>
                                     <button name="refuse_offer" type="object"
                                         help="Refuse" icon="fa-times"
-                                        invisible="status == 'refused'" />
-                                    <field name="status" string="Status" />
+                                        invisible="status == 'refused'"/>
+                                    <field name="status" string="Status"/>
                                 </list>
                             </field>
                         </page>
                         <!-- Other info Tab-->
                         <page string="Other Info">
                             <group>
-                                <field name="salesperson_id" string="Salesperson" />
-                                <field name="buyer_id" string="Buyer" readonly="1" />
+                                <field name="salesperson_id" string="Salesperson"/>
+                                <field name="buyer_id" string="Buyer" readonly="1"/>
                             </group>
                         </page>
                     </notebook>
@@ -142,16 +142,77 @@
                     name="filter_available"
                     string="Available Properties"
                     domain="[('state', 'in', ['new', 'offer_received'])]"
-                />
+               />
                 <!-- Add a Filter for Living Area -->
                 <field name="living_area" string="Living Area(sqm)"
-                    filter_domain="[('living_area', '>=', self)]" />
+                    filter_domain="[('living_area', '>=', self)]"/>
                 <!-- Group By Postcode -->
                 <group expand="0" string="Group By">
                     <filter name="group_by_postcode" string="Postcode"
-                        context="{'group_by': 'postcode'}" />
+                        context="{'group_by': 'postcode'}"/>
                 </group>
             </search>
         </field>
     </record>
+
+    <!-- Define a Kanban View-->
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="false">
+                <field name="name"/>
+                <field name="expected_price"/>
+                <field name="best_price"/>
+                <field name="selling_price"/>
+                <field name="tag_ids"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card">
+                            <!-- Property Name -->
+                            <div class="o_kanban_record_title">
+                                <strong>
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+                            <!-- Expected Price -->
+                            <div>
+                                <span>Expected Price: </span>
+                                <span>
+                                    <field name="expected_price"/>
+                                </span>
+                            </div>
+                            <!-- Best Price (only displayed when an offer is received) -->
+                            <t t-if="record.best_price.raw_value">
+                                <div>
+                                    <span>Best Offer: </span>
+                                    <span>
+                                        <field name="best_price"/>
+                                    </span>
+                                </div>
+                            </t>
+                            <!-- Selling Price (only displayed when an offer is accepted) -->
+                            <t t-if="record.selling_price.raw_value">
+                                <div>
+                                    <span>Selling Price: </span>
+                                    <span>
+                                        <field name="selling_price"/>
+                                    </span>
+                                </div>
+                            </t>
+                            <!-- Tags -->
+                            <div t-if="record.tag_ids.raw_value">
+                                <span>Tags: </span>
+                                <span>
+                                    <field name="tag_ids" widget="many2many_tags"/>
+                                </span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
 </odoo>
