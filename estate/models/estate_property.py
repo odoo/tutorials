@@ -39,6 +39,8 @@ class EstateProperty(models.Model):
         ('selling_price_positive','CHECK(selling_price>=0)','Selling price must be positive number')
     ]
 
+    _order="id desc"
+
     # Computation methods
     @api.depends('living_area','garden_area')
     def _compute_total_area(self):
