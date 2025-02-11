@@ -77,6 +77,12 @@ class EstateProperty(models.Model):
             if not fields.float_is_zero(record.selling_price, precision_digits=2) and fields.float_compare(record.selling_price, min_price, precision_rounding=2) < 0:
                 raise ValidationError("The selling price can't be lower than 90% of the expected price!")
             
+    @api.ondelete(at_uninstall=False)
+    def _check_property_before_delete(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError(f"You can't delete property {record.name} because only New or Cancelled property can be deleted!")
+            
     def action_set_sold(self):
         for record in self:
             if record.state != "offer_accepted":
@@ -87,9 +93,4 @@ class EstateProperty(models.Model):
     def action_set_cancelled(self):
         for record in self:
             record.state = "cancelled"
-            
-    @api.ondelete(at_uninstall=False)
-    def _check_property_before_delete(self):
-        for record in self:
-            if record.state not in ('new', 'cancelled'):
-                raise UserError(f"You can't delete property {record.name} because only New or Cancelled property can be deleted!")
+              
