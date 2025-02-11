@@ -5,7 +5,7 @@ from datetime import timedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers"
-    price = fields.Float("Price")
+    price = fields.Float("Price",required=True)
     state = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")],
         string="Status",
@@ -20,6 +20,12 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         "Date Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
     )
+
+    _sql_constraints = [
+        ('price_positive', 
+         'CHECK(price > 0)', 
+         'The offer price must be strictly positive.')
+    ]
 
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
