@@ -1,4 +1,4 @@
-from odoo import api, fields, models, exceptions, tools
+from odoo import api, exceptions, fields, models, tools
 from dateutil.relativedelta import relativedelta
 
 

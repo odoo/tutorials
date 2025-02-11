@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_offer_list" model="ir.ui.view">
-        <field name="name">Estate Property Offer View</field>
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Property Offers" editable="bottom" decoration-bf="status == 'accept'" decoration-success=" status == 'accept'" decoration-danger=" status == 'refuse' ">
@@ -15,8 +15,8 @@
         </field>
     </record>
 
-    <record id="estate_property_offer_form" model="ir.ui.view">
-        <field name="name">Estate Property Offer View</field>
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Test">

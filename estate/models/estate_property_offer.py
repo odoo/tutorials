@@ -1,4 +1,4 @@
-from odoo import api, fields, models, exceptions
+from odoo import api, exceptions, fields, models 
 from dateutil.relativedelta import relativedelta
 
 
@@ -18,11 +18,11 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
-    property_id = fields.Many2one('estate.property', string="Property", required=True)
+    property_id = fields.Many2one('estate.property', string="Property", required=True, ondelete="cascade")
     validity = fields.Integer(string="Validity (Days)", default=7)
     offer_deadline = fields.Date(string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
     property_type_id = fields.Many2one('estate.property.type', string="Property Type", related="property_id.property_type_id", store=True)
-    
+
     _sql_constraints = [
         ('positive_offer_price', 'CHECK(price > 0)',
          'The offered price must be positive.')
@@ -57,13 +57,14 @@ class EstatePropertyOffer(models.Model):
             record.status = "refuse"
         return True
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
-        if(vals["price"] and vals["property_id"]):
-                prop = self.env["estate.property"].browse(vals["property_id"])
+        for val in vals:
+            if(val["price"] and val["property_id"]):
+                prop = self.env["estate.property"].browse(val["property_id"])
                 if(prop.offer_ids):
                     max_offer = max(prop.mapped("offer_ids.price"))
-                    if vals["price"] < max_offer:
+                    if val["price"] < max_offer:
                         raise exceptions.UserError("Price must be higher than %.2f" % prop.best_price)
                 else:
                     prop.state = "offer_received"

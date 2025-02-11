@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_type_list" model="ir.ui.view">
-        <field name="name">Estate Property List View</field>
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Types">
@@ -11,8 +11,8 @@
         </field>
     </record>
 
-    <record id="estate_property_type_form" model="ir.ui.view">
-        <field name="name">Estate Property List View</field>
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Test">

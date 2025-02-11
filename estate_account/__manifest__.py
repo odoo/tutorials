@@ -6,6 +6,7 @@
     'sequence': 15,
     'summary': 'Accounts and Properties',
     'description': "",
+    'license': 'LGPL-3',
     'installable': True,
     'application': True,
     'auto_install': False

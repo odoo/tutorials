@@ -9,6 +9,7 @@
     'installable': True,
     'application': True,
     'auto_install': False,
+    'license': 'LGPL-3',
     'data': [
         'views/estate_property_tag_views.xml',
         'views/estate_property_views.xml',

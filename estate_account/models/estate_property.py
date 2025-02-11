@@ -1,9 +1,9 @@
-from odoo import models, fields, Command
+from odoo import Command, fields, models
 
 
 class EstateProperty(models.Model):
-
     _inherit = "estate.property"
+
 
     def is_Sold(self):
         res = super().is_Sold()
@@ -34,4 +34,3 @@ class EstateProperty(models.Model):
             self.env['account.move'].create(invoice_vals)
 
         return res
-        
