@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Propery Model"
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -52,6 +53,18 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         compute="_compute_best_price", string="Best Offer", store=True
     )
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "The expected price must be strictly positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "The selling price must be strictly positive",
+        ),
+    ]
 
     @api.depends("offer_ids")
     def _compute_best_price(self):
@@ -77,11 +90,11 @@ class EstateProperty(models.Model):
     def property_sold(self):
         for record in self:
             if record.status == "canceled":
-                raise UserError("sold properties cannot be canceled!")
+                raise UserError("Canceled properties cannot be sold!")
             record.status = "sold"
 
     def property_canceled(self):
         for record in self:
             if record.status == "sold":
-                raise UserError("Canceled properties cannot be sold!")
+                raise UserError("Sold properties cannot be canceled!")
             record.status = "canceled"

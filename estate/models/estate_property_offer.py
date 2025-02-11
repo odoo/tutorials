@@ -1,10 +1,11 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer Model"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -16,6 +17,13 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
+    _sql_constraints = [
+        (
+            "check_price",
+            "CHECK(price > 0)",
+            "The offer price must be strictly positive",
+        ),
+    ]
 
     @api.depends("validity", "property_id")
     def _compute_date_deadline(self):
@@ -33,6 +41,17 @@ class EstatePropertyOffer(models.Model):
                     else fields.Date.today()
                 )
                 record.validity = (record.date_deadline - create_date).days
+
+    @api.constrains("price", "status")
+    def _check_price(self):
+        for record in self:
+            if (
+                record.price < ((record.property_id.expected_price * 90) / 100)
+                and record.status == "accepted"
+            ):
+                raise ValidationError(
+                    "The selling price must be atleast 90% of the expected price! You must reduce expected price if you want to accept this offer."
+                )
 
     def accept_offer(self):
         print(self.price)

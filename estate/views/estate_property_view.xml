@@ -10,15 +10,17 @@
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list>
+                <list multi_edit="1" decoration-success="status == 'offer_received' or status == 'offer_accepted'" decoration-bf="status == 'offer_accepted'" decoration-muted="status == 'sold'">
                     <field name="name" />
                     <field name="postcode" />
+                    <field name="status"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <field name="bedrooms" />
                     <field name="living_area" />
                     <field name="expected_price" />
-
-                    <field name="selling_price" />
-                    <field name="date_availability" />
+                    <field name="date_availability" optional="hide" />
+                    <field name="selling_price"/>
+                    <field name="is_garden" optional="hide"/>
                 </list>
             </field>
         </record>
@@ -52,18 +54,19 @@
                     <header>
                         <button name="property_sold" type="object" string="Sold"/>
                         <button name="property_canceled" type="object" string="Cancel"/>
+                        <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                     </header>
                     <sheet>
                         <h1>
                             <field name="name" class="oe_title"/>
                         </h1>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                         <group>
                             <group>
                                 <field name="status"/>
-                                <field name="property_type_id"/>
+                                <field name="property_type_id" options="{'no_create':true}"/>
                                 <field name="postcode"/>
                                 <field name="expected_price"/>
                             </group>
@@ -83,8 +86,8 @@
                                     <field name="facades"/>
                                     <field name="is_garage"/>
                                     <field name="is_garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not is_garden"/>
+                                    <field name="garden_orientation" invisible="not is_garden"/>
                                 </group>
                             </page>
                             <page name="other_info" string="Other Info">
@@ -94,7 +97,7 @@
                                 </group>
                             </page>
                             <page name="offer" string="Offers">
-                                <field name="offer_ids"></field>
+                                <field name="offer_ids" readonly="status in ['offer_accepted', 'sold', 'canceled']"></field>
                             </page>
                         </notebook>
                     </sheet>
