@@ -1,4 +1,7 @@
+from odoo import api
 from odoo import fields, models
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 class estate_Property(models.Model):
     _name = "estate_model"  
@@ -36,5 +39,56 @@ class estate_Property(models.Model):
     )
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
     property_type_id = fields.Many2one("estate_property_type_model", name="Property Type")
-    salesman = fields.Char(string="Salesman")
-    buyer = fields.Char(string="Buyer") 
+    salesman = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
+    buyer = fields.Many2one('res.partner', string='Buyer')
+    tag_ids = fields.Many2many("estate_property_tag_model", string="Tag")
+    offer_ids = fields.One2many('estate_property_offer_model', 'property_id', string="Offers")
+    total_area = fields.Float(compute="_compute_total_area", readonly=False)
+    best_price = fields.Float(compute="_compute_best_price", store=True)
+
+    ##### compute methods ######
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+        
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
+
+    ###### action button ######
+
+    def sold_action(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Property is solded")  
+            if record.state == "cancelled":
+                raise UserError("poperty is allready cancelled thats why we can not able to marked it as sold")
+            record.state = "sold"
+        return True
+        
+    def cancle_action(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Property is already cancelled")
+            if record.state == "sold":
+                raise UserError("property is already solded thats why we can not mareked it as cancelled")
+            record.state = "cancelled"
+        return True
+
+    ###### constrains ######
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price should be strictly pisitive"),
+        ("selling_price", "CHECK(selling_price > 0)", "Selling_price must be positive")
+    ]
