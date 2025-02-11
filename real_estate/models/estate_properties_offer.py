@@ -1,6 +1,6 @@
 from odoo import fields, api, models  # type: ignore
 from datetime import timedelta
-from odoo.exceptions import UserError  # type: ignore
+from odoo.exceptions import UserError,ValidationError  # type: ignore
 
 
 class EstatePropertiesOffer(models.Model):
@@ -53,3 +53,11 @@ class EstatePropertiesOffer(models.Model):
                 record.property_id.partner_id = 0
             record.status = "refused"
             record.property_id.state = 'cancelled'
+    
+    @api.model
+    def create(self,vals):
+        property=self.env['estate.properties'].browse(vals['property_id'])
+        if vals['price'] < property.expected_price:
+            raise ValidationError('Offer price should not be less than Expected price')
+        property.state='offer_recieved'
+        return super().create(vals)

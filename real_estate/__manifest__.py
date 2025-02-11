@@ -11,11 +11,12 @@
     # data files always loaded at installation
     'data': [
         "security/ir.model.access.csv",
-        "views/estate_property_offer.xml",
-        "views/estate_property_views.xml",
-        "views/estate_type_views.xml",
-        "views/estate_tags_views.xml",
-        "views/estate_menus.xml",
+        "views/estate_properties_offer_views.xml",
+        "views/estate_properties_views.xml",
+        "views/estate_properties_type_views.xml",
+        "views/estate_properties_tags_views.xml",
+        "views/res_user_views.xml",
+        "views/estate_properties_menus.xml",
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
