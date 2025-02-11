@@ -5,16 +5,16 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
-    # Offer Fields
     price = fields.Float(string="Price")
     status = fields.Selection(string="Status", copy=False, selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
+    property_type_id = fields.Many2one('estate.property.type', related="property_id.property_type_id", store=True)
 
-    # SQL Constraints
     _sql_constraints = [
         ('check_price', 'CHECK(price > 0)', 'The offer price must be stricty positive.')
     ]
@@ -26,7 +26,6 @@ class EstatePropertyOffer(models.Model):
                 record.date_deadline = record.create_date + relativedelta(days=record.validity)
             else:
                 record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
-
 
     def _inverse_deadline(self):
         for record in self:
@@ -45,12 +44,10 @@ class EstatePropertyOffer(models.Model):
                     ('property_id', '=', offer.property_id.id),
                     ('id', '!=', offer.id)  # Exclude the current offer
                 ])
-
                 other_offers.write({'status': 'refused'})
-
                 offer.property_id.selling_price = offer.price
                 offer.property_id.buyer = offer.partner_id
-
+                offer.property_id.state = 'offer_accepted'
                 offer.status = 'accepted'
 
     def action_set_offer_status_refused(self):

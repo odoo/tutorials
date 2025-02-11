@@ -8,16 +8,15 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     def calculate_three_months_later():
         today = datetime.now()
-
         return today + relativedelta(months=3)
 
-    # Fields of Property
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
+    postcode = fields.Char(string="Postcode", group_expand=True)
     date_availability = fields.Date(string="Date Availability", default=calculate_three_months_later(), copy=False)
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
@@ -28,14 +27,12 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area")
     
-    # Garden Orientation of Property
     garden_orientation = fields.Selection(
         string="Garden Orientation", 
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]);
     
     active = fields.Boolean(string="Is Active", default=True)
     
-    # State Selection of Property
     state = fields.Selection(
         string="State", 
         required=True, 
@@ -43,23 +40,14 @@ class EstateProperty(models.Model):
         default="new",
         selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
 
-    # Many2one Fields
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-
     salesman = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
-
-    # Many2many Field
     property_tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
-
-    # One2many Field
     property_offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-
-    # Computed Fields
     total_area = fields.Integer(string="Toatal Area (sqm)", compute="_compute_total_area")
     best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
 
-    # SQL Constraints
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
