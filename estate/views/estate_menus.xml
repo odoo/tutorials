@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="test_menu_root" name="Real Estate">
-        <menuitem id="test_first_level_menu" name="Settings">
-            <menuitem id="estate_property_menu_action" action="estate_property_action"/>
-            <menuitem id="estate_property_type_menu_action" action="estate_property_action_1"/>
-            <menuitem id="estate_property_type_menu_action2" action="estate_property_action_2"/>
+    <data>
+        <menuitem id="test_menu_root" name="Real Estate">
+            <menuitem id="test_first_level_menu" name="Settings">
+                <menuitem id="estate_property_menu_action" action="estate_property_action"/>
+                <menuitem id="estate_property_type_menu_action" action="estate_property_action_1"/>
+                <menuitem id="estate_property_type_menu_action2" action="estate_property_action_2"/>
+                <!-- <menuitem id="estate_property_type_menu_action3" action="estate_property_action_3"/> -->
+            </menuitem>
         </menuitem>
-    </menuitem>
+    </data>
 </odoo>
