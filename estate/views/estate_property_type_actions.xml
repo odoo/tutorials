@@ -9,7 +9,7 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Property Type List" >
+            <list string="Property Type List">
                 <field name="name" string="Property Type" />   
             </list>
         </field>
@@ -19,7 +19,7 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Property Type Form" >
+            <form string="Property Type Form">
                  <sheet>
                     <h3>Property Type</h3>
                     <group>

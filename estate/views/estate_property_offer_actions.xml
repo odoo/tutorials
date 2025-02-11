@@ -3,12 +3,14 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offer List" create="True"  edit="True">
-                <field name="price" string="Price" />   
-                <field name="status" string="Status" />   
-                <field name="partner_id" string="Partner" />   
-                <field name="validity" string="Validity (days)" />   
-                <field name="date_deadline" string="Deadline" />   
+            <list string="Property Offer List" create="True" edit="True" editable="bottom">
+                <field name="price" string="Price"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="validity" string="Validity (days)"/>
+                <button name="action_offer_accept" type="object" icon="fa-check"/>
+                <button name="action_offer_refuse" type="object" icon="fa-times"/>
+                <field name="status" string="Status"/>
+                <field name="date_deadline" string="Deadline"/>
             </list>
         </field>
     </record>
