@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -66,3 +66,15 @@ class PropertyOffer(models.Model):
     def refuse_offer(self):
         self.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        property_id = self.env['estate.property'].browse(vals['property_id'])
+
+        if property_id.state == "new":
+            property_id.state = "offer received"
+
+        if self.price < property_id.best_price:
+            raise exceptions.UserError(f"The offer must be higher than {property_id.best_price}")
+        else:
+            return super(PropertyOffer, self).create(vals)

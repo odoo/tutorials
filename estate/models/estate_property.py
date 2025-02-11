@@ -1,4 +1,4 @@
-from odoo import api, fields, models, exceptions, tools
+from odoo import api, fields, models, exceptions, tools, exceptions
 from dateutil.relativedelta import relativedelta
 
 class Property(models.Model):
@@ -153,3 +153,9 @@ class Property(models.Model):
             if (tools.float_utils.float_compare(line.selling_price, line.expected_price * 0.9, precision_digits=2) == -1
                 and line.selling_price != 0):
                 raise exceptions.ValidationError('The selling price must be atleast 90% of the expected price. You must reduce the expected price if you want to accept this offer.')
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_cancelled(self):
+        for line in self:
+            if line.state not in ('new', 'cancelled'):
+                raise exceptions.UserError('Only new and cancelled properties can be deleted.')
