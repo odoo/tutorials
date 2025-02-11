@@ -4,11 +4,11 @@
         <field name="name">House 1</field>
         <field name="expected_price">1000</field>
     </record>
-    <record id="estate_property_0" model="estate.property">
+    <record id="estate_property_1" model="estate.property">
         <field name="name">House 2</field>
         <field name="expected_price">2000</field>
     </record>
-    <record id="estate_property_0" model="estate.property">
+    <record id="estate_property_2" model="estate.property">
         <field name="name">House 3</field>
         <field name="expected_price">3000</field>
     </record>

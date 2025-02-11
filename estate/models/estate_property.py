@@ -4,12 +4,18 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive"),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive"),
+    ]
 
     name = fields.Char("Title", required=True)
     description = fields.Text("Description")
@@ -42,8 +48,12 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled")
         ],
-        string="Status", required=True, default="new", copy=False
-    )
+        string="Status", required=True, default="new", copy=False,
+        help='New: A new property with no offers yet\n'
+            'Offer Received: Offers by buyers are received\n'
+            'Offer Accepted: An offer has been accepted\n'
+            'Sold: property is sold\n'
+            'Cancelled: property cancelled')
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     user_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
@@ -86,3 +96,10 @@ class EstateProperty(models.Model):
         for property in self:
             property.state = "cancelled"
         return True
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_selling_price(self):
+        for p in self:
+            if(float_is_zero(p.selling_price) == False
+                and float_compare(p.selling_price, p.expected_price * 90.0 / 100.0) < 0):
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price")

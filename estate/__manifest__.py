@@ -21,6 +21,8 @@
         'views/estate_property_offer_views.xml',
         'views/estate_menus.xml',
         'data/estate_data.xml',
+    ],
+    'demo': [
         'data/estate_demo.xml',
     ],
     'installable': True,

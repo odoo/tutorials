@@ -6,8 +6,11 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" class="oe_highlight"/>
-                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight"
+                        invisible="not active or state in ['sold', 'cancelled']"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                        invisible="not active or state in ['sold', 'cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -17,9 +20,8 @@
                     </div>
                     <group>
                         <group>
-                            <field name="state"/>
-                            <field name="property_type_id"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="property_type_id" widget="many2one" options="{'no_create': true}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -38,13 +40,13 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="garden == False"/>
+                                <field name="garden_orientation" invisible="garden == False"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -69,7 +71,7 @@
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
                 <field name="property_type_id"/>
                 <field name="tag_ids" widget="many2many_tags"/>
             </list>

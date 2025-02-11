@@ -11,6 +11,17 @@
                             <field name="name" placeholder="Name"/>
                         </h1>
                     </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids" readonly="1">
+                                <list default_order="name">
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -21,6 +32,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Types">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
