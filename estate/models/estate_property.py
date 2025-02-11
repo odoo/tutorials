@@ -6,6 +6,7 @@ from odoo.tools import float_is_zero, float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char("Name", required=True)
     description = fields.Text("Description")
@@ -46,11 +47,13 @@ class EstateProperty(models.Model):
         copy=False,
         selection=[
             ("new", "New"),
-            ("offer refused", "Offer Refused"),
+            ("offer received", "Offer Received"),
             ("offer accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
         ],
+        compute="_compute_state",
+        store=True,
     )
 
     salesman_id = fields.Many2one(
@@ -139,3 +142,11 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price!"
                 )
+
+    @api.depends('offer_ids')
+    def _compute_state(self):
+        for record in self:
+            if record.offer_ids:
+                record.state = 'offer received'
+            else:
+                record.state = 'new'

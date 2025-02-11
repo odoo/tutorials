@@ -6,12 +6,13 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
-<!--
+
     <record id="estate_property_type_list" model="ir.ui.view">
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="all_property_list">
+            <list name="property.type.list">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
@@ -22,10 +23,28 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="estate_property_type_form">
-                <group>
-                    <field name="all_properties_ids"/>
-                </group>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" name="%(estate.estate_property_offer_action)d" class="oe_stat_button" icon="fa-rupee" invisible="offer_count == 0">
+                            <field name="offer_count" string="Total Offer" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <notebook>
+                        <page name="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
         </field>
-    </record> -->
+    </record>
 </odoo>
