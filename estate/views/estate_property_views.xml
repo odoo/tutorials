@@ -44,7 +44,6 @@
                                     <field name="name"/>
                                 </h1>
                             <field name="property_type_id"/>
-                            <field name="offer_ids"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                             <newLine/>
                             <group>
@@ -54,6 +53,7 @@
                             <group>
                                 <field name="expected_price"/>
                                 <field name="selling_price"/>
+                                <field name="best_price" readonly="1"/>
                             </group>
                         </group>
                         <notebook>
@@ -67,8 +67,18 @@
                                     <field name="is_garden" string="Garden"/>
                                     <field name="state" string="Status"/>
                                     <field name="garden_area" string="Garden Area (sqm)"/>
+                                    <field name="total_area" readonly="1"/>
                                     <field name="garden_orientation" string="Garden Orientation"/>
                                 </group>
+                            </page>
+                            <page string="Offer">
+                                <field name="offer_ids">
+                                    <list>
+                                        <field name="price"/>
+                                        <field name="partner_id"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
                             </page>
                             <!-- New Tab for Salesperson & Buyer -->
                             <page string="Other Info">

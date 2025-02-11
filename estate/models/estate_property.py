@@ -16,7 +16,7 @@ class EstateProperty(models.Model):
         copy=False, 
         default=lambda self: fields.Date.today() + timedelta(days=90)
     )
-
+    price = fields.Float(string="Price")
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
 
@@ -67,3 +67,17 @@ class EstateProperty(models.Model):
     def _onchange_is_garden(self):
         if not self.is_garden:
             self.garden_area = 0
+    
+    # Compute Total Area which is depend on living_are and gardern_area
+    total_area=fields.Float(string="Total Area (sqm)", compute="_compute_total")
+    api.depends("living_area","garden_area")
+    def _compute_total(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    best_price=fields.Float(string="Best Price",compute="_compute_best_price")
+    api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price=max(record.mapped("offer_ids.price"),default=0)
+    partner_id=fields.Many2many("res.partner",string="owner")
