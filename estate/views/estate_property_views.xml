@@ -5,23 +5,24 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
+                <header>
+                    <button name="action_sold" type="object" string="Mark as Sold" invisible="state in ['sold']" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ['cancelled']" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                </header>
                 <sheet>
-                    <header>
-                        <button name="action_sold" type="object" string="Mark as Sold"/>
-                        <button name="action_cancel" type="object" string="Cancel"/>
-                    </header>
                     <div class="oe_title">
                         <h1>
                             <field name="title"/>
                         </h1>
                     </div>
                     <group>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </group>
                     <group>
                         <group>
                             <field name="state"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create':true}"/>
                             <field name="postcode"/>
                             <field name="available_from"/>
                         </group>
@@ -43,8 +44,8 @@
                             <field name="property_type_id"/>
                         </group>
                         <group>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
+                            <field name="garden_area" invisible="not garden"/>
+                            <field name="garden_orientation" invisible="not garden"/>
                             <field name="active"/>
                             <field name="total_area"/>
                         </group>
@@ -57,14 +58,14 @@
                     </page>
                     <page string="Offers">
                         <group>
-                            <field name="offer_ids">
-                            <list editable="bottom">
+                            <field name="offer_ids" nolabel="1" readonly="state in ['offer_accepted','sold','cancelled']">
+                                <list editable="bottom">
                                     <field name="price"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
                                     <field name="status"/>
-                                    <button name="action_accept" type="object" icon="fa-check" title="Accept Offer"/>
-                                    <button name="action_refuse" type="object" icon="fa-times" title="Refuse Offer"/>
+                                    <button name="action_accept" type="object" icon="fa-check" title="Accept Offer" invisible="status == 'accepted' or status == 'refused'"/>
+                                    <button name="action_refuse" type="object" icon="fa-times" title="Refuse Offer" invisible="status == 'accepted' or status == 'refused'"/>
                                 </list>
                             </field>
                         </group>
@@ -79,7 +80,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Properties">
+            <list string="Estate Properties" editable="bottom">
                 <field name="title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>

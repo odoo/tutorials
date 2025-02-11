@@ -20,7 +20,7 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offers">
+            <list string="Property Offers" editable="bottom">
                 <field name="price"/>
                 <field name="status"/>
             </list>

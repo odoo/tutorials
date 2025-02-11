@@ -1,6 +1,6 @@
 #Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models,fields,api 
+from odoo import models, fields, api 
 from datetime import date, timedelta
 from odoo.exceptions import UserError
 
@@ -8,6 +8,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order="price desc"
 
     create_date = fields.Date(string="Creation Date", default=date.today())  
     validity = fields.Integer(string="Validity (Days)", default=7,store=True)
@@ -47,4 +48,5 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             create_date = record.create_date if record.create_date else date.today()
             record.validity = (record.date_deadline - create_date).days if record.date_deadline else 7
+
 
