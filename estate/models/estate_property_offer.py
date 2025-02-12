@@ -22,6 +22,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one(comodel_name="estate.property", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Date Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type", compute="_compute_property_type_id", store=True)  
 
     _sql_constraints = [
         ("check_offer_price", "CHECK(price > 0)", "The offer price must be greater than 0")
@@ -38,13 +39,17 @@ class EstatePropertyOffer(models.Model):
             create_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - create_date).days
 
+    @api.depends("property_id.property_type_id")
+    def _compute_property_type_id(self):
+        for record in self:
+            record.property_type_id = record.property_id.property_type_id
+
     def action_offer_accepted(self):
         for record in self:
             if record.property_id:
                 if record.status == "accepted" or record.property_id.state == "offer_accepted":
                     raise UserError("The offer is already accepted!!!")
                 else:
-                    record.property_id.offer_ids.write({"status":"refused"})
                     record.status = "accepted"
                     record.property_id.state = "offer_accepted"
                     record.property_id.buyer_id = record.partner_id
@@ -57,5 +62,3 @@ class EstatePropertyOffer(models.Model):
                     raise UserError("The offer is already refused!!!")
                 else:
                     record.status = "refused"
-                    record.property_id.buyer_id = False
-                    record.property_id.selling_price = 0
