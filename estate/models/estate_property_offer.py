@@ -5,11 +5,12 @@ from odoo.exceptions import UserError
 class estatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "offers available to property"
+    _order = "price desc"
 
     price = fields.Float("Price")
     status = fields.Selection(string = "Status", copy = False, selection = [("accepted", "Accepted"), ("refused", "Refused")])
-    partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    partner_id = fields.Many2one("res.partner", required = True)
+    property_id = fields.Many2one("estate.property", required = True, ondelete = "cascade")
 
     validity = fields.Integer("Validity (days)",  default = 7)
     date_deadline = fields.Date("Deadline Date", compute = "_compute_date_deadline", inverse = "_inverse_date_deadline")
@@ -20,13 +21,14 @@ class estatePropertyOffer(models.Model):
             createDate = record.property_id.create_date.date() if record.property_id and record.property_id.create_date else fields.Date.today()
             record.date_deadline = createDate + timedelta(days=record.validity)
 
+    # inverse function works when whole form is saved, the UI won't be updated until record is saved
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.property_id.create_date.date()).days if record.date_deadline else 0
 
     def action_set_status_accepted(self):
             for record in self:
-                # check if allready accepted another offer
+                # check if already accepted another offer
                 if record.property_id.buyer_id:
                     message = "One Property has already accepted an offer."
                     raise UserError(message)
@@ -34,6 +36,7 @@ class estatePropertyOffer(models.Model):
                     record.status = 'accepted'
                     record.property_id.buyer_id = record.partner_id
                     record.property_id.selling_price = record.price
+                    record.property_id.state = "offer_accepted"
             return True
         
     def action_set_status_refused(self):
@@ -43,3 +46,8 @@ class estatePropertyOffer(models.Model):
                 rd.property_id.selling_price = False
             self.status = 'refused'
         return True  
+
+    _sql_constraints = [("check_positive_price", "CHECK(price > 0)", "Price of Offer must be Strictly positive")]
+
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
+

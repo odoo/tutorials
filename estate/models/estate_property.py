@@ -1,9 +1,11 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class estateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property"
+    _order = "id desc"
 
 
     name= fields.Char("Property Name", required = True) # required make property not nullable 
@@ -20,7 +22,7 @@ class estateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(string = "Orientations", selection = [("north", "North"), ("east","East"), ("west","West"), ("south","South")], help = "this is used to select orientations of garden")
     active = fields.Boolean("Active", default = True)
-    state = fields.Selection(required = True, copy = False, default = "new", selection = [("new", "New"), ("offer received", "Offer Received"), ("offer accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")])
+    state = fields.Selection(required = True, copy = False, default = "new", selection = [("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")])
 
     property_type_id = fields.Many2one("estate.property.type")
     
@@ -73,3 +75,16 @@ class estateProperty(models.Model):
             else:
                 record.state = "cancelled"
             return True
+
+    # sql constraint to check if expected price, selling price are positive
+    _sql_constraints = [("check_positive_expected_price", "CHECK(expected_price > 0)", "The Expected Price of the Property must be a positive value"), ("check_positive_selling_price", "CHECK(selling_price >= 0)", "The Selling Price of the Property must be a positive value")]
+
+    # python constraint for selling price not lower than 90% of expected price
+    @api.constrains("selling_price")
+    def _check_selling_price_minimum_value(self):
+        for record in self:
+            # selling price is zero by deafult, this checks that it do enter with default value
+            if not float_is_zero(record.selling_price, precision_digits = 1):
+                minimum_price = record.expected_price * 0.9;
+                if float_compare(record.selling_price, minimum_price, precision_digits=2) == -1:
+                    raise ValidationError("The Selling Price cannot be lower than 90% of Expected Price")
