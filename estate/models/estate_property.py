@@ -43,8 +43,8 @@ class EstateProperty(models.Model):
         default="new"
     )
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    user_id = fields.Many2one( "res.users", string="Salesperson",default=lambda self: self.env.user)
-    partner_id = fields.Many2one("res.partner", string="Buyer", default=lambda self: self.env.user)
+    user_id = fields.Many2one("res.users", string="Salesperson",default=lambda self: self.env.user)
+    partner_id = fields.Many2one("res.partner", string="Buyer")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     offer_count = fields.Integer(string="Count")
@@ -105,3 +105,12 @@ class EstateProperty(models.Model):
                     raise models.ValidationError(
                         "The selling price cannot be lower than 90% of the expected price!"
                     )
+
+    @api.ondelete(at_uninstall=False)
+    def _check_property_state_before_delete(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(
+                    "You cannot delete a property unless its state is 'New' or 'Cancelled'."
+                )
+                

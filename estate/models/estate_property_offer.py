@@ -35,14 +35,23 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - create_date).days if record.date_deadline else 7
 
     def property_action_accept(self):
-        for record in self:
-            if record.property_id.state != "offer_accepted":
-                record.status = 'accepted'
-                record.property_id.state = 'offer_accepted'
-                record.property_id.partner_id = record.partner_id
-                record.property_id.selling_price = record.price
+            if self.property_id.state == 'sold':
+                raise UserError("Property already sold.")
+            elif self.property_id.state == 'cancelled':
+                raise UserError("Property cancelled, offers cannot be accept.")
+            elif self.status == 'accepted':
+                raise UserError("Buyer is already accepted.")
             else:
-                raise UserError("Only one offer can be accepted for the property.")
+                for offer in self.property_id.offer_ids:
+                    if offer.id != self.id:
+                        offer.status = 'refused'
+                    else:
+                        self.write({'status': 'accepted'})
+                        self.property_id.write({
+                            'selling_price': self.price,
+                            'buyer_id': self.partner_id,
+                            'state': 'offer_accepted'
+                        })
 
     def property_action_refuse(self):
         for record in self:
@@ -55,4 +64,16 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
     ]
-    
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_obj = self.env["estate.property"].browse(vals["property_id"])
+
+            existing_offer_prices = property_obj.offer_ids.mapped("price")
+            if existing_offer_prices and self.price < max(existing_offer_prices):
+                raise UserError("You cannot create an offer lower than an existing one.")
+
+            property_obj.state = "offer_received"
+
+        return super().create(vals_list)
