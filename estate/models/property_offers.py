@@ -6,6 +6,7 @@ from datetime import timedelta
 class PropertyOffers(models.Model):
     _name = "property.offers"
     _description = "Property Offers"
+    _order = "price desc"
 
     price = fields.Float(string="Price", required=True)
     status = fields.Selection(
@@ -15,8 +16,15 @@ class PropertyOffers(models.Model):
     )
 
     # relationships
-    partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    partner_id = fields.Many2one(
+        string="Partner", comodel_name="res.partner", required=True
+    )
+    property_id = fields.Many2one(
+        string="Property", comodel_name="estate.property", required=True
+    )
+    property_type_id = fields.Many2one(
+        string="Property Type", related="property_id.property_type_id", store=True
+    )
 
     # inverse function fields
     validity = fields.Integer(string="Validity (days)", default=7)

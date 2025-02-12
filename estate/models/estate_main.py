@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property"
+    _order = "id desc"
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text("Description")
@@ -105,13 +106,13 @@ class EstateProperty(models.Model):
     _sql_constraints = [
         (
             "expected_price",
-            "CHECK(expected_price >=0)",
+            "CHECK(expected_price >0)",
             "A expected price must be strictly positive",
         ),
         (
             "selling_price",
             "CHECK(selling_price >= 0)",
-            "A selling price must be strictly positive",
+            "A selling price must be positive",
         ),
     ]
 
