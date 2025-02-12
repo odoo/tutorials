@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer for property"
+
     price = fields.Float()
     status= fields.Selection(
         selection=[("accepted","Accepted"), ("refused","Refused")],
@@ -13,7 +14,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property',required=True)
     validity = fields.Integer(string="Validity(days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
-    # store=True means the value of date_deadline is stored in the database, so it can be used in searches, filters, and views.
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -21,7 +22,7 @@ class EstatePropertyOffer(models.Model):
                 record.date_deadline = record.create_date + relativedelta(days=record.validity)
             else:
                 record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
-
+                
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline:
@@ -35,7 +36,7 @@ class EstatePropertyOffer(models.Model):
             if record.status == 'accepted' or record.status == 'refused':
                 raise exceptions.UserError("Property is already accepted or refused.")
             else:
-                all_offers = record.property_id.offer_ids  # Geting all offers og property
+                all_offers = record.property_id.offer_ids  # Geting all offers of property
                 for offer in all_offers:
                     if offer.id != record.id:  # Excluding the current offer
                         offer.status = 'refused'
@@ -49,3 +50,7 @@ class EstatePropertyOffer(models.Model):
                 raise exceptions.UserError("Property is already accepted or refused.")
             else:
                 record.status = 'refused'
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)', "The offer price must be strictly positive."),
+    ]
+    
