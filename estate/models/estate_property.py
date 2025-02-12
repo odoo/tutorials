@@ -8,21 +8,22 @@ class PropertyPlan(models.Model):
     _name = "estate.property"
     _description = "Estate property tables"
     _order = "id desc"
+    _inherit = ["mail.thread"]
 
-    name = fields.Char(string="Title", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
+    name = fields.Char(string="Title", required=True, tracking=True)
+    description = fields.Text(string="Description", tracking=True)
+    postcode = fields.Char(string="Postcode", tracking=True)
     date_availability = fields.Date(
         string="Available From",
         copy=False,
-        default=(fields.Date.today() + relativedelta(months=+3)),
+        default=(fields.Date.today() + relativedelta(months=+3)), tracking=True
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True)
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
-    living_area = fields.Integer(string="Living Area (sqm)")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
+    expected_price = fields.Float(string="Expected Price", required=True,tracking=True)
+    selling_price = fields.Float(string="Selling Price", readonly=True, tracking=True)
+    bedrooms = fields.Integer(string="Bedrooms", default=2, tracking=True)
+    living_area = fields.Integer(string="Living Area (sqm)", tracking=True)
+    facades = fields.Integer(string="Facades", tracking=True)
+    garage = fields.Boolean(string="Garage", tracking=True)
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)")
     active = fields.Boolean(string="Active", default=True)
@@ -38,7 +39,7 @@ class PropertyPlan(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        help="Sate of Offer",
+        help="Sate of Offer", tracking=True
     )
     garden_orientation = fields.Selection(
         string="Garden Orientation",
@@ -48,11 +49,11 @@ class PropertyPlan(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
-        help="Used to decide the direction of Garden",
+        help="Used to decide the direction of Garden", tracking=True
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type", tracking=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
-    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False, tracking=True)
     sales_person = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
