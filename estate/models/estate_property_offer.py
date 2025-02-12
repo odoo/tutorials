@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer for property"
+    _order = "price desc"
 
     price = fields.Float()
     status= fields.Selection(
@@ -14,12 +15,12 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property',required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline",inverse="_inverse_date_deadline", store=True)
-    
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
             if record.create_date:
-                
                 record.date_deadline = record.create_date + relativedelta(days=record.validity)
             else:
                 record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
@@ -27,7 +28,6 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline:
-               
                     delta = record.date_deadline - fields.Date.today()
                     record.validity = delta.days
             else:
@@ -35,12 +35,10 @@ class EstatePropertyOffer(models.Model):
     
     def action_confirm(self):
         for record in self:
-           
             existing_accepted_offer = self.env['estate.property.offer'].search([
                 ('property_id', '=', record.property_id.id),
                 ('status', '=', 'accepted')
             ], limit=1)
-
             if existing_accepted_offer:
                 raise exceptions.UserError("An offer has already been accepted for this property. You cannot accept another offer.")
             record.status = "accepted"
@@ -54,10 +52,13 @@ class EstatePropertyOffer(models.Model):
                 ('property_id', '=', record.property_id.id),
                 ('status', '=', 'accepted')
             ], limit=1)
-
             if existing_accepted_offer:
                 raise exceptions.UserError("An offer has already been accepted. You cannot refuse any other offer.")
-
             record.status = "refused"
-
         return True
+    
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)',
+         'Offer Price must be strictly positive.')
+    ]
+
