@@ -4,12 +4,12 @@
         <record id="res_users_view_form" model="ir.ui.view">
             <field name="name">res.users.view.form.inherit.estate</field>
             <field name="model">res.users</field>
-            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="inherit_id" ref="base.view_users_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='account_security']" position="after">
                     <!-- <notebook position="inside"> -->
                     <page name="estate_property" string="Real Estate Properties">
-                        <field name="property_ids" />
+                        <field name="property_ids"/>
                     </page>
                     <!-- </notebook> -->
                 </xpath>
