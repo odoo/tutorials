@@ -1,0 +1,35 @@
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]" />
+    </record>
+
+    <record id="estate_rule_agent_properties" model="ir.rule">
+        <field name="name">Agent: Access to their own properties or Properties Which have no Agent.</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="domain_force">['&amp;','|', ('user_id', '=', user.id),('user_id', '=',
+            False),'|', ('company_id', '=', user.company_id.id),('company_id', '=', False)]</field>
+        <field name="groups" eval="[Command.link(ref('estate_group_user'))]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+
+    <record id="estate_rule_manager_properties" model="ir.rule">
+        <field name="name">Manager: Full access to all properties</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups" eval="[Command.link(ref('estate_group_manager'))]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
+    </record>
+
+</odoo>

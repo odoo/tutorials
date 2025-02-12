@@ -1,11 +1,12 @@
 from datetime import  timedelta  # Import required libraries
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Estate Recurring Plans"
+    _description = "Estate Property"
     _order = "id desc"
 
     name = fields.Char("Name", required=True)
@@ -51,6 +52,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer("Total Area", compute="_compute_total_area")
     best_price = fields.Integer("Best Price", compute="_compute_best_price")
+    company_id = fields.Many2one("res.company", string="Company Id", default = lambda self:self.env.company, required=True)
 
     _sql_constraints = [
         (
@@ -104,4 +106,5 @@ class EstateProperty(models.Model):
             if record.state not in ['new', 'cancelled']:
                 raise UserError(f"You cannot delete the property '{record.name}' because its state is '{record.state}'.")
                 
+
 

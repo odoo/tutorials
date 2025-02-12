@@ -1,12 +1,13 @@
 from datetime import timedelta
-from odoo import api, models, fields
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_is_zero
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-    _description = "Real Estate Property Offer"
+    _description = "Estate Property Offer"
     _order = "price desc"
 
     # Fields declaration
@@ -72,7 +73,6 @@ class EstatePropertyOffer(models.Model):
                 property_id.state = "offer_received"
 
         super(EstatePropertyOffer, self).create(vals_list)
-        
 
 
    
