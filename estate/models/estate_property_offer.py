@@ -1,11 +1,14 @@
 from odoo import api,fields,models
 from odoo.exceptions import UserError
 
-
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer's"
     _order = "price desc"
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)',
+         'The Offer Price Must be Positive Value')
+    ]
 
     price = fields.Float()
     status = fields.Selection(
@@ -20,10 +23,6 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type", related="property_id.property_type_id", store=True)
 
-    _sql_constraints = [
-        ('check_price', 'CHECK(price > 0)',
-         'The Offer Price Must be Positive Value')
-    ]
 
     @api.depends("validity")
     def _compute_deadline(self):
@@ -51,6 +50,20 @@ class EstatePropertyOffer(models.Model):
                 record.valpassidity = (record.date_deadline -
                                        fields.Datetime.now()).days
 
+    @api.model_create_multi
+    def create(self, vals):
+        for record in vals:
+            property = self.env["estate.property"].browse(
+                record["property_id"])
+
+            if record['price'] < property.best_price:
+                raise UserError(
+                    (f"The Offer must higher then {property.best_price}"))
+
+            property.state = "offer received"
+
+        return super().create(vals)
+
     def action_accept_offer(self):
         for record in self:
             if record.property_id.state == "offer accepted":
@@ -69,6 +82,7 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_refuse_offer(self):
+        self.ensure_one()
         if self.status == "refused":
             raise UserError(
                 (f"You can't Refuse an offer it's already {self.status.capitalize()}"))
@@ -79,16 +93,3 @@ class EstatePropertyOffer(models.Model):
 
         self.status = "refused"
         return True
-
-    @api.model
-    def create(self, vals):
-        property = self.env["estate.property"].browse(
-            vals["property_id"])
-
-        if vals['price'] < property.expected_price:
-            raise UserError(
-                (f"The Offer must higher then {property.expected_price}"))
-
-        property.state = "offer received"
-
-        return super().create(vals)

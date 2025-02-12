@@ -19,16 +19,16 @@
                                     <field name="name" class="oe_inline" placeholder="Property Type" />
                                 </h1>
                             </div>
-                            <div class="oe_button_box" name="button_box">
-                                <button class="oe_stat_button" icon="fa-money" type="action"
-                                    name="%(estate_property_offer_action)d">
+                            <div name="button_box" class="oe_button_box">
+                                <button name="%(estate_property_offer_action)d"
+                                    class="oe_stat_button" icon="fa-money" type="action">
                                     <field name="offer_count" string="Offers" widget="statinfo" />
                                 </button>
                             </div>
                         </group>
                         <notebook>
                             <page string="Properties">
-                                <field id="properties_list" name="property_ids">
+                                <field name="property_ids" id="properties_list">
                                     <list create="False">
                                         <field name="name" />
                                         <field name="expected_price" />

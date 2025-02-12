@@ -2,11 +2,17 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
-
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)',
+         'The Expected Price Must be Positive Value'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The Selling Price Must be Positive Value'),
+        ('check_property_title', 'UNIQUE(name)', 'Property Title Must be Unique')
+    ]
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Property Description")
@@ -68,14 +74,6 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         string="Best Offer", compute="_compute_best_price")
 
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >= 0)',
-         'The Expected Price Must be Positive Value'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)',
-         'The Selling Price Must be Positive Value'),
-        ('check_property_title', 'UNIQUE(name)', 'Property Title Must be Unique')
-    ]
-
     # computation methods
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
@@ -106,25 +104,27 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price must be at least 90% of the expected price!You must reduce the expected price if you want to accept this offer.")
 
-    def action_sold_property(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled Property Cannot be Sold")
-            else:
-                record.state = "sold"
-
-        return True
-
-    def action_cancel_property(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("Sold Property Cannot be Cancelled")
-            else:
-                record.state = "cancelled"
-
-        return True
-
     @api.ondelete(at_uninstall=False)
     def _unlink_except_state_not_new_or_cancelled(self):
         if not any(record.state in ('new', 'cancelled') for record in self):
             raise UserError("Only New and Cancelled Property can be deleted.")
+        
+    def action_sold_property(self):
+        self.ensure_one()
+        
+        if self.state == "cancelled":
+            raise UserError("Cancelled Property Cannot be Sold")
+        else:
+            self.state = "sold"
+
+        return True
+
+    def action_cancel_property(self):
+        self.ensure_one()
+        
+        if self.state == "sold":
+            raise UserError("Sold Property Cannot be Cancelled")
+        else:
+            self.state = "cancelled"   
+
+        return True

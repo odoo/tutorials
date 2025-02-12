@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='account_security']" position="after">
                     <!-- <notebook position="inside"> -->
-                    <page name="estate_property" string="Real Estate Properties1">
+                    <page name="estate_property" string="Real Estate Properties">
                         <field name="property_ids" />
                     </page>
                     <!-- </notebook> -->
