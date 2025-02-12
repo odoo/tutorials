@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -7,19 +7,14 @@ class EstatePropertyType(models.Model):
     _order = "name asc"
 
     name = fields.Char(required=True)
-    property_ids = fields.One2many(
-        "estate.property", "property_type_id", string="All Properties"
-    )
+    property_ids = fields.One2many("estate.property", "property_type_id", string="All Properties")
     offer_ids = fields.One2many("estate.property.offer", "property_type_id")
-    sequence = fields.Integer(
-        "Sequence", default=1, help="Used to order Types. Lower is better."
-    )
+    sequence = fields.Integer("Sequence", default=1, help="Used to order Types. Lower is better.")
+    offer_count = fields.Integer("Offers", compute="_compute_offer_count")
 
     _sql_constraints = [
         ("unique_name", "UNIQUE(name)", "A type with same name is already exists."),
     ]
-
-    offer_count = fields.Integer("Offers", compute="_compute_offer_count")
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):

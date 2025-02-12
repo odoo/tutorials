@@ -1,6 +1,6 @@
-from odoo import fields, models, api
-from odoo.exceptions import UserError, ValidationError
+from odoo import api, fields, models
 from odoo.tools import float_is_zero, float_compare
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -26,7 +26,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean("Garden")
     garden_area = fields.Integer("Garden Area")
     garden_orientation = fields.Selection(
-        string="Type",
+        string="Garden Orientation",
         selection=[
             ("north", "North"),
             ("south", "South"),
@@ -64,13 +64,21 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Integer("Total Area", compute="_compute_total_area")
+    best_price = fields.Float("Best Price", compute="_compute_best_price")
+
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "The expected price must be strictly positive.",
+        ),
+    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    best_price = fields.Float("Best Price", compute="_compute_best_price")
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -106,45 +114,16 @@ class EstateProperty(models.Model):
                 raise UserError("It's already been canceled.")
             return True
 
-    _sql_constraints = [
-        (
-            "check_expected_price",
-            "CHECK(expected_price > 0)",
-            "The expected price must be strictly positive.",
-        ),
-    ]
-
-    @api.constrains("expected_price")
-    def _check_expected_price(self):
-        for record in self:
-            if record.expected_price < 0:
-                raise ValidationError("The expected price must be strictly positive")
-
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if float_is_zero(
-                record.selling_price,
-                precision_rounding=self.env.company.currency_id.rounding,
-            ):
+            if float_is_zero(record.selling_price, precision_rounding=self.env.company.currency_id.rounding):
                 continue
-
-            if (
-                float_compare(
-                    record.selling_price,
-                    (record.expected_price * 0.9),
-                    precision_rounding=self.env.company.currency_id.rounding,
-                )
-                < 0
-            ):
-                raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price!"
-                )
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=self.env.company.currency_id.rounding)< 0:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_allowed(self):
         for record in self:
             if record.state not in ["New", "Canceled"]:
-                raise UserError(
-                    "You can only delete properties in 'New' or 'Cancelled' state."
-                )
+                raise UserError("You can only delete properties in 'New' or 'Cancelled' state.")
