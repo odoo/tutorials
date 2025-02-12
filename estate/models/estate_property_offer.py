@@ -1,12 +1,13 @@
 from odoo import fields, models, api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers for Real Estate App"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -22,6 +23,9 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
+    )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
     )
 
     _sql_constraints = [
@@ -54,9 +58,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.status == "accepted":
                 raise UserError("Offer is already accepted")
-            elif (
-                record.property_id.best_offer >= record.property_id.expected_price * 0.9
-            ):
+            else:
                 # accept the selected offer
                 record.status = "accepted"
                 record.property_id.status = "offer_accept"
@@ -68,10 +70,6 @@ class EstatePropertyOffer(models.Model):
                     lambda o: o.id != record.id
                 )
                 other_offers.write({"status": "refused"})
-            else:
-                raise ValidationError(
-                    f"The selling price must be atleast 90% of expected price"
-                )
 
     def estate_property_offer_action_refuse(self):
         for record in self:
@@ -80,6 +78,5 @@ class EstatePropertyOffer(models.Model):
             else:
                 # refuse the selected offer
                 record.status = "refused"
-                record.property_id.status = "offer_reject"
                 record.property_id.buyer_id = False
                 record.property_id.selling_price = False

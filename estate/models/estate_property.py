@@ -6,6 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate App"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -14,7 +15,7 @@ class EstateProperty(models.Model):
         default=lambda self: date.today() + timedelta(days=90)
     )
     expected_price = fields.Float()
-    selling_price = fields.Float(copy=False)
+    selling_price = fields.Float(copy=False, readonly=True)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -32,7 +33,7 @@ class EstateProperty(models.Model):
     status = fields.Selection(
         selection=[
             ("new", "New"),
-            ("offer_reject", "Offer Rejected"),
+            ("offer_receive", "Offer Received"),
             ("offer_accept", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
@@ -65,7 +66,12 @@ class EstateProperty(models.Model):
             "check_selling_price",
             "CHECK(selling_price >= 0)",
             "Selling Price of the property should be positive",
-        )
+        ),
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected Price should be strictly positive",
+        ),
     ]
 
     @api.depends("garden_area", "living_area")
@@ -96,7 +102,7 @@ class EstateProperty(models.Model):
             if (
                 record.status == "new"
                 or record.status == "offer_accept"
-                or record.status == "offer_reject"
+                or record.status == "offer_receive"
             ):
                 record.status = "sold"
             elif record.status == "cancelled":
@@ -112,7 +118,7 @@ class EstateProperty(models.Model):
             if (
                 record.status == "new"
                 or record.status == "offer_accept"
-                or record.status == "offer_reject"
+                or record.status == "offer_receive"
             ):
                 record.status = "cancelled"
             elif record.status == "sold":
@@ -122,10 +128,12 @@ class EstateProperty(models.Model):
 
         return True
 
-    @api.constrains(
-        "expected_price",
-    )
-    def _check_expected_price(self):
+    @api.constrains("expected_price", "selling_price")
+    def _check_exp_sel_price(self):
         for record in self:
-            if record.expected_price <= 0:
-                raise ValidationError("Expected Price should be strictly positive")
+            if (
+                record.selling_price < record.expected_price * 0.9
+            ) and record.selling_price > 0:
+                raise ValidationError(
+                    f"The selling price must be atleast 90% of expected price"
+                )

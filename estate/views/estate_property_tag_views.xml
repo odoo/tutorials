@@ -5,4 +5,16 @@
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <!-- List View -->
+    <record id="estate_property_tag_view_list" model="ir.ui.view">
+        <field name="name">Tags</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list editable="top">
+                <field name="name" string="name"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
 </odoo>
