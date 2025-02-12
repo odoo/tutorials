@@ -30,7 +30,8 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="sold_property" type="object" string="Sold" class="btn-primary" />
+                    <button name="sold_property" type="object" string="Sold" class="btn btn-primary" invisible="state == 'sold'" />
+                    <button name="cancelled_property" type="object" string="Sold" invisible="state != 'sold'" />
                     <button name="cancelled_property" type="object" string="Cancel" />
                 </header>
                 <sheet>

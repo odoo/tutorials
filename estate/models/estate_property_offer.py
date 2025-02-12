@@ -19,6 +19,10 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer("Validity", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_deadline_date", inverse="_inverse_deadline_date")
 
+    _sql_constraint = [
+        ('check_offer_price', 'check(price > 0.0)', 'The offer price must be greater than 0')
+    ]
+
     def action_accept_offer(self):
         for record in self:
             record.status = 'accepted'
