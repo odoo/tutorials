@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import api, models, fields
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -77,6 +77,14 @@ class EstateProperty(models.Model):
                 raise UserError("sold properties cannot be cancelled")
             else:
                 record.state = "cancelled"
+
+    # === Inherited Methods === #
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("You cannot delete a record which is %s" %record.state)
+        
     
     # === SQL Constraints === #
     _sql_constraints = [

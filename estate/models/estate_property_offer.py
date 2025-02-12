@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -16,6 +16,7 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
     partner_id = fields.Many2one(comodel_name="res.partner", required=True)
     property_id = fields.Many2one(comodel_name="estate.property")
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     # === COMPUTE METHODS === #
     @api.depends('validity', 'create_date')
@@ -29,9 +30,10 @@ class EstatePropertyOffer(models.Model):
 
     # === Actions === #
     def action_accepted(self):
-        accepted_offer = self.search([('property_id', '=', self.property_id.id),('status', '=', 'accepted')], limit=1)
-        if accepted_offer:
-            raise UserError("An offer is already accepted, you cannot accept two offer for the same advertisement.")
+        # accepted_offer = self.search([('property_id', '=', self.property_id.id),('status', '=', 'accepted')], limit=1)
+        #no need to find accepted offer just check the state to check if any offer is accepted
+        if self.property_id.state == 'offeraccepted':
+            raise ValidationError("An offer is already accepted, you cannot accept two offer for the same advertisement.")
         self.status = "accepted"
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
@@ -39,6 +41,19 @@ class EstatePropertyOffer(models.Model):
 
     def action_refused(self):
         self.status = "refused" 
+
+    # === Inherited Methods === #
+    @api.model_create_multi
+    def create(self,vals):
+        for record in vals:
+            property_id = self.env['estate.property'].browse(record['property_id'])
+            if property_id:
+                property_id.write({'state' : 'offerreceived'})
+
+            if property_id.best_offer > record['price']:
+                raise UserError("Offer Price entered is lower than the existing offer price.")
+
+        return super().create(vals)
 
     # === SQL Constraints === #
     _sql_constraints = [

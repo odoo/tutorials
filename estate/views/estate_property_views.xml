@@ -6,7 +6,10 @@
             <field name="name">view.estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Properties">
+                <list name="properties" string="Properties" 
+                      decoration-success="state in ['offerreceived', 'offeraccepted']"
+                      decoration-bf="state == 'offeraccepted'" 
+                      decoration-muted="state == 'sold'">
                     <header>
                         <button name="action_sold" type="object" string="Sold"/>
                         <button name="action_cancelled" type="object" string="Cancel"/>
@@ -30,8 +33,8 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button invisible = "state == 'sold' or state == 'cancelled'" name="action_sold" type="object" string="Sold"/>
-                        <button invisible = "state == 'sold' or state == 'cancelled'" name="action_cancelled" type="object" string="Cancel"/>
+                        <button invisible = "state in ['sold', 'cancelled']" name="action_sold" type="object" string="Sold"/>
+                        <button invisible = "state in ['sold', 'cancelled']" name="action_cancelled" type="object" string="Cancel"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -46,6 +49,7 @@
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
                                 <field name="property_type_id" options="{'no_create': true}"/>
+                                <field name="state"/>
                             </group>
                             <group>
                                 <field name="expected_price"/>
@@ -68,7 +72,7 @@
                                 </group>
                             </page>
                             <page name="Offers">
-                                <field name="offer_ids" nolabel='1' readonly="state == 'offeraccepted' or state == 'sold' or state == 'cancelled'"/>
+                                <field name="offer_ids" nolabel='1' readonly="state in ['offeraccepted', 'sold', 'cancelled']"/>
                             </page>
                             <page name="Other info">
                                 <group>
@@ -94,13 +98,13 @@
                     <field name="expected_price"/>
                     <field name="selling_price"/>
                     <field name="bedrooms"/>
-                    <field name="living_area"/>
+                    <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                     <field name="facades"/>
                     <field name="garage"/>
                     <field name="garden"/>
                     <field name="garden_area"/>
                     <field name="garden_orientation"/>
-                    <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offerreceived'])]"/>
+                    <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offerreceived'])]"/>
                     <filter string="Postcode" name="postcode" context="{'group_by' : 'postcode'}"/>
                 </search>
             </field>
@@ -111,6 +115,7 @@
             <field name="name">Real Estate</field>
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_available': True}</field>
         </record>
     </data>
 </odoo>
