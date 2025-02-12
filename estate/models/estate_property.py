@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from datetime import timedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = 'id desc'
 
     name = fields.Char(
         string="Name", required=True, help="Name of the Property"
@@ -82,7 +83,7 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("A cancelled property cannot be sold!")
 
             accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
-            if not accepted_offer:
+            if not accepted_offer or record.status != 'offer_accepted':
                 raise exceptions.UserError("You need to accept an offer first!")
 
             record.status = 'sold'

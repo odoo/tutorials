@@ -4,6 +4,7 @@ from datetime import timedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = 'price desc'
 
     price = fields.Float(string="Offer Price", required=True)
 
@@ -14,6 +15,7 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True, string="Property Type")
 
     create_date = fields.Date(default=fields.Date.today)
     validity = fields.Integer(default=7)
@@ -38,6 +40,9 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.status == 'sold':
                 raise exceptions.UserError("This property is already sold.")
 
+            if record.property_id.status == 'cancelled':
+                raise exceptions.UserError("This property is cancelled.")
+
             existing_accepted_offer = record.property_id.offer_ids.filtered(lambda o: o.status == 'accepted')
             if existing_accepted_offer:
                 raise exceptions.UserError("Another offer has already been accepted for this property.")
@@ -50,12 +55,17 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         for record in self:
+            if record.property_id.status == 'sold':
+                raise exceptions.UserError("This property is already sold.")
+
+            if record.property_id.status == 'cancelled':
+                raise exceptions.UserError("This property is cancelled.")
+
+            if not record.property_id.status == 'offer_accepted':
+                record.property_id.status = 'offer_received'
+                record.property_id.buyer_id = False
+                record.property_id.selling_price = 0
             record.status = 'refused'
-            record.property_id.status = 'offer_received'
-            record.property_id.buyer_id = False
-            record.property_id.selling_price = 0
         return True
 
-    _sql_constraints = [
-        ('check_offer_price', 'CHECK(price >= 0)', 'The offer price must be positive.')
-    ]
+    _sql_constraints = [('check_offer_price', 'CHECK(price >= 0)', 'The offer price must be positive.')]
