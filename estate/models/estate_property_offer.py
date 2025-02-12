@@ -10,9 +10,8 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
     
     _sql_constraints = [
-        (
-            'positive_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive'
-        )
+        ('positive_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive'),
+        ('one_offer_per_buyer', 'UNIQUE(partner_id, property_id)', 'Buyer can only place one offer')
     ]
     
     price=fields.Float(string="Price")
@@ -56,17 +55,29 @@ class EstatePropertyOffer(models.Model):
         for property in properties:
             linked_offers = self.search_count([('property_id', '=', property.id)])
             
-            if(linked_offers == 0):
+            if linked_offers == 0:
                 property.state = 'new'
                 property.buyer = ''
                 property.selling_price = 0
         return res
     
     def action_accept_offer(self):
+        if self.property_id.state == 'cancelled':
+            raise UserError("This property is already cancelled")
+        
         self.status = "accepted"
         self.property_id.state = "offer_accepted"
         self.property_id.selling_price = self.price
-        self.property_id.buyer = self.partner_id
+        self.property_id.buyer_id = self.partner_id
+        
+        remaining_offers = self.search([
+            '&',
+            ('property_id', '=', self.property_id.id),
+            ('id', '!=', self.id)
+        ])
+        if remaining_offers:
+            remaining_offers.write({'status': 'refused'})
+        
         return True
 
     def action_refuse_offer(self):

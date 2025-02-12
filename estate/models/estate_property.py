@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
 
@@ -28,20 +28,9 @@ class EstateProperty(models.Model):
         copy=False,
         default=lambda self: fields.Date.today() + relativedelta(days=90),
     )
-    expected_price = fields.Float(
-        "Expected Price",
-        required=True,
-        help="Expected Price"
-    )
-    selling_price = fields.Float(
-        "Selling Price",
-        readonly=True,
-        copy=False
-    )
-    bedrooms = fields.Integer(
-        "Bedrooms",
-        default=2
-    )
+    expected_price = fields.Float("Expected Price", required=True, help="Expected Price")
+    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
+    bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer("Facades")
     garage = fields.Boolean("Garage")
@@ -71,8 +60,8 @@ class EstateProperty(models.Model):
         default="new",
     )
     property_type_id=fields.Many2one(string="Property Type", comodel_name="estate.property.type", ondelete="restrict")
-    buyer=fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False, readonly=True)
-    salesperson=fields.Many2one(
+    buyer_id=fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False, readonly=True)
+    salesperson_id=fields.Many2one(
         string="Salesperson",
         comodel_name="res.users",
         default=lambda self: self.env.user,
@@ -107,7 +96,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area=0
             self.garden_orientation=""
-    
+        
     @api.ondelete(at_uninstall=False)
     def _check_property_before_unlink(self):
         for record in self:
@@ -116,20 +105,12 @@ class EstateProperty(models.Model):
     
     def action_mark_property_sold(self):
         for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled properties cannot be sold")
-            elif record.state == "sold":
-                raise UserError("Already sold property")
-            else:
-                record.state = "sold"
+            if record.state != "offer_accepted":
+                raise UserError("Accept an offer first")
+            record.state = "sold"
         return True
     
     def action_mark_property_cancelled(self):
         for record in self:
-            if record.state == "sold":
-                raise UserError("Sold properties cannot be cancelled")
-            elif record.state == "cancelled":
-                raise UserError("Already cancelled property")
-            else:
-                record.state = "cancelled"
+            record.state = "cancelled"
         return True

@@ -24,7 +24,6 @@
         <field name="arch" type="xml">
             <form string="Estate Property Type">
                 <sheet>
-                    <!-- what is the meaning of putting class here and in the button -->
                     <div class="oe_button_box" name="button_box">
                         <button type="action" class="oe_stat_button" name="%(estate_property_offer_action)d" string="Offers" icon="fa-money">
                             <field name="offer_count" widget="statinfo" string="Offers" />

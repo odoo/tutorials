@@ -1,12 +1,12 @@
 from odoo import models, fields
 
 
-class InheritedResUsers(models.Model):
+class ResUsers(models.Model):
     _inherit="res.users"
     
     property_ids = fields.One2many(
         comodel_name="estate.property",
-        inverse_name="salesperson",
+        inverse_name="salesperson_id",
         string="Properties",
         domain=[("state", "in", ['new', 'offer_received'])]
     )

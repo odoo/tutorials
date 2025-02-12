@@ -1,14 +1,13 @@
 from odoo import models, Command
 
 
-class InheritedEstateProperty(models.Model):
+class EstateProperty(models.Model):
     _inherit="estate.property"
     
     def action_mark_property_sold(self):
         self.env["account.move"].create({
-            "partner_id": self.buyer.id,
+            "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",
-            "journal_id": self.env["account.journal"].search([("type", "=", "sale")], limit=1).id,
             "invoice_line_ids": [
                 Command.create({
                     "name": "Property Sale Commission",
