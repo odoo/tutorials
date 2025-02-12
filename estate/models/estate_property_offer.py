@@ -6,8 +6,9 @@ from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
-    _name='estate.property.offer'
-    _description='for adding offers of properties'
+    _name = 'estate.property.offer'
+    _description = 'for adding offers of properties'
+    _order = 'price desc'
 
     price=fields.Float(string='Price')
     status=fields.Selection(
@@ -22,6 +23,7 @@ class EstatePropertyOffer(models.Model):
     property_id=fields.Many2one('estate.property', string='Property', required=True)
     validity = fields.Integer(string='Validity (days)', default=7,)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
 
     _sql_constraints = [
         ('offer_price_check','CHECK( price >= 0 )', 'An offer price must be strictly positive')
@@ -47,6 +49,7 @@ class EstatePropertyOffer(models.Model):
             offer.status = 'accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer = offer.partner_id
+            offer.property_id.state = 'offer_accepted'
         return True
 
     def action_offer_reject_btn(self):
@@ -54,4 +57,5 @@ class EstatePropertyOffer(models.Model):
             offer.status = 'refused'
             offer.property_id.selling_price = 0
             offer.property_id.buyer = False
+            offer.property_id.state = 'offer_received'
         return True

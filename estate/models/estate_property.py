@@ -7,8 +7,9 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"  # . will be shown as _ in actual database 
-    _description = "listing for the properties"
+    _name = 'estate.property'  # . will be shown as _ in actual database 
+    _description = 'listing for the properties'
+    _order = 'id desc'
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
