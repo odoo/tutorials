@@ -7,53 +7,55 @@ from odoo.exceptions import ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property Name"
+    _order = "id desc"
 
-    name = fields.Char('Property Name', required = True, size = 30)
-    description = fields.Text('Description')
-    postcode = fields.Char('Postcode', size = 6)
-    date_availability = fields.Date('Date Availability', copy=False, default=lambda self: fields.Date.today() + timedelta(days=90))
-    expected_price = fields.Float('Expected Price', required = True)
-    selling_price = fields.Float('Selling Price', 
+    name = fields.Char("Property Name", required = True)
+    description = fields.Text("Description")
+    postcode = fields.Char("Postcode", size = 6)
+    date_availability = fields.Date("Date Availability", copy=False, default=lambda self: fields.Date.today() + timedelta(days=90))
+    expected_price = fields.Float("Expected Price", required = True)
+    selling_price = fields.Float("Selling Price", 
         readonly=True, 
         copy=False,
     )
-    bedrooms = fields.Integer('Bedrooms', default = 2)
-    living_area = fields.Integer('Living Area')
-    facades = fields.Integer('Facades')
-    garage = fields.Boolean('Garage')
-    garden = fields.Boolean('Garden', default=False)
-    garden_area = fields.Integer('Garden Area(sqm)', default = 0)
-    total_area = fields.Integer('Total Area (sqm)', compute="_compute_total_area", store=True)
+    bedrooms = fields.Integer("Bedrooms", default = 2)
+    living_area = fields.Integer("Living Area")
+    facades = fields.Integer("Facades")
+    garage = fields.Boolean("Garage")
+    garden = fields.Boolean("Garden")
+    garden_area = fields.Integer("Garden Area(sqm)", default = 0)
+    total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area", store=True)
     garden_orientation = fields.Selection(
-        string ='Type',
+        string ="Type",
         selection=[
-            ('north', 'North'),
-            ('south', 'South'),
-            ('east', 'East'),
-            ('west', 'West')    
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West")    
         ]
     )
-    active = fields.Boolean('Active', 
+    active = fields.Boolean("Active", 
         default=True, 
-        help='if you want to active'
+        help="if you want to active"
         )
     state = fields.Selection(
         required = True,    
         copy = False,
         default = "new",
         selection = [
-            ('new', 'New'),
-            ('offer received', 'Offer Received'),
-            ('offer accepted', 'Offer Accepted'),
-            ('sold', 'Sold'),
-            ('cancelled', 'Cancelled')
+            ("new", "New"),
+            ("offer received", "Offer Received"),
+            ("offer accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled")
         ]
     )
-    salesman_id = fields.Many2one('res.users',default=lambda self: self.env.user, string='Salesman')
-    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=True)
-    tags_ids = fields.Many2many('estate.property.tag', string='Tags')
+    salesman_id = fields.Many2one("res.users",default=lambda self: self.env.user, string="Salesman")
+    partner_id = fields.Many2one("res.partner", string="Partner", copy=True)
+    tags_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store=True)
+    property_type_id = fields.Many2one("estate.property.type") #string="Property Type")
     #computed fields
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -69,7 +71,7 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = 'north'
+            self.garden_orientation = "north"
         else:
             self.garden_area = 0
             self.garden_orientation = False 
@@ -90,8 +92,8 @@ class EstateProperty(models.Model):
             return True
     #SQL constaints
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive."),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive.")
     ]
     #Constaints
     @api.constrains("selling_price", "expected_price")
@@ -106,3 +108,4 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be less than 90% of the expected price."
                 )
+                

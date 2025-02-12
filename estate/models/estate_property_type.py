@@ -7,12 +7,14 @@ from odoo.exceptions import ValidationError
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Types of Properties are stored"
+    _order = "sequence, name"
     
     name = fields.Char(string="Name")
     description = fields.Char(string="Description")
-    property_type = fields.Selection(
+    sequence = fields.Integer(default=1)
+    """property_type = fields.Selection(
         string = 'Property Type',
-        required = True,
+        # required = True,
         default = 'house',
         selection = [
             ('house', 'House'),
@@ -21,17 +23,24 @@ class EstatePropertyType(models.Model):
             ('bunglow', 'Bunglow'),
             ('castle', 'Castle')
         ],
-    )
-    postcode = fields.Char('Postcode', size =6)
+    )"""
     date_availability = fields.Date(
-        default=fields.Date.today() + timedelta(days=90), copy=False
+        copy=False, default=lambda self: fields.Date.today() + timedelta(days=90)
     )
     selling_price = fields.Integer('Selling Price',
         readonly = True,
         copy = False,
         default = 1000000
     )
-    expected_price = fields.Float('Expected price', required = True)
+    property_ids = fields.One2many('estate.property', 'property_type_id') #"""string="Properties)
+    offer_ids = fields.One2many(
+        "estate.property.offer", "property_type_id", string="Offers"
+    )
+    offer_count = fields.Integer(
+        string="Offer Count",
+        compute="_compute_offer_count", store=True
+    )
+
     #SQLonstaints
     _sql_constraints = [
         ('unique_property_type_name', 'UNIQUE(name)', 'The property type name must be unique.')

@@ -6,34 +6,62 @@
         <field name="view_mode">list,form</field>
     </record>
     <record id="estate_form_type_view" model="ir.ui.view">
-        <field name = "name">estate.property.type.list</field>
+        <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Properties">
+            <list string="Estate Property Types">
+                <field name="sequence" widget="handle" />
+                <field name="name" string="Property Type Name" />
+                <field name="sequence" string="seq" />
+            </list>
+        </field>
+    </record>
+    <!--Define the Form View for Property Type-->
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property Type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_property_offer)d"
+                            type="action"
+                            icon="fa-money">
+                            <field name="offer_count" string="offers" widget="statinfo" />
+                        </button>
+                    </div>
                     <h1>
-                        <field name="name" string="Property Name"/>
+                        <field name="name" string="Property Type Name" required="1" />
                     </h1>
-                    <group>
-                        <group>
-                            <field name="postcode" string="Postcode"/>
-                            <field name = "date_availability" string="Available From"/>
-                        </group>
-                        <group>
-                            <field name="expected_price" string="Expected Price"/>
-                            <field name="selling_price" string="Selling Price"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string='Description'>
-                            <group>
-                                <field name = "description" string="Description"/>
-                            </group>
+                     <!--Tabs Section -->
+                        <notebook>
+                        <!-- Offers Tab-->
+                        <page string="Properties">
+                            <field name="property_ids" widget="one2many_list"
+                                options="{'no_create': True}">
+                                <list>
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" string="Expected Price" />
+                                    <field name="state" string="State" />
+                                </list>
+                            </field>
                         </page>
-                        <page string ='Other info'></page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-</odoo>
+    <!-- Define the Search View for Property Type -->
+    <record id="estate_property_type_view_search" model="ir.ui.view">
+        <field name="name">estate.property.type.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Estate Property Types">
+                <!-- Group By Property Type Name -->
+                <group expand="0" string="Group By">
+                    <filter name="group_by_name" string="Name" context="{'group_by': 'name'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>                                         
