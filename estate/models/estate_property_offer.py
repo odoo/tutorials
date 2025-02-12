@@ -5,26 +5,38 @@ from datetime import timedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers"
-    price = fields.Float("Price",required=True)
+    _order = "price desc"
+    price = fields.Float("Price", required=True)
     state = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")],
         string="Status",
         copy=False,
         default=False,
     )
-    partner_id = fields.Many2one("res.partner", string="Partner Id", required=True)
+    partner_id = fields.Many2one(
+        comodel_name="res.partner", string="Partner Id", required=True
+    )
     property_id = fields.Many2one(
-        "estate.property", string="Property Id", required=True
+        comodel_name="estate.property", string="Property Id", required=True
     )
     validity = fields.Integer("Validity", default=7)
     date_deadline = fields.Date(
         "Date Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
     )
 
+    property_type_id = fields.Many2one(
+        comodel_name="property.type",
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True,
+    )
+
     _sql_constraints = [
-        ('price_positive', 
-         'CHECK(price > 0)', 
-         'The offer price must be strictly positive.')
+        (
+            "price_positive",
+            "CHECK(price > 0)",
+            "The offer price must be strictly positive.",
+        )
     ]
 
     @api.depends("create_date", "validity")
@@ -64,4 +76,3 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.state = "refused"
         return True
-

@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     active = fields.Boolean(string="Active", default=True)
 
@@ -27,7 +28,7 @@ class EstateProperty(models.Model):
     living_area = fields.Integer(string="Living Area (m²)")
     facades = fields.Integer(string="Number of Facades")
     garage = fields.Boolean(string="Has Garage")
-    garden = fields.Boolean(string="Has Garden")
+    garden = fields.Boolean(string="Has Garden", default=True)
     garden_area = fields.Integer(string="Garden Area (m²)", default=False)
     date_availability = fields.Date(
         string="Date Availability", default=datetime.today() + relativedelta(months=3)
@@ -85,14 +86,20 @@ class EstateProperty(models.Model):
             self.garden_area = False
             self.garden_orientation = False
 
-    property_type_id = fields.Many2one("property.type", string="Property Type")
-    tags_ids = fields.Many2many("property.tag", string="Property Tags")
-    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    property_type_id = fields.Many2one(
+        comodel_name="property.type", string="Property Type"
+    )
+    tags_ids = fields.Many2many(comodel_name="property.tag", string="Property Tags")
+    buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer")
     seller_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+        comodel_name="res.users",
+        string="Salesperson",
+        default=lambda self: self.env.user,
     )
     offer_ids = fields.One2many(
-        "estate.property.offer", "property_id", string="Offer Id"
+        comodel_name="estate.property.offer",
+        inverse_name="property_id",
+        string="Offer Id",
     )
 
     def action_cancel(self):
@@ -124,4 +131,3 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "Selling Price cannot be lower than 90 percent of expected price"
                 )
-
