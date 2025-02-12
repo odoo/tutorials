@@ -1,11 +1,14 @@
-from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
+
+from odoo import fields, models, api
 from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     # Model Configuration
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
+    _inherit = ['mail.thread']
 
     #---------------------------------------------------------------------
     # SQL Constraints
@@ -24,7 +27,7 @@ class EstateProperty(models.Model):
         string="Availability Date",
         default=lambda self:fields.Datetime.today() + relativedelta(days=90),
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
+    expected_price = fields.Float(string="Expected Price", required=True, tracking=True)
     best_price = fields.Float(compute="_compute_best_offer", string="Best Offer")
     selling_price = fields.Float(string="Selling Price", default="20000",readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
@@ -43,17 +46,19 @@ class EstateProperty(models.Model):
         ],
     )
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area")
-    active = fields.Boolean(string="Active",default=True)
+    active = fields.Boolean(string="Active",default=True, tracking=True)
     status = fields.Selection(
         string="Status",
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled")
         ],
-        default="new"
+        default="new",
+        copy=False,
+        tracking=True
     )
 
     #---------------------------------------------------------------------
@@ -87,10 +92,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            if record.offer_ids.mapped("price"):
-                record.best_price = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_price = 0.0
+            record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
 
 
     # --------------------------- Onchange Methods ---------------------------    
@@ -119,4 +121,12 @@ class EstateProperty(models.Model):
             else:
                 record.status = "cancelled"
                 record.partner_id = ""
+
+    # --------------------------- Ondelete Methods ---------------------------
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_property(self):
+        for record in self:
+            if record.status not in ('new', 'cancelled'):
+                raise UserError("You cannot delete the property which status is not new or cancelled")
+
 

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
-    <!-- Root Menu -->
+    <!-- =============== Root Menu =================== -->
     <menuitem id="estate_menu_root" name="Real Estate"/>
 
-    <!-- Advertisement Menuitem -->
+    <!-- ============== Advertisement Menuitem ================ -->
     <menuitem id="estate_model_advertisement_menu" name="Advertisement" parent="estate_menu_root"/>
     <!-- Property Menuitem -->
     <menuitem id="estate_model_menu_property" action="estate_model_property" 
     parent="estate_model_advertisement_menu"/>
 
-    <!-- Setting Menuitem -->
+
+    <!-- =============== Setting Menuitem =============== -->
     <menuitem id="estate_model_setting_menu" name="Settings" parent="estate_menu_root"/>
     <!-- Types Menuitem -->
     <menuitem id="estate_model_menu_type" action="estate_model_property_type"

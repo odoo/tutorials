@@ -2,29 +2,56 @@
 
 <odoo>
 
+    <!-- ====================================
+                Action
+    ==================================== -->
     <record id="estate_model_property_type" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
-    
+
+    <!-- ====================================
+                List View
+    ==================================== -->
     <record id="estate_model_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- ====================================
+                Form View
+    ==================================== -->
+    <record id="estate_model_property_form_view" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
             <form>
-                <h1><field name="name"/></h1    >
+                <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button name="%(estate_model_property_offer_view)d" type="action" class="oe_stat_button" icon="fa-money">
+                        <field name="offer_ids" widget="statinfo" string="Offer"/>
+                    </button>
+                </div>
+                <h1><field name="name"/></h1>
                     <notebook>  
                         <page string="Properties">
                         <field name="property_ids">     
                             <list>
-                                <field name="title"/>
+                                <field name="name"/>
                                 <field name="expected_price"/>
                                 <field name="status"/>
                             </list>
                         </field>        
                         </page>
                     </notebook>
+                </sheet>
             </form>
         </field>
     </record>
