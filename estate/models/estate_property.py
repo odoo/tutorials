@@ -1,6 +1,8 @@
 from datetime import timedelta
 from odoo import fields, models,api
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -77,3 +79,19 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0 )','The Expected price must be strictly positive'),
+        ('check_selling_price', 'CHECK(selling_price > 0 )','The Selling price must be strictly positive'),
+        ]
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=0.01):
+                continue
+
+            min_valid_price = record.expected_price * 0.9
+
+            if float_compare(record.selling_price, min_valid_price, precision_rounding=0.01) == -1:
+                  raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
