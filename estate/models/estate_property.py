@@ -63,6 +63,9 @@ class estateProperty(models.Model):
             if record.state == "cancelled":
                 message = "Cancelled Property cannot be Sold"
                 raise UserError(message)
+            elif not record.buyer_id:
+                message = "Buyer must be assigned to sell Property"
+                raise UserError(message)
             else:
                 record.state = "sold"
             return True
