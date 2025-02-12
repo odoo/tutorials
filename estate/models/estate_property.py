@@ -1,12 +1,25 @@
 from odoo import api, fields, models
 from datetime import datetime, timedelta
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
 
     _name = "estate.property"
     _description = "Declare property for Real estate"
-
+    _sql_constraints = [
+        (
+            "check_estate_property_selling_price",
+            "CHECK(selling_price >= 0.0)",
+            "Selling Price must be a positive amount",
+        ),
+        (
+            "check_estate_property_expected_price",
+            "CHECK(expected_price > 0.0)",
+            "Expected Price must be a strictly positive amount",
+        ),
+    ]
     # --------------------------------------- Fields Declaration ----------------------------------
     name = fields.Char(required=True)
     description = fields.Text("Description")
@@ -84,3 +97,26 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_price_difference(self):
+        for prop in self:
+            if (
+                not float_is_zero(prop.selling_price, precision_rounding=0.01)
+                and float_compare(prop.selling_price,prop.expected_price * 0.90,precision_rounding=0.01,)< 0
+            ):
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer."
+                )
+    # ---------------------------------------- Action Methods -------------------------------------
+    def action_sold(self):
+        if self.state == "cancelled":
+            raise UserError("Cancelled properties cannot be sold.")
+        if self.state == "sold":
+            raise UserError("This property are already Sold!!")
+        return self.write({"state": "sold"})
+
+    def action_cancel(self):
+        if self.state == "sold":
+            raise UserError("Sold properties cannot be cancelled.")
+        return self.write({"state": "cancelled"})

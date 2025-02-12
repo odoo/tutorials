@@ -2,29 +2,19 @@
 
 <odoo>
     <!-- List View -->
-    <!-- <record id="view_estate_property_offer_list" model="ir.ui.view">
+    <record id="view_estate_property_offer_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list>
                 <field name="price" />
                 <field name="partner_id" />
-                <field name="status" />
+                <field name="state" />
+                <button name="offer_accept" type="object" icon="fa-check" />
+                <button name="offer_refuse" type="object" icon="fa-times" />
+                <field name="validity" />
+                <field name="date_deadline" />
             </list>
-        </field>
-    </record> -->
-    <record id="estate_property_offer_view_form" model="ir.ui.view">
-        <field name="name">Property Offers</field>
-        <field name="model">estate.property.offer</field>
-        <field name="arch" type="xml">
-            <form string="Property Offer">
-                <group>
-                    <field name="price" />
-                    <field name="partner_id" />
-                    <field name="state" />
-                    <field name="validity" />
-                </group>
-            </form>
         </field>
     </record>
     <record id="estate_property_offer_action" model="ir.actions.act_window">

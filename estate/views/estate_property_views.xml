@@ -14,12 +14,17 @@
             </list>
         </field>
     </record>
-
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" />
+                    <button name="action_cancel" type="object" string="Cancel" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -36,7 +41,8 @@
                             <field name="selling_price" />
                             <field name="date_availability" />
                             <field name="property_type_id" widget="many2one" />
-                            <field name="tag_ids" widget="many2many_tags" />
+                            <field name="tag_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
                         </group>
                     </group>
                     <notebook>
@@ -51,8 +57,8 @@
                                 </group>
                                 <group>
                                     <field name="is_garden" />
-                                    <field name="garden_area" />
-                                    <field name="garden_orientation" />
+                                    <field name="garden_area" invisible="not is_garden" />
+                                    <field name="garden_orientation" invisible="not is_garden" />
                                     <field name="state" />
                                     <field name="active" />
                                     <field name="total_area" />
@@ -60,14 +66,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list>
-                                    <field name="price" />
-                                    <field name="partner_id" />
-                                    <field name="state" />
-                                    <field name="validity" />
-                                </list>
-                            </field>
+                            <field name="offer_ids" nolable="1" />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -82,7 +81,6 @@
             </form>
         </field>
     </record>
-
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.views.search</field>
         <field name="model">estate.property</field>
@@ -105,11 +103,9 @@
             </search>
         </field>
     </record>
-
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
-
 </odoo>
