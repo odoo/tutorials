@@ -26,12 +26,24 @@ class estatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
     property_type_id = fields.Many2one(
-        related="property_id.property_type_id", strore=True
+        related="property_id.property_type_id", store=True
     )
 
     _sql_constraints = [
         ("check_offer_price", "CHECK(price > 0)", "Offer price must be > 0")
     ]
+
+    @api.model_create_multi
+    def create(self, vals):
+        for record in vals:
+            property = record.get('property_id')
+            if property:
+                existing_offers = self.search([('property_id', '=', property)])
+                if any(offer.price >= record.get('price', 0) for offer in existing_offers):
+                    raise UserError("An existing offer has an equal or higher amount. Please submit a higher offer.")
+    
+            self.env['estate.property'].browse(record['property_id']).state = "recevied"
+        return super().create(vals)
 
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
@@ -80,3 +92,5 @@ class estatePropertyOffer(models.Model):
 
             offer.status = "refused"
         return True
+
+

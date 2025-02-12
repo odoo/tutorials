@@ -45,13 +45,13 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        compute="_compute_state",
+        # compute="_compute_state",
         store=True,
     )
     date_availability = fields.Date(
         string="Available From", copy=False, default=_default_date_availability
     )
-    
+
     total_area = fields.Float(compute="_compute_total", string="Total Area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
@@ -91,14 +91,6 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
-    @api.depends("offer_ids")
-    def _compute_state(self):
-        for record in self:
-            if record.offer_ids:
-                record.state = "recevied"
-            else:
-                record.state = "new"
-
     @api.onchange("garden")
     def _comoute_garden(self):
         if self.garden is True:
@@ -123,6 +115,15 @@ class EstateProperty(models.Model):
             ):
                 raise ValidationError(
                     "Selling price cannot be lower than 90% of expected price"
+                )
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_deletion_for_offers(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                state_label = dict(self._fields['state'].selection).get(record.state)
+                raise UserError(
+                    f"This offer is in {state_label} state. You can't delete it."
                 )
 
     def mark_offer_sold(self):

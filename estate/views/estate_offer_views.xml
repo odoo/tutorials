@@ -20,13 +20,12 @@
                 <field name="partner_id" />
                 <field name="price" />
                 <field name="validity" />
-                <field name="property_id" />
                 <field name="date_deadline" />
                 <button
                     type="object"
                     name="accept_offer"
                     icon="fa-check"
-                    title="acctep"
+                    title="accept"
                     invisible="status in ('accepted','refused') "
                 />
                 <button
