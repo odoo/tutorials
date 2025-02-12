@@ -8,38 +8,18 @@ class EstatePropertyOffer(models.Model):
     _description = "Real Estate Property Offer"
     _order = "price desc"
 
-    price = fields.Float(string="Offer Price",
-                         required=True)
+    price = fields.Float(string="Offer Price",required=True)
+    status = fields.Selection([
+        ("accepted", "Accepted"),("refused", "Refused")
+        ],string="Status",copy=False )    
 
-    status = fields.Selection(
-                    [("accepted", "Accepted"),
-                    ("refused", "Refused")],
-                    string="Status",
-                    copy=False )
-                            
-    partner_id = fields.Many2one("res.partner", 
-                                string="Buyer",
-                                required=True)
-
-    property_id = fields.Many2one("estate.property",
-                                 string="Property", 
-                                 required=True)
-
-    property_type_id = fields.Many2one(
-                        "estate.property.type",
-                        string="Property Type",
-                        related="property_id.property_type_id", #have to search about this
-                        store=True ) #have to search about this
-                                    
+    partner_id = fields.Many2one("res.partner", string="Buyer",required=True)
+    property_id = fields.Many2one("estate.property",string="Property",required=True)
+    property_type_id = fields.Many2one("estate.property.type",string="Property Type",related="property_id.property_type_id",store=True )
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline",store=True ) 
     validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_date_deadline", 
-                                inverse="_inverse_date_deadline", 
-                                store=True ) 
 
-    
-
-    _sql_constraints = [('check_price', 'CHECK(price > 0)', 
-                    'The offer price must be strictly positive.')]
+    _sql_constraints = [('check_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.')]
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -53,28 +33,24 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - create_date).days if record.date_deadline else 0
     
     def action_accept(self):
-        for record in self:
-            if record.property_id.state == 'sold':
-                raise exceptions.UserError("This property is already sold.")
-            
-            # Ensure no other offer is accepted
+        for record in self:    
+
             accepted_offers = self.env['estate.property.offer'].search([
                 ('property_id', '=', record.property_id.id),
-                ('status', '=', 'accepted')
-            ])
+                ('status', '=', 'accepted')])
             if accepted_offers:
                 raise exceptions.UserError("Only one offer can be accepted per property.")
-            
+                
             record.status = 'accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer_accepted'
+            record.property_id.accepted_offer_id = record
 
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
 
-    
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -87,7 +63,3 @@ class EstatePropertyOffer(models.Model):
             property.state = 'offer_received'
         
         return super().create(vals_list)
-
-
-
-

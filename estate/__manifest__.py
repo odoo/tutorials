@@ -17,5 +17,3 @@
         'views/res_user_view.xml'
     ]
 }
-
-
