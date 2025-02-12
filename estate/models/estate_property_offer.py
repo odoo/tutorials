@@ -1,5 +1,5 @@
-from odoo import api, fields, models
-from datetime import date, timedelta
+from odoo import _, api, fields, models
+from datetime import timedelta
 
 
 class EsatePropertyOffer(models.Model):
@@ -18,6 +18,10 @@ class EsatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7, string="Validity (days)")
     date_deadline = fields.Date(compute='_compute_deadline', inverse='_inverse_deadline', string="Deadline", store=True)
+
+    _sql_constraints = [
+        ('check_offer_price','CHECK(price > 0)','Offer price must be strictly positive'),
+    ]
 
     @api.depends('validity','property_id.create_date')
     def _compute_deadline(self):
