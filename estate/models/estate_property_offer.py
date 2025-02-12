@@ -51,7 +51,17 @@ class EstatePropertyOffer(models.Model):
     # Constraint methods
     @api.constrains('price')
     def _check_price(self):
-        compare_value = float_compare(self.price,0.9*self.property_id.expected_price,precision_digits=2)
-        if compare_value == -1:
+        compare_value=float_compare(self.price,0.9*self.property_id.expected_price,precision_digits=2)
+        if compare_value==-1:
                 raise UserError("Offer Price must be atleast 90% of the expected price.")
         return True
+
+    @api.model
+    def create(self, vals):
+        min_price = min(self.env['estate.property.offer'].search([('property_id','=',vals['property_id'])]).mapped('price'),default=0)
+        if vals['price'] <= min_price:
+            raise UserError("The price must be higher than any existing offer.")
+        status=self.env['estate.property'].browse(vals['property_id']).status
+        if status=='new' or not status:
+            self.env['estate.property'].browse(vals['property_id']).status = 'offer_received'
+        return super().create(vals)

@@ -74,3 +74,10 @@ class EstateProperty(models.Model):
             raise UserError("You cannot cancel a sold property")
         self.write({'status':'canceled'})
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def ondelete(self):
+        for record in self:
+            if record.status not in ['new','canceled']:
+                status = dict(self._fields["status"].selection).get(self.status)
+                raise UserError(f"You cannot delete a property that is in {status} state.")
