@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from datetime import timedelta
 
 
@@ -6,7 +7,12 @@ class EstatePropertyOffer(models.Model):
     """Offers for the property"""
 
     _name = "estate.property.offer"
-    _description = "Offers for the property"
+    _description = "Property Offers"
+    _order = "price desc"
+
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "offer price must be positive")
+    ]
 
     price = fields.Float(
         string="Offer Price",
@@ -65,3 +71,23 @@ class EstatePropertyOffer(models.Model):
                 (record.date_deadline - record.create_date).days
                 if record.date_deadline else 7
             )
+    
+    def action_confirm(self):
+        for record in self:
+            if record.property_id.state == 'sold':
+                raise UserError("Property is already Sold")
+            accepted_offer = record.property_id.offer_ids.filtered(
+                lambda x: x.status == 'accepted'
+            )
+            if accepted_offer:
+                raise UserError("Only one offer can be accepted")
+            record.status = 'accepted'
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+    
+    def action_cancel(self):
+        for record in self:
+            if record.status == 'accepted':
+                record.property_id.buyer_id = False
+                record.property_id.selling_price = 0.0
+            record.status = 'refused'

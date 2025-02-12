@@ -23,7 +23,7 @@
                 <sheet>
                     <group>
                         <h1>
-                            <field name='name'/>
+                            <field name="name"/>
                         </h1>
                     </group>
                 </sheet>

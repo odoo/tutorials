@@ -27,6 +27,13 @@
                             <field name='name'/>
                         </h1>
                     </group>
+                    <field name="property_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="expected_price"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
                 </sheet>
             </form>
         </field>

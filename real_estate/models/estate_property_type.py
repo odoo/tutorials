@@ -3,6 +3,12 @@ from odoo import fields, models
 
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
-    _description = "Real Estate Property Type"
+    _description = "Property Types"
+    _order = "name"
     
-    name = fields.Char(string="Property Types", required=True)
+    _sql_constraints = [
+        ("unique_property_type_name", "UNIQUE(name)", "Type Name must be Unique")
+    ]
+
+    name = fields.Char(string="Name", required=True)
+    property_ids = fields.One2many("estate.property", "property_type_id", string="Properties")
