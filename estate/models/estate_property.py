@@ -1,17 +1,17 @@
-from odoo import fields, models, api
 from datetime import timedelta
-from odoo.tools.float_utils import float_compare, float_is_zero
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property Name"
+    _order = "id desc"
 
     name = fields.Char("Property name", required=True, size=30)
-    selling_price = fields.Integer(
-        "Selling Price", readonly=True, copy=False, default=10000
-    )
+    selling_price = fields.Integer("Selling Price", readonly=True, copy=False)
     description = fields.Char("Property description", size=50)
     postcode = fields.Char("Postcode", size=6)
     date_availability = fields.Date(
@@ -21,12 +21,9 @@ class EstateProperty(models.Model):
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Area")
     facades = fields.Integer("facade")
-    garage = fields.Boolean(
-        "Available", default=False, help="Mark if Garage is available"
-    )
+    garage = fields.Boolean("Available", help="Mark if Garage is available")
     garden = fields.Boolean(
         "Garden",
-        default=False,
         help="Mark if Garden is Present",
     )
     garden_area = fields.Integer("Garden Area(sqm)", default=0)
@@ -49,8 +46,8 @@ class EstateProperty(models.Model):
         copy=False,
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -62,6 +59,7 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=True)
     tags_ids = fields.Many2many("estate.property.tags", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    property_type_id = fields.Many2one("estate.property.types", string="Property Type")
 
     total_area = fields.Float(
         compute="_compute_total_area", string="Total area(sqm)", store=True
@@ -91,10 +89,9 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_price = 0.0
+            record.best_price = (
+                max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
+            )
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -142,7 +139,7 @@ class EstateProperty(models.Model):
                     (record.expected_price * 0.9),
                     precision_digits=2,
                 )
-                != 0
+                < 0
             ):
                 raise ValidationError(
                     "The selling price must be at least 90% per of expected price."

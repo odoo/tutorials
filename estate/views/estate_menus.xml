@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="estate_first_level" name="Real Estate">
-        <menuitem id="estate_sec_level" name="Advertisments">
-            <menuitem id="estate_menu_action" action="action_my_pipeline" />
+    <menuitem id="menu_real_estate" name="Real Estate">
+        <menuitem id="menu_real_estate_advertisements" name="Advertisements">
+            <menuitem id="menu_action_advertisements" action="action_my_pipeline" />
         </menuitem>
-        <menuitem id="estate_types_level" name="Settings">
-            <menuitem id="estate_menu_action_types" action="action_property_types" />
-            <menuitem id="estate_menu_tag_action" action="action_property_tags" />
+        <menuitem id="menu_real_estate_settings" name="Settings">
+            <menuitem id="menu_action_property_types" action="action_property_types" />
+            <menuitem id="menu_action_property_tags" action="action_property_tags" />
         </menuitem>
     </menuitem>
 </odoo>

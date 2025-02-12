@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "All the available offer for the property"
+    _order = "price desc"
 
     property_id = fields.Many2one("estate.property", required=True)
     price = fields.Float(string="Price", required=True)
@@ -12,11 +13,18 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         string="Status",
         copy=False,
-        selection=[("refuse", "Refuse"), ("accepted", "Accepted")],
+        selection=[("reject", "Reject"), ("accepted", "Accepted")],
     )
     validity = fields.Integer(string="Validity(days)", default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
+    )
+
+    property_type_id = fields.Many2one(
+        "estate.property.types",
+        string="Property Type",
+        related="property_id.property_type_id",
+        store=True
     )
 
     @api.depends("create_date", "validity")
@@ -40,15 +48,15 @@ class EstatePropertyOffer(models.Model):
 
     def action_offer_accepted(self):
         for record in self:
-            if record.status != "refuse":
+            if record.status != "reject":
                 record.status = "accepted"
                 record.property_id.selling_price = record.price
                 record.property_id.buyer_id = record.buyer_id
-                record.property_id.state = "offer accepted"
+                record.property_id.state = "offer_accepted"
                 other_offers = record.property_id.offer_ids.filtered(
                     lambda offer: offer.id != record.id
                 )
-                other_offers.write({"status": "refuse"})
+                other_offers.write({"status": "reject"})
 
             else:
                 raise UserError("One offer is already accepted")
@@ -56,8 +64,8 @@ class EstatePropertyOffer(models.Model):
 
     def action_offer_rejected(self):
         for record in self:
-            if record.status != "accepted":
+            if record.status == "accepted":
                 record.property_id.selling_price = 0
                 record.property_id.buyer_id = False
-            record.status = False
+            record.status = "reject"
         return True

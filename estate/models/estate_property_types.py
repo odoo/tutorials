@@ -1,32 +1,23 @@
-from odoo import fields, models
-from datetime import timedelta
-
+from odoo import fields, api, models
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.types"
     _description = "Types of Properties are stored"
+    _order = "name"
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     description = fields.Char(string="Description")
-    property_type = fields.Selection(
-        string="Property Type",
-        required=True,
-        default="house",
-        selection=[
-            ("house", "House"),
-            ("appartment", "Appartment"),
-            ("penthouse", "Pent-House"),
-            ("bunglow", "Bunglow"),
-            ("castle", "Castle"),
-        ],
+    offer_ids = fields.One2many("estate.property.offer", "property_type_id")
+    offer_count = fields.Integer("Offers", compute="_compute_offer_count")
+
+    sequence = fields.Integer(
+        "Sequence", default=1, help="Used to order stages. Lower is better."
     )
-    postcode = fields.Char("Postcode", size=6)
-    date_availability = fields.Date(
-        default=fields.Date.today() + timedelta(days=90), copy=False
-    )
-    selling_price = fields.Integer(
-        "Selling Price", readonly=True, copy=False, default=1000000
-    )
-    expected_price = fields.Float("Expected price", required=True)
+    property_ids = fields.One2many("estate.property", "property_type_id")
+
+    @api.depends("offer_ids")
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)
 
     _sql_constraints = [("name", "Unique(name)", "The type should be unique")]
