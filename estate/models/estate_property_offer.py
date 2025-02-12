@@ -3,12 +3,16 @@
 
 from datetime import timedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)', 'offer price must be strictly positive.')
+    ]
 
     price = fields.Float(string="Price")
     status = fields.Selection([
@@ -33,7 +37,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         if self.status == 'accepted':
-            raise UserError("Offer has already been accepted!")
+            raise UserError(_("Offer has already been accepted!"))
         self.write({'status':'accepted'})
         for property in self.mapped('property_id'):
             property.write({
@@ -44,5 +48,5 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         if self.status == 'refused':
-            raise UserError("Offer has already been refused!")
+            raise UserError(_("Offer has already been refused!"))
         self.write({'status':'refused'})
