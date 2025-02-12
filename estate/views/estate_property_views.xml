@@ -14,6 +14,7 @@
                 <field name="name" />
                 <field name="postcode" />
                 <field name="bedrooms" />
+                <field name="company_id" />
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="active" />
@@ -50,6 +51,7 @@
                             <field name="property_type_id" options="{'no_create': True, 'no_open': True}" />
                             <field name="postcode" />
                             <field name="date_availability" />
+                            <field name="company_id"/>
                         </group>
                         <group>
                             <field name="expected_price" />

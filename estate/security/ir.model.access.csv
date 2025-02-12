@@ -1,5 +1,8 @@
-id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-access_estate_property,access_estate_property,model_estate_property,base.group_user,1,1,1,1
-access_estate_property_type,access_estate_property_type,model_estate_property_type,base.group_user,1,1,1,1
-access_estate_property_tag,access_estate_property_tag,model_estate_property_tag,base.group_user,1,1,1,1
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_estate_property,access_estate_property,model_estate_property,base.group_user,1,1,1,0
 access_estate_property_offer,access_estate_property_offer,model_estate_property_offer,base.group_user,1,1,1,1
+estate_property_manager,Manager Access,model_estate_property,estate_group_manager,1,1,1,1
+estate_property_type_manager,Manager Type Access,model_estate_property_type,estate_group_manager,1,1,1,1
+estate_property_type_user,Agent Type Read,model_estate_property_type,estate_group_user,1,0,0,0
+estate_property_tag_manager,Manager Tag Access,model_estate_property_tag,estate_group_manager,1,1,1,1
+estate_property_tag_user,Agent Tag Read,model_estate_property_tag,estate_group_user,1,0,0,0

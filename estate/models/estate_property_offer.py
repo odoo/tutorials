@@ -17,7 +17,7 @@ class EstatePropertyOffer(models.Model):
         [("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True, ondelete='cascade')
+    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
     validity = fields.Integer("Validity (Days)", default=7)
     date_deadline = fields.Date(
         "Deadline Date",
@@ -50,16 +50,18 @@ class EstatePropertyOffer(models.Model):
                     record.validity = (deadline_date - create_date).days
             else:
                 record.validity = 7
-    
+
     @api.model
     def create(self, vals):
         property_id = self.env["estate.property"].browse(vals.get("property_id"))
         if property_id.state == "new":
             property_id.state = "offer_received"
         else:
-            max_offer = max(property_id.offer_ids.mapped("price"),default=0)
-            if vals['price'] < max_offer:
-                raise UserError('You cannot create an offer lower than an existing offer.')
+            max_offer = max(property_id.offer_ids.mapped("price"), default=0)
+            if vals["price"] < max_offer:
+                raise UserError(
+                    "You cannot create an offer lower than an existing offer."
+                )
 
         return super().create(vals)
 

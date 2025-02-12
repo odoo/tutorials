@@ -68,7 +68,9 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     best_offer = fields.Float("Best offer", compute="_compute_best_offer")
-
+    company_id = fields.Many2one(
+        "res.company", string="Company", required=True, default=lambda self: self.env.company
+    )
     # Python constraints -- selling price cannot be lower than 90% of the expected price
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):

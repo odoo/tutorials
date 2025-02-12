@@ -5,11 +5,9 @@
     "description": "This moduls helps manage connect estate and account, and create invoice.",
     "category": "Real Estate",
     "author": "Darshan Patel",
-    "website":"",
+    "website": "",
     "depends": ["estate", "account"],
-    "data": [
-        
-    ],
+    "data": [],
     "installable": True,
     "application": True,
     "auto_install": False,
