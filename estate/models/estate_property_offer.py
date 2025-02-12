@@ -1,5 +1,5 @@
 from odoo import fields,models,api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import timedelta
 
 class EstatePropertytOffer(models.Model):
@@ -17,16 +17,29 @@ class EstatePropertytOffer(models.Model):
 
     property_type_id = fields.Many2one(string="Property Type",related='property_id.property_type_id',store=True)
 
+    @api.model_create_multi
+    def create(self, vals):
+        property_record = self.env['estate.property'].browse(vals['property_id'])
+        min_price = min(property_record.offer_ids.mapped('price'), default=0)
+
+        if vals['price'] <= min_price:
+            raise UserError("The price must be higher than any existing offer.")
+
+        if property_record.state == 'new':
+            property_record.write({'state': 'offer_received'})
+
+        return super().create(vals)
+
     @api.depends('create_date','validity')
     def _compute_date_deadline(self):
         for record in self:
-            record.create_date=record.create_date or fields.Datetime.today()
-            record.date_deadline= record.create_date.date() + timedelta(days=record.validity)
+            create_date=record.create_date or fields.Datetime.today()
+            record.date_deadline= create_date.date() + timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
-            record.create_date= record.create_date or fields.Datetime.today()
-            record.validity=(record.date_deadline-record.create_date.date()).days
+            create_date= record.create_date or fields.Datetime.today()
+            record.validity=(record.date_deadline-create_date.date()).days
 
     def action_accept(self):
         for record in self:

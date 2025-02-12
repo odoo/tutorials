@@ -102,3 +102,8 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "Selling price must be greater than 90% of expected price. It should be more than {:.2f}".format(min_acceptable_price)
                 )
+    @api.ondelete(at_uninstall=False)
+    def property_deletion(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("You can only delete properties in the 'New' or 'Cancelled' state.")
