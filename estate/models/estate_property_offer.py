@@ -1,6 +1,6 @@
+from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from datetime import timedelta
 
 
 class EstatePropertyOffer(models.Model):
@@ -16,8 +16,8 @@ class EstatePropertyOffer(models.Model):
         string="Status",
         copy=False,
         selection=[
-        ('accepted',"Accepted"),
-        ('refused',"Refuesd")
+            ('accepted',"Accepted"),
+            ('refused',"Refuesd")
         ]
     )
     partner_id = fields.Many2one('res.partner',string="Partner", required=True)
@@ -70,3 +70,21 @@ class EstatePropertyOffer(models.Model):
     # action to change offer status to refused
     def action_refuse(self):
         self.status = 'refused'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            offer_amount = vals.get('price')
+
+            if property_id and offer_amount:
+                property = self.env['estate.property'].browse(property_id)
+                existing_offers = property.offer_ids.mapped('price')
+
+                if existing_offers and offer_amount < max(existing_offers):
+                    raise ValidationError(
+                        "You cannot create an offer lower than an existing one."
+                    )
+
+                property.write({'state':'received'})
+        return super().create(vals_list)    

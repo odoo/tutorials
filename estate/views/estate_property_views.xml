@@ -12,10 +12,10 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" 
-              decoration-danger="state == 'cancelled'" 
-              decoration-success="state == 'sold'" 
-              decoration-warning="state == 'offer_received'">
+            <list string="Properties"
+              decoration-danger="state == 'cancelled'"
+              decoration-success="state == 'sold'"
+              decoration-warning="state == 'received'">
                 <field name="name" string="Title"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
@@ -42,7 +42,7 @@
                     <button name='action_cancel' type="object" string="Cancel"
                         invisible="state in ('sold','canceled')"/>
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                        statusbar_visible="new, eceived, accepted, sold"/>
                 </header>
                 <sheet>
                     <group>
@@ -81,7 +81,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area" string="Garden Area (sqm)"
                                     invisible="not garden"/>
-                                <field name="garden_orientation" string="Garden Orientation" invisible="not garden" />
+                                <field name="garden_orientation" string="Garden Orientation" invisible="not garden"/>
                                 <field name="total_area" string="Total Area"/>
                             </group>
                         </page>
@@ -91,10 +91,10 @@
                         <page string="Offers">
                             <group>
                                 <field nolabel ="1" name="offer_ids"
-                                    readonly="state in ('offer_accepted', 'sold', 'canceled')" >
+                                    readonly="state in ('accepted', 'sold', 'canceled')">
                                     <!-- List View -->
-                                    <list decoration-info="status == 'new'" 
-                                        decoration-success="status == 'accepted'" 
+                                    <list decoration-info="status == 'new'"
+                                        decoration-success="status == 'accepted'"
                                         decoration-danger="status == 'refused'" editable="bottom">
 
                                         <field name="price" string="Price"/>
@@ -136,6 +136,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -150,8 +151,8 @@
                 i.e. the state should be ‘New’ or ‘Offer Received’.  -->
                 <filter name="state" string="Available"
                     domain="['|', 
-                    ('state', '=', 'new'),
-                    ('state', '=', 'offer_received')
+                        ('state', '=', 'new'),
+                        ('state', '=', 'received')
                     ]"/>
                 <!-- A search view -->
                 <field name="name" string="Title"/>

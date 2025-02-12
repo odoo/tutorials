@@ -1,21 +1,21 @@
+from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
-from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
+    _inherit = ['mail.thread']
     _description = "Property"
     _order = 'id desc'
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >0)', 'The Expected Price must be strickly Positive.'),
-        ('check_selling_price', 'CHECK(selling_price >=0)', 'The Selling Price must be Positive.')
+        ('check_expected_price', 'CHECK(expected_price >0)', 'Expected Price must be strickly Positive.'),
+        ('check_selling_price', 'CHECK(selling_price >=0)', 'Selling Price must be Positive.')
     ]
 
-    # Description
-    name = fields.Char(string="Property Name", required=True)
-    description = fields.Text(string="Property Description")
+    name = fields.Char(string="Name", required=True, tracking=True)
+    description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode") 
     date_availability = fields.Date(string="Availabile From",copy=False,
         default=lambda self:fields.Datetime.today() + relativedelta(months=3)
@@ -40,11 +40,11 @@ class EstateProperty(models.Model):
     )
     total_area = fields.Integer(compute='_compute_total_area')
     active = fields.Boolean(string="Active", default=True)
-    state = fields.Selection(string='State',
+    state = fields.Selection(string="State",
         selection=[
             ('new', "New"),
-            ('offer_received', "Offer Received"),
-            ('offer_accepted', "Offer Accepted"),
+            ('received', "Received"),
+            ('accepted', "Accepted"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled")
         ],
@@ -95,7 +95,6 @@ class EstateProperty(models.Model):
         else:
             self.state = 'sold'
 
-
     # checks that selling price cannot be lower than 90% of the expected price.
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
@@ -111,3 +110,13 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
+    # Prevention on Delete
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_state(self):
+        state_id = [
+        'new',
+        'cancelled'
+        ]
+        for property in self:
+            if property.state in state_id:
+                raise UserError("You can not delete a property if its state is not ‘New’ or ‘Cancelled’")
