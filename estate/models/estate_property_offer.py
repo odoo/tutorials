@@ -3,7 +3,7 @@
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -28,6 +28,7 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", string="Property Type", store=True)
 
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
@@ -42,9 +43,21 @@ class EstatePropertyOffer(models.Model):
             date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.validity = (offer.date_deadline - date).days
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for offer in vals_list:
+            property = self.env["estate.property"].browse(offer["property_id"])
+            if property.state != "offer_received":
+                property.state = "offer_received"
+            max_offer = max(property.offer_ids.mapped("price"))
+            max_offer_partner_name = property.offer_ids.filtered(lambda x: x.price == max_offer).mapped("partner_id.name")[0]
+            if property.offer_ids and max_offer > offer["price"]:
+                raise UserError(_(f"The new offer must be higher than the maximum offer of {max_offer:.2f} from {max_offer_partner_name}"))
+            return super().create(vals_list)
+
     def action_accept(self):
         if "accepted" in self.mapped("property_id.offer_ids.state"):
-            raise UserError("An offer has already been accepted.")
+            raise UserError(_("An offer has already been accepted."))
         self.write({ "state": "accepted" })
         for property in self.mapped("property_id"):
             property.write({

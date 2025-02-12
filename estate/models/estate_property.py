@@ -3,7 +3,7 @@
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -62,7 +62,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
-    best_price = fields.Float("Best Offer", compute="_compute_best_price", help="Best offer received till now")
+    best_price = fields.Float("Best Offer", compute="_compute_best_price", help="Best offer received")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -74,6 +74,13 @@ class EstateProperty(models.Model):
         for property in self:
             property.best_price = max(property.offer_ids.mapped("price")) if property.offer_ids else 0.0
 
+    @api.constrains("expected_price", "selling_price")
+    def _check_selling_price(self):
+        for property in self:
+            if (property.selling_price != 0
+                and float_compare(property.selling_price, property.expected_price * 90.0 / 100.0, precision_rounding=0.01) < 0):
+                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price"))
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -83,23 +90,21 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        if any(property.state not in ("new", "cancelled") for property in self):
+            raise UserError(_('You cannot delete a property which is not new or cancelled.'))
+
     def action_sold(self):
         if "cancelled" in self.mapped("state"):
-            raise UserError("Cancelled properties cannot be sold.")
+            raise UserError(_("Cancelled properties cannot be sold."))
         for property in self:
             property.state = "sold"
         return True
 
     def action_cancel(self):
         if "sold" in self.mapped("state"):
-            raise UserError("Sold properties cannot be cancelled.")
+            raise UserError(_("Sold properties cannot be cancelled."))
         for property in self:
             property.state = "cancelled"
         return True
-
-    @api.constrains("expected_price", "selling_price")
-    def _check_selling_price(self):
-        for p in self:
-            if(float_is_zero(p.selling_price) == False
-                and float_compare(p.selling_price, p.expected_price * 90.0 / 100.0) < 0):
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price")
