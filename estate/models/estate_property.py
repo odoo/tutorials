@@ -76,6 +76,12 @@ class EstateProperty(models.Model):
                 raise UserError("Sold properties cannot be cancelled")
             else:
                 record.state = 'cancelled'
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("New or cancelled properties cannot be unlinked.")
 
     _sql_constraints = [
         ('expected_price_positive', 'CHECK(expected_price >= 1)', 'The expected price must be strictly positive.'),

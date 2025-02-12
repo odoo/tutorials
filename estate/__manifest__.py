@@ -11,6 +11,7 @@ This module provides a real estate services
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_menu_views.xml',
+        'views/res_user_views.xml',
     ],
     'application' : True,
     'license' : 'LGPL-3',

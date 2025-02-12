@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -13,6 +13,7 @@ class EstatePropertyOffer(models.Model):
     ], string="Status" ,copy=False)
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type", related="property_id.property_type_id", store=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
 
@@ -27,23 +28,30 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - record.create_date.date()).days if record.date_deadline else 0
 
     def action_accept(self):
-        for record in self:
-            existing_accepted_offer = self.search([
-                ('property_id', '=', record.property_id.id),
-                ('status', '=', 'accepted')
-            ])
-            if existing_accepted_offer:
-                if(existing_accepted_offer.price < record.price): 
-                    existing_accepted_offer.status = 'refused'
-                else: raise ValidationError('You already have better accepted offer.')
+        if self.property_id.state == 'offer_accepted':
+            raise ValidationError("You can't accept more than one offer")
             
-            record.status = 'accepted'
-            record.property_id.buyer_id = record.partner_id.id
-            record.property_id.selling_price = record.price
+        self.status = 'accepted'
+        self.property_id.buyer_id = self.partner_id.id
+        self.property_id.selling_price = self.price
+        self.property_id.state = 'offer_accepted'
 
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
+    
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            property_id = self.env['estate.property'].browse(val['property_id'])
+
+            if property_id:
+                property_id.write({'state': 'offer_received'})
+
+            if val['price'] < property_id.best_offer:
+                raise UserError("Your price is lower than an existing offer.")
+
+        return super(EstatePropertyOffer, self).create(vals)
 
     _sql_constraints = [
         ('offer_price_positive', 'CHECK(price >= 1)', 'The offer price must be strictly positive.')
