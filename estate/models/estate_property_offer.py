@@ -17,9 +17,9 @@ class EstatePropertyOfferModel(models.Model):
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )
-    property_state = fields.Selection(
-        related="property_id.state", string="property state", store=True
-    )
+    # property_state = fields.Selection(
+    #     related="property_id.state", string="property state", store=True
+    # )
 
     _sql_constraints = [
         (
@@ -35,16 +35,16 @@ class EstatePropertyOfferModel(models.Model):
         inverse="_inverse_date_deadline",
     )
 
-    @api.model
-    def create_multi(self, vals_list):
+    @api.model_create_multi
+    def create(self, vals_list):
         for vals in vals_list:
             property_obj = self.env["estate.property"].browse(vals["property_id"])
             property_obj.state = "offer_received"
             if vals["price"] < property_obj.best_offer:
                 raise UserError(
-                    f"The offer must be higher then {property_obj.best_offer}"
+                    f"The offer must be higher than {property_obj.best_offer}"
                 )
-        return super().create(vals)
+        return super().create(vals_list)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -67,6 +67,9 @@ class EstatePropertyOfferModel(models.Model):
             record.property_id.state = "offer_accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
+            for data in record.property_id.offer_ids:
+                if data.status != "accepted":
+                    data.status = "refused"
 
     def refused_offer(self):
         for record in self:

@@ -15,27 +15,31 @@
         <field name="model">estate.property.types</field>
         <field name="arch" type="xml">
             <form string="estate type form">
-            <header>
-                <button type="action" name="%(estate_property_offer_action)d" class="oe_stat_button" icon="fa-moneyf">
-                    <field name="offer_count"></field>
-                    <span class="o_stat_text">Offers</span>
-                </button>
-            </header>
                 <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button type="action" name="estate.estate_property_offer_action" class="oe_stat_button" icon="fa-money">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="offer_count"/>
+                            </span>
+                            <span class="o_stat_text">
+                                Offers
+                            </span>
+                        </div>
+                    </button>
+                </div>
                     <h1>
-                        <field name="name" String="Title"/>
+                        <field name="name" string="Title"/>
                     </h1>
                     <notebook>
                         <page string="Properties">
-                            <group>
-                                <field name="property_ids" nolabel="True">
-                                    <list string="estate form">
-                                        <field name="name"/>
-                                        <field name="expected_price"/>
-                                        <field name="state"/>
-                                    </list>
-                                </field>
-                            </group>
+                            <field name="property_ids">
+                                <list string="estate form">
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>

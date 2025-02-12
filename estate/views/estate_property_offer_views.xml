@@ -9,9 +9,9 @@
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <button name="accept_offer" string="Confirm" type="object" icon="fa-check"
-                    invisible="status in ('accepted', 'refused') or property_state in ('offer_accepted', 'sold')"/>
+                    invisible="status in ('accepted', 'refused') "/>
                 <button name="refused_offer" string="Cancel" type="object" icon="fa-times"
-                    invisible="status in ('accepted', 'refused') or property_state in ('offer_accepted', 'sold')"/>
+                    invisible="status in ('accepted', 'refused') "/>
                 <field name="status" optional="hide"/>
             </list>
         </field>

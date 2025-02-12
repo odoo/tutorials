@@ -57,12 +57,12 @@
                     </h1>
                     <group>
                         <field name="tag_ids" widget="many2many_tags"
-                            options="{'color_field':'color'}" string=""/>
+                            options="{'color_field':'color'}"/>
                     </group>
                     <group>
                         <group>
                             <field name="property_type_id" options="{'no_create':true}"/>
-                            <field name="postcode"/>
+                            <field name="postcode" no_label="1"/>
                             <field name="date_availability" string="Available Form"/>
                             <field name="state"/>
                         </group>
@@ -97,10 +97,8 @@
                             </group> -->
                         </page>
                         <page string="Offers">
-                            <group>
-                                <field name="offer_ids" string=""
-                                    readonly="state in ('offer_accepted','sold', 'cancelled')"/>
-                            </group>
+                            <field name="offer_ids"
+                                readonly="state in ('offer_accepted','sold', 'cancelled')"/>
                         </page>
                         <page string="Other Info">
                             <group>
