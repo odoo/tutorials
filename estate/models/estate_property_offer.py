@@ -50,4 +50,3 @@ class estatePropertyOffer(models.Model):
     _sql_constraints = [("check_positive_price", "CHECK(price > 0)", "Price of Offer must be Strictly positive")]
 
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
-

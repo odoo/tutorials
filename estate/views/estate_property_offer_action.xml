@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property Offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <!-- domain to call fields only those are accepted and refused -->
+        <field name="domain">[('status', 'in', ('accepted', 'refused'))]</field>
+    </record>
+
+    <record id="view_estate_property_offer_list" model="ir.ui.view">
+        <field name="name">estate_property_offer_list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offers">
+                <field name="partner_id" />
+                <field name="id" />
+            </list>
+        </field>
+    </record>
+
+</odoo>
