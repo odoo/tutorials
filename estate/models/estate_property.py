@@ -1,10 +1,12 @@
 from odoo import api, models,fields
 from datetime import timedelta
+from odoo import exceptions
 from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -43,12 +45,13 @@ class EstateProperty(models.Model):
         copy = False,
     )
     active = fields.Boolean(default= True)
-    property_type_id = fields.Many2one("estate.property.type",string="Property Type")
+    property_type_id = fields.Many2one("estate.property.type",string="Property Type", ondelete="restrict")
     property_tag_id = fields.Many2many("estate.property.tag",string="Property Tag")
     buyer_id = fields.Many2one("res.partner",string="Buyer",copy=False)
     salesperson_id = fields.Many2one("res.users",string="Salesman",default=lambda self:self.env.user)
     offer_ids = fields.One2many("estate.property.offer","property_id")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price", store=True)
+    user_id = fields.Many2one("res.users", string="Salesperson")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -97,3 +100,14 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "Selling price cannot be lower than 90% of the expected price!"
                 )
+
+    @api.depends('offer_ids.status')
+    def _compute_status_from_offer(self):
+        for record in self:
+            accepted_offer = record.offer_ids.filtered(lambda o: o.status == "accepted")
+            if accepted_offer:
+                record.status = "offer accepted"
+            elif record.offer_ids:
+                record.status = "offer received"
+            else:
+                record.status = "new"

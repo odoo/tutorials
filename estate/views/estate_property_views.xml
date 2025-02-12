@@ -7,17 +7,17 @@
             <form string="Estate Property">
                <header>
                     <button name="action_set_sold" type="object" string="Mark as Sold"
-                        class="btn-primary" if="status != 'cancelled'"/>
+                        class="btn-primary" invisible ="status == 'sold' or status == 'cancelled'"/>
                     <button name="action_cancel" type="object" string="Cancel"
-                        class="btn-secondary" if="status != 'sold'"/>
-                    <field name="status" widget="statusbar"/>
+                        class="btn-secondary"  invisible ="status == 'sold' or status == 'cancelled' "/>
+                     <field name="status" widget="statusbar"/>
                 </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
                     <h3>
-                        <field name="property_tag_id" widget='many2many_tags'/>
+                        <field name="property_tag_id" widget='many2many_tags'  options="{'color_field': 'color'}"/>
                     </h3>
                 <group>
                     <group>
@@ -41,8 +41,8 @@
                             <field name="facades"/>
                             <field name="garage"/>
                             <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
+                            <field name="garden_area" invisible="not garden"/>
+                            <field name="garden_orientation" invisible="not garden"/>
                             <field name="total_area"/>
                         </group>
                         </page>
@@ -65,14 +65,18 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Properties">
+            <list string="Estate Properties"
+                decoration-success="status == 'offer received'"
+                decoration-warning="status == 'offer accepted'"
+                decoration-muted="status == 'sold'">
                 <field name="name" string="Title" />
+                <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" string="Living area(sqm)" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="date_availability" string="Available from" />
+                <field name="date_availability" string="Available from" optional="hide"/>
             </list>
         </field>
     </record>
@@ -86,9 +90,9 @@
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
                 <field name="postcode"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
                 <field name="facades"/>
-                <filter name='available_property' string='Available' domain="['|',('status','=','new'),('status','=','offer_received')]"/>
+                <filter name='available_property' string='Available' domain="['|',('status','=','new'),('status','=','offer received')]"/>
                 <group string='Group By'>
                     <filter name='postcode' context="{'group_by':'postcode'}"/>
                 </group>
@@ -100,5 +104,6 @@
         <field name="name">Property </field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available_property': True }</field>
     </record>
 </odoo>

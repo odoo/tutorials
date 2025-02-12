@@ -1,5 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+<record id="view_estate_property_type_tree" model="ir.ui.view">
+    <field name="name">estate.property.type.tree</field>
+    <field name="model">estate.property.type</field>
+    <field name="arch" type="xml">
+        <list string="Property Types">
+            <field name="sequence" widget="handle"/>
+            <field name="name"/>
+        </list>
+    </field>
+</record>
+
+<record id="estate_property_type_form_view" model="ir.ui.view">
+    <field name="name">estate.property.type.form.view</field>
+    <field name="model">estate.property.type</field>
+    <field name="arch" type="xml">
+        <form string="Property Type">
+            <sheet>
+             <header>
+                    <button name="%(action_estate_property_offer)d" type="action" class="oe_stat_button" icon="fa-bar-chart">
+                        <field name="offer_count" widget="statinfo" />
+                    </button>
+                </header>
+                <group>
+                    <field name="name"/>
+                </group>
+                <group>
+                    <field name="property_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="date_availability"/>
+                        </list>
+                    </field>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
 <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Type</field>
         <field name="res_model">estate.property.type</field>

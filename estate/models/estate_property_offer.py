@@ -1,10 +1,12 @@
 from odoo import api, fields, models
 from datetime import timedelta
+from odoo import exceptions
 from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -18,7 +20,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required = True)
     validity = fields.Integer(string="Validity (Days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
-
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True, string="Property Type")
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for offer in self:
@@ -45,10 +47,12 @@ class EstatePropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
+            record.property_id.status = "offer accepted"
 
     def action_refuse(self):
         for record in self:
             record.status = "refused"
+            record.property_id.status = "new"
 
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
