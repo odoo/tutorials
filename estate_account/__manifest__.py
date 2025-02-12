@@ -1,11 +1,11 @@
 {
     'name': 'Estate Account',
+    'license': 'LGPL-3',
     'depends': [
         'estate',
         'account'
     ],
     'data': [
-        'security/ir.model.access.csv'
     ],
     'installable': True,
     'application': True,

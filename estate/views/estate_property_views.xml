@@ -28,7 +28,7 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sold_property" type="object" string="SOLD" class="me-3" invisible="state == 'sold' or state == 'cancelled'"/>
+                    <button name="action_sell_property" type="object" string="SOLD" class="me-3" invisible="state == 'sold' or state == 'cancelled'"/>
                     <button name="action_cancel_property" type="object" string="CANCEL" class="me-3" invisible="state == 'sold' or state == 'cancelled'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new, offer received, offer accepted, sold"/>
                 </header>
@@ -45,7 +45,7 @@
                     </group>
                     <group>
                         <group>
-                            <field name="property_type" class="w-25" options="{'no_create': true}"/>
+                            <field name="property_type_id" class="w-25" options="{'no_create': true}"/>
                             <field name="postcode" class="w-25"/>
                             <field name="date_availability" class="w-25"/>
                         </group>
@@ -53,7 +53,6 @@
                             <field name="expected_price" class="w-25"/>
                             <field name="best_offer" class="w-25"/>
                             <field name="selling_price" class="w-25"/>
-                            <field name="state"/>
                         </group>
                     </group>
                     <notebook>
@@ -75,8 +74,8 @@
                         </page>
                         <page string="Other Info">
                             <group class="w-25">
-                                <field name="salesman"/>
-                                <field name="buyer"/>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -88,7 +87,7 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type" group_create="false" quick_create="false">
+            <kanban default_group_by="property_type_id" group_create="false" quick_create="false" records_draggable="false">
                 <field name="state"/>
                 <templates>
                     <t t-name="kanban-box" flex-direction="row">
@@ -129,8 +128,6 @@
                 <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <field name="facades"/>
                 <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
-                <!-- <separator/>
-                <filter string="Unavailable" name="unavailable" domain="['|', ('state', '=', 'offer accepted')]"/> -->
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>

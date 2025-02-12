@@ -4,8 +4,8 @@ from odoo import api, models, fields, exceptions, Command
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
-    def action_sold_property(self):
-        if not self.buyer:
+    def action_sell_property(self):
+        if not self.buyer_id:
             raise exceptions.UserError("A buyer must be set before selling the property.")
         if not self.selling_price:
             raise exceptions.UserError("Choose at least one offer before selling the property!")
@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
         admin_fee = 100
 
         invoice_vals = {
-            "partner_id": self.buyer.id,
+            "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",
             "invoice_line_ids": [
                 Command.create({
@@ -32,4 +32,4 @@ class EstateProperty(models.Model):
 
         self.env['account.move'].create(invoice_vals)
 
-        return super(EstateProperty, self).action_sold_property()
+        return super(EstateProperty, self).action_sell_property()
