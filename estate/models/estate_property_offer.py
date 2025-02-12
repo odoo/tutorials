@@ -1,3 +1,4 @@
+from typing import overload
 from dateutil.relativedelta import relativedelta
 from odoo import api, models, fields
 from odoo.exceptions import UserError
@@ -56,3 +57,12 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Property is already accepted or refused.")
             else:
                 record.status = 'refused'
+
+    @api.model
+    def create(self, vals_list):
+        if vals_list.get('price') < self.env['estate.property'].browse(vals_list['property_id']).expected_price or vals_list.get('price') < self.env['estate.property'].browse(vals_list['property_id']).best_offer:
+            best_offer = self.env['estate.property'].browse(vals_list['property_id']).best_offer
+            raise UserError(f"The offer must be higher than {best_offer}")
+        
+        self.env['estate.property'].browse(vals_list['property_id']).state = 'offer_received'
+        return super(EstatePropertyOffer, self).create(vals_list)

@@ -1,4 +1,3 @@
-from ast import If
 from odoo import api, models, fields
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -76,6 +75,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     # Action Button Methods
+    # This methods were used earlier for different sold and cancel button of the property form
     def action_set_sold_status(self):
         if self.state == 'cancelled':
             raise UserError('A cancelled property cannot be sold.')
@@ -88,6 +88,19 @@ class EstateProperty(models.Model):
         else:
             self.state = 'cancelled'
 
+    # Single method for two buttons action handling
+    def action_set_status(self):
+        if self.env.context.get('button_id') == 'sold_button':
+            if self.state == 'cancelled':
+                raise UserError('A cancelled property cannot be sold.')
+            else:
+                self.state = 'sold'
+        elif self.env.context.get('button_id') == 'cancelled_button':
+            if self.state == 'sold':
+                raise UserError('A sold property cannot be cancelled.')
+            else:
+                self.state = 'cancelled'
+
     # Python Constraints
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
@@ -95,3 +108,8 @@ class EstateProperty(models.Model):
             if not float_is_zero(record.selling_price, precision_digits=2):
                 if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
                     raise ValidationError("The selling price must be greater than the 90% of expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _delete_property(self):
+        if self.state != 'new' and self.state != 'cancelled':
+            raise UserError("Only new and cancelled propeties can be deleted.")

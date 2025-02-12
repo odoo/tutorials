@@ -56,11 +56,24 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="action_set_sold_status" type="object" string="Sold" invisible="state == 'sold' or state == 'cancelled'" />
-                    <button name="action_set_cancelled_status" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'" />
+                    <button name="action_set_status" type="object" string="Sold" 
+                            invisible="state == 'sold' or state == 'cancelled' or state == 'new' or state == 'offer_received'" 
+                            context="{'button_id': 'sold_button'}" 
+                            class="btn-primary"
+                    />
+                    <button name="action_set_status" type="object" string="Sold" 
+                            invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'" 
+                            context="{'button_id': 'sold_button'}" 
+                            class="btn-secondary"
+                    />
+                    <button name="action_set_status" type="object" string="Cancel" 
+                            invisible="state == 'sold' or state == 'cancelled'"  
+                            context="{'button_id': 'cancelled_button'}" 
+                    />
 
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': True}" />
                 </header>
+                
                 <sheet>
                     <group>
                         <h1>
@@ -116,9 +129,6 @@
                                         <!-- Action Buttons -->
                                         <button name="action_set_offer_status_accepted" type="object" icon="fa-check" title="Accept Property Offer." invisible="status == 'accepted' or status == 'refused'" />
                                         <button name="action_set_offer_status_refused" type="object" icon="fa-times" title="Refuse Property Offer." invisible="status == 'accepted' or status == 'refused'" />
-                                        
-                                        <!-- <field name="status" /> -->
-
                                     </list>
                                 </field>
                             </page>
