@@ -1,10 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Properties"
+    _order = "id desc"
 
     name = fields.Char("Title", required=True)
     description = fields.Text()
@@ -49,6 +51,13 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute='_compute_total_area', string="Total Area (sqm)")
     best_offer = fields.Float(compute= '_compute_best_offer', string="Best Offer")
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+        'The selling price must be positive'),
+    ]
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -70,3 +79,25 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = False
             self.garden_orientation = False
+
+    def set_property_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError(_("cancelled properties can't be sold"))
+            else:
+                for record in self:
+                    record.state = 'sold'
+
+    def set_property_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(_("sold properties can't be cancelled"))
+            else:
+                for record in self:
+                    record.state = 'cancelled'
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price < (record.expected_price*90)/100 and record.offer_ids!=False and record.state!='new':
+                raise ValidationError("Offer price can't be less than 90% of expected price")

@@ -27,6 +27,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Properties">
+                <header>
+                    <button name="set_property_sold" type="object" string="Sold" invisible="state=='sold' or state=='cancelled'"/>
+                    <button name="set_property_cancel" type="object" class="btn-secondary" string="Cancel" invisible="state=='sold' or state=='cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -34,12 +39,12 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                         <group>
                             <field name="state"/>
                         </group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create':true, 'no_create_edit':true}"/>
                             <field name="expected_price"/>
                         </group>
                         <group>
@@ -61,8 +66,8 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                     <field name="total_area"/>
                                     <field name="active"/>
                                 </group>
