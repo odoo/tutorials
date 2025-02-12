@@ -66,7 +66,7 @@
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                             <field name="selling_price"/>
-                            <field name="active"/>
+                            <field name="company_id"/>
                         </group>
                     </group>
                     <notebook>
@@ -85,10 +85,8 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <group>
-                                <field name="offer_ids" string=""
-                                    readonly="state=='offer_accepted' or state=='sold' or state=='cancelled'"/>
-                            </group>
+                            <field name="offer_ids"
+                                readonly="state=='offer_accepted' or state=='sold' or state=='cancelled'"/>
                         </page>
                         <page string="Other Info">
                             <group>

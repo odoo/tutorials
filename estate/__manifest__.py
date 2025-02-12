@@ -1,12 +1,15 @@
 {
     "name": "estate",
     "version": "1.0",
+    "category": "Real Estate/Brokerage",
     "author": "ksni-odoo",
     "depends": ["base"],
     "installable": True,
     "application": True,
     "data": [
-        "data/ir.model.access.csv",
+        "security/estate_groups.xml",
+        "security/estate_property_security.xml",   
+        "security/ir.model.access.csv",
         "views/estate_property_views.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
@@ -14,4 +17,5 @@
         "views/estate_property_users.xml",
         "views/estate_menus.xml",
     ],
+    "license": "LGPL-3"
 }

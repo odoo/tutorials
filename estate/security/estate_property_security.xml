@@ -1,0 +1,28 @@
+<odoo>
+    <record id="estate_property_rule_company_access" model="ir.rule">
+        <field name="name">This rule makes users only access the 
+        properties associated with the company they themselves are associated with.</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[
+            "|",('company_id','=',False),
+                ('company_id','in',company_ids)]</field>
+    </record>
+    <record id="estate_property_rule_agent" model="ir.rule">
+        <field name="name">This rule makes only the salesperson associated with a property make 
+        changes to that property.</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="groups" eval="[(4,ref('estate.estate_group_user'))]"/>
+        <field name="domain_force">[ '|',('salesman_id','=',user.id), ('salesman_id','=',False)]</field>
+    </record>
+    <record id="estate_property_rule_manager" model="ir.rule">
+        <field name="name">This rule gives manager full access to all properties.</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="groups" eval="[(4,ref('estate.estate_group_manager'))]"/>
+    </record>
+</odoo>

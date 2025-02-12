@@ -53,6 +53,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+    company_id = fields.Many2one('res.company',default=lambda self: self.env.company)
 
     _sql_constraints = [
         (

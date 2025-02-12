@@ -19,12 +19,6 @@ class EstatePropertyOffer(models.Model):
     )
     property_type_id = fields.Many2one(related='property_id.property_type_id',store=True)
 
-    property_state = fields.Selection(
-        related="property_id.state",
-        string="Property State",
-        store=True
-    )
-
     _sql_constraints = [
         (
             "offer_price_positive",
@@ -51,6 +45,9 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = record.price
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.state = "offer_accepted"
+                for offer in record.property_id.offer_ids:
+                    if not offer.id == record.id:
+                        offer.status = "refused"
             else:
                 raise UserError("An Offer has already been accepted.")
 
