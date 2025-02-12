@@ -52,6 +52,12 @@ class EstateProperty(models.Model):
     total_area =fields.Integer(string="Total Area", compute="_compute_total_area")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_check_state(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError("You can only delete properties in 'New' & 'Cancelled' state")
+
     _sql_constraints = [
         ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be greater than 0"),
         ("check_selling_price", "CHECK(selling_price > 0)", "The selling price must be positive"),

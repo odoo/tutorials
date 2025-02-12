@@ -18,7 +18,7 @@
         <record id="demo_property_offer_3" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_2"/>
             <field name="property_id" ref="estate.demo_property_1"/>
-            <field name="price">150001</field>
+            <field name="price">15000001</field>
             <field name="validity">14</field>
         </record>
 
@@ -39,7 +39,7 @@
         <record id="demo_property_offer_6" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_5"/>
             <field name="property_id" ref="estate.demo_property_2"/>
-            <field name="price">225000</field>
+            <field name="price">275000</field>
             <field name="validity">7</field>
         </record>
 
@@ -53,21 +53,21 @@
         <record id="demo_property_offer_8" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_3"/>
             <field name="property_id" ref="estate.demo_property_3"/>
-            <field name="price">180000</field>
+            <field name="price">280000</field>
             <field name="validity">7</field>
         </record>
 
         <record id="demo_property_offer_9" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_10"/>
             <field name="property_id" ref="estate.demo_property_4"/>
-            <field name="price">200000</field>
+            <field name="price">290000</field>
             <field name="validity">10</field>
         </record>
 
         <record id="demo_property_offer_10" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"/>
             <field name="property_id" ref="estate.demo_property_4"/>
-            <field name="price">200000</field>
+            <field name="price">300000</field>
             <field name="validity">7</field>
         </record>
     </data>

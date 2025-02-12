@@ -19,10 +19,27 @@ class EstatePropertyOffer(models.Model):
         copy=False
     )
     partner_id = fields.Many2one(comodel_name="res.partner", required=True)
-    property_id = fields.Many2one(comodel_name="estate.property", required=True)
+    property_id = fields.Many2one(comodel_name="estate.property", required=True, ondelete="cascade")
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Date Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
-    property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type", compute="_compute_property_type_id", store=True)  
+    property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type", compute="_compute_property_type_id", store=True)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        print(vals_list)
+        offers = super().create(vals_list)
+        print(offers)
+        for offer in offers:
+            print(offer)
+            property_obj = offer.property_id
+            print(property_obj)
+            max_existing_offer = max(property_obj.offer_ids.mapped("price"), default=0)
+            if offer.price < max_existing_offer:
+                raise UserError(f"The offer price should be greater than {max_existing_offer}.")
+            if property_obj.state == 'new':
+                property_obj.state = 'offer_received'
+        return offers
+
 
     _sql_constraints = [
         ("check_offer_price", "CHECK(price > 0)", "The offer price must be greater than 0")
