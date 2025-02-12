@@ -1,11 +1,12 @@
-from odoo import api, fields, models
 from datetime import timedelta
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
 class estatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Propert offers"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -24,13 +25,12 @@ class estatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", strore=True
+    )
 
     _sql_constraints = [
-        (
-            'check_offer_price',
-            'CHECK(price > 0)',
-            'Offer price must be > 0'
-        )
+        ("check_offer_price", "CHECK(price > 0)", "Offer price must be > 0")
     ]
 
     @api.depends("validity", "create_date")
@@ -59,6 +59,7 @@ class estatePropertyOffer(models.Model):
 
             # Accept the current offer
             offer.status = "accepted"
+            offer.property_id.state = "accepted"
             offer.property_id.selling_price = offer.price
             offer.property_id.partner_id = offer.partner_id.id
 
@@ -72,7 +73,7 @@ class estatePropertyOffer(models.Model):
         for offer in self:
             if offer.status == "refused":
                 raise UserError(f"Offer {offer.id} is already refused.")
-            
+
             if offer.status == "accepted":
                 offer.property_id.selling_price = 0
                 offer.property_id.partner_id = False

@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from datetime import datetime
+
+from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
@@ -8,6 +9,7 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     def _default_date_availability(self):
         return datetime.today() + relativedelta(months=3)
@@ -35,29 +37,33 @@ class EstateProperty(models.Model):
     )
     state = fields.Selection(
         string="Status of Document",
+        default="new",
         selection=[
             ("new", "New"),
-            ("offer Received", "Offer Received"),
-            ("offer Accepted", "Offer Accepted"),
+            ("recevied", "Received"),
+            ("accepted", "Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
+        compute="_compute_state",
+        store=True,
     )
     date_availability = fields.Date(
         string="Available From", copy=False, default=_default_date_availability
     )
+    
+    total_area = fields.Float(compute="_compute_total", string="Total Area")
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     partner_id = fields.Many2one("res.partner", string="Buyer", copy="False")
     users_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
+
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
 
     offer_ids = fields.One2many("estate.property.offer", "property_id")
-
-    total_area = fields.Float(compute="_compute_total", string="Total Area")
-    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
     _sql_constraints = [
         (
@@ -85,6 +91,14 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
+    @api.depends("offer_ids")
+    def _compute_state(self):
+        for record in self:
+            if record.offer_ids:
+                record.state = "recevied"
+            else:
+                record.state = "new"
+
     @api.onchange("garden")
     def _comoute_garden(self):
         if self.garden is True:
@@ -111,7 +125,7 @@ class EstateProperty(models.Model):
                     "Selling price cannot be lower than 90% of expected price"
                 )
 
-    def mark_sold(self):
+    def mark_offer_sold(self):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cancelled property can not be sold")
@@ -119,10 +133,10 @@ class EstateProperty(models.Model):
                 record.state = "sold"
         return True
 
-    def mark_cancel(self):
+    def mark_offer_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("Sold property can not be Cancelled")
             else:
-                record.state = "Cancelled"
+                record.state = "cancelled"
         return True

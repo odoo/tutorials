@@ -1,4 +1,5 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <odoo>
     <!-- Property Type Action -->
     <record id="estate_property_type_action" model="ir.actions.act_window">
@@ -13,6 +14,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Properties">
+                <field name="sequence" widget="handle" />
                 <field name="name" />
             </list>
         </field>
@@ -23,11 +25,36 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Property Types">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            type="action"
+                            name="%(estate.estate_property_offers_list_view_action)d"
+                            string="Offers"
+                            class="oe_stat_button"
+                            icon="fa-star"
+                        >
+                            <div class="o_stat_info">
+                                <field name="offer_count" class="o_stat_value" />
+                                <span class="o_stat_text">Offers</span>
+                            </div>
+                        </button>
+                    </div>
                     <h1>
                         <field name="name" />
                     </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
