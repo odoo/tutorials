@@ -6,6 +6,12 @@ class Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+        'The selling price must be strictly positive.'),
+    ]
 
     name = fields.Char(
         "Title", required=True,
@@ -102,13 +108,6 @@ class Property(models.Model):
         help="This field specifies the best offered price for the property.",
     )
 
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)',
-        'The expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)',
-        'The selling price must be strictly positive.'),
-    ]
-
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for line in self:
@@ -119,7 +118,6 @@ class Property(models.Model):
         for line in self:
             line.best_price = max(line.mapped('offer_ids.price'), default=0)
 
-
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -129,24 +127,8 @@ class Property(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def cancel_property(self):
-        if self.state == 'sold':
-            raise exceptions.UserError("Sold Property cannot be cancelled.")
-        else:
-            self.state = 'cancelled'
-
-        return True
-
-    def sold_property(self):
-        if self.state == 'cancelled':
-            raise exceptions.UserError("Cancelled Property cannot be sold.")
-        else:
-            self.state = 'sold'
-
-        return True
-
     @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
+    def _check_smaller_selling_price(self):
         for line in self:
             if (float_compare(line.selling_price, line.expected_price * 0.9, precision_digits=2) == -1
                 and not float_is_zero(line.selling_price, precision_rounding=2)):
@@ -157,3 +139,23 @@ class Property(models.Model):
         for line in self:
             if line.state not in ('new', 'cancelled'):
                 raise exceptions.UserError('Only new and cancelled properties can be deleted.')
+
+    def action_cancel(self):
+        self.ensure_one()
+
+        if self.state == 'sold':
+            raise exceptions.UserError("Sold Property cannot be cancelled.")
+        else:
+            self.state = 'cancelled'
+
+        return True
+
+    def action_sold(self):
+        self.ensure_one()
+
+        if self.state == 'cancelled':
+            raise exceptions.UserError("Cancelled Property cannot be sold.")
+        else:
+            self.state = 'sold'
+
+        return True

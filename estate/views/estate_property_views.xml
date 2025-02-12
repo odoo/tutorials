@@ -83,8 +83,8 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <header>
-                    <button name="sold_property" type="object" string="Sold" invisible="state in ('sold','cancelled')" />
-                    <button name="cancel_property" type="object" string="Cancel" invisible="state in ('sold','cancelled')" />
+                    <button name="action_sold" type="object" string="Sold" invisible="state in ('sold','cancelled')" />
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold','cancelled')" />
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': True}" />
                 </header>
 
@@ -132,8 +132,8 @@
                         </page>
 
                         <page name="Offers">
-                            <field name="offer_ids" readonly="state in ('offer_accepted
-                            ', 'sold', 'cancelled')" />
+                            <field name="offer_ids"
+                            readonly="state in ('offer_accepted', 'sold', 'cancelled')" />
                         </page>
 
                         <page name="Other Info">
