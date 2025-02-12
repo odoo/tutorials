@@ -11,7 +11,7 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float()
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one('res.partner', required=True)
-    property_id = fields.Many2one('estate.property', required=True)
+    property_id = fields.Many2one('estate.property')
     validity = fields.Integer(default=7, string="Validity (Days)")
     date_deadline = fields.Date(
         compute='_compute_date_deadline',
@@ -46,6 +46,7 @@ class EstatePropertyOffer(models.Model):
         self.property_id.selling_price = self.price
         self.property_id.offer_ids.status = 'refused'  # Refuse all offers
         self.status = 'accepted'  # Accept this offer
+        self.property_id.state = 'offer_accepted'
 
     def action_estate_property_offer_refuse(self):
         if self.status == 'refused':
@@ -53,3 +54,17 @@ class EstatePropertyOffer(models.Model):
         self.property_id.buyer_id = False
         self.property_id.selling_price = 0
         self.status = 'refused'
+
+    # use @api.model doesn't support batch creation and is Deprecated
+    # Instead, use @api.model_create_multi decorator to support batch creation
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            if property_id.state != 'offer_received':
+                property_id.state = 'offer_received'
+            if property_id.offer_ids:
+                # we have written _order = "price desc" in the model, so the first offer is the highest one
+                if vals['price'] < property_id.offer_ids[0].price:
+                    raise ValidationError("The offer price must be higher than the existing offer.")
+        return super().create(vals_list)
