@@ -88,7 +88,7 @@ class EstateProperty(models.Model):
         else:
             self.state = 'cancelled'
 
-    # Single method for two buttons action handling
+    # Single method for two button's(sold, cancelled) action handling
     def action_set_status(self):
         if self.env.context.get('button_id') == 'sold_button':
             if self.state == 'cancelled':

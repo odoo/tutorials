@@ -56,17 +56,17 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="action_set_status" type="object" string="Sold" 
+                    <button name="action_set_sold_status" type="object" string="Sold" 
                             invisible="state == 'sold' or state == 'cancelled' or state == 'new' or state == 'offer_received'" 
                             context="{'button_id': 'sold_button'}" 
                             class="btn-primary"
                     />
-                    <button name="action_set_status" type="object" string="Sold" 
+                    <button name="action_set_sold_status" type="object" string="Sold" 
                             invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'" 
                             context="{'button_id': 'sold_button'}" 
                             class="btn-secondary"
                     />
-                    <button name="action_set_status" type="object" string="Cancel" 
+                    <button name="action_set_cancelled_status" type="object" string="Cancel" 
                             invisible="state == 'sold' or state == 'cancelled'"  
                             context="{'button_id': 'cancelled_button'}" 
                     />
