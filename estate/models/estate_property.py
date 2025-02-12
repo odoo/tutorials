@@ -16,7 +16,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         copy=False, default=fields.Datetime.today() + relativedelta(months=3)
     )
-    expected_price = fields.Float(required=True, allow_negative=False)
+    expected_price = fields.Float(required=True)
     selling_price = fields.Integer(readonly=True, copy=False, allow_negative=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -48,21 +48,33 @@ class EstateProperty(models.Model):
         default="new",
     )
     property_type_id = fields.Many2one("estate.property.type")
-    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="buyer_id", copy=False)
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_area")
     best_price = fields.Float(compute="_compute_best_offer")
-    seller = fields.Many2one(
+    seller_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
     _sql_constraints = [
         (
-            "name_uniq",
-            "unique(name, property_type_id.name, tags_ids.name)",
-            "A tag with the same name and applicability already exists",
-        )
+            "positive_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price cannot be negative.",
+        ),
+        (
+            "positive_selling_price",
+            "CHECK(selling_price > 0)",
+            "Selling_price cannot be negative.",
+        ),
+        ("unique_property_name", "UNIQUE(name)", "Property name should be unique"),
     ]
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company.id,
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_area(self):
@@ -96,18 +108,11 @@ class EstateProperty(models.Model):
             raise UserError("Cancelled Property cannot be sold!")
 
     def cancel(self):
-        if self.state !="sold":
+        if self.state != "sold":
             self.state = "cancelled"
         else:
             raise UserError("Sold Property cannot be cancelled!")
 
-    @api.constrains("expected_price")
-    def _check_price_positive(self):
-        for record in self:
-            if record.expected_price < 0:
-                raise ValidationError("Expected Price cannot be negative!")
-
-    # using api.model because ondelte method is returning recursion errors
     def unlink(self):
         for property in self:
             if property.state not in ["new", "cancelled"]:

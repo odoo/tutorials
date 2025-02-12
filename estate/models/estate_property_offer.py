@@ -41,14 +41,14 @@ class EstatePropertyOffer(models.Model):
                 dates.validity = (dates.date_deadline - dates.create_date).days
 
     def offer_accept(self):
-        if self.property_id.buyer:
+        if self.property_id.buyer_id:
             raise UserError(
                 "This property already has an offer that has been accepted!"
             )
         else:
             if self.price >= (0.9) * self.property_id.expected_price:
                 self.property_id.selling_price = self.price
-                self.property_id.buyer = self.partner_id
+                self.property_id.buyer_id = self.partner_id
                 self.status = "accepted"
                 self.property_id.state = "offer accepted"
             else:
@@ -58,8 +58,8 @@ class EstatePropertyOffer(models.Model):
 
     def offer_refuse(self):
         self.status = "refused"
-        if self.partner_id == self.property_id.buyer:
-            self.property_id.buyer = None
+        if self.partner_id == self.property_id.buyer_id:
+            self.property_id.buyer_id = None
             self.property_id.selling_price = 0
             self.property_id.state = "offer received"
 

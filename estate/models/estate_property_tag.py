@@ -1,5 +1,4 @@
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo import fields, models
 
 
 class EstatePropertyTag(models.Model):
