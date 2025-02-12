@@ -4,9 +4,8 @@ from odoo import Command, fields, models
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
-
-    def is_Sold(self):
-        res = super().is_Sold()
+    def action_sell_property(self):
+        res = super().action_sell_property()
         for prop in self:
             journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
 
@@ -32,5 +31,4 @@ class EstateProperty(models.Model):
             }
 
             self.env['account.move'].create(invoice_vals)
-
         return res

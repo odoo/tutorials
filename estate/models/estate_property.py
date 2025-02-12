@@ -1,12 +1,16 @@
-from odoo import api, exceptions, fields, models, tools
 from dateutil.relativedelta import relativedelta
+from odoo import api, exceptions, fields, models, tools
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is estate model"
     _order = "id desc"
-
+    
+    _sql_constraints = [
+        ('positive_expected_price', 'CHECK(expected_price > 0)','The expected price must be positive.'),
+        ('positive_selling_price', 'CHECK(selling_price > 0)','The selling price must be positive.')
+    ]
 
     name = fields.Char(string = "Name", required = True)
     description = fields.Text(string = "Description", required = True)
@@ -44,24 +48,21 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
-    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id")
-
-    total_area = fields.Float(compute="_total_area" ,store=True)
+    property_type_id = fields.Many2one(
+        comodel_name="estate.property.type", string="Property Type")
+    buyer_id = fields.Many2one(
+        comodel_name="res.partner", string="Buyer", copy=False, readonly=True)
+    salesperson_id = fields.Many2one(
+        comodel_name="res.users", string="Salesperson", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many(
+        comodel_name="estate.property.tag", string="Tags")
+    offer_ids = fields.One2many(
+        comodel_name="estate.property.offer", inverse_name="property_id")
+    total_area = fields.Float(compute="_compute_total_area" ,store=True)
     best_price = fields.Integer(compute="_compute_best_price")
 
-    _sql_constraints = [
-        ('positive_expected_price', 'CHECK(expected_price > 0)',
-         'The expected price must be positive.'),
-        ('positive_selling_price', 'CHECK(selling_price > 0)',
-         'The selling price must be positive.')
-    ]
-
     @api.depends("living_area", "garden_area")
-    def _total_area(self):
+    def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
         
@@ -70,24 +71,8 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
 
-    @api.onchange("garden")
-    def _update_garden_vals(self):
-        if self.garden == True:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = None
-            self.garden_orientation = None
-
-    # @api.onchange("offer_ids")
-    # def _update_status(self):
-    #     if (len(self.offer_ids) > 0):
-    #         self.state = "offer_received"
-    #     else:
-    #         self.state = "new"
-    
     @api.constrains("selling_price", "expected_price")
-    def is_selling_price_fine(self):
+    def _check_selling_price(self):
         for record in self:
             # if(len(record.offer_ids) == 0): alternate approach
             #     pass
@@ -98,7 +83,22 @@ class EstateProperty(models.Model):
             else:
                 pass
 
-    def is_Cancelled(self):
+    @api.onchange("garden")
+    def _onchange_garden_area(self):
+        if self.garden == True:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_is_new_or_cancelled(self):
+        for record in self:
+            if record.state in ['offer received', 'offer accepted', 'sold']:
+                raise exceptions.UserError("Only new and cancelled properties can be deleted.")
+
+    def action_cancel_property(self):
         for record in self:
             if record.state != "sold":
                 record.state = "cancelled"
@@ -106,17 +106,10 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Property is already sold!")
         return True
 
-    def is_Sold(self):
+    def action_sell_property(self):
         for record in self:
             if record.state != "cancelled":
                 record.state = "sold"
-                print("Check")
             else:
                 raise exceptions.UserError("Sorry! This listing is cancelled.")
         return True
-
-    @api.ondelete(at_uninstall=False)
-    def prevent_delete(self):
-        for record in self:
-            if(record.state=="new" or record.state=="cancelled"):
-                raise exceptions.UserError("This property cannot be deleted!")

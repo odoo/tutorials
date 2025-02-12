@@ -1,12 +1,15 @@
-from odoo import api, exceptions, fields, models 
 from dateutil.relativedelta import relativedelta
+from odoo import api, exceptions, fields, models 
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-    _description = "This contains offer related configurations."
+    _description = "Property Offers"
     _order = "price desc"
 
+    _sql_constraints = [
+        ('positive_offer_price', 'CHECK(price > 0)','The offered price must be positive.')
+    ]
 
     price = fields.Float(string="Offer", required=True)
     status = fields.Selection(
@@ -17,16 +20,16 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False,
     )
-    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
-    property_id = fields.Many2one('estate.property', string="Property", required=True, ondelete="cascade")
+    partner_id = fields.Many2one(
+        comodel_name='res.partner', string="Partner", required=True)
+    property_id = fields.Many2one(
+        comodel_name='estate.property', string="Property", required=True, 
+        ondelete="cascade")
     validity = fields.Integer(string="Validity (Days)", default=7)
     offer_deadline = fields.Date(string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type", related="property_id.property_type_id", store=True)
-
-    _sql_constraints = [
-        ('positive_offer_price', 'CHECK(price > 0)',
-         'The offered price must be positive.')
-    ]
+    property_type_id = fields.Many2one(
+        comodel_name='estate.property.type', string="Property Type", related="property_id.property_type_id",
+        store=True)
 
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):
@@ -38,24 +41,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.offer_deadline-date).days
-    
-    def action_accept(self):
-        for record in self:
-            record.status = "accept"
-                    # Find other records and set their status to "refused"
-            other_records = self.search([('id', '!=', record.id), ('property_id', '=', record.property_id.id)])
-            for other_record in other_records:
-                other_record.status = 'refuse'
-            bought_property = record.property_id
-            bought_property.buyer_id = record.partner_id
-            bought_property.selling_price = record.price
-            bought_property.state = 'offer_accepted'
-        return True
-
-    def action_reject(self):
-        for record in self:
-            record.status = "refuse"
-        return True
 
     @api.model_create_multi
     def create(self, vals):
@@ -69,3 +54,21 @@ class EstatePropertyOffer(models.Model):
                 else:
                     prop.state = "offer_received"
         return super().create(vals)
+
+    def action_accept(self):
+        for record in self:
+            record.status = "accept"
+            # Find other records and set their status to "refused"
+            other_records = self.search([('id', '!=', record.id), ('property_id', '=', record.property_id.id)])
+            for other_record in other_records:
+                other_record.status = 'refuse'
+            bought_property = record.property_id
+            bought_property.buyer_id = record.partner_id
+            bought_property.selling_price = record.price
+            bought_property.state = 'offer_accepted'
+        return True
+
+    def action_reject(self):
+        for record in self:
+            record.status = "refuse"
+        return True

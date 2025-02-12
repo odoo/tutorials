@@ -26,12 +26,10 @@
             <form string="Test">
                 <sheet>
                     <header>
-                        <button name="is_Sold" type="object" string="Sell" class="btn-primary"
+                        <button name="action_sell_property" type="object" string="Sell" class="btn-primary"
                             invisible="state == 'sold' or state == 'cancelled'" />
-                        <button name="is_Cancelled" type="object" string="Cancel"
+                        <button name="action_cancel_property" type="object" string="Cancel"
                             invisible="state == 'sold' or state == 'cancelled'" />
-                        <button name="%(estate_property_action)d" type="action"
-                            string="Show All Properties" />
                         <field name="state" widget="statusbar"
                             statusbar_visible="new,offer_received, offer_accepted, sold" />
                     </header>
