@@ -1,12 +1,13 @@
 {
     "name": "Real_estate",
     "version": "1.8",
+    'category': 'Real Estate/Brokerage', 
     "summary": "Track leads and close opportunities",
     "depends": [
         "base",
-        "base_setup",
     ],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
 
         "views/res_users_views.xml",

@@ -33,7 +33,7 @@
             <list string="Estate Properties Offers" decoration-danger="status == 'refused'"
                 decoration-success="status == 'accepted'" 
                >
-                <field name="price" string="Price"/>
+                <field name="price" string="Price" sum="Total"/>
                 <field name="partner_id" string="Partner"/>
                 <field name="property_type_id" readonly="1"/>
                 <field name="status" string="Status" readonly="1"/>
@@ -42,5 +42,4 @@
             </list>
         </field>
     </record>
-
 </odoo>

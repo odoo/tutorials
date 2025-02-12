@@ -1,0 +1,33 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Agent Group -->
+        <record id="estate_group_user" model="res.groups">
+            <field name="name">Agent</field>
+            <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        </record>
+
+        <!-- Manager Group -->
+        <record id="estate_group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+            <!-- Implied groups: Managers inherit Agent group rights -->
+            <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+        </record>
+
+        <!-- Rule for Agents: Access to properties where they are the salesperson or none is assigned -->
+        <record id="estate_rule_agent_see_own_properties" model="ir.rule">
+            <field name="name">Agent: Access Own Properties</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="domain_force">['|', ('salesperson_id', '=', False), ('salesperson_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+        </record>
+
+        <!-- Rule for Managers: Full access to all properties -->
+        <record id="estate_rule_manager_see_all_properties" model="ir.rule">
+            <field name="name">Manager: Access All Properties</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="domain_force">[(1, '=', 1)]</field> <!-- Always True: No restriction -->
+            <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
+        </record>
+    </data>
+</odoo>
