@@ -1,6 +1,6 @@
-from odoo import models, fields, api
-from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
+from odoo import api, models, fields
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -17,15 +17,19 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Datetime.today() + relativedelta(days=90),
     )
     salesperson_id = fields.Many2one(
-        "res.partner",
-        string="Salesperson",
-        default=lambda self: self.env.user.partner_id,
+        "res.users", string="Salesperson", default=lambda self: self.env.user
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     best_price = fields.Float(compute="_compute_best_price")
     bedrooms = fields.Integer(default=2)
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        default=lambda self: self.env.user.company_id,
+        required=True,
+    )
     living_area = fields.Integer()
     facades = fields.Integer()
     property_type_id = fields.Many2one("estate.property.type")
@@ -95,17 +99,15 @@ class EstateProperty(models.Model):
                 self.garden_orientation = ""
                 self.garden_area = 0
 
-    def sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled property cannot be sold.")
-            record.state = "sold"
+    def action_sold(self):
+        if self.state == "cancelled":
+            raise UserError("Cancelled property cannot be sold.")
+        self.state = "sold"
 
-    def cancel(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("Sold property cannot be cancelled.")
-            record.state = "cancelled"
+    def action_cancel(self):
+        if self.state == "sold":
+            raise UserError("Sold property cannot be cancelled.")
+        self.state = "cancelled"
 
     @api.constrains("selling_price")
     def _check_selling_price(self):

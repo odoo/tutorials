@@ -1,6 +1,6 @@
-from odoo import fields, models, api
-from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -22,7 +22,7 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True
     )
-    create_date = fields.Date(default=fields.Datetime.today())
+
     _sql_constraints = [
         ("positive_price", "CHECK(price > 0)", "Expected price cannot be negative.")
     ]
@@ -53,32 +53,17 @@ class EstatePropertyOffer(models.Model):
         return True
 
     @api.model_create_multi
-    def create(self, vals_list):
-        if isinstance(vals_list, list):
-            for vals in vals_list:
-                property_id = vals.get("property_id")
-                if property_id:
-                    property_record = self.env["estate.property"].browse(property_id)
-                    if property_record:
-                        property_record.write({"state": "offer received"})
+    def create(self, vals):
+        property_id = vals.get("property_id")
+        if property_id:
+            property_record = self.env["estate.property"].browse(property_id)
+            if property_record:
+                property_record.write({"state": "offer received"})
 
-                if vals["price"] is not None:
-                    highest_price = property_record.best_price
-                    if vals["price"] < highest_price:
-                        raise UserError(
-                            f"Error: the price cannot be less than maximum price {highest_price}."
-                        )
-        else:
-            property_id = vals.get("property_id")
-            if property_id:
-                property_record = self.env["estate.property"].browse(property_id)
-                if property_record:
-                    property_record.write({"state": "offer received"})
-
-            if vals["price"] is not None:
-                highest_price = property_record.best_price
-                if vals["price"] < highest_price:
-                    raise UserError(
-                        f"Error: the price cannot be less than maximum price {highest_price}."
-                    )
+        if vals["price"] is not None:
+            highest_price = property_record.best_price
+            if vals["price"] < highest_price:
+                raise UserError(
+                    f"Error: the price cannot be less than maximum price {highest_price}."
+                )
         return super().create(vals)

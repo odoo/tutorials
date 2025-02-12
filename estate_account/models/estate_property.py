@@ -1,16 +1,16 @@
-from odoo import models, fields, api, Command
-
+from odoo import Command, models
 
 
 class EstateProperty(models.Model):
     _inherit = ['estate.property']
     
     def sold(self):
-        account_move = self.env['account.move'].create({
-            "name" : self.name,
+
+        print(" reached ".center(100, '='))
+        self.check_access('write') 
+        account_move = self.env['account.move'].sudo().create({
             "move_type" : "out_invoice",
             "partner_id" : self.buyer_id.id,
-            "journal_id" : self.env['account.journal'].search([('type','=','sale')],limit=1),
             "line_ids": [
                 Command.create({
                     "name": self.name,
@@ -34,4 +34,3 @@ class EstateProperty(models.Model):
         print("INvoice Created!!!!!!!!!!!!!!!!!!!!1")
         print("INvoice Created!!!!!!!!!!!!!!!!!!!!1")
         return super().sold()
- 

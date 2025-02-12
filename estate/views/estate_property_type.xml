@@ -9,8 +9,8 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list editable="bottom" open_form_view="True">
-                <field name="sequence" widget="handle"></field>
-                <field name="name"></field>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
             </list>
         </field>
     </record>            
@@ -25,12 +25,12 @@
                             <button class="oe_stat_button" name="%(estate_property_offer_action)d" string="Offers" type="action" icon="fa-bars">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">
-                                        <field name="offer_count" widget="statinfo" string="Offers"></field>
+                                        <field name="offer_count" widget="statinfo" string="Offers"/>
                                     </span>
                                 </div>
                             </button>
                         </div>  
-                        <h1><field name="name"></field></h1>   
+                        <h1><field name="name"/></h1>   
                         <notebook>
                             <page string="Properties">
                                 <field name="property_ids">

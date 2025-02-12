@@ -1,9 +1,6 @@
 {
     "name" : "estate_account",
-    "depends" : ['base','account','estate'],
-    'data' : [
-
-    ],
+    "depends" : ['account','estate'],
     'installable': True,
     'auto_install': True,
 }
