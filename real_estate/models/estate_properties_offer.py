@@ -1,12 +1,12 @@
-from odoo import fields, api, models  # type: ignore
+from odoo import fields, api, models
 from datetime import timedelta
-from odoo.exceptions import UserError,ValidationError  # type: ignore
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertiesOffer(models.Model):
     _name = 'estate.properties.offer'
-    _description = "Estate Properties Offer"
-    _order = "price desc"
+    _description = 'Estate Properties Offer'
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection(copy=False, selection=[(
@@ -39,25 +39,27 @@ class EstatePropertiesOffer(models.Model):
 
     def accept_offer(self):
         for record in self:
-            if record.property_id.selling_price > 0 or record.status == "accepted":
-                raise UserError("Offer already accepted")
-            record.status = "accepted"
+            if record.property_id.selling_price > 0 or record.status == 'accepted':
+                raise UserError('Offer already accepted')
+            record.status = 'accepted'
             record.property_id.state = 'offer_accepted'
             record.property_id.partner_id = record.partner_id
             record.property_id.selling_price = record.price
 
     def refuse_offer(self):
         for record in self:
-            if record.status == "accepted":
+            if record.status == 'accepted':
                 record.property_id.selling_price = 0.00
                 record.property_id.partner_id = 0
-            record.status = "refused"
+            record.status = 'refused'
             record.property_id.state = 'cancelled'
-    
+
     @api.model
-    def create(self,vals):
-        property=self.env['estate.properties'].browse(vals['property_id'])
+    def create(self, vals):
+        property = self.env['estate.properties'].browse(
+            vals['property_id'])
         if vals['price'] < property.expected_price:
-            raise ValidationError('Offer price should not be less than Expected price')
-        property.state='offer_recieved'
+            raise ValidationError(
+                'Offer price should not be less than Expected price')
+        property.state = 'offer_recieved'
         return super().create(vals)

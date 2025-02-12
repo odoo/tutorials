@@ -4,7 +4,6 @@
             <field name="res_model">estate.properties.type</field>
             <field name="view_mode">list,form</field>
         </record>
-
         <record id="property_type_view" model="ir.ui.view">
             <field name="name">estate.form.view</field>
             <field name="model">estate.properties.type</field>
@@ -16,7 +15,6 @@
                 </list>
             </field>
         </record>
-
         <record id="property_type_form" model="ir.ui.view">
             <field name="name">estate.type.form</field>
             <field name="model">estate.properties.type</field>
@@ -24,7 +22,7 @@
                 <form string="Types">
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                        <!-- <button class="oe_stat_button" name="redirect_offer_form" type="object" icon="fa-money"> -->
+                            <!-- <button class="oe_stat_button" name="redirect_offer_form" type="object" icon="fa-money"> -->
                             <button class="oe_stat_button" name="%(estate_offer_model_action)d" type="action" icon="fa-money">
                                 <div class="o_stat_info">
                                     <span class="o_stat_value">
@@ -54,6 +52,5 @@
                 </form>
             </field>
         </record>
-
     </data>
 </odoo>

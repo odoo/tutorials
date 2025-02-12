@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>        <!--Basic action that will open the default landing page of module-->
+    <data>       
         <record id="test_model_action" model="ir.actions.act_window">
             <field name="name">Real Estate</field>
             <field name="res_model">estate.properties</field>
             <field name="view_mode">list,kanban,form</field>
             <field name="context">{'search_default_state': 1}</field>
-        </record>        <!--Action that will define how much fields and what name of field should be shown in the table (form) for view-->
+        </record>       
         <record id="estate_form_view" model="ir.ui.view">
             <field name="name">estate.form.view</field>
             <field name="model">estate.properties</field>
@@ -22,7 +22,7 @@
                     <field string="Available From" name="date_availability" optional="hide"/>
                 </list>
             </field>
-        </record>        <!--Action that will help to customize view for a form -->
+        </record>        
         <record id="real_estate_view_form" model="ir.ui.view">
             <field name="name">real.estate.form</field>
             <field name="model">estate.properties</field>
@@ -91,7 +91,7 @@
                     </sheet>
                 </form>
             </field>
-        </record>        <!--Action that will help to search data accordingly-->
+        </record>
         <record id="estate_view_search" model="ir.ui.view">
             <field name="name">estate.view.search</field>
             <field name="model">estate.properties</field>
@@ -103,9 +103,9 @@
                     <field string="Bedrooms" name="bedrooms"/>
                     <field string="Living Area (sqm)" name="living_area" filter_domain="[('living_area','>=',self)]"/>
                     <field string="Facades" name="facades"/>
-                    <filter string="Available" name="state" domain="[&apos;|&apos;, (&apos;state&apos;, &apos;=&apos;, &apos;new&apos;), (&apos;state&apos;, &apos;=&apos;, &apos;offer_received&apos;)]"/>
+                    <filter string="Available" name="state" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                     <group expand="1" string="Group By">
-                        <filter string="Postcode" name="postcode" context="{&apos;group_by&apos;:&apos;postcode&apos;}"/>
+                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                     </group>
                 </search>
             </field>
