@@ -1,0 +1,9 @@
+<odoo>
+    <record id="seq_estate_property" model="ir.sequence">
+        <field name="name">Estate Property Sequence</field>
+        <field name="code">estate.property</field>
+        <field name="prefix">P</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

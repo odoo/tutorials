@@ -30,31 +30,23 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
         compute="_compute_deadline",
         inverse="_inverse_deadline",
-        store="True",
+        store= True,
     )
 
     @api.model_create_multi
     def create(self, vals_list):
-        offers = super().create(vals_list)
-
-        for offer in offers:
-            property_id = offer.property_id
-            existing_offers = property_id.offer_ids - offer
-            previous_best_price = 0
-
-            for existing_offer in existing_offers:
-                if existing_offer.price > previous_best_price:
-                    previous_best_price = existing_offer.price
-
-            if previous_best_price and offer.price <= previous_best_price:
-                raise UserError(
-                    f"The new offer must be higher than {previous_best_price}"
-                )
-
-            if property_id.state == "new":
-                property_id.state = "offer_recieved"
-
+        offers = []
+        for val in vals_list:
+            property = self.env["estate.property"].browse(val["property_id"])
+            for offer in property.offer_ids:
+                if offer.price > val["price"]:
+                    raise UserError(f"The offer must be higher than {offer.price}")
+            offer = super().create([val])  
+            if offer.property_id.state == "new":
+                 offer.property_id.state = "offer_recieved"
+            offers.append(offer)
         return offers
+
 
     @api.depends("validity")
     def _compute_deadline(self):

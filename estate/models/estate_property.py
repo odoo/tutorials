@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -21,7 +21,8 @@ class EstateProperty(models.Model):
         ),
     ]
 
-    name = fields.Char(string="Name of the property", required=True)
+    name = fields.Char(string="Property Name", required=True, copy=False)
+    sequence_number = fields.Char(string="Number", required=True, readonly=True, copy=False)
     description = fields.Text(string="Property Description")
     postcode = fields.Char(string="Postal code")
     date_availability = fields.Date(
@@ -75,11 +76,17 @@ class EstateProperty(models.Model):
         compute="_compute_best_price", string="Best Offer", store=True
     )
     company_id = fields.Many2one(
-        "res.company",
-        required=True,
-        default=lambda self: self.env.company
+        "res.company", required=True, default=lambda self: self.env.company
     )
-    
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("sequence_number", _("New")) == _("New"):
+                vals["sequence_number"] = self.env["ir.sequence"].with_company(vals.get("company_id")).next_by_code("estate.property") or _("New")
+
+        return super().create(vals_list)
+
     @api.ondelete(at_uninstall=False)
     def _check_property_deletion(self):
         for record in self:
@@ -124,5 +131,6 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if 0 < record.selling_price < record.expected_price * 0.9:
+            if record.selling_price and record.selling_price < record.expected_price * 0.9:
                 raise ValidationError("The selling price of the property cannot be less than 90% of the expected price")
+
