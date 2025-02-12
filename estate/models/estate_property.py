@@ -110,7 +110,7 @@ class PropertyPlan(models.Model):
         ),
         (
             "check_selling_price",
-            "CHECK(selling_price > 0)",
+            "CHECK(selling_price >= 0)",
             "Selling price must be positive!",
         ),
     ]
