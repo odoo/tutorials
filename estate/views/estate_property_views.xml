@@ -109,9 +109,8 @@
                     />
                 </header>
                 <sheet>
-                    <h1>
-                        <field name="name" placeholder="Property name" />
-                    </h1>
+                    <field name="name" placeholder="Property name" class="fs-1 fw-bold d-block" nolabel="True" />
+                    <field name="sequence" class="fs-3 fw-bold d-block" nolabel="True" />
                     <field name="tag_ids"
                         placeholder="Property Tags"
                         widget="many2many_tags"

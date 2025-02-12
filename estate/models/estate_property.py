@@ -12,6 +12,7 @@ class EstateProperty(models.Model):
     _inherit = ["mail.thread"]
 
     name = fields.Char(string="Title", required=True, tracking=True)
+    sequence = fields.Char(string="Sequence", readonly=True, default="New")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
         string="Available From", copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3)
@@ -61,6 +62,12 @@ class EstateProperty(models.Model):
         ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be strictly positive"),
         ("check_selling_price", "CHECK(selling_price >= 0)", "Selling price must be positive")
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            vals["sequence"] = self.env["ir.sequence"].next_by_code("estate.property")
+        return super().create(vals_list)
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):

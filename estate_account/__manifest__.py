@@ -7,7 +7,9 @@
     "summary": "Create real estate invoices!",
     "category": "Tutorials/RealEstate",
     "depends": ["estate", "account"],
-    "data": [],
+    "data": [
+        "reports/estate_property_templates.xml"
+    ],
     "installable": True,
     "application": False,
     "license": "LGPL-3"
