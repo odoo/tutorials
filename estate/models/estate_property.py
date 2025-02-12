@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -5,17 +7,18 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Estateproperty(models.Model):
-    _name = "estate.property"
-    _description = "Estate property table"
+    _name = 'estate.property'
+    _description = 'Estate property'
 
     name = fields.Char(string='Property Name',
-                       required=True, default="unknown")
+                       required=True, default='Property')
     property_type_id = fields.Many2one(
-        'estate.property.type', string="Property Type")
+        'estate.property.type', string='Property Type')
     salesperson_id = fields.Many2one(
         'res.users', string='Salesperson', default=lambda self: self.env.user)
-    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
-    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
+    buyer_id = fields.Many2one(
+        'res.partner', string='Buyer', copy=False)
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many(
         'estate.property.offer', 'property_id', string='Offers')
     description = fields.Text(string='Description', compute='_compute_desc')
@@ -44,9 +47,8 @@ class Estateproperty(models.Model):
     best_price = fields.Float(
         string='Best Price', compute='_compute_best_price')
     offer_recieved = fields.Boolean(
-        compute="_compute_offer_recieved", store=True)
+        compute='_compute_offer_recieved', store=True)
 
-    # constraints
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
          'The expected price must be strictly positive.'),
@@ -58,13 +60,13 @@ class Estateproperty(models.Model):
     def _check_selling_price(self):
         for record in self:
             if record.selling_price < 0:
-                raise ValidationError("The selling price must be positive.")
+                raise ValidationError('The selling price must be positive.')
 
     @api.constrains('expected_price')
     def _check_expected_price(self):
         for record in self:
             if record.expected_price < 0:
-                raise ValidationError("The expected price must be positive.")
+                raise ValidationError('The expected price must be positive.')
 
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
@@ -73,7 +75,7 @@ class Estateproperty(models.Model):
                 min_acceptable_price = record.expected_price * 0.9
                 if float_compare(record.selling_price, min_acceptable_price, precision_digits=2) == -1:
                     raise ValidationError(
-                        "The selling price cannot be lower than 90% of the expected price.")
+                        'The selling price cannot be lower than 90% of the expected price.')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -86,7 +88,6 @@ class Estateproperty(models.Model):
             prices = property.offer_ids.mapped('price')
             property.best_price = max(prices, default=0)
 
-    # onchange
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -96,20 +97,19 @@ class Estateproperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    # object type and action
     def action_cancel(self):
         for property in self:
             if property.state == 'sold':
-                raise UserError("A sold property cannot be cancelled.")
+                raise UserError('A sold property cannot be cancelled.')
             else:
                 property.state = 'cancel'
 
     def action_sold(self):
         for property in self:
             if property.state == 'cancel':
-                raise UserError("A cancelled property cannot be sold.")
+                raise UserError('A cancelled property cannot be sold.')
             if not property.offer_ids:
-                raise UserError("Cannot sold without any offer.")
+                raise UserError('Cannot sold without any offer.')
             else:
                 property.state = 'sold'
 
@@ -118,15 +118,10 @@ class Estateproperty(models.Model):
         for record in self:
             record.offer_recieved = bool(record.offer_ids)
 
-    # @api.depends('offer_recieved')
-    # def _compute_offer_state(self):
-    #     if self.offer_recieved:
-    #         self.state = 'offered_rec'
-
-    @api.depends("salesperson_id.name")
+    @api.depends('salesperson_id.name')
     def _compute_desc(self):
         for record in self:
-            record.description = "Test for salesperson %s" % record.salesperson_id.name
+            record.description = 'Test for salesperson %s' % record.salesperson_id.name
     postcode = fields.Char('PostCode')
     date_availability = fields.Date(
         'Available From', copy=False, default=lambda self: fields.Datetime.today() + timedelta(days=90))
@@ -138,4 +133,5 @@ class Estateproperty(models.Model):
         for record in self:
             if record.state not in ('new', 'cancel'):
                 raise UserError(
-                    "You can only delete properties that are in new or cancel state.")
+                    'You can only delete properties that are in new or cancel state.')
+ 

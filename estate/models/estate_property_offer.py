@@ -1,25 +1,27 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate.property.offer"
-    _description = "estate property offer table"
+    _name = 'estate.property.offer'
+    _description = 'Estate Property'
 
-    price = fields.Float(string="Price")
+    price = fields.Float(string='Price')
     status = fields.Selection(
         string='Status',
-        selection=[('accepted', "Accepted"), ('refused', 'Refused')],
+        selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         copy=False
     )
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one(
-        'estate.property', required=True, ondelete="cascade")
+        'estate.property', required=True, ondelete='cascade')
     create_date = fields.Date()
     property_type_id = fields.Many2one(
-        comodel_name="estate.property.type",
-        related="property_id.property_type_id",
+        comodel_name='estate.property.type',
+        related='property_id.property_type_id',
         store=True
     )
     validity = fields.Integer(string='Validity', default=7)
@@ -37,7 +39,6 @@ class EstatePropertyOffer(models.Model):
             if offer.create_date:
                 offer.date_deadline = offer.create_date + \
                     timedelta(days=offer.validity)
-
             else:
                 offer.date_deadline = False
 
@@ -51,13 +52,12 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             if offer.property_id.state == 'sold':
                 raise UserError(
-                    "You cannot accept an offer for a sold property.")
+                    'You cannot accept an offer for a sold property.')
             existing_accepted_offer = offer.property_id.offer_ids.filtered(
                 lambda o: o.status == 'accepted')
             if existing_accepted_offer:
                 raise UserError(
-                    "Only one offer can be accepted for a given property.")
-
+                    'Only one offer can be accepted for a given property.')
             offer.status = 'accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
@@ -72,17 +72,16 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        records = super().create(vals_list)
-        for record in records:
-            property_id = record.property_id
+        for record in vals_list:
+            property_id = record.get('property_id')
             if property_id:
                 existing_offers = self.search(
-                    [('property_id', '=', property_id.id)])
-
-                if existing_offers and any(offer.price >= vals_list['price'] for offer in existing_offers):
+                    [('property_id', '=', property_id)])
+                if existing_offers and any(offer.price >= vals_list[0]['price'] for offer in existing_offers):
                     raise UserError(
-                        "You cannot create an offer lower than or equal to existing offer.")
-                if property_id.state == 'new':
-                    property_id.state = "offered_rec"
-
-        return super().create(vals_list)
+                        'You cannot create an offer lower than or equal to existing offer.')
+        records = super().create(vals_list)
+        for record in records:
+            if record.property_id.state == 'new':
+                record.property_id.state = 'offered_rec'
+        return records

@@ -1,23 +1,25 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
-    _name = "estate.property.type"
-    _description = "estate property type table"
+    _name = 'estate.property.type'
+    _description = 'Estate Property'
     # _order="name asc"
 
-    name = fields.Char(string="Property Type", required=True)
+    name = fields.Char(string='Property Type', required=True)
     property_ids = fields.One2many(
-        "estate.property", "property_type_id", readonly=True)
+        'estate.property', 'property_type_id', readonly=True)
     sequence = fields.Integer(string='Sequence', default=1,
-                              help="Used to order stages. Lower is better.")
+                              help='Used to order stages. Lower is better.')
     offer_ids = fields.One2many(
-        comodel_name="estate.property.offer",
-        inverse_name="property_type_id",
-        string="Offers"
+        string='Offers',
+        comodel_name='estate.property.offer',
+        inverse_name='property_type_id'
     )
     offer_count = fields.Integer(
-        string="Offer Count", compute="_compute_offers", store=True)
+        string='Offer Count', compute='_compute_offers', store=True)
 
     _sql_constraints = [
         ('unique_type_name', 'UNIQUE(name)',
@@ -31,10 +33,10 @@ class EstatePropertyType(models.Model):
 
     def action_open_offers(self):
         return {
-            "name": "Offers",
-            "type": "ir.actions.act_window",
-            "res_model": "estate.property.offer",
-            "view_mode": "list,form",
-            "domain": [("property_type_id", "=", self.id)],
-            "context": {"default_property_type_id": self.id},
+            'name': 'Offers',
+            'type': 'ir.actions.act_window',
+            'res_model': 'estate.property.offer',
+            'view_mode': 'list,form',
+            'domain': [('property_type_id', '=', self.id)],
+            'context': {'default_property_type_id': self.id},
         }
