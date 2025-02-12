@@ -56,7 +56,7 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Offer Price must be atleast 90% of the expected price.")
         return True
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         min_price = min(self.env['estate.property.offer'].search([('property_id','=',vals['property_id'])]).mapped('price'),default=0)
         if vals['price'] <= min_price:
