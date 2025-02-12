@@ -1,24 +1,21 @@
 from odoo import fields, models , api
 from datetime import timedelta 
 from odoo.exceptions import UserError
-import logging
-
-_logger = logging.getLogger(__name__)
 
 
 class EstatePropertyOffer(models.Model):
-
     _name = "estate.property.offer"
     _description = "Test Property"
+    _order = "price desc" 
 
-    price = fields.Float(string="Offer Price", required=True)
+    price = fields.Float(string="Offer Price",required=True)
     status = fields.Selection(
-        [('new', 'New'), ('accepted', 'Accepted'), ('refused', 'Refused')],
+        [('new','New'),('accepted','Accepted'),('refused','Refused')],
         default="new",
         string="Status"
     ) 
-    partner_id = fields.Many2one('res.partner', string="Buyer",required=True)
-    property_id = fields.Many2one('estate.property', string="Property", required=True) 
+    partner_id = fields.Many2one('res.partner',string="Buyer",required=True)
+    property_id = fields.Many2one('estate.property',string="Property",required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         string="Deadline Date",
@@ -36,9 +33,7 @@ class EstatePropertyOffer(models.Model):
         ('check_offer_price', 
          'CHECK(price > 0)', 
          'The offer price must be strictly positive!')
-    ]
-    _order = "price desc" 
-        
+    ]  
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -73,31 +68,10 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         if "property_id" not in vals_list:
             raise UserError("Property ID is required to create an offer.")
-
         property = self.env["estate.property"].browse(vals_list["property_id"])
-
-        existing_offer = self.search([("property_id", "=", vals_list["property_id"]), ("price", ">=", vals_list["price"])])
+        existing_offer = self.search([("property_id", "=",vals_list["property_id"]),("price",">=",vals_list["price"])])
         if existing_offer:
             raise UserError("You cannot create an offer with a lower or equal amount than an existing offer.")
-
         if property.state == "new":
             property.state = "offer_received"
-
         return super(EstatePropertyOffer, self).create(vals_list)
-             
-
-       
-
-        
-
-       
-
-        
-
-       
-
-
-
-  
-
-      

@@ -11,4 +11,4 @@
         <field name="domain_force">[('state', 'in', ['offer received', 'offer accepted', 'sold'])]</field>
     </record>
 
-</odoo>  
+</odoo>

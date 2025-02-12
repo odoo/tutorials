@@ -5,12 +5,13 @@
    'author':"bhpr",
    'category': 'RealEstate/Brokerage',
    'description': """
-        Starting module of Real Estate 
+        Starting module of Real Estate
     """,
     'data':[
         'security/security.xml',
         'security/ir.model.access.csv',
-        'views/estate_property_views.xml',
+        'views/estate_property_res_users.xml',
+        'views/estate_property.xml',
         'views/estate_property_type.xml',
         'views/estate_property_tag.xml',
         'views/estate_property_offer.xml',
@@ -19,5 +20,5 @@
     'license':'LGPL-3',
     'installable': True,
     'auto_install': True,
-    'application': True,  
+    'application': True,
 }
