@@ -1,5 +1,6 @@
-from odoo import api,fields,models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -15,14 +16,14 @@ class EstatePropertyOffer(models.Model):
         [("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
     partner_id = fields.Many2one(comodel_name="res.partner", required=True)
-    property_id = fields.Many2one(comodel_name="estate.property", required=True)
+    property_id = fields.Many2one(
+        comodel_name="estate.property", required=True)
     validity = fields.Integer(string="Validity (Days)", default=7)
     date_deadline = fields.Date(
         string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
     )
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type", related="property_id.property_type_id", store=True)
-
 
     @api.depends("validity")
     def _compute_deadline(self):
@@ -58,7 +59,7 @@ class EstatePropertyOffer(models.Model):
 
             if record['price'] < property.best_price:
                 raise UserError(
-                    (f"The Offer must higher then {property.best_price}"))
+                    _("The Offer must higher then %s", property.best_price))
 
             property.state = "offer received"
 
@@ -67,13 +68,14 @@ class EstatePropertyOffer(models.Model):
     def action_accept_offer(self):
         for record in self:
             if record.property_id.state == "offer accepted":
-                raise UserError("An offer Already Accepted for this Property")
+                raise UserError(
+                    _("An offer Already Accepted for this Property"))
 
         if self.status == "accepted":
             raise UserError(
-                (f"You can't Accept an offer it's already {self.status}"))
+                _("You can't Accept an offer it's already %s", self.status.capitalize()))
         elif self.property_id.state == "sold":
-            raise UserError("Property Already Sold")
+            raise UserError(_("Property Already Sold"))
 
         self.property_id.state = "offer accepted"
         self.status = "accepted"
@@ -85,7 +87,7 @@ class EstatePropertyOffer(models.Model):
         self.ensure_one()
         if self.status == "refused":
             raise UserError(
-                (f"You can't Refuse an offer it's already {self.status.capitalize()}"))
+                _("You can't Refuse an offer it's already %s", self.status.capitalize()))
         elif self.status == "accepted":
             self.property_id.state = "offer received"
             self.property_id.selling_price = None
