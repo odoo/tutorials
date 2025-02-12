@@ -49,7 +49,7 @@ class EstatePropertyOffer(models.Model):
         if self.property_id.state != "offer_accepted":
             self.status = "accepted"
             self.property_id.selling_price = self.price
-            self.property_id.buyer_id = self.partner_id
+            self.property_id.partner_id = self.partner_id
             self.property_id.state = "offer_accepted"
         else:
             raise UserError("You can not accept another offer.")
@@ -83,11 +83,5 @@ class EstatePropertyOffer(models.Model):
                     raise UserError(
                         "You cannot update an offer with an amount lower than or equal to an existing offer."
                     )
-
-        # Update offers (property state will update automatically due to compute)
         return super(EstatePropertyOffer, self).write(vals)
-
-    def unlink(self):
-        # No need to manually update property state; it will be computed automatically
-        return super(EstatePropertyOffer, self).unlink()
 

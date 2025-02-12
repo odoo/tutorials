@@ -1,9 +1,4 @@
 <odoo>
-    <record id="estate_property_users_action" model="ir.actions.act_window">
-        <field name="name">Users</field>
-        <field name="res_model">res.users</field>
-        <field name="view_mode">list,form</field>
-    </record>
     <record id="restate_property_users_form_view" model="ir.ui.view">
         <field name="name">res.users.view.form.inherit</field>
         <field name="model">res.users</field>

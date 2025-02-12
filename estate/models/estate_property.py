@@ -1,7 +1,7 @@
 from datetime import timedelta
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
-from odoo import models, fields, api
 
 
 class EstateProperty(models.Model):
@@ -25,10 +25,10 @@ class EstateProperty(models.Model):
     )
     name = fields.Char(string="Property Name", required=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    sales_man = fields.Many2one(
+    user_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
-    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    partner_id = fields.Many2one("res.partner", string="Buyer")
     description = fields.Text(string="Description")
     selling_price = fields.Float(readonly=True, copy=False)
     postcode = fields.Char(string="Postcode")
@@ -56,6 +56,8 @@ class EstateProperty(models.Model):
         string="Total Area (sqm)", compute="_compute_total_area"
     )
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+    
+    company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [
         (

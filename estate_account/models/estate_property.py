@@ -1,49 +1,63 @@
-from odoo import models, Command
-from odoo.exceptions import ValidationError
+from odoo import Command, models
+from odoo.exceptions import AccessError, ValidationError
 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        for property in self:
-            if not property.buyer_id:
-                raise ValidationError(
-                    "Please define a buyer for the property before marking it as sold."
-                )
-            if not property.selling_price:
-                raise ValidationError(
-                    "Selling price must be set before marking the property as sold."
-                )
-            journal = self.env["account.journal"].search(
-                [("type", "=", "sale")], limit=1
+        try:
+            self.check_access("write")
+        except AccessError:
+            raise AccessError(
+                "You do not have the necessary permissions to mark this property as sold."
             )
-            if not journal:
-                raise ValidationError(
-                    "No sales journal found! Please configure a sales journal."
-                )
-            invoice_vals = {
-                "partner_id": property.buyer_id.id,
-                "move_type": "out_invoice",
-                "journal_id": journal.id,
-                "invoice_line_ids": [
-                    Command.create(
-                        {
-                            "name": "Commission (6% of Selling Price)",
-                            "quantity": 1,
-                            "price_unit": property.selling_price * 0.06,
-                        }
-                    ),
-                    Command.create(
-                        {
-                            "name": "Administrative Fee",
-                            "quantity": 1,
-                            "price_unit": 100.00,
-                        }
-                    ),
-                ],
-            }
-            self.env["account.move"].create(invoice_vals)
-        return super().action_sold()
+        
+        if not self.partner_id:
+            raise ValidationError(
+                "Please define a buyer for the property before marking it as sold."
+            )
+        if not self.selling_price:
+            raise ValidationError(
+                "Selling price must be set before marking the property as sold."
+            )
 
+        current_company = self.env.company
+
+        sell_journal = self.env["account.journal"].search(
+            [("name", "=", "Sell"), ("company_id", "=", current_company.id)], limit=1
+        )
+
+        if not sell_journal:
+            sell_journal = self.env["account.journal"].create({
+                "name": "Sell",
+                "type": "sale",
+                "code": "SELL",
+                "company_id": current_company.id,
+            })
+
+        invoice_vals = {
+            "partner_id": self.partner_id.id,
+            "move_type": "out_invoice",
+            "journal_id": sell_journal.id,
+            "invoice_line_ids": [
+                Command.create(
+                    {
+                        "name": "Commission (6% of Selling Price)",
+                        "quantity": 1,
+                        "price_unit": self.selling_price * 0.06,
+                    }
+                ),
+                Command.create(
+                    {
+                        "name": "Administrative Fee",
+                        "quantity": 1,
+                        "price_unit": 100.00,
+                    }
+                ),
+            ],
+        }
+
+        self.env["account.move"].sudo().create(invoice_vals)
+        return super(EstateProperty, self).action_sold()
 

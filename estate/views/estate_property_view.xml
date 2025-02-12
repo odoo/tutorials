@@ -50,6 +50,7 @@
                 <sheet>
                     <h1>
                         <field name="name" />
+                        <field name="company_id"/>
                     </h1>
                     <group>
                         <field name="tag_ids" widget="many2many_tags"
@@ -87,8 +88,8 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="sales_man" />
-                                <field name="buyer_id" />
+                                <field name="user_id" />
+                                <field name="partner_id" />
                             </group>
                         </page>
                     </notebook>
