@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -21,14 +21,16 @@ class EstatePropertyType(models.Model):
         inverse_name='property_type_id',
         string="Properties"
     )
-    offer_ids=fields.One2many(
+    offer_ids = fields.One2many(
         comodel_name='estate.property.offer',
         inverse_name='property_type_id',
-        string="Offer"
+        string="Offers",
+        help="List of offers related to properties of this type"
     )
-    offer_count=fields.Integer(
+    offer_count = fields.Integer(
         string="Offer Count",
-        compute='_compute_offer_count'
+        compute='_compute_offer_count',
+        help="Total number of offers for properties of this type"
     )
 
     # SQL CONSTRAINTS
@@ -40,6 +42,7 @@ class EstatePropertyType(models.Model):
         )
     ]
 
+    @api.depends('offer_ids')
     def _compute_offer_count(self):
         for offer in self:
             offer.offer_count = len(offer.offer_ids)

@@ -1,5 +1,6 @@
 from datetime import date, timedelta
-from odoo import models, fields, api
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -19,7 +20,7 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         selection = [
             ('accepted', "Accepted"),
-            ('refused', "Accepted")
+            ('refused', "Refused")
         ],
         string="Status",
         copy=False
@@ -42,7 +43,8 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(
         comodel_name='estate.property.type',
         string="Property Type",
-        related='property_id.property_type_id'
+        related='property_id.property_type_id',
+        store=True
     )
 
     date_deadline = fields.Date(
@@ -69,6 +71,7 @@ class EstatePropertyOffer(models.Model):
     def action_accept_offer(self):
         for offer in self:
             offer.status = 'accepted'
+            offer.property_id.state='offer_accepted'
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
 
@@ -84,3 +87,13 @@ class EstatePropertyOffer(models.Model):
             'Offer Price must be positive'
         )
     ] 
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals.get('property_id'))
+            if property.best_price >= vals['price']:
+                raise UserError("You cannot create an offer lower than an existing offer.")
+            if property.state == 'new':
+                property.state='offer_received'
+        return super().create(vals_list)

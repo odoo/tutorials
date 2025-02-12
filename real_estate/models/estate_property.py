@@ -193,6 +193,19 @@ class EstateProperty(models.Model):
         for product in self:
             min_selleing_price = 0.9 * product.expected_price
             if (not float_is_zero(product.selling_price, precision_digits=2) and 
-                float_compare(product.selling_price, min_selleing_price, precision_rounding=2)
-                ) == -1:
+                float_compare(product.selling_price, min_selleing_price, 
+                precision_rounding=2) == -1
+                ):
                 raise ValidationError("Selling Price cannot be lower than 90% of the Expected Price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_check_property_state(self):
+        for property in self:
+            if property.state not in ['new', 'cancelles']:
+                d = {
+                    'offer_received':'Offer Received',
+                    'offer_accepted':'Offer Accepted',
+                }
+                raise UserError(
+                    f"You cannot delete a property in {d[property.state]} state."
+                )

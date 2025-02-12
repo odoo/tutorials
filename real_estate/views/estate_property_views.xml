@@ -49,7 +49,10 @@
                         string="cancel" 
                         class="btn-danger" 
                         invisible="state in ['sold', 'cancelled']"/>  
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" nolabel="1"/>
+                    <field name="state" 
+                        widget="statusbar" 
+                        statusbar_visible="new,offer_received,offer_accepted,sold" 
+                        nolabel="1"/>
                 </header>
                 <sheet>
                     <group>
@@ -155,8 +158,6 @@
 
                 <!-- Filters-->
                 <filter name="filter_available" string="Available" domain="[('state', '=', 'new')]"/>
-                    <!-- {'search_default_availability':'1'}
-                </filter> -->
                 <filter name="filter_sold" string="Sold" domain="[('state', '=', 'sold')]"/>
 
                 <!-- Group By -->
@@ -167,18 +168,4 @@
             </search>
         </field>
     </record>
-
-    <!-- Menu 2 -> Settings -> (Property Type, Property Tags) -->
-    <record id="action_estate_property_types" model="ir.actions.act_window">
-        <field name="name">Property Types</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
-    <record id="action_estate_property_tags" model="ir.actions.act_window">
-        <field name="name">Property Tags</field>
-        <field name="res_model">estate.property.tag</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
 </odoo>
