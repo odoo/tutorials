@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real estate property details"
@@ -64,6 +65,7 @@ class EstateProperty(models.Model):
         comodel_name="estate.property.offer", inverse_name="property_id"
     )
     best_prices = fields.Float(string="Best Offer", compute="_compute_best_offer")
+
     _sql_constraints = [
         (
             "expected_price_positive",
@@ -127,3 +129,4 @@ class EstateProperty(models.Model):
             if record.status == "cancelled":
                 raise UserError("Property already canceled")
             record.status = "cancelled"
+            

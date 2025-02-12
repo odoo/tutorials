@@ -4,6 +4,7 @@ from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers"
@@ -26,6 +27,21 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )
+    
+    @api.depends("validate")
+    def _compute_date_deadline(self):
+        for record in self:
+            record.date_deadline = datetime.today() + relativedelta(
+                days=record.validate
+            )
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            if record.date_deadline:
+                delta = record.date_deadline - datetime.today().date()
+                record.validate = delta.days
+            else:
+                record.validate = 0
 
     @api.constrains("price", "status")
     def _check_accepted_offer_price(self):
@@ -55,27 +71,8 @@ class EstatePropertyOffer(models.Model):
 
         return super().create(vals_list)
 
-    @api.depends("validate")
-    def _compute_date_deadline(self):
-        for record in self:
-            record.date_deadline = datetime.today() + relativedelta(
-                days=record.validate
-            )
-
-    def _inverse_date_deadline(self):
-        for record in self:
-            if record.date_deadline:
-                delta = record.date_deadline - datetime.today().date()
-                record.validate = delta.days
-            else:
-                record.validate = 0
-
     def action_accept(self):
         for record in self:
-            if record.property_id.status in ["sold", "offer_accepted"]:
-                raise ValidationError(
-                    "Cannot accept the offer. Property is already sold or an offer has been accepted."
-                )
             record.status = "accepted"
             record.property_id.status = "offer_accepted"
             record.property_id.selling_price = record.price
@@ -83,8 +80,6 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         for record in self:
-            if record.status == "refused":
-                raise ValidationError("This offer is already refused.")
             if record.status == "accepted":
                 record.property_id.selling_price = 0
                 record.property_id.status = "offer_received"

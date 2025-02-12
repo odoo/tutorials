@@ -1,10 +1,10 @@
 from odoo import Command, fields, models
 
+
 class InheritedModel(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        print(" reached ".center(100, "="))
         self.check_access("write")
         self.env["account.move"].sudo().create(
             {
@@ -38,9 +38,4 @@ class InheritedModel(models.Model):
         )
 
         return super().action_sold()
-    
-
-
-
-
-
+        

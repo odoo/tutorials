@@ -8,7 +8,7 @@
     </record>
 
     <record id="estate_property_offer_view_list" model="ir.ui.view">
-        <field name="name">estate.property.offer</field>
+        <field name="name">estate.property.offer.list.view</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Channel" sample="1" editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
@@ -40,5 +40,3 @@
         </field>
     </record>
 </odoo>
-
-

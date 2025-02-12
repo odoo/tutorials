@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="inherited_users_view_form" model="ir.ui.view">
-        <field name="name">inherited.users.form.res.users</field>
+        <field name="name">inherit.res.users.form.real.estate</field>
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
@@ -13,5 +13,3 @@
         </field>
     </record>
 </odoo>
-
-
