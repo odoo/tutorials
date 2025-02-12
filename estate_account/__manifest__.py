@@ -1,0 +1,15 @@
+{
+    'name': "Estate Account",
+    'version': "1.0",
+    'depends': ["estate", "account"],
+    'author': "Prathmesh Soni (pdso)",
+    'category': "Tutorials/estate_account",
+    'summary': "A real estate app",
+    'description': "A real estate account app developed by Prathmesh Soni (pdso).",
+    'data': [],
+    'sequence': 2,
+    'application': True,
+    'installable': True,
+    'maintainer': "Prathmesh Soni (pdso)",
+    'license': "LGPL-3",
+}

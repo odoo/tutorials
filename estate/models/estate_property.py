@@ -113,7 +113,6 @@ class EstateProperty(models.Model):
 
     # Many2many field for property tags
     tag_ids = fields.Many2many(
-        string="Tags",
         help="Tags related to the property.",
         comodel_name="estate.property.tag"
     )
@@ -188,3 +187,14 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         self.state = 'canceled'
         return True
+
+    # -------------------------------------------------------------------------
+    # CRUD METHODS
+    # -------------------------------------------------------------------------
+
+    @api.ondelete(at_uninstall=False)
+    def _check_property_deletion(self):
+        if self.state not in ['new', 'canceled']:
+            state = dict(self._fields["state"].selection).get(self.state)
+
+            raise UserError(f"""You cannot delete a property that is in the "{state.title()}" state.""")

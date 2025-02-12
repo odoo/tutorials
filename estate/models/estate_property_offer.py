@@ -117,5 +117,21 @@ class EstatePropertyOffer(models.Model):
         if compare_value == -1:
             raise UserError("Offer Price must be atleast 90% of the expected price.")
 
-        self.property_id.state = 'offer_received'
         return True
+
+    # -------------------------------------------------------------------------
+    # CRUD METHODS
+    # -------------------------------------------------------------------------
+
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            state = self.env['estate.property'].browse(val['property_id']).state
+            if state == 'new' or not state:
+                self.env['estate.property'].browse(val['property_id']).state = 'offer_received'
+
+            min_price = min(self.env['estate.property.offer'].search([('property_id', '=', val['property_id'])]).mapped('price'), default=0)
+            if val['price'] <= min_price:
+                raise ValidationError("The price must be higher than any existing offer.")
+
+            return super().create(vals)
