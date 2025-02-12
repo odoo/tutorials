@@ -43,11 +43,19 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled")
         ]
     )
-    property_type_id = fields.Many2one(string="Property Type", comodel_name="estate.property.type")
-    buyer = fields.Many2one("res.partner", string="Buyer", copy=False )
-    salesperson = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    property_type_id = fields.Many2one(
+        string="Property Type", comodel_name="estate.property.type"
+    )
+    buyer_id = fields.Many2one(
+        "res.partner", string="Buyer", copy=False, readonly=True
+    )
+    salesperson_id = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user
+    )
     tag_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
+    offer_ids = fields.One2many(
+        "estate.property.offer", "property_id", string="Offer"
+    )
     total_area = fields.Float(compute="_compute_total")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
@@ -60,7 +68,14 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0.0) 
-
+            
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            min_price = record.expected_price * 0.9 
+            if not fields.float_is_zero(record.selling_price, precision_digits=2) and fields.float_compare(record.selling_price, min_price, precision_rounding=2) < 0:
+                raise ValidationError("The selling price can't be lower than 90% of the expected price!")
+    
     @api.onchange("garden")
     def _onchange_garden(self):
         if(self.garden):
@@ -69,13 +84,6 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
-            
-    @api.constrains("selling_price")
-    def _check_selling_price(self):
-        for record in self:
-            min_price = record.expected_price * 0.9 
-            if not fields.float_is_zero(record.selling_price, precision_digits=2) and fields.float_compare(record.selling_price, min_price, precision_rounding=2) < 0:
-                raise ValidationError("The selling price can't be lower than 90% of the expected price!")
             
     @api.ondelete(at_uninstall=False)
     def _check_property_before_delete(self):

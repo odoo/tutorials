@@ -80,14 +80,51 @@
                         <page string="Other Info">
                             <group>
                                <group>
-                                    <field string="Salesman" name="salesperson"/>
-                                    <field string="Buyer" name="buyer"/>
+                                    <field string="Salesman" name="salesperson_id"/>
+                                    <field string="Buyer" name="buyer_id"/>
                                 </group>
                             </group>
                         </page>
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="0" class="o_kanban_view">
+                <field name="state" />
+                
+                <templates>
+                    <progressbar field="state" colors='{"offer_received": "success", "offer_accepted": "warning", "cancelled": "danger"}'/>
+                    
+                    <t t-name="card">
+                        <div class="o_kanban_card">
+                                <strong style="font-size: 18px;">
+                                    <field name="name" />
+                                </strong>
+            
+                            <div>
+                                <strong>Expected Price:</strong> <field name="expected_price" widget="monetary"/>
+                            </div>
+            
+                            <t t-if="record.state.raw_value == 'offer_received'">
+                                <strong>Best Offer:</strong> <field name="best_price" widget="monetary"/>
+                            </t>
+            
+                            <t t-if="record.state.raw_value == 'offer_accepted'">
+                                <strong>Selling Price:</strong> <field decoration-primary="1" name="selling_price" widget="monetary"/>
+                            </t>
+            
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+            
         </field>
     </record>
 

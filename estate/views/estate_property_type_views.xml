@@ -31,9 +31,11 @@
                         </button>  
                     </div>  
                     <label for="name"/>
-                    <h1 class="mb16">
-                        <field name="name"/>
-                    </h1>
+                    <div>
+                        <h1 class="mb16">
+                            <field name="name"/>
+                        </h1>
+                    </div>
                     <notebook>
                         <page name="properties">
                             <field name="property_ids">

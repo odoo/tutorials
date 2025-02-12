@@ -25,7 +25,7 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Property Offers" editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'" >
-                <field name="price"/>
+                <field name="price" sum="Total"/>
                 <field name="partner_id"/>
                 <field name="property_type_id"/>
                 <field name="validity" />

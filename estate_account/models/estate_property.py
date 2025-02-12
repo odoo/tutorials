@@ -7,9 +7,8 @@ class EstateProperty(models.Model):
     def action_set_sold(self):
         res = super().action_set_sold()
         self.env['account.move'].create({
-            'partner_id': self.buyer.id, 
+            'partner_id': self.buyer_id.id, 
             'move_type': 'out_invoice', 
-            'journal_id': self.env["account.journal"].search([("type", "=", "sale")], limit=1).id,
             "invoice_line_ids": [
                 Command.create({
                     "name": "Property Sale Commission",
