@@ -14,6 +14,7 @@ class EstatePropertyOffer(models.Model):
         ('check_offer_price', 'CHECK(price > 0)',
          'The offer price must be strictly positive.')
     ]
+
     price = fields.Float(string="Price")
     status = fields.Selection(
         [("accepted", "Accepted"),
@@ -23,6 +24,7 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type", related="property_id.property_type_id", store=True)
     create_date = fields.Datetime(string="Creation Date", default=fields.Datetime.now)
     validity = fields.Integer(string="Validity (Days)", default=7)
     date_deadline = fields.Date(

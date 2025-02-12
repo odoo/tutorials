@@ -23,6 +23,11 @@
     <field name="arch" type="xml">
         <form>
             <sheet>
+                <header>
+                    <button name="%(estate_property_offer_action)d" type="action" icon="fa-list" string="Offers">
+                        <field name="offer_count" widget="statinfo"/>
+                    </button>
+                </header>
                 <group>
                     <h1>
                         <field name="name"/>
