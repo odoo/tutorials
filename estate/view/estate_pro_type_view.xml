@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <odoo>
-     
+    <!-- list view -->
+    <record id="estate_property_type_list_view" model="ir.ui.view">
+        <field name="name">estate_property_type_list_view</field>
+        <field name="model">estate_property_type_model</field>
+        <field name="arch" type="xml">
+            <list string="list_view">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/> 
+            </list> 
+        </field> 
+    </record>
+    <!-- action view -->
     <record id="estate_property_type_model_action" model="ir.actions.act_window">
         <field name="name">Property Type</field>
         <field name="res_model">estate_property_type_model</field>
@@ -14,6 +25,13 @@
             <form string="Property_Type_Form">
                 <h3>Name</h3>
                 <h1><field name="name"/></h1>
+                <field name="property_ids" widget="one2many_list">
+                    <list>
+                        <field name="name"/>
+                        <field name="expected_price"/>
+                        <field name="state"/>
+                    </list>
+                </field>
             </form>
         </field>
     </record>

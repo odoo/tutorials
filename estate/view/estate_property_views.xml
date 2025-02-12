@@ -32,19 +32,20 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="sold_action" type="object" string="Sold"/>
-                    <button name="cancle_action" type="object" string="Cancle"/>
+                    <button name="sold_action" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="cancle_action" type="object" string="Cancle" invisible="state in ['sold', 'cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <sheet>
                     <group>
                         <h2>Name: </h2>
                         <h1><field name="name"/></h1>
-                        <field name="state"/>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <!-- <field name="state"/> -->
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field':'Color'}"/>
                     </group>
                     <group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -64,26 +65,25 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/> 
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="garden == False"/>
+                                    <field name="garden_orientation" invisible="garden == False"/>
                                     <field name="total_area"/>
                                 </group>
                             </page>
                             <page string="Offers">
-                                <field name="offer_ids" widget="one2many_list">
-                                    <list>
+                                <field name="offer_ids" widget="one2many_list" options="{'color_field':'color'}" readonly="state in ['offer_accepted', 'sold', 'cancelled']">
+                                    <list editable="top" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                         <field name="price"/>
                                         <field name="partner_id"/>
-                                        <field name="validity"/> 
-                                        <field name="date_deadline"/> 
+                                        <field name="validity"/>
+                                        <field name="date_deadline"/>
                                         <field name="status"/>
-                                        <!-- <button name="accepted" type="object" string="Accept"/>
-                                        <button name="refused" type="object" string="Refuse"/> -->
-                                        <button name="action_confirm" string="Confirm" states="draft" type="object" icon="fa-check"/>
-                                        <button name="action_cancel" string="Cancel" states="draft,open" type="object" icon="fa-times"/>
-                                        </list>
+                                        <button name="action_accept" string="Confirm" type="object" icon="fa-check" invisible="status == 'accepted'"/>
+                                        <button name="action_refuse" string="Refuse" type="object" icon="fa-times" invisible="status == 'accepted'"/>
+                                    </list>
                                 </field>
                             </page>
+
                             <page string="Other Info">
                                 <group>
                                     <field name="salesman"/>

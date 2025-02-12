@@ -1,14 +1,20 @@
 from odoo import api, fields, models
 from datetime import timedelta
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 class EstatePropertyOffer (models.Model):
     _name = "estate_property_offer_model"
     _description = "hiiii"
 
+    ###### sql constrains ######
+    _sql_constraints = [
+        ("check_offer_price", "CHECK(price > 0)", "Offer price must be strictly positive")
+    ]
+    
+    ###### fiels #########
     price = fields.Float()
     status = fields.Selection(
-        # default="accepted",
         copy=False,
         selection = [
             ('accepted', 'Accepted'),
@@ -20,6 +26,7 @@ class EstatePropertyOffer (models.Model):
     create_date = fields.Datetime(default=fields.Date.today(), readonly=True)
     validity = fields.Integer('Validity (Days)', default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+    _order = "price desc"
 
     ###### compute methods #####
     @api.depends('create_date', 'validity')
@@ -36,7 +43,7 @@ class EstatePropertyOffer (models.Model):
                 validity = (fields.Datetime.from_string(record.date_deadline) - create_date).days
                 record.validity = validity
 
-    def action_confirm(self):
+    def action_accept(self):
         for record in self:
             if record.status == "accepted":
                 raise UserError("this offer is allready acceplted")
@@ -47,12 +54,15 @@ class EstatePropertyOffer (models.Model):
 
             record.status = "accepted"
             record.property_id.write({
-                'buyer' : record.partner_id.id,
-                'selling_price' : record.price
+                "buyer" : record.partner_id.id,
+                "selling_price" : record.price,
+                "state" : "offer_accepted"
             })
         return True
     
-    def action_cancel(self):
+    def action_refuse(self):
         for record in self:
+            if record.status == "accepted":
+                raise UserError("offer is already accepted thats why you cant refuse it")
             record.status = "refused"
         return True
