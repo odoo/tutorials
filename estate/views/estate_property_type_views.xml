@@ -12,6 +12,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                <field name="offer_count"/>
                 <field name="sequence" widget="handle"/>
             </list>
         </field>
@@ -22,6 +23,9 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type='xml'>
             <form>
+                <header>
+                    <button name='%(estate_property_offer_action_view_list)d' string='Offers' type='action'/>
+                </header>
                 <sheet>
                 <group>
                     <field name="name"/>

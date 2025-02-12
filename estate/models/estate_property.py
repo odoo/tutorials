@@ -57,9 +57,14 @@ class EstateProperty(models.Model):
     def _check_selling_price(self):
         for record in self:
             if(record.selling_price < 0.9*record.expected_price):
-                raise UserError('Selling price can not be lesser than 90% of the expected price')
+                raise UserError('Selling price can not be lesser than 90% of the expected price')           
     
-            
+    @api.ondelete(at_uninstall=False)
+    def _prevent_deletion(self):
+        for record in self:
+            if(record.status not in ['new','cancelled']):
+                raise UserError('only new and cancelled can be cancelled')
+    
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -80,7 +85,7 @@ class EstateProperty(models.Model):
     salesman_id = fields.Many2one('res.users', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', copy=False)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
-    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string=' ')
     garden_orientation = fields.Selection(
         selection=[
             ("north", "North"),

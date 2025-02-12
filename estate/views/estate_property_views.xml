@@ -4,6 +4,7 @@
         <field name='name'>Properties</field>
         <field name='res_model'>estate.property</field>
         <field name='view_mode'>list,form,kanban</field>
+        <field name='context'>{'search_default_available': True}</field>
     </record>
     
     <record id='estate_property_view_search' model='ir.ui.view'>
@@ -15,13 +16,14 @@
                 <field name='postcode'/>
                 <field name='expected_price'/>
                 <field name='bedrooms'/>
-                <field name='living_area'/>
+                <field name='living_area' filter_domain='[("living_area",">=",self)]'/>
                 <field name='facades'/>
                 <field name='property_type_id'/>
                 <field name='salesman_id'/>
                 <field name='buyer_id'/>
                 <field name='tag_ids'/>
-                <filter name='available' string='status' domain='["|",("status","=","new"),("status","=","offer_received")]'/>
+                <filter name='status' string='status' domain='["|",("status","=","new"),("status","=","offer_received")]'/>
+                <filter name='available' string='Available' domain='[("status","=","new")]'/>
                 <filter name='group_by' string='Postcode' context="{'group_by':'postcode'}"/>
             </search>
         </field>
@@ -31,7 +33,7 @@
         <field name='name'>estate.property.view.list</field>
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
-            <list>
+            <list decoration-success='status in ["offer_accepted","offer_received"]' decoration-danger='status == "cancelled"' decoration-muted='status == "sold"' decoration-bf='status=="offer_accepted"'>
                 <field name='name'/>
                 <field name='postcode'/>
                 <field name='bedrooms'/>
@@ -41,8 +43,8 @@
                 <field name='property_type_id'/>
                 <field name='salesman_id'/>
                 <field name='buyer_id'/>
-                <field name='tag_ids'/>
-                <field name='date_availability'/>
+                <field name='tag_ids' options="{'color_field':'color'}" widget='many2many_tags'/>
+                <field name='date_availability' optional='hide'/>
             </list>
         </field>
     </record>
@@ -102,15 +104,14 @@
                                 </page>
                                 <page string='Offers'>
                                     <group>
-                                        <field name='offer_ids'>
-                                            <list >
+                                        <field name='offer_ids' readonly="status in ['offer_accepted','cancelled','sold']">
+                                            <list editable='bottom' decoration-success='status == "accepted"' decoration-danger='status == "refused"' decoration-bf='status=="accepted"'>
                                                 <field name='price'/>
                                                 <field name='partner_id'/>
                                                 <field name='validity'/>
                                                 <field name='deadline'/>
-                                                <button name='action_accept_offer' string=' ' type='object' icon='fa-check' invisible="status in ['accepted','refused']" />
+                                                <button name='action_accept_offer' string=' ' type='object' icon='fa-check' invisible="status in ['accepted','refused']"/>
                                                 <button name='action_refuse_offer' string=' ' type='object' icon='fa-times' invisible="status in ['accepted','refused']"/>
-                                                <field name='status'/>
                                             </list>
                                         </field>
                                     </group>

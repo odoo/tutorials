@@ -40,6 +40,19 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.status = 'refused'
     
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            if property_id.offer_ids:
+                max_offer = max(property_id.offer_ids.mapped('price'))
+                if vals['price'] <= max_offer:
+                    raise UserError(
+                        "The offer price must be higher than the current maximum offer."
+                    )
+            property_id.write({'status': 'offer_received'})
+        return super(EstatePropertyOffer, self).create(vals_list)
+    
     _sql_constraints =[
         ('_check_price','CHECK(price > 0)','Offer Price must be positive'),
     ]
@@ -52,3 +65,4 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
