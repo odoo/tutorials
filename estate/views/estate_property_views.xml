@@ -34,7 +34,7 @@
                 <field name="property_type_id" string="Property type"/>
                 <field name="living_area" string="Living Area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades" string="Facades"/>
-                <filter name="state" domain="[('state', 'in', ['new', 'offer received'])]" string="Available"/>
+                <filter name="available_property" domain="[('state', 'in', ['new', 'offer received'])]" string="Available"/>
                 <group string='Group By'>
                     <filter name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
@@ -103,6 +103,7 @@
         <field name="name">Estate</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available_property': True}</field>
     </record>
 
 </odoo>

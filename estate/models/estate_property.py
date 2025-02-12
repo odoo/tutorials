@@ -73,13 +73,17 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
-
     def sold_property(self):
         for record in self:
-            if record.state=='cancelled':
-                raise UserError("Property is already cancelled,you cannot sell this property")
-            else:
-                record.state='sold'
+            if record.state == 'cancelled':
+                raise UserError("Property is already cancelled, you cannot sell this property.")
+
+            accepted_offers = record.offer_ids.filtered(lambda offer: offer.status == 'Accepted')
+            if not accepted_offers:
+                raise UserError("You cannot sell this property without at least one accepted offer.")
+
+            record.state = 'sold'
+
         return True
 
     def cancel_property(self):

@@ -18,17 +18,24 @@ class EstatePropertytOffer(models.Model):
     property_type_id = fields.Many2one(string="Property Type",related='property_id.property_type_id',store=True)
 
     @api.model_create_multi
-    def create(self, vals):
-        property_record = self.env['estate.property'].browse(vals['property_id'])
-        min_price = min(property_record.offer_ids.mapped('price'), default=0)
+    def create(self, vals_list):
+        records = super().create(vals_list)
 
-        if vals['price'] <= min_price:
-            raise UserError("The price must be higher than any existing offer.")
+        for record in records:
+            property_record = record.property_id
+            existing_offers = property_record.offer_ids
 
-        if property_record.state == 'new':
-            property_record.write({'state': 'offer_received'})
+            min_existing_price = min(existing_offers.mapped('price'), default=0)
 
-        return super().create(vals)
+            if record.price < min_existing_price:
+                raise UserError(
+                    f"The offer price ({record.price}) must be higher than the minimum of existing offer ({min_existing_price})."
+                )
+
+            if property_record.state == 'new':
+                property_record.write({'state': 'offer_received'})
+
+        return records
 
     @api.depends('create_date','validity')
     def _compute_date_deadline(self):
