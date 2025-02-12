@@ -1,39 +1,45 @@
-from odoo import fields, models , api
 from datetime import timedelta 
+
+from odoo import api, fields , models 
 from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate.property.offer"
-    _description = "Test Property"
-    _order = "price desc" 
-
-    price = fields.Float(string="Offer Price",required=True)
-    status = fields.Selection(
-        [('new','New'),('accepted','Accepted'),('refused','Refused')],
-        default="new",
-        string="Status"
-    ) 
-    partner_id = fields.Many2one('res.partner',string="Buyer",required=True)
-    property_id = fields.Many2one('estate.property',string="Property",required=True)
-    validity = fields.Integer(default=7)
-    date_deadline = fields.Date(
-        string="Deadline Date",
-        compute="_compute_date_deadline",
-        inverse="_inverse_date_deadline",
-        store=True
-    ) 
-    property_type_id = fields.Many2one(
-        comodel_name="estate.property.type",
-        related="property_id.property_type_id",
-        store=True,
-        string="Property Type",
-    )
+    _name = 'estate.property.offer'
+    _description = "Estate Property represents offers made by buyers on properties"
+    _order = 'price desc'
     _sql_constraints = [
         ('check_offer_price', 
          'CHECK(price > 0)', 
-         'The offer price must be strictly positive!')
+         "The offer price must be strictly positive!")
     ]  
+
+    price = fields.Float(string="Offer Price", required=True)
+    validity = fields.Integer(string="Validity", default=7)
+    status = fields.Selection(
+        string="Status",
+        default='new',
+        selection=[
+            ('new', "New"),
+            ('accepted', "Accepted"),
+            ('refused', "Refused")
+        ]
+    )
+    date_deadline = fields.Date(
+        string="Deadline Date",
+        compute='_compute_date_deadline',
+        inverse='_inverse_date_deadline',
+        store=True
+    )  
+    partner_id = fields.Many2one('res.partner', string="Buyer", required=True)
+    property_id = fields.Many2one('estate.property', string="Property", required=True)
+    property_type_id = fields.Many2one(
+        comodel_name='estate.property.type',
+        related='property_id.property_type_id',
+        store=True,
+        string="Property Type",
+    )
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -54,24 +60,30 @@ class EstatePropertyOffer(models.Model):
             if offer.property_id.selling_price:
                 raise UserError("A selling price has already been set. You cannot accept another offer.")
             offer.status = 'accepted'
-            offer.property_id.state = 'offer_accepted'
-            offer.property_id.selling_price = offer.price
-            offer.property_id.buyer = offer.partner_id
+            offer.property_id.write({
+                'state': 'offer_accepted',
+                'selling_price': offer.price,
+                'buyer_id': offer.partner_id.id,
+            })
+            other_offers = self.env['estate.property.offer'].search([
+                ('property_id', '=', offer.property_id.id),
+                ('id', '!=', offer.id)
+            ])
+            other_offers.write({'status': 'refused'})
 
     def action_refuse(self):
         for offer in self:
             offer.status = 'refused'
-            offer.property_id.selling_price = 0
-            offer.property_id.buyer = False 
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
-        if "property_id" not in vals_list:
-            raise UserError("Property ID is required to create an offer.")
-        property = self.env["estate.property"].browse(vals_list["property_id"])
-        existing_offer = self.search([("property_id", "=",vals_list["property_id"]),("price",">=",vals_list["price"])])
-        if existing_offer:
-            raise UserError("You cannot create an offer with a lower or equal amount than an existing offer.")
-        if property.state == "new":
-            property.state = "offer_received"
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            new_offer = vals.get('price')
+            if property_id:
+                property = self.env['estate.property'].browse(property_id)
+                existing_offer = self.search([('property_id.id', '=', property_id), ('price', '>=', new_offer)])
+                if existing_offer:
+                    raise UserError("You cannot create an offer with a lower or equal amount than an existing offer.")
+                property.state = 'offer_received'
         return super(EstatePropertyOffer, self).create(vals_list)

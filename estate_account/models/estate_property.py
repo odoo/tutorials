@@ -1,32 +1,27 @@
-from odoo import fields,api,models
+from odoo import models
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _inherit='estate.property'
 
     def action_sold(self):
-        
         for record in self:
-            if not record.buyer:
-                raise ValueError("Buyer must be set before generating an invoice.") 
-            journal = self.env['account.journal'].search(
-                [('type','=','sale')], limit=1
-            )
-            if not journal:
-                raise ValueError("No Sales Journal found. Please configure one.")
+            if not record.buyer_id:
+                raise UserError("Buyer must be set.") 
             self.env['account.move'].create({
-                'partner_id': record.buyer.id,  
-                'move_type': 'out_invoice',  
-                'journal_id': journal.id, 
-                'invoice_line_ids':[
-                    (0,0,{
-                        'name': 'Property Sale Commission (6%)',
-                        'quantity': 1,
-                        'price_unit': record.selling_price * 0.06,
+                'partner_id': record.buyer_id.id,   
+                'move_type': 'out_invoice', 
+                'property_id': record.id, 
+                'invoice_line_ids': [
+                    (0, 0, {
+                       'name': 'Property Sale Commission (6%)',
+                       'quantity': 1,
+                       'price_unit': record.selling_price * 0.06,
                     }),
-                    (0,0,{
-                        'name': 'Administrative Fees',
-                        'quantity': 1,
-                        'price_unit': 100.00,
+                    (0, 0, {
+                       'name': 'Administrative Fees',
+                       'quantity': 1,
+                       'price_unit': 100.00,
                     }),
                 ]
             })  
