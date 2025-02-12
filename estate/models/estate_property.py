@@ -17,7 +17,7 @@ class estateProperty(models.Model):
         string="Availability Date",
         default=lambda self: fields.Date.today() + relativedelta(months=3)  
     )
-    expected_price = fields.Float(string="Expected Price", required=True, default=0.0)
+    expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True)  
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sq.m.)")
@@ -47,14 +47,14 @@ class estateProperty(models.Model):
         default="new",
         required=True,
         copy=False,
-     )
+    )
     active = fields.Boolean(default=True)  
 
     # to add a buyer and seller field in our form beacuse of the buyer can be anyone one but the seller must be the employer or the seller owner
     buyer_id=fields.Many2one("res.partner", string="buyer" , required=False ,copy=False)
     salesperson_id=fields.Many2one("res.users", string="sales_person_name" , default= lambda self: self.env.user, required=True)
 
-     #  to use a compute decorator
+    #  to use a compute decorator
     living_area=fields.Float(string="living_area")
     garden_area=fields.Float(string="garden_area")
     total_area=fields.Float(string="total_area", compute="compute_total_area", store=True)
@@ -63,8 +63,9 @@ class estateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type" )
     tag_ids=fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    best_price = fields.Float(string="Best Price", compute="_compute_best_price_", store=True)
-
+    best_price = fields.Float(string="Best Price", compute="_compute_best_price", store=True)
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
+    
     _sql_constraints = [
     ("check_expected_price", "CHECK(expected_price >= 0 OR expected_price IS NULL)", "The expected price must be strictly positive."),
     ("check_selling_price", "CHECK(selling_price >= 0 OR selling_price IS NULL)", "The selling price must be positive."),
@@ -77,14 +78,14 @@ class estateProperty(models.Model):
 
     #  we have to add the best price decorated to use to show the best price in our field
     @api.depends("offer_ids.price")
-    def _compute_best_price_(self):
+    def _compute_best_price(self):
         for record in self:
             # Get the maximum price from all related offers using mapped
             best_offer = max(record.offer_ids.mapped("price"), default=0.0)
             record.best_price = best_offer
 
     @api.onchange("garden")
-    def _onchange_garden_(self):
+    def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10  
             self.garden_orientation= "north"  

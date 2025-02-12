@@ -37,7 +37,7 @@ class estatePropertyOffer(models.Model):
             if record.create_date:
                 # Compute the deadline by adding the validity (days) to the creation date
                 record.date_deadline = (record.create_date.date() + timedelta(days=record.validity))
-     
+    
     @api.model_create_multi
     def create(self, vals_list):
         for val in vals_list:

@@ -13,9 +13,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" decoration-muted="state=='sold'"
-                decoration-success="state=='offer_accepted'"
-                decoration-danger="state=='offer_received'" class="font-weight-bold">
+            <list string="Properties" decoration-success="state=='offer_accepted'" decoration-danger="state=='offer_received'" class="fw-bold">
                 <field name="name" string="Property Name" />
                 <field name="postcode" string="Postcode" />
                 <field name="property_type_id" string="Property Type" />
@@ -83,7 +81,7 @@
                                 </group>
                                 <group>
                                     <field string="Garage" name="garage" />
-                                    <field string="Garden" name="garden" invisible="not garden" />
+                                    <field string="Garden" name="garden" />
                                     <field string="Garden Area (sqm)" name="garden_area" />
                                     <field string="Garden Orientation" name="garden_orientation"
                                         invisible="not garden" />
@@ -126,42 +124,42 @@
         </field>
     </record>
 
-   <!-- define the kanban view of the property type -->
+<!-- define the kanban view of the property type -->
     <record id="estate_properties_view_kanban" model="ir.ui.view">
-      <field name="name">estate.property.kanban</field>
-      <field name="model">estate.property</field>
-      <field name="arch" type="xml">
-      <kanban default_group_by='property_type_id' records_draggable="true">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+        <kanban default_group_by='property_type_id' records_draggable="true">
         <templates>
-          <field name="state"/>
-          <t t-name="kanban-box">
+        <field name="state"/>
+        <t t-name="card">
             <div class="oe_kanban_global_click">
-              <h3>
+            <h3>
                 <field name="name"/>
-              </h3>
-              <p>Expected Price:
+            </h3>
+            <p>Expected Price:
                 <field name="expected_price"/>
-              </p>
-              <div>
+            </p>
+            <div>
                 <t t-if="record.state.raw_value=='offer_recieved'">
-                  <p>Best Offer:
+                <p>Best Offer:
                     <field name="best_price"/>
-                  </p>
+                </p>
                 </t>
                 <t t-elif="record.state.raw_value=='offer_accepted'">
-                  <p>Selling Price:
+                <p>Selling Price:
                     <field name="selling_price"/>
-                  </p>
+                </p>
                 </t>
-              </div>
-              <p>Tags:
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
-              </p>
             </div>
-          </t>
+            <p>Tags:
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
+            </p>
+            </div>
+        </t>
         </templates>
-      </kanban>
-     </field>
+    </kanban>
+    </field>
     </record>
 
     <!-- Define the Search View for the "estate.property" model -->

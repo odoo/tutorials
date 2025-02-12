@@ -12,16 +12,14 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offers" editable="bottom">
-                <field name="price" />
-                <field name="status" />
+            <list string="Property Offers" editable="bottom"  decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+                <field name="price" sum="Total" />
                 <field name="partner_id" />
                 <field name="property_id" />
                 <field name="property_type_id" />
                 <field name="validity" />
                 <field name="status" invisible="1" />
-                <field name="status" decoration-success="status == 'accepted'" />
-                <field name="status" decoration-danger="status == 'refused'" />
+                <field name="status" />
             </list>
         </field>
     </record>
