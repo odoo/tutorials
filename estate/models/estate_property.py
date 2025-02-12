@@ -9,6 +9,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'Property expected price must be strictly positive!'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'Property selling price must be positive!'),
@@ -36,7 +37,7 @@ class EstateProperty(models.Model):
         string='Garden Orientation'
     )
     active = fields.Boolean(string='Active', default=True)
-    state = fields.Selection(string='State',
+    state = fields.Selection(string='Status',
         selection=[
             ('new','New'),
             ('offer_received','Offer Received'),
@@ -93,7 +94,13 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if record.offer_ids:
+            if record.selling_price != 0:
                 difference_in_price = float_compare(record.selling_price, record.expected_price*90/100, precision_digits=0)
                 if difference_in_price < 0:
                     raise ValidationError(r"Selling price cannot be less than 90% of the expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_check(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("Only new and cancelled properties can be deleted.")

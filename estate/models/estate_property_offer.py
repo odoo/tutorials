@@ -25,7 +25,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', string='Property', required=True)
     validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
-
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type', related='property_id.property_type_id', store=True)
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -42,6 +42,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if 'accepted' not in record.property_id.offer_ids.mapped('status'):
                 record.status = 'accepted'
+                record.property_id.state = 'offer_accepted'
                 record.property_id.selling_price = record.price
                 record.property_id.partner_id = record.partner_id
             else:
