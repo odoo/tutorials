@@ -1,11 +1,15 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 
+
 class EstateProperty(models.Model):
   _name = 'estate.property'
-  _description = 'this is estate property Database model created by meem (meet moradiya)...'
+  _description = 'estate property'
 
   name = fields.Char(string='Property Name', required=True)
   description = fields.Text(string='Description')
@@ -43,14 +47,13 @@ class EstateProperty(models.Model):
     ]
   )
   property_type_id = fields.Many2one('estate.property.type', string='Property Type')
-  buyer = fields.Many2one('res.partner', string='Buyer', copy=False)
-  sales_person = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
+  buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+  sales_person_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
   tag_ids = fields.Many2many('estate.property.tag', string='Tags')
   offer_ids = fields.One2many('estate.property.offer', inverse_name='property_id')
   total_area = fields.Float(string='Total Area', compute='_compute_area')
   best_price = fields.Float(string='Best Price', compute='_compute_best_price')
 
-########## Compute, onchange and ondelete Methods ##########
 
   @api.depends('living_area', 'garden_area')
   def _compute_area(self):
@@ -75,9 +78,22 @@ class EstateProperty(models.Model):
   def _unlink_except_new_or_cancelled(self):
     for record in self:
       if record.state not in ['new', 'cancelled']:
-        raise UserError(f"Cannot delete property '{record.name}' because its state is '{record.state}'. Only properties in 'New' or 'Cancelled' state can be deleted.")
+        raise UserError(f'Cannot delete property "{record.name}" because its state is "{record.state}". Only properties in "New" or "Cancelled" state can be deleted.')
 
-########## Normal Methods ##########
+  _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0.00)',
+         'The Expected price must be Positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0.00)',
+         'The Selling price must be Positive.')
+    ]  
+
+  @api.constrains('selling_price', 'expected_price')
+  def _check_selling_price(self):
+    for record in self:
+      if record.selling_price == 0.00:
+        continue
+      elif float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) == -1:
+        raise ValidationError(f'Selling price cannot be lower than 90% of the expected price.')
 
   def action_set_property_sold(self):
     if self.state == 'cancelled':
@@ -90,22 +106,3 @@ class EstateProperty(models.Model):
       raise UserError('Sold properties cannot be cancelled.')
     else:
       self.state = 'cancelled'
-
-########## SQL constraints ##########
-
-  _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >= 0.00)',
-         'The Expected price must be Positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0.00)',
-         'The Selling price must be Positive.')
-    ]  
-  
-########## Python constraints ##########
-
-  @api.constrains('selling_price', 'expected_price')
-  def _check_selling_price(self):
-    for record in self:
-      if record.selling_price == 0.00:
-        continue
-      elif float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) == -1:
-        raise ValidationError(f"Selling price cannot be lower than 90% of the expected price.")
