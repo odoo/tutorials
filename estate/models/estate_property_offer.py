@@ -1,6 +1,5 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError
-from odoo.tools import float_is_zero, float_compare
 from datetime import timedelta
 
 class EstatePropertyOffer(models.Model):
@@ -19,18 +18,17 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(related="property_id.property_type", store=True)
 
     validity = fields.Integer("Validity", default=7)
-
-    _sql_constraints = [
-        ("positive_offer_price", "CHECK(price > 0)",
-         "A property offer price must be strictly positive.")
-    ]
-
     date_deadline = fields.Date(
         string="Date Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
         store=True
     )
+
+    _sql_constraints = [
+        ("positive_offer_price", "CHECK(price > 0)",
+         "A property offer price must be strictly positive.")
+    ]
 
     @api.depends("property_id.create_date", "validity")
     def _compute_date_deadline(self):
@@ -72,29 +70,17 @@ class EstatePropertyOffer(models.Model):
             if not record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
                 record.property_id.state = "offer_received"  # Fallback to previous state
 
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
-        """Ensures that the selling price is at least 90% of the expected price unless it is zero."""
-        for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2):
-                min_price = record.expected_price * 0.9
-                if float_compare(record.selling_price, min_price, precision_digits=2) == -1:
-                    raise models.ValidationError(
-                        "The selling price cannot be lower than 90% of the expected price!"
-                    )
-
     @api.model_create_multi
-    def create(self, vals):
-        """ Prevents creating an offer lower than an existing offer. """
-        property_id = self.env["estate.property"].browse(vals["property_id"])
+    def create(self, vals_list):
+        """Prevents creating an offer lower than an existing offer."""
+        for vals in vals_list:  # Loop added
+            property_id = self.env["estate.property"].browse(vals.get("property_id"))
 
-        # Check if there are existing offers and compare prices
-        if property_id.offer_ids and vals["price"] <= max(property_id.offer_ids.mapped("price")):
-            raise UserError("You cannot create an offer lower than an existing offer!")
+            if not property_id:
+                raise UserError("Property must be specified for an offer.")
+            if property_id.offer_ids and vals["price"] <= max(property_id.offer_ids.mapped("price")):
+                raise UserError("You cannot create an offer lower than an existing offer!")
 
-        # Set property state to 'Offer Received'
-        property_id.state = "offer_received"
+            property_id.state = "offer_received"
 
-        # Explicitly calling the parent class' create method
-        return super(EstatePropertyOffer, self).create(vals)
+        return super(EstatePropertyOffer, self).create(vals_list)

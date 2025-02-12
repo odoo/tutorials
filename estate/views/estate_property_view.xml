@@ -130,7 +130,6 @@
                 </form>
             </field>
         </record>
-
         <!-- Search view for Estate Properties -->
         <record id="estate_property_search" model="ir.ui.view">
             <field name="name">estate.property.search</field>
@@ -159,6 +158,5 @@
                 </search>
             </field>
         </record>
-
     </data>
 </odoo>

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-	<!-- Root Menu for Estate Management -->
-	<menuitem id="menu_estate_root" name="Estate Management" />
-	<!-- Properties Menu under Estate Management -->
-	<menuitem id="menu_estate_property" name="Properties" parent="menu_estate_root" sequence="1"/>
-	<!-- Settings Menu under Estate Management -->
-	<menuitem id="menu_estate_property_settings" name="Settings" parent="menu_estate_root" sequence="2"/>
-	<!-- Action for All Properties, linked to the 'estate_property_action' -->
-	<menuitem id="menu_estate_property_action" name="All Properties" action="estate_property_action" parent="menu_estate_property"/>
-	<!-- Action for Property Types, linked to 'estate_property_type_action' -->
-	<menuitem id="menu_estate_property_type_action" name="Property Type" action="estate_property_type_action" parent="menu_estate_property_settings"/>
-	<!-- Action for Property Tags, linked to 'estate_property_tag_action' -->
-	<menuitem id="menu_estate_property_tag_action" name="Property Tags" action="estate_property_tag_action" parent="menu_estate_property_settings"/>
-
+    <!-- Root Menu for Estate Management -->
+    <menuitem id="menu_estate_root" name="Estate Management" />
+    <!-- Properties Menu under Estate Management -->
+    <menuitem id="menu_estate_property" name="Properties" parent="menu_estate_root" sequence="1"/>
+    <!-- Settings Menu under Estate Management -->
+    <menuitem id="menu_estate_property_settings" name="Settings" parent="menu_estate_root" sequence="2"/>
+    <!-- Action for All Properties, linked to the 'estate_property_action' -->
+    <menuitem id="menu_estate_property_action" name="All Properties" action="estate_property_action" parent="menu_estate_property"/>
+    <!-- Action for Property Types, linked to 'estate_property_type_action' -->
+    <menuitem id="menu_estate_property_type_action" name="Property Type" action="estate_property_type_action" parent="menu_estate_property_settings"/>
+    <!-- Action for Property Tags, linked to 'estate_property_tag_action' -->
+    <menuitem id="menu_estate_property_tag_action" name="Property Tags" action="estate_property_tag_action" parent="menu_estate_property_settings"/>
 </odoo>

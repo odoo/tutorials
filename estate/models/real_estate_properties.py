@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.tools import float_is_zero, float_compare
 from odoo.exceptions import UserError
 from datetime import timedelta, datetime
 
@@ -7,16 +8,6 @@ class RealEstateProperty(models.Model):
     _description = "Real Estate Property Table"
     _order = "id desc"
 
-    # Basic property fields
-    id = fields.Integer()  # Internal ID field (not needed explicitly as Odoo manages it)
-    create_uid = fields.Integer()  # ID of the user who created the record
-    create_date = fields.Datetime(
-        "Create Date", readonly=True, default=fields.Datetime.now
-    )  # Auto-filled creation timestamp
-    write_uid = fields.Integer()  # ID of the last user who modified the record
-    write_date = fields.Datetime(
-        "Write Date", readonly=True, default=fields.Datetime.now
-    )  # Auto-filled last modification timestamp
     name = fields.Char(required=True)  # Property name
     description = fields.Text()  # Property description
     postcode = fields.Char("Postcode")  # Postal code of the property
@@ -144,5 +135,18 @@ class RealEstateProperty(models.Model):
     def _prevent_delete(self):
         """ Prevent deletion of properties if no in 'new' or 'cancelled' state. """
         for record in self:
-            if record.state not in["new", "cancelled"]:
+            if record.state not in {"new", "cancelled"}:
                 raise UserError("You can only delete new or cancelled properties!")
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        """Ensures that the selling price is at least 90% of the expected price unless it is zero."""
+        for record in self:
+            if record.selling_price and record.expected_price:
+                if not float_is_zero(record.selling_price, precision_digits=2):
+                    min_price = record.expected_price * 0.9
+                    if float_compare(record.selling_price, min_price, precision_digits=2) == -1:
+                        raise models.ValidationError(
+                            "The selling price cannot be lower than 90% of the expected price!"
+                        )
+
