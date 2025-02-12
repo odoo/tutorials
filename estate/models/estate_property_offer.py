@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError, ValidationError
 
 class PropertyOffers(models.Model):
     _name = 'estate.property.offer'
@@ -18,6 +19,7 @@ class PropertyOffers(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer('Validity (days)', default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline',  inverse="_inverse_date_deadline", string='Deadline')
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     _sql_constraints = [
         ('check_offer_price_positive', 
@@ -36,9 +38,10 @@ class PropertyOffers(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline and record.create_date:
-                record.validity = (record.date_deadline - record.create_date.date()).days
-            if record.validity < 0:
-                record.validity = 0
+                count_validity = (record.date_deadline - record.create_date.date()).days
+                if count_validity < 7:
+                    raise UserError("Deadline cannot be set within 7 days")
+                record.validity = count_validity
 
     def action_accept(self):
         self.property_id.offer_ids.status = 'rejected'
@@ -50,3 +53,15 @@ class PropertyOffers(models.Model):
     def action_reject(self):
         for record in self:
             record.status = 'rejected'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            if property_id.state != 'offer_received':
+                property_id.state = 'offer_received'
+            if property_id.offer_ids:
+                # we have written _order = "price desc" in the model, so the first offer is the highest one
+                if vals['price'] < property_id.offer_ids[0].price:
+                    raise ValidationError("The offer price must be higher than the existing offer.")
+        return super().create(vals_list)

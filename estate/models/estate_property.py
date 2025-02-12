@@ -95,3 +95,9 @@ class Property(models.Model):
                         precision_digits=2,
                     ) < 0:
                 raise ValidationError("Selling Price cannot be lower than 90% of the expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _check_state_on_delete(self):
+         for record in self:
+             if record.state not in ('new', 'cancelled'):
+                raise UserError("You cannot delete an offered property.")
