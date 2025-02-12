@@ -1,8 +1,8 @@
 from odoo import models, fields, api
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import ValidationError, UserError
-from odoo.tools.float_utils import float_compare
+from odoo.exceptions import UserError,ValidationError
+from odoo.tools.float_utils import float_compare 
 
 
 class EstateProperty(models.Model):
@@ -51,7 +51,7 @@ class EstateProperty(models.Model):
         copy=False,
     )
     propertytype_id = fields.Many2one("public.property.type", string="Property type")
-    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson = fields.Many2one(
         "res.users", string="Sales Person", default=lambda self: self.env.user
     )
@@ -104,7 +104,7 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ""
 
-    def sold(self):
+    def action_sold(self):
         count = self.env['public.property.offer'].search_count([])
         if count <= 0 : 
             raise ValidationError("No records found in offers")
@@ -114,8 +114,14 @@ class EstateProperty(models.Model):
         if self.state == "cancelled":
             raise UserError("A cancelled property cannot be sold")
 
-    def cancelled(self):
+    def action_cancelled(self):
         if self.state == "sold":
             raise UserError("A sold property cannot be cancelled")
         for record in self:
             record.state = "cancelled"
+
+    @api.ondelete(at_uninstall = False) 
+    def _unlink_public_property_offer(self): 
+        for record in self : 
+            if record.state not in ('new' , 'cancelled') : 
+                raise UserError("A property cannot be deleted in this stage")

@@ -5,8 +5,10 @@
     "depends": ["base"],
     "data": [
         "views/public_property_views.xml",
+         "views/res_users.xml",
         "views/estate_menus.xml",
         "security/ir.model.access.csv",
+       
     ],
     "application": True,
     "author": "Lucky Prajapati (prlu)",
