@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!-- Estate property tag list view -->
+    <record id="view_estate_property_tag_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.list</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list name="estate_property_tag_list" editable="bottom">
+                <field name="name" width="30%"></field>
+            </list>
+        </field>
+    </record>
+
     <!-- Estate property tag action -->
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name">Property Tag</field>

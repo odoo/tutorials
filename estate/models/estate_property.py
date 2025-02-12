@@ -82,3 +82,9 @@ class EstateProperty(models.Model):
         for record in self:
             if record.selling_price > 0 and record.expected_price * 0.9 > record.selling_price:
                 raise ValidationError("Selling price is less than 90% of expected price. you must have set selling price more than 90% of expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_property(self):
+            for record in self:
+                if record.state not in ['new', 'cancelled']:
+                    raise UserError("You cannot delete offer, when it's in %s state.", record.state)
