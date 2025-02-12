@@ -50,3 +50,13 @@ class estatePropertyOffer(models.Model):
     _sql_constraints = [("check_positive_price", "CHECK(price > 0)", "Price of Offer must be Strictly positive")]
 
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals["property_id"])
+            property.state = "offer_received"
+            for offer in property.offer_ids:
+                if offer.price > vals["price"]:
+                    raise UserError("The offer must be higher than the existing offer")
+        return super().create(vals_list)

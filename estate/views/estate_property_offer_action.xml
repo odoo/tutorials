@@ -13,10 +13,36 @@
         <field name="name">estate_property_offer_list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offers">
-                <field name="partner_id" />
-                <field name="id" />
+            <list editable="bottom" decoration-success="status == 'accepted'"
+                decoration-danger="status == 'refused'">
+                <field name="price" />
+                <field name="partner_id" string="Partner" />
+                <field name="validity" />
+                <field name="date_deadline" />
+                <button name="action_set_status_accepted" type="object"
+                    class="oe_stat_button" icon="fa-check" title="Accepted"
+                    invisible="status in ('accepted','refused')" />
+                <button name="action_set_status_refused" type="object"
+                    class="oe_stat_button" icon="fa-remove" title="Refused"
+                    invisible="status in ('accepted','refused')" />
+                <!-- column_invisible field  -->
+                <field name="status" column_invisible="1" />
             </list>
+        </field>
+    </record>
+    <record id="view_estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate_property_offer_form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Create Offer">
+                <group>
+                    <field name="price" />
+                    <field name="partner_id" string="Partner" />
+                    <field name="validity" />
+                    <field name="date_deadline" />
+                    <field name="status" />
+                </group>
+            </form>
         </field>
     </record>
 
