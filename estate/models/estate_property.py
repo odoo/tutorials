@@ -5,6 +5,7 @@ from odoo.tools import float_compare, float_is_zero
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = "id desc"
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
@@ -26,15 +27,15 @@ class Property(models.Model):
     )
     date_availability = fields.Date(
         "Available From", readonly=False, default=fields.Date.add(fields.Date.today(),months=3),
-        help="This field specifies the date when the property will be available.",
+        help="This field specifies the date when the property will be available.", tracking=True,
     )
     expected_price = fields.Float(
         "Expected Price", required=True,
-        help="This field specifies the price expected for the property.",
+        help="This field specifies the price expected for the property.", tracking=True,
     )
     selling_price = fields.Float(
         "Selling Price", readonly=True, copy=False,
-        help="This field specifies the actual selling price of the property.",
+        help="This field specifies the actual selling price of the property.", tracking=True,
     )
     bedrooms = fields.Integer(
         "Bedrooms", default=2,
@@ -79,11 +80,11 @@ class Property(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        help="This selection fields specifies the state of the property.",
+        help="This selection fields specifies the state of the property.", tracking=True,
     )
     active = fields.Boolean(
         "Active", default=True,
-        help="This specifies if the property should be listed."
+        help="This specifies if the property should be listed.", tracking=True,
     )
     property_type_id = fields.Many2one(
         "estate.property.type", string="Property Type",
@@ -91,21 +92,21 @@ class Property(models.Model):
     )
     buyer_id = fields.Many2one(
         "res.partner", string="Buyer", copy=False,
-        help="Buyer of the property."
+        help="Buyer of the property.", tracking=True,
     )
     salesperson_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user,
-        help="Sales Person associated with the property."
+        help="Sales Person associated with the property.", tracking=True,
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property Offers")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property Offers", tracking=True,)
     total_area = fields.Integer(
         "Total Area (sqm)", compute="_compute_total_area",
         help="This field specifies the total area (in sqm.) of the property.",
     )
     best_price = fields.Float(
         "Best Offer", compute="_compute_best_price",
-        help="This field specifies the best offered price for the property.",
+        help="This field specifies the best offered price for the property.", tracking=True,
     )
 
     @api.depends('living_area', 'garden_area')
@@ -155,6 +156,8 @@ class Property(models.Model):
 
         if self.state == 'cancelled':
             raise exceptions.UserError("Cancelled Property cannot be sold.")
+        elif self.state != 'offer_accepted':
+            raise exceptions.UserError("Please accept an offer first.")
         else:
             self.state = 'sold'
 

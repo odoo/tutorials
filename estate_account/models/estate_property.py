@@ -1,4 +1,4 @@
-from odoo import models, Command
+from odoo import models, Command, fields
 
 
 class Property(models.Model):
@@ -8,9 +8,9 @@ class Property(models.Model):
         self.ensure_one()
 
         invoice_vals = {
-            "name": "Invoice Bill",
             "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",
+            "property_id": self.id,
             "line_ids": [
                 (
                     Command.create({

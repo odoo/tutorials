@@ -2,7 +2,7 @@
     "name": "Real Estate",
     "version": "1.0",
     "sequence": 1,
-    "depends": ["base"],
+    "depends": ["base", "mail"],
     "description": """
     This is the estate application being developed as per Tutorial for Technical Training.
     """,
