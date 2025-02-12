@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="estate_property_view_kanban" model='ir.ui.view'>
+        <field name='name'>estate.property.kanban</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <kanban default_group_by="property_type_id" records_draggable='0'>
+                    <field name="status"/>
+                <templates>
+                    <t t-name="card">
+                        <h3><field name="name" /></h3>
+                        <div class="flex-row">
+                            <text>Expected price:</text>
+                            <field name="expected_price" />
+                        </div>
+                        <t t-if="record.status.raw_value=='offer_received'">
+                            <div class="flex-row">
+                                <text>Best offer:</text>
+                                <field name="best_price" />
+                            </div>
+                        </t>
+                        <t t-if="record.status.raw_value=='offer_accepted' or record.status.raw_value=='sold'">
+                            <div class="flex-row">
+                                <text>Selling price:</text>
+                                <field name="selling_price" />
+                            </div>
+                        </t>
+                        <footer class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            </div>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id='estate_property_view_list' model='ir.ui.view'>
         <field name='name'>estate.property.list</field>
         <field name='model'>estate.property</field>
@@ -35,7 +71,7 @@
                     <h1>
                         <field name='name'/>
                     </h1>
-                    <h3><field name='tag_ids' widget='many2many_tags' options="{'color_field':'color'}"/></h3>
+                    <h3><field name='tag_ids' widget='many2many_tags'/></h3>
                     <group>
                         <group>
                             <field name='property_type_id' options="{'no_create':True, 'no_open':True}"/>
@@ -100,7 +136,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
         <field name="context">{'search_default_available_property':True}</field>
     </record>
 </odoo>

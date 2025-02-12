@@ -58,10 +58,11 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
-        min_price = min(self.env['estate.property.offer'].search([('property_id','=',vals['property_id'])]).mapped('price'),default=0)
-        if vals['price'] <= min_price:
-            raise UserError("The price must be higher than any existing offer.")
-        status=self.env['estate.property'].browse(vals['property_id']).status
-        if status=='new' or not status:
-            self.env['estate.property'].browse(vals['property_id']).status = 'offer_received'
+        for val in vals:
+            min_price = min(self.env['estate.property.offer'].search([('property_id','=',val['property_id'])]).mapped('price'),default=0)
+            if val['price'] <= min_price:
+                raise UserError("The price must be higher than any existing offer.")
+            status=self.env['estate.property'].browse(vals['property_id']).status
+            if status=='new' or not status:
+                self.env['estate.property'].browse(vals['property_id']).status = 'offer_received'
         return super().create(vals)
