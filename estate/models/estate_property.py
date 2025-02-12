@@ -5,9 +5,10 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >= 0)', 'The expected price must be strictly positive.'),
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
     ]
 
@@ -74,6 +75,9 @@ class EstateProperty(models.Model):
     def property_sold(self):
         if self.status == 'cancelled':
             raise exceptions.UserError("A Cancelled property cannot be sold!")
+        accepted_offer = self.offer_ids.filtered(lambda o: o.status == 'accepted')
+        if not accepted_offer or self.status != 'offer_accepted':
+            raise exceptions.UserError("You need to accept an offer first!")
         self.status = "sold"
         return True
 
@@ -91,5 +95,5 @@ class EstateProperty(models.Model):
             min_allowed_price = record.expected_price * 0.9
             if fields.float_compare(record.selling_price, min_allowed_price, precision_digits=2) == -1:
                 raise models.ValidationError(
-                    "Selling price cannot be lower than 90% of the expected price!"
+                    "Offer price cannot be lower than 90% of the expected price!"
                 )
