@@ -6,12 +6,23 @@ class EstatePropertyAccount(models.Model):
     _inherit='estate.property'
 
     def sold_event(self):
+
         #record.status='sold'
+
+        try:
+            self.check_access_rights('write')  
+            self.check_access_rule('write')
+
+            print("Access check passed".center(100, '='))
+        except Exception as e:
+            print(f"Access error: {str(e)}".center(100, '='))
+            raise
+
         invoice_vals={
                 'name': f"INV/{datetime.today().year}/{self.property_buyer_id.id}{self.id}",
                 'partner_id' : self.property_buyer_id.id,
                 'move_type'  : 'out_invoice',
-                'journal_id' : self.env['account.journal'].search([('type', '=', 'sale')], limit=1).id,
+                # 'journal_id' : self.env['account.journal'].search([('type', '=', 'sale')], limit=1).id,
                 'invoice_date': fields.Date.today(),
                 'invoice_line_ids' : [
                     Command.create({
@@ -29,7 +40,7 @@ class EstatePropertyAccount(models.Model):
                 ]
 
         }
-        invoice = self.env['account.move'].create(invoice_vals)
+        invoice = self.env['account.move'].sudo().create(invoice_vals)
         return super().sold_event()
 
     

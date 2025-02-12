@@ -3,7 +3,7 @@
     <menuitem id="first_level_menu" name="First Level">
     <menuitem id="menu_action" action="estate_property_action"/>
     </menuitem>
-    <menuitem id="type_menu" name="Settings">
+    <menuitem id="type_menu" name="Settings" groups="estate_group_manager">
     <menuitem id="type_action" action="estate_property_type_action"/>
     <menuitem id="menu_property_tags" action="estate_property_tag_action"/>
     </menuitem>

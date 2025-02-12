@@ -70,6 +70,12 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(string="Total Area", compute="_compute_total_area")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
+    company_id = fields.Many2one(
+        'res.company',
+        required=True,
+        string="Company",
+        default=lambda self: self.env.company,
+    )
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):

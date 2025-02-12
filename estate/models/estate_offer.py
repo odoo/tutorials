@@ -68,7 +68,7 @@ class EstateOffer(models.Model):
             record.property_id.selling_price=0.000
         return True
 
-    @api.model_create_multi
+    @api.model
     def create(self, vals):
         # Step 1: Set the property state to 'Offer Received' when a new offer is created
         property_id = vals.get('property_id')
