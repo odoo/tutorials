@@ -5,12 +5,13 @@
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form,kanban,pivot,graph</field>
+            <field name="context">{'search_default_avaibility': True}</field>
         </record>
         <record id="estate_property_list_view" model="ir.ui.view">
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list multi_edit="1" decoration-success="status == 'offer_received' or status == 'offer_accepted'" decoration-bf="status == 'offer_accepted'" decoration-muted="status == 'sold'">
+                <list multi_edit="1" decoration-success="status == 'offer_received' or status == 'offer_accepted'" decoration-bf="status == 'offer_accepted'" decoration-muted="status == 'sold'" decoration-danger="status == 'cancelled'">
                     <field name="name" />
                     <field name="postcode" />
                     <field name="status"/>
@@ -33,13 +34,15 @@
                     <field name="postcode"/>
                     <field name="expected_price"/>
                     <field name="bedrooms"/>
-                    <field name="living_area"/>
+                    <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                     <field name="facades"/>
                     <filter string="Status" name="status" domain="[('status','in',['new','offer_received'])]"/>
                     <separator />
                     <filter string="Garden" name="is_garden" domain="[('is_garden', '=', True)]"/>
                     <separator />
                     <filter string="Garage" name="is_garage" domain="[('is_garage', '=', True)]"/>
+                    <separator />
+                    <filter string="Avaibility" name="avaibility" domain="[('status', '=', 'new')]"/>
                     <group>
                         <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
                     </group>
@@ -53,7 +56,7 @@
                 <form string="Test">
                     <header>
                         <button name="property_sold" type="object" string="Sold"/>
-                        <button name="property_canceled" type="object" string="Cancel"/>
+                        <button name="property_cancelled" type="object" string="Cancel"/>
                         <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                     </header>
                     <sheet>
@@ -97,7 +100,7 @@
                                 </group>
                             </page>
                             <page name="offer" string="Offers">
-                                <field name="offer_ids" readonly="status in ['offer_accepted', 'sold', 'canceled']"></field>
+                                <field name="offer_ids" readonly="status in ['offer_accepted', 'sold', 'cancelled']"></field>
                             </page>
                         </notebook>
                     </sheet>

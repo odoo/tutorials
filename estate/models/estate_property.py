@@ -37,7 +37,7 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("canceled", "Canceled"),
+            ("cancelled", "cancelled"),
         ],
         default="new",
     )
@@ -89,12 +89,20 @@ class EstateProperty(models.Model):
 
     def property_sold(self):
         for record in self:
-            if record.status == "canceled":
-                raise UserError("Canceled properties cannot be sold!")
+            if record.status == "cancelled":
+                raise UserError("cancelled properties cannot be sold!")
             record.status = "sold"
 
-    def property_canceled(self):
+    def property_cancelled(self):
         for record in self:
             if record.status == "sold":
-                raise UserError("Sold properties cannot be canceled!")
-            record.status = "canceled"
+                raise UserError("Sold properties cannot be cancelled!")
+            record.status = "cancelled"
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_status_sold_or_new(self):
+        if any(
+            record.status in ["offer_received", "offer_accepted", "sold"]
+            for record in self
+        ):
+            raise UserError("Only new or cancelled properties can be deleted")

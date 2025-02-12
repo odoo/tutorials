@@ -17,6 +17,9 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
     _sql_constraints = [
         (
             "check_price",
@@ -65,9 +68,7 @@ class EstatePropertyOffer(models.Model):
                     ("id", "!=", record.id),
                 ]
             )
-
             other_offers.write({"status": "refused"})
-
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
@@ -82,3 +83,20 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.buyer_id = False
                 record.property_id.status = "offer_received"
             record.status = "refused"
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        max = 0
+        for val in vals_list:
+            property_id = val.get("property_id")
+            if property_id:
+                property = self.env["estate.property"].browse(property_id)
+                for offer in property.offer_ids:
+                    if offer.price > max:
+                        max = offer.price
+                if val.get("price") < max:
+                    raise UserError(f"The offer must be greater than {max}")
+        offers = super().create(vals_list)
+        for offer in offers:
+            offer.property_id.status = "offer_received"
+        return offers
