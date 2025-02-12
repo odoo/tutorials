@@ -4,7 +4,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list name="estate_property_list" string="Property">
+            <list name="estate_property_list" string="Property" decoration-success="state in ('offer accepted','offer recieved')" decoration-muted="state == 'sold'" decoration-bf="state == 'offer accepted'">
                 <field name="name" width="10%"></field>
                 <field name="postcode" width="10%"></field>
                 <field name="bedrooms" width="10%"></field>
@@ -88,12 +88,12 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <field name="buyer_id"/>
                 <field name="seller_id"/>
-                <filter string="Available" name="date_availability" domain="[('state', 'in', ['new','offer recieved'] )]"/>
+                <filter name="available" string="Available" domain="[('state', 'in', ['new','offer recieved'] )]"/>
                 <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>
@@ -103,5 +103,6 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available':True}</field>
     </record>
 </odoo>

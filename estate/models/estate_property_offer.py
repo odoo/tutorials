@@ -14,6 +14,7 @@ class EstatePropertyOffer(models.Model):
     ], string="Status", copy=False, readonly=True)
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
     property_id = fields.Many2one('estate.property', string="Property ID", required=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     validity = fields.Integer(string="Validity(days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     
@@ -49,3 +50,12 @@ class EstatePropertyOffer(models.Model):
     
     def action_refused(self):
         self.status = 'refused'
+
+    @api.model_create_multi
+    def create(self,vals_list):
+        offers = super().create(vals_list)
+        for vals in vals_list:
+            if vals.get('property_id'):
+                property = self.env['estate.property'].browse(vals['property_id'])
+            if any(offer.price < property.best_price for offer in offers):
+                raise exceptions.UserError("Enter offer Price greater than the existing ones")
