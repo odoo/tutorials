@@ -93,17 +93,6 @@ class EstateProperty(models.Model):
                 record.state = "cancelled"
         return True
 
-    def action_accept_offer(self):
-        for record in self:
-            if record.property_id.state == "sold":
-                raise exceptions.UserError("You cannot accept an offer for a sold property!")
-            record.status = "accepted"
-            record.property_id.write({
-                'state': 'sold',
-                'buyer_id': record.buyer_id.id,
-                'selling_price': record.price
-                })
-        return True
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 

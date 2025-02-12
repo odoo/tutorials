@@ -24,8 +24,8 @@ class EstatePropertyType(models.Model):
 
     _sql_constraints = [
                 ('unique_type_name', 'UNIQUE(name)', 
-                'Property type names must be unique.')
-    ]
+                'Property type names must be unique.')]
+
     property_ids = fields.One2many(
                         "estate.property", 
                         "property_type_id", 

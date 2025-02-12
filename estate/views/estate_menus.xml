@@ -2,10 +2,9 @@
 <odoo>
 
     <menuitem id="estate_menu_root" name="Real Estate">
-
     <!--Advertisement menu -->
         <menuitem id="Adv_menu" name="Advertisement">
-            <menuitem id="estate_property_action_menu" action="estate.estate_property_action" />
+            <menuitem id="estate_property_action_menu" action="estate_property_action" />
         </menuitem>
 
         <!-- Settings menu -->
@@ -13,6 +12,5 @@
             <menuitem id="estate_property_type_action_menu" action="estate_property_type_action"/>
             <menuitem id="estate_property_tag_action_menu" action="estate_property_tag_action"/>
         </menuitem>
-        
     </menuitem>  
 </odoo>
