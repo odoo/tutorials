@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -69,18 +69,23 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         if self.selling_price and self.selling_price < 0.9 * self.expected_price:
-            raise ValidationError("Selling price must be atleast 90% of expected price")
+            raise ValidationError(_("Selling price must be atleast 90% of expected price"))
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancel(self):
+        for record in self.filtered(lambda record: record.state not in ['new', 'cancelled']):
+            raise UserError(_("In order to delete a property, it must be new or cancelled."))
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold properties cannot be cancelled.")
+                raise UserError(_("Sold properties cannot be cancelled."))
             else:
                 record.state = 'cancelled'
 
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cancelled properties cannot be sold.")
+                raise UserError(_("Cancelled properties cannot be sold."))
             else:
                 record.state = 'sold'

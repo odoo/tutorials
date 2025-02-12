@@ -4,14 +4,14 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list name="estate_property_list">
+            <list name="estate_property_list" decoration-bf="state == 'offer_accepted'" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-muted="state == 'sold'">
                 <field name="name" width="30%"></field>
                 <field name="postcode" width="10%"></field>
                 <field name="bedrooms" width="10%"></field>
                 <field name="living_area" width="10%"></field>
                 <field name="expected_price" width="10%"></field>
                 <field name="selling_price" width="10%"></field>
-                <field name="date_availability" width="10%"></field>
+                <field name="date_availability" width="10%" optional="hide"></field>
                 <field name="property_type_id" width="10%"></field>
                 <field name="tag_ids" widget="many2many_tags" width="10%"></field>
             </list>
@@ -24,8 +24,8 @@
         <field name="arch" type="xml">
             <form name="estate_property_form" string="Estate Property">
                 <header>
-                    <button name="action_cancel" type="object" string="Cancel"></button>
-                    <button name="action_sold" type="object" string="Sold"></button>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"></button>
+                    <button name="action_sold" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"></button>
                     <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <h1 class="mb32">
@@ -34,8 +34,7 @@
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" nolabel="1"></field>
                 <group>
                     <group>
-                        <field name="state"></field>
-                        <field name="property_type_id"></field>
+                        <field name="property_type_id" options="{'no_create' : true}"></field>
                         <field name="postcode" string="Postcode"></field>
                         <field name="date_availability"></field>
                     </group>
@@ -85,10 +84,10 @@
                 <field name="postcode" string="Postcode"></field>
                 <field name="expected_price" string="Expected Price"></field>
                 <field name="bedrooms" string="Bedrooms"></field>
-                <field name="living_area" string="living Area (sqm)"></field>
+                <field name="living_area" string="living Area (sqm)" filter_domain="[('living_area', '>=', self)]"></field>
                 <field name="facades" string="Facades"></field>
                 <field name="property_type_id" string="Property Type id"></field>
-                <filter string="State" name="state" domain="[('state', 'in', ['offer_received', 'new'])]"></filter>
+                <filter name="available_property" string="Available" domain="[('state', 'in', ['offer_received', 'new'])]"></filter>
                 <filter string="Postcode" name="groupby_postcode" context="{'group_by': 'postcode'}"></filter>
             </search>
         </field>
@@ -98,5 +97,6 @@
         <field name="name">Real Estate</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available_property' : True}</field>
     </record>
 </odoo>
