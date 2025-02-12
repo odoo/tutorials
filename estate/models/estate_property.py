@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
+from odoo import api, fields, models, tools
 from odoo.exceptions import UserError
-from odoo import fields, models, api, tools
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -17,11 +17,7 @@ class EstateProperty(models.Model):
         "estate.property.type", string="Property Type"
     )
     property_tag_id = fields.Many2many("estate.property.tags", string="Property Tags")
-    offer_ids = fields.One2many(
-        comodel_name="estate.property.offer",
-        inverse_name="property_id",
-        string="Offers",
-    )
+    offer_ids = fields.One2many("estate.property.offer","property_id",string="Offers",)
     date_availability = fields.Date(
         string="Availability Date",
         default=lambda self: fields.Date.today() + relativedelta(months=3),

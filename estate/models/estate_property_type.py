@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
@@ -17,7 +17,9 @@ class EstatePropertyType(models.Model):
         ('unique_property_type_name', 'UNIQUE(name)', 'Property type names must be unique.')
     ]
 
-    @api.depends("offer_ids")
+    @api.depends('offer_ids')
     def _compute_offer_count(self):
-        self.offer_count = len(self.offer_ids)
+        for record in self:
+            record.offer_count = len(record.offer_ids)
+
 

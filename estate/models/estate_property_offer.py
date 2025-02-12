@@ -1,6 +1,6 @@
-from odoo import fields, models, api
-from odoo.exceptions import UserError
 from datetime import timedelta
+from odoo import api, fields, models, tools
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -19,11 +19,26 @@ class EstatePropertyOffer(models.Model):
     sequence = fields.Integer('Sequence', help="Used to order offers, first is best")
     property_type_id = fields.Many2one("estate.property.type",string="Property Type",related="property_id.property_type_id",store=True)
 
-    @api.depends('create_date', 'validity')
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.')
+    ]
+
+    @api.depends('validity')
     def _compute_date_deadline(self):
-        for record in self: 
+        for record in self:
             if record.create_date:
                 record.date_deadline = (record.create_date + timedelta(days=record.validity)).date()
+            else:
+                record.date_deadline = fields.Date.today()+ timedelta(days=record.validity)
+    
+    @api.model_create_multi
+    def create(self,vals_list):
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals.get('property_id'))
+            if tools.float_compare(vals.get('price', 0.0), property_id.best_price, precision_digits=2) < 0:
+                raise UserError("The offered price cannot be lower than the best price.")
+
+        return super(EstatePropertyOffer, self).create(vals)
 
     def _inverse_date_deadline(self):
         if self.date_deadline:
@@ -38,16 +53,11 @@ class EstatePropertyOffer(models.Model):
         self.status = 'accepted'
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
-        self.property_id.state = 'sold'
+        self.property_id.state = 'offer_accepted'
 
     def action_refuse_offer(self):
         self.status = 'refused'
-        self.property_id.state = 'new'
         self.property_id.buyer_id = False
         self.property_id.selling_price = False
+        self.property_id.state = 'offer_received'
 
-    _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.')
-    ]
-
-    
