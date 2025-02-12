@@ -23,7 +23,22 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string = "Property Type">
+
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" class="oe_stat_button" name="%(estate_property_offer_action)d"
+                            string="Offers" icon="fa-pencil-square-o" invisible="offer_count == 0">
+                             <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_count" />
+                                </span>
+                                <span class="o_stat_text">
+                                    Offer
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+
                     <h1>
                         <field name="sequence" widget="handle" />
                         <field name="name"/>
