@@ -5,6 +5,7 @@ from odoo.exceptions import UserError,ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Model"
+    _order = "id desc"  
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -27,7 +28,7 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default = 'True')
     status = fields.Selection(
-        selection = [('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted','Offer Accepted'), ('sold','Sold'), ('cancelled','cancelled')],
+        selection = [('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted','Offer Accepted'), ('sold','Sold'), ('cancelled','cancelled')],
         default = 'new'
     )
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
@@ -42,7 +43,7 @@ class EstateProperty(models.Model):
         ('expected_price', 'CHECK(expected_price > 0)',
          'The expected price must be strictly positive!'),
 
-        ('selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be strictly positive!')
+        ('selling_price', 'CHECK(selling_price > 0)', 'The selling price must be strictly positive!')
     ]
 
     @api.depends("living_area","garden_area")
@@ -67,10 +68,10 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ''
 
-    @api.constrains('selling_price','expected_price')
+    @api.constrains('selling_price')
     def _check_offer_price(self):
         for record in self:
-            if record.selling_price <= (record.expected_price * 0.9) and (record.selling_price > 0):
+            if record.selling_price < (record.expected_price * 0.9) and (record.selling_price > 0):
                 raise ValidationError(f"Selling price cannote be lower than 90% of it's expected price!")
 
     def action_sold(self):

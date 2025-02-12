@@ -5,13 +5,15 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer Model"
+    _order = "price desc"
 
     price = fields.Float()
-    status = fields.Selection(
+    state = fields.Selection(
         selection = [('accepted','Accepted'),('refused','refused')]
     )
     partner_id = fields.Many2one('res.partner',required=True)
     property_id = fields.Many2one('estate.property',required=True)
+    property_type_id  = fields.Many2one(related='property_id.property_type_id', store=True)    
     validity = fields.Integer(default=7)
     deadline = fields.Date(compute="_compute_date_deadline",inverse="_inverse_deadline",store=True)
     
@@ -34,23 +36,21 @@ class EstatePropertyOffer(models.Model):
         
         for record in self:
             
-            if(record.status=="accepted"):
+            if(record.state=="accepted"):
                 raise UserError('Offer is already accepted')
             else:
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
-                record.property_id.status = 'offer accepted'
-                record.status = "accepted"
+                record.property_id.status = 'offer_accepted'
+                record.state = "accepted"
                 other_offer = record.property_id.offer_ids.filtered(lambda offer : record.id!=offer.id)
-                other_offer.write({'status':'refused'})
-
+                other_offer.write({'state':'refused'})
 
     def action_offer_reject(self):
-        
         for record in self:
-            if record.status == 'refused':
+            if record.state == 'refused':
                 raise UserError('Offer is already refused')
             else:
-                record.status = "refused"
+                record.state = "refused"
                 record.property_id.selling_price = False
                 record.property_id.buyer_id = False

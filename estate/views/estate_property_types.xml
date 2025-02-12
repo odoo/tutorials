@@ -11,17 +11,38 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
-                <field name="name" string="Title" />
-
-                <field name="property_ids">
-                    <list editable="bottom">
-                        <field name="name" string="Title" />
-                        <field name="expected_price" string="Expected Price"/>
-                        <field name="status" string="Status" />
-                    </list>
-                </field>
-
+                <sheet>
+                    <div name="button_box" position="inside">
+                        <button class="oe_stat_button" type="action" name="%(estate.estate_property_offer_action)d" icon="fa-money" invisible="offer_count == 0">
+                            <field string="Offers" name="offer_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <field name="name" string="Title" />
+                    <notebook>
+                        <page name="Properties">
+                            <field name="property_ids">
+                                <list editable="bottom">
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" string="Expected Price"/>
+                                    <field name="status" string="Status" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">Properties</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Title"/>
+                <field name="offer_count"/>
+            </list>
         </field>
     </record>
 </odoo>
