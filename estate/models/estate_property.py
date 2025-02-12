@@ -37,7 +37,7 @@ class EstateProperty(models.Model):
     # Many2one relationship
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer = fields.Many2one('res.partner', string="Buyer", copy=False)
-    seller = fields.Many2one('res.users', string="Salesman", default=lambda self: self.env.user)
+    user_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
 
     # Many2many relationship
     tag_ids = fields.Many2many('estate.property.tag', string="Property Tags")
@@ -97,6 +97,7 @@ class EstateProperty(models.Model):
     # ------------------------------------------------------------
 
     def action_property_sold(self):
+        print("This method is called from estate ---------------------------")
         if self.state == 'canceled':
             raise UserError("You cannot sell a canceled property")
         else:
@@ -134,7 +135,7 @@ class EstateProperty(models.Model):
     # CONSTRAINTS METHODS
     # -------------------------------------------------------------------------
 
-    @api.constrains('seeling_price', 'expected_price')
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
             if float_is_zero(record.selling_price, precision_digits=2):
@@ -143,3 +144,14 @@ class EstateProperty(models.Model):
             minimum_price = record.expected_price * 0.9
             if float_compare(record.selling_price, minimum_price, precision_digits=2) == -1:
                 raise ValidationError(f"The selling price cannot be lower than 90% of the expected price.")
+
+
+    # -------------------------------------------------------------------------
+    # CRUD METHODS
+    # -------------------------------------------------------------------------
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'canceled'):
+                raise UserError("You may only delete properties in state 'New' or 'Canceled'")
