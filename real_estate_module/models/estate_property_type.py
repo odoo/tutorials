@@ -3,7 +3,7 @@ from odoo import api, fields, models
 
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
-    _description = 'Estate Property Types such as Home, Apartment, etc.'
+    _description = "Estate Property Types such as Home, Apartment, etc."
     _order = 'name'
 
     name = fields.Char(
