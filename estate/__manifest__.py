@@ -1,7 +1,9 @@
 {
     'name': 'Real estate',
     'depends': ["base"],
+    'category' : 'Real Estate/Brokerage',
     'data' : [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/estate_res_user_views.xml",
         "views/estate_property_offers_view.xml",

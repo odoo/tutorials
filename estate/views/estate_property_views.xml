@@ -30,8 +30,8 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="action_property_sold" type="object" string="Sold" title="Sold" invisible="state in ('sold', 'canceled')"/>
-                    <button name="action_property_cancel" type="object" string="Cancel" title="Canceled" invisible="state in ('sold', 'canceled')"/>
+                    <button name="action_property_sold" type="object" string="Sold" title="Sold" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_property_cancel" type="object" string="Cancel" title="Canceled" invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -67,7 +67,6 @@
                             </group>
                         </page>
                         <page string="Offers">            
-                            
                             <field name="offer_ids">
                                 <list editable="bottom" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
                                     <field name="price"/>

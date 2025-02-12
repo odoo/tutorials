@@ -5,6 +5,8 @@
         <div class="p-3">
             hello world
         </div>
+        <p>Counter: <t t-esc="state.value"/></p>
+        <button t-on-click="increment">Increment</button>
     </t>
 
-</templates>
+</templates> 
