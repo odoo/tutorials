@@ -39,7 +39,6 @@
                     <h3><field name="property_tag_id" widget='many2many_tags' options="{'color_field': 'color'}"/></h3>
                     <group>
                         <group>
-                            <field name="status"/>
                             <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>

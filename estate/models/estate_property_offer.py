@@ -11,9 +11,21 @@ class EstatePropertyOffer(models.Model):
     partner_id=fields.Many2one('res.partner',required=True, string="Partner")
     create_date = fields.Date(default=fields.Date.today)
     property_id=fields.Many2one('estate.property',required=True)
+    property_status = fields.Selection(related='property_id.status', string='Property Status', store=True)
     property_type_id=fields.Many2one(related='property_id.property_type_id',store=True)
     validity = fields.Integer(default = 7, string = "Validity (days)")
     date_deadline = fields.Date(string="Deadline", compute = "_compute_date_deadline", inverse="_inverse_date_deadline", store = True)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            min_price = min( self.env['estate.property.offer'] .search([('property_id', '=', vals['property_id'])]) .mapped('price'), default=0 )
+            if vals['price'] <= min_price:
+                raise exceptions.UserError("The price must be higher than any existing offer.")
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if property.status == 'new' or not property.status:
+                property.status = 'offer_received'
+        return super().create(vals_list)
 
     @api.depends("create_date","validity")
     def _compute_date_deadline(self):

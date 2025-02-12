@@ -53,6 +53,12 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area (sqm)", compute = "_compute_total_area", store = True)
     best_offer = fields.Char(compute = "_compute_best_offer", store = True)
 
+    @api.ondelete(at_uninstall=False)
+    def _check_state_on_delete(self):
+        for record in self:
+            if record.status not in ['new', 'cancelled']:
+                raise exceptions.UserError("You can only delete properties in the 'New' or 'Cancelled' state.")
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
