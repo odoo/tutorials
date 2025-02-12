@@ -109,17 +109,27 @@
             </search>
         </field>
     </record>
+
     <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">estate_property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_group_by="property_type_id" records_draggable="False" groups_draggable="False">
+                <field name="state" />
                 <templates>
-                    <t t-name="card">
-                        <field name="name" />
-                        <div class="d-flex"> Description: <field name="description" class="ms-1" />
-                        </div>
-                        <div class="d-flex"> Tags: <field name="tag_ids" class="ms-2" />
+                    <t t-name="kanban-box">
+                        <div name="card">
+                            <strong><field name="name"/></strong>
+                            <div class="mt-2">
+                                Expected Price : <field name="expected_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_received'">
+                                Best price : <field name="best_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'" >
+                                Selling Price : <field name="selling_price" />
+                            </div>
+                            <field name="tag_ids" options="{'color_field': 'color'}" class="mt-1"/>
                         </div>
                     </t>
                 </templates>
