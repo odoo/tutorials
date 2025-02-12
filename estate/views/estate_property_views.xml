@@ -9,7 +9,7 @@
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Real Estate</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
     <record id="action_estate_property_type" model="ir.actions.act_window">
@@ -29,11 +29,16 @@
         <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
     <menuitem id="menu_real_estate_root" name="Real Estate" sequence="1" />
-    <menuitem id="menu_real_estate_advertisements" name="Advertisement" parent="menu_real_estate_root"/>
-    <menuitem id="menu_real_estate_properties" action="action_estate_property" parent="menu_real_estate_advertisements" name="Properties" sequence="3"/>
-    <menuitem id="menu_real_estate_settings" name="Settings" sequence="10" parent="menu_real_estate_root"/>
-    <menuitem id="menu_real_estate_property_type" name="Property Types" action="action_estate_property_type" parent="menu_real_estate_settings"/>
-    <menuitem id="menu_real_estate_property_tag" name="Property Tags" action="action_estate_property_tag" parent="menu_real_estate_settings"/>
+    <menuitem id="menu_real_estate_advertisements" name="Advertisement"
+        parent="menu_real_estate_root" />
+    <menuitem id="menu_real_estate_properties" action="action_estate_property"
+        parent="menu_real_estate_advertisements" name="Properties" sequence="3" />
+    <menuitem id="menu_real_estate_settings" name="Settings" sequence="10"
+        parent="menu_real_estate_root" />
+    <menuitem id="menu_real_estate_property_type" name="Property Types"
+        action="action_estate_property_type" parent="menu_real_estate_settings" />
+    <menuitem id="menu_real_estate_property_tag" name="Property Tags"
+        action="action_estate_property_tag" parent="menu_real_estate_settings" />
     <!-- List View -->
     <record id="view_estate_property_tree" model="ir.ui.view">
         <field name="name">estate.property.list</field>
@@ -41,25 +46,58 @@
         <field name="type">list</field>
         <field name="arch" type="xml">
             <list string="Properties"
-                  decoration-success="state == 'offer_received'"
-                  decoration-muted="state == 'sold'"
-                  decoration-info="state == 'offer_accepted'">
-                <field name="name"/>
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                <field name="postcode"/>
-                <field name="property_type_id"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability" optional="hide"/>
-                <field name="total_area"/>
-                <field name="best_offer"/>
+                decoration-success="state == 'offer_received'"
+                decoration-muted="state == 'sold'"
+                decoration-info="state == 'offer_accepted'">
+                <field name="name" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                <field name="postcode" />
+                <field name="property_type_id" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" optional="hide" />
+                <field name="total_area" />
+                <field name="best_offer" />
             </list>
         </field>
     </record>
-   <!-- Form View -->
-   <record id="view_estate_property_form" model="ir.ui.view">
+    <!-- Kanban View -->
+    <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="type">kanban</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" disable_column_reordering="true"
+                disable_drag_drop="true">
+                <field name="property_type_id" />
+                <field name="tag_ids" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <strong>
+                                <field name="name" />
+                            </strong>
+                            <div>Expected Price: <field name="expected_price" widget="monetary" /></div>
+                            <t t-if="record.best_offer.raw_value">
+                                <div>Best Offer: <field name="best_offer" widget="monetary" /></div>
+                            </t>
+                            <t t-if="record.selling_price.raw_value">
+                                <div>Selling Price: <field name="selling_price" widget="monetary" /></div>
+                            </t>
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags"
+                                    options="{'color_field': 'color'}" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <!-- Form View -->
+    <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="type">form</field>
@@ -67,42 +105,46 @@
             <form string="Property">
                 <header>
                     <button name="action_cancel" type="object" string="Cancel" class="btn-secondary"
-                        modifiers="{'invisible': [('state', 'in', ['cancelled', 'sold'])]}"/>
+                        modifiers="{'invisible': [('state', 'in', ['cancelled', 'sold'])]}" />
                     <button name="action_sold" type="object" string="Sold" class="btn-primary"
-                        modifiers="{'invisible': [('state', 'in', ['sold', 'cancelled'])]}"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+                        modifiers="{'invisible': [('state', 'in', ['sold', 'cancelled'])]}" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold,cancelled" />
                 </header>
                 <sheet>
                     <group>
                         <group>
-                            <field name="name"/>
-                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="postcode"/>
-                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
-                            <field name="date_availability"/>
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
-                            <field name="best_offer"/>
+                            <field name="name" />
+                            <field name="tag_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
+                            <field name="postcode" />
+                            <field name="property_type_id"
+                                options="{'no_create': True, 'no_open': True}" />
+                            <field name="date_availability" />
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                            <field name="best_offer" />
                         </group>
                         <group>
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="total_area"/>
-                            <field name="facades"/>
-                            <field name="garden"/>
-                            <field name="garden_area" invisible="not garden"/>
-                            <field name="garden_orientation" invisible="not garden"/>
+                            <field name="bedrooms" />
+                            <field name="living_area" />
+                            <field name="total_area" />
+                            <field name="facades" />
+                            <field name="garden" />
+                            <field name="garden_area" invisible="not garden" />
+                            <field name="garden_orientation" invisible="not garden" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
-                            <field name="description"/>
+                            <field name="description" />
                         </page>
                         <page string="Offers">
                             <field name="offer_ids">
-                                <list decoration-danger="status == 'refused'" decoration-success="status == 'accepted'" editable="bottom">
-                                    <field name="price"/>
-                                    <field name="partner_id"/>
+                                <list decoration-danger="status == 'refused'"
+                                    decoration-success="status == 'accepted'" editable="bottom">
+                                    <field name="price" />
+                                    <field name="partner_id" />
                                     <field name="date_deadline" />
                                     <button name="action_accepted" string="Accepted" type="object"
                                         icon="fa-check"
@@ -116,8 +158,8 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesperson_id"/>
-                                <field name="buyer_id"/>
+                                <field name="salesperson_id" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
@@ -131,15 +173,18 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Properties">
-                <field name="name"/>
-                <field name="property_type_id"/>
-                <field name="postcode"/>
-                <field name="expected_price"/>
-                 <field name="living_area" string="Living Area" filter_domain="[('living_area', '>=', self)]"/>
-                <field name="tag_ids"/>
-                <filter name="filter_available" string="Available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <field name="name" />
+                <field name="property_type_id" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="living_area" string="Living Area"
+                    filter_domain="[('living_area', '>=', self)]" />
+                <field name="tag_ids" />
+                <filter name="filter_available" string="Available"
+                    domain="[('state', 'in', ['new', 'offer_received'])]" />
                 <group expand="1" string="Group By">
-                    <filter name="group_by_property_type" string="Property Type" context="{'group_by': 'property_type_id'}"/>
+                    <filter name="group_by_property_type" string="Property Type"
+                        context="{'group_by': 'property_type_id'}" />
                 </group>
             </search>
         </field>
@@ -149,9 +194,9 @@
         <field name="name">estate.property.type.tree</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Property Types"> 
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
+            <list string="Property Types">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
             </list>
         </field>
     </record>
@@ -162,20 +207,21 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <header>
-                    <button name="%(action_estate_property_offer)d" type="action" class="oe_stat_button" icon="fa-th-list">
+                    <button name="%(action_estate_property_offer)d" type="action"
+                        class="oe_stat_button" icon="fa-th-list">
                         <field name="offer_count" widget="statinfo" />
                     </button>
                 </header>
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="name" />
                     </group>
                     <group>
                         <field name="property_ids">
                             <list editable="bottom">
-                                <field name="name"/>
-                                <field name="expected_price"/>
-                                <field name="state"/>
+                                <field name="name" />
+                                <field name="expected_price" />
+                                <field name="state" />
                             </list>
                         </field>
                     </group>
@@ -189,8 +235,8 @@
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <list string="Property Tags" editable="bottom">
-                <field name="name"/>
-                <field name="color" widget="color_picker"/>
+                <field name="name" />
+                <field name="color" widget="color_picker" />
             </list>
         </field>
     </record>
@@ -202,7 +248,7 @@
             <form string="Property Tag">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="name" />
                     </group>
                 </sheet>
             </form>
@@ -213,9 +259,10 @@
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list decoration-danger="status == 'refused'" decoration-success="status == 'accepted'" editable="bottom">
-                <field name="price"/>
-                <field name="partner_id"/>
+            <list decoration-danger="status == 'refused'" decoration-success="status == 'accepted'"
+                editable="bottom">
+                <field name="price" />
+                <field name="partner_id" />
                 <!-- <field name="status"/> -->
             </list>
         </field>
@@ -227,19 +274,22 @@
         <field name="arch" type="xml">
             <form string="Property Offer">
                 <header>
-                    <field name="status" widget="statusbar" statusbar_visible="new,accepted,refused"/>
-                    <button name="action_accepted" type="object" string="Accepted" class="btn-primary"
-                            modifiers="{'invisible': [('status', '=', 'accepted')]}"/>
-                    <button name="action_refused" type="object" string="Refused" class="btn-secondary"
-                            modifiers="{'invisible': [('status', '=', 'refused')]}"/>
+                    <field name="status" widget="statusbar" statusbar_visible="new,accepted,refused" />
+                    <button name="action_accepted" type="object" string="Accepted"
+                        class="btn-primary"
+                        modifiers="{'invisible': [('status', '=', 'accepted')]}" />
+                    <button name="action_refused" type="object" string="Refused"
+                        class="btn-secondary"
+                        modifiers="{'invisible': [('status', '=', 'refused')]}" />
                 </header>
                 <sheet>
                     <group>
-                        <field name="price"/>
-                        <field name="partner_id"/>
-                        <field name="validity"/>
-                        <field name="date_deadline" modifiers="{'readonly': [('validity', '=', False)]}"/>
-                        <field name="status" readonly="1"/>
+                        <field name="price" />
+                        <field name="partner_id" />
+                        <field name="validity" />
+                        <field name="date_deadline"
+                            modifiers="{'readonly': [('validity', '=', False)]}" />
+                        <field name="status" readonly="1" />
                     </group>
                 </sheet>
             </form>
@@ -248,15 +298,15 @@
     <record id="view_res_users_form_inherit_estate" model="ir.ui.view">
         <field name="name">res.users.form.inherit.estate</field>
         <field name="model">res.users</field>
-        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="inherit_id" ref="base.view_users_form" />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Properties">
                     <field name="property_ids">
                         <list>
-                            <field name="name"/>
-                            <field name="expected_price"/>
-                            <field name="state"/>
+                            <field name="name" />
+                            <field name="expected_price" />
+                            <field name="state" />
                         </list>
                     </field>
                 </page>
