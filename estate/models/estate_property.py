@@ -10,6 +10,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = 'Listing for the properties'
+    _order = "id desc"
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string='Description')
@@ -57,7 +58,6 @@ class EstateProperty(models.Model):
     user_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     property_offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
-
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store="True")
 
     @api.depends('property_offer_ids')

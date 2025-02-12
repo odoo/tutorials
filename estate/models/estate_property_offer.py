@@ -1,3 +1,4 @@
+from ast import Store
 from dateutil.relativedelta import relativedelta
 from datetime import date
 
@@ -7,6 +8,7 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer for properties"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -21,6 +23,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', string="Property", required=True, ondelete='cascade')
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -56,7 +59,7 @@ class EstatePropertyOffer(models.Model):
                 record.status = 'refused'
                 record.property_id.selling_price = 0.0
                 record.property_id.buyer_id = False
-                record.property_id.state = 'new'
+                record.property_id.state = 'offer_recevied'
             else:
                 record.status = 'refused'
         return True
