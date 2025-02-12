@@ -45,7 +45,7 @@ class EstateProperty(models.Model):
         string="State",
         required=True,
         copy=False,
-        default="new",
+        default="new"
     )
     total_area = fields.Float(string="Total Area(sqm)", compute="_compute_total_area")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")

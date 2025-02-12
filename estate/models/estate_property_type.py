@@ -9,8 +9,8 @@ class EstatePropertyType(models.Model):
     name = fields.Char(string="Name", required=True)
     property_ids = fields.One2many("estate.property", "property_type_id")
     sequence = fields.Integer(string="Sequence", default=1)
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    offer_count = fields.Integer(string="Offers", compute="_compute_offers")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")
+    offer_count = fields.Integer(compute="_compute_offers")
 
     _sql_constraints = [
         ("name_uniq", "unique (name)", "Type name already exists!"),
