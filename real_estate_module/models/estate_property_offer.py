@@ -91,16 +91,25 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             if offer.property_id.state == 'sold':
                 raise UserError("Cannot accept an offer for a sold property.")
-            if offer.property_id.offer_ids.filtered(lambda o: o.status == 'accept' and o != order):
+            if offer.property_id.offer_ids.filtered(lambda o: o.status == 'accept'):
                 raise UserError("Only one offer can be accepted per property.")
             offer.status = 'accept'
             offer.property_id.state = 'offer_accepted'
-            offer.property_id.buyer = order.partner_id
-            offer.property_id.selling_price = order.price
-
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
 
     def action_reject(self):
         """Rejects the offer."""
-        for offer in self:
-            if not offer.status:
-                offer.status = 'reject'
+        self.status = 'reject'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_obj = self.env['estate.property'].browse(vals.get('property_id'))
+
+            if property_obj.best_price >= vals['price']:
+                raise UserError("Offer Price is lower than the existing ones")
+
+            property_obj.state = 'offer_received'
+
+        return super().create(vals_list)

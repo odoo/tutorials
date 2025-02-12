@@ -114,13 +114,13 @@ class EstateProperty(models.Model):
         help="The type of the property (e.g., apartment, house, etc.)"
     )
 
-    buyer = fields.Many2one(
+    buyer_id = fields.Many2one(
         comodel_name='res.partner',
         string="Buyer",
         help="The buyer who purchased the property"
     )
 
-    salesman = fields.Many2one(
+    salesman_id = fields.Many2one(
         comodel_name='res.users',
         string="Salesman",
         default=lambda self: self.env.user,
@@ -165,16 +165,16 @@ class EstateProperty(models.Model):
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        for property_record in self:
-            property_record.total_area = property_record.living_area + property_record.garden_area
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        for property_record in self:
-            if property_record.offer_ids:
-                property_record.best_price = max(property_record.offer_ids.mapped('price'))
+        for property in self:
+            if property.offer_ids:
+                property.best_price = max(property.offer_ids.mapped('price'))
             else:
-                property_record.best_price = 0.0
+                property.best_price = 0.0
 
     @api.onchange('garden')
     def _onchange_garden_area_orientation(self):
@@ -201,15 +201,26 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def check_selling_price(self):
         """Ensure the selling price is at least 90% of the expected price."""
-        for property_record in self:
+        for property in self:
             if (
-                not float_is_zero(property_record.selling_price, precision_rounding=0.01)
+                not float_is_zero(property.selling_price, precision_rounding=0.01)
                 and float_compare(
-                property_record.selling_price,
-                property_record.expected_price * 0.9,
+                property.selling_price,
+                property.expected_price * 0.9,
                 precision_rounding=2
-            )) == -1:
+                )
+            ) == -1:
                 raise ValidationError(
                     "The selling price must be at least 90% of the expected price! "
                     "You must reduce the expected price if you want to accept this offer."
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_is_not_new_cancelled(self):
+        for property in self:
+            if (
+                property.state != 'new'
+                and property.state != 'cancelled'
+                ):
+                raise UserError("Can't delete a property whose current state "
+                "is neither 'New' nor 'Cancelled'")
