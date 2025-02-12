@@ -46,6 +46,16 @@ class EstatePropertyOffer(models.Model):
             if record.date_deadline and record.create_date:
                 record.validity = (record.date_deadline - record.create_date.date()).days
 
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            property = self.env["estate.property"].browse(val["property_id"])
+            max_offer_price = max(property.offer_ids.mapped("price"), default=0.0)
+            if val["price"] < max_offer_price:
+                raise UserError("The offer must be higher than an existing offer!")
+            property.state = "offer received"
+            return super().create(vals)
+
     def action_set_accepted(self):
         for record in self:
             if record.property_id.selling_price == 0.0:
@@ -69,12 +79,3 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.buyer_id = False
             record.status = "refused"
         return True
-
-    @api.model_create_multi
-    def create(self, vals):
-        property = self.env["estate.property"].browse(vals[0]["property_id"])
-        max_offer_price = max(property.offer_ids.mapped("price"), default=0.0)
-        if vals[0]["price"] < max_offer_price:
-            raise UserError("The offer must be higher than an existing offer!")
-        property.state = "offer received"
-        return super().create(vals)

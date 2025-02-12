@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _inherit="mail.thread"
 
     name = fields.Char("Name", required=True)
     description = fields.Text("Description")
@@ -17,7 +18,7 @@ class EstateProperty(models.Model):
         default=fields.Date.add(fields.Date.today(), months=3),
         copy=False,
     )
-    expected_price = fields.Float("Expected Price", required=True)
+    expected_price = fields.Float("Expected Price", required=True, tracking=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living Area")
@@ -37,6 +38,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(
         "Active",
         default=True,
+        tracking=True,
         help="Mark as active if you want the property to be listed.",
     )
     state = fields.Selection(
@@ -52,14 +54,15 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("canceled", "Canceled"),
         ],
+        tracking=True,
     )
 
     salesman_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
-    buyer_id = fields.Many2one("res.partner", copy=False, string="Buyer")
+    buyer_id = fields.Many2one("res.partner", copy=False, string="Buyer", tracking=True)
 
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags", tracking=True)
 
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
@@ -94,6 +97,21 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ""
 
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=self.env.company.currency_id.rounding):
+                continue
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=self.env.company.currency_id.rounding)< 0:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_allowed(self):
+        for record in self:
+            if record.state not in ["New", "Canceled"]:
+                raise UserError("You can only delete properties in 'New' or 'Cancelled' state.")
+
+
     def action_set_sold(self):
         for record in self:
             if record.state != "canceled":
@@ -113,17 +131,3 @@ class EstateProperty(models.Model):
             elif record.state == "canceled":
                 raise UserError("It's already been canceled.")
             return True
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_rounding=self.env.company.currency_id.rounding):
-                continue
-            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=self.env.company.currency_id.rounding)< 0:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_allowed(self):
-        for record in self:
-            if record.state not in ["New", "Canceled"]:
-                raise UserError("You can only delete properties in 'New' or 'Cancelled' state.")

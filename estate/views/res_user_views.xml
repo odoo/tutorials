@@ -5,11 +5,11 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
-            <notebook>
-                <page name="Real Estate Properties">
+        <xpath expr="//page[@name='account_security']" position="before">
+            <page name="Estate Properties" position="before">
                     <field name="property_ids"/>
                 </page>
-            </notebook>
+        </xpath>
         </field>
     </record>
 </odoo>
