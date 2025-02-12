@@ -8,5 +8,10 @@
     'description': """
     Test module for selling real estate properties.
     """,
+    'data': [
+        'security/ir.model.access.csv',
+    ],
+    'application': True,
+    'installable': True,
     'license': 'AGPL-3'
 }
