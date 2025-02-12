@@ -4,13 +4,14 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list  decoration-success="state == 'offer_accepted' or state == 'offer_received'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name" />
                 <field name="postcode" />
                 <field name="bedrooms" />
+                 <field name="tag_ids" widget="many2many_tags" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="date_availability" optional="hide"/>
                 <field name="property_type_id" />
             </list>
         </field>
@@ -22,26 +23,25 @@
         <field name="arch" type="xml">
             <form string="Add Detail">
                 <header>
-                    <button name="action_sold" type="object" string="SOLD" />
-                    <button name="action_cancel" type="object" string="CANCEL" />
-                    <field name="state" widget="statusbar"></field>
+                    <button name="action_sold" type="object" string="SOLD" invisible="state in ('sold', 'cancel')" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="CANCEL"  invisible="state in ('sold', 'cancel')"  class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"></field>
                 </header>
                 <sheet>
                     <div>
                         <h1>
-                            <field name="name" />
+                            <field name="name" readonly="state in ('offer_accepted', 'sold', 'cancel')"/>
                         </h1>
                     </div>
                     <div>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" />
+                            <field name="tag_ids" widget="many2many_tags"  options="{'no_create': true, 'color_field': 'color'}" />
                         </group>
                     </div>
                     <group>
                         <group>
-                            <field name="type_ids" widget="many2many_tags" />
-                            <field name="state" />
-                            <field name="postcode" />
+                            <field name="property_type_id"  options="{'no_create' : true}"/>
+                            <field name="postcode"  />
                             <field name="date_availability" />
                         </group>
                         <group>
@@ -55,33 +55,32 @@
                             <group>
                                 <field name="description" />
                                 <field name="bedrooms" />
-                                <field name="living_area" />
+                                <field name="living_area" options="{'type': 'number'}"/>
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
-                                <field name="total_area" />
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area" invisible="not garden"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list editable="bottom">
+                            <field name="offer_ids" readonly="state in ('sold', 'cancel', 'offer_accepted')">
+                                 <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="date_deadline" />
                                     <button name="action_accepted" type="object" icon="fa-check"
-                                        title="Accept Offer" />
+                                        title="Accept Offer" invisible="status"/>
                                     <button name="action_refused" type="object" icon="fa-times"
-                                        title="Refused Offer" />
-                                    <field name="status" />
+                                        title="Refused Offer" invisible="status"/>
                                     <field name="validity" />
                                 </list>
                             </field>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesman_id" />
-                                <field name="partner_id" />
+                                <field name="salesman_id" widget="many2one_avatar" />
+                                <field name="partner_id" widget="many2one_avatar"/>
                             </group>
                         </page>
                     </notebook>
@@ -95,12 +94,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Property">
-                <field name="property_type_id" />
                 <field name="name" string="name" />
                 <field name="postcode" string="Postcode" />
                 <field name="expected_price" string="Expected Price" />
                 <field name="bedrooms" string="Bedrooms" />
-                <field name="living_area" string="Living Area (sqm)" />
+                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '&gt;', self)]"/>
                 <field name="facades" string="Facades" />
                 <filter name="state" domain="[('state','=','new')]" />
                 <filter name="total_area" />

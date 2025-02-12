@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id asc"
 
     name = fields.Char(string="Name", required=False, copy=False)
     description = fields.Text(copy=True)
@@ -35,15 +36,14 @@ class EstateProperty(models.Model):
             ('new', "New"),
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
-            ("sold_cancelled", "Sold and Cancelled"),
+            ("sold", "Sold"),
             ("cancel", "Cancel")
-        ]
-    )
-    property_type_id = fields.Char(string="Property id")
+        ],
+    default='new')
     salesman_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     partner_id = fields.Many2one('res.partner', string="Partner", copy=False)
     tag_ids=fields.Many2many('estate.property.tag', "estate_property_estate_property_tag_rel", "estate_property_id", "estate_property_tag_id")
-    type_ids=fields.Many2many('estate.property.type', 'estate_property_estate_property_type_rel', 'estate_property_id', 'estate_property_type_id')
+    property_type_id=fields.Many2one('estate.property.type', string="Property Type")
     offer_ids=fields.One2many("estate.property.offer", "property_id", string="offerid")
     total_area=fields.Float(compute="_compute_total_area", string="Total Area (sqm)")
     best_price=fields.Float(compute='_compute_best_price', string="Best Offer")
@@ -51,7 +51,7 @@ class EstateProperty(models.Model):
     _sql_constraints=[
             ("check_expected_price", "CHECK(expected_price >= 0)", "Price should be positive"),
             ("check_selling_price", "CHECK(selling_price >= 0)", "Selling price should be positive")
-    ]
+    ]    
         
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -75,13 +75,13 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for rec in self:
             if(rec.state != "cancel"):
-                 rec.state="sold_cancelled"
+                 rec.state="sold"
             else:
                 raise UserError(_("Canceled property can not be sold"))
                            
     def action_cancel(self):
         for rec in self:
-            if(rec.state != "sold_cancelled"):
+            if(rec.state != "sold"):
                 rec.state="cancel"
             else:
                 raise UserError(_("Sold property can not be cancel"))
