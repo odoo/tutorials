@@ -1,8 +1,9 @@
 {
     "name": "Real Estate Account",
-    "version": "1.0",
-    "author": "jsum",
+    "version": "18.0",
+    "author": "Odoo PS",
     "license": "LGPL-3",
+    "website": "https://www.odoo.com/",
     "depends": ["account", "estate"],
     "application": True,
     "description": """

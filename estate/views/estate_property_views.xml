@@ -91,7 +91,7 @@
                             <page string="Other Info">
                                 <group>
                                     <field name="property_seller_id"/>
-                                    <field name="property_buyer_id"/>
+                                    <field name="property_buyer_id" readonly="1"/>
                                 </group>
                             </page>
                         </notebook>

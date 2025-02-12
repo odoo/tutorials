@@ -39,8 +39,6 @@ class EstatePropertyOffer(models.Model):
                     + fields.date_utils.relativedelta(days=record.validity)
                 )
 
-    # This method calculate the validity based on change in deadline
-    # here type of create_date is datetime while type of date_deadline is date so need type conversion to date
     def _inverse_deadline(self):
         for record in self:
             if record.create_date:
