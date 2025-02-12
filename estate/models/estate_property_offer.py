@@ -21,11 +21,12 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False
     )
+
     property_id = fields.Many2one(comodel_name="estate.property", string="Property", required=True)
     partner_id = fields.Many2one(comodel_name="res.partner", string="Partner", required=True)
     validity = fields.Integer(string="Validity (days)", default=7, compute="_compute_validity", inverse="_inverse_validity", store=True)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
-
+    property_type_id = fields.Many2one(comodel_name="estate.property.type", related="property_id.property_type_id", string="Property Type", store=True)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -55,7 +56,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         if "accepted" in self.mapped("property_id.property_offer_ids.state"):
-            UserError("An Offer is already been accepted")
+            raise UserError("An Offer is already been accepted")
         else:
             self.state = "accepted"
             self.property_id.state = "offer_accepted"
@@ -63,10 +64,6 @@ class EstatePropertyOffer(models.Model):
             self.property_id.selling_price = self.price
         return True
 
-
     def action_refuse(self):
         self.state = "refused"
-        self.property_id.state = "offer_received"
-        self.property_id.buyer_id = None
-        self.property_id.selling_price = 0.0
         return True

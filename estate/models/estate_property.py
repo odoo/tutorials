@@ -76,7 +76,7 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = "n"
+            self.garden_orientation = "north"
         else:
             self.garden_area = 0
             self.garden_orientation = False
@@ -84,6 +84,8 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if self.state == "cancelled":
             raise UserError("Cancelled properties cannot be sold")
+        elif self.state != "offer_accepted" :
+            raise UserError("Property cannot be sold without an offer accepted")
         else:
             self.state = "sold"
         return True
