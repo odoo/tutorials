@@ -49,7 +49,7 @@
 
     <record id="estate_property_4" model="estate.property">
         <field name="name">Girls PG</field>
-        <field name="state">sold</field>
+        <field name="state">new</field>
         <field name="description">PG for Girls with security</field>
         <field name="postcode">9040001</field>
         <field name="date_availability">2024-09-12</field>
@@ -58,6 +58,7 @@
         <field name="bedrooms">20</field>
         <field name="living_area">20000</field>
         <field name="facades">20</field>
+        <field name="user_id" ref="base.partner_admin"/>
         <field name="garage">False</field>
         <field name="garden">False</field>
     </record>
