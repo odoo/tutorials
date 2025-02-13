@@ -3,9 +3,9 @@
                 <menuitem id="public_property_first_level_menu" name="Advertisements">
                         <menuitem id="public_property_menu_action" action="public_property_action" />
                 </menuitem>
-                <menuitem id="public_property_types_first_level_menu" name="Settings">
+                <menuitem id="public_property_types_first_level_menu" name="Settings" groups ="estate.estate_group_manager">
                         <menuitem id="public_property_types_menu_action" action="public_property_type_action"/>
-                        <menuitem id="public_property_tags_menu_action" action="public_property_tag_action"/>
+                        <menuitem id="public_property_tags_menu_action"  action="public_property_tag_action"/>
                 </menuitem>
         </menuitem>
 </odoo>

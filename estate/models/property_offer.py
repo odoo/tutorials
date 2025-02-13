@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api 
 from datetime import timedelta
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare
@@ -61,9 +61,10 @@ class PropertyOffer(models.Model):
 
     @api.depends("date_deadline")
     def _inverse_date_deadline(self):
-        if record.date_deadline:
-            deadline = record.date_deadline
-            record.validity = (deadline - record.create_date.date()).days
+        for record in self : 
+            if record.date_deadline:
+                deadline = record.date_deadline
+                record.validity = (deadline - record.create_date.date()).days
 
     def action_confirm(self):
         for record in self:
@@ -72,10 +73,10 @@ class PropertyOffer(models.Model):
             self.property_id.selling_price = self.price
             self.property_id.buyer_id = self.partner_id
             self.property_id.state = "offer_accepted"
-
     def action_cancel(self):
         for record in self:
             record.status = "refused"
+
     
     @api.model
     def create(self,vals):

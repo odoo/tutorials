@@ -107,6 +107,7 @@
                     <notebook>
                         <page string="Description">
                             <group>
+                            <field name="company_id"/>
                                 <field name="description" height="50" />
                                 <field name="bedrooms" />
                                 <field name="living_area" string="Living Area (sqm)" />

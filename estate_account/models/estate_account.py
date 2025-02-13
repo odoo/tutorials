@@ -5,7 +5,9 @@ class EstateAccount(models.Model):
     _inherit = "public.property"
     def action_sold(self):
         fees = 0.06 * self.selling_price
-        account_move = self.env["account.move"].create(
+        print(" reached ".center(100, '='))
+        self.check_access('write')
+        account_move = self.env["account.move"].sudo().create(
             {
                 "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",

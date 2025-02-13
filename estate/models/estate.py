@@ -59,7 +59,10 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("public.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total")
     best_price = fields.Float(compute="_compute_best_price")
-
+    company_id = fields.Many2one('res.company',required=True,string="Comapany",default = lambda self : self.env.user.company_id)
+    
+    
+    
     _sql_constraints = [
         (
             "check_expected_price",
@@ -77,6 +80,7 @@ class EstateProperty(models.Model):
 
     @api.constrains("selling_price")
     def _check_selling_price(self):
+        breakpoint()
         for record in self:
             if (float_compare(record.expected_price * 0.9,record.selling_price,precision_rounding=self.rounding_precision)>= 0):
                 raise ValidationError(
@@ -89,6 +93,7 @@ class EstateProperty(models.Model):
     def _compute_total(self):
         for record in self:
             record.total_area = self.living_area + self.garden_area
+       
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
