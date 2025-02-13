@@ -24,6 +24,36 @@
         </field>
     </record>
 
+    <!-- Kanban View -->
+    <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="0">
+                <field name="state" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="offer_ids" />
+                <field name="property_type_id" />
+
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bolder" />
+                        <div> Expected Price: <field name="expected_price" />
+                        </div>
+                        <div t-if="record.state.raw_value == 'offer_recieved'"> 
+                            Best Offer: <field name="best_price" />
+                        </div>
+                        <div t-if="record.state.raw_value == 'offer_accepted'"> 
+                            Selling Price: <field name="selling_price" />
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags" />
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <!-- Form View  -->
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
@@ -46,9 +76,9 @@
                 <sheet>
                     <group>
                         <field name="sequence_number" />
-                        <label style="font-size: 32px; font-weight: normal;">
+                        <span style="font-size: 32px; font-weight: normal;">
                             <field name="name" placeholder="Property name" />
-                        </label>
+                        </span>
                     </group>
                     <div class="mb16">
                         <field name="tag_ids"
@@ -118,37 +148,8 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
-        </field>
-    </record>
-
-    <!-- Kanban View -->
-    <record id="view_estate_property_kanban" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" disable_drag_drop="1">
-                <field name="state" />
-                <field name="expected_price" />
-                <field name="selling_price" />
-                <field name="offer_ids" />
-                <field name="property_type_id" />
-
-                <templates>
-                    <t t-name="card">
-                        <field name="name" class="fw-bolder" />
-                        <div> Expected Price: <field name="expected_price" />
-                        </div>
-                        <div t-if="record.state.raw_value == 'offer_received'"> 
-                            Best Offer: <field name="best_price" />
-                        </div>
-                        <div t-if="record.state.raw_value == 'offer_accepted'"> 
-                            Selling Price: <field name="selling_price" />
-                        </div>
-                        <field name="tag_ids" widget="many2many_tags" />
-                    </t>
-                </templates>
-            </kanban>
         </field>
     </record>
 

@@ -6,6 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ["mail.thread"]
     _description = "Properties/Advertisements created and managed in estate"
     _order = "id desc"
     _sql_constraints = [
@@ -21,8 +22,8 @@ class EstateProperty(models.Model):
         ),
     ]
 
-    name = fields.Char(string="Property Name", required=True, copy=False)
-    sequence_number = fields.Char(string="Number", required=True, readonly=True, copy=False)
+    name = fields.Char(string="Property Name", required=True, copy=False, tracking=True)
+    sequence_number = fields.Char(string="Number", readonly=True, copy=False)
     description = fields.Text(string="Property Description")
     postcode = fields.Char(string="Postal code")
     date_availability = fields.Date(
@@ -118,7 +119,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cancelled property cannot be sold")
-            if not record.buyer_id or not record.selling_price:
+            if not record.buyer_id or not record.selling_price or not record.state=="offer_accepted":
                 raise UserError("Property must have an accepted offer before being sold")
             record.state = "sold"
 

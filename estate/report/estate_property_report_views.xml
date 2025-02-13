@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_offers_template">
+        <t t-if="len(property.offer_ids) == 0">
+            <span class="fw-bold">No offers have been made yet :(</span>
+        </t>
+        <t t-else="">
+            <t t-set="offer_status_dict"
+                t-value="dict(property.offer_ids._fields['status'].selection)" />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Price</td>
+                        <td>Partner</td>
+                        <td>Validity</td>
+                        <td>Deadline</td>
+                        <td>State</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="property.offer_ids" t-as="offer">
+                        <td t-out="offer.price" />
+                        <td t-out="offer.partner_id.name" />
+                        <td t-out="offer.validity" />
+                        <td t-out="offer.deadline" />
+                        <td t-out="offer_status_dict[offer.status] if offer.status else 'Pending'" />
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+    </template>
+    <template id="estate_property_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-set="property_state_dict" t-value="dict(property._fields['state'].selection)" />
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1 t-out="property.name" />
+                        <div>
+                            <span class="fw-bold">Salesman: </span>
+                            <span t-out="property.salesperson_id.name" />
+                        </div>
+                        <div>
+                            <span class="fw-bold">Expected Price: </span>
+                            <span t-out="property.expected_price" />
+                        </div>
+                        <div id="status">
+                            <span class="fw-bold">Status: </span>
+                            <span t-out="property_state_dict[property.state]" />
+                        </div>
+                        <t t-call="estate.estate_property_offers_template" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="res_users_estate_property_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="user">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>
+                            <span class="fw-bold">Salesman: </span>
+                            <span t-out="user.name" />
+                        </h1>
+                        <t t-foreach="user.property_ids" t-as="property">
+                            <h1 t-out="property.name" class="mt-3" />
+                            <div>
+                                <span class="fw-bold">Expected Price: </span>
+                                <span t-out="property.expected_price" />
+                            </div>
+                            <div>
+                                <span class="fw-bold">Status: </span>
+                                <span t-out="property.state" />
+                            </div>
+                            <t t-call="estate.estate_property_offers_template" />
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

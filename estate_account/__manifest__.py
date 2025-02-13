@@ -3,6 +3,9 @@
 {
     "name": "Real Estate Accounting",
     "depends": ["estate", "account"],
+    "data": [
+        "report/estate_property_reports.xml"
+    ],
     "installable": True,
     "application": True,
     "auto_install": True,
