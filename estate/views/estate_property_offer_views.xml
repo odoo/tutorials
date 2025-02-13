@@ -2,8 +2,8 @@
 
 <odoo>
 
-    <record id="view_estate_property_offer_form" model="ir.ui.view">
-        <field name="name">estate.property.offer.form</field>
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Property Offer">
@@ -21,7 +21,7 @@
     </record>
 
     <record id="view_estate_property_offer_list" model="ir.ui.view">
-        <field name="name">estate.property.offer.list</field>
+        <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Property Offers" editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'" >

@@ -9,8 +9,8 @@
         <field name="context">{'search_default_date_availability': True}</field>
     </record>
 
-    <record id="estate_property_list_view" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Property List" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-danger="state == 'cancelled'" decoration-muted="state == 'sold'" >
@@ -27,8 +27,8 @@
         </field>
     </record>
 
-    <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
@@ -91,8 +91,8 @@
         </field>
     </record>
 
-    <record id="view_estate_property_kanban" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="0" class="o_kanban_view">
@@ -128,8 +128,8 @@
         </field>
     </record>
 
-    <record id="estate_property_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Property Search">

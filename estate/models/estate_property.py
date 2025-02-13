@@ -6,6 +6,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price>0)', 'The expected price must be strictly positive!'),
         ('check_selling_price', 'CHECK(selling_price>=0)', 'The selling price must be positive!')
@@ -14,7 +15,7 @@ class EstateProperty(models.Model):
     name = fields.Char("Property Name", required=True, help="Property Name")
     description = fields.Char()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=fields.Date.add(fields.Date.today(), days=90))
+    date_availability = fields.Date(copy=False, default=lambda self: fields.Date.add(fields.Date.today(), days=90))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -24,24 +25,24 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer("Garden Area(sqm)")
     garden_orientation = fields.Selection(
-        string = "Garden Orientation",
         selection = [
             ("north", "North"), 
             ("south", "South"), 
             ("east", "East"), 
             ("west", "West")
-        ]
+        ],
+        string = "Garden Orientation"
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        default="new", copy=False, string="State",
         selection = [
             ("new", "New"), 
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled")
-        ]
+        ],
+        default="new", copy=False, string="State", required=True
     )
     property_type_id = fields.Many2one(
         string="Property Type", comodel_name="estate.property.type"
@@ -78,7 +79,7 @@ class EstateProperty(models.Model):
     
     @api.onchange("garden")
     def _onchange_garden(self):
-        if(self.garden):
+        if self.garden :
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
@@ -95,10 +96,9 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state != "offer_accepted":
                 raise ValidationError("There isn't any offer accepted! please accept any offer to sold this property.")
-            elif record.state == "offer_accepted":
+            else:
                 record.state = "sold"
             
     def action_set_cancelled(self):
         for record in self:
             record.state = "cancelled"
-              

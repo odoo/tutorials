@@ -8,8 +8,8 @@
         <field name="view_mode">list,kanban,form</field>
     </record>
 
-    <record id="estate_property_type_list_view" model="ir.ui.view">
-        <field name="name">estate.property.type.list</field>
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Type List">
@@ -19,8 +19,8 @@
         </field>
     </record>
 
-    <record id="estate_property_type_form_view" model="ir.ui.view">
-        <field name="name">estate.property.type.form</field>
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type Form">

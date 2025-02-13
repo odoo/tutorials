@@ -5,6 +5,7 @@ class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Type"
     _order = "sequence, name"
+    
     _sql_constraints = [
         ('unique_name', 'UNIQUE(name)', 'Property Type already exists!')
     ]
