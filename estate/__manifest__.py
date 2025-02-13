@@ -17,5 +17,8 @@
         "views/estate_menus.xml",
         "security/ir.model.access.csv",
         'views/res_users_views.xml',
+        
+    ],
+    "demo": ["demo/estate_property_demo.xml",
     ],
 }

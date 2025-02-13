@@ -84,6 +84,3 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = 0
                 record.property_id.status = "offer_received"
             record.status = "refused"
-
-    
-

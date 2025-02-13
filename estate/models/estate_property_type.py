@@ -24,4 +24,3 @@ class EstatePropertyType(models.Model):
         for record in self:
             record.offer_count = len(record.offer_ids)
    
-    

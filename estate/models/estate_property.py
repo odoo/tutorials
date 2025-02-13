@@ -78,6 +78,9 @@ class EstateProperty(models.Model):
             "Selling Price must be strictly positive!",
         ),
     ]
+    company_id = fields.Many2one(
+        "res.company", default=lambda self: self.env.company, required=True
+    )
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_new_canceled(self):
@@ -124,9 +127,4 @@ class EstateProperty(models.Model):
 
     def action_cancel(self):
         for record in self:
-            if record.status == "sold":
-                raise UserError("Sold property can't be canceled")
-            if record.status == "cancelled":
-                raise UserError("Property already canceled")
-            record.status = "cancelled"
-            
+            record.status= "cancelled"

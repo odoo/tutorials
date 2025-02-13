@@ -15,4 +15,28 @@
         <field name="implied_ids" eval="[(4, ref('estate.estate_group_user'))]"/>
         <field name="users" eval="[(4, ref('base.user_admin'))]"></field>
     </record>
+    
+    <record id="exclusive_property_access_rule" model="ir.rule">
+        <field name="name">Agent's ability to read properties</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="perm_read" eval="True" />
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]" />
+        <field name="domain_force">['|', ('user_id', '=', user.id),('user_id', '=', False)]</field>
+    </record>
+
+    <record id="estate_manager_rule" model="ir.rule">
+        <field name="name">Estate Manager rules for all properties</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]" />
+        <field name="domain_force">[(1,'=',1)]</field>
+    </record>
+
+    <record model="ir.rule" id="estate_company_rule">
+        <field name="name">Estate property rules for multi-company</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[
+        '|', ('company_id', '=', False),
+             ('company_id', 'in', company_ids)
+    ]</field>
+    </record>
 </odoo>
