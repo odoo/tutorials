@@ -5,23 +5,25 @@ from dateutil.relativedelta import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "offer_price desc"
     _sql_constraints = [
-        ('check_offer_price','CHECK(price > 0)','Offer Price must be a positive amount')
+        ('check_offer_price','CHECK(offer_price > 0)','Offer Price must be a positive amount')
     ]
 
     #-------------------------------------------Basic Fields-------------------------------------------#
-    price = fields.Float(string="Price",required=True)
-    state = fields.Selection(selection=[('accepted','Accepted'),('rejected','Rejected')],
+    offer_price = fields.Float(string="Price",required=True)
+    state = fields.Selection(selection=[('offer_received','Offer Received'), ('offer_accepted','Offer Accepted'), ('offer_rejected','Offer Rejected')],
                             string="State", copy=False
-                            )
+                        )
     validity = fields.Integer(string="Validity(days)", default=7)
     
     #-------------------------------------------Relational Fields---------------------------------------#
     partner_id = fields.Many2one("res.partner", string="Partner",required=True)
     property_id = fields.Many2one("estate.property",string="Property")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     
     #-------------------------------------------Computed Fields------------------------------------------#
-    deadline_date=fields.Date(compute="_compute_deadline_date", inverse="_inverse_deadline_date", string="Deadline")
+    deadline_date = fields.Date(compute="_compute_deadline_date", inverse="_inverse_deadline_date", string="Deadline")
 
     # ------------------------------------------Compute Methods----------------------------------------#
     @api.depends("create_date", "validity")
@@ -37,17 +39,16 @@ class EstatePropertyOffer(models.Model):
 
     # --------------------------------------------Action Methods------------------------------------------------
     def offer_accept_action(self):
-        for offer in self:
-            if offer.state == "accepted":
-                raise UserError('offer is already accepted')            
-            offer.state = "accepted"
-            offer.property_id.selling_price = self.price
-            offer.property_id.buyer_id = self.partner_id
-            return True
+        if self.state == "offer_accepted":
+            raise UserError('offer is already accepted')
+        self.state = "offer_accepted"
+        self.property_id.selling_price = self.offer_price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = "offer_accepted"
+        return True
         
     def offer_reject_action(self):
-        for offer in self:
-            offer.state = "rejected"
-            offer.property_id.selling_price = None
-            offer.property_id.buyer_id = None
+        self.state = "offer_rejected"
+        self.property_id.selling_price = 0
+        self.property_id.buyer_id = None
         return True

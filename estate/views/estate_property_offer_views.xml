@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="estate_property_offer_action" model="ir.actions.act_window">
-        <field name="name"/>
+        <field name="name">Property Offer</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
     <!-- List View -->
@@ -12,16 +12,16 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="price"/>
+            <list decoration-danger="state in ('offer_rejected')" decoration-success="state in ('offer_accepted')">
+                <field name="offer_price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="deadline_date"/>
-                <button name="offer_accept_action" type="object" icon="fa-check" />
-                <button name="offer_reject_action" type="object" icon="fa-times"/>
+                <button name="offer_accept_action" type="object" icon="fa-check" invisible="state in ('offer_accepted', 'offer_rejected')"/>
+                <button name="offer_reject_action" type="object" icon="fa-times" invisible="state in ('offer_accepted', 'offer_rejected')"/>
                 <field name="state"/>
             </list>
         </field>
     </record>
-
 </odoo>
+
