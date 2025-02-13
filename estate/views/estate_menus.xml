@@ -2,17 +2,17 @@
 <odoo>
 
     <!-- Top menu item -->
-    <menuitem id="menu_estate_root" name="Estate" web_icon="estate,static/description/icon.png">
+    <menuitem id="estate_property_menu_root" name="Estate" web_icon="estate,static/description/icon.png">
 
         <!-- Advertisement Submenu -->
-        <menuitem id="menu_advertisement" name="Advertisement">
-            <menuitem id="menu_advertisement_property" name="Properties" action="action_estate_property" />
+        <menuitem id="advertisement_menu" name="Advertisement">
+            <menuitem id="estate_property_menu_action" name="Properties" action="estate_property_action" />
         </menuitem>
 
         <!-- Settings Submenu -->
-        <menuitem id="menu_settings" name="Settings">
-            <menuitem id="menu_settings_property_type" name="Property Types" action="action_estate_property_type" />
-            <menuitem id="menu_setings_property_tags" name="Property Tag" action="action_estate_property_tag" />
+        <menuitem id="settings_menu" name="Settings">
+            <menuitem id="property_type_menu_action" name="Property Types" action="estate_property_type_action" />
+            <menuitem id="property_tags_menu_action" name="Property Tag" action="estate_property_tag_action" />
         </menuitem>
     </menuitem>
 </odoo>
