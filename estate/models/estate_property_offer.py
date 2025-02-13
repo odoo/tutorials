@@ -1,6 +1,7 @@
 from datetime import timedelta
-from odoo import fields, models,api
+from odoo import fields, models,api,exceptions
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -18,6 +19,7 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', string='Partner', index=True, required = True)
     property_id = fields.Many2one("estate.property", required = True)
     validity = fields.Integer(string="Validity (days)", default=7)
+    property_status = fields.Selection(related='property_id.status', string='Property Status', store=True)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
     property_type_id=fields.Many2one(related='property_id.property_type_id',store=True)
 
@@ -44,6 +46,17 @@ class EstatePropertyOffer(models.Model):
     def action_reject(self):
         for record in self:
             record.status = "refused"
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            min_price = min( self.env['estate.property.offer'] .search([('property_id', '=', vals['property_id'])]) .mapped('price'), default=0 )
+            if vals['price'] <= min_price:
+                raise exceptions.UserError("The price must be higher than any existing offer.")
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if property.status == 'new' or not property.status:
+                property.status = 'offer_received'
+        return super().create(vals_list)
 
     sql_constraints = [
         ('check_offer_price', 'CHECK(offer_price > 0 )','The Offer price must be strictly positive')]

@@ -68,8 +68,10 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if self.status == "cancelled":
             raise UserError("A cancelled property cannot be sold.")
-        else:
-            self.status = "sold"
+        accepted_offer = self.offer_ids.filtered(lambda offer: offer.status == "offer_accepted")
+        if not accepted_offer:
+             raise UserError("You cannot sell a property without an accepted offer.")
+        self.status = "sold"
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -91,8 +93,12 @@ class EstateProperty(models.Model):
         for record in self:
             if float_is_zero(record.selling_price, precision_rounding=0.01):
                 continue
-
             min_valid_price = record.expected_price * 0.9
-
             if float_compare(record.selling_price, min_valid_price, precision_rounding=0.01) == -1:
                   raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_delete(self):
+        for record in self:
+            if record.status not in ['new','cancelled']:
+                raise UserError("You can only delete properties in 'New' or 'Cancelled' state.")
