@@ -26,7 +26,6 @@ class EstatePropertytOffer(models.Model):
             existing_offers = property_record.offer_ids
 
             min_existing_price = min(existing_offers.mapped('price'), default=0)
-
             if record.price < min_existing_price:
                 raise UserError(
                     f"The offer price ({record.price}) must be higher than the minimum of existing offer ({min_existing_price})."
