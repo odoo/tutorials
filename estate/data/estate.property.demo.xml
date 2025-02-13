@@ -1,0 +1,72 @@
+<odoo noupdate="1">
+    <!-- Demo Property 1: Big Villa -->
+    <record id="estate_property_big_villa" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">1600</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate.property_type_residential"/> 
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <!-- Demo Property 2: Trailer Home -->
+    <record id="estate_property_trailer_home" model="estate.property">
+        <field name="name">Trailer Home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">1000</field>
+        <field name="selling_price">0</field> <!-- Selling price not set -->
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="property_type_id" ref="estate.property_type_residential"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <!-- Create a New Property -->
+    <record id="estate_property_modern_apartment" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="state">offer_accepted</field>
+        <field name="description">A beautiful modern apartment</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability">2025-03-01</field>
+        <field name="expected_price">4500</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">75</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="property_type_id" ref="estate.property_type_residential"/>
+        <field name="company_id" ref="base.main_company"/>   
+        <field name="salesperson_id" ref="base.user_admin"/>     
+        <field name="offer_ids" eval="[
+            Command.create({
+                'partner_id': ref('base.res_partner_1'),
+                'price': 1000000,
+                'validity': 14,
+            }),
+            Command.create({
+                'partner_id': ref('base.res_partner_1'),
+                'price': 12000000,
+                'validity': 14,
+            }),
+        ]"/>
+    </record>
+</odoo>

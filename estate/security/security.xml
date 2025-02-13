@@ -26,8 +26,16 @@
         <record id="estate_rule_manager_see_all_properties" model="ir.rule">
             <field name="name">Manager: Access All Properties</field>
             <field name="model_id" ref="model_estate_property"/>
-            <field name="domain_force">[(1, '=', 1)]</field> <!-- Always True: No restriction -->
+            <field name="domain_force">[(1, '=', 1)]</field>
             <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
+        </record>
+
+        <!-- Record Rule: Restrict access to properties by company -->
+        <record id="estate_property_rule_company" model="ir.rule">
+            <field name="name">Estate Property: Access by Company</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="global" eval="True"/>
         </record>
     </data>
 </odoo>

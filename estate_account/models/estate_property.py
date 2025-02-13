@@ -9,7 +9,11 @@ class estateProperty(models.Model):
            if property.state != "offer_accepted":
                raise UserError("You can only sell properties with an accepted offer.")   
            # Create the account.move (invoice)
-           invoice = self.env["account.move"].create({
+           print(" reached ".center(100, '='))
+           print(self.env.user)
+           self.env['account.move'].check_access("write")
+           self.ensure_one()
+           invoice = self.env["account.move"].sudo().create({
                "partner_id": property.buyer_id.id,  # Buyer is the partner
                "move_type": "out_invoice",  # Customer Invoice
                "invoice_line_ids": [

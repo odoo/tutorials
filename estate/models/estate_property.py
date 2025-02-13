@@ -9,6 +9,7 @@ class estateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _check_company_auto = True  # Ensures consistency across company-dependent fields.
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -65,6 +66,13 @@ class estateProperty(models.Model):
     total_area = fields.Float(string="Total Area", compute="_compute_total_area", store=True)
     # Computed field for find a best offer price 
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store=True)
+    # Add the company_id field
+    company_id = fields.Many2one(
+        "res.company",
+        required=True,
+        default=lambda self: self.env.company,
+        string="Company",
+    )
 
     #constraint
     _sql_constraints = [

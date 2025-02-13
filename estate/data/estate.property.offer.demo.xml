@@ -1,0 +1,32 @@
+<odoo>
+    <!-- Offer 1: Azure Interior for Big Villa -->
+    <record id="offer_azure_10000" model="estate.property.offer">
+        <field name="property_id" ref="estate.estate_property_big_villa"/>
+        <field name="partner_id" ref="base.res_partner_1"/> <!-- Existing partner in 'base' module -->
+        <field name="price">10000</field>
+        <field name="date_deadline" eval="(DateTime.now() + timedelta(days=10))"/>
+    </record>
+
+    <!-- Offer 2: Azure Interior for Big Villa -->
+    <record
+        id="offer_azure_1500000" model="estate.property.offer">
+        <field name="property_id" ref="estate.estate_property_big_villa"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="price">1500000</field>
+        <field name="date_deadline" eval="(DateTime.now() + timedelta(days=10))"/>
+    </record>
+
+    <!-- Offer 3: Deco Addict for Big Villa -->
+    <record
+        id="offer_deco_1500001" model="estate.property.offer">
+        <field name="property_id" ref="estate.estate_property_big_villa"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="price">1500001</field>
+        <field name="date_deadline" eval="(DateTime.now() + timedelta(days=10))"/>
+    </record>
+    
+    <function
+        model="estate.property.offer" name="accept_offer">
+        <value eval="[ref('offer_azure_1500000')]"/>
+    </function>
+</odoo>

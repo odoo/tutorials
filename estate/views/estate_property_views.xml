@@ -142,7 +142,7 @@
                     name="filter_available"
                     string="Available Properties"
                     domain="[('state', 'in', ['new', 'offer_received'])]"
-               />
+              />
                 <!-- Add a Filter for Living Area -->
                 <field name="living_area" string="Living Area(sqm)"
                     filter_domain="[('living_area', '>=', self)]"/>

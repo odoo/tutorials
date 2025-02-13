@@ -10,6 +10,10 @@
         "security/security.xml",
         "security/ir.model.access.csv",
 
+        "data/estate.property.type.csv",
+        "data/estate.property.demo.xml",
+        "data/estate.property.offer.demo.xml",
+
         "views/res_users_views.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",

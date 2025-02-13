@@ -10,7 +10,7 @@
         action="estate_property_action" sequence="3"/>
 
     <!-- Settings Menu -->
-    <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root" sequence="10"/>
+    <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root" groups="estate_group_manager" sequence="10"/>
     <!-- Action Menu for Property Types -->
     <menuitem id="estate_menu_property_type" name="Property Types" parent="estate_menu_settings"
         action="estate_property_type_action" sequence="4"/>
