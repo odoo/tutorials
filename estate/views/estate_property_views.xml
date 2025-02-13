@@ -90,6 +90,7 @@
                         </page>
                     </notebook>
                 </sheet>
+               <chatter/>
             </form>
         </field>
     </record>
@@ -141,6 +142,9 @@
                             <div t-if="record.selling_price.raw_value &gt; 0">
                                 Selling Price: <field name="selling_price"/>
                             </div> 
+                            <div t-if="record.property_tag_id.raw_value">
+                                Tags: <field name="property_tag_id"/>
+                            </div>
                         </div>
                     </t>
                 </templates>

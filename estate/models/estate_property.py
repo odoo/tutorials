@@ -1,23 +1,32 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models, tools
+from odoo import api, fields, models, tools 
 from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ["mail.thread"]
     _description = "Real Estate Property"
 
-    name = fields.Char(string="Property Name", required=True)
+    name = fields.Char(string="Property Name", required=True,tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, default=None)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, default=None,tracking=True)
     salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+        "res.users", string="Salesperson", default=lambda self: self.env.user,tracking=True
     )
-    property_type_id = fields.Many2one(
-        "estate.property.type", string="Property Type"
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company,
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_id = fields.Many2many("estate.property.tags", string="Property Tags")
-    offer_ids = fields.One2many("estate.property.offer","property_id",string="Offers",)
+    offer_ids = fields.One2many(
+        "estate.property.offer",
+        "property_id",
+        string="Offers",
+    )
     date_availability = fields.Date(
         string="Availability Date",
         default=lambda self: fields.Date.today() + relativedelta(months=3),
@@ -31,8 +40,17 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Has Garden")
     garden_area = fields.Float(string="Garden Area (sq.m.)")
     total_area = fields.Float("Total Area", compute="_compute_total_area")
-    state = fields.Selection([("new", "New"),('offer_received', 'Offer Received'),
-        ('offer_accepted', 'Offer Accepted'),("sold", "Sold"),("cancelled", "Cancelled")], string="State")
+    state = fields.Selection(
+        [
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        string="State",
+        tracking=True
+    )
     best_price = fields.Float(
         "Best Buyer Price", compute="_compute_best_price", store=True
     )
@@ -43,16 +61,33 @@ class EstateProperty(models.Model):
 
     # SQL Constraints
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be positive'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price must be positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "The selling price must be positive.",
+        ),
     ]
 
-    @api.constrains('selling_price', 'expected_price')
+    @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
             if record.selling_price:
-                if tools.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
-                    raise UserError("Selling price must be at least 90% of the expected price!")
+                if (
+                    tools.float_compare(
+                        record.selling_price,
+                        record.expected_price * 0.9,
+                        precision_digits=2,
+                    )
+                    < 0
+                ):
+                    raise UserError(
+                        "Selling price must be at least 90% of the expected price!"
+                    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -76,17 +111,17 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _check_when_detele_record(self):
         for record in self:
-            if record.state not in ['new','cancelled']:
-                raise UserError("You cannot delete a property that is not 'New' or 'Cancelled'.")
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(
+                    "You cannot delete a property that is not 'New' or 'Cancelled'."
+                )
 
     def action_cancel_property(self):
-        if self.state == 'sold':
+        if self.state == "sold":
             raise UserError("Sold properties cannot be cancelled.")
-        self.state = 'cancelled'
+        self.state = "cancelled"
 
     def action_set_sold(self):
-        if self.state == 'cancelled':
+        if self.state == "cancelled":
             raise UserError("Cancelled properties cannot be sold.")
-        self.state = 'sold'
-
-        
+        self.state = "sold"

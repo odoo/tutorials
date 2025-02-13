@@ -1,0 +1,90 @@
+<odoo>
+    <data noupdate="1">
+        <record id="estate_property_1" model="estate.property">
+            <field name="name">Big Villa</field>
+            <field name="state">new</field>
+            <field name="description">A nice and big villa</field>
+            <field name="property_type_id" ref="propety_type_residential"/>
+            <field name="postcode">12345</field>
+            <field name="date_availability">2020-02-02</field>
+            <field name="expected_price">1600000</field>
+            <field name="selling_price">1500000</field>
+            <field name="bedrooms">6</field>
+            <field name="living_area">100</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">100000</field>
+            <field name="garden_orientation">south</field>
+        </record>
+
+        <record id="estate_property_2" model="estate.property">
+            <field name="name">Trailer home</field>
+            <field name="state">cancelled</field>
+            <field name="description">Home in a trailer park</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability">1970-01-01</field>
+            <field name="expected_price">100000</field>
+            <field name="selling_price">120000</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+        </record>
+
+        <record id="estate_property_3" model="estate.property">
+            <field name="name">Big Villa with Offers</field>
+            <field name="state">new</field>
+            <field name="description">A nice villa with multiple offers</field>
+            <field name="property_type_id" ref="propety_type_residential"/>
+            <field name="postcode">12345</field>
+            <field name="date_availability">2022-01-01</field>
+            <field name="expected_price">20</field>
+            <field name="selling_price">19</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">300</field>
+            <field name="facades">3</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="offer_ids" eval="[
+            Command.create({
+                'price': 150000,
+                'validity': 14,
+                'partner_id': ref('base.res_partner_12'),
+            }),
+            Command.create({
+                'price': 15000,
+                'validity': 14,
+                'partner_id': ref('base.res_partner_2'),
+            }),
+            Command.create({
+                'price': 1506,
+                'validity': 14,
+                'partner_id': ref('base.res_partner_2'),
+            })
+            ]"/>
+        </record>
+
+        <record id="estate_property_offer1" model="estate.property.offer">
+            <field name="price">10000</field>
+            <field name="property_id" ref="estate_property_1"/>
+            <field name="partner_id" ref="base.res_partner_1"/>
+            <field name="validity">14</field>
+        </record>
+
+        <record id="estate_property_offer2" model="estate.property.offer">
+            <field name="price">1500000</field>
+            <field name="property_id" ref="estate_property_1"/>
+            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="validity">14</field>
+        </record>
+
+        <record id="estate_property_offer3" model="estate.property.offer">
+            <field name="price">1500001</field>
+            <field name="property_id" ref="estate_property_1"/>
+            <field name="partner_id" ref="base.res_partner_3"/>
+            <field name="validity">14</field>
+        </record>
+    </data>    
+</odoo>

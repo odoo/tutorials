@@ -38,7 +38,7 @@ class EstatePropertyOffer(models.Model):
             if tools.float_compare(vals.get('price', 0.0), property_id.best_price, precision_digits=2) < 0:
                 raise UserError("The offered price cannot be lower than the best price.")
 
-        return super(EstatePropertyOffer, self).create(vals)
+        return super(EstatePropertyOffer, self).create(vals_list) 
 
     def _inverse_date_deadline(self):
         if self.date_deadline:

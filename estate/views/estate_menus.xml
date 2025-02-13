@@ -4,14 +4,10 @@
 
     <!-- First level menu -->
     <menuitem id="estate_first_level_menu" name="Properties" parent="estate_menu_root" sequence="1"/>
-    
-    <!-- Action menu linked to a specific action -->
-    <menuitem id="estate_property_menu_action" name="Properties List" parent="estate_first_level_menu" action="estate_property_action" sequence="1"/>
+        <menuitem id="estate_property_menu_action" name="Properties List" parent="estate_first_level_menu" action="estate_property_action" sequence="1"/>
     
     <!-- Settings Menu -->
-    <menuitem id="estate_setting_menu" name="Settings" parent="estate_menu_root"/>
-    
-    <!-- Property Type Menu, linking it to the correct action -->
-    <menuitem id="estate_property_type_menu" name="Property Type" action="estate_property_type_action" parent="estate_setting_menu"/>
-    <menuitem id="estate_property_tag_menu" name="Property Tag" parent="estate_setting_menu" action="estate_property_tag_action"/>
+    <menuitem id="estate_setting_menu" name="Settings" parent="estate_menu_root" groups="estate_group_manager"/>
+        <menuitem id="estate_property_type_menu" name="Property Type" action="estate_property_type_action" parent="estate_setting_menu"/>
+        <menuitem id="estate_property_tag_menu" name="Property Tag" parent="estate_setting_menu" action="estate_property_tag_action"/>
 </odoo>

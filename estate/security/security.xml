@@ -11,11 +11,12 @@
     </record>
 
     <record id="estate_property_rule_agent" model="ir.rule">
-        <field name="name">Agents can see and modify properties they are assigned to, or properties with no salesperson</field>
+        <field name="name">Agents can see and modify properties they are assigned to them in their respective company, or properties with no salesperson </field>
         <field name="model_id" ref="model_estate_property"/>
         <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
-        <field name="domain_force">['|', ('salesperson_id', '=', user.id), ('salesperson_id', '=', False)]</field>
+        <field name="domain_force">['&amp;','|', ('salesperson_id', '=', user.id), ('salesperson_id', '=', False),("company_id",'=',user.company_id.id)]</field>
     </record>  
+
     <record id="estate_property_rule_manager" model="ir.rule">
         <field name="name">Manager can see and modify all properties</field>
         <field name="model_id" ref="model_estate_property"/>
