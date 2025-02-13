@@ -1,11 +1,13 @@
 from odoo import Command, fields, models
-from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
-    def action_set_sold_status(self):
+    state = fields.Selection(selection_add=[('invoiced', 'Invoiced')], ondelete={'invoiced': 'cascade'})
+
+    def action_create_invoice(self):
+        super().action_create_invoice()
         self.env['account.move'].create({
             'partner_id': self.buyer.id,
             'move_type': 'out_invoice',
@@ -27,4 +29,5 @@ class EstateProperty(models.Model):
                 })
             ]
         })
-        return super(EstateProperty, self).action_set_sold_status()
+        self.state = 'invoiced'
+        return True

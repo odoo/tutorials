@@ -41,11 +41,8 @@ class EstatePropertyOffer(models.Model):
             if offer.status == 'accepted' or offer.status == 'refused':
                 raise UserError("Property is already accepted or refused.")
             else:
-                other_offers = self.env['estate.property.offer'].search([
-                    ('property_id', '=', offer.property_id.id),
-                    ('id', '!=', offer.id)  # Exclude the current offer
-                ])
-                other_offers.write({'status': 'refused'})
+                offer.property_id.property_offer_ids.status = 'refused'
+
                 offer.property_id.selling_price = offer.price
                 offer.property_id.buyer = offer.partner_id
                 offer.property_id.state = 'offer_accepted'
@@ -60,9 +57,10 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
-        if vals_list.get('price') < self.env['estate.property'].browse(vals_list['property_id']).expected_price or vals_list.get('price') < self.env['estate.property'].browse(vals_list['property_id']).best_offer:
-            best_offer = self.env['estate.property'].browse(vals_list['property_id']).best_offer
-            raise UserError(f"The offer must be higher than {best_offer}")
+        if self.env['estate.property'].browse(vals_list['property_id']).best_offer:
+            if vals_list.get('price') < self.env['estate.property'].browse(vals_list['property_id']).expected_price or vals_list.get('price') < self.env['estate.property'].browse(vals_list['property_id']).best_offer:
+                max_val = max(self.env['estate.property'].browse(vals_list['property_id']).best_offer, self.env['estate.property'].browse(vals_list['property_id']).expected_price)
+                raise UserError(f"The offer must be higher than best offer {max_val}")
         
         self.env['estate.property'].browse(vals_list['property_id']).state = 'offer_received'
         return super(EstatePropertyOffer, self).create(vals_list)

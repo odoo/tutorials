@@ -1,12 +1,4 @@
 <odoo>
-    <!-- Property Action Menu -->
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form,kanban,pivot</field>
-        <field name="context">{'search_default_availability': True}</field>
-    </record>
-
     <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -57,18 +49,22 @@
             <form string="Property Form">
                 <header>
                     <button name="action_set_sold_status" type="object" string="Sold" 
-                            invisible="state == 'sold' or state == 'cancelled' or state == 'new' or state == 'offer_received'" 
+                            invisible="state == 'sold' or state == 'cancelled' or state == 'new' or state == 'offer_received' or state == 'invoiced'" 
                             context="{'button_id': 'sold_button'}" 
                             class="btn-primary"
                     />
                     <button name="action_set_sold_status" type="object" string="Sold" 
-                            invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'" 
+                            invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'  or state == 'invoiced'" 
                             context="{'button_id': 'sold_button'}" 
                             class="btn-secondary"
                     />
                     <button name="action_set_cancelled_status" type="object" string="Cancel" 
-                            invisible="state == 'sold' or state == 'cancelled'"  
+                            invisible="state == 'sold' or state == 'cancelled' or state == 'invoiced'"  
                             context="{'button_id': 'cancelled_button'}" 
+                    />
+                    <button name="action_create_invoice" type="object" string="Invoice" 
+                            invisible="state == 'cancelled' or state == 'new' or state == 'offer_received' or state == 'offer_accepted' or state == 'invoiced'" 
+                            class="btn-primary"
                     />
 
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': True}" />
@@ -142,6 +138,7 @@
                         </notebook>
                     </group>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>
@@ -198,6 +195,14 @@
                 </group>
             </search>
         </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,kanban,pivot</field>
+        <field name="view_id" ref="estate_property_list_view" />
+        <field name="context">{'search_default_availability': True}</field>
     </record>
 
 </odoo>

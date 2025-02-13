@@ -1,3 +1,4 @@
+from re import T
 from odoo import api, models, fields
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -8,16 +9,17 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
-
+    _inherit = ["mail.thread"]
+    
     def calculate_three_months_later():
         today = datetime.now()
         return today + relativedelta(months=3)
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode", group_expand=True)
     date_availability = fields.Date(string="Date Availability", default=calculate_three_months_later(), copy=False)
-    expected_price = fields.Float(string="Expected Price", required=True)
+    expected_price = fields.Float(string="Expected Price", required=True, tracking=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area")
@@ -100,6 +102,10 @@ class EstateProperty(models.Model):
                 raise UserError('A sold property cannot be cancelled.')
             else:
                 self.state = 'cancelled'
+
+    def action_create_invoice(self):
+        # this method is defined to be inherited by estate_account module and create the invoice
+        return True
 
     # Python Constraints
     @api.constrains('selling_price', 'expected_price')

@@ -1,6 +1,6 @@
 {
     'name': "Real Estate",
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'application': True,
     'license': 'LGPL-3',
     'data': [

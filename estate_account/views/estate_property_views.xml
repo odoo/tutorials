@@ -1,0 +1,34 @@
+<odoo>
+    <record id="estate_property_account_list_view" model="ir.ui.view">
+        <field name="name">estate.property.account.list</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_list_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="replace">
+                <list string="Property" multi_edit="1" decoration-success="state == 'offer_received'" decoration-bf="state == 'offer_received'" decoration-muted="state == 'sold'">
+                    <field name="name" />
+                    <field name="property_type_id" />
+                    <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                    <field name="description" optional="hide" />
+                    <field name="postcode" optional="hide" />
+                    <field name="date_availability" />
+                    <field name="expected_price" />
+                    <field name="selling_price" optional="hide" />
+                    <field name="bedrooms" sum="Total" />
+                    <field name="living_area" avg="Avg" />
+                    <field name="facades" optional="hide" />
+                    <field name="garage" optional="hide" />
+                    <field name="garden" optional="hide" />
+                    <field name="garden_area" />
+                    <field name="garden_orientation" optional="hide" />
+                    <field name="state" />
+                </list>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="res_model">estate.property</field>
+        <field name="view_id" ref="estate_property_account_list_view" />
+    </record>
+</odoo>

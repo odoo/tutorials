@@ -39,7 +39,7 @@
                     </h1>
 
                     <notebook>
-                        <page string="Properties">
+                        <page string="Properties" name="properties">
                             <field name="property_ids">
                                 <list string="Property List">
                                     <field name="name" />
