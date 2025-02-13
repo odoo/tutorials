@@ -1,8 +1,11 @@
-from odoo import api,fields,models
+from odoo import api,fields,models, _
+from odoo.exceptions import UserError,ValidationError
+from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "See properties"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -44,6 +47,11 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area",store=True)
     best_price = fields.Float(compute="_compute_best_price",store=True)
 
+    _sql_constraints = [
+        ('check_pos_expected_price','CHECK(expected_price > 0)','Expected price shall be greater than 0.'),
+        ('check_pos_selling_price','CHECK(expected_price >= 0)','Price cannot be negative')
+    ]
+
     @api.depends("living_area","garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -65,3 +73,33 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_sold_property(self):
+        if self.state!='cancelled':
+            if self.state=='offer_accepted':
+                self.state = 'sold'
+            else:
+                raise UserError("Accept a offer first.")
+        else:
+            raise UserError("Cancelled Properties cannot be sold.")
+        return True
+
+    def action_cancel_property(self):
+        self.state = 'cancelled'
+        self.selling_price = False
+        return True
+
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price_gt_90(self):
+        for record in self:
+            if record.selling_price > 0:
+                if float_compare(record.selling_price,0.9*record.expected_price,precision_digits=2)<0:
+                    raise ValidationError("The selling price cannot be lower than 90 percentage of the expected price. You must lower your expected price or increase offered price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_cancelled(self):
+        for record in self:
+            if record.state not in ['new','cancelled']:
+                raise UserError("Only new and cancelled properties can be deleted!")
+        return True
+    

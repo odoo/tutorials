@@ -1,6 +1,6 @@
 {
     'name': "estate",
-    'version': '1.0',
+    'version': '18.0',
     'depends': ['base'],
     'author': "Smit",
     'category': 'Real Estate',
@@ -11,11 +11,11 @@
     'data': [
         'security/ir.model.access.csv',
         'views/estate_actions.xml',
-        'views/estate_menus.xml',
-        'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_types_views.xml',
         'views/estate_property_tags_views.xml',
+        'views/estate_property_views.xml',
+        'views/estate_menus.xml',
     ],
     'installable': True,
     'application': True,

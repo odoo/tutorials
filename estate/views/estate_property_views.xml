@@ -4,7 +4,7 @@
         <field name="name">estate_property_list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" editable="top" decoration-success="state in ['offer_recieved','offer_accepted']" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
@@ -23,6 +23,18 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
+                <header>
+                    <button name="action_sold_property" 
+                            string="Sold" 
+                            type="object" 
+                            class="oe_highlight"
+                            invisible="state != 'offer_accepted'"/>
+                    <button name="action_cancel_property" 
+                            string="Cancel" 
+                            type="object" 
+                            invisible="state in ['sold', 'cancelled']"/>
+                    <field name="state" widget="statusbar" />
+                </header>
                 <sheet>
                     <group>
                         <h1>
