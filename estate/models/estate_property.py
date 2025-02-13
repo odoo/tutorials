@@ -76,6 +76,7 @@ class EstateProperty(models.Model):
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
+        # breakpoint() self.env['estate.property'].search([])
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
@@ -137,3 +138,9 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     f"The selling price must be atleast 90% of expected price"
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_new_cancel(self):
+        for record in self:
+            if record.status not in ["new", "cancelled"]:
+                raise UserError("Can only delete properties in new or cancelled stage")
