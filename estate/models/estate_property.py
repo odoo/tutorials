@@ -5,10 +5,11 @@ from odoo import api, fields, models, exceptions
 # Class of EstateProperty to define fields of database table
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ["mail.thread"]
     _description = "Real Estate Properties"
     _order = "id desc"
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode", required=True)
     date_availability = fields.Date(

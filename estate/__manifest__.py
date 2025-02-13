@@ -2,7 +2,7 @@
     'name': 'Real Estate',
     'version': '1.0',
     'category': 'tutorials',
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'summary': 'Chapter 2: Server Framework 101',
     'description': "",
     'installable': True,
