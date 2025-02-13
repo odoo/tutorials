@@ -197,7 +197,7 @@
     <record id="offer_4" model="estate.property.offer">
         <field name="property_id" ref="property_1"/>
         <field name="partner_id" ref="partner_het"/>
-        <field name="price">460000.00</field>
+        <field name="price">500000.00</field>
     </record>
 
     <record id="offer_5" model="estate.property.offer">

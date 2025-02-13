@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from datetime import timedelta
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -59,3 +60,18 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - record.create_date.date()).days
             else:
                 record.validity = 7
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'property_id' in vals:
+                property_rec = self.env['estate.property'].browse(vals['property_id'])
+                existing_offers = property_rec.mapped('offer_ids.price')
+                if existing_offers and vals.get('price') < max(existing_offers):
+                    raise UserError("Cannot create an offer because of amount lower than existing offers.\n"
+                                    f"Highest existing offer: {max(existing_offers)}"
+                    )
+                property_rec.write({
+                    'state': 'offer_received'
+                })
+        return super().create(vals_list)

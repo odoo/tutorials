@@ -77,7 +77,8 @@ class EstateProperty(models.Model):
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        self.total_area = self.living_area + self.garden_area
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -117,3 +118,9 @@ class EstateProperty(models.Model):
             min_expected_price = 0.9 * record.expected_price
             if float_compare(record.selling_price, min_expected_price, 2) == -1:
                 raise ValidationError("The selling price should be atleast 90% of the expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("You cannot delete this property as it is neither in new or cancelled state")
