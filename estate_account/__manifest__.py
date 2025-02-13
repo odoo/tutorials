@@ -6,5 +6,5 @@
     "description": "estate_account module is used to manage real estate properties accounting.",
     "installable": True,
     "application": True, 
-    "license": "LGPL-3"
+    "license": "LGPL-3",
 }

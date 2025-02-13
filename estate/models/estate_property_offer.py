@@ -76,3 +76,4 @@ class EstatePropertyOffer(models.Model):
             ('status' , '!=' , 'rejected')  
         ])
         other_offer.write({'status' : 'rejected'})
+        return True

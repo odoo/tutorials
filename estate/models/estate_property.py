@@ -47,6 +47,7 @@ class EstateProperties(models.Model):
     total_area = fields.Float(compute='_compute_total_area')
     _order = 'id desc'
     best_price = fields.Float(compute="_compute_best_price", store=True)
+    company_id= fields.Many2one(comodel_name="res.company", string="related company", required=True, default=lambda self: self.env.user.company_id)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive'),
@@ -90,6 +91,8 @@ class EstateProperties(models.Model):
 
                 
     def action_property_sold(self):
+        if self.state not in ('offer_accepted'):
+            raise ValidationError("Offer should be accepted before selling the property")
         for record in self:
             if(record.state == 'cancelled'):
                 raise UserError(("Cancelled property cannot be sold."))
