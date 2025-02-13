@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="comment">This group represents real estate agents with specific access rights.</field>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <!-- <field name="implied_ids" eval="[(4, ref('estate_group_user'),0)]"/> -->
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="comment">This group manages real estate.</field>
+    </record>
+
+    <record id="estate_agent_ops" model="ir.rule">
+        <field name="name">estate.agent.ops</field>
+        <field name="model_id" ref="model_estate_properties"/>
+        <!-- <field name="perm_read" eval="False"/> -->
+        <field name="groups" eval="[(6, 0, [ref('estate_group_user')])]"/>
+        <field name="domain_force">[
+        '|', ('users_id', '=', user.id),
+             ('users_id', '=', False)
+    ]</field>
+    </record>
+
+    <record id="estate_manager_ops" model="ir.rule">
+        <field name="name">estate.manager.ops</field>
+        <field name="model_id" ref="model_estate_properties"/>
+        <!-- <field name="perm_read" eval="False"/> -->
+        <field name="groups" eval="[(6, 0, [ref('estate_group_manager')])]"/>
+        <field name="domain_force">[]</field>
+    </record>
+</odoo>

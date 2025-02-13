@@ -6,6 +6,7 @@
     'author': 'Odoo',
     'category': 'Real Estate/Brokerage',
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_properties_offer_views.xml',
         'views/estate_properties_views.xml',
