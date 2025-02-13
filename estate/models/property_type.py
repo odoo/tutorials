@@ -6,6 +6,14 @@ class PropertyType(models.Model):
     _description = "Property Type"
     _order = "name"
 
+    _sql_constraints = [
+        (
+            "property_type_name_unique",
+            "UNIQUE(name)",
+            "The property type name must be unique.",
+        )
+    ]
+
     name = fields.Char("Name")
     property_ids = fields.One2many(
         comodel_name="estate.property", inverse_name="property_type_id"
@@ -21,14 +29,6 @@ class PropertyType(models.Model):
     offer_count = fields.Integer(
         string="offer Count", compute="_compute_offer_count", store=True
     )
-
-    _sql_constraints = [
-        (
-            "property_type_name_unique",
-            "UNIQUE(name)",
-            "The property type name must be unique.",
-        )
-    ]
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):

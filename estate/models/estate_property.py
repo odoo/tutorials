@@ -1,5 +1,6 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo.exceptions import UserError, ValidationError
@@ -8,12 +9,26 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _inherit = ["mail.thread"]
     _order = "id desc"
+
+    _sql_constraints = [
+        (
+            "expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected Price should be positive",
+        ),
+        (
+            "selling_price_constraint",
+            "CHECK(selling_price >= 0)",
+            "Selling Price should be positive",
+        ),
+    ]
 
     active = fields.Boolean(string="Active", default=True)
     name = fields.Char(required=True)
     description = fields.Text("Description")
-    postcode = fields.Text(string="Postcode")
+    postcode = fields.Text(string="Postcode", tracking=True)
     selling_price = fields.Float(string="Selling Price", default=0.0, readonly=True)
     expected_price = fields.Float(string="Expected Price")
     best_price = fields.Float("Best Price", compute="_compute_best_price")
@@ -36,6 +51,7 @@ class EstateProperty(models.Model):
         ],
         string="Status",
         default="new",
+        tracking=True,
     )
     garden_orientation = fields.Selection(
         [
@@ -63,31 +79,6 @@ class EstateProperty(models.Model):
         inverse_name="property_id",
         string="Offer Id",
     )
-
-    _sql_constraints = [
-        (
-            "expected_price",
-            "CHECK(expected_price > 0)",
-            "Expected Price should be positive",
-        ),
-        (
-            "selling_price_constraint",
-            "CHECK(selling_price >= 0)",
-            "Selling Price should be positive",
-        ),
-    ]
-
-    def action_cancel(self):
-        for record in self:
-            if record.status == "sold":
-                raise UserError("A sold property cannot be cancelled!")
-            record.status = "cancelled"
-
-    def action_sold(self):
-        for record in self:
-            if record.status == "cancelled":
-                raise UserError("A cancelled property cannot be sold!")
-            record.status = "sold"
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -133,3 +124,15 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "You can only delete records with state New or cancelled"
                 )
+
+    def action_cancel(self):
+        for record in self:
+            if record.status == "sold":
+                raise UserError("A sold property cannot be cancelled!")
+            record.status = "cancelled"
+
+    def action_sold(self):
+        for record in self:
+            if record.status == "cancelled":
+                raise UserError("A cancelled property cannot be sold!")
+            record.status = "sold"

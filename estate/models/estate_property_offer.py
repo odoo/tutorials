@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from datetime import timedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -7,6 +8,15 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers"
     _order = "price desc"
+
+    _sql_constraints = [
+        (
+            "price_positive",
+            "CHECK(price > 0)",
+            "The offer price must be strictly positive.",
+        )
+    ]
+
     price = fields.Float("Price", required=True)
     state = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")],
@@ -32,40 +42,6 @@ class EstatePropertyOffer(models.Model):
         store=True,
     )
 
-    _sql_constraints = [
-        (
-            "price_positive",
-            "CHECK(price > 0)",
-            "The offer price must be strictly positive.",
-        )
-    ]
-
-    def _inverse_deadline(self):
-        for record in self:
-            if record.date_deadline:
-                if record.create_date:
-                    record.validity = (
-                        record.date_deadline - record.create_date.date()
-                    ).days
-                else:
-                    record.validity = 7
-
-    def action_accepted(self):
-        for offer in self:
-            offer.state = "accepted"
-            for other_offers in offer.property_id.offer_ids:
-                if other_offers.id != offer.id:
-                    other_offers.state = "refused"
-            offer.property_id.selling_price = offer.price
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.status = "offer_accepted"
-        return True
-
-    def action_refused(self):
-        for offer in self:
-            offer.state = "refused"
-        return True
-
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
         for record in self:
@@ -78,6 +54,16 @@ class EstatePropertyOffer(models.Model):
                 record.date_deadline = fields.Date.today() + timedelta(
                     days=record.validity
                 )
+
+    def _inverse_deadline(self):
+        for record in self:
+            if record.date_deadline:
+                if record.create_date:
+                    record.validity = (
+                        record.date_deadline - record.create_date.date()
+                    ).days
+                else:
+                    record.validity = 7
 
     @api.model_create_multi
     def create(self, vals):
@@ -98,3 +84,19 @@ class EstatePropertyOffer(models.Model):
                     "You cannot create an offer with a lower amount than an existing offer"
                 )
         return super(EstatePropertyOffer, self).create(vals)
+
+    def action_accepted(self):
+        for offer in self:
+            offer.state = "accepted"
+            for other_offers in offer.property_id.offer_ids:
+                if other_offers.id != offer.id:
+                    other_offers.state = "refused"
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.status = "offer_accepted"
+        return True
+
+    def action_refused(self):
+        for offer in self:
+            offer.state = "refused"
+        return True
