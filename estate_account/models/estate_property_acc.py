@@ -19,7 +19,7 @@ class EstatePropertyAccount(models.Model):
             raise
 
         invoice_vals={
-                'name': f"INV/{datetime.today().year}/{self.property_buyer_id.id}{self.id}",
+                #'name': f"INV/{datetime.today().year}/{self.property_buyer_id.id}{self.id}",
                 'partner_id' : self.property_buyer_id.id,
                 'move_type'  : 'out_invoice',
                 # 'journal_id' : self.env['account.journal'].search([('type', '=', 'sale')], limit=1).id,

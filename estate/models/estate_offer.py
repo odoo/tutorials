@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError,ValidationError
@@ -38,10 +39,10 @@ class EstateOffer(models.Model):
     def _compute_date_deadline(self):
         """ Compute date_deadline based on create_date and validity. """
         for record in self:
-            if record.create_date and record.validity:
-                record.date_deadline = record.create_date + relativedelta(days=record.validity)
-            else:
-                record.date_deadline = False
+            # added fallback
+            start_date = record.create_date if record.create_date else datetime.now() #if create_date is not there then it will be calculate based on the current date.
+            if start_date and record.validity:
+                record.date_deadline = start_date + relativedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         """ Inverse function to set validity based on date_deadline """

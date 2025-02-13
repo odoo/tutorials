@@ -102,6 +102,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -128,7 +129,13 @@
     </field>
 </record>
 
-
+            
+<record id='propery_sold_chatter' model="mail.message.subtype">
+    <field name="name">Property Is sold</field>
+    <field name="res_model">estate.property</field>
+    <field name="default" eval="True"></field>
+    <field name="description">Estate propertt is sold</field>
+</record>
 
 <record id="estate_property_action" model="ir.actions.act_window">
     <field name="name">Action 1</field>

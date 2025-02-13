@@ -4,7 +4,7 @@
     'version':'1.2',
     'summary':'This is real-estate module developed by deep i. joshi',
     'application': True,
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'category':'Real Estate/Brokerage',
     'data': [
         'security/ir.model.access.csv', 

@@ -8,23 +8,24 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _inherit=["mail.thread","mail.activity.mixin"]
     _order = "id desc"
-    name = fields.Char(string="Property Name", required=True)
+    name = fields.Char(string="Property Name", required=True,tracking=True)
     description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
+    postcode = fields.Char(string="Postcode",tracking=True)
     date_availability = fields.Date(
         string="Date Availability",
         copy=False,
         default=lambda self: fields.Date.today() + timedelta(days=90),
     )
-    expected_price = fields.Float(string="Expected Price")
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
-    bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
-    living_area = fields.Integer(string="Living Area (m²)")
-    facades = fields.Integer(string="Number of Facades")
+    expected_price = fields.Float(string="Expected Price",tracking=True)
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False,tracking=True)
+    bedrooms = fields.Integer(string="Number of Bedrooms", default=2,tracking=True)
+    living_area = fields.Integer(string="Living Area (m²)",tracking=True)
+    facades = fields.Integer(string="Number of Facades",tracking=True)
     garage = fields.Boolean(string="Has Garage")
     garden = fields.Boolean(string="Has Garden", default=True)
-    garden_area = fields.Integer(string="Garden Area (m²)")
+    garden_area = fields.Integer(string="Garden Area (m²)",tracking=True)
     garden_orientation = fields.Selection(
         [  # this list contains all drop-down options
             ("north", "North"),  # (internal_value,Displayed value)
@@ -35,7 +36,7 @@ class EstateProperty(models.Model):
         string="Orientation",
         copy=False,
     )
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(string="Active", default=True,tracking=True)
     status = fields.Selection(
         [  # this list contains all drop-down options
             ("new", "New"),  # (internal_value,Displayed value)
@@ -47,6 +48,27 @@ class EstateProperty(models.Model):
         string="Status",
         default="new",
         copy=False,
+        tracking=True,
+    )
+
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type",tracking=True)
+    # property_seller_id=fields.Many2one('estate.property.seller',string="Salesman")
+    # property_buyer_id=fields.Many2one('estate.property.buyer',string="Buyer")
+    property_seller_id = fields.Many2one(
+        "res.users", string="Salesman",tracking=True,default=lambda self: self.env.user
+    )
+    property_buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False,tracking=True)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags",tracking=True)
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers",tracking=True)
+    total_area = fields.Float(string="Total Area", compute="_compute_total_area",tracking=True)
+    best_price = fields.Float(string="Best Price", compute="_compute_best_price",tracking=True)
+    company_id = fields.Many2one(
+        'res.company',
+        required=True,
+        string="Company",
+        default=lambda self: self.env.company,
+        tracking=True
     )
 
     def unlink(self):
@@ -58,24 +80,6 @@ class EstateProperty(models.Model):
 
         # After applying the business logic, call the parent unlink() method
         return super(EstateProperty, self).unlink()
-
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    # property_seller_id=fields.Many2one('estate.property.seller',string="Salesman")
-    # property_buyer_id=fields.Many2one('estate.property.buyer',string="Buyer")
-    property_seller_id = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user
-    )
-    property_buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    total_area = fields.Float(string="Total Area", compute="_compute_total_area")
-    best_price = fields.Float(string="Best Price", compute="_compute_best_price")
-    company_id = fields.Many2one(
-        'res.company',
-        required=True,
-        string="Company",
-        default=lambda self: self.env.company,
-    )
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
@@ -150,3 +154,10 @@ class EstateProperty(models.Model):
         else:
             raise UserError("This property is already canceled.")
         return True
+
+    # this will called when the status is changed (as we wrote tracking=True inside status) and will return to the xml files's id where we mention view/message what we have to show on the chatter. 
+    def _track_subtype(self,init_values):
+        if 'status' in init_values and self.status == 'sold':
+            return self.env.ref('estate.propery_sold_chatter')
+        return super()._track_subtype(init_values)
+    

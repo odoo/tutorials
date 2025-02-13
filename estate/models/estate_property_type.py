@@ -14,13 +14,14 @@ class EstatePropertyType(models.Model):
 
     offer_count=fields.Integer(string="Offer Counts",compute='_compute_offer_count')
 
+    sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
+    _sql_constraints = [
+        ('unique_property_type_name', 'UNIQUE(name)', 'Property type name must be unique!')
+    ]
+
     @api.depends("offer_ptype_ids")
     def _compute_offer_count(self):
         for record in self:
             record.offer_count=len(record.offer_ptype_ids)
 
-    sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
-    _sql_constraints = [
-        ('unique_property_type_name', 'UNIQUE(name)', 'Property type name must be unique!')
-    ]
 
