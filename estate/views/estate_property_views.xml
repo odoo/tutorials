@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="0">
+                <field name="status"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="o_kanban_record">
+                            <h3><field name="name"/></h3>
+                            <div class="o_kanban_details">
+                                <strong>Expected price: </strong>
+                                <field name="expected_price"/>
+                            </div>
+                            <t t-if="record.status.raw_value == 'offer_received'">
+                                <div class="o_kanban_details">
+                                    <strong>Best offer: </strong>
+                                    <field name="best_price"/>
+                                </div>
+                            </t>
+                            <t t-if="record.status.raw_value == 'offer_accepted' or record.status.raw_value == 'sold'">
+                                <div class="o_kanban_details">
+                                    <strong>Selling price: </strong>
+                                    <field name="selling_price"/>
+                                </div>
+                            </t>
+                            <footer class="o_kanban_footer">
+                                <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </footer>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -103,7 +139,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Property </field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
         <field name="context">{'search_default_available_property': True }</field>
     </record>
 </odoo>
