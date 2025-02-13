@@ -1,6 +1,6 @@
+from datetime import timedelta,datetime
 from odoo import api, models, fields
 from odoo.tools.float_utils import float_compare
-from datetime import timedelta,datetime
 from odoo.exceptions import UserError
 
 class estatePropertyOffer(models.Model):

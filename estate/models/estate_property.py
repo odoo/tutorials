@@ -1,6 +1,6 @@
+from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.tools.float_utils import float_compare, float_is_zero
-from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError
 from odoo.exceptions import UserError
 
@@ -8,6 +8,7 @@ class estateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order="id desc"
+    _inherit = ["mail.thread"]
 
     # Basic fields for property details
     name = fields.Char(string="Property name", required=True)
@@ -17,7 +18,7 @@ class estateProperty(models.Model):
         string="Availability Date",
         default=lambda self: fields.Date.today() + relativedelta(months=3)  
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
+    expected_price = fields.Float(string="Expected Price", required=True, tracking=True)
     selling_price = fields.Float(string="Selling Price", readonly=True)  
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sq.m.)")
@@ -47,6 +48,8 @@ class estateProperty(models.Model):
         default="new",
         required=True,
         copy=False,
+        tracking=True
+        
     )
     active = fields.Boolean(default=True)  
 
@@ -65,6 +68,9 @@ class estateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price", store=True)
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
+    # message_follower_ids = fields.One2many('mail.followers', 'res_id', domain=[('res_model', '=', 'estate.property')])
+    # message_ids = fields.One2many('mail.message', 'res_id', domain=[('model', '=', 'estate.property')])
+
     
     _sql_constraints = [
     ("check_expected_price", "CHECK(expected_price >= 0 OR expected_price IS NULL)", "The expected price must be strictly positive."),
