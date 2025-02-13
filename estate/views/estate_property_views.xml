@@ -55,8 +55,8 @@
         <field name='arch' type='xml'>
             <form>
                 <header>
-                    <button name="sold_property" string="Mark as Sold" type="object" class="btn-primary"/>
-                    <button name="cancel_property" string="Cancel Property" type="object" class="btn-secondary"/>
+                    <button name="sold_property" string="Mark as Sold" type="object" class="btn-primary" invisible="status in ['sold','accepted']"/>
+                    <button name="cancel_property" string="Cancel Property" type="object" class="btn-secondary" invisible="status in ['sold','accepted']"/>
                     <field name="status" widget='statusbar' statusbar_visible='new,offer_received,offer_accepted,sold'/>
                 </header>
                 <sheet>
@@ -98,7 +98,6 @@
                                         </group>
                                         <group>
                                             <field name='active'/>
-                                            <field name='status'/>
                                         </group>
                                     </group>
                                 </page>

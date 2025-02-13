@@ -15,6 +15,7 @@ This is Real Estate application which makes easy to sold property
         "views/estate_property_views.xml",
         "views/estate_property_tag_views.xml",
         "views/estate_property_type_views.xml",
+        "views/estate_property_users_views.xml",
         "views/estate_property_menus.xml",
     ],
 }
