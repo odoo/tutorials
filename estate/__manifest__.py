@@ -5,7 +5,7 @@
     'author': 'ATPA',
     'category': 'Category',
     'description': """
-Real Estate module is for training
+Real Estate module is for training, the module contains property types, offers and tags.
 """,
     'data' : [
         'security/ir.model.access.csv',
@@ -14,7 +14,7 @@ Real Estate module is for training
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
-        'views/users_view.xml'
+        'views/res_users_view.xml'
     ],
     'application' : True,
     'license' : 'LGPL-3'
