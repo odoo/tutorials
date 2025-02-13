@@ -1,5 +1,6 @@
 from odoo import models,fields,api
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -43,6 +44,10 @@ class EstatePropertyOffer(models.Model):
             record.property_id.partner_id = record.partner_id
             record.status = 'accepted'
             record.property_id.state = 'offer_accepted'
+            rejected_offers = self.search([
+                ('property_id', '=', record.property_id.id), ('id', '!=', record.id)
+            ])
+            rejected_offers.write({'status':'rejected'})
 
     def action_status_reject(self):
         for record in self:
@@ -51,3 +56,20 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ('check_positive_integer', 'CHECK(price > 0)', 'Price must be greater than 0.')
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            print(f"self===={self}, value======{vals}")
+            if vals.get('property_id') and vals.get('price'):
+                if vals.get('price') == 0:
+                    raise ValidationError("Offer price must be positive.")
+                property_obj = self.env['estate.property'].browse(vals['property_id'])
+                if property_obj.offer_ids:
+                    max_offer = max(property_obj.offer_ids.mapped('price'))
+                    if vals.get('price') < max_offer:
+                        raise ValidationError('The offer price must be higher than available offers.')
+                if property_obj.state == 'new':
+                    property_obj.state = 'offer_received'
+        return super().create(vals_list)
+        

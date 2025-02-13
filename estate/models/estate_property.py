@@ -42,7 +42,7 @@ class EstateProperty(models.Model):
     user_id = fields.Many2one('res.users',string='Salesman',default=lambda self: self.env.user, required=True)
     partner_id = fields.Many2one('res.partner',string='Buyer',readonly=True)
     property_tag_ids = fields.Many2many('estate.property.tag', string='Property Tag', readonly=False)
-    offers_ids = fields.One2many('estate.property.offer', 'property_id')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
     #computed Fields
     total_area = fields.Char(string='Total Area', compute='_total_area')
     best_offer = fields.Integer(string='Best Offer',compute='_best_offer')
@@ -52,12 +52,12 @@ class EstateProperty(models.Model):
         for area in self:
             area.total_area = area.living_area + area.garden_area
 
-    @api.depends('offers_ids.price')
+    @api.depends('offer_ids.price')
     def _best_offer(self):
         best_price = 0
         for price in self:
-            if price.offers_ids:
-                best_price = max(price.offers_ids.mapped('price'))
+            if price.offer_ids:
+                best_price = max(price.offer_ids.mapped('price'))
             price.best_offer = best_price
     
     @api.onchange('garden')
