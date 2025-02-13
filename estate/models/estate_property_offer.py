@@ -6,6 +6,7 @@ from odoo.exceptions import ValidationError
 class EstatePropertyOffer (models.Model):
     _name = "estate_property_offer_model"
     _description = "hiiii"
+    _order = "price desc"
 
     ###### sql constrains ######
     _sql_constraints = [
@@ -23,10 +24,10 @@ class EstatePropertyOffer (models.Model):
     )
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate_model', required=True)
+    property_type_id = fields.Many2one("estate_property_type_model", name="Property Type", related='property_id.property_type_id')
     create_date = fields.Datetime(default=fields.Date.today(), readonly=True)
     validity = fields.Integer('Validity (Days)', default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
-    _order = "price desc"
 
     ###### compute methods #####
     @api.depends('create_date', 'validity')

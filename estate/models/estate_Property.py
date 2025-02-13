@@ -28,7 +28,7 @@ class estate_Property(models.Model):
     name = fields.Char(required=True, string="Title")
     description = fields.Text()
     postcode = fields.Integer()
-    date_availability = fields.Date(copy=False,default=fields.Date.today())
+    date_availability = fields.Date(copy=False,default=fields.Date.today(), required=False)
     expected_price = fields.Float(required=True, string="Expected_Price")
     selling_price = fields.Float(readonly=True)
     bedrooms = fields.Integer(default=2)
@@ -60,7 +60,7 @@ class estate_Property(models.Model):
     salesman = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     buyer = fields.Many2one('res.partner', string='Buyer')
     tag_ids = fields.Many2many("estate_property_tag_model", string="Tag")
-    offer_ids = fields.One2many('estate_property_offer_model', 'property_id', string="Offers")
+    offer_ids = fields.One2many("estate_property_offer_model", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area", readonly=False)
     best_price = fields.Float(compute="_compute_best_price", store=True)
 
@@ -86,7 +86,6 @@ class estate_Property(models.Model):
             self.garden_orientation = None
 
     ###### action button ######
-
     def sold_action(self):
         for record in self:
             if record.state == "sold":

@@ -7,9 +7,11 @@
         <field name="arch" type="xml">
             <list string="list_view">
                 <field name="sequence" widget="handle"/>
-                <field name="name"/> 
-            </list> 
-        </field> 
+                <field name="name"/>
+                <field name="offer_ids"/>
+                <field name="offer_count"/>
+            </list>
+        </field>
     </record>
     <!-- action view -->
     <record id="estate_property_type_model_action" model="ir.actions.act_window">
@@ -24,7 +26,21 @@
         <field name="arch" type="xml">
             <form string="Property_Type_Form">
                 <h3>Name</h3>
-                <h1><field name="name"/></h1>
+                <div name='button_box' class='oe_button_box'>
+                    <button name='%(estate_property_offer_action)d' type='action' class='oe_stat_button' icon='fa-money'>
+                        <div class='o_stat_info'>
+                            <span class='o_stat_value'>
+                                <field name='offer_count'/>
+                            </span>
+                            <span class='o_stat_text'>
+                                Offers
+                            </span>
+                        </div>
+                    </button>
+                </div>
+                <h1>
+                    <field name="name"/>
+                </h1>
                 <field name="property_ids" widget="one2many_list">
                     <list>
                         <field name="name"/>
@@ -32,6 +48,7 @@
                         <field name="state"/>
                     </list>
                 </field>
+
             </form>
         </field>
     </record>

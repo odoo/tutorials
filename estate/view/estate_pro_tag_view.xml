@@ -1,6 +1,18 @@
 <?xml version="1.0"?>
 <odoo>
 
+    <!-- list view -->
+    <record id="estate_property_tag_list_view" model="ir.ui.view">
+        <field name="name">estate_property_tag_list_view</field>
+        <field name="model">estate_property_tag_model</field>
+        <field name="arch" type="xml">
+            <list editable="top" string="list_view">
+                <field name="name"/> 
+                <field name="Color"/>
+            </list> 
+        </field> 
+    </record>
+    <!-- record view -->
     <record id="estate_property_tag_model_action" model="ir.actions.act_window">
         <field name="name">Property Tag</field>
         <field name="res_model">estate_property_tag_model</field>
@@ -13,7 +25,11 @@
         <field name="arch" type="xml">
             <form string="Property_Tag_Form">
                 <h3>Name</h3>
-                <field name="name"/>
+                <h1><field name="name"/></h1>
+                    <list>
+                        <field name="name"/>
+                        <field name="Color"/>
+                    </list>
             </form>
         </field>
     </record>

@@ -7,9 +7,9 @@
     "depends" : [ "base" ],
     "data" : [ 
         "view/estate_property_views.xml",
+        "view/estate_pro_offer_view.xml",
         "view/estate_pro_type_view.xml",
         "view/estate_pro_tag_view.xml",
-        "view/estate_pro_offer_view.xml",
         "view/estate_model_action.xml",
         "security/ir.model.access.csv" 
     ],
