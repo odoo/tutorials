@@ -15,10 +15,10 @@
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
-        'views/estate_property_actions.xml', # Maintain the sequance for loading of the data files
-        'views/estate_property_type_actions.xml', 
-        'views/estate_property_tag_actions.xml', 
-        'views/estate_property_offer_actions.xml', 
-        'views/estate_property_menus.xml'
+        'views/estate_property_views.xml', # Maintain the sequance for loading of the data files
+        'views/estate_property_type_views.xml', 
+        'views/estate_property_tag_views.xml', 
+        'views/estate_property_offer_views.xml', 
+        'views/estate_menus.xml'
     ]
 }

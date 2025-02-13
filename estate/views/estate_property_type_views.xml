@@ -9,8 +9,9 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Property Type List">
-                <field name="name" string="Property Type" />   
+            <list string="Property Type List" default_order="sequence asc">
+                <field name="name" string="Property Type"/>
+                <field name="sequence" widget="handle"/> <!-- enable manual ordering-->
             </list>
         </field>
     </record>
@@ -21,10 +22,20 @@
         <field name="arch" type="xml">
             <form string="Property Type Form">
                  <sheet>
-                    <h3>Property Type</h3>
-                    <group>
-                        <field name="name"/>
-                    </group>                           
+                 <group>
+                    <field name="name"/>
+                 </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids" readonly="True">
+                                <list>
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price" string="Expected price"/>
+                                    <field name="state" string="State"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook> 
                 </sheet>
             </form>
         </field>
