@@ -5,7 +5,7 @@
     'author': "djsh",
     'category': 'Category',
     'description': """
-Real Estate Properties With all the information
+Real Estate Properties with the information regarding buyers, sellers, properties, property offers, property types and property tags.
 """,
     'data': [
         'security/ir.model.access.csv',

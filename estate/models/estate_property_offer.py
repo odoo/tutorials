@@ -57,5 +57,6 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             if vals.get('property_id'):
                 property = self.env['estate.property'].browse(vals['property_id'])
+                property.state = "offer recieved"
             if any(offer.price < property.best_price for offer in offers):
                 raise exceptions.UserError("Enter offer Price greater than the existing ones")
