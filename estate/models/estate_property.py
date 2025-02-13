@@ -65,13 +65,13 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def order_status_sold(self):
+    def sold_action(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold.")
             record.state = 'sold'
 
-    def order_status_cancel(self):
+    def cancel_action(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError("sold properties cannot be cancelled.")

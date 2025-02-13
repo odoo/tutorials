@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -41,12 +41,12 @@ class EstatePropertyOffer(models.Model):
             record.status = 'refused'
 
     @api.model_create_multi
-    def create(self, vals):
-        for record in vals:
-            property_id = self.env['estate.property'].browse(record['property_id'])
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
             if property_id:
                 property_id.write({'state' : 'offer_received'})
 
-            if property_id.best_offer > record['price']:
+            if property_id.best_offer > vals['price']:
                 raise UserError("Offer Price entered is lower than the existing offer price.")
-        return super().create(vals)
+        return super().create(vals_list)

@@ -17,5 +17,4 @@ class EstatePropertyType(models.Model):
     @api.depends('offer_ids')
     def _count_offer_ids(self):
         for record in self:
-            pass
             record.offer_count = len(record.offer_ids)

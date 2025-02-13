@@ -24,12 +24,7 @@
                             <field name="name"/>
                         </h1>
                     </group>
-                    <div name="button_box" class="oe_button_box" position="inside">
-                            <button name="%(estate_property_offer_action)d" type="action"
-                                    class="oe_stat_button" string="Offers" icon="fa-money">
-                                <field name="offer_count" widget="statinfo"/>
-                            </button> 
-                        </div>
+                   
                     <notebook>
                         <page string="Properties" name="estate_property_type_properties">
                             <field name="property_ids">
