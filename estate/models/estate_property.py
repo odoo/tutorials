@@ -110,7 +110,7 @@ class EstateProperty(models.Model):
                 raise UserError("It cannot be canceled once sold")
             elif record.state == "cancelled":
                 raise UserError("It is already canceled")
-            return True
+        return True
 
     def action_set_sold(self):
         for record in self:
@@ -120,6 +120,8 @@ class EstateProperty(models.Model):
                 raise UserError("It cannot be sold once cancelled")
             elif record.state == "sold":
                 raise UserError("It is already sold")
+
+        return True
 
     @api.constrains("offer_ids")
     def _check_offer_price(self):
