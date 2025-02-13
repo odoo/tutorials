@@ -8,6 +8,22 @@ class EstateProperty(models.Model):
     _description = "Property"
     _order = "id desc"
 
+    # sql constraints
+    # expected price must not be negative
+    _sql_constraints = [
+        (
+            "expected_price",
+            "CHECK(expected_price >0)",
+            "A expected price must be strictly positive",
+        ),
+        (
+            "selling_price",
+            "CHECK(selling_price >= 0)",
+            "A selling price must be positive",
+        ),
+    ]
+
+    # Fields
     name = fields.Char(required=True, string="Title")
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
@@ -48,36 +64,21 @@ class EstateProperty(models.Model):
         default="new",
     )
 
-    # Defining Many2One relationship
+    total_area = fields.Integer(string="Total Area", compute="_compute_total")
+    best_price = fields.Float(string="Best Price", compute="_compute_best_price")
+
+    # Relationships
     property_type_id = fields.Many2one(
         comodel_name="property.type", string="Property Type"
     )
-    # means multiple records can have a single property_type
-
     buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer")
     salesperson_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
-    tags_ids = fields.Many2many("property.tags", string="Tags")
-    offer_ids = fields.One2many("property.offers", "property_id", string="Offers")
-
-    total_area = fields.Integer(string="Total Area", compute="_compute_total")
-    best_price = fields.Float(string="Best Price", compute="_compute_best_price")
-
-    # sql constraints
-    # expected price must not be negative
-    _sql_constraints = [
-        (
-            "expected_price",
-            "CHECK(expected_price >0)",
-            "A expected price must be strictly positive",
-        ),
-        (
-            "selling_price",
-            "CHECK(selling_price >= 0)",
-            "A selling price must be positive",
-        ),
-    ]
+    tags_ids = fields.Many2many(comodel_name="property.tags", string="Tags")
+    offer_ids = fields.One2many(
+        comodel_name="property.offers", inverse_name="property_id", string="Offers"
+    )
 
     # Compute total_area
     @api.depends("living_area", "garden_area")
@@ -90,32 +91,6 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
-
-    # checking garden automatically set garden_area and garden_orienatation
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = False
-            self.garden_orientation = False
-
-    # mark property as sold when sold button is clicked
-    def sold_action(self):
-        if self.state == "cancelled":
-            raise UserError("Cancelled properties can't be sold!")
-        else:
-            self.state = "sold"
-        return True
-
-    # mark property as cancelled when cancel button is clicked
-    def cancel_action(self):
-        if self.state == "sold":
-            raise UserError("Sold properties can't be cancelled!")
-        else:
-            self.state = "cancelled"
-        return True
 
     # python constraints to check whether selling price is below 90% of expected price
     @api.constrains("expected_price", "selling_price")
@@ -145,8 +120,34 @@ class EstateProperty(models.Model):
                         "The selling price must be at least 90% of expected price! You must reduce the expected price in order to accept the offer."
                     )
 
+    # checking garden automatically set garden_area and garden_orienatation
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = False
+            self.garden_orientation = False
+
     # unlink only if property state is 'New' or 'Cancelled'
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_new_cancelled(self):
         if any(not record.state in ["new", "cancelled"] for record in self):
             raise UserError("Only new or cancelled properties can be deleted!")
+
+    # mark property as sold when sold button is clicked
+    def sold_action(self):
+        if self.state == "cancelled":
+            raise UserError("Cancelled properties can't be sold!")
+        else:
+            self.state = "sold"
+        return True
+
+    # mark property as cancelled when cancel button is clicked
+    def cancel_action(self):
+        if self.state == "sold":
+            raise UserError("Sold properties can't be cancelled!")
+        else:
+            self.state = "cancelled"
+        return True

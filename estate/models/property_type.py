@@ -6,13 +6,19 @@ class PropertyType(models.Model):
     _description = "Property Type"
     _order = "name"
 
+    # sql constraints for unique property type name
+    _sql_constraints = [
+        ("unique_property_type", "unique(name)", "This property type already exists!")
+    ]
+
+    # Fields
     name = fields.Char(required=True)
     offer_count = fields.Integer(compute="_compute_offer_count", string="Offer Count")
     sequence = fields.Integer(
         "Sequence", default=1, help="Used to manually order types based on sales."
     )
 
-    # One2many relationship with property model
+    # Relationships
     property_ids = fields.One2many(
         string="Properties",
         comodel_name="estate.property",
@@ -23,11 +29,6 @@ class PropertyType(models.Model):
         comodel_name="property.offers",
         inverse_name="property_type_id",
     )
-
-    # sql constraints for unique property type name
-    _sql_constraints = [
-        ("unique_property_type", "unique(name)", "This property type already exists!")
-    ]
 
     # compute method to count offers
     @api.depends("offer_ids")
