@@ -60,10 +60,24 @@ class EstatePropertyOffer(models.Model):
             offer.status = "accepted"
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.state = "offer accepted"
+            offer.property_id.state = "offer_accepted"
 
     def action_refuse(self):
         for offer in self:
             if offer.status == "accepted":
                 raise UserError("Accepted offer can not be refused")
             offer.status = "refused"
+
+    @api.model_create_multi
+    def create(self, vals):
+        offer_list = list()
+        for val in vals:
+            property = self.env["estate.property"].browse(val["property_id"])
+            for offer in property.offer_ids:
+                if (offer.price > val["price"]):
+                    raise UserError(f"The offer must be higher than {offer.price}")
+            offer = super().create(val)
+            if (offer.property_id.state == "new"):
+                offer.property_id.state = "offer_received"
+            offer_list.append(offer)
+        return offer_list

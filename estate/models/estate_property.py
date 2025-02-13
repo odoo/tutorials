@@ -24,7 +24,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(
-        "res.users",
+        comodel_name="res.users",
         string="Salesperson",
         default=lambda self: self.env.user,
         required=True
@@ -62,8 +62,8 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         selection=[
             ('new', 'New'),
-            ('offer received', 'Offer Received'),
-            ('offer accepted', 'Offer Accepted'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
         ],
@@ -126,3 +126,9 @@ class EstateProperty(models.Model):
                 vals['sequence_number'] = self.env['ir.sequence'].next_by_code(
                     'estate.property')
         return super().create(vals_list)
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_deletion(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("You can only delete properties that are in 'New' or 'Cancelled' state.")
