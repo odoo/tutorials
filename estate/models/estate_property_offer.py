@@ -7,6 +7,7 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
+
     price = fields.Float("Price")
     status = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")], string="Status"
@@ -34,16 +35,12 @@ class EstatePropertyOffer(models.Model):
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date + timedelta(
-                    days=record.validity
-                )
+            record.date_deadline = (record.create_date or fields.Datetime.today()) + timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
-            if record.date_deadline and record.create_date:
-                delta = record.date_deadline - record.create_date.date()
-                record.validity = delta.days
+            delta = record.date_deadline - record.create_date.date()
+            record.validity = delta.days
 
     def action_confirm(self):
         if self.property_id.state != "offer_accepted":
@@ -60,7 +57,6 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            # Validate that the new offer amount is greater than existing offers
             property_id = self.env["estate.property"].browse(vals.get("property_id"))
             if property_id.offer_ids and any(
                 offer.price >= vals["price"] for offer in property_id.offer_ids
@@ -69,19 +65,5 @@ class EstatePropertyOffer(models.Model):
                     "You cannot create an offer with an amount lower than or equal to an existing offer."
                 )
 
-        # Create offers (no need to manually update property state anymore)
         return super(EstatePropertyOffer, self).create(vals_list)
-
-    def write(self, vals):
-        if "price" in vals:
-            for record in self:
-                # Validate that the new offer amount is greater than existing offers
-                if record.property_id.offer_ids and any(
-                    offer.price >= vals["price"]
-                    for offer in record.property_id.offer_ids
-                ):
-                    raise UserError(
-                        "You cannot update an offer with an amount lower than or equal to an existing offer."
-                    )
-        return super(EstatePropertyOffer, self).write(vals)
 

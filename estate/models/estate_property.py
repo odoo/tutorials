@@ -8,6 +8,8 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property"
     _order = "id desc"
+    _inherit = ['mail.thread']
+    
     active = fields.Boolean(string="active", default=True)
     state = fields.Selection(
         [
@@ -23,12 +25,12 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
     )
-    name = fields.Char(string="Property Name", required=True)
+    name = fields.Char(string="Property", tracking=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     user_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
-    partner_id = fields.Many2one("res.partner", string="Buyer")
+    partner_id = fields.Many2one('res.partner', string="Responsible", tracking=True)
     description = fields.Text(string="Description")
     selling_price = fields.Float(readonly=True, copy=False)
     postcode = fields.Char(string="Postcode")
@@ -100,6 +102,16 @@ class EstateProperty(models.Model):
         if self.state == "cancelled":
             raise UserError("A cancelled property cannot be marked as sold.")
         self.state = "sold"
+        self.message_post(
+            body=f"The property '{self.name}' has been sold for {self.selling_price}!",
+            subject="Property Sold",
+            message_type='notification'
+        )
+        print("Message posted successfully for property: %s", self.name)
+        print("Message posted successfully for property: %s", self.name)
+        print("Message posted successfully for property: %s", self.name)
+        print("Message posted successfully for property: %s", self.name)
+
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):

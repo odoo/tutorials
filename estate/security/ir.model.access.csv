@@ -6,3 +6,4 @@ access_property_type_agent,access.property.type.agent,model_estate_property_type
 access_property_tag_manager,access.property.tag.manager,model_estate_property_tag,estate_group_manager,1,1,1,0
 access_property_tag_agent,access.property.tag.agent,model_estate_property_tag,estate_group_user,1,0,0,0
 access_estate_property_offer,access_estate_property_offer,model_estate_property_offer,base.group_user,1,1,1,0
+

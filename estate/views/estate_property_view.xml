@@ -2,7 +2,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Define a new Property
@@ -20,7 +20,7 @@
                 decoration-success="state in ('offer_received','offer_accepted')"
                 decoration-muted="state == 'sold'"
                 decoration-bf="state == 'offer_accepted'">
-                <field name="name"/>
+                <field name="name" />
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="property_type_id" />
                 <field name="postcode" />
@@ -43,18 +43,18 @@
                         invisible="state in ('offer_accepted','sold','cancelled')" />
                     <button name="action_sold" type="object" string="Sold" class="btn-primary"
                         invisible="state in ('new','offer_received','sold','cancelled')" />
-                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold','cancelled')"  />
+                    <button name="action_cancel" type="object" string="Cancel"
+                        invisible="state in ('sold','cancelled')" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <h1>
                         <field name="name" />
-                        <field name="company_id"/>
                     </h1>
                     <group>
                         <field name="tag_ids" widget="many2many_tags"
-                            options="{'color_field': 'color'}" />
+                            options="{'color_field': 'color','no_create': True}" />
                     </group>
                     <group>
                         <group>
@@ -84,7 +84,22 @@
                         </page>
                         <page string="Offer">
                             <field name="offer_ids"
-                                readonly="state in ('offer_accepted', 'sold', 'canceled')" />
+                                readonly="state in ('offer_accepted', 'sold', 'canceled')">
+                                <list string="Offer List" editable="bottom"
+                                    decoration-success="status == 'accepted'"
+                                    decoration-danger="status == 'refused'">
+                                    <field name="price" />
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
+                                    <field name="partner_id" />
+                                    <button name="action_confirm" type="object" icon="fa-check"
+                                        string="Confirm"
+                                        invisible="(status in ('accepted','refused')) or(parent.state in ['offer_accepted', 'sold', 'cancelled'])" />
+                                    <button name="action_refuse" type="object" icon="fa-times"
+                                        string="Refuse"
+                                        invisible="parent.state in ['offer_accepted', 'sold', 'cancelled']" />
+                                </list>
+                            </field>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -94,6 +109,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -103,7 +119,6 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Estate Properties">
-
                 <field name="name" string="Title" />
                 <field name="postcode" string="Postcode" />
                 <field name="expected_price" string="Expected Price" />
@@ -112,9 +127,9 @@
                 <field name="living_area" string="Living Area(sqm)"
                     filter_domain="[('living_area', '>=', self)]" />
                 <field name="facades" string="Facades" />
-                <filter name="filter_available_today" 
-                    string="Available" 
-                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter name="filter_available_today"
+                    string="Available"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
                 <group string="Group By">
                     <filter name="group_by_postcode" string="Postcode" domain="[]"
                         context="{'group_by': 'postcode'}" />
@@ -122,5 +137,36 @@
             </search>
         </field>
     </record>
-</odoo>
 
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.kanban.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="false" quick_create="true">
+                <field name="state"/>
+                <field name="expected_price"/>
+                <field name="best_price"/>
+                <field name="selling_price"/>
+                <field name="tag_ids"/>
+                <field name="property_type_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="o_kanban_card">
+                            <div><strong><field name="name"/></strong></div>                            
+                            <div>Expected Price: <field name="expected_price"/></div>  
+                            <div t-if="record.state.raw_value == 'offer_received'">
+                                Best Price: <field name="best_price"/>
+                            </div>  
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
+                                Selling Price: <field name="selling_price"/>
+                            </div>                            
+                            <div>
+                                Tags: <field name="tag_ids"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

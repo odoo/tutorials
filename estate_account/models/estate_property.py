@@ -22,24 +22,9 @@ class EstateProperty(models.Model):
                 "Selling price must be set before marking the property as sold."
             )
 
-        current_company = self.env.company
-
-        sell_journal = self.env["account.journal"].search(
-            [("name", "=", "Sell"), ("company_id", "=", current_company.id)], limit=1
-        )
-
-        if not sell_journal:
-            sell_journal = self.env["account.journal"].create({
-                "name": "Sell",
-                "type": "sale",
-                "code": "SELL",
-                "company_id": current_company.id,
-            })
-
         invoice_vals = {
             "partner_id": self.partner_id.id,
             "move_type": "out_invoice",
-            "journal_id": sell_journal.id,
             "invoice_line_ids": [
                 Command.create(
                     {
