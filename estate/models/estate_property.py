@@ -71,6 +71,7 @@ class EstateProperty(models.Model):
     offer_ids=fields.One2many(string="Offers", comodel_name="estate.property.offer", inverse_name="property_id")
     total_area=fields.Integer(compute="_compute_total_area")
     best_price=fields.Integer(compute="_compute_best_price", help="Best price from offers")
+    company_id=fields.Many2one(string="Company", comodel_name="res.company", required=True, default=lambda self: self.env.company)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -96,7 +97,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area=0
             self.garden_orientation=""
-        
+    
     @api.ondelete(at_uninstall=False)
     def _check_property_before_unlink(self):
         for record in self:
