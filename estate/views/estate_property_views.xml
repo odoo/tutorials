@@ -95,8 +95,15 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
+    </record>
+    <record id="mt_state_change" model="mail.message.subtype">
+    <field name="name">Buyer confirmed</field>
+    <field name="res_model">estate.property</field>
+    <field name="default" eval="True"/>
+    <field name="description">Buyer confirmed!</field>
     </record>
 
     <record id="estate_property_search" model="ir.ui.view">

@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True)
     tag_ids = fields.Many2many("estate.property.tag", string="tags")
@@ -19,7 +20,7 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
-    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", tracking=True)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     best_price = fields.Float(compute="_compute_best_price")
@@ -61,9 +62,10 @@ class EstateProperty(models.Model):
         required=True,
         default="new",
         copy=False,
+        tracking=True,
     )
     active = True
-    offer_ids = fields.One2many("estate.property.offer", "property_id")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", tracking=True)
     _sql_constraints = [
         (
             "positive_expected_price",
@@ -126,3 +128,9 @@ class EstateProperty(models.Model):
                     "Cant Delete a property that is not New or Cancelled"
                 )
         return super(EstateProperty, self).unlink()
+
+    def _track_subtype(self, init_values):
+        self.ensure_one()
+        if "state" in init_values and self.state == "sold":
+            return self.env.ref("estate.mt_state_change")
+        return super()._track_subtype(init_values)

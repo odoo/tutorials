@@ -1,9 +1,11 @@
 {
     "name" : "estate",
-    "depends" : ['base'],
+    "depends" : ['base','mail'],
     "category" : "Real Estate/Brokerage",
     'data' : [
         'views/res_users.xml',
+        'data/estate_demo.xml',
+        'demo/estate_demo_offer.xml',
         'views/estate_property_offer.xml',
         'views/estate_property_type.xml',
         'views/estate_property_tag.xml',
@@ -11,9 +13,6 @@
         'views/estate_menus.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
-    ],
-    'demo':[
-        'data/estate_demo.xml',
     ],
     'installable': True,
     'auto_install': True,

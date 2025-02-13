@@ -52,7 +52,7 @@ class EstatePropertyOffer(models.Model):
             record.status = "refused"
         return True
 
-    @api.model_create_multi
+    @api.model
     def create(self, vals):
         property_id = vals.get("property_id")
         if property_id:
