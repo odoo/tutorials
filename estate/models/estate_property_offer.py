@@ -2,7 +2,8 @@ from ast import Store
 from dateutil.relativedelta import relativedelta
 from datetime import date
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -67,3 +68,14 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ('positive_offer_price', 'CHECK(price > 0)', 'Offer price must be greater than zero!')
     ]
+
+    @api.model_create_multi
+    def create(self,vals):
+        property_obj = self.env['estate.property'].browse(vals[0]['property_id'])
+        prices = [val['price'] for val in vals]
+        min_price = min(prices, default=property_obj.best_price)
+        if min_price < property_obj.best_price:
+            raise UserError(_("offer with a lower amount than an existing offer"))
+        property_obj.state = 'offer_recevied'
+
+        return super().create(vals)

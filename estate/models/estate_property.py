@@ -1,9 +1,8 @@
 from dateutil.relativedelta import relativedelta
 from datetime import date
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.sql_db import re_into
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -114,3 +113,9 @@ class EstateProperty(models.Model):
             min_selling_price = record.expected_price * 0.9
             if float_compare(record.selling_price, min_selling_price, precision_digits=6) < 0:
                 raise ValidationError("Selling price cannot be less than 90% of the expected price!")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_stete_not_new_or_cancel(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(_('Only new or cancelled properties can be deleted!'))

@@ -21,10 +21,12 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property type Form">
-                <button name="estate.offer_action" type="action" class="oe_stat_button" icon="fa-money">
-                    <field name="offer_count" widget="statinfo" />
-                </button>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="estate.offer_action" type="action" class="oe_stat_button" icon="fa-money">
+                            <field name="offer_count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <h1><field name="name" placeholder="Enter Property type"/></h1>
                     <notebook>
                         <page string="Properties">
