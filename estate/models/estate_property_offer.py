@@ -5,6 +5,7 @@ from datetime import timedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Offer Property Model"
+    _order = "price desc"
 
     price = fields.Float("Price")
     status = fields.Selection(
@@ -18,6 +19,12 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer("Validity", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_deadline_date", inverse="_inverse_deadline_date")
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True
+    )
 
     _sql_constraint = [
         ('check_offer_price', 'check(price > 0.0)', 'The offer price must be greater than 0')
@@ -35,8 +42,10 @@ class EstatePropertyOffer(models.Model):
             rejected_offers.write({'status':'rejected'})
 
     def action_reject_offer(self):
-        for offer in self:
-            offer.status = 'rejected'
+        for record in self:
+            record.status = 'rejected'
+            if record.property_id.buyer == record.partner_id:
+                record.property_id.buyer = False
 
     @api.depends("create_date","validity")
     def _compute_deadline_date(self):

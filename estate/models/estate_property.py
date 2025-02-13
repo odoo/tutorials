@@ -6,6 +6,7 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char("Property Name", required=True)
     active = fields.Boolean(default=True)
@@ -42,7 +43,7 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offers"
     )
-    salesman = fields.Many2one(
+    user_id = fields.Many2one(
         "res.users",
         string="Salesman",
         default=lambda self: self.env.user
@@ -76,8 +77,7 @@ class EstateProperty(models.Model):
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
+        self.total_area = self.living_area + self.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
