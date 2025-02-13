@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -24,14 +25,21 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity','property_id.create_date')
     def _compute_deadline(self):
         for record in self:
-            record.date_deadline = timedelta(days=record.validity) + record.property_id.create_date or date.today()
+            record.date_deadline = timedelta(days=record.validity) + (record.property_id.create_date or fields.Date.today())
+
+    @api.model_create_multi
+    def create(self,vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if vals['price'] < property.best_price:
+                raise UserError(_('The offer must be higher than the previous best price of %s' % property.best_price))
+            if property.state == 'new':
+                property.state = 'offer_received'
+        return super().create(vals_list)
     
     def _inverse_deadline(self):
         for record in self:
-            if record.date_deadline and record.property_id.create_date:
-                record.validity = (record.date_deadline - record.property_id.create_date.date()).days
-            else:
-                record.validity = 0
+                record.validity = (record.date_deadline - (record.property_id.create_date.date() or fields.Date.today())).days
     
     def action_accept_offer(self):
         for record in self:
