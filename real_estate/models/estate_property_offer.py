@@ -1,10 +1,10 @@
+from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-from datetime import timedelta
 
 
 class EstatePropertyOffer(models.Model):
-    """Offers for the property"""
+    # Offers for the property
 
     _name = "estate.property.offer"
     _description = "Property Offers"
@@ -54,40 +54,42 @@ class EstatePropertyOffer(models.Model):
         string="Create Date",
         default=fields.Date.context_today
     )
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        string="Type",
+        related='property_id.property_type_id'
+    )
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         """Compute deadline date based on create_date and validity period."""
-        for record in self:
-            record.date_deadline = (
-                record.create_date + timedelta(days=record.validity)
-                if record.create_date else False
+        for property in self:
+            property.date_deadline = (
+                property.create_date + timedelta(days=property.validity)
+                if property.create_date else False
             )
 
     def _inverse_date_deadline(self):
         """Inverse function to calculate validity from date_deadline."""
-        for record in self:
-            record.validity = (
-                (record.date_deadline - record.create_date).days
-                if record.date_deadline else 7
+        for property in self:
+            property.validity = (
+                (property.date_deadline - property.create_date).days
+                if property.date_deadline else 7
             )
     
     def action_confirm(self):
-        for record in self:
-            if record.property_id.state == 'sold':
+        for property in self:
+            if property.property_id.state == 'sold':
                 raise UserError("Property is already Sold")
-            accepted_offer = record.property_id.offer_ids.filtered(
-                lambda x: x.status == 'accepted'
-            )
-            if accepted_offer:
+            if property.property_id.offer_ids.filtered(lambda x: x.status == 'accepted'):
                 raise UserError("Only one offer can be accepted")
-            record.status = 'accepted'
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
+            property.status = 'accepted'
+            property.property_id.buyer_id = property.partner_id
+            property.property_id.selling_price = property.price
     
     def action_cancel(self):
-        for record in self:
-            if record.status == 'accepted':
-                record.property_id.buyer_id = False
-                record.property_id.selling_price = 0.0
-            record.status = 'refused'
+        for property in self:
+            if property.status == 'accepted':
+                property.property_id.buyer_id = False
+                property.property_id.selling_price = 0.0
+            property.status = 'refused'

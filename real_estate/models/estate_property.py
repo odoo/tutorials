@@ -1,7 +1,7 @@
+from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
-from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
@@ -10,10 +10,10 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be"
-"positive."),
-        ("check_selling_price", "CHECK(selling_price >= 0)", "Selling price cannot be" 
-"negative.")
+        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must"
+"be positive."),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "Selling price cannot"
+"be negative.")
     ]
 
     name = fields.Char(
@@ -130,28 +130,30 @@ class EstateProperty(models.Model):
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
-            self.garden_area=10
-            self.garden_orientation="north"
+            self.garden_area = 10
+            self.garden_orientation = "north"
         else:
-            self.garden_area=0
-            self.garden_orientation=False
+            self.garden_area = 0
+            self.garden_orientation = False
 
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cancelled Properties cannot be sold...")
+                raise UserError("Cancelled Properties cannot be sold")
             record.state = 'sold'
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold Properties cannot be Cancelled...")
+                raise UserError("Sold Properties cannot be Cancelled")
             record.state = 'cancelled'
     
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if record.selling_price > 0 and float_compare(
-                record.selling_price, record.expected_price * 0.9, precision_digits=2
-            ) < 0:
+            if (
+                record.selling_price > 0 
+                and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2)
+                < 0
+            ):
                 raise ValidationError("Selling Price must be 90% of the expected price")

@@ -11,6 +11,7 @@
         <field name='model'>estate.property.type</field>
         <field name='arch' type='xml'>
             <list string="Property Types">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
