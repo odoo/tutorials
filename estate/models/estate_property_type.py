@@ -4,8 +4,8 @@ class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Type of property"
     _order = "sequence,name"
-    sequence = fields.Integer('Sequence', default=1)
 
+    sequence = fields.Integer('Sequence', default=1)
     name = fields.Char(required=True)
     property_ids = fields.One2many('estate.property','property_type_id')
     offer_ids = fields.One2many('estate.property.offer','property_type_id')
@@ -20,4 +20,4 @@ class EstatePropertyType(models.Model):
         ('check_unique_property_type', 'UNIQUE(name)', 
          'A property type must be unique.')
     ]
-
+       

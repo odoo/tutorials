@@ -11,7 +11,7 @@
         <field name="arch" type="xml">
             <list editable="bottom">
                 <field name="name" />
-                <field name="color"/>
+                <field name="color" />
             </list>
         </field>
     </record>

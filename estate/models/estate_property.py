@@ -1,14 +1,15 @@
 from odoo import fields, models,api,exceptions
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 from odoo.tools.float_utils import float_is_zero, float_compare
 
 class Property_Plan(models.Model):
     _name = "estate.property"
     _description = "Custom model for real estate."
     _order = "id desc"
+    _inherit = ["mail.thread"]
     
-    name = fields.Char(required=True, string="Title")
+    name = fields.Char(required=True, string="Title",tracking=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Tag")
     #One2Many
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="OfferID")
@@ -84,6 +85,12 @@ class Property_Plan(models.Model):
             else:
                 record.state = 'sold'
         return True
+    
+    @api.ondelete(at_uninstall=False)
+    def __unlink_except_new_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("You can only delete properties in 'New' or 'Cancelled' state.")
     
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',

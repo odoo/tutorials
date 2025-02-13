@@ -1,5 +1,6 @@
 from odoo import fields, models, api,exceptions
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -35,30 +36,29 @@ class EstatePropertyOffer(models.Model):
     
     def action_confirm(self):
         for record in self:
-            existing_accepted_offer = self.env['estate.property.offer'].search([
-                ('property_id', '=', record.property_id.id),
-                ('status', '=', 'accepted')
-            ], limit=1)
-            if existing_accepted_offer:
-                raise exceptions.UserError("An offer has already been accepted for this property. You cannot accept another offer.")
+            record.property_id.offer_ids.status = 'refused'
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
-        return True
-    
+            return True
+
     def action_cancel(self):
         for record in self:
-            existing_accepted_offer = self.env['estate.property.offer'].search([
-                ('property_id', '=', record.property_id.id),
-                ('status', '=', 'accepted')
-            ], limit=1)
-            if existing_accepted_offer:
-                raise exceptions.UserError("An offer has already been accepted. You cannot refuse any other offer.")
             record.status = "refused"
         return True
-    
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+        for offer in offers:
+            existing_offers = self.search([("property_id", "=", offer.property_id.id)])
+            max_offer = max(existing_offers.mapped("price"),default=0)
+            if existing_offers and offer.price < max_offer:
+                raise ValidationError(f"Offer must be higher than {max_offer}")
+            offer.property_id.state = "offer_received"
+        return offers
+
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)',
          'Offer Price must be strictly positive.')
     ]
-
