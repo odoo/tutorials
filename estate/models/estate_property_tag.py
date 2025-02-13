@@ -12,3 +12,4 @@ class EstatePropertyTag(models.Model):
 
     name = fields.Char('Tag', required=True)
     color = fields.Integer('Color')
+    rating = fields.Float('Ratings')

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
+        <field name="description">Helps you manage your properties.</field>
+    </record>
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[Command.link(ref('estate_group_user'))]"/>
+    </record>
+
+    <data noupdate="1">
+        <record id="estate_rule_exclusive_property_agent" model="ir.rule">
+            <field name="name">Agent Exclusive Property rule</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
+            <field name="domain_force">[
+                '|', ('salesperson_id', '=', user.id),
+                    ('salesperson_id', '=', False)
+            ]</field>
+        </record>
+    </data>
+</odoo>

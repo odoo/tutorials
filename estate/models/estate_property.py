@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
     ]
 
     name = fields.Char('Title', required=True, translate=True)
-    tags_ids = fields.Many2many(
+    tag_ids = fields.Many2many(
         comodel_name='estate.property.tag', string='Tags')
     property_type_id = fields.Many2one(
         comodel_name='estate.property.type', string='Property Type')
@@ -60,6 +60,10 @@ class EstateProperty(models.Model):
         help="Status of the Property",
         required=True, copy=False,
         default="new")
+    tag_count = fields.Integer('Tag Count',
+        compute="_compute_tag_count")
+    rating = fields.Float('Property Rating',
+        compute="_compute_property_rating")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_amount(self):
@@ -69,7 +73,17 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max(record.mapped('offer_ids.price'), default=0)
+            record.best_offer = max(record.offer_ids.mapped('price'), default=0)
+    
+    @api.depends('tag_ids')
+    def _compute_tag_count(self):
+        for record in self:
+            record.tag_count = len(record.tag_ids)
+
+    @api.depends("tag_ids", "tag_ids.rating")
+    def _compute_property_rating(self):
+        for record in self:
+            record.rating = sum(record.tag_ids.mapped('rating'))
     
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
@@ -79,7 +93,12 @@ class EstateProperty(models.Model):
             low_best_offer = record.best_offer <= threshold_price  
             has_offers = len(record.offer_ids) > 0
             if (low_selling_price or low_best_offer) and has_offers:
-                raise exceptions.ValidationError("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")
+                error_message = (
+                    "The selling price must be at least 90% of the expected price! "
+                    "You must reduce the expected price if you want to accept this offer."
+                )
+                raise exceptions.ValidationError(error_message)
+
 
     @api.onchange('garden')
     def _onchange_garden(self):

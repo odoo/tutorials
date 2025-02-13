@@ -11,6 +11,7 @@
         <field name="arch" type="xml">
             <list string="Property Tags" editable="bottom">
                 <field name="name"/>
+                <field name="rating"/>
             </list>
         </field>
     </record>
@@ -24,6 +25,7 @@
                         <h1>
                             <field name="name"/>
                         </h1>
+                        <field name="rating"/>
                     </group>
                 </sheet>
             </form>
