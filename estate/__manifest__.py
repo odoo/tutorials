@@ -4,7 +4,7 @@
     'application': True,
     'category': "Tutorials",
     'installable': True,
-    'depends': ['base', 'mail'],
+    'depends': ['mail'],
     'data': [
         'data/estate_property_data.xml', 
         'security/ir.model.access.csv', 

@@ -28,13 +28,13 @@ class EstatePropertyOffer(models.Model):
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
         store=True
-        )
+    )
     create_date = fields.Date(default=fields.Date.context_today)
     property_type_id = fields.Many2one(
         'estate.property.type',
         string="Property Type",
         related='property_id.property_type_id'
-        )
+    )
 
     # compute date deadline from create date plus validity.
     @api.depends('create_date','validity')
@@ -49,24 +49,22 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for offer in self:
             if offer.create_date and offer.date_deadline:
-                offer.validity = (offer.date_deadline -
-                    offer.create_date).days
+                offer.validity = (offer.date_deadline - offer.create_date).days
             else:
                 offer.validity = 7
-
+                
     # action to check if any offer accepted then shows error
     # else change state to accepted and change selling price
     def action_accept(self):
         for offer in self:
-            accepted_offers = offer.property_id.offer_ids.filtered(
-                lambda x: x.status == "accepted"
-            )
-
-            if accepted_offers:
+            if offer.property_id.offer_ids.filtered(lambda x: x.status == 'accepted'):
                 raise UserError("Only one offer can accepted.")
-            offer.status = 'accepted'
-            offer.property_id.selling_price = offer.price
-
+            
+            offer.write({'status': 'accepted'})
+            offer.property_id.write({
+                'selling_price': offer.price,
+                'buyer_id': offer.partner_id,
+            })
     # action to change offer status to refused
     def action_refuse(self):
         self.status = 'refused'
@@ -86,5 +84,5 @@ class EstatePropertyOffer(models.Model):
                         "You cannot create an offer lower than an existing one."
                     )
 
-                property.write({'state':'received'})
+                property.write({'state': 'received'})
         return super().create(vals_list)    

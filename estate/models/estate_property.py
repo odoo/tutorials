@@ -113,10 +113,6 @@ class EstateProperty(models.Model):
     # Prevention on Delete
     @api.ondelete(at_uninstall=False)
     def _unlink_if_property_state(self):
-        state_id = [
-        'new',
-        'cancelled'
-        ]
         for property in self:
-            if property.state in state_id:
+            if property.state in ('new', 'cancelled'):
                 raise UserError("You can not delete a property if its state is not ‘New’ or ‘Cancelled’")
