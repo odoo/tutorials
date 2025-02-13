@@ -5,7 +5,7 @@ class PropertyInherit(models.Model):
 
     def action_sold(self):
         self.check_access("write")
-        invoice =  self.env['account.move'].create({      
+        invoice =  self.env['account.move'].sudo().create({      
               'partner_id' : self.buyer_id.id,
               'move_type' : 'out_invoice',
               'invoice_line_ids' : [
