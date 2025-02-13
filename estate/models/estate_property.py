@@ -1,13 +1,13 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
-
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
+    _order = 'id desc'
 
     name = fields.Char(string='Title', required=True)
     description = fields.Text()
@@ -42,29 +42,11 @@ class EstateProperty(models.Model):
             ('cancelled','Cancelled'),
         ],
     )
-    property_type_id = fields.Many2one(
-        comodel_name='estate.property.type',
-        string='Property Type',
-    )
-    user_id = fields.Many2one(
-        comodel_name='res.users',
-        string='Salesman',
-        default=lambda self: self.env.user,
-    )
-    partner_id = fields.Many2one(
-        comodel_name='res.partner',
-        string='Buyer',
-        copy=False,
-    )
-    tag_ids = fields.Many2many(
-        comodel_name='estate.property.tag',
-        string='Tags',
-    )
-    offer_ids = fields.One2many(
-        comodel_name='estate.property.offer',
-        inverse_name='property_id',
-        string='Offers',
-    )
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+    user_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
+    partner_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+    offer_ids = fields.One2many('estate.property.offer', inverse_name='property_id', string='Offers')
     total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')
     best_price = fields.Float(string='Best Offer', compute='_compute_best_offer')
 
@@ -94,7 +76,7 @@ class EstateProperty(models.Model):
     def check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=1) and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=1) == -1:
-                raise ValidationError('The selling price must be at least 90% of the expected price! You must reduce expected price if you want to accept this offer')
+                raise ValidationError(_('The selling price must be at least 90% of the expected price! You must reduce expected price if you want to accept this offer'))
 
     def action_sold_property(self):
         for record in self:

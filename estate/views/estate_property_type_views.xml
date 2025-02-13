@@ -6,11 +6,45 @@
         <field name="arch" type="xml">
             <form string="New Property Type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="%(estate.estate_offer_model_action)d" type="action" icon="fa-bars">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_count"/>
+                                </span>
+                                <span class="o_stat_text">
+                                        Offers
+                                </span>
+                            </div>
+                        </button>
+                    </div>
                     <h1>
                         <field name="name"/>
                     </h1>
-                </sheet>            
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Property Type">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </list>
         </field>
     </record>
 
