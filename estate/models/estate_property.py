@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ['mail.thread']
     _description = "Estate Property"
     _order = "id desc"
 
@@ -97,6 +98,10 @@ class EstateProperty(models.Model):
     def action_property_sold(self):
         if self.state != "cancelled":
             self.state = "sold"
+            self.message_post(
+            body=f"Property '{self.name}' has been sold.",
+            message_type='notification',
+            subject="Property Sold",)
         else:
             raise UserError("cancelled property can not be sold.")
 
@@ -105,6 +110,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError(f"You cannot delete the property '{record.name}' because its state is '{record.state}'.")
+                
                 
 
 

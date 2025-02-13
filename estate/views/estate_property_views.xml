@@ -34,12 +34,14 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="estate_property">
+                <chatter />
                 <header>
                     <button name="action_property_cancel" type="object" string="Cancel"
                         invisible="state in ['sold', 'cancelled']" />
                     <button name="action_property_sold" type="object" string="Sold"
                         invisible="state in ['offer_accepted','sold', 'cancelled']" />
-                    <button name="action_property_sold" type="object" string="Sold" class="btn-primary"
+                    <button name="action_property_sold" type="object" string="Sold"
+                        class="btn-primary"
                         invisible="state in ['new', 'offer_received', 'sold', 'cancelled']" />
                     <field name="state" widget="statusbar" />
                 </header>
@@ -52,12 +54,12 @@
 
                     <group>
                         <field name="tag_ids" widget="many2many_tags"
-                            options="{'color_field': 'color'}" />
+                            options="{'color_field': 'color','no_create': true}" />
                     </group>
                     <group>
                         <group>
                             <field name="property_type_id"
-                                options="{'no_create': true, 'no_open': true}" />
+                                options="{'no_create': true}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -83,7 +85,24 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']" />
+                            <field name="offer_ids"
+                                readonly="state in ['offer_accepted', 'sold', 'cancelled']">
+                                <list string="Estate Property offer" editable="bottom"
+                                    decoration-success="status == 'accepted'"
+                                    decoration-danger="status == 'refused'">
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
+                                    <field name="status" optional="1" />
+                                    <button name="action_offer_confirm" string="Confirm"
+                                        type="object" icon="fa-check"
+                                        invisible="parent.state in ['offer_accepted', 'sold', 'cancelled']" />
+                                    <button name="action_offer_cancel" string="Cancel" type="object"
+                                        icon="fa-times"
+                                        invisible="parent.state in ['offer_accepted', 'sold', 'cancelled']" />
+                                </list>
+                            </field>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -99,8 +118,7 @@
     </record>
 
 
-    <record
-        id="estate_property_search_view" model="ir.ui.view">
+    <record id="estate_property_search_view" model="ir.ui.view">
         <field name="name">estate.property.search.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -129,4 +147,3 @@
     </record>
 
 </odoo>
-

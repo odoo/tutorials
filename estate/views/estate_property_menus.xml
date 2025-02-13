@@ -8,7 +8,7 @@
         </menuitem>
 
         <!-- Estate First Level Menu for Settings -->
-        <menuitem id="estate_first_level_menu_settings" name="Settings">
+        <menuitem id="estate_first_level_menu_settings" name="Settings" groups="estate_group_manager">
             <!-- Property Types Action Menu -->
             <menuitem id="estate_property_type_menu_action" action="estate_property_type_action"/>
             
@@ -18,4 +18,3 @@
         </menuitem>
     </menuitem>
 </odoo>
-

@@ -8,6 +8,7 @@
     # 'website': 'https://www.odoo.com/page/crm',
     'depends': [
         'base',
+        'mail',
     ],
     'data': [
          'security/estate_property_security.xml',
@@ -18,9 +19,13 @@
          'views/estate_property_tag_views.xml',
          'views/res_users_views.xml',
          'views/estate_property_menus.xml',
-
+         'data/master_data.xml',
+    ],
+    'demo' : [
+        'demo/demo_data.xml',
     ],
    
     'installable': True,
     'application': True,
+
 }

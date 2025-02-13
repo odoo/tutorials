@@ -2,7 +2,6 @@ from datetime import timedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import float_is_zero
 
 
 class EstatePropertyOffer(models.Model):
@@ -31,9 +30,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _compute_date_deadline(self):
         for offer in self:
-            offer.date_deadline = (
-                offer.create_date or fields.Datetime.today()
-            ) + timedelta(days=offer.validity)
+            offer.date_deadline = (offer.create_date or fields.Datetime.today()) + timedelta(days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:
@@ -42,7 +39,7 @@ class EstatePropertyOffer(models.Model):
 
     # Action methods
     def action_offer_confirm(self):
-        if float_is_zero(self.property_id.selling_price,precision_digits=2):
+        if self.property_id.state in ("new", "offer_received"):
             if self.price > self.property_id.expected_price * 0.9:
                 self.status = "accepted"
                 self.property_id.partner_id = self.partner_id
@@ -72,7 +69,7 @@ class EstatePropertyOffer(models.Model):
             else:
                 property_id.state = "offer_received"
 
-        super(EstatePropertyOffer, self).create(vals_list)
-
-
+        return super(EstatePropertyOffer, self).create(vals_list)
+        
+        
    
