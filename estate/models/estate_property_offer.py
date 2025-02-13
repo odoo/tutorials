@@ -1,12 +1,16 @@
-from odoo import api,models, fields
 from datetime import timedelta  
+from odoo import api,models, fields
 from odoo.exceptions import UserError
+
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property offer'
     _order = "price desc"
-    
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
+    ]
+
     price = fields.Float(string='Price', required=True)
     status = fields.Selection(
         string="Status",
@@ -16,11 +20,38 @@ class EstatePropertyOffer(models.Model):
             ("refused", "Refused"),
         ],
     )
-    partner_id = fields.Many2one("res.partner", string="Buyer", default=lambda self: self.env.user)
-    property_id = fields.Many2one('estate.property', string="Offer")
+
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline",inverse="_inverse_date_deadline")
     validity = fields.Integer(string="Validity (days)", default=7)
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type", related="property_id.property_type_id", store=True)
+    partner_id = fields.Many2one(
+        "res.partner", string="Buyer", default=lambda self: self.env.user)
+    property_id = fields.Many2one(
+        'estate.property', string="Offer")
+    property_type_id = fields.Many2one(
+        "estate.property.type", string="Property Type", related="property_id.property_type_id", store=True)
+
+    def property_action_accept(self):
+            if self.property_id.state == 'sold':
+                raise UserError("Property already sold.")
+            elif self.property_id.state == 'cancelled':
+                raise UserError("Property cancelled, offers cannot be accept.")
+            elif self.status == 'accepted':
+                raise UserError("Buyer is already accepted.")
+
+            for offer in self.property_id.offer_ids:
+                    if offer.id != self.id:
+                        offer.status = 'refused'
+
+            self.status = 'accepted'
+            self.property_id.write({
+                'selling_price': self.price,
+                'partner_id': self.partner_id.id,
+                'state': 'offer_accepted'
+            })
+
+    def property_action_refuse(self):
+        for record in self:
+            record.status = 'refused'
 
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
@@ -33,45 +64,15 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             create_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - create_date).days if record.date_deadline else 7
-
-    def property_action_accept(self):
-            if self.property_id.state == 'sold':
-                raise UserError("Property already sold.")
-            elif self.property_id.state == 'cancelled':
-                raise UserError("Property cancelled, offers cannot be accept.")
-            elif self.status == 'accepted':
-                raise UserError("Buyer is already accepted.")
-            else:
-                for offer in self.property_id.offer_ids:
-                    if offer.id != self.id:
-                        offer.status = 'refused'
-                    else:
-                        self.write({'status': 'accepted'})
-                        self.property_id.write({
-                            'selling_price': self.price,
-                            'buyer_id': self.partner_id,
-                            'state': 'offer_accepted'
-                        })
-
-    def property_action_refuse(self):
-        for record in self:
-            record.status = 'refused'
-
-    def _compute_property_count(self):
-        for record in self:
-            record.property_count = len(record.property_ids)
             
-    _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
-    ]
-
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             property_obj = self.env["estate.property"].browse(vals["property_id"])
 
             existing_offer_prices = property_obj.offer_ids.mapped("price")
-            if existing_offer_prices and self.price < max(existing_offer_prices):
+            new_offer_price = vals["price"]
+            if existing_offer_prices and new_offer_price < max(existing_offer_prices):
                 raise UserError("You cannot create an offer lower than an existing one.")
 
             property_obj.state = "offer_received"
