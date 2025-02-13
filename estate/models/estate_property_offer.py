@@ -52,3 +52,16 @@ class EstatePropertyOffer(models.Model):
         self.property_id.selling_price = 0
         self.property_id.buyer_id = None
         return True
+
+    #-------------------------------------CRUD methods------------------------------------------#
+    @api.model
+    def create (self, vals):
+        """override the create() method to only allow offers bigger than existing
+          offers and update the property state when a new valid offer is created"""
+        for record in vals:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            best_price = property.best_price
+            if vals['offer_price']< best_price:
+                raise UserError(f"Please Increase your offer amount. It should be more than {best_price}")
+            property.state = "offer_received"
+        return super().create(vals)

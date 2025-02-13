@@ -54,7 +54,7 @@ class EstateProperty(models.Model):
     
     # --------------------------------------------Compute Methods----------------------------------------#
     @api.depends("living_area", "garden_area", "measurement_unit")
-    def _compute_total_area(self):  
+    def _compute_total_area(self):
         for property in self:
             property.total_area = property.living_area + property.garden_area
             if property.measurement_unit == 'sqft':
@@ -93,3 +93,10 @@ class EstateProperty(models.Model):
         for property in self:
             if fields.Float.compare (property.selling_price, property.expected_price * 90/100, precision_rounding=0.01) < 0 and not fields.Float.is_zero(property.selling_price, precision_rounding=0.01):
                 raise ValidationError ("Selling Price cannot be lower than '90%'of the expected price.")
+
+       #-------------------------------------CRUD methods------------------------------------------#
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_sold_or_cancelled(self):
+        for record in self:
+            if record.state not in {'new', 'cancelled'} :
+                raise UserError("You can only delete New or Cancelled Properties")
