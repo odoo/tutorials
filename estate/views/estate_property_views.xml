@@ -6,12 +6,15 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" string="Title"/>
+                <field name="property_type_id" string="Type"/>
+                <field name="tag_ids" string="Tags" widget="many2many_tags"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="selling_price" string="Selling Price"/>
                 <field name="date_availability" string="Available From"/>
+
             </list>
         </field>
     </record>
@@ -23,6 +26,8 @@
             <form string="Property">
                 <sheet>
                     <h1><field name="name"/></h1>
+                    <field name="tag_ids" string="Tags" widget="many2many_tags"/>
+                    <separator/>
                     <group>
                         <group>
                             <field name="property_type_id" string="Property Type"/>
@@ -48,6 +53,9 @@
                             <field name="garden_orientation"/>
                         </group>
                     </page>
+                    <page string="Offers">
+                        <field name="offer_ids" string="Offers" widget="many2many_offers"/>
+                    </page>
                     <page string="Other Info">
                         <group>
                             <field name="salesperson_id" string="Salesman"/>
@@ -66,6 +74,7 @@
         <field name="arch" type="xml">
             <search string="Properties">
                 <field name="name" string="Title"/>
+                <field name="property_type_id" string="Type"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
