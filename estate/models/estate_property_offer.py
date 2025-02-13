@@ -65,7 +65,7 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property = self.env["estate.property"].browse(vals["property_id"])
-            property.state = "offer_received"
+            property.state = "offer received"
             for offer in property.offer_ids:
                 if offer.price > vals["price"]:
                     raise UserError("The offer must be higher than the existing offer")
@@ -73,6 +73,9 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def unlink(self):
+        for record in self:
+            if record.property_id.state not in ['new', 'cancelled']:
+                raise UserError("You cannot delete a property offer if the property state is not 'New' or 'Cancelled'.")
         properties = self.mapped("property_id")
         result = super(EstatePropertyOffer, self).unlink()
         # Check each property and update its state if it has no more offers

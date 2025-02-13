@@ -20,26 +20,18 @@
                 <field name="status" string="Status" readonly="1" />
                 <field name="validity" />
                 <field name="date_deadline" />
+                <button
+                    type="object"
+                    name="action_status_accepted"
+                    icon="fa-check"
+                    title="accept"
+                    invisible="status in ['accepted', 'reject']" />
+                <button name="action_status_refused"
+                    type="object"
+                    title="reject"
+                    icon="fa-times"
+                    invisible="status in ['accepted', 'reject']" />
             </list>
-        </field>
-    </record>
-        <!-- Form View for Estate Property Offers -->
-    <record id="estate_property_offer_view_form" model="ir.ui.view">
-        <field name="name">estate.property.offer.form</field>
-        <field name="model">estate.property.offer</field>
-        <field name="arch" type="xml">
-            <form string="Estate Property Offer">
-                <sheet>
-                    <group>
-                        <field name="price" string="Price" sum="Total" />
-                        <field name="partner_id" string="Partner" />
-                        <field name="property_type_id" readonly="1" />
-                        <field name="status" string="Status" readonly="1" />
-                        <field name="validity" />
-                        <field name="date_deadline" />
-                    </group>
-                </sheet>
-            </form>
         </field>
     </record>
 </odoo>

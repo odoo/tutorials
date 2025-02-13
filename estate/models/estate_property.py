@@ -71,7 +71,7 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = "north"
+            self.garden_orientation = "nortwh"
         else:
             self.garden_area = 0
             self.garden_orientation = False 
@@ -108,4 +108,8 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be less than 90% of the expected price."
                 )
-                
+    @api.ondelete(at_uninstall=False)
+    def _check_delete_state(self):
+        for record in self:
+            if record.state not in ["New", "Cancelled"]:
+                raise exceptions.UserError("You cannot delete a property unless its state is 'New' or 'Cancelled'.")
