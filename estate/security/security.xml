@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+    </record>
+
+    <record id="restrict_sales_person_property" model="ir.rule">
+        <field name="name">Sales Person</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_user')), Command.link(ref('estate_group_manager'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+        <field name="domain_force">[
+            '|', ('salesperson_id', '=', user.id),
+            ('salesperson_id', '=', 'False')
+        ]</field>
+    </record>
+
+    <record id="manager_property_visibility" model="ir.rule">
+        <field name="name">An agent manager managers property types and tags and oversees all the properties.</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="estate_property_agent_company_rule" model="ir.rule">
+        <field name="name">Estate Property: Agent's Company Access</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
+         <field name="domain_force">[
+            '|', ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+        ]</field>
+    </record>
+</odoo>

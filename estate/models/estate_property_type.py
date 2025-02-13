@@ -10,13 +10,13 @@ class EstatePropertyType(models.Model):
         ('unique_prop_type', 'UNIQUE(name)', 'This property type already exists.')
     ]
 
-    name = fields.Char(string = "Name", required = True)
+    name = fields.Char(string="Name", required=True)
     property_ids = fields.One2many(
         comodel_name="estate.property", inverse_name="property_type_id")
-    sequence = fields.Integer(default = 1)
+    sequence = fields.Integer(default=1)
     offer_ids = fields.One2many(
         comodel_name="estate.property.offer", inverse_name="property_type_id")
-    offer_count = fields.Integer(compute = "_compute_offer_count")
+    offer_count = fields.Integer(compute="_compute_offer_count")
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):

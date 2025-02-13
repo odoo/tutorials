@@ -1,12 +1,16 @@
-from odoo import Command, fields, models
+from odoo import Command, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sell_property(self):
+        # if not self.env.user.has_group('estate_group_manager'):
+        #     raise exceptions.AccessError("You do not have permission to generate an invoice.") exercise
+        
         res = super().action_sell_property()
         for prop in self:
+            prop.check_access('write')
             journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
 
             if not journal:
@@ -29,6 +33,6 @@ class EstateProperty(models.Model):
                     })
                 ] 
             }
-
+            print(" reached ".center(100, '='))
             self.env['account.move'].create(invoice_vals)
         return res
