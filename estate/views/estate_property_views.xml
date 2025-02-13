@@ -101,7 +101,7 @@
                         </page>
 
                         <page string="Offers">
-                            <field name="offer_ids">
+                            <field name="offer_ids" readonly="state in('sold', 'cancelled', 'offer_accepted')">
                             </field>
                         </page> 
 

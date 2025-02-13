@@ -7,9 +7,6 @@ class Property(models.Model):
 
     def action_set_sold(self):
 
-        if not self.accepted_offer_id:
-            raise exceptions.UserError("No accepted offer to sell this property.")
-
         invoice_vals = {
             "name": "Invoice Bill",
             "partner_id": self.buyer_id.id,

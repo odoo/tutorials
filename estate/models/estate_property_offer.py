@@ -33,11 +33,14 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - create_date).days if record.date_deadline else 0
     
     def action_accept(self):
-        for record in self:    
+        for record in self:
+            if record.property_id.state in ['sold', 'cancelled']:
+                raise exceptions.UserError("The property has already been sold or cancelled. The offer cannot be accepted.")
 
             accepted_offers = self.env['estate.property.offer'].search([
                 ('property_id', '=', record.property_id.id),
                 ('status', '=', 'accepted')])
+                
             if accepted_offers:
                 raise exceptions.UserError("Only one offer can be accepted per property.")
                 
@@ -45,7 +48,6 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer_accepted'
-            record.property_id.accepted_offer_id = record
 
     def action_refuse(self):
         for record in self:

@@ -36,7 +36,6 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type",string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users",string="Salesman",default=lambda self: self.env.user)
-    accepted_offer_id = fields.Many2one("estate.property.offer", string="Accepted Offer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area", store=True, string="Total Area")
@@ -60,10 +59,10 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         for record in self:
+            if  record.state != 'offer_accepted':
+                raise exceptions.UserError("Accept an offer first!")
             if not record.offer_ids:
-                raise exceptions.UserError("No offers available to accept!")
-            if not record.accepted_offer_id:
-                raise exceptions.UserError("Please select an offer first!")       
+                raise exceptions.UserError("No offers available to accept!")       
             record.state = "sold"
         return True
 
