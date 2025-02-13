@@ -18,7 +18,7 @@
         <form string="Property Type">
             <sheet>
                 <div name='button_box'>
-                    <button name="%(action_estate_property_offer)d" type="action" class="oe_stat_button" icon="fa-bar-chart">
+                    <button name="%(estate_property_offer_action)d" type="action" class="oe_stat_button" icon="fa-bar-chart">
                         <field name="offer_count" widget="statinfo" />
                     </button>
                 </div>
