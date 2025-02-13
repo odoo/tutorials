@@ -13,9 +13,8 @@
         <field name="arch" type="xml">
             <list string="Estate Properties" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold_offer'">
                 <field name="name"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="property_type_id"/>
-                <field name="postcode"/>
                 <field name="state"/>
                 <field name="active"/>
                 <field name="bedrooms"/>
@@ -42,7 +41,7 @@
                         <h1>
                             <field name="name" placeholder="My new house"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color_fi'}"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
                     <group>
                         <group>

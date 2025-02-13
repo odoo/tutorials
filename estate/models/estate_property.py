@@ -77,6 +77,12 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_allowed(self):
+        for record in self:
+            if record.state not in ('new_offer', 'cancel_offer'):
+                raise UserError(_('You can only delete properties in "New" or "Cancelled" state.'))
+
     def action_sold(self):
         if 'cancel_offer' in self.mapped('state'):
             raise UserError(_("Cancelled property can't be sold!"))

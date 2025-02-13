@@ -4,7 +4,7 @@
 from datetime import timedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -21,8 +21,25 @@ class EstatePropertyOffer(models.Model):
     ], string="Status", copy=False)
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type', related='property_id.property_type_id', store=True)
     validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline', store=True)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for offer in vals_list:
+            property = self.env["estate.property"].browse(offer["property_id"])
+
+            if property.state != "offer_received":
+                property.state = "offer_received"
+
+            existing_offers = property.offer_ids.mapped("price")
+            max_offer = max(existing_offers) if existing_offers else 0
+
+            if property.offer_ids and offer["price"] <= max_offer:
+                raise UserError(_(f"The new offer must be higher than the maximum offer of {max_offer:.2f}"))
+
+        return super().create(vals_list)
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
