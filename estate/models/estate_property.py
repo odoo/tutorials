@@ -1,12 +1,13 @@
 from datetime import timedelta
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero, float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ["mail.thread","mail.activity.mixin"]
     _description = "Estate Property models"
     _order = "id desc"
     _sql_constraints = [
@@ -21,6 +22,7 @@ class EstateProperty(models.Model):
             "The selling price must be positive!",
         ),
     ]
+    _track_duration_field = "state"
 
     name = fields.Char("Title", default="Unknown", required=True)
     description = fields.Text("Description")
@@ -59,6 +61,7 @@ class EstateProperty(models.Model):
         default="new",
         required=True,
         copy=False,
+        tracking=True
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -109,7 +112,7 @@ class EstateProperty(models.Model):
             self.garden_area = 0
 
     @api.ondelete(at_uninstall=False)
-    def _prevent_deletion(self):
+    def _ondelete_prevent(self):
         for record in self:
             if record.state not in ["new", "cancelled"]:
                 raise UserError(
@@ -128,3 +131,17 @@ class EstateProperty(models.Model):
             raise UserError("A Sold property cannot to be cancelled.")
         self.state = "cancelled"
         return True
+    
+    # --------------------------------------------------
+    # MAILING
+    # ---------------------------------------------------
+
+    def _track_subtype(self,init_values):
+        self.ensure_one()
+        if 'state' in init_values and self.state == 'offer_received':
+            return self.env.ref('estate.mt_property_received')
+        elif 'state' in init_values and self.state == 'offer_accepted':
+            return self.env.ref('estate.mt_property_accepted')
+        elif 'state' in init_values and self.state == 'sold':
+            return self.env.ref('estate.mt_property_sold')
+        return super()._track_subtype(init_values) 

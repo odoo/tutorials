@@ -36,10 +36,9 @@ class EstatePropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             if record.create_date:
-                record.date_deadline = fields.Date.to_string(
-                    fields.Date.from_string(record.create_date)
-                    + timedelta(days=record.validity)
-                )
+                record.date_deadline = record.create_date + timedelta(days=record.validity)
+            else:
+                record.date_deadline = False
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -51,19 +50,20 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.validity = 7
 
-    @api.model
-    def create(self, vals):
-        property_id = self.env["estate.property"].browse(vals.get("property_id"))
-        if property_id.state == "new":
-            property_id.state = "offer_received"
-        else:
-            max_offer = max(property_id.offer_ids.mapped("price"), default=0)
-            if vals["price"] < max_offer:
-                raise UserError(
-                    "You cannot create an offer lower than an existing offer."
-                )
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env["estate.property"].browse(vals.get("property_id"))
+            if property_id.state == "new":
+                property_id.state = "offer_received"
+            else:
+                max_offer = max(property_id.offer_ids.mapped("price"), default=0)
+                if vals["price"] < max_offer:
+                    raise UserError(
+                        "You cannot create an offer lower than an existing offer."
+                    )
 
-        return super().create(vals)
+        return super().create(vals_list)
 
     # action Methods
     def action_accept_offer(self):

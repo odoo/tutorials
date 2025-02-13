@@ -21,7 +21,6 @@ class EstateProperty(models.Model):
         invoice_vals = {
             "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",
-            #"journal_id": self.env["account.journal"].search([("type", "=", "sale")], limit=1).id,
             "invoice_line_ids": [
                 Command.create(
                     {

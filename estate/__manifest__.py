@@ -9,7 +9,7 @@
     "category": "Real Estate/Brokerage",
     "author": "Darshan Patel",
     "website": "",
-    "depends": ["base"],
+    "depends": ["base","mail"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
@@ -19,6 +19,12 @@
         "views/estate_property_type.xml",
         "views/estate_property_views.xml",
         "views/estate_menus.xml",
+        "data/estate_property_type_data.xml",
+        "data/mail_message_subtype_data.xml"
+    ],
+    "demo": [
+        "demo/estate_demo_properties.xml",
+        "demo/estate_demo_offers.xml",
     ],
     "installable": True,
     "application": True,

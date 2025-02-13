@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+        <record id="mt_property_received" model="mail.message.subtype">
+            <field name="name">Property Offer Received</field>
+            <field name="res_model">estate.property</field>
+            <field name="default" eval="True"/>
+            <field name="description">A new offer has been received for a property.</field>
+        </record>
+        <record id="mt_property_accepted" model="mail.message.subtype">
+            <field name="name">Property Offer Accepted</field>
+            <field name="res_model">estate.property</field>
+            <field name="default" eval="True"/>
+            <field name="description">A received offer has been accepted for a property.</field>
+        </record>
+        <record id="mt_property_sold" model="mail.message.subtype">
+            <field name="name">Property Offer Sold</field>
+            <field name="res_model">estate.property</field>
+            <field name="default" eval="True"/>
+            <field name="description">A accepted offer has been Sold.</field>
+        </record>
+    </data>
+    
+
+</odoo>
