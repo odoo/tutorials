@@ -1,7 +1,6 @@
-from datetime import timedelta
+from datetime import date, timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-
 
 
 class EstatePropertyOffer(models.Model):
@@ -72,16 +71,17 @@ class EstatePropertyOffer(models.Model):
     def _compute_date_deadline(self):
         """Computes date_deadline as create_date + validity days."""
         for offer in self:
-            if offer.create_date:
-                offer.date_deadline = offer.create_date + timedelta(days=offer.validity)
+            if date.today():
+                offer.date_deadline = fields.Date.to_date(date.today + timedelta(days=offer.validity))
             else:
                 offer.date_deadline = False
+        print("Date Deadline ",offer.date_deadline)
 
     def _inverse_date_deadline(self):
         """Sets validity based on date_deadline - create_date."""
         for offer in self:
             if offer.date_deadline and offer.create_date:
-                offer.validity = (offer.date_deadline - offer.create_date.date()).days
+                offer.validity = (offer.date_deadline - offer.create_date)
             else:
                 offer.validity = 7
 
@@ -105,11 +105,11 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            property_obj = self.env['estate.property'].browse(vals.get('property_id'))
+            property = self.env['estate.property'].browse(vals.get('property_id'))
 
-            if property_obj.best_price >= vals['price']:
+            if property.best_price >= vals['price']:
                 raise UserError("Offer Price is lower than the existing ones")
 
-            property_obj.state = 'offer_received'
+            property.state = 'offer_received'
 
         return super().create(vals_list)
