@@ -1,5 +1,5 @@
-from odoo import api, models, fields, exceptions
 from datetime import timedelta
+from odoo import api, exceptions,fields, models
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -7,19 +7,17 @@ class EstatePropertyOffer(models.Model):
     _order = 'price desc'
 
     price = fields.Float(string="Offer Price", required=True)
-
     status = fields.Selection([
         ('accepted', "Accepted"),
         ('refused', "Refused")
     ], string="Status", copy=False)
+    create_date = fields.Date(default=fields.Date.today)
+    validity = fields.Integer(default=7)
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True, string="Property Type")
-
-    create_date = fields.Date(default=fields.Date.today)
-    validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
     _sql_constraints = [('check_offer_price', 'CHECK(price >= 0)', 'The offer price must be positive.')]
 

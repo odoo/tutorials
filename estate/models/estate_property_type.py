@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api,fields, models
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
