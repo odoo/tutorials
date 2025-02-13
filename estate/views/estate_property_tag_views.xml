@@ -10,8 +10,9 @@
         <field name="name">Estate Property Tag View</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Property Tags">
+            <list string="Property Tags" editable="bottom">
                 <field name="name"/>
+                <field name="color" widget="colorpicker"/> 
             </list>
         </field>
     </record>

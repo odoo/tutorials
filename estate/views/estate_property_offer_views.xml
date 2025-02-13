@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    
     <record id="estate_property_offer_form_view" model="ir.ui.view">
         <field name="name">Estate Property Offer Form View</field>
         <field name="model">estate.property.offer</field>
@@ -22,11 +29,12 @@
         <field name="name">Estate Property Offer List View</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offers">
+            <list string="Property Offers" editable="bottom" decoration-danger="status == 'refused'"
+                decoration-success="status == 'accepted'">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <button name="action_accept" type="object" title="Accept Offer" icon="fa-check"/>
-                <button name="action_refuse" type="object" title="Refuse Offer" icon="fa-times"/>
+                <button name="action_accept" type="object" title="Accept" class="btn-success" icon="fa-check" invisible="status in ['accepted', 'refused']"/>
+                <button name="action_refuse" type="object" title="Refuse" class="btn-danger" icon="fa-close" invisible="status in ['accepted', 'refused']"/>
                 <field name="status"/>
             </list>
         </field>

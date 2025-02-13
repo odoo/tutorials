@@ -1,13 +1,20 @@
 # -- coding: utf-8 --
 # Part of Odoo. See LICENSE file for full copyright and licensing details. 
 
-from odoo import api,models,fields
+from odoo import api, models, fields, exceptions, _
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
+    _order = "id desc"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+    ]
 
     name = fields.Char(string='Property Name', required=True)
     description = fields.Text(string='Description')
@@ -67,11 +74,24 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("A sold property cannot be cancelled.")
+                raise UserError(_("Sold properties cannot be cancelled."))
             record.state = 'cancelled'
 
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("A cancelled property cannot be sold.")
+                raise UserError(_("Cancelled properties cannot be sold."))
             record.state = 'sold' 
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_rounding=0.01) and \
+               float_compare(record.selling_price, 0.9 * record.expected_price, precision_rounding=0.01) < 0:
+                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise exceptions.UserError(_("You can only delete properties that are New or Cancelled."))
