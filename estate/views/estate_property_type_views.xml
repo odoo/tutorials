@@ -9,7 +9,7 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Property Types">
                 <field name="name"/>
                 <field name="sequence" widget="handle"/>
             </list>
@@ -19,10 +19,10 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Property Type">
+            <form string="Property Type Form">
                 <sheet>
                     <div name='button_box'>
-                        <button name="estate.action_estate_property_offer" type="action" class="oe_stat_button" icon="fa-th-list">
+                        <button name="estate.estate_property_offer_action" type="action" class="oe_stat_button" icon="fa-th-list">
                             <field name="offer_count" widget="statinfo"/>
                         </button>
                     </div>

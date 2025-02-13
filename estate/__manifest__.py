@@ -20,7 +20,7 @@
         ],
     },
     'images': ['static/description/icon.png'],
-    'instalable': True,
+    'installable': True,
     'application':True,
     'license': 'LGPL-3'
 }

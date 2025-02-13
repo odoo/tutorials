@@ -65,7 +65,7 @@ class EstateProperty(models.Model):
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
-            record.total_area = record.living_area + record.garden_area
+            record.total_area = (record.living_area or 0) + (record.garden_area or 0)
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -113,4 +113,4 @@ class EstateProperty(models.Model):
     def _check_state_on_delete(self):
         for record in self:
             if record.status not in ['sold', 'cancelled']:
-                raise exceptions.UserError("You can only delete properties in the 'New' or 'Cancelled' state.")
+                raise exceptions.UserError("Only properties with 'New' or 'Cancelled' status can be deleted.")

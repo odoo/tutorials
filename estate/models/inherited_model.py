@@ -7,5 +7,6 @@ class RefUsers(models.Model):
         "estate.property",
         "salesperson_id",
         string="Properties",
+        readonly=True,
         domain=[('status', 'in', ['new', 'offer_received'])]
     )

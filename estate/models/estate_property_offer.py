@@ -35,7 +35,7 @@ class EstatePropertyOffer(models.Model):
                 delta = record.date_deadline - record.create_date
                 record.validity = delta.days
 
-    def action_accept(self):
+    def action_accept_offer(self):
         for record in self:
             if record.property_id.status == 'sold':
                 raise exceptions.UserError("This property is already sold.")
@@ -53,7 +53,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
         return True
 
-    def action_refuse(self):
+    def action_refuse_offer(self):
         for record in self:
             if record.property_id.status == 'sold':
                 raise exceptions.UserError("This property is already sold.")
