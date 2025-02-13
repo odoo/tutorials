@@ -1,7 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
-
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -9,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = 'id desc'
     
     name = fields.Char("Property Name", required=True)
     description = fields.Text("Description")
@@ -70,7 +70,7 @@ class EstateProperty(models.Model):
     
     @api.onchange('garden')
     def _onchange_garden(self): 
-        if self.garden == True:
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
         else:
