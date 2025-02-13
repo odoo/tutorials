@@ -3,7 +3,7 @@
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available_properties_filter': True}</field>
     </record>
 
@@ -75,8 +75,7 @@
                                 readonly="status == 'offer_accepted' or status=='sold' or status=='cancelled'">
                                 <list editable="bottom"
                                     decoration-success="state=='accepted'"
-                                    decoration-danger="state=='refused'"
-                                >
+                                    decoration-danger="state=='refused'">
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="property_type_id" />
@@ -120,6 +119,30 @@
                     <filter string="Postcode" name="postcode_name" context="{'group_by':'postcode'}" />
                 </group>
             </search>
+        </field>
+    </record>
+
+    <record id="property_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="false">
+                <field name="status" />
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bolder" />
+                        <div> Expected Price : <field name="expected_price" />
+                        </div>
+                        <div t-if="record.status.raw_value == 'offer_received'"> Best Price : <field
+                                name="best_price" />
+                        </div>
+                        <div t-if="record.status.raw_value == 'offer_accepted'"> Selling Price : <field
+                                name="selling_price" />
+                        </div>
+                        <field name="tags_ids" widget="many2many_tags" />
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>

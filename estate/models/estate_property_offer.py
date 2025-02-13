@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float("Price", required=True)
     state = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")],
-        string="Status",
+        string="State",
         copy=False,
         default=False,
     )
@@ -58,6 +58,7 @@ class EstatePropertyOffer(models.Model):
                     other_offers.state = "refused"
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.status = "offer_accepted"
         return True
 
     def action_refused(self):

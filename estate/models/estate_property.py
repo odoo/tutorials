@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text("Description")
     postcode = fields.Text(string="Postcode")
-    selling_price = fields.Float(string="Selling Price", default=0.0)
+    selling_price = fields.Float(string="Selling Price", default=0.0, readonly=True)
     expected_price = fields.Float(string="Expected Price")
     best_price = fields.Float("Best Price", compute="_compute_best_price")
     bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
@@ -34,10 +34,8 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        string="State",
+        string="Status",
         default="new",
-        required=True,
-        copy=False,
     )
     garden_orientation = fields.Selection(
         [
@@ -94,7 +92,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            self.best_price = max(record.offer_ids.mapped("price"), default=0.0)
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
