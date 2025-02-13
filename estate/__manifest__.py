@@ -1,7 +1,7 @@
 {
     "name": "Estate",
     "application": True,
-    "depends": ["base"],
+    "depends": ["base","mail"],
     "sequence": 1,
     "license": "LGPL-3",
     "installable" : True,

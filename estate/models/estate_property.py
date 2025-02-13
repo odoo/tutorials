@@ -1,13 +1,14 @@
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ['mail.thread']
     _description = "Real Estate Property"
     _order = "id desc"
 
@@ -15,11 +16,11 @@ class EstateProperty(models.Model):
         return datetime.today() + relativedelta(months=3)
 
     active = fields.Boolean(default=True)
-    name = fields.Char(string="Property Name", required=True)
+    name = fields.Char(string="Property Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postal Code")
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False, tracking=True)
     bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Number of Facades")
@@ -40,13 +41,13 @@ class EstateProperty(models.Model):
         default="new",
         selection=[
             ("new", "New"),
-            ("recevied", "Received"),
+            ("received", "Received"),
             ("accepted", "Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        # compute="_compute_state",
         store=True,
+        tracking=True
     )
     date_availability = fields.Date(
         string="Available From", copy=False, default=_default_date_availability
@@ -107,24 +108,15 @@ class EstateProperty(models.Model):
                 continue
             min_selling_price = record.expected_price * 0.9
 
-            if (
-                float_compare(
-                    record.selling_price, min_selling_price, precision_digits=2
-                )
-                < 0
-            ):
-                raise ValidationError(
-                    "Selling price cannot be lower than 90% of expected price"
-                )
+            if (float_compare(record.selling_price, min_selling_price, precision_digits=2)< 0):
+                raise ValidationError("Selling price cannot be lower than 90% of expected price")
 
     @api.ondelete(at_uninstall=False)
-    def _prevent_deletion_for_offers(self):
+    def _unlink_block_offer_deletion(self):
         for record in self:
             if record.state not in ["new", "cancelled"]:
                 state_label = dict(self._fields['state'].selection).get(record.state)
-                raise UserError(
-                    f"This offer is in {state_label} state. You can't delete it."
-                )
+                raise UserError(f"This offer is in {state_label} state. You can't delete it.")
 
     def mark_offer_sold(self):
         for record in self:

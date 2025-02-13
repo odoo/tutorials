@@ -1,11 +1,12 @@
 from datetime import timedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
-class estatePropertyOffer(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-    _description = "Propert offers"
+    _description = "Property offers"
     _order = "price desc"
 
     price = fields.Float(string="Price")
@@ -24,13 +25,13 @@ class estatePropertyOffer(models.Model):
         store=True,
     )
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )
 
     _sql_constraints = [
-        ("check_offer_price", "CHECK(price > 0)", "Offer price must be > 0")
+        ("check_offer_price", "CHECK(price > 0)", "The offer price must be positive")
     ]
 
     @api.model_create_multi
@@ -42,20 +43,16 @@ class estatePropertyOffer(models.Model):
                 if any(offer.price >= record.get('price', 0) for offer in existing_offers):
                     raise UserError("An existing offer has an equal or higher amount. Please submit a higher offer.")
     
-            self.env['estate.property'].browse(record['property_id']).state = "recevied"
+            self.env['estate.property'].browse(record['property_id']).state = "received"
         return super().create(vals)
 
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
         for offer in self:
             if offer.create_date:
-                offer.date_deadline = offer.create_date.date() + timedelta(
-                    days=offer.validity
-                )
+                offer.date_deadline = offer.create_date.date() + timedelta(days=offer.validity)
             else:
-                offer.date_deadline = fields.Date.today() + timedelta(
-                    days=offer.validity
-                )
+                offer.date_deadline = fields.Date.today() + timedelta(days=offer.validity)
 
     def _inverse_deadline(self):
         for offer in self:
@@ -66,9 +63,6 @@ class estatePropertyOffer(models.Model):
 
     def accept_offer(self):
         for offer in self:
-            if offer.status == "accepted":
-                raise UserError("This offer has already been accepted.")
-
             # Accept the current offer
             offer.status = "accepted"
             offer.property_id.state = "accepted"
@@ -83,8 +77,6 @@ class estatePropertyOffer(models.Model):
 
     def reject_offer(self):
         for offer in self:
-            if offer.status == "refused":
-                raise UserError(f"Offer {offer.id} is already refused.")
 
             if offer.status == "accepted":
                 offer.property_id.selling_price = 0
@@ -92,5 +84,3 @@ class estatePropertyOffer(models.Model):
 
             offer.status = "refused"
         return True
-
-

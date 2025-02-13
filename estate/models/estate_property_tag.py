@@ -13,6 +13,6 @@ class estatePropertyTag(models.Model):
         (
             "unique_property_tag",
             "unique(name)",
-            "A tag woth same property tag already exist",
+            "A tag with same property tag already exist",
         ),
     ]
