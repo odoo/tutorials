@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="estate_property_type_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Property Types">
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Type"/>
+            </list>
+        </field>
+    </record>
+
     <record id="estate_property_type_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button class="oe_stat_button" name="%(estate.estate_property_offer_action)d"
+                        type="action"
+                        icon="fa-money">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="offer_count" widget="statinfo" string="Offers"/>                            
+                            </span>
+                            <span class="o_stat_text">
+                                Offers
+                            </span>
+                        </div>
+                    </button>
+                </div>
                     <h1><field name="name"/></h1>
+                    <separator/>
+                <notebook>
+                    <page string="Properties">
+                        <field name="property_ids" string="Properties" nolabel="1" >
+                        <list string="Properties">
+                            <field name="name" string="Title"/>
+                            <field name="expected_price" string="Expected Price"/>
+                            <field name="state" string="Status"/>
+                        </list>
+                        </field>
+                    </page>
+                </notebook>
                 </sheet>
             </form>
         </field>
