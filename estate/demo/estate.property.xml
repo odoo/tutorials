@@ -1,0 +1,53 @@
+<odoo>
+    <record id="estate_property_demo_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">1600000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate.type_residential"/>
+    </record>
+    <record id="estate_property_demo_2" model="estate.property">
+        <field name="name">Trailer Home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="selling_price">120000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="estate.type_residential"/>
+    </record>
+     <record id="estate_property_demo_3" model="estate.property">
+        <field name="name">Bandra Property</field>
+        <field name="state">new</field>
+        <field name="description">High class bandra property.</field>
+        <field name="postcode">380015</field>
+        <field name="date_availability">2025-02-15</field>
+        <field name="expected_price">100000000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="estate.type_residential"/>
+        <field name="offer_ids" eval="[
+            Command.create({
+            'partner_id':ref('base.res_partner_2'),'price':100000000,'validity':15
+            }),
+            Command.create({
+            'partner_id':ref('base.res_partner_12'),'price':100000001,'validity':15
+            })
+        ]"/>
+    </record>
+</odoo>

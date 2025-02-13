@@ -19,6 +19,7 @@
                 </div>
                     <h1>
                         <field name="name"/>
+                        <field name="sequence"/>
                     </h1>
                     <notebook>
                         <page string="Properties">

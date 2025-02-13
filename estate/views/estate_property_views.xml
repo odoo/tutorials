@@ -96,10 +96,19 @@
                         </page>
                     </notebook>
                 </sheet>
+                    <chatter/>
             </form>
         </field>
     </record>
-
+    <!-- <record id="estate_property_chatter" model="ir.ui.view">
+        <field name="name">estate.property.chatter</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Business Trip">
+                <chatter/>
+            </form>
+        </field>
+    </record> -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>

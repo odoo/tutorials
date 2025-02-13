@@ -15,7 +15,7 @@ class EstatePropertyType(models.Model):
     _sql_constraints = [
         ("uniq_type", "unique(name)", "Types should have a unique name.")
     ]
-
+    
     @api.depends('offer_ids')
     def _compute_offer_count(self):
         for record in self:

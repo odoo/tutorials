@@ -6,6 +6,7 @@ from odoo.exceptions import ValidationError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ["mail.thread"]
     _description = "This is the estate property model"
     _order = "id desc"
 
