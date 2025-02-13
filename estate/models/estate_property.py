@@ -85,3 +85,9 @@ class EstateProperty(models.Model):
                 rec.state="cancel"
             else:
                 raise UserError(_("Sold property can not be cancel"))
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_deletion(self):
+        for rec in self:
+            if(rec.state not in ['new', 'canceled']):
+                raise UserError(_("Can't delete  this property!" ))

@@ -41,6 +41,7 @@ class EstatePropertyOffer(models.Model):
             self.status="accepted"
             self.property_id.selling_price = self.price
             self.property_id.partner_id = self.partner_id
+            self.property_id.state="offer_accepted"
             
     def action_refused(self):
             self.status="refused"   
@@ -49,4 +50,16 @@ class EstatePropertyOffer(models.Model):
     def _check_price(self):
             for rec in self:
                     if(rec.price < (rec.property_id.expected_price * 90) / 100):
-                           raise UserError(_("The price should be at least 90% of the expected price, which is {}.").format((rec.property_id.expected_price * 90) / 100))
+                           raise UserError(_(r"Selling price cannot be less than 90% of the expected price."))
+
+
+    @api.model_create_multi
+    def create(self, rec_list):
+            for rec in rec_list:
+                    if rec["property_id"]:
+                            val = self.env["estate.property"].browse(rec["property_id"])
+                    if rec["price"] < val.best_price:
+                            raise UserError("price must be greater than best price")  
+                    if val.state == "new":
+                            val.state = "offer_received"      
+            return super().create(rec_list)       
