@@ -33,7 +33,10 @@ class RealEstateProperty(models.Model):
     selling_price = fields.Float(
         string="Selling Price", help="The selling price excluding taxes.", required=True
     )
-    availability_date = fields.Date(string="Availability Date")
+    availability_date = fields.Date(
+        string="Availability Date",
+        default=lambda self: date_utils.add(fields.Date.today(), months=2)
+    )
     stalled = fields.Boolean(string="Stalled", compute='_compute_stalled', search='_search_stalled')
     floor_area = fields.Integer(
         string="Floor Area", help="The floor area in square meters excluding the garden."
@@ -48,7 +51,9 @@ class RealEstateProperty(models.Model):
     address_id = fields.Many2one(string="Address", comodel_name='res.partner', required=True)
     street = fields.Char(string="Street", related='address_id.street', readonly=False, store=True)
     seller_id = fields.Many2one(string="Seller", comodel_name='res.partner', required=True)
-    salesperson_id = fields.Many2one(string="Salesperson", comodel_name='res.users')
+    salesperson_id = fields.Many2one(
+        string="Salesperson", comodel_name='res.users', default=lambda self: self.env.user
+    )
     offer_ids = fields.One2many(
         string="Offers", comodel_name='real.estate.offer', inverse_name='property_id'
     )
