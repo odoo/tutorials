@@ -5,7 +5,6 @@
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
         <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
         <field name="domain_force">['|',('salesperson_id', '=', user.id), ('salesperson_id', '=', False)]</field>
     </record>
@@ -17,5 +16,10 @@
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="True"/>
         <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]"/>
+    </record>
+    <record id="estate_property_rule_access_company" model="ir.rule">
+        <field name="name">Only access the properties associated with the company </field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">['|',('company_id','in',company_ids), ('company_id','=',False)]</field>
     </record>
 </odoo>
