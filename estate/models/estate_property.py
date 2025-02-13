@@ -16,9 +16,10 @@ class PropertyPlan(models.Model):
     date_availability = fields.Date(
         string="Available From",
         copy=False,
-        default=(fields.Date.today() + relativedelta(months=+3)), tracking=True
+        default=(fields.Date.today() + relativedelta(months=+3)),
+        tracking=True,
     )
-    expected_price = fields.Float(string="Expected Price", required=True,tracking=True)
+    expected_price = fields.Float(string="Expected Price", required=True, tracking=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, tracking=True)
     bedrooms = fields.Integer(string="Bedrooms", default=2, tracking=True)
     living_area = fields.Integer(string="Living Area (sqm)", tracking=True)
@@ -38,8 +39,10 @@ class PropertyPlan(models.Model):
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
+            ("invoiced", "Invoiced"),
         ],
-        help="Sate of Offer", tracking=True
+        help="Sate of Offer",
+        tracking=True,
     )
     garden_orientation = fields.Selection(
         string="Garden Orientation",
@@ -49,17 +52,23 @@ class PropertyPlan(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
-        help="Used to decide the direction of Garden", tracking=True
+        help="Used to decide the direction of Garden",
+        tracking=True,
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type", tracking=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type", string="Property Type", tracking=True
+    )
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
-    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False, tracking=True)
+    partner_id = fields.Many2one(
+        "res.partner", string="Buyer", copy=False, tracking=True
+    )
     sales_person = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Price")
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+    priority = fields.Integer(default=1)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -85,9 +94,7 @@ class PropertyPlan(models.Model):
 
     def action_property_cancelled(self):
         for record in self:
-            if record.state == "cancelled":
-                raise ValidationError("Already cancelled.")
-            elif record.state == "sold":
+            if record.state == "sold":
                 raise ValidationError("Cannot cancel a sold property!")
             else:
                 record.state = "cancelled"
@@ -95,13 +102,14 @@ class PropertyPlan(models.Model):
 
     def action_property_sold(self):
         for record in self:
-            if record.state == "sold":
-                raise ValidationError("Already sold.")
-            elif record.state == "cancelled":
+            if record.state == "cancelled":
                 raise ValidationError("Cannot sell a cancelled property!")
             else:
                 record.state = "sold"
         return True
+
+    def action_to_invoice_property(self):
+        print()
 
     _sql_constraints = [
         (
@@ -132,3 +140,27 @@ class PropertyPlan(models.Model):
     def _deleting_record(self):
         if self.state != "new" and self.state != "cancelled":
             raise UserError("Only new and cancelled properties can be deleted!")
+
+    # def _get_estate_property_view(self):
+
+    #     if self._is_module_installed('estate_account'):
+    #         print("installed")
+    #         print(self.env.ref('estate.estate_action_view_tree').id)
+    #         return self.env.ref('estate.estate_action_view_tree').id
+    #     else:
+    #         print("not installed")
+    #         print(self.env.ref('estate.estate_property_view_tree').id)
+    #         return self.env.ref('estate.estate_property_view_tree').id
+
+    # @api.model
+    # def action_view_estate_properties(self):
+
+    #     view_id = self._get_estate_property_view()
+    #     return {
+    #         'type': 'ir.actions.act_window',
+    #         'name': 'Estate Properties',
+    #         'res_model': 'estate.property',
+    #         'view_mode': 'list,form',
+    #         'view_id': view_id,
+    #         'target': 'current',
+    #     }

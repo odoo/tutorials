@@ -1,10 +1,17 @@
-from odoo import models, fields, Command
+from odoo import api, Command, fields, models
 
 
 class EstateProperty(models.Model):
-    _inherit = "estate.property"
+    _inherit = ["estate.property"]
 
-    def action_property_sold(self):
+    state = fields.Selection(
+        selection_add =[
+            ("invoiced","Invoiced")
+        ], ondelete={'invoiced':'cascade'}
+    )   
+
+    def action_to_invoice_property(self):
+        print("sdfvdfvdfvdfv")
         move_vals = {
             "partner_id": self.partner_id.id,
             "move_type": "out_invoice",
@@ -35,4 +42,6 @@ class EstateProperty(models.Model):
 
         self.env["account.move"].create(move_vals)
 
-        super(EstateProperty, self).action_property_sold()
+        res = super(EstateProperty, self).action_property_sold()
+        self.state = "invoiced"
+        return res
