@@ -1,8 +1,9 @@
 <odoo>
-    <record id="estate_property_account_list_view" model="ir.ui.view">
+    <record id="estate_property_account_view_list" model="ir.ui.view">
         <field name="name">estate.property.account.list</field>
         <field name="model">estate.property</field>
-        <field name="inherit_id" ref="estate.estate_property_list_view" />
+        <field name="inherit_id" ref="estate.estate_property_view_list" />
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//list" position="replace">
                 <list string="Property" multi_edit="1" decoration-success="state == 'offer_received'" decoration-bf="state == 'offer_received'" decoration-muted="state == 'sold'">
@@ -29,6 +30,6 @@
 
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="res_model">estate.property</field>
-        <field name="view_id" ref="estate_property_account_list_view" />
+        <field name="view_id" ref="estate_account.estate_property_account_view_list" />
     </record>
 </odoo>

@@ -11,14 +11,14 @@ class EstateProperty(models.Model):
     _order = "id desc"
     _inherit = ["mail.thread"]
     
-    def calculate_three_months_later():
+    def _default_date_availability(self):
         today = datetime.now()
         return today + relativedelta(months=3)
 
     name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode", group_expand=True)
-    date_availability = fields.Date(string="Date Availability", default=calculate_three_months_later(), copy=False)
+    postcode = fields.Char(string="Postcode")
+    date_availability = fields.Date(string="Date Availability", default=_default_date_availability, copy=False)
     expected_price = fields.Float(string="Expected Price", required=True, tracking=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
@@ -76,6 +76,19 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
+    # Python Constraints
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                    raise ValidationError("The selling price must be greater than the 90% of expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _delete_property(self):
+        if self.state != 'new' and self.state != 'cancelled':
+            raise UserError("Only new and cancelled propeties can be deleted.")
+
     # Action Button Methods
     # This methods were used earlier for different sold and cancel button of the property form
     def action_set_sold_status(self):
@@ -106,16 +119,3 @@ class EstateProperty(models.Model):
     def action_create_invoice(self):
         # this method is defined to be inherited by estate_account module and create the invoice
         return True
-
-    # Python Constraints
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2):
-                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
-                    raise ValidationError("The selling price must be greater than the 90% of expected price.")
-
-    @api.ondelete(at_uninstall=False)
-    def _delete_property(self):
-        if self.state != 'new' and self.state != 'cancelled':
-            raise UserError("Only new and cancelled propeties can be deleted.")

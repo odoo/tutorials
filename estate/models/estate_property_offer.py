@@ -34,7 +34,18 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - fields.Date.today()).days
             else:
                 record.validity = 7
-    
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if self.env['estate.property'].browse(vals['property_id']).best_offer:
+                if vals.get('price') < self.env['estate.property'].browse(vals['property_id']).expected_price or vals.get('price') < self.env['estate.property'].browse(vals['property_id']).best_offer:
+                    max_val = max(self.env['estate.property'].browse(vals['property_id']).best_offer, self.env['estate.property'].browse(vals['property_id']).expected_price)
+                    raise UserError(f"The offer must be higher than best offer {max_val}")
+
+            self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
+        return super(EstatePropertyOffer, self).create(vals_list)
+
     # Action Button Methods
     def action_set_offer_status_accepted(self):
         for offer in self:
@@ -54,13 +65,4 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Property is already accepted or refused.")
             else:
                 record.status = 'refused'
-
-    @api.model
-    def create(self, vals_list):
-        if self.env['estate.property'].browse(vals_list['property_id']).best_offer:
-            if vals_list.get('price') < self.env['estate.property'].browse(vals_list['property_id']).expected_price or vals_list.get('price') < self.env['estate.property'].browse(vals_list['property_id']).best_offer:
-                max_val = max(self.env['estate.property'].browse(vals_list['property_id']).best_offer, self.env['estate.property'].browse(vals_list['property_id']).expected_price)
-                raise UserError(f"The offer must be higher than best offer {max_val}")
-        
-        self.env['estate.property'].browse(vals_list['property_id']).state = 'offer_received'
-        return super(EstatePropertyOffer, self).create(vals_list)
+                
