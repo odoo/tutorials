@@ -25,7 +25,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', string='Property', required=True)
     validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
-    property_type_id = fields.Many2one('estate.property.type', string='Property Type', related='property_id.property_type_id', store=True)
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type', related='property_id.property_type_id')
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -51,3 +51,12 @@ class EstatePropertyOffer(models.Model):
     def action_refuse_offer(self):
         for record in self:
             record.status = 'refused'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for record in vals_list:
+            property = self.env['estate.property'].browse(record.get('property_id'))
+            if property.best_price > record.get('price'):
+                raise UserError("Offer price can't be less than the current best offer.")
+            property.state = 'offer_received'
+        return super().create(vals_list)
