@@ -106,6 +106,10 @@ class EstateProperty(models.Model):
     def action_sell_property(self):
         if self.state == "cancelled":
             raise UserError("Cancelled property cannot be sold")
+        if not self.buyer_id.id:
+            raise UserError("Property without buyer cannot be sold.")
+        if not any([offer.status == "accepted" for offer in self.offer_ids]):
+            raise UserError("You must accept an offer before selling the property.")
         self.state = "sold"
 
     def action_cancel_property(self):

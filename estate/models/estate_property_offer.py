@@ -30,6 +30,8 @@ class EstatePropertyOffer(models.Model):
         offers = []
         for val in vals:
             property = self.env["estate.property"].browse(val["property_id"])
+            if property.state == "sold":
+                raise UserError("Offers cannot be made for sold property!")
             for offer in property.offer_ids:
                 if offer.price > val["price"]:
                     raise UserError(f"The offer must be higher than {offer.price}")

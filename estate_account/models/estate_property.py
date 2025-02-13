@@ -8,8 +8,7 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sell_property(self):
-        if not self.buyer_id.id:
-            raise UserError("Property without buyer cannot be sold.")
+        super().action_sell_property()
         try:
             self.env["estate.property"].check_access("write")
         except:
@@ -22,4 +21,3 @@ class EstateProperty(models.Model):
                 Command.create({"name": "Administrative Fees", "quantity": 1, "price_unit": 100.0})
             ]
         })
-        return super().action_sell_property()
