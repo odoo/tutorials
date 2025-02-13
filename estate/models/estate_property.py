@@ -5,13 +5,14 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class Property_Plan(models.Model):
     _name = "estate.property"
     _description = "Estate Model containing all the fields"
+    _inherit = ["mail.thread"]
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
-    name = fields.Char(string="Title", required=True, help="Enter the name of property")
+    name = fields.Char(string="Title", required=True, help="Enter the name of property", tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Date Availability", copy=False, default=lambda self: (datetime.today() + timedelta(days=90)).date())
