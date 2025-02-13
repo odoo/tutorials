@@ -1,6 +1,7 @@
 {
     "name": "estate",
     "category": "Real Estate/Brokerage",
+    "depends": ["base", "mail"],  # Add 'mail' module
     "data": [
         "views/res_user_views.xml",
         "views/estate_property_offer.xml",

@@ -9,6 +9,7 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "test description 4"
     _order = "price desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]  # enables the chatter
 
     price = fields.Float(allow_negative=False)
     status = fields.Selection(
@@ -26,6 +27,7 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )
+    fil = fields.Char("DDSDS")
 
     @api.depends("validity")
     def _compute_date(self):

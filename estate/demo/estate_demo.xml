@@ -1,5 +1,5 @@
 <odoo>
-    <data>
+    <data noupdate="1">
 
         <!-- Big Villa -->
         <record id="estate_property_big_villa" model="estate.property">
@@ -17,6 +17,7 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
+            <field name="property_type_id" ref="estate_property_type_residential"/>
         </record>
 
         <!-- Trailer Home -->
@@ -32,6 +33,28 @@
             <field name="facades">4</field>
             <field name="garage">False</field>
             <field name="garden">False</field>
+            <field name="property_type_id" ref="estate_property_type_residential"/>
+        </record>
+        <!--Apartment home-->
+        <record id="estate_property_aparment_home" model="estate.property">
+            <field name="name">Apartment Home</field>
+            <field name="state">new</field>
+            <field name="description">Home in a apartment building</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability">1970-01-01</field>
+            <field name="expected_price">100000</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="property_type_id" ref="estate_property_type_residential"/>
+            <field name="offer_ids" eval="[
+            Command.create({'partner_id': ref('base.res_partner_1'), 'price': 700000, 'validity': 10}),
+            Command.create({'partner_id': ref('base.res_partner_2'), 'price': 720000, 'validity': 15}),
+            Command.create({'partner_id': ref('base.res_partner_3'), 'price': 730000, 'validity': 20})
+            ]"/>
+
         </record>
         <!-- Residential Property Type -->
         <record id="estate_property_type_residential" model="estate.property.type">
@@ -52,5 +75,38 @@
         <record id="estate_property_type_land" model="estate.property.type">
             <field name="name">Land</field>
         </record>
+        
+        <record id="azure_interior_offer_1" model="estate.property.offer">
+            <field name="property_id" ref="estate_property_big_villa"/>
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="price">10000</field>
+            <field name="validity">14</field>
+        </record>
+
+        <record id="azure_interior_offer_2" model="estate.property.offer">
+                <field name="property_id" ref="estate_property_big_villa"/>
+                <field name="partner_id" ref="base.res_partner_12"/>
+                <field name="price">1500000</field>
+                <field name="validity">14</field>
+        </record>
+                <record id="deco_addict_offer_1" model="estate.property.offer">
+                <field name="property_id" ref="estate_property_big_villa"/>
+                <field name="partner_id" ref="base.res_partner_2"/>
+                <field name="price">1500001</field>
+                <field name="validity">14</field>
+        </record>
+
+        <function model="estate.property.offer" name="offer_refuse">
+            <value eval="[ref('azure_interior_offer_1')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="offer_refuse">
+            <value eval="[ref('azure_interior_offer_2')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="offer_accept">
+            <value eval="[ref('deco_addict_offer_1')]"/>
+        </function>
+        
     </data>
 </odoo>

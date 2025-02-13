@@ -7,7 +7,8 @@ from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "This is a test description"
+    _description = "A new property is listed"
+    _inherit = ["mail.thread", "mail.activity.mixin"]  # enables the chatter
     _order = "id desc"
 
     name = fields.Char(required=True)
@@ -46,15 +47,21 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
+        tracking=True,
     )
     property_type_id = fields.Many2one("estate.property.type")
-    buyer_id = fields.Many2one("res.partner", string="buyer_id", copy=False)
+    buyer_id = fields.Many2one(
+        "res.partner", string="buyer_id", copy=False, tracking=True
+    )
     tag_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many("estate.property.offer", "property_id")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", tracking=True)
     total_area = fields.Float(compute="_compute_area")
-    best_price = fields.Float(compute="_compute_best_offer")
+    best_price = fields.Float(compute="_compute_best_offer", tracking=True)
     seller_id = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user
+        "res.users",
+        string="Salesman",
+        default=lambda self: self.env.user,
+        tracking=True,
     )
     _sql_constraints = [
         (
@@ -120,3 +127,9 @@ class EstateProperty(models.Model):
 
         # Call the super method to actually delete the property
         return super(EstateProperty, self).unlink()
+
+    def _track_subtype(self, init_values):
+        self.ensure_one()
+        if "state" in init_values and self.state == "sold":
+            return self.env.ref("estate.mt_state_change")
+        return super()._track_subtype(init_values)

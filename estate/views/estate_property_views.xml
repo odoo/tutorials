@@ -93,8 +93,17 @@
                     </page>
                 </notebook>
             </sheet>
+            <chatter reload_on_post="True"/>
         </form>
     </field>
+
+</record>
+
+<record id="mt_state_change" model="mail.message.subtype">
+    <field name="name">Property Sold</field>
+    <field name="res_model">estate.property</field>
+    <field name="default" eval="True"/>
+    <field name="description">Property Sold!</field>
 </record>
 
 <record id ="estate_property_view_search" model="ir.ui.view">
