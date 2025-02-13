@@ -53,6 +53,7 @@ class EstateProperty(models.Model):
   offer_ids = fields.One2many('estate.property.offer', inverse_name='property_id')
   total_area = fields.Float(string='Total Area', compute='_compute_area')
   best_price = fields.Float(string='Best Price', compute='_compute_best_price')
+  company_id = fields.Integer(string='Company ID')
 
 
   @api.depends('living_area', 'garden_area')

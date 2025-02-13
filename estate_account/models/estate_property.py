@@ -5,13 +5,16 @@ from odoo import Command, models
 
 
 class EstatePropertyAccount(models.Model):
-  _inherit = "estate.property"
+  _inherit = 'estate.property'
 
   def action_set_property_sold(self):
-    journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
+    self.check_access_rights('write')
+    self.check_access_rule('write')
+
+    journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
 
     for record in self:
-      self.env["account.move"].create({
+      self.env['account.move'].create({
       'partner_id': record.buyer_id.id,
       'move_type': 'out_invoice',
       'journal_id': journal.id,
@@ -24,7 +27,7 @@ class EstatePropertyAccount(models.Model):
         Command.create({
           'name': 'Administrative Fees',
           'quantity': 1,
-          'price_unit': "100.00"
+          'price_unit': '100.00'
         })
       ]
     })

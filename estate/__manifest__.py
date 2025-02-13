@@ -1,12 +1,12 @@
 {
-    'name': "Real Estate",
+    'name': 'Real Estate',
     'version': '1.0',
     'depends': ['base'],
-    'author': "Odoo PS",
+    'author': 'Odoo PS',
     'website': 'https://www.odoo.com/',
     'license': 'LGPL-3',
-    'category': 'Category',
-    'description': "this is description",
+    'category': 'Real Estate/Brokerage',
+    'description': 'this is description',
     'application': True,
     'installable': True,
     'data': [
@@ -16,8 +16,7 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_res_users_views.xml',
+        'security/security.xml',
         'views/estate_menus.xml',
-    ],
-    'demo': [
-    ],
+    ]
 }
