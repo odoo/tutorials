@@ -24,7 +24,6 @@
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-
             </list>
         </field>
     </record>
@@ -69,6 +68,7 @@
                             <group>
                                 <group>
                                     <field name="description" />
+                                    <field name="company_id"/>
                                     <field name="bedrooms" />
                                     <field name="garage" />
                                     <field name="garden" />
@@ -116,6 +116,7 @@
                 <field string="Living Area (sqm)" name="living_area" filter_domain="['>=', ('area'), (self)]"/>
                 <filter name="availible_property" string="Avalible" domain="[('state', 'in', ('offer_received','new'))]"/>
                 <filter string="With Garden" name="garden" domain="[('garden', '=', True)]" />
+                <filter string="Not Active" name="garden" domain="[('active', '=', False)]" />
                 <filter string="State" name="state" context="{'group_by':'state'}"/>
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
                 <filter string="Tags" name="tag_ids" context="{'group_by':'tag_ids'}" />

@@ -69,7 +69,7 @@ class EstateProperty(models.Model):
 
     total_area = fields.Float(compute='_compute_total_area')
     best_price=fields.Integer(compute="_compute_best_price")
-
+    company_id = fields.Many2one(string="Company", comodel_name="res.company", default=lambda self: self.env.user.company_id)
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
