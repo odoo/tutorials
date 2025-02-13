@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class EstatePropertyType(models.Model):
+class EstatePropertyTag(models.Model):
 
     _name = 'estate.property.tag'
     _description = "Property Tag"
@@ -15,7 +15,6 @@ class EstatePropertyType(models.Model):
         string="Color",
         default=5
     )
-    
 
     # SQL CONSTRAINTS
     _sql_constraints = [

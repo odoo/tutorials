@@ -166,7 +166,7 @@ class EstateProperty(models.Model):
             if property.state == "cancelled":
                 raise UserError("Cancelled Property can not be sold")
             property.state = 'sold'
-        
+
     def action_set_cancel(self):
         for property in self:
             if property.state == "sold":
@@ -200,12 +200,12 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_check_property_state(self):
+        state_mapping = {
+            k: v
+            for k, v in self._fields['state']._description_selection(self.env)
+        }
         for property in self:
-            if property.state not in ['new', 'cancelles']:
-                d = {
-                    'offer_received':'Offer Received',
-                    'offer_accepted':'Offer Accepted',
-                }
+            if property.state not in ['new', 'cancelled']:
                 raise UserError(
-                    f"You cannot delete a property in {d[property.state]} state."
+                    f"You cannot delete a property in {state_mapping[property.state]} state."
                 )
