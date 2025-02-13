@@ -1,7 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo import api, fields, models
+from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     # Model Configuration
@@ -13,9 +14,10 @@ class EstateProperty(models.Model):
     #---------------------------------------------------------------------
     # SQL Constraints
     #---------------------------------------------------------------------
-    # _sql_constraints = [
-    #     ('check price', 'CHECK(expected_price >= 0)', 'The expected price must be positive')
-    # ]
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)', 'The expected price must be positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The expected price must be positive'),
+    ]
 
     #---------------------------------------------------------------------
     # Fields
@@ -29,7 +31,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(string="Expected Price", required=True, tracking=True)
     best_price = fields.Float(compute="_compute_best_offer", string="Best Offer")
-    selling_price = fields.Float(string="Selling Price", default="20000",readonly=True, copy=False)
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer(string="Facades")
@@ -64,20 +66,16 @@ class EstateProperty(models.Model):
     #---------------------------------------------------------------------
     # Relations
     #---------------------------------------------------------------------
-
-    # Relation for property type
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
 
-    # Relation for Partner
+    # Salesmen
     user_id = fields.Many2one("res.users", string="Salesmen", copy=False, default = lambda self: self.env.user)
+    # Buyer
     partner_id = fields.Many2one("res.partner", string="Buyer", readonly=True)
 
-    # Relation for Estate Property Tag
     tag_ids = fields.Many2many("estate.property.tag", string="Tag")
 
-    # Relation for Estate Property Offer
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
-
 
 
     #---------------------------------------------------------------------
@@ -124,9 +122,19 @@ class EstateProperty(models.Model):
 
     # --------------------------- Ondelete Methods ---------------------------
     @api.ondelete(at_uninstall=False)
-    def _ondelete_property(self):
+    def _unlink_property(self):
         for record in self:
             if record.status not in ('new', 'cancelled'):
                 raise UserError("You cannot delete the property which status is not new or cancelled")
+            
 
+    #---------------------------------------------------------------------
+    # Python Constraints
+    #---------------------------------------------------------------------
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
+                    raise ValidationError("The selling price cannot be lower then 90% of the expected price")
 

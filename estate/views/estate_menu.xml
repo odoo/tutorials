@@ -2,7 +2,7 @@
 
 <odoo>
     <!-- =============== Root Menu =================== -->
-    <menuitem id="estate_menu_root" name="Real Estate"/>
+    <menuitem id="estate_menu_root" name="Real Estate" web_icon="estate,static/description/icon.png"/>
 
     <!-- ============== Advertisement Menuitem ================ -->
     <menuitem id="estate_model_advertisement_menu" name="Advertisement" parent="estate_menu_root"/>

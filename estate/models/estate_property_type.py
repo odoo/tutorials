@@ -6,10 +6,18 @@ class EstatePropertyType(models.Model):
     _order = "name"
 
     #---------------------------------------------------------------------
+    # SQL Constraints
+    #---------------------------------------------------------------------
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', 'The property type name should be unique')
+    ]    
+
+    #---------------------------------------------------------------------
     # Fields
     #---------------------------------------------------------------------
     name = fields.Char(required=True)
     sequence = fields.Integer(string="Seqeuence", default=1)
+
 
     #---------------------------------------------------------------------
     # Relations
@@ -17,6 +25,7 @@ class EstatePropertyType(models.Model):
     property_ids = fields.One2many("estate.property", "property_type_id", string="Property Id")
     offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="Type Id")
     offer_count = fields.Integer()
+
 
     #---------------------------------------------------------------------
     # Compute Methods

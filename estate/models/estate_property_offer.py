@@ -9,6 +9,14 @@ class EstatePropetyOffer(models.Model):
     _order= "price desc"
 
     #---------------------------------------------------------------------
+    # SQL Constraints
+    #---------------------------------------------------------------------
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price >= 0)', 'The expected price must be positive')
+    ]
+
+
+    #---------------------------------------------------------------------
     # Fields
     #---------------------------------------------------------------------
     price = fields.Float(string = "Price")
@@ -22,11 +30,12 @@ class EstatePropetyOffer(models.Model):
     validity = fields.Integer(default=7, string="Validity")
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
 
+
     #---------------------------------------------------------------------
     # Relations
     #---------------------------------------------------------------------
     partner_id = fields.Many2one(comodel_name="res.partner", required=True)
-    property_id = fields.Many2one(comodel_name="estate.property", required=True)
+    property_id = fields.Many2one(comodel_name="estate.property", required=True, ondelete="cascade")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type",related="property_id.property_type_id", store=True)
 
 
@@ -53,6 +62,7 @@ class EstatePropetyOffer(models.Model):
         for offer in self.property_id.offer_ids:
             if offer == self:
                 offer.status = "accepted"
+                self.property_id.status = "offer_accepted"
             else:
                 offer.status = "refused"
         return True

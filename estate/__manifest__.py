@@ -3,12 +3,13 @@
     'version': '1.0',
     'depends': ['base','mail'],
     'author': "Dhruv Godhani",
-    'category': 'Category',
+    'category': 'Real Estate/Brokerage',
     'description': """
     This is the first module
     """,
     # data files always loaded at installation
     'data': [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/estate_res_user_views.xml",
         "views/estate_property_views.xml",
