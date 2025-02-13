@@ -49,11 +49,12 @@ class EstatePropertyOffer(models.Model):
             property = self.env["estate.property"].browse(offer["property_id"])
             if property.state != "offer_received":
                 property.state = "offer_received"
-            max_offer = max(property.offer_ids.mapped("price"))
-            max_offer_partner_name = property.offer_ids.filtered(lambda x: x.price == max_offer).mapped("partner_id.name")[0]
-            if property.offer_ids and max_offer > offer["price"]:
-                raise UserError(_(f"The new offer must be higher than the maximum offer of {max_offer:.2f} from {max_offer_partner_name}"))
-            return super().create(vals_list)
+            if property.offer_ids:
+                max_offer = max(property.offer_ids.mapped("price"))
+                max_offer_partner_name = property.offer_ids.filtered(lambda x: x.price == max_offer).mapped("partner_id.name")[0]
+                if max_offer > offer["price"]:
+                    raise UserError(_(f"The new offer must be higher than the maximum offer of {max_offer:.2f} from {max_offer_partner_name}"))
+        return super().create(vals_list)
 
     def action_accept(self):
         if "accepted" in self.mapped("property_id.offer_ids.state"):
