@@ -11,6 +11,12 @@
             "views/inherited_model.xml",
             "views/estate_menus.xml",
     ],
+    'assets': {
+        'web.assets_backend': [
+            'estate/static/description/icon.png',
+        ],
+    },
+    'images': ['static/description/icon.png'],
     "installable": True,
     "application": True,
     "license": "LGPL-3"
