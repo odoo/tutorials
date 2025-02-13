@@ -11,6 +11,7 @@
       "security/security.xml",
       "security/ir.model.access.csv",
       
+      "views/estate_users_view.xml",
       "views/estate_property_offer.xml",
       "views/estate_property_tag.xml",
       "views/estate_property_views.xml",

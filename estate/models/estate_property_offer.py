@@ -1,6 +1,6 @@
 from odoo import api,fields, models
 from datetime import datetime,timedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError,ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -54,3 +54,12 @@ class EstatePropertyOffer(models.Model):
                 record.state = "refused"
                 record.property_id.selling_price = False
                 record.property_id.buyer_id = False
+
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        for rec in res:
+            if rec.price < rec.property_id.best_offer:
+                raise ValidationError('Offer Price should be greater than best price')       
+            else:
+                rec.property_id.status="offer_received"
+        return res 

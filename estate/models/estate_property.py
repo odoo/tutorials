@@ -35,10 +35,10 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     seller_id = fields.Many2one('res.users', string="Seller", default=lambda self: self.env.user)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
-    offer_ids = fields.One2many('estate.property.offer', "property_id", string="Offer")
+    offer_ids = fields.One2many('estate.property.offer',inverse_name="property_id", string="Offer")
     total_area = fields.Float(compute="_compute_total")
     best_offer = fields.Float(compute="_compute_offer")
-
+    
     _sql_constraints = [
         ('expected_price', 'CHECK(expected_price > 0)',
          'The expected price must be strictly positive!'),
@@ -72,7 +72,7 @@ class EstateProperty(models.Model):
     def _check_offer_price(self):
         for record in self:
             if record.selling_price < (record.expected_price * 0.9) and (record.selling_price > 0):
-                raise ValidationError(f"Selling price cannote be lower than 90% of it's expected price!")
+                raise ValidationError(f"Selling price cannote be lower than 90% of it's expected price!")       
 
     def action_sold(self):
         if self.selling_price<0:
@@ -85,3 +85,9 @@ class EstateProperty(models.Model):
         if self.status == 'sold':
             raise UserError('This property cannot be cancelled it is sold')
         self.status='cancelled'
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if record.status not in {'new','cancelled'}:
+                raise UserError('A property can only delete if it is new or cancelled')  
