@@ -10,6 +10,14 @@ class EstatePropertyOffer(models.Model):
     _description = "Real Estate Property Offer"
     _order = "price desc"
 
+    # -------------------------------------------------------------------------
+    # SQL QUERIES
+    # -------------------------------------------------------------------------
+
+    _sql_constraints = [
+        ('check_price', 'CHECK(price >= 0)', 'The price must be positive.'),
+    ]
+
     price = fields.Float(
         string="Price",
         help="The price offered for the property.",
@@ -59,14 +67,6 @@ class EstatePropertyOffer(models.Model):
     )
 
     # -------------------------------------------------------------------------
-    # SQL QUERIES
-    # -------------------------------------------------------------------------
-
-    _sql_constraints = [
-        ('check_price', 'CHECK(price >= 0)', 'The price must be positive.'),
-    ]
-
-    # -------------------------------------------------------------------------
     # COMPUTED FIELDS
     # -------------------------------------------------------------------------
 
@@ -82,31 +82,6 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - datetime.now().date()).days
 
     # -------------------------------------------------------------------------
-    # ONCHANGE METHODS
-    # -------------------------------------------------------------------------
-
-    @api.onchange('price')
-    def _onchange_price(self):
-        if self.price == 0:
-            return
-        if self.price <= 0:
-            raise ValidationError("The price must be positive.")
-
-    # -------------------------------------------------------------------------
-    # ACTION METHODS
-    # -------------------------------------------------------------------------
-
-    def action_confirm(self):
-        self.property_id.offer_ids.status = "refused"
-        self.status = "accepted"
-        self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.partner_id
-        self.property_id.state = "offer_accepted"
-
-    def action_cancel(self):
-        self.status = "refused"
-
-    # -------------------------------------------------------------------------
     # CONSTRAINTS METHODS
     # -------------------------------------------------------------------------
 
@@ -118,6 +93,17 @@ class EstatePropertyOffer(models.Model):
             raise UserError("Offer Price must be atleast 90% of the expected price.")
 
         return True
+
+    # -------------------------------------------------------------------------
+    # ONCHANGE METHODS
+    # -------------------------------------------------------------------------
+
+    @api.onchange('price')
+    def _onchange_price(self):
+        if self.price == 0:
+            return
+        if self.price <= 0:
+            raise ValidationError("The price must be positive.")
 
     # -------------------------------------------------------------------------
     # CRUD METHODS
@@ -134,4 +120,18 @@ class EstatePropertyOffer(models.Model):
             if val['price'] <= min_price:
                 raise ValidationError("The price must be higher than any existing offer.")
 
-            return super().create(vals)
+        return super().create(vals)
+
+    # -------------------------------------------------------------------------
+    # ACTION METHODS
+    # -------------------------------------------------------------------------
+
+    def action_confirm(self):
+        self.property_id.offer_ids.status = "refused"
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = "offer_accepted"
+
+    def action_cancel(self):
+        self.status = "refused"

@@ -5,10 +5,18 @@ class EstateAccount(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        self.env["account.move"].create({
+        print(" reached ".center(100, '='))
+        self.check_access('write')
+
+        self.env["account.move"].sudo().create({
             "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",
             "invoice_line_ids": [
+                Command.create({
+                    "name": self.name,
+                    "quantity": 1,
+                    "price_unit": self.selling_price,
+                }),
                 Command.create({
                     "name": "Property Sale Commission",
                     "quantity": 1,
@@ -22,5 +30,7 @@ class EstateAccount(models.Model):
                 })
             ],
         })
+
+        print("Invoice Created!".center(100, '='))
 
         return super().action_sold()

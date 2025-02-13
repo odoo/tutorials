@@ -6,6 +6,14 @@ class EstatePropertyTag(models.Model):
     _description = "Real Estate Property Tag"
     _order = "name"
 
+    # -------------------------------------------------------------------------
+    # SQL QUERIES
+    # -------------------------------------------------------------------------
+
+    _sql_constraints = [
+        ('uniq_name', 'unique(name)', 'The name of the tag must be unique.')
+    ]
+
     name = fields.Char(
         string="Name",
         help="The name of the property tag.",
@@ -15,11 +23,3 @@ class EstatePropertyTag(models.Model):
         string="Color",
         help="The color of the tag."
     )
-
-    # -------------------------------------------------------------------------
-    # SQL QUERIES
-    # -------------------------------------------------------------------------
-
-    _sql_constraints = [
-        ('uniq_name', 'unique(name)', 'The name of the tag must be unique.')
-    ]

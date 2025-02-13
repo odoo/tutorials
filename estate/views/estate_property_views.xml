@@ -26,7 +26,7 @@
                             <div class="mb8" t-if="record.state.raw_value == 'offer_received'">
                                 Best Offer: <field name="expected_price"/>
                             </div>
-                            <div t-if="record.state.raw_value == 'offer_accepted'">
+                            <div t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold'">
                                 Selling Offer: <field name="selling_price"/>
                             </div>
                             <div>
@@ -101,6 +101,9 @@
                     </group>
                     <notebook>
                         <page string="Description">
+                            <group>
+                                <field name="company_id"/>
+                            </group>
                             <group>
                                 <field name="description"/>
                             </group>

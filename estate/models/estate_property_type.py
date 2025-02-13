@@ -6,6 +6,14 @@ class EstatePropertyType(models.Model):
     _description = "Real Estate Property Type"
     _order = "name"
 
+    # -------------------------------------------------------------------------
+    # SQL QUERIES
+    # -------------------------------------------------------------------------
+
+    _sql_constraints = [
+        ('uniq_name', 'unique(name)', 'The name of the type must be unique.')
+    ]
+
     name = fields.Char(
         string="Name",
         help="The name of the property type.",
@@ -33,14 +41,6 @@ class EstatePropertyType(models.Model):
         help="The number of offers for properties of this type.",
         compute="_compute_offer_count"
     )
-
-    # -------------------------------------------------------------------------
-    # SQL QUERIES
-    # -------------------------------------------------------------------------
-
-    _sql_constraints = [
-        ('uniq_name', 'unique(name)', 'The name of the type must be unique.')
-    ]
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS

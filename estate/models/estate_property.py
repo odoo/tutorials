@@ -9,6 +9,15 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
+    # -------------------------------------------------------------------------
+    # SQL QUERIES
+    # -------------------------------------------------------------------------
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)', 'The expected price must be positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+    ]
+
     # Basic property details
     name = fields.Char(
         string="Name",
@@ -136,15 +145,12 @@ class EstateProperty(models.Model):
         compute="_compute_total_area",
         store=True
     )
-
-    # -------------------------------------------------------------------------
-    # SQL QUERIES
-    # -------------------------------------------------------------------------
-
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >= 0)', 'The expected price must be positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
-    ]
+    company_id = fields.Many2one(
+        string="Company",
+        help="The company that owns the property.",
+        comodel_name="res.company",
+        default=lambda self: self.env.user.company_id
+    )
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
@@ -172,6 +178,17 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     # -------------------------------------------------------------------------
+    # CRUD METHODS
+    # -------------------------------------------------------------------------
+
+    @api.ondelete(at_uninstall=False)
+    def _check_property_deletion(self):
+        if self.state not in ['new', 'canceled']:
+            state = dict(self._fields["state"].selection).get(self.state)
+
+            raise UserError(f"""You cannot delete a property that is in the "{state.title()}" state.""")
+
+    # -------------------------------------------------------------------------
     # ACTION METHODS
     # -------------------------------------------------------------------------
 
@@ -187,14 +204,3 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         self.state = 'canceled'
         return True
-
-    # -------------------------------------------------------------------------
-    # CRUD METHODS
-    # -------------------------------------------------------------------------
-
-    @api.ondelete(at_uninstall=False)
-    def _check_property_deletion(self):
-        if self.state not in ['new', 'canceled']:
-            state = dict(self._fields["state"].selection).get(self.state)
-
-            raise UserError(f"""You cannot delete a property that is in the "{state.title()}" state.""")
