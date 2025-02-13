@@ -67,6 +67,7 @@ class PropertyOffers(models.Model):
 
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.state = "offer_accepted"
         return True
 
     # action method when offer is refused
