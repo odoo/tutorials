@@ -26,19 +26,15 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        print(vals_list)
-        offers = super().create(vals_list)
-        print(offers)
-        for offer in offers:
-            print(offer)
-            property_obj = offer.property_id
-            print(property_obj)
-            max_existing_offer = max(property_obj.offer_ids.mapped("price"), default=0)
-            if offer.price < max_existing_offer:
-                raise UserError(f"The offer price should be greater than {max_existing_offer}.")
-            if property_obj.state == 'new':
-                property_obj.state = 'offer_received'
-        return offers
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            if property_id.state == 'new':
+                property_id.state = 'offer_received'
+            if property_id.offer_ids:
+                if vals['price'] < property_id.offer_ids[0].price:
+                    raise UserError("The offer price must be higher than the existing offer.")
+        return super().create(vals_list)
+        
 
 
     _sql_constraints = [
