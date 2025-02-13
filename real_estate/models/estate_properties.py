@@ -1,4 +1,7 @@
-from odoo import fields, api, models
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -84,10 +87,7 @@ class EstateProperties(models.Model):
     def check_price(self):
         for record in self:
             if (
-                not float_is_zero(record.selling_price,
-                                  precision_rounding=0.01)
-                and
-                float_compare(
+                not float_is_zero(record.selling_price, precision_rounding=0.01) and float_compare(
                     record.selling_price, record.expected_price * .9, precision_rounding=0.01) < 0
             ):
                 raise ValidationError(

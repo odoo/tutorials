@@ -1,11 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="tags_model_action" model="ir.actions.act_window">
+        <record id="estate_propeties_tags_model_action" model="ir.actions.act_window">
             <field name="res_model">estate.properties.tags</field>
             <field name="view_mode">list,form</field>
         </record>
-        <record id="estate_tags_form_view" model="ir.ui.view">
-            <field name="name">estate.form.view</field>
+        <record id="estate_propeties_tags_view" model="ir.ui.view">
+            <field name="name">estate.properties.tags.view</field>
             <field name="model">estate.properties.tags</field>
             <field name="arch" type="xml">
                 <list editable="bottom">

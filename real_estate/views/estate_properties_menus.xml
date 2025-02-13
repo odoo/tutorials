@@ -1,13 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <menuitem id="test_menu_root" name="Real Estate" web_icon="real_estate,static/description/estate_icon.png">
-            <menuitem id="test_first_level_menu" name="Advertisement">
-                <menuitem id="test_model_menu_action" action="test_model_action" name="Properties"/>
+        <menuitem id="root_menu" name="Real Estate" web_icon="real_estate,static/description/estate_icon.png">
+            <menuitem id="first_level_menu" name="Advertisement">
+                <menuitem id="model_menu_action" action="estate_properties_action" name="Properties"/>
             </menuitem>
-            <menuitem id="test_first_level_menu_new" name="Setting">
-                <menuitem id="model_menu_offers" action="estate_offer_model_action" name="Property Offers"/>
-                <menuitem id="test_model_menu_action_type" action="type_model_action_1" name="Property Type"/>
-                <menuitem id="model_menu_tags" action="tags_model_action" name="Property Tags"/>
+            <menuitem id="second_level_menu_new" name="Setting">
+                <menuitem id="model_menu_offers" action="estate_properties_offer_action" name="Property Offers"/>
+                <menuitem id="model_menu_types" action="estate_properties_type_action" name="Property Type"/>
+                <menuitem id="model_menu_tags" action="estate_propeties_tags_model_action" name="Property Tags"/>
             </menuitem>
         </menuitem>
     </data>

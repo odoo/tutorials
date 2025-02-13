@@ -1,17 +1,17 @@
-from odoo import models, fields
-from odoo import Command
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import Command, models
 from odoo.exceptions import UserError
 
 
-class InheritedEstateProperty(models.Model):
+class EstateProperties(models.Model):
     _inherit = 'estate.properties'
 
     def action_property_sold(self):
-        print(self,'self')
         super().action_property_sold()
         journal = self.env['account.journal'].search(
             [('type', '=', 'sale')], limit=1)
-        print(journal,'')
 
         if not journal:
             raise UserError(

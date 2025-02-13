@@ -1,6 +1,6 @@
 {
     'name': 'Estate',
-    'version': '18.0',
+    'version': '1.0',
     'depends': ['base'],
     'icon': '/real_estate/static/description/estate_icon.png',
     'author': 'Odoo',
@@ -11,7 +11,7 @@
         'views/estate_properties_views.xml',
         'views/estate_properties_type_views.xml',
         'views/estate_properties_tags_views.xml',
-        'views/res_user_views.xml',
+        'views/res_users_views.xml',
         'views/estate_properties_menus.xml',
     ],
     'installable': True,

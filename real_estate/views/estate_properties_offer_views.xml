@@ -1,12 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="estate_offer_model_action" model="ir.actions.act_window">
+        <record id="estate_properties_offer_action" model="ir.actions.act_window">
             <field name="res_model">estate.properties.offer</field>
             <field name="view_mode">list,form</field>
             <field name="domain">[('property_type_id', '=', context.get('active_id', False))]</field>
         </record>
-        <record id="estate_offers_form_view" model="ir.ui.view">
-            <field name="name">estate.form.view</field>
+        <record id="estate_properties_offer_view" model="ir.ui.view">
+            <field name="name">estate.properties.offer.view</field>
             <field name="model">estate.properties.offer</field>
             <field name="arch" type="xml">
                 <list decoration-success="status=='accepted'" decoration-danger="status=='rejected'">
