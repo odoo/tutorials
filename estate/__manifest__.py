@@ -5,7 +5,7 @@
         and sales of there properties
         """,
     'sequence': 1,
-    'depends' : ['base'],
+    'depends' : ['base','mail'],
     'data' : [
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',

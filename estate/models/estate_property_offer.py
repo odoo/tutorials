@@ -7,9 +7,7 @@ class EstatePropertyOffer(models.Model):
     _description = "All the available offer for the property"
     _order = "price desc"
 
-    property_id = fields.Many2one("estate.property", required=True)
     price = fields.Float(string="Price", required=True)
-    buyer_id = fields.Many2one("res.partner", required=True)
     status = fields.Selection(
         string="Status",
         copy=False,
@@ -19,13 +17,31 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
-
+    buyer_id = fields.Many2one("res.partner", required=True)
+    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
     property_type_id = fields.Many2one(
         "estate.property.types",
         string="Property Type",
         related="property_id.property_type_id",
-        store=True
+        store=True,
     )
+
+    _sql_constraints = [("check_offer_price", "CHECK(price > 0)", "Offer price must be stictly positive")]
+
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            property = self.env["estate.property"].browse(val["property_id"])
+
+            max_offer_price = max(property.offer_ids.mapped("price") or [0])
+            if val.get("price", 0) <= max_offer_price:
+                raise UserError(
+                    "New offer should contain price higher than current one"
+                )
+
+            property.state = "offer_received"
+
+        return super().create(vals)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -70,16 +86,3 @@ class EstatePropertyOffer(models.Model):
             record.status = "reject"
         return True
 
-
-    @api.model_create_multi
-    def create(self, vals):
-        for val in vals:
-            property = self.env["estate.property"].browse(val["property_id"])
-
-            max_offer_price = max(property.offer_ids.mapped("price") or [0])
-            if val.get("price", 0) <= max_offer_price:
-                raise UserError("New offer should contain price higher than current one")
-
-            property.state = "offer_received"
-
-        return super().create(vals)
