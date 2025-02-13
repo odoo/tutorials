@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from datetime import timedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -39,19 +40,6 @@ class EstatePropertyOffer(models.Model):
         )
     ]
 
-    @api.depends("create_date", "validity")
-    def _compute_deadline(self):
-        for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date.date() + timedelta(
-                    days=record.validity
-                )
-            else:
-                # fallback: if create_date is not set then set it to current date
-                record.date_deadline = fields.Date.today() + timedelta(
-                    days=record.validity
-                )
-
     def _inverse_deadline(self):
         for record in self:
             if record.date_deadline:
@@ -66,7 +54,7 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.state = "accepted"
             for other_offers in offer.property_id.offer_ids:
-                if other_offers.state == "accepted" and other_offers.id != offer.id:
+                if other_offers.id != offer.id:
                     other_offers.state = "refused"
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
@@ -76,3 +64,36 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.state = "refused"
         return True
+
+    @api.depends("create_date", "validity")
+    def _compute_deadline(self):
+        for record in self:
+            if record.create_date:
+                record.date_deadline = record.create_date.date() + timedelta(
+                    days=record.validity
+                )
+            else:
+                # fallback: if create_date is not set then set it to current date
+                record.date_deadline = fields.Date.today() + timedelta(
+                    days=record.validity
+                )
+
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            property_id = val.get("property_id")
+            # set state to offer_received
+            if property_id:
+                property_record = self.env["estate.property"].browse(property_id)
+                property_record.status = "offer_received"
+
+            # check if offer is there or not
+            existing_offer = self.env["estate.property.offer"].search(
+                [("property_id", "=", property_id), ("price", ">", val.get("price"))]
+            )
+
+            if existing_offer:
+                raise UserError(
+                    "You cannot create an offer with a lower amount than an existing offer"
+                )
+        return super(EstatePropertyOffer, self).create(vals)

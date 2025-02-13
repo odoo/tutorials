@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
@@ -13,8 +14,7 @@
             <list string="Channel"
                 decoration-success="status=='offer_received' or status=='offer_accepted'"
                 decoration-bf="status=='offer_accepted'"
-                decoration-muted="status=='sold'"
-            >
+                decoration-muted="status=='sold'">
                 <field name="name" width="200%" />
                 <field name="postcode" width="200%" />
                 <field name="date_availability" optional="hide" />
@@ -24,6 +24,7 @@
             </list>
         </field>
     </record>
+
     <record id="estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -67,7 +68,6 @@
                                 <field name="garden_area" invisible="not garden" />
                                 <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
-                                <!-- <field name="status" /> -->
                             </group>
                         </page>
                         <page string="Offers">
@@ -102,6 +102,7 @@
             </form>
         </field>
     </record>
+
     <record id="estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
