@@ -1,6 +1,6 @@
+from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-from datetime import timedelta
 
 
 class PropertyOffers(models.Model):
@@ -78,3 +78,28 @@ class PropertyOffers(models.Model):
     _sql_constraints = [
         ("price", "CHECK(price >= 0)", "Price must be strictly positive")
     ]
+
+    # set state to offer_received when an offer is created
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            property_id = val.get("property_id")
+            if property_id:
+                property_obj = self.env["estate.property"].browse(property_id)
+                # Ensures we're only looking for offers related to property_obj.
+                # This condition ensures that the query is looking for an offer with a higher price than the one being passed in val.get('price').
+                is_offer_exists = self.env["property.offers"].search(
+                    [
+                        ("property_id", "=", property_obj.id),
+                        ("price", ">", val.get("price")),
+                    ],
+                    limit=1,
+                )
+
+                if is_offer_exists:
+                    raise UserError(
+                        "The offer price cannot be lower than an existing offer."
+                    )
+                property_obj.state = "offer_received"
+
+        return super(PropertyOffers, self).create(vals)

@@ -1,5 +1,6 @@
 {
-    "name": "estate",
+    "name": "Estate",
+    "description": "Real Estate App",
     "depends": ["base"],
     "sequence": 1,
     "data": [
@@ -8,6 +9,7 @@
         "views/property_offers_views.xml",
         "views/property_type_views.xml",
         "views/property_tags_views.xml",
+        "views/res_users_views.xml",
         "views/estate_menus.xml",
     ],
     "installable": True,

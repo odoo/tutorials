@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -34,7 +34,6 @@ class EstateProperty(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
-        default=False,
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -50,10 +49,12 @@ class EstateProperty(models.Model):
     )
 
     # Defining Many2One relationship
-    property_type_id = fields.Many2one("property.type", string="Property Type")
+    property_type_id = fields.Many2one(
+        comodel_name="property.type", string="Property Type"
+    )
     # means multiple records can have a single property_type
 
-    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer")
     salesperson_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
@@ -62,6 +63,21 @@ class EstateProperty(models.Model):
 
     total_area = fields.Integer(string="Total Area", compute="_compute_total")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
+
+    # sql constraints
+    # expected price must not be negative
+    _sql_constraints = [
+        (
+            "expected_price",
+            "CHECK(expected_price >0)",
+            "A expected price must be strictly positive",
+        ),
+        (
+            "selling_price",
+            "CHECK(selling_price >= 0)",
+            "A selling price must be positive",
+        ),
+    ]
 
     # Compute total_area
     @api.depends("living_area", "garden_area")
@@ -101,21 +117,6 @@ class EstateProperty(models.Model):
             self.state = "cancelled"
         return True
 
-    # sql constraints
-    # expected price must not be negative
-    _sql_constraints = [
-        (
-            "expected_price",
-            "CHECK(expected_price >0)",
-            "A expected price must be strictly positive",
-        ),
-        (
-            "selling_price",
-            "CHECK(selling_price >= 0)",
-            "A selling price must be positive",
-        ),
-    ]
-
     # python constraints to check whether selling price is below 90% of expected price
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
@@ -143,3 +144,9 @@ class EstateProperty(models.Model):
                     raise ValidationError(
                         "The selling price must be at least 90% of expected price! You must reduce the expected price in order to accept the offer."
                     )
+
+    # unlink only if property state is 'New' or 'Cancelled'
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_new_cancelled(self):
+        if any(not record.state in ["new", "cancelled"] for record in self):
+            raise UserError("Only new or cancelled properties can be deleted!")
