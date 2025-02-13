@@ -31,9 +31,9 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="action_property_sold" type="object" string="Sold"
+                    <button name="action_property_sold" type="object" string="Sold" class="btn-primary"
                         invisible = "status == 'sold' or status == 'cancelled'"/>
-                    <button name="action_property_cancel" type="object" string="Cancel"
+                    <button name="action_property_cancel" type="object" string="Cancel" class="btn-secondary"
                         invisible = "status == 'sold' or status == 'cancelled'"/>
                     <field name="status" widget="statusbar"/>
                 </header>
@@ -80,7 +80,7 @@
             </form>
         </field>
     </record>
-      <record id='estate_property_view_search' model='ir.ui.view'>
+    <record id='estate_property_view_search' model='ir.ui.view'>
         <field name='name'>estate.property.search</field>
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
