@@ -57,3 +57,15 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            min_price = min(self.env['estate.property.offer'].search(
+                [('property_id', '=', vals['property_id'])]).mapped('price'), default=0)
+            if vals['price'] <= min_price:
+                raise UserError("The price must be higher than any existing offer.")
+            property_obj = self.env['estate.property'].browse(vals['property_id'])
+            if property_obj.status in ['new', False]:
+                property_obj.status = 'offer received'
+        return super().create(vals_list)
