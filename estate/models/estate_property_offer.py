@@ -20,7 +20,7 @@ class EstatePropertyOffer(models.Model):
         copy=False
     )
     partner_id=fields.Many2one('res.partner', string='Partner', required=True)
-    property_id=fields.Many2one('estate.property', string='Property', required=True)
+    property_id=fields.Many2one('estate.property', string='Property', required=True, ondelete='cascade')
     validity = fields.Integer(string='Validity (days)', default=7,)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
     property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
@@ -59,3 +59,14 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.buyer = False
             offer.property_id.state = 'offer_received'
         return True
+
+    @api.model_create_multi
+    def create(self,vals):
+        property_obj = self.env['estate.property'].browse(vals[0]['property_id'])
+        prices = [val['price'] for val in vals]
+        min_price = min(prices, default=property_obj.best_price)
+        if min_price < property_obj.best_price:
+            raise UserError(_("offer with a lower amount than an existing offer"))
+        if property_obj.state == 'new':
+            property_obj.state = 'offer_received'
+        return super().create(vals)

@@ -79,6 +79,7 @@ class EstateProperty(models.Model):
         for record in self:
             best_prices = record.offer_ids.mapped('price')
             record.best_price = max(best_prices) if best_prices else 0
+            print("Best price ", record.best_price)
 
     @api.constrains('selling_price', 'expected_price')
     def _validate_selling_price(self):
@@ -112,3 +113,9 @@ class EstateProperty(models.Model):
             else:
                 raise UserError(_("Property which is sold can't be cancelled"))
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_not_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['new','cancelled']:
+                raise UserError(_("You can only delete a property if its state is 'New' or 'Cancelled'."))
