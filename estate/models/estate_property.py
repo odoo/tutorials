@@ -75,6 +75,8 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         for record in self:
+            if record.status not in ["offer accepted"]:
+                raise UserError("You cannot sell a property that is not in 'Offer Accepted' state")
             if record.status == 'cancelled':
                 raise UserError("A cancelled property cannot be set as sold.")
             record.status = 'sold'

@@ -17,11 +17,11 @@
     <field name="arch" type="xml">
         <form string="Property Type">
             <sheet>
-             <header>
+                <div name='button_box'>
                     <button name="%(action_estate_property_offer)d" type="action" class="oe_stat_button" icon="fa-bar-chart">
                         <field name="offer_count" widget="statinfo" />
                     </button>
-                </header>
+                </div>
                 <group>
                     <field name="name"/>
                 </group>
