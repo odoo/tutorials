@@ -105,3 +105,9 @@ class EstateProperty(models.Model):
                     "The selling price must be at least 90% of the expected price! "
                     "You must reduce the expected price if you want to accept this offer."
                 )
+
+    def unlink(self):
+        print("Custom unlink method called")
+        if not set(self.mapped("state")) <= {"new", "cancelled"}:
+            raise UserError("Only new or cancelled state properties can be deleted")
+        return super().unlink()
