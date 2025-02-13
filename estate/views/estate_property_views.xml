@@ -5,12 +5,19 @@
         <field name="name">estate.property.views.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Records" delete="0">
+            <list string="Records"
+                decoration-success="state in ['offer_received', 'offer_accepted']"
+                decoration-muted="state == 'sold'"
+                decoration-bf="state == 'offer_accepted'" decoration-danger="state == 'cancelled'">
                 <field name="name" />
+                <field name="property_type_id" />
                 <field name="postcode" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                <field name="bedrooms" />
                 <field name="expected_price" sum="Total" />
                 <field name="selling_price" />
                 <field name="living_area" />
+                <field name="date_availability" optional="hide" />
             </list>
         </field>
     </record>
@@ -20,7 +27,8 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" />
+                    <button name="action_sold" type="object" string="Sold"
+                        class="oe_highlight" />
                     <button name="action_cancel" type="object" string="Cancel" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
@@ -42,7 +50,7 @@
                             <field name="date_availability" />
                             <field name="property_type_id" widget="many2one" />
                             <field name="tag_ids" widget="many2many_tags"
-                                options="{'color_field': 'color'}" />
+                                options="{'color_field' : 'color' }" />
                         </group>
                     </group>
                     <notebook>
@@ -50,7 +58,8 @@
                             <group>
                                 <group>
                                     <field name="description" />
-                                    <field name="bedrooms" />
+                                    <field name="bedrooms"
+                                        options="{'type' : 'number' , 'step' : 1}" />
                                     <field name="living_area" />
                                     <field name="facades" />
                                     <field name="is_garage" />
@@ -66,7 +75,8 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" nolable="1" />
+                            <field name="offer_ids" nolable="1"
+                                readonly="state in ['offer_accepted' , 'sold' , 'canceled' ]" />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -89,16 +99,14 @@
                 <field name="name" />
                 <field name="postcode" />
                 <field name="expected_price" />
-                <field name="expected_price" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
                 <field name="is_garage" />
                 <field name="is_garden" />
-                <filter name="state" string="Available"
-                    domain="[('state', 'in', ('new', 'offer_received'))]" />
+                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <group expand="1" string="Group By">
-                    <filter name='postcode' context="{'group_by':'postcode'}" />
+                    <filter name='postcode' context="{'group_by' :'postcode' }" />
                 </group>
             </search>
         </field>
@@ -107,5 +115,6 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context"> {'search_default_available': 1} </field>
     </record>
 </odoo>

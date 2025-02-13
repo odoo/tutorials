@@ -7,6 +7,7 @@ class EstatePropertyOffer(models.Model):
 
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
     _sql_constraints = [
         (
             "check_estate_property_offer_price",
@@ -30,6 +31,9 @@ class EstatePropertyOffer(models.Model):
     # Relational
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type", related="property_id.property_type_id", string="Property Type", store=True
+    )
     date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_date_deadline",
@@ -54,12 +58,11 @@ class EstatePropertyOffer(models.Model):
 
     # ---------------------------------------- Offer's Action Method -------------------------------------
     def offer_accept(self):
-        # if self.state == "accepted":
-        #     raise UserError("This offer has already been accepted")
+        if self.state == "accepted":
+            raise UserError("This offer has already been accepted")
         self.state = "accepted"
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
-        # return True
 
         for offer in self.property_id.offer_ids:
             if offer.id != self.id:

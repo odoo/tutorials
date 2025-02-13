@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
 
     _name = "estate.property"
     _description = "Declare property for Real estate"
+    _order = "id desc"
     _sql_constraints = [
         (
             "check_estate_property_selling_price",
@@ -19,6 +20,11 @@ class EstateProperty(models.Model):
             "CHECK(expected_price > 0.0)",
             "Expected Price must be a strictly positive amount",
         ),
+        (
+            "check_estate_property_bedrooms",
+            "check(bedrooms > 0)",
+            "Expected Bedrooms must be a strictly positive Number",
+        ),
     ]
     # --------------------------------------- Fields Declaration ----------------------------------
     name = fields.Char(required=True)
@@ -26,6 +32,9 @@ class EstateProperty(models.Model):
     postcode = fields.Char("Postcode")
     date_availability = fields.Date(
         "Available From", default=datetime.now() + timedelta(90)
+    )
+    sequence = fields.Integer(
+        string="Sequence", default="1", help="Used to order stages. Lower is better."
     )
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", copy=False, readonly=True)
@@ -98,12 +107,25 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    def unlink(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(
+                    f"You cannot delete a property because it is in {record.state} state."
+                )
+        return super(EstateProperty, self).unlink()
+
     @api.constrains("expected_price", "selling_price")
     def _check_price_difference(self):
         for prop in self:
             if (
                 not float_is_zero(prop.selling_price, precision_rounding=0.01)
-                and float_compare(prop.selling_price,prop.expected_price * 0.90,precision_rounding=0.01,)< 0
+                and float_compare(
+                    prop.selling_price,
+                    prop.expected_price * 0.90,
+                    precision_rounding=0.01,
+                )
+                < 0
             ):
                 raise ValidationError(
                     "The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer."

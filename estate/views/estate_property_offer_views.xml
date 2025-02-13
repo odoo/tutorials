@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Property Offer">
+                <group>
+                    <field name="price" />
+                    <field name="partner_id" />
+                    <field name="validity" />
+                    <field name="date_deadline" />
+                </group>
+            </form>
+        </field>
+    </record>
     <!-- List View -->
     <record id="view_estate_property_offer_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-success="state == 'accepted'" decoration-danger="state == 'refused'">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="state" />
-                <button name="offer_accept" type="object" icon="fa-check" />
-                <button name="offer_refuse" type="object" icon="fa-times" />
+                <button name="offer_accept" type="object" title="Accept" icon="fa-check" />
+                <button name="offer_refuse" type="object" title="Refuse" icon="fa-times" />
                 <field name="validity" />
                 <field name="date_deadline" />
             </list>
         </field>
     </record>
+
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
