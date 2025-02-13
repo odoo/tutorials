@@ -4,11 +4,8 @@ from odoo.exceptions import ValidationError
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
-    _description = "This property is for sell"
+    _description = "Estate Property"
 
-    def _default_name(self):
-        return self.get_value()
-    
     name = fields.Char("Property Name", required=True)
     active = fields.Boolean(default=True)
     description = fields.Text("Description")
