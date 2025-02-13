@@ -17,18 +17,29 @@
     </record>
 
     <record id="estate_property_rule_agent" model="ir.rule">
-        <field name="name">estate.property.rule.agent</field>
+        <field name="name">Agent Rules</field>
         <field name="model_id" ref="estate.model_estate_property"/>
         <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="perm_read" eval="False"/>
+        <field name="groups" eval="[Command.link(ref('base.group_user'))]"/>
         <field name="domain_force">['|', ('property_seller_id', '=', user.id), ('property_seller_id', '=', False)]
         </field>
     </record>
 
-    <record id="estate_property_rule_agent" model="ir.rule">
-        <field name="name">estate.property.rule.agent</field>
+    <record id="estate_property_rule_manager" model="ir.rule">
+        <field name="name">Manager Rules</field>
         <field name="model_id" ref="estate.model_estate_property"/>
         <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
         <field name="domain_force">[(1,"=",1)]
         </field>
+    </record>
+
+    <record id="estate_property_company_rule" model="ir.rule">
+        <field name="name">Appraisal Plan multi-company</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="domain_force">[
+        '|', ('company_id', '=', False),
+             ('company_id', 'in', company_ids)
+        ]</field>
     </record>
 </odoo>
