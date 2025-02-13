@@ -1,10 +1,14 @@
-from odoo import models, Command
+from odoo import Command, fields, models
 
 
 class InheritedModel(models.Model):
     _inherit = "estate.property"
 
-    def action_to_sold_property(self):
+    state = fields.Selection(
+        selection_add=[("invoiced", "Invoiced")], ondelete={"invoiced": "cascade"}
+    )
+
+    def action_to_invoice_property(self):
         print("Added successfully".center(100, "="))
         self.env["account.move"].create(
             {
@@ -35,4 +39,6 @@ class InheritedModel(models.Model):
                 ],
             }
         )
-        return super().action_to_sold_property()
+        result = super().action_to_invoice_property()
+        self.state = "invoiced"
+        return result

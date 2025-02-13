@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Override List View when Estate Account Module is Installed -->
+    <record id="estate_account_property_list_view" model="ir.ui.view">
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_list_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="replace">
+                <list string="Properties" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                    <field name="name" string="Title"/>
+                    <field name="postcode"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <field name="bedrooms"/>
+                    <field name="total_area"/>
+                    <field name="selling_price"/>
+                </list>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -46,7 +46,7 @@ class EstateProperty(models.Model):
         string="State",
         required=True,
         copy=False,
-        default="new"
+        default="new",
     )
     total_area = fields.Float(string="Total Area(sqm)", compute="_compute_total_area")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -134,3 +134,10 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError(
                     "You cannot delete a property unless it is in 'New' or 'Cancelled' state."
                 )
+
+    def action_to_invoice_property(self):
+        """Invoice button will be visible once it is sold and clicking on
+        invoice button invoice of property will be creaed and state from sold to invoiced
+        will be updated.
+        And the method is being overridden in estate account module's inherited model.
+        """

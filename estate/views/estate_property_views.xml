@@ -32,10 +32,11 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button string="SOLD" name="action_to_sold_property" type="object" invisible="state in ('offer_accepted', 'sold', 'cancelled')"/>
-                    <button string="SOLD" name="action_to_sold_property" type="object" class="btn-primary" invisible="state in ('new', 'offer_received', 'sold', 'cancelled')"/>
-                    <button string="CANCEL" name="action_to_cancel_property" type="object" invisible="state in ('sold', 'cancelled')"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
+                    <button string="SOLD" name="action_to_sold_property" type="object" invisible="state in ('offer_accepted', 'sold', 'cancelled', 'invoiced')"/>
+                    <button string="SOLD" name="action_to_sold_property" type="object" class="btn-primary" invisible="state in ('new', 'offer_received', 'sold', 'cancelled', 'invoiced')"/>
+                    <button string="CANCEL" name="action_to_cancel_property" type="object" invisible="state in ('sold', 'cancelled', 'invoiced')"/>
+                    <button string="INVOICE" name="action_to_invoice_property" type="object" class="btn-primary" invisible="state in ('new', 'offer_received', 'offer_accepted', 'cancelled', 'invoiced')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold, cancelled, invoiced"/>
                 </header>
                 <sheet>
                     <group>
