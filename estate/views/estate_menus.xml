@@ -7,6 +7,7 @@
         <menuitem id="estate_property_settings_menu" name="Settings">
             <menuitem id="estate_property_type_menu_action" name="Property Types" action="estate_property_type_action" />
             <menuitem id="estate_property_tags_menu_action" name="Property Tags" action="estate_property_tag_action"/>
+            <menuitem id="estate_property_users_menu_action" name="Users" action="estate_property_users_action"/>
         </menuitem>
     </menuitem>
 </odoo>

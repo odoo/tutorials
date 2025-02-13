@@ -55,8 +55,8 @@
             <field name="arch" type="xml">
                 <form string="Test">
                     <header>
-                        <button name="property_sold" type="object" string="Sold"/>
-                        <button name="property_cancelled" type="object" string="Cancel"/>
+                        <button name="property_sold" type="object" string="Sold" invisible="status in ['sold','cancelled']"/>
+                        <button name="property_cancelled" type="object" string="Cancel" invisible="status in ['sold','cancelled']"/>
                         <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                     </header>
                     <sheet>
@@ -68,7 +68,6 @@
                         </group>
                         <group>
                             <group>
-                                <field name="status"/>
                                 <field name="property_type_id" options="{'no_create':true}"/>
                                 <field name="postcode"/>
                                 <field name="expected_price"/>
