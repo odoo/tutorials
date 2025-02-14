@@ -48,6 +48,11 @@ class Estateproperty(models.Model):
         string='Best Price', compute='_compute_best_price')
     offer_recieved = fields.Boolean(
         compute='_compute_offer_recieved', store=True)
+    postcode = fields.Char('PostCode')
+    date_availability = fields.Date(
+        'Available From', copy=False, default=lambda self: fields.Datetime.today() + timedelta(days=90))
+    expected_price = fields.Float('Expected Price', required=True)
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
@@ -55,6 +60,27 @@ class Estateproperty(models.Model):
         ('check_selling_price', 'CHECK(selling_price >= 0)',
          'The selling price must be positive.'),
     ]
+
+    @api.depends('offer_ids')
+    def _compute_offer_recieved(self):
+        for record in self:
+            record.offer_recieved = bool(record.offer_ids)
+
+    @api.depends('salesperson_id.name')
+    def _compute_desc(self):
+        for record in self:
+            record.description = 'Test for salesperson %s' % record.salesperson_id.name
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for property in self:
+            prices = property.offer_ids.mapped('price')
+            property.best_price = max(prices, default=0)
 
     @api.constrains('selling_price')
     def _check_selling_price(self):
@@ -77,17 +103,6 @@ class Estateproperty(models.Model):
                     raise ValidationError(
                         'The selling price cannot be lower than 90% of the expected price.')
 
-    @api.depends('living_area', 'garden_area')
-    def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
-
-    @api.depends('offer_ids.price')
-    def _compute_best_price(self):
-        for property in self:
-            prices = property.offer_ids.mapped('price')
-            property.best_price = max(prices, default=0)
-
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -96,6 +111,13 @@ class Estateproperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_in_cancel_or_new_state(self):
+        for record in self:
+            if record.state not in ('new', 'cancel'):
+                raise UserError(
+                    'You can only delete properties that are in new or cancel state.')
 
     def action_cancel(self):
         for property in self:
@@ -112,26 +134,3 @@ class Estateproperty(models.Model):
                 raise UserError('Cannot sold without any offer.')
             else:
                 property.state = 'sold'
-
-    @api.depends('offer_ids')
-    def _compute_offer_recieved(self):
-        for record in self:
-            record.offer_recieved = bool(record.offer_ids)
-
-    @api.depends('salesperson_id.name')
-    def _compute_desc(self):
-        for record in self:
-            record.description = 'Test for salesperson %s' % record.salesperson_id.name
-    postcode = fields.Char('PostCode')
-    date_availability = fields.Date(
-        'Available From', copy=False, default=lambda self: fields.Datetime.today() + timedelta(days=90))
-    expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_property_in_cancel_or_new_state(self):
-        for record in self:
-            if record.state not in ('new', 'cancel'):
-                raise UserError(
-                    'You can only delete properties that are in new or cancel state.')
- 

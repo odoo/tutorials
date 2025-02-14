@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id='estate_property_action_1' model='ir.actions.act_window'>
+        <record id='estate_property_type_action_view_list' model='ir.actions.act_window'>
             <field name='name'>Properties Type</field>
             <field name='res_model'>estate.property.type</field>
             <field name='view_mode'>list,form</field>
         </record>
 
         <!-- estate property type list view -->
-        <record id='estate_property_type_view' model='ir.ui.view'>
+        <record id='estate_property_type_view_list' model='ir.ui.view'>
             <field name='name'>estate.property.type.list</field>
             <field name='model'>estate.property.type</field>
             <field name='arch' type='xml'>
@@ -22,7 +22,7 @@
         </record>
 
         <!-- estate property type form view -->
-        <record id='estate_property_type_form_view' model='ir.ui.view'>
+        <record id='estate_property_type_view_form' model='ir.ui.view'>
             <field name='name'>estate.property.type.form.view</field>
             <field name='model'>estate.property.type</field>
             <field name='arch' type='xml'>
@@ -38,7 +38,7 @@
                         </div>
                     </group>
                     <div class='oe_button_box' name='button_box'>
-                        <button class='oe_stat_button' name='%(estate_property_action_3)d' type='action' icon='fa-money'>
+                        <button class='oe_stat_button' name='%(estate_property_type_action_view_list)d' type='action' icon='fa-money'>
                             <!-- <button name='action_open_offers' type='object' class='oe_stat_button'> -->
                             <div class='o_stat_info'>
                                 <span class='o_stat_value'>

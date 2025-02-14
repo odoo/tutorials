@@ -48,6 +48,22 @@ class EstatePropertyOffer(models.Model):
                 dayys = (offer.date_deadline - offer.create_date).days
                 offer.validity = dayys
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for record in vals_list:
+            property_id = record.get('property_id')
+            if property_id:
+                existing_offers = self.search(
+                    [('property_id', '=', property_id)])
+                if existing_offers and any(offer.price >= vals_list[0]['price'] for offer in existing_offers):
+                    raise UserError(
+                        'You cannot create an offer lower than or equal to existing offer.')
+        records = super().create(vals_list)
+        for record in records:
+            if record.property_id.state == 'new':
+                record.property_id.state = 'offered_rec'
+        return records
+
     def action_accept(self):
         for offer in self:
             if offer.property_id.state == 'sold':
@@ -69,19 +85,3 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.selling_price = 0.00
             offer.property_id.buyer_id = False
             offer.property_id.state = 'new'
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        for record in vals_list:
-            property_id = record.get('property_id')
-            if property_id:
-                existing_offers = self.search(
-                    [('property_id', '=', property_id)])
-                if existing_offers and any(offer.price >= vals_list[0]['price'] for offer in existing_offers):
-                    raise UserError(
-                        'You cannot create an offer lower than or equal to existing offer.')
-        records = super().create(vals_list)
-        for record in records:
-            if record.property_id.state == 'new':
-                record.property_id.state = 'offered_rec'
-        return records

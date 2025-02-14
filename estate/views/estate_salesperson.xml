@@ -11,7 +11,7 @@
                         <group>
                             <field name='property_ids' mode='list'>
                                 <list editable='bottom'>
-                                    <field name='name'></field>
+                                    <field name='name'/>
                                     <field name='state'/>
                                     <field name='salesperson_id'/>
                                 </list>
