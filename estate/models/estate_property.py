@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
+    _inherit = ['mail.thread']
 
     # -------------------------------------------------------------------------
     # SQL QUERIES
@@ -22,7 +23,8 @@ class EstateProperty(models.Model):
     name = fields.Char(
         string="Name",
         help="The name of the property.",
-        required=True
+        required=True,
+        tracking=True
     )
     description = fields.Text(
         string="Description",
@@ -100,7 +102,8 @@ class EstateProperty(models.Model):
                    ("offer_accepted", "Offer Accepted"),
                    ("sold", "Sold"), ("canceled", "Canceled")],
         default='new',
-        copy=False
+        copy=False,
+        tracking=True
     )
     property_type_id = fields.Many2one(
         string="Property Type",
@@ -158,7 +161,8 @@ class EstateProperty(models.Model):
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        self.total_area = self.living_area + self.garden_area
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):

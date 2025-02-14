@@ -5,7 +5,6 @@ class EstateAccount(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        print(" reached ".center(100, '='))
         self.check_access('write')
 
         self.env["account.move"].sudo().create({
@@ -30,7 +29,5 @@ class EstateAccount(models.Model):
                 })
             ],
         })
-
-        print("Invoice Created!".center(100, '='))
 
         return super().action_sold()

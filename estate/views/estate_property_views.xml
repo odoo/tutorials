@@ -24,7 +24,7 @@
                                 Expected Price: <field name="expected_price"/>
                             </div>
                             <div class="mb8" t-if="record.state.raw_value == 'offer_received'">
-                                Best Offer: <field name="expected_price"/>
+                                Best Offer: <field name="best_price"/>
                             </div>
                             <div t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold'">
                                 Selling Offer: <field name="selling_price"/>
@@ -149,6 +149,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

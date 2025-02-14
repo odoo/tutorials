@@ -88,9 +88,10 @@ class EstatePropertyOffer(models.Model):
     rounding_precision = 0.0001
     @api.constrains('price')
     def _check_price(self):
-        compare_value = float_compare(self.price,0.9*self.property_id.expected_price,precision_digits=2)
-        if compare_value == -1:
-            raise UserError("Offer Price must be atleast 90% of the expected price.")
+        for record in self:
+            compare_value = float_compare(record.price,0.9*record.property_id.expected_price,precision_digits=2)
+            if compare_value == -1:
+                raise UserError(f"Offer Price must be atleast 90% of the expected price.")
 
         return True
 
