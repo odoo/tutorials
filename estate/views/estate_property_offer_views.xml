@@ -11,12 +11,12 @@
         <field name='name'>estate.property.offer.view.list</field>
         <field name='model'>estate.property.offer</field>
         <field name='arch' type='xml'>
-                    <list>
-                        <field name='price'/>
-                        <field name='partner_id'/>
-                        <field name='validity'/>
-                        <field name='deadline'/>
-                    </list>
+            <list>
+                <field name='price'/>
+                <field name='partner_id'/>
+                <field name='validity'/>
+                <field name='deadline'/>
+            </list>
         </field>
     </record>
 

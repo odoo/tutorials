@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="estate_property_category" model="ir.module.category">
-        <field name="name">Estate Category</field>
+    <record id="estate_property_brokerage" model="ir.module.category">
+        <field name="name">Estate Category Brokerage</field>
         <field name="description">This is group</field>
     </record>
-
-    <record id="estate_property_group_agent" model="res.groups">
+    
+    <record id="estate_group_user" model="res.groups">
         <field name="name">Agent</field>
-        <field name="category_id" ref="estate.estate_property_category"/>
+        <field name="category_id" ref="estate.estate_property_brokerage"/>
     </record>
 
-    <record id="estate_property_group_manager" model="res.groups">
+    <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
-        <field name="category_id" ref="estate.estate_property_category"/>
-        <field name="implied_ids" eval="[(4,ref('estate_property_group_agent'))]"></field>
+        <field name="category_id" ref="estate.estate_property_brokerage"/>
+        <field name="implied_ids" eval="[(4,ref('estate_group_user'))]"></field>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"></field>
+    </record>
+
+    <record model="ir.rule" id="multicompany_rule">
+        <field name="name">multi-company</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="domain_force">[
+            '|', ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+        ]</field>
     </record>
 </odoo>

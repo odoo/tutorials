@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate.my_template">
+        <h1>Hello, <t t-out="my_variable"/>!</h1>
+    </template>
+</odoo>
