@@ -17,8 +17,9 @@ class EstateProperty(models.Model):
          'The Selling Price Must be Positive Value'),
         ('check_property_title', 'UNIQUE(name)', 'Property Title Must be Unique')
     ]
+    _inherit = ["mail.thread"]
 
-    name = fields.Char(string="Title", required=True)
+    name = fields.Char(string="Title", required=True, tracking=True)
     description = fields.Text(string="Property Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
@@ -72,7 +73,8 @@ class EstateProperty(models.Model):
         string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(
         string="Best Offer", compute="_compute_best_price")
-    company_id = fields.Many2one(comodel_name='res.company', required=True, default= lambda self: self.env.company)
+    company_id = fields.Many2one(
+        comodel_name='res.company', required=True, default=lambda self: self.env.company)
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
@@ -97,8 +99,9 @@ class EstateProperty(models.Model):
     @api.constrains("expected_price", "selling_price")
     def _check_best_price(self):
         for record in self:
-            if float_compare(record.expected_price * 0.9, record.selling_price, 2) == 1 and not float_is_zero(record.best_price, 2):
-                print(record.expected_price,record.selling_price,record.best_price)
+            if float_compare(record.expected_price * 0.9, record.selling_price, 2) == 1 and not float_is_zero(record.selling_price, 2):
+                print(record.expected_price,
+                      record.selling_price, record.best_price)
                 raise ValidationError(
                     _("The selling price must be at least 90% of the expected price!You must reduce the expected price if you want to accept this offer."))
 

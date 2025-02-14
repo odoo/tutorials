@@ -6,12 +6,12 @@
     "version": "1.0",
     "author": "Odoo PS",
     "license": "LGPL-3",
-    "website":"https://www.odoo.com/",
-    "depends": ["base"],
+    "website": "https://www.odoo.com/",
+    "depends": ["base", "mail"],
     "application": True,
     "category": "Real Estate/Brokerage",
     "description": """
-   Real Estate Test Description
+    Real Estate Test Description
     """,
     "data": [
         "data/master_data_estate_property_type.xml",
@@ -24,7 +24,7 @@
         "views/estate_property_tag_views.xml",
         "views/estate_menus.xml",
     ],
-    "demo":[
+    "demo": [
         "demo/demo_property_data.xml",
         "demo/demo_property_offer.xml"
     ]

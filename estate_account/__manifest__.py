@@ -10,7 +10,7 @@
     "depends": ["account", "estate"],
     "application": True,
     "description": """
-   Real Estate Account Application Description
+    Real Estate Account Application Description
     """,
     "data": [],
 }

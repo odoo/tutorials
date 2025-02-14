@@ -78,6 +78,7 @@
                             </page>
                         </notebook>
                     </sheet>
+                    <chatter/>
                 </form>
             </field>
         </record>
@@ -111,7 +112,7 @@
                     <field name="bedrooms"/>
                     <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
                     <field name="fascades"/>
-                    <filter name="available" string="Available" domain="['|',('state','=','new'),('state','=','offer received')]" />
+                    <filter name="available" string="Available" domain="[('state','in',('new','offer received'))]" />
                     <group string="Group By">
                         <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                     </group>
