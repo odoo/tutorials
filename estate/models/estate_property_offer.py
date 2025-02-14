@@ -10,14 +10,14 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float()
     status = fields.Selection(
         selection=[('accepted','Accepted'),
-                    ('refused','Refused')],
+                   ('refused','Refused')],
         copy=False,
     )
     validity = fields.Integer(default="7")
     date_deadline = fields.Date(compute="_compute_date_deadline",inverse="_inverse_date_deadline",store=True)
 
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-    property_id = fields.Many2one("estate.property", string="Properties", required=True, ondelete="cascade")
+    property_id = fields.Many2one("estate.property", string="Properties", required=True,ondelete="cascade")
     property_type_id = fields.Many2one("estate.property.type", string="Property Types", store=True)
 
     _sql_constraint = [
@@ -55,10 +55,12 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        property = self.env['estate.property'].browse(vals_list['property_id'])
-        if property.best_price>0: #if list is empty, initial condition.
-            if vals_list['price'] <= max(property.offer_ids.mapped("price")):
-                raise UserError("Create an offer with a higher price than an existing offer.")
-        property.state = 'offer_recieved'
-        return super().create(vals_list) 
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if property.best_price > 0:  # If list is empty, initial condition.
+                if vals['price'] <= max(property.offer_ids.mapped('price'), default=0):
+                    raise UserError("Create an offer with a higher price than an existing offer.")
+            property.state = 'offer_recieved'
+        return super().create(vals_list)
+ 
     
