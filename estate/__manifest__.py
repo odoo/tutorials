@@ -1,6 +1,6 @@
 {
     "name" : "estate",
-    "depends" : ['base','mail'],
+    "depends" : ['base','mail','web'],
     "category" : "Real Estate/Brokerage",
     'data' : [
         'views/res_users.xml',
@@ -11,6 +11,9 @@
         'views/estate_property_tag.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+        'report/res_users_report.xml',
+        'report/estate_property_report_template.xml',
+        'report/estate_property_reports.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
     ],
