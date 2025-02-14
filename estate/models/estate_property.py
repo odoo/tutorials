@@ -8,6 +8,10 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _sql_constraints = [
+        ('expected_price_positive', 'CHECK(expected_price >= 1)', 'The expected price must be strictly positive.'),
+        ('selling_price_positive', 'CHECK(selling_price >= 1)', 'The selling price must be strictly positive.')
+    ]
 
     name = fields.Char(string="Name", required=True)
     active = fields.Boolean(string="Active", default=True)
@@ -54,6 +58,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_sellings_price(self):
+        for record in self:
+            if record.selling_price and record.selling_price < record.expected_price * 0.9:
+                raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden == True:
@@ -62,6 +72,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("New or cancelled properties cannot be unlinked.")
 
     def action_sold(self):
         for record in self:
@@ -76,20 +92,3 @@ class EstateProperty(models.Model):
                 raise UserError("Sold properties cannot be cancelled")
             else:
                 record.state = 'cancelled'
-    
-    @api.ondelete(at_uninstall=False)
-    def _unlink_property(self):
-        for record in self:
-            if record.state not in ['new', 'cancelled']:
-                raise UserError("New or cancelled properties cannot be unlinked.")
-
-    _sql_constraints = [
-        ('expected_price_positive', 'CHECK(expected_price >= 1)', 'The expected price must be strictly positive.'),
-        ('selling_price_positive', 'CHECK(selling_price >= 1)', 'The selling price must be strictly positive.')
-    ]
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_sellings_price(self):
-        for record in self:
-            if record.selling_price and record.selling_price < record.expected_price * 0.9:
-                raise ValidationError("Selling price cannot be lower than 90% of the expected price.")

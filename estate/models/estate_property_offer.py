@@ -5,6 +5,9 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc" 
+    _sql_constraints = [
+        ('offer_price_positive', 'CHECK(price >= 1)', 'The offer price must be strictly positive.')
+    ]
 
     price = fields.Float(string="Price")
     status = fields.Selection([
@@ -27,19 +30,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days if record.date_deadline else 0
 
-    def action_accept(self):
-        if self.property_id.state == 'offer_accepted':
-            raise ValidationError("You can't accept more than one offer")
-            
-        self.status = 'accepted'
-        self.property_id.buyer_id = self.partner_id.id
-        self.property_id.selling_price = self.price
-        self.property_id.state = 'offer_accepted'
-
-    def action_refuse(self):
-        for record in self:
-            record.status = 'refused'
-    
     @api.model_create_multi
     def create(self, vals):
         for val in vals:
@@ -53,6 +43,15 @@ class EstatePropertyOffer(models.Model):
 
         return super(EstatePropertyOffer, self).create(vals)
 
-    _sql_constraints = [
-        ('offer_price_positive', 'CHECK(price >= 1)', 'The offer price must be strictly positive.')
-    ]
+    def action_accept(self):
+        if self.property_id.state == 'offer_accepted':
+            raise ValidationError("You can't accept more than one offer")
+            
+        self.status = 'accepted'
+        self.property_id.buyer_id = self.partner_id.id
+        self.property_id.selling_price = self.price
+        self.property_id.state = 'offer_accepted'
+
+    def action_refuse(self):
+        for record in self:
+            record.status = 'refused'
