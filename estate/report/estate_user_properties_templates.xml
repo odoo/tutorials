@@ -1,0 +1,45 @@
+<odoo>
+    <template id="report_estate_properties">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="company_info">
+                    <img t-if="docs.company_id.logo"
+                        t-att-src="'data:image/png;base64,%s' % docs.company_id.logo"
+                        alt="Company Logo" style="max-height: 80px;" />
+                    <h5 t-field="docs.company_id.name" />
+                    <hr />
+                    <h5 t-field="docs.company_id.partner_id.street" />
+                    <h5 t-field="docs.company_id.partner_id.city" />
+                    <h5>
+                        <span t-field="docs.company_id.partner_id.zip" />
+                        <span t-field="docs.company_id.partner_id.state_id.name" />
+                    </h5>
+                    <h5 t-field="docs.company_id.partner_id.country_id.name" />
+                    <br/>
+                    <br/>
+                    <br/>
+                </div>
+                <div class="page">
+                    <h1>
+                        <span t-field="docs.partner_id.name" />
+                    </h1>
+                    <t t-foreach="docs.property_ids" t-as="property">
+                        <br/>
+                        <h2>
+                            <span t-field="property.name" />
+                        </h2>
+                        <h3>
+                            <span>Status: </span>
+                            <span t-field="property.state" />
+                        </h3>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price" />
+                        </div>
+                        <t t-call="estate.report_offers_table" />
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -11,6 +11,10 @@
         'mail',
     ],
     'data': [
+         'report/estate_property_report.xml',
+         'report/estate_property_templates.xml',
+         'report/estate_user_properties_report.xml',
+         'report/estate_user_properties_templates.xml',
          'security/estate_property_security.xml',
          'security/ir.model.access.csv',
          'views/estate_property_offer_views.xml',
@@ -22,7 +26,7 @@
          'data/master_data.xml',
     ],
     'demo' : [
-        'demo/demo_data.xml',
+        'demo/estate_property_demo.xml',
     ],
    
     'installable': True,

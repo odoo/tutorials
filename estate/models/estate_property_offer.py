@@ -40,13 +40,10 @@ class EstatePropertyOffer(models.Model):
     # Action methods
     def action_offer_confirm(self):
         if self.property_id.state in ("new", "offer_received"):
-            if self.price > self.property_id.expected_price * 0.9:
-                self.status = "accepted"
-                self.property_id.partner_id = self.partner_id
-                self.property_id.selling_price = self.price
-                self.property_id.state = "offer_accepted"
-            else:
-                raise UserError(f"Selling price must be at least 90% greater than expected price.")
+            self.status = "accepted"
+            self.property_id.partner_id = self.partner_id
+            self.property_id.selling_price = self.price
+            self.property_id.state = "offer_accepted"
         else:
             raise UserError("you can select only one offer for one property.")
         

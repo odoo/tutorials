@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+    <template id="report_property_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                         <div class="company_info">
+                    <img t-if="property.company_id.logo"
+                        t-att-src="'data:image/png;base64,%s' % property.company_id.logo"
+                        alt="Company Logo" style="max-height: 80px;" />
+                    <h5 t-field="property.company_id.name" />
+                    <hr />
+                    <h5 t-field="property.company_id.partner_id.street" />
+                    <h5 t-field="property.company_id.partner_id.city" />
+                    <h5>
+                        <span t-field="property.company_id.partner_id.zip" />
+                        <span t-field="property.company_id.partner_id.state_id.name" />
+                    </h5>
+                    <h5 t-field="property.company_id.partner_id.country_id.name" />
+                    <br/>
+                    <br/>
+                    <br/>
+                </div>
+                        <h2>
+                            <strong>Salesman:</strong>
+                            <span t-field="property.user_id.name" />
+                        </h2>
+                        <h3>
+                            <span t-field="property.name" />
+                        </h3>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price" />
+                        </div>
+                        <div>
+                            <strong>Status: </strong>
+                            <span t-field="property.state" />
+                        </div>
+                        <t t-call="estate.report_offers_table" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    
+    <template id="report_offers_table">
+        <t t-set="offers" t-value="property.mapped('offer_ids')" />
+        <t t-if="offers">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity (days)</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="offers" t-as="offer">
+                        <td>
+                            <span t-field="offer.price" />
+                        </td>
+                        <td>
+                            <span t-field="offer.partner_id.name" />
+                        </td>
+                        <td>
+                            <span t-field="offer.validity" />
+                        </td>
+                        <td>
+                            <span t-field="offer.date_deadline" />
+                        </td>
+                        <td>
+                            <span t-field="offer.status" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-if="not offers">
+            <div colspan="5">No offers have been made yet :(</div>
+        </t>
+
+    </template>
+</odoo>

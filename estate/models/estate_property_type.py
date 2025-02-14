@@ -10,7 +10,7 @@ class EstatePropertyType(models.Model):
     name = fields.Char('Property Type', required=True)
     property_ids = fields.One2many('estate.property','property_type_id')
     sequence = fields.Integer('Sequence')
-    offer_ids = fields.One2many('estate.property.offer', 'property_type_id',string="Offers")
+    offer_ids = fields.One2many('estate.property.offer', 'property_type_id',string="Offer Id")
     offer_count = fields.Integer("Offers" , compute='_compute_offer_count')
    
     _sql_constraints = [

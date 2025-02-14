@@ -6,7 +6,7 @@
         'account'
    
     ],
-  
+   
     'installable': True,
     'application': True,
 }
