@@ -1,28 +1,13 @@
 <odoo>
-    <menuitem
-        id = "estate_menu_root"
-        name = "Real Estate">
+    <menuitem id="menu_estate_root" name="Real Estate">
         <!-- Advertisements Menu -->
-        <menuitem
-            id = "estate_menu_advertisements"
-            name = "Advertisements">
-
-            <menuitem
-                id = "menu_estate_properties"
-                action = "estate_properties"/>
+        <menuitem id="menu_estate_advertisements" name="Advertisements">
+            <menuitem id="menu_estate_properties" action="estate_property"/>
         </menuitem>
         <!-- Setting Menu -->
-        <menuitem
-            id = "estate_menu_setting"
-            name = "Setting">
-            <menuitem
-                id = "menu_estate_property_type"
-                action = "estate_property_type"/>
-
-            <menuitem
-                id = "menu_estate_property_tag"
-                action = "estate_property_tag"/>
+        <menuitem id="estate_menu_setting" name="Setting">
+            <menuitem id="menu_estate_property_type" action="estate_property_type"/>
+            <menuitem id="menu_estate_property_tag" action="estate_property_tag"/>
         </menuitem>
-
     </menuitem>
 </odoo>

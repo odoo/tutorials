@@ -7,14 +7,14 @@
     </record>
 
     <!-- Form View -->
-    <record id="estate_property_type_form" model="ir.ui.view">
+    <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Form">
                 <sheet>
                     <div  name="button_box" position="before">
-                        <button name="%(action_estate_property_offer)d" 
+                        <button name="%(estate_property_offer_action)d" 
                             type="action"
                             class="oe_stat_button"
                             icon="fa-money">
@@ -29,8 +29,8 @@
                     <notebook>
                         <page string="Properties">
                             <group>
-                                <field nolabel="1" name="property_ids">
-                                    <list>
+                                <field name="property_ids" nolabel="1">
+                                    <list string="Property Types">
                                         <field name="name" string="Title"/>
                                         <field name="expected_price"/>
                                         <field name="state"/>
@@ -45,7 +45,7 @@
     </record>
 
     <!-- List View -->
-    <record id="estate_property_type_list" model="ir.ui.view">
+    <record id="estate_property_type_view_list" model="ir.ui.view">
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">

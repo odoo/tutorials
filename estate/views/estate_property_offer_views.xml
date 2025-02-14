@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <!-- Action to Open Property Offers -->
-    <record id="action_estate_property_offer" model="ir.actions.act_window">
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
@@ -10,7 +10,7 @@
     </record>
 
     <!-- List View for Property Offers -->
-    <record id="view_estate_property_offer_list" model="ir.ui.view">
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">

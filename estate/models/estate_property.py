@@ -6,7 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Property"
     _order = 'id desc'
     _sql_constraints = [
@@ -17,12 +17,12 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode") 
-    date_availability = fields.Date(string="Availabile From",copy=False,
+    date_availability = fields.Date(string="Availabile From", copy=False,
         default=lambda self:fields.Datetime.today() + relativedelta(months=3)
     )
 
-    expected_price = fields.Float(string="Expected Price",required=True)
-    selling_price = fields.Float(string="Selling Price",readonly=True, copy=False)
+    expected_price = fields.Float(string="Expected Price", required=True)
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms",default=2)
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Facades")
@@ -50,16 +50,18 @@ class EstateProperty(models.Model):
         ],
         required=True,
         default="new",
-        copy=False
+        copy=False,
+        tracking=True
     )
     
-    property_type_id = fields.Many2one('estate.property.type',string="Property Type")
-    property_tag_ids = fields.Many2many('estate.property.tag',string="Property Tags")
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    property_tag_ids = fields.Many2many('estate.property.tag', string="Property Tags")
     offer_ids = fields.One2many('estate.property.offer','property_id')
     user_id = fields.Many2one('res.users', string='Salesperson',
-        default=lambda self: self.env.user
+        default=lambda self: self.env.user,
+        tracking=True
     )
-    buyer_id = fields.Many2one('res.partner',string="Buyers")
+    buyer_id = fields.Many2one('res.partner', string="Buyer", tracking=True)
     best_offer = fields.Float(string="Best Offer", compute='_compute_best_offer', store=True)
 
     # Computing Total Area from living_area and garden_area
@@ -92,8 +94,7 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if self.state == 'cancelled':
             raise UserError("Cancelled Property can not be sold")
-        else:
-            self.state = 'sold'
+        self.state = 'sold'
 
     # checks that selling price cannot be lower than 90% of the expected price.
     @api.constrains('expected_price', 'selling_price')
@@ -113,6 +114,5 @@ class EstateProperty(models.Model):
     # Prevention on Delete
     @api.ondelete(at_uninstall=False)
     def _unlink_if_property_state(self):
-        for property in self:
-            if property.state in ('new', 'cancelled'):
+        if any(property.state in ('new', 'cancelled') for property in self):
                 raise UserError("You can not delete a property if its state is not ‘New’ or ‘Cancelled’")

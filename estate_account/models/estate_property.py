@@ -13,10 +13,7 @@ class EstateProperty(models.Model):
         if not journal:
             raise ValueError("No sales journal found.")
 
-        commission_amount = self.selling_price * 0.06  # 6% of selling price
-        admin_fees = 100.00  # Fixed fee
-
-        invoice_vals = {
+        self.env['account.move'].create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
             'journal_id': journal.id,
@@ -24,15 +21,13 @@ class EstateProperty(models.Model):
                 Command.create({
                     "name": "Commission (6%)",
                     "quantity": 1,
-                    "price_unit": commission_amount,
+                    "price_unit": self.selling_price * 0.06,
                 }),
                 Command.create({
                     "name": "Administrative Fees",
                     "quantity": 1,
-                    "price_unit": admin_fees,
+                    "price_unit": 100.00,
                 }),
             ],
-        }
-
-        invoice = self.env['account.move'].create(invoice_vals)
+        })
         return res
