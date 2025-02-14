@@ -11,21 +11,15 @@ class EstateProperty(models.Model):
     _order = "id desc"
     
     _sql_constraints = [
-        (
-            'positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive'
-        ),
+        ('positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive'),
+        ('positive_selling_price', 'CHECK(selling_price > 0)', 'Selling price must be strictly positive')
     ]
 
-    name = fields.Char(
-        string="Property Name",
-        required=True,
-        help="Property Name"
-    )
+    name = fields.Char(string="Property Name", required=True, help="Property Name")
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
     date_availability = fields.Date(
-        "Availability Date",
-        copy=False,
+        "Availability Date", copy=False,
         default=lambda self: fields.Date.today() + relativedelta(days=90),
     )
     expected_price = fields.Float("Expected Price", required=True, help="Expected Price")
@@ -54,18 +48,12 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        string="State",
-        required=True,
-        copy=False,
-        default="new",
+        string="State", required=True, copy=False, default="new"
     )
     property_type_id=fields.Many2one(string="Property Type", comodel_name="estate.property.type", ondelete="restrict")
     buyer_id=fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False, readonly=True)
     salesperson_id=fields.Many2one(
-        string="Salesperson",
-        comodel_name="res.users",
-        default=lambda self: self.env.user,
-        ondelete="restrict",
+        string="Salesperson", comodel_name="res.users", default=lambda self: self.env.user, ondelete="restrict"
     )
     tag_ids=fields.Many2many(string="Tags", comodel_name="estate.property.tag", ondelete="restrict")
     offer_ids=fields.One2many(string="Offers", comodel_name="estate.property.offer", inverse_name="property_id")
@@ -83,7 +71,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
     
-    @api.constrains("selling_price", "expected_price")
+    @api.constrains("selling_price")
     def _check_valid_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, record.expected_price*0.9, precision_digits=2) < 0:
