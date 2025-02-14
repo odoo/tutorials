@@ -10,11 +10,12 @@
 
     'version': '0.1',
     'application': True,
-    'category': 'Tutorials/RealEstate',
+    'category': 'Real Estate/Brokerage',
     'installable': True,
     'depends': ['base'],
     'data':[
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_type_views.xml',
