@@ -2,10 +2,14 @@ from odoo import exceptions, Command, models
 from odoo.exceptions import UserError
 
 
-class Property(models.Model):
+class InheritedEstateProperty(models.Model):
     _inherit="estate.property"
 
     def action_set_sold(self):
+
+        print(" reached ".center(100, '='))
+
+        self.check_access('write')
 
         invoice_vals = {
             "name": "Invoice Bill",
@@ -25,6 +29,17 @@ class Property(models.Model):
             ]
             }
 
-        self.env["account.move"].create(invoice_vals)
+        print(f"Invoice creation attempt for Buyer ID: {self.buyer_id.id}, Selling Price: {self.selling_price}")
+
+
+        if not self.env.user.has_group('estate.estate_group_user'):
+            raise UserError("You do not have permission to confirm the sale.")
+        
+
+        invoice = self.env["account.move"].sudo().create(invoice_vals)
+
+        if invoice:
+            print(f"Invoice created successfully for Partner ID: {self.buyer_id.id}, Amount: {self.selling_price * 0.06 + 100.00}")
+
 
         return super().action_set_sold()

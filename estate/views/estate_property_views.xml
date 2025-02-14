@@ -10,7 +10,7 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id">
+            <kanban default_group_by="company_id">
                 <field name="state"/>
                 <templates>
                     <t t-name="kanban-box">
@@ -48,6 +48,7 @@
                 <field name="living_area" string="Living Area(sqm)"></field>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
+                <field name="company_id" invisible="context.get('company_id', False)"/>
                 <field name="date_availability" string="Available From" optional="True" invisible="1"/>
             </list>
         </field>
@@ -77,6 +78,7 @@
                             <field name="property_type_id" widget="many2one" options="{'no_create': True}"/>
                             <field name="postcode"/>
                             <field name="expected_price"/>
+                            <field name="company_id" readonly="1"/> 
                         </group>
                         <group>
                             <field name="selling_price"/>
@@ -128,6 +130,7 @@
                 <field name="selling_price"/>
                 <field name="date_availability"/>
                 <field name="living_area" string="Living Area" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="company_id"/>
 
                 <filter name="filter_available_properties" string="Available Properties" 
                         domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
