@@ -42,7 +42,7 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         self.env['estate.property'].browse(vals['property_id']).state = 'offer received'
-        if int(self.env['estate.property.offer'].browse(vals['price'])) < self.env['estate.property'].browse(vals['property_id']).best_offer:
+        if int(vals['price']) < self.env['estate.property'].browse(vals['property_id']).best_offer:
             raise exceptions.UserError(f"The offer must be higher than {self.env['estate.property'].browse(vals['property_id']).best_offer}")
         return super(EstatePropertyOffer, self).create(vals)
     
@@ -56,6 +56,4 @@ class EstatePropertyOffer(models.Model):
                 
     def action_refuse_offer(self):
         for record in self:
-            if record.status == 'accepted':
-                record.property_id.selling_price = 1
             record.status = 'refused'

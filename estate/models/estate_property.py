@@ -64,6 +64,10 @@ class EstateProperty(models.Model):
         compute="_compute_tag_count")
     rating = fields.Float('Property Rating',
         compute="_compute_property_rating")
+    company_id = fields.Many2one(
+        comodel_name='res.company', 
+        required=True, 
+        default=lambda self: self.env.user.company_id.id)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_amount(self):
@@ -85,11 +89,11 @@ class EstateProperty(models.Model):
         for record in self:
             record.rating = sum(record.tag_ids.mapped('rating'))
     
-    @api.constrains('selling_price', 'expected_price')
+    @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
             threshold_price = 0.9 * record.expected_price  
-            low_selling_price = record.selling_price <= threshold_price  
+            low_selling_price = record.selling_price <= threshold_price
             low_best_offer = record.best_offer <= threshold_price  
             has_offers = len(record.offer_ids) > 0
             if (low_selling_price or low_best_offer) and has_offers:

@@ -9,7 +9,9 @@ class EstateProperty(models.Model):
             raise exceptions.UserError("A buyer must be set before selling the property.")
         if not self.selling_price:
             raise exceptions.UserError("Choose at least one offer before selling the property!")
-        
+
+        self.env['estate.property'].check_access('write')
+
         invoicing_price = self.selling_price * 0.06
         admin_fee = 100
 
@@ -29,8 +31,6 @@ class EstateProperty(models.Model):
                 }),
             ],
         }
-
-        print(" reached ".center(100, '='))
-        self.env['account.move'].check_access('write').create(invoice_vals)
+        self.env['account.move'].sudo().create(invoice_vals)
 
         return super(EstateProperty, self).action_sell_property()
