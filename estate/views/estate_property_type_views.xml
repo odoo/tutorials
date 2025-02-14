@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_type_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.type.list</field>
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list name="estate_property_type_list" string="Property Types">

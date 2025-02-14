@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <odoo>
-    <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list name="estate_property_list" string="Property" decoration-success="state in ('offer accepted','offer recieved')" decoration-muted="state == 'sold'" decoration-bf="state == 'offer accepted'">
