@@ -6,6 +6,9 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "Offer price must be strictly positive")
+    ]
 
     price = fields.Float(string="Price")
     status = fields.Selection([
@@ -28,6 +31,19 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days if record.date_deadline else 0
 
+    # === Create Methods === #
+    @api.model_create_multi
+    def create(self,vals):
+        for record in vals:
+            property_id = self.env['estate.property'].browse(record['property_id'])
+            if property_id:
+                property_id.write({'state' : 'offerreceived'})
+
+            if property_id.best_offer > record['price']:
+                raise UserError("Offer Price entered is lower than the existing offer price.")
+
+        return super().create(vals)
+
     # === Actions === #
     def action_accepted(self):
         # accepted_offer = self.search([('property_id', '=', self.property_id.id),('status', '=', 'accepted')], limit=1)
@@ -41,21 +57,3 @@ class EstatePropertyOffer(models.Model):
 
     def action_refused(self):
         self.status = "refused" 
-
-    # === Inherited Methods === #
-    @api.model_create_multi
-    def create(self,vals):
-        for record in vals:
-            property_id = self.env['estate.property'].browse(record['property_id'])
-            if property_id:
-                property_id.write({'state' : 'offerreceived'})
-
-            if property_id.best_offer > record['price']:
-                raise UserError("Offer Price entered is lower than the existing offer price.")
-
-        return super().create(vals)
-
-    # === SQL Constraints === #
-    _sql_constraints = [
-        ("check_price", "CHECK(price > 0)", "Offer price must be strictly positive")
-    ]

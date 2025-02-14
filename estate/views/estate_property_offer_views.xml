@@ -1,8 +1,8 @@
 <odoo>
     <data>
         <!-- Custom List view -->
-        <record id="view_estate_property_offer_list" model="ir.ui.view">
-            <field name="name">view.estate.property.offer.list</field>
+        <record id="estate_property_offer_view_list" model="ir.ui.view">
+            <field name="name">estate.property.offer.view.list</field>
             <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
                 <list name="offer" editable="bottom" 
@@ -18,8 +18,9 @@
             </field>
         </record>
 
-        <record id="view_estate_property_offer_form" model="ir.ui.view">
-            <field name="name">view.estate.property.offer.form</field>
+        <!-- Custom Form view -->
+        <record id="estate_property_offer_view_form" model="ir.ui.view">
+            <field name="name">estate.property.offer.view.form</field>
             <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
                 <form name="estate_property_offer_form" string="Offers">

@@ -2,8 +2,8 @@
 <odoo>
     <data>
     <!-- Custom list view -->
-    <record id="view_estate_property_type_list" model="ir.ui.view">
-            <field name="name">view.estate.property.type.list</field>
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+            <field name="name">estate.property.type.view.list</field>
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
                 <list string="Property Types">
@@ -14,8 +14,8 @@
         </record>
 
     <!-- Custom form view -->
-        <record id="view_estate_property_type_form" model="ir.ui.view">
-            <field name="name">view.estate.property.type.form</field>
+        <record id="estate_property_type_view_form" model="ir.ui.view">
+            <field name="name">estate.property.type.view.form</field>
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
                 <form>

@@ -2,8 +2,8 @@
 <odoo>
     <data>
         <!-- Custom list view-->
-        <record id="view_estate_property_list" model="ir.ui.view">
-            <field name="name">view.estate.property.list</field>
+        <record id="estate_property_view_list" model="ir.ui.view">
+            <field name="name">estate.property.view.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <list name="properties" string="Properties" 
@@ -27,8 +27,8 @@
         </record>
 
         <!-- Custom form view-->
-        <record id="view_estate_property_form" model="ir.ui.view">
-            <field name="name">view.estate.property.form</field>
+        <record id="estate_property_view_form" model="ir.ui.view">
+            <field name="name">estate.property.view.form</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form>
@@ -87,8 +87,8 @@
         </record>
 
         <!-- Custom search view -->
-        <record id="view_estate_property_search" model="ir.ui.view">
-            <field name="name">estate.property.search</field>
+        <record id="estate_property_view_search" model="ir.ui.view">
+            <field name="name">estate.property.view.search</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <search>
@@ -111,8 +111,8 @@
         </record>
 
         <!-- Custom Kanban View -->
-        <record id="view_estate_property_kanban" model="ir.ui.view">
-            <field name="name">estate.property.kanban</field>
+        <record id="estate_property_view_kanban" model="ir.ui.view">
+            <field name="name">estate.property.view.kanban</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <kanban default_group_by="property_type_id" records_draggable="False">

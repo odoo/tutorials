@@ -8,6 +8,10 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be strictly positive"),
+        ("check_selling_price", "CHECK(selling_price > 0)", "Selling price must be strictly positive")  
+    ]
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
@@ -54,6 +58,12 @@ class EstateProperty(models.Model):
         for record in (self):
             record.best_offer = max(record.offer_ids.mapped('price'), default=0)
     
+    # === Constraints and Onchanges === #
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        if self.selling_price and self.selling_price < self.expected_price * 0.9:
+            raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+
     @api.onchange("garden")
     def _onchange_partner_id(self):
         if self.garden == True:
@@ -63,7 +73,14 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    # === Actions === #
+    # === CRUD Methods === #
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("You cannot delete a record which is %s" %record.state)
+
+    # === Action Methods === #
     def action_sold(self):
         for record in self:
             if record.state== "cancelled":
@@ -77,23 +94,3 @@ class EstateProperty(models.Model):
                 raise UserError("sold properties cannot be cancelled")
             else:
                 record.state = "cancelled"
-
-    # === Inherited Methods === #
-    @api.ondelete(at_uninstall=False)
-    def _unlink_property(self):
-        for record in self:
-            if record.state not in ['new', 'cancelled']:
-                raise UserError("You cannot delete a record which is %s" %record.state)
-        
-    
-    # === SQL Constraints === #
-    _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be strictly positive"),
-        ("check_selling_price", "CHECK(selling_price > 0)", "Selling price must be strictly positive")  
-    ]
-
-    # === Python Constraints === #
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        if self.selling_price > 0 and self.selling_price < self.expected_price * 0.9:
-            raise ValidationError("Selling price cannot be lower than 90% of the expected price.")

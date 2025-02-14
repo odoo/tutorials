@@ -5,6 +5,9 @@ class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Type"
     _order = "sequence, name desc"
+    _sql_constraints = [
+        ('unique_property_type', 'UNIQUE(name)', 'Property type must be unique'),
+    ]
 
     name = fields.Char(string="Name", required=True)
     sequence = fields.Integer(string="Sequence", default=1)
@@ -17,8 +20,3 @@ class EstatePropertyType(models.Model):
     def _compute_total_offers(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
-
-    # === SQL Constraints === #
-    _sql_constraints = [
-        ('unique_property_type', 'UNIQUE(name)', 'Property type must be unique'),
-    ]
