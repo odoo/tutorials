@@ -17,6 +17,7 @@ class EstateProperty(models.Model):
         copy=False,
         default= lambda self: fields.Datetime.now() + relativedelta(months=3)
     )
+    image = fields.Image("Property Image")
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Number of bedrooms", default=2)

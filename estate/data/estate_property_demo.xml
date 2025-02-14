@@ -65,6 +65,7 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_pool'), ref('property_tag_garden')])]"/>
         <field name="expected_price">500000.00</field>
         <field name="living_area">300</field>
+        <field name="postcode">388245</field>
         <field name="bedrooms">4</field>
         <field name="garden">true</field>
         <field name="garden_area">150</field>
@@ -78,6 +79,7 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_new'), ref('property_tag_furnished')])]"/>
         <field name="expected_price">250000.00</field>
         <field name="living_area">85</field>
+        <field name="postcode">388505</field>
         <field name="bedrooms">2</field>
         <field name="state">offer_received</field>
     </record>
@@ -88,6 +90,7 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_renovated')])]"/>
         <field name="expected_price">180000.00</field>
         <field name="living_area">70</field>
+        <field name="postcode">388258</field>
         <field name="bedrooms">2</field>
         <field name="garden">true</field>
         <field name="garden_area">100</field>
@@ -101,6 +104,7 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_garden')])]"/>
         <field name="expected_price">450000.00</field>
         <field name="living_area">200</field>
+        <field name="postcode">388890</field>
         <field name="bedrooms">5</field>
         <field name="garden">true</field>
         <field name="garden_area">200</field>
@@ -114,6 +118,7 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_new'), ref('property_tag_furnished')])]"/>
         <field name="expected_price">800000.00</field>
         <field name="living_area">150</field>
+        <field name="postcode">388345</field>
         <field name="bedrooms">3</field>
         <field name="state">new</field>
     </record>
@@ -124,6 +129,7 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_pool'), ref('property_tag_furnished')])]"/>
         <field name="expected_price">600000.00</field>
         <field name="living_area">180</field>
+        <field name="postcode">898245</field>
         <field name="bedrooms">4</field>
         <field name="state">new</field>
     </record>
@@ -134,6 +140,7 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_renovated')])]"/>
         <field name="expected_price">320000.00</field>
         <field name="living_area">95</field>
+        <field name="postcode">389207</field>
         <field name="bedrooms">2</field>
         <field name="state">new</field>
     </record>
@@ -144,6 +151,7 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_garden')])]"/>
         <field name="expected_price">220000.00</field>
         <field name="living_area">90</field>
+        <field name="postcode">382929</field>
         <field name="bedrooms">3</field>
         <field name="garden">true</field>
         <field name="garden_area">150</field>
@@ -157,6 +165,7 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_pool'), ref('property_tag_garden')])]"/>
         <field name="expected_price">550000.00</field>
         <field name="living_area">250</field>
+        <field name="postcode">389298</field>
         <field name="bedrooms">4</field>
         <field name="garden">true</field>
         <field name="garden_area">300</field>
@@ -170,6 +179,7 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_furnished')])]"/>
         <field name="expected_price">150000.00</field>
         <field name="living_area">45</field>
+        <field name="postcode">389828</field>
         <field name="bedrooms">1</field>
         <field name="state">new</field>
     </record>

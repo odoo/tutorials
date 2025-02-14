@@ -3,8 +3,67 @@
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Real Estate</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form,search</field>
+        <field name="view_mode">list,form,kanban,search</field>
         <field name="context">{'search_default_available': True}</field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" default_group_by="property_type_id" records_draggable="False">
+                <field name="state"/>
+                <field name="bedrooms"/>
+                <field name="garden"/>
+                <field name="garage"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="d-flex justify-content-between">
+                                <strong><field name="name"/></strong>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+                            <div>
+                                <t t-if="record.state.raw_value == 'new'">
+                                    <span class="text-muted">Expected: </span>
+                                    <field name="expected_price" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                </t>
+                                <t t-if="record.state.raw_value == 'offer_received'">
+                                    <span class="text-muted">Best: </span>
+                                    <field name="best_price" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                </t>
+                                <t t-if="record.state.raw_value == 'offer_accepted'">
+                                    <span class="text-muted">Selling: </span>
+                                    <field name="selling_price" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                                </t>
+                            </div>
+                            <div>
+                                <span><i class="fa fa-home"/> <field name="living_area"/> cm²</span>
+                                <span class="ms-2"><i class="fa fa-bed"/> <field name="bedrooms"/></span>
+                                <t t-if="record.garage.raw_value">
+                                    <span class="ms-2"><i class="fa fa-car"/> Garage</span>
+                                </t>
+                                <t t-if="record.garden.raw_value">
+                                    <span class="ms-2"><i class="fa fa-tree"/> Garden</span>
+                                </t>
+                            </div>
+                            <div>
+                                <i class="fa fa-map-marker-alt"/> <field name="postcode"/>
+                            </div>
+                            <div class="o_kanban_footer">
+                                <span t-if="record.state.raw_value == 'sold'" class="badge bg-danger">Sold</span>
+                                <span t-elif="record.state.raw_value == 'new'" class="badge bg-light">New</span>
+                                <span t-elif="record.state.raw_value == 'offer_received'" class="badge bg-warning">Offer Received</span>
+                                <span t-elif="record.state.raw_value == 'offer_accepted'" class="badge bg-success">Offer Accepted</span>
+                                <div class="d-flex justify-content-between">
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -14,7 +73,7 @@
             <list string="Estate Property" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'" decoration-success="state == 'offer_received'">
                 <field name="name" />
                 <field name="property_type_id" />
-                <field name="tag_ids" widget="many2many_tags" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="postcode" optional="hide" />
                 <field name="bedrooms" optional="hide" />
                 <field name="living_area" />
@@ -43,6 +102,7 @@
                 <sheet>
                     <h1>
                         <field name="name" />
+                        <field name="image" widget="image" class="oe_avatar" />
                     </h1>
                     <p>
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
