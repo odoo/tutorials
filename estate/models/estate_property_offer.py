@@ -31,23 +31,16 @@ class EstatePropertyOffer(models.Model):
         "estate.property.type", string="Property Type", related="property_id.property_type_id", store=True)
 
     def property_action_accept(self):
-            if self.property_id.state == 'sold':
-                raise UserError("Property already sold.")
-            elif self.property_id.state == 'cancelled':
-                raise UserError("Property cancelled, offers cannot be accept.")
-            elif self.status == 'accepted':
-                raise UserError("Buyer is already accepted.")
+        for offer in self.property_id.offer_ids:
+            if offer.id != self.id:
+                offer.status = 'refused'
 
-            for offer in self.property_id.offer_ids:
-                    if offer.id != self.id:
-                        offer.status = 'refused'
-
-            self.status = 'accepted'
-            self.property_id.write({
-                'selling_price': self.price,
-                'partner_id': self.partner_id.id,
-                'state': 'offer_accepted'
-            })
+        self.status = 'accepted'
+        self.property_id.write({
+            'selling_price': self.price,
+            'partner_id': self.partner_id.id,
+            'state': 'offer_accepted'
+        })
 
     def property_action_refuse(self):
         for record in self:
@@ -56,13 +49,13 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for record in self:
-            create_date = record.create_date.date() if record.create_date else fields.Date.today()
+            create_date = create_date = (record.create_date or fields.Datetime.now()).date()
             record.date_deadline = create_date + timedelta(days=record.validity)
    
     
     def _inverse_date_deadline(self):
         for record in self:
-            create_date = record.create_date.date() if record.create_date else fields.Date.today()
+            create_date = create_date = (record.create_date or fields.Datetime.now()).date()
             record.validity = (record.date_deadline - create_date).days if record.date_deadline else 7
             
     @api.model_create_multi

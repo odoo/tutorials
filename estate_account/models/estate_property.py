@@ -1,16 +1,17 @@
 from odoo import Command, fields, models
+from odoo.exceptions import UserError
 
 
-class InheritedModel(models.Model):
+class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def property_action_sell(self):
-        print(" reached ".center(100, "="))
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cancelled properties cannot be sold.")
 
-            self.env["account.move"].create({
+            prop.check_access('write')
+            self.env["account.move"].sudo().create({
                 "partner_id": self.partner_id.id, 
                 "move_type": "out_invoice", 
                 "invoice_line_ids": [

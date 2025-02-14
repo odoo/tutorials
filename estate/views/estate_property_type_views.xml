@@ -29,7 +29,7 @@
                         </h1>
                     </group>
                     <div class="oe_button_box" name="button_box">
-                        <button name="%(estate_property_offer_view)d" type="action" class="oe_stat_button" icon="fa-money">
+                        <button name="%(estate_property_offer_action)d" type="action" class="oe_stat_button" icon="fa-money">
                             <div class="o_stat_info">
                                 <span class="o_stat_text">
                                 Offers
