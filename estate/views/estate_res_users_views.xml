@@ -1,4 +1,4 @@
-<odoo> 
+<odoo>
     <record id="estate_res_users_form_view" model="ir.ui.view">
         <field name="name">estate.res.users</field>
         <field name="model">res.users</field>
