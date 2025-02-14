@@ -2,7 +2,7 @@
 <odoo>
     <record id="estate_users_view_form" model="ir.ui.view">
         <field name="name">Real Estate Properties</field>
-        <field name="model">inherited.users</field>
+        <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook[@colspan=4]" position="inside">

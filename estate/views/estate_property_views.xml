@@ -90,7 +90,7 @@
                 <field name="name" string="Title" />
                 <field name="property_type_id" string="Property Type"/>
                 <field name="postcode" string="Postcode"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area(sqm)"/>
                 <field name="expected_price" string="Expected Price"/>
@@ -104,21 +104,25 @@
         <field name="name">Properties</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_group_by="property_type_id" groups_draggable="false" records_draggable="false">
+                <field name="status" />
                 <templates>
                     <t t-name="kanban-box">
-                        <div>
+                        <div class="row mb4">
                             <div>
                                 <b>Name: <field name="name" string="Title"/>
                                 </b>
                             </div>
                             <div>Postcode: <field name="postcode"/>
                             </div>
-                            <div>Bedrooms: <field name="bedrooms"/>
-                            </div>
-                            <div>Living Area: <field name="living_area"/>
-                            </div>
                             <div>Expected Price: <field name="expected_price"/>
+                            </div>
+                            <div t-if="record.status.raw_value == 'offer_received'">Best Price: <field name="best_offer"/>
+                            </div>
+                            <div t-if="record.status.raw_value == 'offer_accepted'">Selling Price: <field name="selling_price"/>
+                            </div>
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             </div>
                         </div>
                     </t>

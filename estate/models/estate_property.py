@@ -1,11 +1,17 @@
-from odoo import api,fields, models 
 from dateutil.relativedelta import relativedelta
+from odoo import api,fields, models 
 from odoo.exceptions import UserError,ValidationError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Model"
     _order = "id desc"  
+    _sql_constraints = [
+        ('expected_price', 'CHECK(expected_price > 0)',
+         'The expected price must be strictly positive!'),
+
+        ('selling_price', 'CHECK(selling_price > 0)', 'The selling price must be strictly positive!')
+    ]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -32,19 +38,12 @@ class EstateProperty(models.Model):
         default = 'new'
     )
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    total_area = fields.Float(compute="_compute_total")
+    best_offer = fields.Float(compute="_compute_offer")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     seller_id = fields.Many2one('res.users', string="Seller", default=lambda self: self.env.user)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer',inverse_name="property_id", string="Offer")
-    total_area = fields.Float(compute="_compute_total")
-    best_offer = fields.Float(compute="_compute_offer")
-    
-    _sql_constraints = [
-        ('expected_price', 'CHECK(expected_price > 0)',
-         'The expected price must be strictly positive!'),
-
-        ('selling_price', 'CHECK(selling_price > 0)', 'The selling price must be strictly positive!')
-    ]
 
     @api.depends("living_area","garden_area")
     def _compute_total(self):
@@ -90,4 +89,4 @@ class EstateProperty(models.Model):
     def _unlink_property(self):
         for record in self:
             if record.status not in {'new','cancelled'}:
-                raise UserError('A property can only delete if it is new or cancelled')  
+                raise UserError('A property can only delete if it is new or cancelled')

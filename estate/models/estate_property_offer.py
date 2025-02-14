@@ -1,23 +1,23 @@
-from odoo import api,fields, models
 from datetime import datetime,timedelta
+from odoo import api,fields, models
 from odoo.exceptions import UserError,ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer Model"
     _order = "price desc"
+    _sql_constraints = [('price_pos','check(price>0)','price should be positive!')]
 
     price = fields.Float()
     state = fields.Selection(
         selection = [('accepted','Accepted'),('refused','refused')]
     )
+    validity = fields.Integer(default=7)
+    deadline = fields.Date(compute="_compute_date_deadline",inverse="_inverse_deadline",store=True)
     partner_id = fields.Many2one('res.partner',required=True)
     property_id = fields.Many2one('estate.property',required=True)
     property_type_id  = fields.Many2one(related='property_id.property_type_id', store=True)    
-    validity = fields.Integer(default=7)
-    deadline = fields.Date(compute="_compute_date_deadline",inverse="_inverse_deadline",store=True)
     
-    _sql_constraints = [('price_pos','check(price>0)','price should be positive!')]
 
     @api.depends('validity')
     def _compute_date_deadline(self):
@@ -32,6 +32,15 @@ class EstatePropertyOffer(models.Model):
             if record.create_date and record.deadline:
                 record.validity = (record.deadline - record.create_date.date()).days
 
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        for rec in res:
+            if rec.price < rec.property_id.best_offer:
+                raise ValidationError('Offer Price should be greater than best price')       
+            else:
+                rec.property_id.status="offer_received"
+        return res 
+    
     def action_offer_accept(self):
         
         for record in self:
@@ -54,12 +63,3 @@ class EstatePropertyOffer(models.Model):
                 record.state = "refused"
                 record.property_id.selling_price = False
                 record.property_id.buyer_id = False
-
-    def create(self, vals_list):
-        res = super().create(vals_list)
-        for rec in res:
-            if rec.price < rec.property_id.best_offer:
-                raise ValidationError('Offer Price should be greater than best price')       
-            else:
-                rec.property_id.status="offer_received"
-        return res 
