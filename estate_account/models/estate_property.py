@@ -5,9 +5,10 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold_property(self):
+        self.env['account.move'].check_access("create")
         res = super().action_sold_property()
         for record in self:
-            self.env['account.move'].create({
+            self.env['account.move'].sudo().create({
                 'partner_id': self.buyer_id.id,
                 "move_type": "out_invoice",
                 "invoice_line_ids": [
@@ -23,4 +24,5 @@ class EstateProperty(models.Model):
                     })
                 ]
                 })
+            print(" reached ".center(100, '='))
         return res

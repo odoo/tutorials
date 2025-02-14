@@ -4,10 +4,11 @@
     "description": "A real estate app developed by Vedant within the four walls of Odoo IN",
     "author": "Vedant Pandey (vpan)",
     "website": "https://odoo.com",
-    "category": "Tutorials/Estate",
+    "category": "Real Estate/Brokerage",
     "version": "0.1",
     "depends": ["base"],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/res_users_views.xml",
         "views/estate_property_views.xml",
