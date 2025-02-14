@@ -143,8 +143,6 @@
                 <field name="facades" />
                 <field name="property_type_id" />
                 <filter name="available" string="Available"
-                    domain="[('date_availability', '&gt;=', datetime.datetime.now())]" />
-                <filter name="state" string="Status"
                     domain="[('state', 'in', ['new','offer_received'])]" />
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
