@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
 
     def action_sell_property(self):
         # if not self.env.user.has_group('estate_group_manager'):
-        #     raise exceptions.AccessError("You do not have permission to generate an invoice.") exercise
+        #     raise exceptions.AccessError("You do not have permission to sell property.") exercise
         
         res = super().action_sell_property()
         for prop in self:
@@ -33,6 +33,5 @@ class EstateProperty(models.Model):
                     })
                 ] 
             }
-            print(" reached ".center(100, '='))
             self.env['account.move'].create(invoice_vals)
         return res
