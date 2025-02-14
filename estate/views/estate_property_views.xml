@@ -7,6 +7,7 @@
         <field name = "context">{'search_default_availible_property': 1}</field>
     </record>
 
+
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate_property_list</field>
         <field name="model">estate.property</field>
@@ -80,6 +81,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

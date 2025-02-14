@@ -32,5 +32,23 @@
         <field name="garage">False</field>
         <field name="property_type_id" ref="estate.estate_property_type_1" />
       </record>
-     
+
+      <record id="penthouse_airy" model="estate.property">
+        <field name="name">Super Ventilated Pent house</field>
+        <field name="state">new</field>
+        <field name="description">airy and ventilated penthouse</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">12000</field>
+        <field name="selling_price">1400000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">120</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="1" />
+        <field name="offer_ids" eval="[
+            Command.create({'partner_id': ref('base.res_partner_1'), 'price': 100000}),
+            Command.create({'partner_id': ref('base.res_partner_3'), 'price': 9877655})]" />
+    </record>
+
 </odoo>

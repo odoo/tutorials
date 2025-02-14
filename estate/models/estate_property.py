@@ -6,8 +6,9 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperties(models.Model):
     _name = "estate.property"
     _description = "Estate Model"
+    _inherit = ['mail.thread']
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True , tracking = True)
     id = fields.Integer(required=True)
     create_uid = fields.Integer()
     create_date = fields.Date()
@@ -37,7 +38,7 @@ class EstateProperties(models.Model):
         ( 'offer_accepted', 'OFFER ACCEPTED'),
         ('sold' , 'SOLD'),
         ('canceled' , 'CANCELED')],
-        required = True, default = "new", copy = False)
+        required = True, default = "new", tracking = True , copy = False)
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one("estate.property.type" ,string="Property Type")
     buyer_id = fields.Many2one("res.partner",string="Buyer" , copy=False)
