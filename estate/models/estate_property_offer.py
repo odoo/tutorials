@@ -1,5 +1,7 @@
-from odoo import _, api, fields, models
 from datetime import timedelta
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class EsatePropertyOffer(models.Model):
@@ -31,14 +33,14 @@ class EsatePropertyOffer(models.Model):
             if record.validity and record.property_id.create_date:
                 record.date_deadline = record.property_id.create_date + timedelta(days=record.validity)
             else:
-                record.date_deadline = False
+                record.date_deadline = fields.Date.today()
     
     def _inverse_deadline(self):
         for record in self:
             if record.date_deadline and record.property_id.create_date:
                 record.validity = (record.date_deadline - record.property_id.create_date.date()).days
             else:
-                record.validity = 0
+                record.validity = 7
 
     def offer_accepted_action(self):
         for record in self:
@@ -55,3 +57,12 @@ class EsatePropertyOffer(models.Model):
             if(record.property_id.partner_id == record.partner_id):
                 record.property_id.selling_price = 0
                 record.property_id.partner_id = False   
+    @api.model_create_multi
+    def create(self,vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if vals['price'] < property.best_price:
+                raise ValidationError(_('The offer must be higher than the previous best price of %s' % property.best_price))
+            if property.state == 'new':
+                property.state = 'offer_received'
+        return super().create(vals_list)
