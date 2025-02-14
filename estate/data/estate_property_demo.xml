@@ -115,4 +115,69 @@
         <field name="property_type_id" ref="property_type_condo"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_beachfront'))]"/>
     </record>
+
+    <record model="estate.property" id="property_7">
+        <field name="name">Urban Loft</field>
+        <field name="postcode">123789</field>
+        <field name="description">Contemporary loft in downtown area</field>
+        <field name="expected_price">350000</field>
+        <field name="facades">2</field>
+        <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_apartment"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_new')), (4, ref('property_tag_luxury'))]"/>
+    </record>
+
+    <record model="estate.property" id="property_8">
+        <field name="name">Country Cottage</field>
+        <field name="postcode">123888</field>
+        <field name="description">Quiet cottage with a garden view</field>
+        <field name="expected_price">150000</field>
+        <field name="facades">1</field>
+        <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_cottage"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_nature'))]"/>
+    </record>
+
+    <record model="estate.property" id="property_9">
+        <field name="name">Seaside Villa</field>
+        <field name="postcode">123999</field>
+        <field name="description">Exclusive villa with ocean views</field>
+        <field name="expected_price">2000000</field>
+        <field name="facades">5</field>
+        <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_villa"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_beachfront')), (4, ref('property_tag_luxury'))]"/>
+    </record>
+
+    <record model="estate.property" id="property_10">
+        <field name="name">Historic Mansion</field>
+        <field name="postcode">124000</field>
+        <field name="description">Elegant mansion with historical value</field>
+        <field name="expected_price">7000000</field>
+        <field name="facades">8</field>
+        <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_mansion"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_luxury')), (4, ref('property_tag_riverside'))]"/>
+    </record>
+
+    <record model="estate.property" id="property_11">
+        <field name="name">Mountain Cabin</field>
+        <field name="postcode">124111</field>
+        <field name="description">Rustic cabin with stunning mountain views</field>
+        <field name="expected_price">250000</field>
+        <field name="facades">3</field>
+        <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_retreat"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_mountain')), (4, ref('property_tag_nature'))]"/>
+    </record>
+
+    <record model="estate.property" id="property_12">
+        <field name="name">Luxury Penthouse</field>
+        <field name="postcode">124222</field>
+        <field name="description">Penthouse with panoramic city views</field>
+        <field name="expected_price">5000000</field>
+        <field name="facades">4</field>
+        <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_condo"/>
+        <field name="property_tag_ids" eval="[(4, ref('property_tag_luxury')), (4, ref('property_tag_new'))]"/>
 </odoo>

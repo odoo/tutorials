@@ -17,6 +17,7 @@
                 <field name="living_area"/>
                 <field name="garden_area"/>
                 <field name="total_area"/>
+                <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="state" optional="hide"/>
@@ -39,6 +40,7 @@
                 <sheet>
                     <h1>
                         <field name="name" />
+                        <field name="property_image" widget="image" class="oe_avatar" />
                     </h1>
                     <p>
                         <field name="property_tag_ids" widget='many2many_tags'/>
@@ -121,20 +123,30 @@
         </field>
     </record>
 
-    <!-- =============== Kanban View (WIP)=============== -->
+    <!-- =============== Kanban View (Improved)=============== -->
     <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban>
-                <field name="name" />
-                <field name="expected_price" />
-                <field name="postcode" />
+            <kanban default_group_by="property_type_id" records_draggable="False">
+                <field name="state" />
                 <field name="color" />
+                <progressbar field="state" colors="{
+                    &quot;new&quot;: &quot;success-done&quot;,
+                    &quot;offer_received&quot;: &quot;info&quot;,
+                    &quot;offer_accepted&quot;: &quot;warning&quot;,
+                    &quot;sold&quot;: &quot;success&quot;,
+                    &quot;canceled&quot;: &quot;danger&quot;
+                }"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="{{'oe_kanban_color_' + kanban_getcolor(record.color.raw_value)}} oe_kanban_global_click">
                         <div class="oe_kanban_global_click p-3 shadow-sm rounded border">
+                            <div class="text-end">
+                                <span class="badge bg-primary">
+                                    <t t-out="record.state.raw_value"/>
+                                </span>
+                            </div>
                             <div class="o_kanban_details d-flex flex-column">
                                 
                                 <!-- Name Field with Bold Styling -->
@@ -150,8 +162,20 @@
 
                                 <!-- Expected Price with Currency Formatting -->
                                 <div class="fw-bold text-success">
-                                    <span class="fa fa-dollar-sign me-1" title="Expected Price"></span>
-                                    <field name="expected_price"/>
+                                    <span class="fa fa-dollar-sign me-1" title="Expected Price">
+                                        <t t-if="record.state.raw_value == 'new'">
+                                            <field name="expected_price"/>
+                                        </t>
+                                        <t t-elif="record.state.raw_value == 'offer_received'">
+                                            <field name="best_offer"/>
+                                        </t>
+                                        <t t-else="">
+                                            <field name="selling_price"/>
+                                        </t>
+                                    </span>
+                                </div>
+                                <div class="mt-2">
+                                    <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 </div>
                             </div>
                         </div>
