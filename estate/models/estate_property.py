@@ -95,7 +95,7 @@ class EstateProperty(models.Model):
             self.garden_area = 10
             self.garden_orientation = 'north'
 
-    def sold_property(self):
+    def sell_property(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold")

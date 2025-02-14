@@ -31,10 +31,10 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="sold_property" type="object" string="Sold"
+                    <button name="sell_property" type="object" string="Sold"
                             class="btn-primary" invisible="state == 'sold'"
                             data-hotkey="s" />
-                    <button name="sold_property" type="object" string="Sold"
+                    <button name="sell_property" type="object" string="Sold"
                             invisible="state != 'sold'" data-hotkey="s" />
                     <button name="cancelled_property" type="object" string="Cancel"
                             invisible="state == 'sold'" data-hotkey="x" />
