@@ -103,6 +103,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -159,7 +160,8 @@
                                 <field name="selling_price" />
                             </div>
                             <div class="p-1">
-                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                <field name="tag_ids" widget="many2many_tags"
+                                    options="{'color_field': 'color'}" />
                             </div>
                         </div>
                     </t>

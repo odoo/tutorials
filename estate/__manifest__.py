@@ -4,7 +4,7 @@
     'author': "Sufiyan Shaikh",
     'application': True,
     'description': "Real Estate buying/selling app",
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'category': 'Real Estate/Brokerage',
     'license': 'LGPL-3',
     'data': [
@@ -16,5 +16,10 @@
         'views/estate_property_tag_views.xml',
         'views/estate_property_views.xml',
         'views/estate_menu_views.xml',
-    ],  
+        "data/estate.property.type.csv",
+    ],
+    "demo": [
+        "demo/estate_property_demo.xml",
+        "demo/estate_property_offer_demo.xml",
+    ],
 }

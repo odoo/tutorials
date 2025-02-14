@@ -1,11 +1,11 @@
 from odoo import fields, models, Command
 
 class PropertyInherit(models.Model):
-    _inherit = "estate.property"
+     _inherit = "estate.property"
 
-    def action_sold(self):
-        self.check_access("write")
-        invoice =  self.env['account.move'].sudo().create({      
+     def action_sold(self):
+          self.check_access("write")
+          invoice =  self.env['account.move'].sudo().create({      
               'partner_id' : self.buyer_id.id,
               'move_type' : 'out_invoice',
               'invoice_line_ids' : [
@@ -19,6 +19,6 @@ class PropertyInherit(models.Model):
                         "quantity" : 1,
                         "price_unit" : 100         
                    })
-              ]
-         })
-        return super().action_sold()
+              ] 
+          })
+          return super().action_sold()

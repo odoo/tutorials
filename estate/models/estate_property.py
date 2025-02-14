@@ -7,8 +7,9 @@ class Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _inherit = ['mail.thread']
 
-    name = fields.Char('Title', required=True)
+    name = fields.Char('Title', required=True, tracking=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postalcode')
     date_availability = fields.Date(
@@ -40,7 +41,7 @@ class Property(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
         ],
-        default='new', required=True, copy=False  
+        default='new', required=True, copy=False, tracking=True  
     )
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
@@ -49,6 +50,7 @@ class Property(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Integer('Total Areat (sqm)', compute='_compute_total_area')
     best_price = fields.Float('Best Offer', compute='_compute_best_offer')
+    company_id = fields.Many2one(comodel_name='res.company', default=lambda self: self.env.user.company_id, required=True)
 
     _sql_constraints = [
         ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive.'),
