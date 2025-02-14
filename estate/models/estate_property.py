@@ -10,6 +10,7 @@ class estateProperty(models.Model):
     _order="id desc"
     _inherit = ["mail.thread"]
 
+
     # Basic fields for property details
     name = fields.Char(string="Property name", required=True)
     description = fields.Text(string="Description")
@@ -68,8 +69,7 @@ class estateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price", store=True)
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
-    # message_follower_ids = fields.One2many('mail.followers', 'res_id', domain=[('res_model', '=', 'estate.property')])
-    # message_ids = fields.One2many('mail.message', 'res_id', domain=[('model', '=', 'estate.property')])
+
 
     
     _sql_constraints = [

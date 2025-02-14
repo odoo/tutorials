@@ -15,6 +15,8 @@
             <form string="Estate Property">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button name="%(action_report_property_offers)d" type="action"
+                            string="Print Report" class="oe_highlight" icon="fa-print"/>
                         <button name="%(action_estate_property_offer_model)d" type="action"
                             class="oe_stat_button" icon="fa-money">
                             <field name="offer_ids" widget="statinfo" string="Offers" />
