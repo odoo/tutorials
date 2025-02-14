@@ -74,6 +74,7 @@ class EstateProperty(models.Model):
     company_id = fields.Many2one(
         "res.company", string="Company", required=True, default=lambda self: self.env.company
     )
+    
     # Python constraints -- selling price cannot be lower than 90% of the expected price
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):

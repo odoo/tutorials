@@ -20,7 +20,9 @@
         "views/estate_property_views.xml",
         "views/estate_menus.xml",
         "data/estate_property_type_data.xml",
-        "data/mail_message_subtype_data.xml"
+        "data/mail_message_subtype_data.xml",
+        "report/estate_property_report_view.xml",
+        "report/estate_property_templates.xml",
     ],
     "demo": [
         "demo/estate_demo_properties.xml",

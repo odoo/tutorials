@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_property_offers">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price"/>
+                        </div>
+                        <t t-if="property.offer_ids">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Price</th>
+                                        <th>Partner</th>
+                                        <th>Validity</th>
+                                        <th>Deadline</th>
+                                        <th>State</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="property.offer_ids" t-as="offer">
+                                        <tr>
+                                            <td>
+                                                <span t-field="offer.price"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="offer.partner_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="offer.validity"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="offer.date_deadline"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="offer.status"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-else="">
+                            <p><em>No offers received yet.</em></p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
