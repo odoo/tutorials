@@ -11,7 +11,13 @@ class EstateProperty(models.Model):
         if not self.buyer_id.id:
             raise UserError("No buyer set for this property.")
 
-        self.sudo().env["account.move"].create({
+        try:
+            self.check_access_rights("write", raise_exception=True)
+            self.check_access_rule("write")
+        except AccessError:
+            raise UserError("You do not have the required permissions to update this property.")
+
+        self.env["account.move"].sudo().create({
             "move_type": "out_invoice",
             "partner_id": self.buyer_id.id,
             "line_ids": [

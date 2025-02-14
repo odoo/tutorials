@@ -1,11 +1,12 @@
 {
     "name": "Real Estate",
     "version": "1.0",
-    "category": "Real Estate",
+    "category": "Real Estate/Brokerage",
     "summary": "Module to manage real estate advertisements",
     "description": "A module to create and manage real estate advertisements.",
     "depends": ["base"],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "data/ir_sequence_data.xml",
         "views/estate_property_offer_views.xml",

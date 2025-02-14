@@ -20,6 +20,12 @@ class EstateProperty(models.Model):
          'Property name must be unique.')
     ]
     sequence_number = fields.Char(string="Number", copy=False, readonly=True, default="New")
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company
+    )
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
