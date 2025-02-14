@@ -6,14 +6,6 @@ class EstateProperty(models.Model):
     _inherit = ["estate.property"]
 
     def sold(self):
-        print()
-        print()
-        print()
-        print("Child class is called!!!")
-        print(" reached ".center(100, "="))
-        self.check_access("write")
-        print()
-        print()
         self.env["account.move"].sudo().create(
             {
                 "move_type": "out_invoice",

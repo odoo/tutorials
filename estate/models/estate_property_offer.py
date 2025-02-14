@@ -1,7 +1,7 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -27,7 +27,6 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )
-    fil = fields.Char("DDSDS")
 
     @api.depends("validity")
     def _compute_date(self):
