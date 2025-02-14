@@ -10,7 +10,7 @@
 
     'author': "Odoo",
     'website': "https://www.odoo.com",
-    'category': 'Tutorials/Estate',
+    'category': 'Real Estate/Brokerage',
     'version': '0.1',
 
     'depends': [
@@ -19,6 +19,7 @@
     ],
 
     'data':[
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_tag_views.xml',

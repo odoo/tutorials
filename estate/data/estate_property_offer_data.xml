@@ -49,4 +49,12 @@
         <field name="validity">10</field>
     </record>
 
+    <function model="estate.property.offer" name="action_accept">
+        <value eval="[ref('estate_property_offer_4')]"/>
+    </function>
+
+    <function model="estate.property.offer" name="action_refuse">
+        <value eval="[ref('estate_property_offer_1'), ref('estate_property_offer_3')]"/>
+    </function>
+
 </odoo>
