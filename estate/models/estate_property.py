@@ -49,7 +49,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="offer_id")
     total_area = fields.Integer(compute='_compute_total_area', string="Total Area (sqm)")
-    best_offer = fields.Float(compute= '_compute_best_offer', string="Best Offer")
+    best_offer = fields.Float(compute= '_compute_best_offer', string="Best Offer", store=True)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
@@ -101,3 +101,15 @@ class EstateProperty(models.Model):
         for record in self:
             if (record.selling_price < record.expected_price*0.9) and record.offer_ids and record.state!='new':
                 raise ValidationError("Offer price can't be less than 90% of expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_new_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("Can't delete a sold property or with an offer.")
+
+    def check_offer(self):
+        for record in self:
+            if record.state=="new" and record.offer_ids:
+                record.state='Offer Received'
+                return record
