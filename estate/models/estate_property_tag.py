@@ -8,7 +8,7 @@ class EstatePropertyTag(models.Model):
 
     name = fields.Char(string="Tag Name", required=True)
     color = fields.Integer(
-        string="Color Id", default=1, help="It will use to define colors automatically"
+        string="Color Id", help="It will use to define colors automatically"
     )
     _sql_constraints = [
         (
