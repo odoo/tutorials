@@ -37,6 +37,7 @@ class EstatePropertyOffer(models.Model):
     def action_confirm(self):
         for record in self:
             record.property_id.offer_ids.status = 'refused'
+            record.property_id.state="offer_accepted"
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
@@ -49,14 +50,15 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        offers = super().create(vals_list)
-        for offer in offers:
-            existing_offers = self.search([("property_id", "=", offer.property_id.id)])
-            max_offer = max(existing_offers.mapped("price"),default=0)
-            if existing_offers and offer.price < max_offer:
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals.get("property_id"))
+            price = vals.get("price")
+            existing_offers = self.search([("property_id", "=", property.id)])
+            max_offer = max(existing_offers.mapped("price"), default=0)
+            if existing_offers and price < max_offer:
                 raise ValidationError(f"Offer must be higher than {max_offer}")
-            offer.property_id.state = "offer_received"
-        return offers
+            property.state = "offer_received"
+        return super().create(vals_list)
 
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)',
