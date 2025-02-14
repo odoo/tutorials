@@ -1,14 +1,23 @@
 # -- coding: utf-8 --
 # Part of Odoo. See LICENSE file for full copyright and licensing details. 
-from odoo import _, Command, api, fields, models
+from odoo import models, Command, fields, _
+from odoo.exceptions import AccessError
 
 class Property(models.Model):
     _inherit = "estate.property"
+
     def action_sold(self):
+        try:
+            self.ensure_one()
+            self.check_access_rights('write')  # Ensure user has write access to this model
+            self.check_access_rule('write')  # Ensure record rules allow write access
+        except AccessError:
+            raise AccessError(_("You do not have the permission to mark this property as sold."))
+
         invoice_vals = {
-            "name": "Invoice Bill",
             "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",
+            "property_id": self.id,
             "line_ids": [
                 (
                     Command.create({
@@ -26,5 +35,10 @@ class Property(models.Model):
                 )
             ]
         }
-        self.env["account.move"].create(invoice_vals)
+
+        print(" reached ".center(100, '='))
+
+        # Use sudo() to create invoice and bypass security
+        self.env["account.move"].sudo().create(invoice_vals)
+
         return super().action_sold()

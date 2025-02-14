@@ -37,6 +37,7 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         if self.status == 'accepted':
             raise UserError(_("Offer has already been accepted!"))
+            return
         self.write({'status':'accepted'})
         for property in self.mapped('property_id'):
             property.write({

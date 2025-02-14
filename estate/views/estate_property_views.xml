@@ -71,6 +71,7 @@
                             <group>
                                 <field name="buyer_id"/>
                                 <field name="salesperson_id"/>
+                                <field name="company_id"/>
                             </group>
                         </page>
                         <page string="Offers">
