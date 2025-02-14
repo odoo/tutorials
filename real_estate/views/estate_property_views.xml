@@ -1,7 +1,7 @@
 <odoo>
 
     <!-- Menu 1 -> Advertisements -> Property -->
-    <record id="action_estate_property" model="ir.actions.act_window">
+    <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">kanban,list,form</field>
@@ -9,7 +9,7 @@
     </record>
 
     <!-- list view -->
-    <record id="view_estate_property_list" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -31,7 +31,7 @@
     </record>
 
     <!-- form view -->
-    <record id="view_estate_property_form" model="ir.ui.view">
+    <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -61,7 +61,7 @@
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                     <group>
                         <group>
-                            <field name="state" string="Status"/>
+                            <field name="state" string="state"/>
                             <field name="expected_price"/>
                         </group>
                         <group>
@@ -140,7 +140,7 @@
     </record>
 
     <!-- search view -->
-    <record id="view_estate_property_search" model="ir.ui.view">
+    <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -169,7 +169,7 @@
     </record>
 
     <!-- kanban view -->
-    <record id="view_estate_property_kanban" model="ir.ui.view">
+    <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -183,11 +183,14 @@
                             <div>
                                 <span> <strong>Expected Price:</strong> <field name="expected_price"/></span>
                             </div>
-                            <div>
-                                <span> <strong>Best Price:</strong> <field t-if="record.state == offer_received" name="best_price"/></span>
+                            <div t-att-style="'display: none;'">
+                                <span> <strong>State:</strong> <field name="state"/></span>
                             </div>
-                            <div>
-                                <span> <strong>Selling Price:</strong> <field t-if="record.state == offer_accepted" name="selling_price"/></span>
+                            <div t-if="record.state.raw_value == 'offer_received'">
+                                <span> <strong>Best Price:</strong> <field name="best_price"/></span>
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
+                                <span> <strong>Selling Price:</strong> <field name="selling_price"/></span>
                             </div>
                             <div>
                                 <field name="tag_ids"/>
@@ -199,5 +202,10 @@
         </field>
     </record>
 
+    <record id="estate_property_company_rule" model="ir.rule">
+        <field name="name">Estate Property Multi-Company Access</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+    </record>
+
 </odoo>
-<!-- <span><strong>Postcode:</strong> <t t-esc="record.postcode.value"/></span> -->

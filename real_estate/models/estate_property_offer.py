@@ -74,6 +74,7 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.state='offer_accepted'
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
+            print(offer.property_id.state)
 
     def action_refuse_offer(self):
         for offer in self:

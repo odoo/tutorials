@@ -117,6 +117,12 @@ class EstateProperty(models.Model):
         string="Salesperson",
         default=lambda self: self.env.user
     )
+    company_id = fields.Many2one(
+        comodel_name='res.company',
+        string="Company",
+        default=lambda self: self.env.company,
+        required=True
+    )
 
     tag_ids = fields.Many2many(
         comodel_name='estate.property.tag',
