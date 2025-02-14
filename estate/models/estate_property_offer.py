@@ -19,7 +19,7 @@ class EstatePropertyOfferModel(models.Model):
     )
     # property_state = fields.Selection(
     #     related="property_id.state", string="property state", store=True
-    # )
+    # )   
 
     _sql_constraints = [
         (

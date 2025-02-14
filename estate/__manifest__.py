@@ -3,14 +3,14 @@
     'version': '1.0',
     'category':'Real Estate/Brokerage',
     'author': "assh-odoo",
-    'depends':[
-        'base'
-    ],
+    'depends':['base', 'mail'],
     'data':[
         'security/security.xml',
         'security/ir.model.access.csv',
         'security/estate_property_security.xml',
         'data/estate.property.types.csv',
+        'report/estate_property_report.xml',
+        'report/estate_property_templates.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_types_views.xml',

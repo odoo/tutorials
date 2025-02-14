@@ -44,6 +44,7 @@ class EstatePropertyModel(models.Model):
         default="new",
         required=True,
         copy=False,
+        tracking=True
     )
 
     property_type_id = fields.Many2one(
@@ -58,6 +59,13 @@ class EstatePropertyModel(models.Model):
     total_area = fields.Integer("Total Area", compute="_compute_total_area")
     best_offer = fields.Float("Best Price", compute="_compute_best_offer")
     company_id= fields.Many2one("res.company", default=lambda self:self.env.company)
+    _inherit=['mail.thread']
+
+    def _track_subtype(self, initial_values):
+        self.ensure_one()
+        if 'state' in initial_values and self.state=='offer_accepted':
+            return self.env.ref('estate.mt_state_change')
+        return super()._track_subtype(initial_values)
 
     _sql_constraints = [
         (
@@ -118,6 +126,7 @@ class EstatePropertyModel(models.Model):
                 raise UserError("cancelled property can not be sold")
             else:
                 record.state = "sold"
+                record.message_post(body='propert sold', message_type='notification', parent_id=None)
         return True
 
     def action_set_cancel(self):

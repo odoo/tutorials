@@ -110,13 +110,45 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
+    </record>
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+        <field name="name">Estate Property Kanban View</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="false">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                        <strong><field name="name"/></strong>
+                        <div>Expected Price:<field name="expected_price"/></div>
+                        <div t-if="record.best_offer.raw_value">
+                        <p>Best Offer: <field name="best_offer"/></p>
+                        </div>
+                        <div t-if="record.selling_price.raw_value">
+                        <p>Selling Price: <field name="selling_price"/></p>
+                        </div>
+                        <div t-if="record.tag_ids.raw_value">
+                        <p><field name="tag_ids"/></p>
+                        </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="mt_state_change" model="mail.message.subtype">
+        <field name="name">Offer Accepted</field>
+        <field name="res_model">estate.property</field>
+        <field name="default" eval="True"/>
+        <field name="description">Offer Accepted</field>
     </record>
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available':True}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
