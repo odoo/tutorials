@@ -1,6 +1,6 @@
 from datetime import timedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -93,3 +93,18 @@ class EstatePropertyOffer(models.Model):
                 property.property_id.buyer_id = False
                 property.property_id.selling_price = 0.0
             property.status = 'refused'
+
+    @api.model_create_multi
+    def create(self,vals):
+        for val in vals:
+            property_id = val.get('property_id')
+            offer_amount = val.get('price')
+
+            if property_id and offer_amount:
+                property = self.env['estate.property'].browse(property_id)
+                existing_offers = property.offer_ids.mapped('price')
+
+                if existing_offers and offer_amount< max(existing_offers):
+                    raise ValidationError("Cannot create offer less than current offer")
+                property.write({'state': 'offer_received'})
+        return super().create(vals)
