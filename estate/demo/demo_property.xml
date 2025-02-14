@@ -14,7 +14,38 @@
         <field name="garden_area">100000</field>
         <field name="garden_orientation">north</field>
     </record>
+
     <record id="demo_property_2" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="state">new</field>
+        <field name="description">A stylish and modern apartment in the city center</field>
+        <field name="postcode">560002</field>
+        <field name="date_availability">2025-07-01</field>
+        <field name="expected_price">850000.0</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">80</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+    </record>
+
+    <record id="demo_property_3" model="estate.property">
+        <field name="name">Cozy Cottage</field>
+        <field name="state">new</field>
+        <field name="description">A charming countryside cottage with a beautiful garden</field>
+        <field name="postcode">560003</field>
+        <field name="date_availability">2025-08-10</field>
+        <field name="expected_price">600000.0</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">120</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">5000</field>
+        <field name="garden_orientation">south</field>
+    </record>
+
+    <record id="demo_property_4" model="estate.property">
         <field name="name">Trailer Home</field>
         <field name="state">cancelled</field>
         <field name="description">Home in trailer park</field>

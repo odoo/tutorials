@@ -8,7 +8,7 @@
     'author': "Krunal Gelot",
     'website': "https://www.odoo.com",
 
-    'category': 'Tutorials',
+    'category': 'Real Estate/Brokerage',
     'version': '0.1',
 
     'depends': ['base'],
@@ -16,6 +16,7 @@
     'installable': True,
 
     'data' : [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_offer_views.xml',
         'views/estate_property_views.xml',
