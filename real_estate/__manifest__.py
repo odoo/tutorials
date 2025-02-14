@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 {
     'name': 'Estate',
     'version': '1.0',
@@ -14,6 +17,11 @@
         'views/estate_properties_tags_views.xml',
         'views/res_users_views.xml',
         'views/estate_properties_menus.xml',
+        'data/master_data.xml',
+    ],
+    'demo': [
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml',
     ],
     'installable': True,
     'application': True,

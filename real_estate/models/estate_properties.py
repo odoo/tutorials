@@ -25,6 +25,7 @@ class EstateProperties(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    company_id = fields.Many2one('res.company', required=True ,default=lambda self: self.env.company)
     garden_orientation = fields.Selection(string='Orientation', selection=[(
         'north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')], default='east')
     state = fields.Selection(string='State', selection=[('new', 'New'), ('offer_recieved', 'Offer Received'), (

@@ -5,7 +5,7 @@
             <menuitem id="first_level_menu" name="Advertisement">
                 <menuitem id="model_menu_action" action="estate_properties_action" name="Properties"/>
             </menuitem>
-            <menuitem id="second_level_menu_new" name="Setting">
+            <menuitem id="second_level_menu_new" name="Setting" groups="estate_group_manager">
                 <menuitem id="model_menu_offers" action="estate_properties_offer_action" name="Property Offers"/>
                 <menuitem id="model_menu_types" action="estate_properties_type_action" name="Property Type"/>
                 <menuitem id="model_menu_tags" action="estate_propeties_tags_model_action" name="Property Tags"/>

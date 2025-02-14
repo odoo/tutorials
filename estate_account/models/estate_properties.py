@@ -9,7 +9,6 @@ class EstateProperties(models.Model):
     _inherit = 'estate.properties'
 
     def action_property_sold(self):
-        print(self.check_access())
         super().action_property_sold()
         journal = self.env['account.journal'].search(
             [('type', '=', 'sale')], limit=1)
