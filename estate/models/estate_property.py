@@ -8,6 +8,8 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
 
     _sql_constraints = [
         (
@@ -121,7 +123,7 @@ class EstateProperty(models.Model):
                 raise ValidationError("Selling price must be atleast 90% of the expected price")
 
     @api.ondelete(at_uninstall=False)
-    def _prevent_delete(self):
+    def _unlink_except_(self):
         """Prevents deletion of properties unless they are new or cancelled."""
         for record in self:
             if record.state not in["new", "cancelled"]:

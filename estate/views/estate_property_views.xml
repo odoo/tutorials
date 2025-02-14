@@ -6,7 +6,6 @@
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
-        <field name="domain">[]</field>
         <field name = "context">{'search_default_availible_property': 1}</field>
 
     </record>
@@ -61,7 +60,6 @@
                             <field name="property_type_id" string="Property Type" options="{'no_create': true}"/>
                             <field name="best_price" />
                         </group>
-
                     </group>
                     <notebook>
                         <page string="Description">
@@ -98,6 +96,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

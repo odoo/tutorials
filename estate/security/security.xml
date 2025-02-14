@@ -19,6 +19,7 @@
         <field name="perm_read" eval="True"/>
         <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
         <field name="domain_force">[
+            '&amp;', ('company_id', '=', user.company_id.id),
             '|', ('salesperson_id', '=', user.id),
                 ('salesperson_id', '=', False),
         ]

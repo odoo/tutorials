@@ -3,7 +3,7 @@
         <menuitem id="property_menu" name="Property">
             <menuitem id="estate_property_menu_action" action="estate_property_views_action" />
         </menuitem>
-        <menuitem id="settings_menu" name="Settings">
+        <menuitem id="settings_menu" name="Settings" groups="estate.estate_group_manager">
             <menuitem id="estate_property_type_menu_action" action="estate_property_type_action" />
             <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action" />
         </menuitem>
