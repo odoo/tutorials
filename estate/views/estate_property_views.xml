@@ -55,6 +55,7 @@
             </list>
         </field>
     </record>
+
     <record id='estate_property_view_form' model='ir.ui.view'>
         <field name='name'>estate.property.form</field>
         <field name='model'>estate.property</field>
@@ -113,6 +114,7 @@
             </form>
         </field>
     </record>
+
     <record id='estate_property_view_search' model='ir.ui.view'>
         <field name='name'>estate.property.search</field>
         <field name='model'>estate.property</field>
@@ -133,6 +135,7 @@
             </search>
         </field>
     </record>
+
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>

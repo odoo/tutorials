@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name="estate.property"
     _description="Real Estate Property"
+    _order="id desc"
 
     name=fields.Char(required=True)
     description=fields.Text()
@@ -33,13 +34,17 @@ class EstateProperty(models.Model):
     offer_ids=fields.One2many("estate.property.offer","property_id")
     total_area=fields.Float(compute="_compute_total_area",string='Total Area')
     best_price=fields.Float(compute="_compute_best_price",string="Best Offer")
+    company_id = fields.Many2one(
+        string="Company",
+        help="The company that owns the property.",
+        comodel_name="res.company",
+        default=lambda self: self.env.user.company_id
+    )
 
     _sql_constraints=[
         ('expected_price_positive','CHECK(expected_price>0)','Expected price must be positive number'),
         ('selling_price_positive','CHECK(selling_price>=0)','Selling price must be positive number')
     ]
-
-    _order="id desc"
 
     # Computation methods
     @api.depends('living_area','garden_area')

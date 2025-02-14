@@ -3,6 +3,7 @@ from odoo import models,fields
 class EstatePropertyType(models.Model):
     _name="estate.property.type"
     _description="Real Estate Property Type Model"
+    _order="name"
 
     name=fields.Char(required=True)
     property_ids=fields.One2many("estate.property","property_type_id")    
@@ -10,8 +11,6 @@ class EstatePropertyType(models.Model):
     offer_count=fields.Integer(compute='_compute_offer_count',string="Offer Count")
 
     _sql_constraints=[('type_name_unique','UNIQUE(name)','Type name must be unique')]
-
-    _order="name"
 
     sequence=fields.Integer('Sequence')
 

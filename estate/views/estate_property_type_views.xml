@@ -10,6 +10,7 @@
             </list>
         </field>
     </record>
+
     <record id='estate_property_type_view_form' model='ir.ui.view'>
         <field name='name'>estate.property.type.form</field>
         <field name='model'>estate.property.type</field>
@@ -22,7 +23,7 @@
                                 icon="fa-pencil-square-o"
                                 invisible="offer_count == 0">
                                 <field name='offer_count' string='Offers' widget='statinfo'/>
-                        </button>
+                            </button>
                     </div>
                     <h1>
                         <field name='name'/>
@@ -42,6 +43,7 @@
             </form>
         </field>
     </record>
+
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Type</field>
         <field name="res_model">estate.property.type</field>

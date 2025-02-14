@@ -6,6 +6,7 @@ from odoo.tools import float_compare
 class EstatePropertyOffer(models.Model):
     _name="estate.property.offer"
     _description="Real Estate Property Offer Model"
+    _order="price desc"
 
     price=fields.Float(required=True,copy=False,default=0)
     status=fields.Selection(selection=[('accepted','Accepted'),('refused','Refused')],copy=False)
@@ -13,11 +14,9 @@ class EstatePropertyOffer(models.Model):
     property_id=fields.Many2one('estate.property',required=True)
     validity=fields.Integer(string="Validity (in days)",default=7)
     date_deadline=fields.Date(compute='_compute_date_deadline',inverse='_inverse_date_deadline',string="Deadline")
-    property_type_id=fields.Many2one(related='property_id.property_type_id',store=True) 
+    property_type_id=fields.Many2one(related='property_id.property_type_id',store=True)
 
     _sql_constraints=[('offer_price_positive','CHECK(price>0)','Price must be positive number')]
-
-    _order="price desc"
 
     # Computation methods
     @api.depends('create_date','validity')
