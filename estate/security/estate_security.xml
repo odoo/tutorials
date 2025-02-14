@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_security" model="ir.rule">
+        <field name="name">estate.security</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+</odoo>
