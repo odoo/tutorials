@@ -100,9 +100,16 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban string="Property">
+            <kanban string="Property" default_group_by="property_type_id" records_draggable="False" >
+                <progressbar field="state" colors="{
+                    &quot;new&quot;: &quot;success-done&quot;,
+                    &quot;offer_received&quot;: &quot;info&quot;,
+                    &quot;offer_accepted&quot;: &quot;warning&quot;,
+                    &quot;sold&quot;: &quot;success&quot;,
+                    &quot;canceled&quot;: &quot;danger&quot;
+                }"/>
                 <templates>
-                    <t t-name="card">
+                    <t t-name="kanban-box">
                         <div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <h4 class="fw-bold"><field name="name"/></h4>
@@ -113,16 +120,12 @@
                                 "><field name="state"/></span>
                             </div>
                             <div class="d-flex justify-content-between mt-2">
-                                <span class="fw-bold text-primary">Expected: <field name="expected_price"/></span>
-                                <span class="fw-bold text-primary">Best: <field name="best_price"/></span>
+                                <span class="fw-bold text-primary">Expected : <field name="expected_price"/></span>
+                                <span t-if="record.state.raw_value == 'offer_accepted'" class="fw-bold text-primary">Selling : <field name="selling_price"/></span>
+                                <span t-elif="record.state.raw_value == 'offer_received'" class="fw-bold text-primary">Best : <field name="best_price"/></span>
                             </div>
                             <div class="d-flex justify-content-between mt-2">
-                                <small class="text-muted">Available: <field name="date_availability"/></small>
-                                <small class="text-muted">Type: <field name="property_type_id"/></small>
-                            </div>
-                            <div class="d-flex justify-content-between mt-2">
-                                <span><i class="fa fa-bed" title="bedroom"></i> <field name="bedrooms"/> Bedrooms</span>
-                                <span><i class="fa fa-expand" title="living_area"></i> <field name="living_area"/> sqm</span>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             </div>
                         </div>
                     </t>
