@@ -6,6 +6,7 @@
             <field name="property_id" ref="estate.demo_property_1"/>
             <field name="price">10000</field>
             <field name="validity">14</field>
+
         </record>
 
         <record id="demo_property_offer_2" model="estate.property.offer">
@@ -70,5 +71,33 @@
             <field name="price">300000</field>
             <field name="validity">7</field>
         </record>
+
+        <function model="estate.property.offer" name="action_offer_accepted">
+            <value eval="[ref('demo_property_offer_2')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="action_offer_accepted">
+            <value eval="[ref('demo_property_offer_8')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="action_offer_accepted">
+            <value eval="[ref('demo_property_offer_10')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="action_offer_refused">
+            <value eval="[ref('demo_property_offer_1')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="action_offer_refused">
+            <value eval="[ref('demo_property_offer_3')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="action_offer_refused">
+            <value eval="[ref('demo_property_offer_7')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="action_offer_refused">
+            <value eval="[ref('demo_property_offer_9')]"/>
+        </function>
     </data>
 </odoo>

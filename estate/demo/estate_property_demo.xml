@@ -15,6 +15,7 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
+            <field name="property_type_id" ref="estate.demo_property_type_1"/>
         </record>
 
         <record id="demo_property_2" model="estate.property">
@@ -29,6 +30,7 @@
             <field name="living_area">10</field>
             <field name="facades">4</field>
             <field name="garage">False</field>
+            <field name="property_type_id" ref="estate.demo_property_type_1"/>
         </record>
 
         <record id="demo_property_3" model="estate.property">
@@ -45,6 +47,7 @@
             <field name="garden">True</field>
             <field name="garden_area">5000</field>
             <field name="garden_orientation">south</field>
+            <field name="property_type_id" ref="estate.demo_property_type_1"/>
        </record>
 
        <record id="demo_property_4" model="estate.property">
@@ -58,6 +61,7 @@
             <field name="living_area">524</field>
             <field name="facades">0</field>
             <field name="garage">True</field>
+            <field name="property_type_id" ref="estate.demo_property_type_2"/>
        </record>
     </data>
 </odoo>

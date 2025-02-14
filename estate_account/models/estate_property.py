@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
                     Command.create({
                         "name": record.name,
                         "quantity": 1,
-                        "price_unit": record.selling_price * 0.6
+                        "price_unit": record.selling_price * 0.06
                     }),
                     Command.create({
                         "name": record.name,
