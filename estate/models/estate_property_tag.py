@@ -2,7 +2,6 @@ from odoo import fields, models
 
 
 class EstatePropertyTag(models.Model):
-
     _name = "estate.property.tag"
     _description = "Real Estate Property Tag"
     _order = "name"
@@ -16,5 +15,5 @@ class EstatePropertyTag(models.Model):
     # --------------------------------------- Fields Declaration ----------------------------------
     # Basic Fields
     name = fields.Char("Tag", required=True)
-    sequence = fields.Integer("Sequence", default=1)
+    sequence = fields.Integer(default=1)
     color = fields.Integer("Color index")
