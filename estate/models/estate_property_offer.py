@@ -90,7 +90,7 @@ class EstatePropertyOffer(models.Model):
                 min_existing_price = min(property.offer_ids.mapped('price'))
                 if vals['price'] < min_existing_price:
                     raise UserError("The new offer price cannot be lower than the existing offer prices.")
-        property.state = 'offer_received'
+            property.state = 'offer_received'
         return super().create(vals)
 
     _sql_constraints = [
