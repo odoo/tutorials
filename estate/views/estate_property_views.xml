@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_list_view" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list name="estate_property_list" decoration-bf="state == 'offer_accepted'" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-muted="state == 'sold'">
@@ -18,8 +18,8 @@
         </field>
     </record>
 
-    <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form name="estate_property_form" string="Estate Property">
@@ -75,8 +75,8 @@
         </field>
     </record>
 
-    <record id="estate_property_search_view" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search estate">
@@ -93,8 +93,8 @@
         </field>
     </record>
 
-    <record id="estate_property_kanban_view" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban string="Search estate" default_group_by="property_type_id" records_draggable="false">
