@@ -60,7 +60,6 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            print(f"self===={self}, value======{vals}")
             if vals.get('property_id') and vals.get('price'):
                 if vals.get('price') == 0:
                     raise ValidationError("Offer price must be positive.")
