@@ -3,7 +3,7 @@
 
 {
     'name': 'Real Estate',
-    'category': 'Real Estate',
+    'category': 'Real Estate/Brokerage',
     'summary': 'Manage real estate properties',
     'description': """
     This module allows the users to manage their real estate properties.
@@ -14,6 +14,7 @@
         'base',
     ],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',

@@ -56,9 +56,10 @@ class EstateProperty(models.Model):
             'Cancelled: property cancelled')
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    user_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    company_id = fields.Many2one("res.company", string="Company", required=True, default=lambda self: self.env.company)
+    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")

@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -52,7 +53,7 @@ class EstatePropertyOffer(models.Model):
             if property.offer_ids:
                 max_offer = max(property.offer_ids.mapped("price"))
                 max_offer_partner_name = property.offer_ids.filtered(lambda x: x.price == max_offer).mapped("partner_id.name")[0]
-                if max_offer > offer["price"]:
+                if float_compare(offer["price"], max_offer, precision_rounding=0.01) <= 0:
                     raise UserError(_(f"The new offer must be higher than the maximum offer of {max_offer:.2f} from {max_offer_partner_name}"))
         return super().create(vals_list)
 

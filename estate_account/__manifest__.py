@@ -3,6 +3,7 @@
 
 {
     'name': 'Real Estate Invoicing',
+    'category': 'Real Estate/Brokerage',
     'depends': [
         'estate',
         'account',
