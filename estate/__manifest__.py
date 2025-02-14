@@ -3,7 +3,7 @@
 
 {
     'name': 'Real Estate APP',
-    'category': 'Real Estate',
+    'category': 'Real Estate/Brokerage',
     'summary': 'Manage Real Estate Properties',
     'description': """
     This module allows the users to manage their real estate properties.
@@ -12,13 +12,14 @@
     'version': '1.0',
     'depends': ['base', 'web'],
     'data': [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
-        'views/inherited_model_views.xml',
+        'views/res_users_views.xml',
     ],
     'installable': True,
     'application': True,

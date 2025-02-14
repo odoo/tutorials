@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+    </record>
+
+    <record id="estate_property_rule_agent" model="ir.rule">
+        <field name="name">Agent: Access Only Own or Unassigned Properties</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]"/>
+        <field name="domain_force">['|', ('saleperson_id', '=', False), ('saleperson_id', '=', user.id)]</field>
+    </record>
+
+    <record id="estate_property_rule_manager" model="ir.rule">
+        <field name="name">Manager: Access All Properties</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
+        <field name="domain_force">[]</field>
+    </record>
+</odoo>

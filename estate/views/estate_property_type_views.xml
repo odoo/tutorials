@@ -36,14 +36,14 @@
                         </h1>
                         <notebook>
                             <page string="properties">
-                            <field name="property_ids">
-                                <list editable="bottom">
-                                    <field name="name"/>
-                                    <field name="expected_price"/>
-                                    <field name="state"/>
-                                </list>
-                            </field>
-                        </page>
+                                <field name="property_ids">
+                                    <list editable="bottom">
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </page>
                         </notebook>
                     </div>
                 </sheet>
