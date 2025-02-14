@@ -49,7 +49,7 @@ class EstatePropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.state = "offer_accepted"
             record.property_id.selling_price = record.price
-            record.property_id.buyer = record.partner_id
+            record.property_id.buyer_id = record.partner_id
 
             other_offers = self.env['estate.property.offer'].search([
                 ('property_id', '=', record.property_id.id),

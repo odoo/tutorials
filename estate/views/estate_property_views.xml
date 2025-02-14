@@ -85,7 +85,7 @@
                         <page string="Other Info">
                             <group>
                                 <field name="user_id" />
-                                <field name="buyer" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
 

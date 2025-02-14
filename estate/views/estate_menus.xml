@@ -10,7 +10,7 @@
         </menuitem>
 
         <!-- Settings Submenu -->
-        <menuitem id="settings_menu" name="Settings">
+        <menuitem groups="estate_group_manager" id="settings_menu" name="Settings">
             <menuitem id="property_type_menu_action" name="Property Types" action="estate_property_type_action" />
             <menuitem id="property_tags_menu_action" name="Property Tag" action="estate_property_tag_action" />
         </menuitem>

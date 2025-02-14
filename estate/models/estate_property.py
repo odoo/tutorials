@@ -36,7 +36,7 @@ class EstateProperty(models.Model):
 
     # Many2one relationship
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    buyer = fields.Many2one('res.partner', string="Buyer", copy=False)
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     user_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
 
     # Many2many relationship
@@ -52,7 +52,7 @@ class EstateProperty(models.Model):
 
     _order = "id desc"
 
-
+    company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.user.company_id)
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
@@ -97,7 +97,6 @@ class EstateProperty(models.Model):
     # ------------------------------------------------------------
 
     def action_property_sold(self):
-        print("This method is called from estate ---------------------------")
         if self.state == 'canceled':
             raise UserError("You cannot sell a canceled property")
         else:
