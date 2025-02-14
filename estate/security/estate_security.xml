@@ -1,0 +1,29 @@
+<odoo>
+    <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
+        <field name="name">Real Estate/Brokerage</field>
+    </record>
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+    </record>
+
+    <record id="estate_agent_limit_rule" model="ir.rule">
+        <field name="name">Estate Agent Limit Rule</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">['&amp;', ("company_id",'=',user.company_id.id), '|', ('salesperson_id', '=', False), ('salesperson_id', '=', user.id)]</field>
+    </record>
+
+    <record id="estate_manager_property_access_rule" model="ir.rule">
+        <field name="name">Estate Manager Access Rule</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
+    </record>
+</odoo>

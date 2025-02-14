@@ -21,11 +21,12 @@ class EstateProperty(models.Model):
     facades=fields.Integer()
     garage= fields.Boolean()
     garden= fields.Boolean()
-
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
-    ]
+    company_id = fields.Many2one(
+        'res.company',
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company
+    )
     garden_orientation= fields.Selection(string='Garden orientation',
         selection=[
             ('North', 'North'),
@@ -54,6 +55,11 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one('res.partner', copy=False, string='Buyer')
     property_tags_ids=fields.Many2many('estate.property.tag')
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+    ]
+
     @api.depends('garden_area','living_area')
     def _compute_total_area(self):
         for record in self:
@@ -73,20 +79,18 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
-    def sold_property(self):
+
+    def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("Property is already cancelled, you cannot sell this property.")
-
             accepted_offers = record.offer_ids.filtered(lambda offer: offer.status == 'Accepted')
             if not accepted_offers:
                 raise UserError("You cannot sell this property without at least one accepted offer.")
-
             record.state = 'sold'
-
         return True
 
-    def cancel_property(self):
+    def action_cancelled(self):
         for record in self:
             if record.state=='sold':
                 raise UserError("Property is already sold ,it cannot be cancelled")
@@ -99,13 +103,13 @@ class EstateProperty(models.Model):
         for record in self:
             if float_is_zero(record.selling_price, precision_digits=2):
                 continue
-
             min_acceptable_price= 0.9*record.expected_price
-
             if float_compare(record.selling_price,min_acceptable_price, precision_digits=2)==-1:
                 raise UserError(
-                    "Selling price must be greater than 90% of expected price. It should be more than {:.2f}".format(min_acceptable_price)
+                    "Selling price must be greater than 90% of expected price. It should be more than {:.2f}".\
+                    format(min_acceptable_price)
                 )
+
     @api.ondelete(at_uninstall=False)
     def property_deletion(self):
         for record in self:

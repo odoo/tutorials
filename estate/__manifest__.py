@@ -1,10 +1,10 @@
 {
     "name":'Real Estate',
     "summary": "An estate app",
-    'depends': [
-        'base'
-    ],
+    'category':'Real Estate/Brokerage',
+    'depends': ['base'],
     'data':[
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_tags_view.xml',
         'views/estate_property_offer_view.xml',
