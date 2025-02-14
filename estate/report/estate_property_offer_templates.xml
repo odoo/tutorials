@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Sub-template for Offers Table -->
+    <template id="report_offers_table">
+        <div>
+            <h3>Offers</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Partner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="offers" t-as="offer">
+                        <td><span t-field="offer.price"/></td>
+                        <td><span t-field="offer.status"/></td>
+                        <td><span t-field="offer.partner_id.name"/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+</odoo>    

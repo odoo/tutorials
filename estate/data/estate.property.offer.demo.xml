@@ -25,8 +25,8 @@
         <field name="date_deadline" eval="(DateTime.now() + timedelta(days=10))"/>
     </record>
     
-    <function
+    <!-- <function
         model="estate.property.offer" name="accept_offer">
         <value eval="[ref('offer_azure_1500000')]"/>
-    </function>
+    </function> -->
 </odoo>
