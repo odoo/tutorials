@@ -69,10 +69,10 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
-        """Computes date_deadline as create_date + validity days."""
+        """Computes date_deadline as date.today() + validity days."""
         for offer in self:
             if date.today():
-                offer.date_deadline = fields.Date.to_date(date.today + timedelta(days=offer.validity))
+                offer.date_deadline = date.today() + timedelta(days=offer.validity)
             else:
                 offer.date_deadline = False
         print("Date Deadline ",offer.date_deadline)
@@ -81,7 +81,7 @@ class EstatePropertyOffer(models.Model):
         """Sets validity based on date_deadline - create_date."""
         for offer in self:
             if offer.date_deadline and offer.create_date:
-                offer.validity = (offer.date_deadline - offer.create_date)
+                offer.validity = (offer.date_deadline - offer.create_date.date()).days
             else:
                 offer.validity = 7
 

@@ -130,7 +130,7 @@
     </record>
 
     <!-- Second Menu -->
-    <record id="property_types" model="ir.actions.act_window">
+    <record id="property_types_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
@@ -142,7 +142,7 @@
     </record>
 
      <!-- Property Types Inline View (Corrected) -->
-     <record id="property_types_inline" model="ir.ui.view">
+     <record id="property_types_inline_view_form" model="ir.ui.view">
         <field name="name">estate.property.type.inline.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">

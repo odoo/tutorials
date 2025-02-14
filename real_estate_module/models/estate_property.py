@@ -150,6 +150,12 @@ class EstateProperty(models.Model):
         help="The best price offered for the property"
     )
 
+    company_id = fields.Many2one(
+        comodel_name='res.company',
+        string="Company",
+        default=lambda self: self.env.company
+    )
+
     _sql_constraints = [
         (
             'check_expected_price',
@@ -221,3 +227,6 @@ class EstateProperty(models.Model):
             if property.state not in ('new', 'cancelled'):
                 raise UserError("Can't delete a property whose current state "
                 "is neither 'New' nor 'Cancelled'")
+
+    def _default_company(self):
+        return self.env.company

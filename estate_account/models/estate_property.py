@@ -1,4 +1,5 @@
 from odoo import Command, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -7,11 +8,11 @@ class EstateProperty(models.Model):
     def action_sold_button(self):
         res =  super().action_sold_button()
         if not self.buyer_id:
-            raise ValueError("A buyer must be specified before selling the property.")
+            raise UserError("A buyer must be specified before selling the property.")
         journal = self.env['account.journal'].search([('type', '=', 'sale')], limit = 1)
 
         if not journal:
-            raise ValueError("No sales journal found.")
+            raise UserError("No sales journal found.")
 
         commission_amount = self.selling_price * 0.06  # 6% of selling price
         admin_fees = 100.00  # Fixed fee
