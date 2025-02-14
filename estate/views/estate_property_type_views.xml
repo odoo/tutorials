@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <!-- Estate property type list view -->
-    <record id="view_estate_property_type_list" model="ir.ui.view">
-        <field name="name">view.estate.property.type.list</field>
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="List Properties">
@@ -13,8 +13,8 @@
     </record>
 
     <!-- Estate property type from view -->
-    <record id="view_estate_property_type_form" model="ir.ui.view">
-        <field name="name">view.estate.property.type.form</field>
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Form property type">
@@ -24,9 +24,14 @@
                             <field name="name"/>
                         </h1>
                     </group>
-                   
+                    <div name="button_box" class="oe_button_box" position="inside">
+                            <button name="%(estate_property_offer_action)d" type="action"
+                                    class="oe_stat_button" string="Offers" icon="fa-money">
+                                <field name="offer_count" widget="statinfo"/>
+                            </button> 
+                        </div>
                     <notebook>
-                        <page string="Properties" name="estate_property_type_properties">
+                        <page name="estate_property_type_properties" string="Properties" >
                             <field name="property_ids">
                                 <list>
                                     <field name="name"/>

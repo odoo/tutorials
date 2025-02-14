@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <!-- Estate property list view -->
-    <record id="view_estate_property_list" model="ir.ui.view">
-        <field name="name">view.estate.property.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list name="List Properties" 
@@ -15,20 +15,20 @@
                 <field name="living_area" width="10%"/>
                 <field name="expected_price" width="10%"/>
                 <field name="selling_price" width="10%"/>
-                <field name="date_availability" width="10%" optional="hide"/>
+                <field name="date_availability" optional="hide" width="10%"/>
             </list>
         </field>
     </record>
 
     <!-- Estate property form view -->
-    <record id="view_estate_property_form" model="ir.ui.view">
-        <field name="name">view.estate.property.form</field>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form property">
                 <header>
-                    <button invisible="state in ['sold', 'cancelled']" name="sold_action" type="object" string="SOLD"/>
-                    <button invisible="state in ['sold', 'cancelled']" name="cancel_action" type="object" string="CANCEL"/>
+                    <button name="sold_action" string="SOLD" invisible="state in ['sold', 'cancelled']" type="object"/>
+                    <button name="cancel_action" string="CANCEL" invisible="state in ['sold', 'cancelled']" type="object"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -52,7 +52,7 @@
                     </group>
 
                     <notebook>
-                        <page string="Description" name="estate_property_description">
+                        <page name="estate_property_description" string="Description">
                             <group>
                                 <field name="description"/>
                                 <field name="bedrooms"/>
@@ -66,13 +66,13 @@
                             </group>
                         </page>
 
-                        <page string="Offer" name="estate_property_offer">
+                        <page name="estate_property_offer" string="Offer">
                             <group>
                                 <field name="offer_ids" nolabel="1" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                             </group>
                         </page>
 
-                        <page string="Other Info" name="estate_property_other_info">
+                        <page name="estate_property_other_info" string="Other Info">
                             <group>
                                 <field name="salesman_id"/>
                                 <field name="buyer_id"/>
@@ -85,8 +85,8 @@
     </record>
 
     <!-- Estate property search view -->
-    <record id="view_estate_property_search" model="ir.ui.view">
-        <field name="name">view.estate.property.search</field>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Filter">
@@ -98,15 +98,15 @@
                 <field name="facades"/>
                 <field name="salesman_id"/>
                 <field name="buyer_id"/>
-                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"></filter>
-                <filter string="Postcode" name="postcode" context="{'group_by' : 'postcode'}"></filter>
+                <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_received'])]"></filter>
+                <filter name="postcode" string="Postcode" context="{'group_by' : 'postcode'}"></filter>
             </search>
         </field>
     </record>
 
     <!-- Estate property kanban view -->
-    <record id="view_estate_property_kanban" model="ir.ui.view">
-        <field name="name">view.estate.property.kanban</field>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="False">
