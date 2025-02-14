@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="implied_ids" eval="[ref('estate_group_user')]" />
+        <field name="users" eval="[4, ref('base.user_admin')]" />
+    </record>
+
+    <record id="estate_property_user_rule" model="ir.rule">
+        <field name="name">Property Access for Agents</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_unlink" eval="False" />
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]" />
+        <field name="domain_force">[
+            '|', ('seller_id', '=', user.id), ('seller_id', '=', False) ]
+        </field>
+    </record>
+
+    <record id="estate_property_manager_rule" model="ir.rule">
+        <field name="name">Property Access for Agents</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]" />
+        <field name="domain_force">[]</field>
+    </record>
+
+    <record id="estate_property_company_access_rule" model="ir.rule">
+        <field name="name">Estate Property: Company-based Access</field>
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
+    </record>
+
+</odoo>

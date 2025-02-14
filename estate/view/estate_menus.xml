@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="property_root_menu" name="Menus">
-
+    <menuitem id="property_root_menu" name="Menus" web_icon="estate,static/description/icon.png">
         <menuitem id="property_menu_management" name="Estate Management">
             <menuitem id="estate_properties_menu" action="estate_model_action" name="Properties" />
         </menuitem>

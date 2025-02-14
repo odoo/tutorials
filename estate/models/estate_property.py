@@ -80,6 +80,13 @@ class EstateProperty(models.Model):
         string="Offer Id",
     )
 
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
+
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
