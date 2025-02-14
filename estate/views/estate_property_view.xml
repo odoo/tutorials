@@ -14,7 +14,7 @@
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list decoration-success="state in ['offer_received', 'offer_accepted'] " decoration-bf="state == 'offer_accepted'" decoration-muted="state=='sold'">
+                <list decoration-success="state in ['offer_received', 'offer_accepted'] " decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                     <!-- Columns to be displayed in the list view -->
                     <field name="name"/>
                     <field name="postcode"/>
@@ -60,7 +60,6 @@
                         <!-- Statusbar for Property State -->
                         <field name="state" widget="statusbar" />
                     </header>
-
                     <sheet>
                         <div class="oe_title mb-32">
                             <label for="name"/>
@@ -82,6 +81,7 @@
                                 <field name="expected_price" class="w-50" />
                                 <field name="best_price" class="w-50" />
                                 <field name="selling_price" class="w-50" />
+                                <field name="company_id" class="w-50"></field>
                             </group>
                         </group>
                         <!-- Notebook with multiple pages -->

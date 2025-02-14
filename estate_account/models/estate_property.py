@@ -1,6 +1,5 @@
-import logging
 from odoo import models, fields
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, AccessError
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
@@ -13,11 +12,16 @@ class EstateProperty(models.Model):
         res = super().action_sold()
 
         for property in self:
+            try:
+                property.check_access('write')
+            except:
+                raise AccessError("You don't have the right to sell this property.")
+
             if not property.buyer_id:
                 raise UserError("A buyer must be assigned before marking the property as sold.")
 
             # Find the default Sales Journal
-            journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
+            journal = self.env['account.journal'].sudo().search([('type', '=', 'sale')], limit=1)
             if not journal:
                 raise UserError("No sales journal found! Please configure one.")
 
@@ -45,7 +49,7 @@ class EstateProperty(models.Model):
                 # Step 3: Add invoice lines
                 'invoice_line_ids': [(0, 0, line1_vals), (0, 0, line2_vals)]
             }
-            invoice = self.env['account.move'].create(invoice_vals)
+            invoice = self.env['account.move'].sudo().create(invoice_vals)
             # Link the invoice to the property
             property.invoice_id = invoice.id
 

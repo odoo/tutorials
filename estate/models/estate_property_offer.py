@@ -50,16 +50,28 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - record.property_id.create_date.date()).days
 
     def action_accept(self):
-        """Ensures that same offer is not accepted and Only one offer can be accepted per property!."""
+        """Ensures that only one offer can be accepted per property and other offers are refused."""
         for record in self:
+            # Check if the same partner is trying to accept their own offer
             if record.property_id.buyer_id == record.partner_id:
-                raise UserError("You cannot accept your the same offer!")
+                raise UserError("You cannot accept your own offer!")
+            # Check if another offer has already been accepted for this property
             elif record.property_id.buyer_id:
                 raise UserError("Only one offer can be accepted per property!")
+
+            # Accept the current offer
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
             record.property_id.state = "offer_accepted"
+
+            # Refuse all other offers for the same property
+            other_offers = self.env['estate.property.offer'].search([
+                ('property_id', '=', record.property_id.id),
+                ('id', '!=', record.id)  # Exclude the current accepted offer
+            ])
+            for offer in other_offers:
+                offer.status = "refused"  # Refuse the other offers
 
     def action_refuse(self):
         """Ensures an accepted offer cannot be refused!"""

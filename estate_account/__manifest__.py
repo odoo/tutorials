@@ -1,6 +1,6 @@
 {
     "name": "Estate Account",
-    "version": "1.2",
+    "version": "1.0",
     "description": "",
     "license": "LGPL-3",
     "depends": [

@@ -80,6 +80,12 @@ class RealEstateProperty(models.Model):
         "property_id",
         string="Offers"
     )
+    company_id = fields.Many2one(
+        comodel_name='res.company',
+        required=True,
+        help="Current Company",
+        default=lambda self: self.env.company,
+    )
     # defined constraints
     _sql_constraints = [
         ("positive_expected_price", "CHECK(expected_price > 0)",
