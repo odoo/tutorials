@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -6,6 +6,13 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer Model"
     _order = "price desc"
+    _sql_constraints = [
+        (
+            "check_price",
+            "CHECK(price > 0)",
+            "The offer price must be strictly positive",
+        ),
+    ]
 
     price = fields.Float()
     status = fields.Selection(
@@ -20,13 +27,6 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )
-    _sql_constraints = [
-        (
-            "check_price",
-            "CHECK(price > 0)",
-            "The offer price must be strictly positive",
-        ),
-    ]
 
     @api.depends("validity", "property_id")
     def _compute_date_deadline(self):
@@ -56,7 +56,20 @@ class EstatePropertyOffer(models.Model):
                     "The selling price must be atleast 90% of the expected price! You must reduce expected price if you want to accept this offer."
                 )
 
-    def accept_offer(self):
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            property_id = val["property_id"]
+            if property_id:
+                property = self.env["estate.property"].browse(property_id)
+                if val["price"] < property.best_price:
+                    raise UserError(f"The offer must be greater than {max}")
+        offers = super().create(vals)
+        for offer in offers:
+            offer.property_id.status = "offer_received"
+        return offers
+
+    def action_accept(self):
         print(self.price)
         for record in self:
             if record.status == "accepted":
@@ -66,7 +79,8 @@ class EstatePropertyOffer(models.Model):
                 [
                     ("property_id", "=", record.property_id.id),
                     ("id", "!=", record.id),
-                ]
+                ],
+                limit=1,
             )
             other_offers.write({"status": "refused"})
             record.status = "accepted"
@@ -74,7 +88,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             record.property_id.status = "offer_accepted"
 
-    def refuse_offer(self):
+    def action_refuse(self):
         for record in self:
             if record.status == "refused":
                 raise UserError("This offer already refused")
@@ -83,20 +97,3 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.buyer_id = False
                 record.property_id.status = "offer_received"
             record.status = "refused"
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        max = 0
-        for val in vals_list:
-            property_id = val.get("property_id")
-            if property_id:
-                property = self.env["estate.property"].browse(property_id)
-                for offer in property.offer_ids:
-                    if offer.price > max:
-                        max = offer.price
-                if val.get("price") < max:
-                    raise UserError(f"The offer must be greater than {max}")
-        offers = super().create(vals_list)
-        for offer in offers:
-            offer.property_id.status = "offer_received"
-        return offers

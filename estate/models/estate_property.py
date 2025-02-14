@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -6,6 +6,18 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Propery Model"
     _order = "id desc"
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "The expected price must be strictly positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "The selling price must be strictly positive",
+        ),
+    ]
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -49,22 +61,13 @@ class EstateProperty(models.Model):
     )
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id")
-    total_area = fields.Float(compute="_compute_area", store=True)
-    best_price = fields.Float(
-        compute="_compute_best_price", string="Best Offer", store=True
-    )
-    _sql_constraints = [
-        (
-            "check_expected_price",
-            "CHECK(expected_price > 0)",
-            "The expected price must be strictly positive",
-        ),
-        (
-            "check_selling_price",
-            "CHECK(selling_price >= 0)",
-            "The selling price must be strictly positive",
-        ),
-    ]
+    total_area = fields.Float(compute="_compute_area")
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids")
     def _compute_best_price(self):
@@ -72,11 +75,6 @@ class EstateProperty(models.Model):
         for record in self.offer_ids:
             max = record.price if record.price > max else max
         self.best_price = max
-
-    @api.depends("living_area", "garden_area")
-    def _compute_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
 
     @api.onchange("is_garden")
     def _onchange_is_garden(self):
@@ -87,18 +85,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ""
 
-    def property_sold(self):
-        for record in self:
-            if record.status == "cancelled":
-                raise UserError("cancelled properties cannot be sold!")
-            record.status = "sold"
-
-    def property_cancelled(self):
-        for record in self:
-            if record.status == "sold":
-                raise UserError("Sold properties cannot be cancelled!")
-            record.status = "cancelled"
-
     @api.ondelete(at_uninstall=False)
     def _unlink_if_status_sold_or_new(self):
         if any(
@@ -106,3 +92,15 @@ class EstateProperty(models.Model):
             for record in self
         ):
             raise UserError("Only new or cancelled properties can be deleted")
+
+    def action_sold(self):
+        for record in self:
+            if record.status == "cancelled":
+                raise UserError("cancelled properties cannot be sold!")
+            record.status = "sold"
+
+    def action_cancelled(self):
+        for record in self:
+            if record.status == "sold":
+                raise UserError("Sold properties cannot be cancelled!")
+            record.status = "cancelled"

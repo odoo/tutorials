@@ -55,8 +55,8 @@
             <field name="arch" type="xml">
                 <form string="Test">
                     <header>
-                        <button name="property_sold" type="object" string="Sold" invisible="status in ['sold','cancelled']"/>
-                        <button name="property_cancelled" type="object" string="Cancel" invisible="status in ['sold','cancelled']"/>
+                        <button name="action_sold" type="object" string="Sold" invisible="status in ['sold','cancelled']"/>
+                        <button name="action_cancelled" type="object" string="Cancel" invisible="status in ['sold','cancelled']"/>
                         <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                     </header>
                     <sheet>
@@ -110,41 +110,28 @@
             <field name="name">estate.property.view.kanban</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <kanban>
-                    <field name="name" />
-                    <field name="postcode"/>
-                    <field name="expected_price"/>
-                    <field name="bedrooms"/>
-                    <field name="date_availability"/>
-                    <field name="living_area"/>
-
+                <kanban default_group_by="property_type_id" records_draggable="0">
                     <templates>
+                        <field name="status" />
                         <t t-name="kanban-box">
-                            <div class="oe_kanban_card">
-                                <div class="oe_kanban_details">
-                                    <strong>
-                                        <t t-esc="record.name.value"/>
-                                    </strong>
+                            <div class="flex">
+                                <h2>
+                                    <field name="name"/>
+                                </h2>
+                                <div>
                                     <div>
-                                        <span>Status:</span>
-                                        <t t-esc="record.status.value"/>
+                                        <label for="expected_price">Expected Price :</label>
+                                        <field name="expected_price"/>
                                     </div>
-                                    <div>
-                                        <span>Expected Price:</span>
-                                        <t t-esc="record.expected_price.value"/>
+                                    <div t-if="record.status.raw_value == 'offer_received'">
+                                        <label for="best_price">Best Price: </label>
+                                        <field name="best_price"/>
                                     </div>
-                                    <div>
-                                        <span>Best Offer:</span>
-                                        <t t-esc="record.best_price.value"/>
+                                    <div t-if="record.status.raw_value == 'offer_accepted'">
+                                        <label for="selling_price">Selling Price: </label>
+                                        <field name="selling_price"/>
                                     </div>
-                                    <div>
-                                        <span>Seller:</span>
-                                        <t t-esc="record.seller_id.value"/>
-                                    </div>
-                                    <div>
-                                        <span>Available From:</span>
-                                        <t t-esc="record.date_availability.value"/>
-                                    </div>
+                                    <field name="tag_ids" class="mt-2" options="{'color_field':'color'}"></field>
                                 </div>
                             </div>
                         </t>
