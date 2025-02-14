@@ -5,7 +5,7 @@
         'base'
     ],
     'author': "sbbh",
-    'category': 'Real Estate/Food',
+    'category': 'Real Estate/Brokerage',
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
