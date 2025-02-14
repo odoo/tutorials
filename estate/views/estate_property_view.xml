@@ -28,7 +28,7 @@
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="availability_date" optional="hide" />
+                <field name="date_availability" optional="hide" />
             </list>
         </field>
     </record>
@@ -49,6 +49,13 @@
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
+                    <div name="button_box">
+                        <button name="%(action_property_offers_report)d"
+                            type="action"
+                            string="Print Offers"
+                            class="oe_highlight"
+                            icon="fa-print" />
+                    </div>
                     <h1>
                         <field name="name" />
                     </h1>
@@ -60,7 +67,7 @@
                         <group>
                             <field name="property_type_id" options="{'no_create': True}" />
                             <field name="postcode" />
-                            <field name="availability_date" />
+                            <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
@@ -109,7 +116,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <chatter/>
+                <chatter />
             </form>
         </field>
     </record>
@@ -142,26 +149,25 @@
         <field name="name">estate.property.kanban.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" records_draggable="false" quick_create="true">
-                <field name="state"/>
-                <field name="expected_price"/>
-                <field name="best_price"/>
-                <field name="selling_price"/>
-                <field name="tag_ids"/>
-                <field name="property_type_id"/>
+            <kanban default_group_by="property_type_id" records_draggable="false">
+                <field name="state" />
                 <templates>
                     <t t-name="kanban-box">
                         <div class="o_kanban_card">
-                            <div><strong><field name="name"/></strong></div>                            
-                            <div>Expected Price: <field name="expected_price"/></div>  
-                            <div t-if="record.state.raw_value == 'offer_received'">
-                                Best Price: <field name="best_price"/>
-                            </div>  
-                            <div t-if="record.state.raw_value == 'offer_accepted'">
-                                Selling Price: <field name="selling_price"/>
-                            </div>                            
                             <div>
-                                Tags: <field name="tag_ids"/>
+                                <strong>
+                                    <field name="name" />
+                                </strong>
+                            </div>
+                            <div>Expected Price: <field name="expected_price" /></div>
+                            <div t-if="record.state.raw_value == 'offer_received'"> Best Price: <field
+                                    name="best_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
+                                    name="selling_price" />
+                            </div>
+                            <div> 
+                                Tags: <field name="tag_ids" options="{'color_field': 'color'}"/>
                             </div>
                         </div>
                     </t>
@@ -170,3 +176,4 @@
         </field>
     </record>
 </odoo>
+

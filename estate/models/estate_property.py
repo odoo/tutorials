@@ -34,7 +34,7 @@ class EstateProperty(models.Model):
     description = fields.Text(string="Description")
     selling_price = fields.Float(readonly=True, copy=False)
     postcode = fields.Char(string="Postcode")
-    availability_date = fields.Date(
+    date_availability = fields.Date(
         string="Availability date",
         default=lambda self: fields.Datetime.today() + timedelta(days=90),
         copy=False,
@@ -115,19 +115,18 @@ class EstateProperty(models.Model):
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-        for record in self:
-            if (
-                not float_is_zero(record.selling_price, precision_rounding=0.01)
-                and float_compare(
-                    record.selling_price,
-                    record.expected_price * 0.9,
-                    precision_rounding=0.01,
-                )
-                < 0
-            ):
-                raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price. Please adjust the selling price or expected price."
-                )
+        if (
+            not float_is_zero(self.selling_price, precision_rounding=0.01)
+            and float_compare(
+                self.selling_price,
+                self.expected_price * 0.9,
+                precision_rounding=0.01,
+            )
+            < 0
+        ): 
+            raise ValidationError(
+                "The selling price cannot be lower than 90% of the expected price. Please adjust the selling price or expected price."
+            )
 
     @api.depends("offer_ids.status")
     def _compute_state(self):
