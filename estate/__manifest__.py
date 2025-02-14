@@ -8,14 +8,11 @@
     'author': "panj",
     'website': "https://www.odoo.com",
 
-    'category': 'Tutorials/RealEstate',
-
     'version': '0.1',
-
-    'depends': ['base'],
     'application': True,
+    'category': 'Tutorials/RealEstate',
     'installable': True,
-
+    'depends': ['base'],
     'data':[
         'security/ir.model.access.csv',
         'views/estate_property_offer_views.xml',
@@ -25,11 +22,9 @@
         'views/res_users_views.xml',
         'views/estate_menus.xml'
     ],
-
     'demo':[
         'demo/estate_property_demo.xml',
         'demo/estate_property_offer_demo.xml'
     ],
-
     'license': 'AGPL-3'
 }

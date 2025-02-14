@@ -79,7 +79,6 @@ class EstateProperty(models.Model):
         for record in self:
             best_prices = record.offer_ids.mapped('price')
             record.best_price = max(best_prices) if best_prices else 0
-            print("Best price ", record.best_price)
 
     @api.constrains('selling_price', 'expected_price')
     def _validate_selling_price(self):
