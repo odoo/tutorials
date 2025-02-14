@@ -1,6 +1,7 @@
+from dateutil.relativedelta import relativedelta
 from odoo import fields, api, models # type: ignore
 from odoo.exceptions import ValidationError, UserError # type: ignore
-from dateutil.relativedelta import relativedelta
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -11,19 +12,19 @@ class EstatePropertyOffer(models.Model):
     ]
 
     #-------------------------------------------Basic Fields-------------------------------------------#
-    offer_price = fields.Float(string="Price",required=True)
-    state = fields.Selection(selection=[('offer_received','Offer Received'), ('offer_accepted','Offer Accepted'), ('offer_rejected','Offer Rejected')],
-                            string="State", copy=False
-                        )
+    offer_price = fields.Float(string="Price", required=True)
+    state = fields.Selection(string="State", selection=[('offer_received','Offer Received'), ('offer_accepted','Offer Accepted'), ('offer_rejected','Offer Rejected')],
+                             copy=False
+                            )
     validity = fields.Integer(string="Validity(days)", default=7)
     
     #-------------------------------------------Relational Fields---------------------------------------#
-    partner_id = fields.Many2one("res.partner", string="Partner",required=True)
-    property_id = fields.Many2one("estate.property",string="Property")
+    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    property_id = fields.Many2one("estate.property", string="Property")
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     
     #-------------------------------------------Computed Fields------------------------------------------#
-    deadline_date = fields.Date(compute="_compute_deadline_date", inverse="_inverse_deadline_date", string="Deadline")
+    deadline_date = fields.Date(string="Deadline", compute="_compute_deadline_date", inverse="_inverse_deadline_date")
 
     # ------------------------------------------Compute Methods----------------------------------------#
     @api.depends("create_date", "validity")
@@ -54,14 +55,16 @@ class EstatePropertyOffer(models.Model):
         return True
 
     #-------------------------------------CRUD methods------------------------------------------#
-    @api.model
-    def create (self, vals):
-        """override the create() method to only allow offers bigger than existing
-          offers and update the property state when a new valid offer is created"""
-        for record in vals:
+    def create(self, vals_list):
+        """Override the create() method to only allow offers bigger than existing
+        offers and update the property state when a new valid offer is created"""
+        if not isinstance(vals_list, list):
+            vals_list = [vals_list]
+        for vals in vals_list:
             property = self.env['estate.property'].browse(vals['property_id'])
             best_price = property.best_price
-            if vals['offer_price']< best_price:
+            if vals['offer_price'] < best_price:
                 raise UserError(f"Please Increase your offer amount. It should be more than {best_price}")
             property.state = "offer_received"
-        return super().create(vals)
+        return super().create(vals_list)
+
