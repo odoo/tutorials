@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_list">
+        <div class="p-3 border">
+            <h3>Todo List</h3>
+            <input t-ref="todoInput" type="text" placeholder="Enter a Todo" class="form-control mb-2" t-on-keyup="onKeyUpListener"/>
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
+            </t>
+        </div>
+    </t>
+
+    <t t-name="awesome_owl.todo_item">
+        <div t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+            <input type="checkbox" t-att-checked="props.todo.isCompleted" class="form-check-input me-2" t-on-change="toggleState"/>
+            <span class="fw-bold">
+                <t t-esc="props.todo.id + '.'"/>
+            </span>
+            <span class="ms-2">
+                <t t-esc="props.todo.description"/>
+            </span>
+            <i class="ms-2 fa fa-times text-danger" style="cursor: pointer;" t-on-click="removeTodo"/>
+        </div>
+    </t>
+</templates>
