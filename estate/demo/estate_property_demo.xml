@@ -66,5 +66,4 @@
             Command.create({'price': 490000, 'validity': 5, 'partner_id': ref('base.res_partner_10')})
         ]" />
     </record>
-
 </odoo>
