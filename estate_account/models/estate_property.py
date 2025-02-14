@@ -33,3 +33,4 @@ class EstatePropertyAccount(models.Model):
     })
 
     return super().action_set_property_sold()
+

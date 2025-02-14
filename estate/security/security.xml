@@ -1,5 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-
 <odoo>
   <data>
     <record id='estate_group_user' model='res.groups'>
@@ -19,7 +18,20 @@
       <field name="name">Estate Property: Agent Access</field>
       <field name="model_id" ref="model_estate_property"/>
       <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
-      <field name="domain_force">['|', ('sales_person_id', '=', False), ('sales_person_id', '=', user.id)]</field>
+      <field name="domain_force">[
+        '|', ('sales_person_id', '=', False), 
+             ('sales_person_id', '=', user.id)
+        ]</field>
+    </record>
+
+    <record id="estate_property_agent_company_rule" model="ir.rule">
+      <field name="name">Estate Company: Agent Access</field>
+      <field name="model_id" ref="model_estate_property"/>
+      <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+      <field name="domain_force">[
+        '|', ('company_id', '=', False),
+             ('company_id', '=', 'company_ids')
+        ]</field>
     </record>
 
     <record id="estate_property_manager_rule" model="ir.rule">

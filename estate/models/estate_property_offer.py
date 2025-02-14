@@ -10,6 +10,11 @@ class EstatePropertyOffer(models.Model):
   _name = 'estate.property.offer'
   _description = 'estate property offer'
 
+  _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0.00)',
+         'The Offer price must be Positive.')
+    ]  
+
   price = fields.Float(string='Price')
   status = fields.Selection(
     string='Status',
@@ -48,11 +53,6 @@ class EstatePropertyOffer(models.Model):
         property_record.state = 'offer received'
 
     return super().create(vals_list)
-
-  _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0.00)',
-         'The Offer price must be Positive.')
-    ]  
 
   def action_accepted(self):
     for record in self:

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <odoo>
   <data>
     <record id='estate_res_users_view_form' model='ir.ui.view'>
@@ -16,3 +15,4 @@
     </record>
   </data>
 </odoo>
+

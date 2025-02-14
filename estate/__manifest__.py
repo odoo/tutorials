@@ -10,13 +10,19 @@
     'application': True,
     'installable': True,
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_res_users_views.xml',
-        'security/security.xml',
         'views/estate_menus.xml',
+        'data/master_data.xml',
+    ],
+    'demo': [
+        'demo/demo_property_data.xml',
+        'demo/demo_offer_data.xml',
     ]
 }
+

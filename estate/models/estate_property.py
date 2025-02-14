@@ -11,6 +11,13 @@ class EstateProperty(models.Model):
   _name = 'estate.property'
   _description = 'estate property'
 
+  _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0.00)',
+         'The Expected price must be Positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0.00)',
+         'The Selling price must be Positive.')
+    ]  
+
   name = fields.Char(string='Property Name', required=True)
   description = fields.Text(string='Description')
   postcode = fields.Char(string='Postcode')
@@ -53,7 +60,7 @@ class EstateProperty(models.Model):
   offer_ids = fields.One2many('estate.property.offer', inverse_name='property_id')
   total_area = fields.Float(string='Total Area', compute='_compute_area')
   best_price = fields.Float(string='Best Price', compute='_compute_best_price')
-  company_id = fields.Integer(string='Company ID')
+  company_id = fields.Many2one('res.company', string='Company ID', required=True, default=lambda self: self.env.company)
 
 
   @api.depends('living_area', 'garden_area')
@@ -75,19 +82,6 @@ class EstateProperty(models.Model):
       self.garden_area = 0
       self.garden_orientation = ''
 
-  @api.ondelete(at_uninstall=False)
-  def _unlink_except_new_or_cancelled(self):
-    for record in self:
-      if record.state not in ['new', 'cancelled']:
-        raise UserError(f'Cannot delete property "{record.name}" because its state is "{record.state}". Only properties in "New" or "Cancelled" state can be deleted.')
-
-  _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >= 0.00)',
-         'The Expected price must be Positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0.00)',
-         'The Selling price must be Positive.')
-    ]  
-
   @api.constrains('selling_price', 'expected_price')
   def _check_selling_price(self):
     for record in self:
@@ -95,6 +89,12 @@ class EstateProperty(models.Model):
         continue
       elif float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) == -1:
         raise ValidationError(f'Selling price cannot be lower than 90% of the expected price.')
+
+  @api.ondelete(at_uninstall=False)
+  def _unlink_except_new_or_cancelled(self):
+    for record in self:
+      if record.state not in ['new', 'cancelled']:
+        raise UserError(f'Cannot delete property "{record.name}" because its state is "{record.state}". Only properties in "New" or "Cancelled" state can be deleted.')
 
   def action_set_property_sold(self):
     if self.state == 'cancelled':
@@ -107,3 +107,4 @@ class EstateProperty(models.Model):
       raise UserError('Sold properties cannot be cancelled.')
     else:
       self.state = 'cancelled'
+
