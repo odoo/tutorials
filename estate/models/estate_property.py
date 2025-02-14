@@ -1,11 +1,13 @@
-from odoo import api, fields, models,exceptions
+from odoo import api, fields, models
 from datetime import datetime, timedelta
 from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.exceptions import ValidationError,UserError
 
 class Property_Plan(models.Model):
     _name = "estate.property"
     _description = "Estate Model containing all the fields"
     _inherit = ["mail.thread"]
+    _order = "id desc"
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
@@ -31,7 +33,7 @@ class Property_Plan(models.Model):
     )
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area")
     best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store=True)
-    state = fields.Selection(string="State", selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')], required=True, copy=False)
+    state = fields.Selection(string="State", selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')], required=True, copy=False, default="new")
     active = fields.Boolean(string="Active", default=True)
 
     @api.depends("living_area", "garden_area")
