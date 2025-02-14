@@ -47,6 +47,7 @@ class EsatePropertyOffer(models.Model):
             record.status = 'accepted'
             record.property_id.selling_price = record.price
             record.property_id.partner_id = record.partner_id
+            record.property_id.state = 'offer_accepted'
             for offer in record.property_id.offer_ids:
                 if offer.id is not record.id:
                     offer.status = 'refused'
@@ -57,6 +58,7 @@ class EsatePropertyOffer(models.Model):
             if(record.property_id.partner_id == record.partner_id):
                 record.property_id.selling_price = 0
                 record.property_id.partner_id = False   
+
     @api.model_create_multi
     def create(self,vals_list):
         for vals in vals_list:
