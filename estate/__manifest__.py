@@ -20,5 +20,6 @@
         
     ],
     "demo": ["demo/estate_property_demo.xml",
+            "demo/estate_property_offers.xml",
     ],
 }

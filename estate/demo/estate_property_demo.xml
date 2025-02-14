@@ -30,4 +30,24 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
     </record>
+
+    <!-- record 3: Duplex with offers made directly here -->
+    <record id="estate_property_duplex" model="estate.property">
+        <field name="name">Duplex</field>
+        <field name="status">new</field>
+        <field name="description">A nice duplex</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">160000.00</field>
+        <field name="selling_price">160000.00</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="offer_ids"
+            eval="[
+        Command.create({'partner_id':ref('base.res_partner_12'),'price': 150000.00}),
+        Command.create({'partner_id':ref('base.res_partner_18'),'price':155000.00}),
+        Command.create({'partner_id':ref('base.res_partner_10'),'price':160000.00})]" />
+    </record>
 </odoo>
