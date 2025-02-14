@@ -68,6 +68,7 @@ class EstateProperty(models.Model):
 
     total_area = fields.Integer("Total Area", compute="_compute_total_area")
     best_price = fields.Float("Best Price", compute="_compute_best_price")
+    company_id = fields.Many2one("res.company", default=lambda self: self.env.company, required=True)
 
     _sql_constraints = [
         (
@@ -106,10 +107,10 @@ class EstateProperty(models.Model):
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
 
     @api.ondelete(at_uninstall=False)
-    def _unlink_if_allowed(self):
+    def _unlink_property(self):
         for record in self:
-            if record.state not in ["New", "Canceled"]:
-                raise UserError("You can only delete properties in 'New' or 'Cancelled' state.")
+            if record.state not in ["new", "canceled"]:
+                raise UserError("You can only delete properties in 'New' or 'Canceled' state.")
 
 
     def action_set_sold(self):

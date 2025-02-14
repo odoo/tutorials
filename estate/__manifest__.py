@@ -1,9 +1,11 @@
 {
     "name": "estate",
     "sequence": 1,
+    "category": "Real Estate/Brokerage",
     "description": "",
     "depends": ["base", "mail"],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
         "views/estate_property_offer_views.xml",

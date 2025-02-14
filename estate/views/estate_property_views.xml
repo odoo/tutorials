@@ -6,6 +6,14 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">kanban,list,form</field>
         <field name="context">{'search_default_available_products' : True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a property
+            </p>
+            <p>
+                Create properties, register payments and keep track of the discussions with your customers.
+            </p>
+        </field>
     </record>
 
     <!-- Kanban View -->
@@ -61,8 +69,8 @@
         <field name="arch" type="xml">
             <form string="Estate property form view">
                 <header>
-                    <button name="action_set_sold" type="object" string="SOLD" invisible="state == 'sold'"/>
-                    <button name="action_set_cancel" type="object" string="CANCEL" invisible="state == 'sold'"/>
+                    <button name="action_set_sold" type="object" string="SOLD" invisible="state in ['sold', 'canceled']"/>
+                    <button name="action_set_cancel" type="object" string="CANCEL" invisible="state in ['sold', 'canceled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
                 </header>
                 <sheet>
@@ -106,6 +114,7 @@
                             <group>
                                 <field name="salesman_id"/>
                                 <field name="buyer_id"/>
+                                <field name="company_id"/>
                             </group>
                         </page>
                     </notebook>

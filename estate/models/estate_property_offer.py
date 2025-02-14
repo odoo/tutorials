@@ -14,7 +14,7 @@ class EstatePropertyOffer(models.Model):
         selection=[("accepted", "Accepted"), ("refused", "Refused")],
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-    property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_id = fields.Many2one("estate.property", string="Property", ondelete="cascade" ,required=True)
     property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type",
