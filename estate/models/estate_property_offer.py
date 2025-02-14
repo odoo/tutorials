@@ -71,15 +71,19 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ("check_price", "CHECK(price > 0)", "Price must be positive."),
     ]
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Iterate through each record's values in the batch
+        for vals in vals_list:
+            property_id = vals["property_id"]
+            property_record = self.env["estate.property"].browse(property_id)
 
-    @api.model
-    def create(self, vals):
-        if (
-            self.env["estate.property"].browse(vals["property_id"]).expected_price
-            > vals.get("price")
-            or vals.get("price")
-            < self.env["estate.property"].browse(vals["property_id"]).best_price
-        ):
-            raise UserError("Price is low !!")
-        self.env["estate.property"].browse(vals["property_id"]).state = "offer_received"
-        return super(EstatePropertyOffer, self).create(vals)
+            # Validate the price for each record
+            if property_record.expected_price > vals["price"] or vals["price"] < property_record.best_price:
+                raise UserError("Price is too low!")
+
+            # Update property state for each related property
+            property_record.state = "offer_received"
+
+        # Call the super method to create records in batch
+        return super().create(vals_list)

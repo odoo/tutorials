@@ -69,6 +69,12 @@ class PropertyPlan(models.Model):
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
     priority = fields.Integer(default=1)
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company,
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -140,27 +146,3 @@ class PropertyPlan(models.Model):
     def _deleting_record(self):
         if self.state != "new" and self.state != "cancelled":
             raise UserError("Only new and cancelled properties can be deleted!")
-
-    # def _get_estate_property_view(self):
-
-    #     if self._is_module_installed('estate_account'):
-    #         print("installed")
-    #         print(self.env.ref('estate.estate_action_view_tree').id)
-    #         return self.env.ref('estate.estate_action_view_tree').id
-    #     else:
-    #         print("not installed")
-    #         print(self.env.ref('estate.estate_property_view_tree').id)
-    #         return self.env.ref('estate.estate_property_view_tree').id
-
-    # @api.model
-    # def action_view_estate_properties(self):
-
-    #     view_id = self._get_estate_property_view()
-    #     return {
-    #         'type': 'ir.actions.act_window',
-    #         'name': 'Estate Properties',
-    #         'res_model': 'estate.property',
-    #         'view_mode': 'list,form',
-    #         'view_id': view_id,
-    #         'target': 'current',
-    #     }

@@ -25,7 +25,7 @@
                     <button name="action_property_sold" type="object" string="SOLD" class="oe_highlight" invisible="state in ['sold', 'cancelled', 'new', 'offer_received','invoiced']" />
                     <button name="action_to_invoice_property" type="object" string="INVOICE" class="oe_highlight" invisible="state in ('new', 'offer_received', 'offer_accepted', 'cancelled', 'invoiced')"/>
                     <button name="action_property_cancelled" type="object" string="CANCEL" invisible="state in ['sold', 'cancelled','invoiced']" />
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled,invoiced" />
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <group>
@@ -39,7 +39,6 @@
                             <field name="property_type_id" options="{'no_create': True}" />
                             <field name="postcode" />
                             <field name="date_availability" />
-                            <field name="partner_id" />
                         </group>
                         <group>
                             <field name="expected_price" />

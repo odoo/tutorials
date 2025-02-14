@@ -9,5 +9,5 @@ class ResUser(models.Model):
         "estate.property",
         "sales_person",
         string="Properties",
-        domain="[('date_availability', '>=', context_today())]" 
+        domain=[('date_availability', '>=', fields.Date.today())]
     )

@@ -1,17 +1,19 @@
-from odoo import api, Command, fields, models
+from odoo import Command, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
     _inherit = ["estate.property"]
 
     state = fields.Selection(
-        selection_add =[
-            ("invoiced","Invoiced")
-        ], ondelete={'invoiced':'cascade'}
-    )   
+        selection_add=[("invoiced", "Invoiced")], ondelete={"invoiced": "cascade"}
+    )
 
     def action_to_invoice_property(self):
-        print("sdfvdfvdfvdfv")
+        if not self.env.user.has_group("estate.estate_group_manager"):
+            raise exceptions.AccessError(
+                "You do not have the necessary write access rights to edit this property."
+            )
+
         move_vals = {
             "partner_id": self.partner_id.id,
             "move_type": "out_invoice",
@@ -40,7 +42,7 @@ class EstateProperty(models.Model):
             ],
         }
 
-        self.env["account.move"].create(move_vals)
+        self.env["account.move"].sudo().create(move_vals)
 
         res = super(EstateProperty, self).action_property_sold()
         self.state = "invoiced"
