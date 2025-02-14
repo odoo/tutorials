@@ -1,4 +1,5 @@
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class PropertyOffer(models.Model):
@@ -58,7 +59,7 @@ class PropertyOffer(models.Model):
                 property_id.state = "offer_received"
 
             if val['price'] <= property_id.best_price:
-                raise exceptions.UserError(f"The offer must be higher than {property_id.best_price}")
+                raise UserError(f"The offer must be higher than {property_id.best_price}")
 
         return super().create(vals)
 

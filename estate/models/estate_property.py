@@ -1,5 +1,6 @@
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models
 from odoo.tools import float_compare, float_is_zero
+from odoo.exceptions import UserError, ValidationError
 
 
 class Property(models.Model):
@@ -108,6 +109,9 @@ class Property(models.Model):
         "Best Offer", compute="_compute_best_price",
         help="This field specifies the best offered price for the property.", tracking=True,
     )
+    company_id = fields.Many2one(
+        "res.company", required=True, default=lambda self: self.env.company,
+        help="This field specifies the company to which the property belongs.", tracking=True,)
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -133,19 +137,19 @@ class Property(models.Model):
         for line in self:
             if (float_compare(line.selling_price, line.expected_price * 0.9, precision_digits=2) == -1
                 and not float_is_zero(line.selling_price, precision_rounding=2)):
-                raise exceptions.ValidationError('The selling price must be atleast 90% of the expected price. You must reduce the expected price if you want to accept this offer.')
+                raise ValidationError('The selling price must be atleast 90% of the expected price. You must reduce the expected price if you want to accept this offer.')
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_cancelled(self):
         for line in self:
             if line.state not in ('new', 'cancelled'):
-                raise exceptions.UserError('Only new and cancelled properties can be deleted.')
+                raise UserError('Only new and cancelled properties can be deleted.')
 
     def action_cancel(self):
         self.ensure_one()
 
         if self.state == 'sold':
-            raise exceptions.UserError("Sold Property cannot be cancelled.")
+            raise UserError("Sold Property cannot be cancelled.")
         else:
             self.state = 'cancelled'
 
@@ -155,9 +159,9 @@ class Property(models.Model):
         self.ensure_one()
 
         if self.state == 'cancelled':
-            raise exceptions.UserError("Cancelled Property cannot be sold.")
+            raise UserError("Cancelled Property cannot be sold.")
         elif self.state != 'offer_accepted':
-            raise exceptions.UserError("Please accept an offer first.")
+            raise UserError("Please accept an offer first.")
         else:
             self.state = 'sold'
 

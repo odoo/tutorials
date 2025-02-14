@@ -6,6 +6,7 @@ class Property(models.Model):
 
     def action_sold(self):
         self.ensure_one()
+        self.check_access('write')
 
         invoice_vals = {
             "partner_id": self.buyer_id.id,
@@ -29,5 +30,7 @@ class Property(models.Model):
             ]
         }
 
+        print(" reached ".center(100, '='))
+
         self.env["account.move"].create(invoice_vals)
-        return super().action_sold()
+        return super().sudo().action_sold()
