@@ -5,8 +5,10 @@
         and sales of there properties
         """,
     'sequence': 1,
+    'category': 'Real Estate/Brokerage',
     'depends' : ['base','mail'],
     'data' : [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_offer.xml',

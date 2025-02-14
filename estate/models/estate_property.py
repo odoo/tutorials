@@ -28,6 +28,7 @@ class EstateProperty(models.Model):
         help="Mark if Garden is Present",
     )
     garden_area = fields.Integer("Garden Area(sqm)", default=0)
+
     active = fields.Boolean(
         "Active", default=True, help="Mark if you want it as Active"
     )
@@ -69,6 +70,12 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=True, tracking=True)
     salesman_id = fields.Many2one(
         "res.users", default=lambda self: self.env.user, string="Salesman"
+    )
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.user.company_id,
     )
 
     _sql_constraints = [
