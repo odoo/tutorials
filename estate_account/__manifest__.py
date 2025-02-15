@@ -1,7 +1,7 @@
 {
     "name": "Estate Account",
     "description": "estate account module",
-    "depends": ["base", "account"],
+    "depends": ["estate", "account"],
     "data": [],
     "installable": True,
     "application": True,

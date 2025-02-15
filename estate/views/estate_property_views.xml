@@ -6,7 +6,13 @@
         <field name="res_model">estate.property</field>  <!-- Model name should be correct -->
         <field name="view_mode">list,form,search,kanban</field>
         <field name="context">{'search_default_available_properties': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Properties Here!
+            </p>
+        </field>
     </record>
+
     <!-- Property list view-->
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
@@ -34,8 +40,8 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="sold_action" type="object" string="SOLD" invisible="state=='sold'"/>
-                    <button name="cancel_action" type="object" string="CANCLE" invisible="state=='sold'"/>
+                    <button name="action_sold" type="object" string="SOLD" invisible="state=='sold'"/>
+                    <button name="action_cancel" type="object" string="CANCLE" invisible="state=='sold'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -97,6 +103,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

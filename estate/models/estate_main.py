@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property"
+    _inherit = ["mail.thread"]
     _order = "id desc"
 
     # sql constraints
@@ -24,15 +25,19 @@ class EstateProperty(models.Model):
     ]
 
     # Fields
-    name = fields.Char(required=True, string="Title")
-    description = fields.Text("Description")
-    postcode = fields.Char("Postcode")
+    name = fields.Char(required=True, string="Title", tracking=True)
+    description = fields.Text("Description", tracking=True)
+    postcode = fields.Char("Postcode", tracking=True)
     available_from = fields.Date(
         string="Available From",
         copy=False,
-        default=fields.Date.add(fields.Date.today(), months=3),
+        default=fields.Date.add(
+            fields.Date.today(),
+            months=3,
+        ),
+        tracking=True,
     )
-    expected_price = fields.Float(required=True, string="Expected Price")
+    expected_price = fields.Float(required=True, string="Expected Price", tracking=True)
     selling_price = fields.Float(
         string="Selling Price", default=0, copy=False, readonly=True
     )
@@ -62,10 +67,17 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         default="new",
+        tracking=True,
     )
 
     total_area = fields.Integer(string="Total Area", compute="_compute_total")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
+    company_id = fields.Many2one(
+        string="Company",
+        comodel_name="res.company",
+        required=True,
+        default=lambda self: self.env.company,
+    )
 
     # Relationships
     property_type_id = fields.Many2one(
@@ -137,7 +149,10 @@ class EstateProperty(models.Model):
             raise UserError("Only new or cancelled properties can be deleted!")
 
     # mark property as sold when sold button is clicked
-    def sold_action(self):
+    def action_sold(self):
+        if not self.state == "offer_accepted":
+            raise UserError("Property Can't be sold without accepting offer!")
+
         if self.state == "cancelled":
             raise UserError("Cancelled properties can't be sold!")
         else:
@@ -145,7 +160,7 @@ class EstateProperty(models.Model):
         return True
 
     # mark property as cancelled when cancel button is clicked
-    def cancel_action(self):
+    def action_cancel(self):
         if self.state == "sold":
             raise UserError("Sold properties can't be cancelled!")
         else:

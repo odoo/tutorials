@@ -1,9 +1,11 @@
 {
     "name": "Estate",
+    "category": "Real Estate/Brokerage",
     "description": "Real Estate App",
-    "depends": ["base"],
+    "depends": ["base", "mail"],
     "sequence": 1,
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
         "views/property_offers_views.xml",
