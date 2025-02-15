@@ -4,13 +4,13 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base'],
     'author': "rsbh",
-    'category': 'Real Estate',
+    'category': 'Real Estate/Brokerage',
     'license': 'LGPL-3',
     'description': "A module for managing real estate properties",
     'depends':['base'],
     'data': [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/estate_property_offer_view.xml",
         "views/estate_property_type_view.xml",

@@ -7,8 +7,7 @@ class EstateProperty(models.Model):
     _inherit="estate.property"
     
     def action_sold(self):
-        # breakpoint()
-        self.env["account.move"].create({
+        self.env["account.move"].sudo().create({
             "partner_id":self.partner_id.id,
             "move_type": "out_invoice",
             "invoice_line_ids":[
@@ -32,7 +31,7 @@ class EstateProperty(models.Model):
                         "quantity": 1,
                         "price_unit": 100.00 
                     }
-                ),
+                )
             ]
         })
         return super().action_sold()
