@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Root Menu for Estate -->
-    <menuitem id="estate_menu_root" name="Estate">
+    <menuitem id="estate_menu_root" name="Estate" web_icon="estate,static/description/deal.png">
         <!-- Second-level Submenu under Estate (Estate Management) -->
         <menuitem id="estate_menu_management" name="Estate Management">
             <!-- Third-level Submenu under Estate Management (Estate Properties) -->
-            <menuitem id="estate_menu_properties" name="Properties" action="estate_property_action"/>
+            <menuitem id="estate_menu_properties" name="Properties" action="estate_property_action" />
         </menuitem>
         <!-- Menu of property type (second level)-->
         <menuitem id="estate_settings" name="Settings" groups="estate.estate_group_manager">
-            <menuitem id="estate_property_type" name="Property Types" action="property_type_action"/>
-            <menuitem id="estate_property_tags" name="Property Tags" action="property_tags_action"/>
+            <menuitem id="estate_property_type" name="Property Types" action="property_type_action" />
+            <menuitem id="estate_property_tags" name="Property Tags" action="property_tags_action" />
         </menuitem>
     </menuitem>
 </odoo>
