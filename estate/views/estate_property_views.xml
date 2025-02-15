@@ -15,7 +15,7 @@
     </record>
 
     <!-- Property List View -->
-    <record id="estate_property_list" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -25,21 +25,22 @@
                 decoration-bf="state == 'accepted'"
                 decoration-muted="state == 'sold'"
             >
-                <field name="name" width="20%" />
-                <field name="postcode" width="20%" />
-                <field name="bedrooms" width="20%" />
-                <field name="living_area" width="20%" />
+                <field name="name" />
+                <field name="company_id" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
                 <field name="garden_area" />
-                <field name="expected_price" width="20%" />
-                <field name="selling_price" width="20%" />
-                <field name="date_availability" width="20%" optional="hide" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" optional="hide" />
                 <field name="total_area" />
             </list>
         </field>
     </record>
 
     <!-- Property Form View -->
-    <record id="estate_property_form" model="ir.ui.view">
+    <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -80,6 +81,7 @@
                             <field name="expected_price" />
                             <field name="best_price" />
                             <field name="selling_price" />
+                            <field name="company_id" />
                         </group>
                     </group>
                     <notebook>
@@ -121,7 +123,7 @@
     </record>
 
     <!-- Search View -->
-    <record id="estate_property_search" model="ir.ui.view">
+    <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">

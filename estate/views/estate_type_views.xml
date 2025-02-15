@@ -9,7 +9,7 @@
     </record>
 
     <!-- Property Type List View -->
-    <record id="estate_type_list" model="ir.ui.view">
+    <record id="estate_type_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
@@ -21,7 +21,7 @@
     </record>
 
     <!-- Property Type Form View -->
-    <record id="estate_type_form" model="ir.ui.view">
+    <record id="estate_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
@@ -30,7 +30,7 @@
                     <div class="oe_button_box" name="button_box">
                         <button
                             type="action"
-                            name="%(estate.estate_property_offers_list_view_action)d"
+                            name="%(estate.estate_property_offers_action)d"
                             string="Offers"
                             class="oe_stat_button"
                             icon="fa-star"

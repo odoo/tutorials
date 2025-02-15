@@ -8,19 +8,27 @@ from odoo.tools import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _inherit = ['mail.thread']
+    _inherit = ["mail.thread"]
     _description = "Real Estate Property"
     _order = "id desc"
 
     def _default_date_availability(self):
         return datetime.today() + relativedelta(months=3)
 
+    company_id = fields.Many2one(
+        "res.company",
+        required=True,
+        string="Company",
+        default=lambda self: self.env.company,
+    )
     active = fields.Boolean(default=True)
     name = fields.Char(string="Property Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postal Code")
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False, tracking=True)
+    selling_price = fields.Float(
+        string="Selling Price", readonly=True, copy=False, tracking=True
+    )
     bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Number of Facades")
@@ -47,7 +55,7 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         store=True,
-        tracking=True
+        tracking=True,
     )
     date_availability = fields.Date(
         string="Available From", copy=False, default=_default_date_availability
@@ -59,7 +67,9 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     partner_id = fields.Many2one("res.partner", string="Buyer", copy="False")
     users_id = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user
+        "res.users",
+        string="Salesman",
+        # default=lambda self: self.env.user,
     )
 
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
@@ -108,15 +118,24 @@ class EstateProperty(models.Model):
                 continue
             min_selling_price = record.expected_price * 0.9
 
-            if (float_compare(record.selling_price, min_selling_price, precision_digits=2)< 0):
-                raise ValidationError("Selling price cannot be lower than 90% of expected price")
+            if (
+                float_compare(
+                    record.selling_price, min_selling_price, precision_digits=2
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    "Selling price cannot be lower than 90% of expected price"
+                )
 
     @api.ondelete(at_uninstall=False)
     def _unlink_block_offer_deletion(self):
         for record in self:
             if record.state not in ["new", "cancelled"]:
-                state_label = dict(self._fields['state'].selection).get(record.state)
-                raise UserError(f"This offer is in {state_label} state. You can't delete it.")
+                state_label = dict(self._fields["state"].selection).get(record.state)
+                raise UserError(
+                    f"This offer is in {state_label} state. You can't delete it."
+                )
 
     def mark_offer_sold(self):
         for record in self:
