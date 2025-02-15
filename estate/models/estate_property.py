@@ -4,7 +4,7 @@
 import math
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
-from odoo import fields, models, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError,ValidationError
 
 class EstateProperty(models.Model):
@@ -81,7 +81,6 @@ class EstateProperty(models.Model):
                 record.state = "sold"
         return True
 
-
     def action_cancel_property(self): # method for cancel button
         for record in self:
             if record.state == "sold":
@@ -102,3 +101,9 @@ class EstateProperty(models.Model):
         for record in self:
             if record.selling_price < record.expected_price * 0.9:
                 raise ValidationError("Selling price should be greater than 90% of expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_is_new_or_cancelled(self):
+        for record in self:
+            if record.state!='new' and record.state!='cancelled':
+                raise UserError('You cannot delete a property which is not new or cancelled.')

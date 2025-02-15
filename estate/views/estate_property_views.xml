@@ -1,11 +1,11 @@
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">property</field>
+        <field name="name">Property</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
-        <field name="context">{'search_default_available': 1}</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="context">{'search_default_available':1}</field>
     </record>
-    
+
     <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -74,7 +74,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state!='new'"/>
+                            <field name="offer_ids" readonly="state!='new' and state!='offer received'"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -87,7 +87,7 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <search string="Properties Search">
-                    
+
                     <!-- search using property -->
                     <field name="name" string="Title"/>
                     <field name="postcode" string="Postcode"/>
@@ -95,18 +95,48 @@
                     <field name="bedrooms" string="Bedrooms"/>
                     <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area', '>=', self)]"/> <!--self is entred value-->
                     <field name="facades" string="Facades" />
-                    <filter name="available" string="Available" domain="['|',('state','=','new'), ('state','=','offer received')]"/>
-                    
+
                     <!-- filter record -->
-                    <filter string="New" name="new property filter" domain="[('state','=', 'new')]"/>
-                    <filter string="Offer Recieved" name="offer recieved property filter" domain="[('state','=', 'offer received')]"/>
+                    <filter name="available" string="Available" domain="['|',('state','=','new'), ('state', '=', 'offer received')]"/>
+                    <filter string="New" name="new property filter" domain="[('state','=','new')]"/>
+                    <filter string="Offer Recieved" name="offer recieved property filter" domain="[('state','=','offer received')]"/>
 
                     <!-- group record -->
                     <group expand="1" string="group by postcode">
                         <filter string="PostCode" name="filter for group by postcode" context="{'group_by':'postcode'}"/>
                     </group>
-
                 </search>
+            </field>
+    </record>
+
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+            <field name="name">estate.property.kanban</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" records_draggable='False'>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <strong>
+                                    Name : <field name="name" string="Name"/>
+                                </strong>
+                                <div>
+                                    Expected Price : <field name="expected_price" string="Expected Price"/>
+                                </div>
+                                <t t-if="record.state.raw_value == 'offer received'">
+                                    Best Price : <field name="best_offer" string="Best Offer"/>
+                                </t>
+                                <t t-if="record.state.raw_value == 'offer accepted'">
+                                    Selling Price : <field name="selling_price" string="Selling Price"/>
+                                </t>
+                                <div>
+                                    <field name="property_tag_ids" widget="many2many_tags" string="Tags" options="{'color_field': 'color'}"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
             </field>
     </record>
 </odoo>

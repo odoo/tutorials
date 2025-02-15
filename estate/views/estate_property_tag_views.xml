@@ -1,6 +1,6 @@
 <odoo>
     <record id="estate_property_tag_action" model="ir.actions.act_window">
-        <field name="name">property tag</field>
+        <field name="name">Property Tag</field>
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">list,form</field>
     </record>
@@ -10,7 +10,7 @@
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <list string="Property Tag List" edit="True" editable="bottom" open_form_view="True">
-                <field name="name" string="Property Tag" />   
+                <field name="name" string="Property Tag" />
             </list>
         </field>
     </record>

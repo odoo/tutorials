@@ -19,9 +19,10 @@ class EstatePropertyOffer(models.Model):
         copy=False
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    property_id = fields.Many2one("estate.property", required=True, ondelete='cascade')
     validity = fields.Integer(string="validity", default=7)
     date_deadline = fields.Date(string="valid till", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     @api.depends("validity")
     def _compute_date_deadline(self):
@@ -55,3 +56,16 @@ class EstatePropertyOffer(models.Model):
         ('check_positive_value_offer_price', 'CHECK(price >= 0)',
          'Offer price must be positive')
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for offer in vals_list:
+            property = self.env["estate.property"].browse(offer["property_id"])
+            if property.state != "offer received":
+                property.state = "offer received"
+            max_offer = 0
+            if property.offer_ids:
+                max_offer = max(property.offer_ids.mapped("price"))
+            if max_offer > offer["price"]:
+                    raise UserError(f"The new offer must be higher than the maximum offer of {max_offer:.2f}")
+        return super().create(vals_list)
