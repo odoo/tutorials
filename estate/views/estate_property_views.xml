@@ -60,6 +60,7 @@
             <sheet>
                 <group>
                     <h1><field name="name" placeholder="Property Name"/></h1>
+                    <field name="company_id"></field>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"></field>
                     <field name="property_type_id" options="{'no_create':true, 'no_one':true}"></field>
                 </group>
@@ -148,7 +149,7 @@
         <kanban default_group_by="status" records_draggable='False'>
             <field name="status"/>
             <templates>
-                <t t-name="kanban-box">
+                <t t-name="card">
                     <div class="oe_kanban_global_click">
                         <strong>
                             Name : <field name="name" string="Name"/>

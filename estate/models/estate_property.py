@@ -15,7 +15,7 @@ class EstateProperty(models.Model):
     # SQL Constraints
     #---------------------------------------------------------------------
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >= 0)', 'The expected price must be positive'),
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The expected price must be positive'),
     ]
 
@@ -62,6 +62,7 @@ class EstateProperty(models.Model):
         copy=False,
         tracking=True
     )
+    company_id = fields.Many2one("res.company", string="Company", required=True, default= lambda self: self.env.company)
 
     #---------------------------------------------------------------------
     # Relations
@@ -106,6 +107,11 @@ class EstateProperty(models.Model):
 
     # --------------------------- Action Methods ---------------------------
     def action_property_sold(self):
+
+        if self.selling_price == 0:
+            raise UserError("No any offer found")
+
+
         for record in self:
             if record.status == "cancelled":
                 raise UserError("Cancelled property cannot be Sold")

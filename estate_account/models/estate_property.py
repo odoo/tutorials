@@ -6,14 +6,14 @@ class EstateProperty(models.Model):
 
     # -------- Overridden Method -----------
     def action_property_sold(self):
-        print(" The overriden mehtod from estate module is being called".center(100, '='))  
+        print(" The overriden mehtod from estate module is being called".center(150, '='))  
 
         # //TODO : Explore this while referring restricted data chapter
-        # if not self.env['account.move'].check_acccess('create', False):
-        #     try:
-        #         self.check_access('write')
-        #     except AccessError:
-        #         return self.env['account.move']
+        if not self.env['account.move'].check_access('create'):
+            try:
+                self.check_access('write')
+            except AccessError:
+                raise AccessError("You do not have permission to sell this property.")
             
         self.env['account.move'].sudo().create(
             {
