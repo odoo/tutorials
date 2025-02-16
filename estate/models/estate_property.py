@@ -2,38 +2,49 @@ from odoo import models,fields,api
 from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
-    _name="estate.property"
-    _description="Real Estate Property"
-    _order="id desc"
+    _name = "estate.property"
+    _inherit = ["mail.thread"]
+    _description = "Real Estate Property"
+    _order = "id desc"
 
-    name=fields.Char(required=True)
-    description=fields.Text()
-    postcode=fields.Char()
-    date_availability=fields.Date(
+    name = fields.Char(required=True,tracking=True)
+    description = fields.Text()
+    postcode = fields.Char()
+    date_availability = fields.Date(
         copy=False,
         default=fields.Date().add(fields.Date().today(),days=90)
     )
-    expected_price=fields.Float(required=True)
-    selling_price=fields.Float(readonly=True,copy=False)
-    bedrooms=fields.Integer(default=2)
-    living_area=fields.Float()
-    facades=fields.Integer()
-    garage=fields.Boolean()
-    garden=fields.Boolean()
-    garden_area=fields.Float()
-    garden_orientation=fields.Selection(selection=[('north','North'),('south','South'),('east','East'),('west','West')])
-    active=fields.Boolean("Active",default=True)
-    status=fields.Selection(
-        selection=[('new','New'),("offer_received","Offer Received"),("offer_accepted","Offer Accepted"),("sold","Sold"),("canceled","Canceled")],
-        default='new',copy=False
-    )
-    property_type_id=fields.Many2one("estate.property.type",string="Property Type")
-    buyer_id=fields.Many2one("res.partner",string="Buyer",copy=False)
-    salesperson_id=fields.Many2one("res.users",string="Salesperson",default=lambda self:self.env.user)
-    tag_ids=fields.Many2many("estate.property.tag")
-    offer_ids=fields.One2many("estate.property.offer","property_id")
-    total_area=fields.Float(compute="_compute_total_area",string='Total Area')
-    best_price=fields.Float(compute="_compute_best_price",string="Best Offer")
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True,copy=False)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Float()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Float()
+    garden_orientation = fields.Selection(
+        selection=[
+            ('north','North'),
+            ('south','South'),
+            ('east','East'),
+            ('west','West')
+        ],copy=False)
+    active = fields.Boolean("Active",default=True)
+    status = fields.Selection(
+        selection=[
+            ('new','New'),
+            ("offer_received","Offer Received"),
+            ("offer_accepted","Offer Accepted"),
+            ("sold","Sold"),
+            ("canceled","Canceled")
+        ],default='new',copy=False,tracking=True)
+    property_type_id = fields.Many2one("estate.property.type",string="Property Type")
+    buyer_id = fields.Many2one("res.partner",string="Buyer",copy=False)
+    salesperson_id = fields.Many2one("res.users",string="Salesperson",default=lambda self:self.env.user)
+    tag_ids = fields.Many2many("estate.property.tag")
+    offer_ids = fields.One2many("estate.property.offer","property_id")
+    total_area = fields.Float(compute="_compute_total_area",string='Total Area')
+    best_price = fields.Float(compute="_compute_best_price",string="Best Offer")
     company_id = fields.Many2one(
         string="Company",
         help="The company that owns the property.",
@@ -41,7 +52,7 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.user.company_id
     )
 
-    _sql_constraints=[
+    _sql_constraints = [
         ('expected_price_positive','CHECK(expected_price>0)','Expected price must be positive number'),
         ('selling_price_positive','CHECK(selling_price>=0)','Selling price must be positive number')
     ]

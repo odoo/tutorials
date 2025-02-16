@@ -72,7 +72,7 @@
                     <h1>
                         <field name='name'/>
                     </h1>
-                    <h3><field name='tag_ids' widget='many2many_tags'/></h3>
+                    <field name='tag_ids' widget='many2many_tags'/>
                     <group>
                         <group>
                             <field name='property_type_id' options="{'no_create':True, 'no_open':True}"/>
@@ -111,6 +111,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
