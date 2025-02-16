@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Template for Company Logo, Name, Address, and Country -->
+    <template id="company_details_template">
+        <div class="company-details mb-5 pb-5">
+            <img t-att-src="'/estate/static/description/icon.png'"
+                alt="Company Logo"
+                class="company-logo img-fluid mb-3"
+                style="max-width: 100px; height: auto;" />
+            <div class="border border-dark mb-2" />
+            <div>
+                <t t-foreach="docs" t-as="property">
+                    <span class="fw-bold d-block">
+                        <span t-field="property.company_id" class="d-block" />
+                        <span t-field="property.company_id.street" class="d-block" />
+                        <span>
+                            <span t-field="property.company_id.city" />, <span
+                                t-field="property.company_id.state_id.code" />
+                            <span
+                                t-field="property.company_id.zip" />
+                        </span>
+                        <span t-field="property.company_id.country_id.name" class="d-block" />
+                    </span>
+                </t>
+            </div>
+        </div>
+    </template>
+
+    <!-- Template for Estate Property Offers -->
+    <template id="estate_property_offers_template">
+        <t t-if="not property.offer_ids">
+            <span class="fw-bold text-danger">No offers have been made yet :(</span>
+        </t>
+        <t t-else="">
+            <t t-set="offer_status_dict"
+                t-value="dict(property.offer_ids._fields['status'].selection)" />
+            <table class="table table-bordered mt-3">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="property.offer_ids" t-as="offer">
+                        <td t-out="offer.price" />
+                        <td t-out="offer.partner_id.name" />
+                        <td t-out="offer.validity" />
+                        <td t-out="offer.date_deadline" />
+                        <td t-out="offer_status_dict.get(offer.status, 'Pending')" />
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+    </template>
+
+    <!-- Template for Estate Property Report -->
+    <template id="estate_property_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-set="property_state_dict" t-value="dict(property._fields['state'].selection)" />
+                <t t-call="web.external_layout">
+                    <div class="container page">
+                        <div class="row">
+                            <div class="col-12">
+                                <t t-call="estate.company_details_template" />
+                            </div>
+                        </div>
+                        <div class="row pt-5">
+                            <div class="col-12">
+                                <h1 class="text-primary" t-out="property.name" />
+                            </div>
+                            <div class="col-12">
+                                <p>
+                                    <span class="fw-bold">Salesman:</span>
+                                    <span t-out="property.users_id.name" />
+                                </p>
+                            </div>
+                            <div class="col-12">
+                                <p>
+                                    <span class="fw-bold">Expected Price:</span>
+                                    <span t-out="property.expected_price" />
+                                </p>
+                            </div>
+                            <div id="status" class="col-12">
+                                <p>
+                                    <span class="fw-bold">Status:</span>
+                                    <span t-out="property_state_dict[property.state]" />
+                                </p>
+                            </div>
+                        </div>
+                        <t t-call="estate.estate_property_offers_template" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Template for Salesman Estate Properties -->
+    <template id="res_users_estate_property_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="user">
+                <t t-call="web.external_layout">
+                    <div class="container page">
+                        <t t-call="estate.company_details_template" />
+                        <h1 class="text-primary mt-5">
+                            <span class="fw-bold">Salesman:</span>
+                            <span t-out="user.name" />
+                        </h1>
+                        <t t-foreach="user.property_ids" t-as="property">
+                            <h2 class="mt-4 text-secondary" t-out="property.name" />
+                            <p>
+                                <span class="fw-bold">Expected Price:</span>
+                                <span t-out="property.expected_price" />
+                            </p>
+                            <p>
+                                <span class="fw-bold">Status:</span>
+                                <span t-out="property.state" />
+                            </p>
+                            <t t-call="estate.estate_property_offers_template" />
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
