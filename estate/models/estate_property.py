@@ -12,7 +12,7 @@ class EstateProperty(models.Model):
     
     _sql_constraints = [
         ('positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive'),
-        ('positive_selling_price', 'CHECK(selling_price > 0)', 'Selling price must be strictly positive')
+        ('positive_selling_price', 'CHECK(selling_price NOT NULL AND selling_price > 0)', 'Selling price must be strictly positive')
     ]
 
     name = fields.Char(string="Property Name", required=True, help="Property Name")

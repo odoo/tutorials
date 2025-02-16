@@ -12,6 +12,7 @@
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
         <field name="implied_ids" eval="[(4, ref('estate.estate_group_user'))]"/>
         <field name="comment">Real estate managers can configure the system (manage available types and tags) as well as oversee every property in the pipeline.</field>
+        <field name="users" eval="[(4,ref('base.user_admin'))]" />
     </record>
     
     <record id="property_visibility_manager_rule" model="ir.rule">
