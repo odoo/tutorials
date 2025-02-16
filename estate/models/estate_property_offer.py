@@ -6,6 +6,8 @@ from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
+
+    # ..................private attributes..................
     _name = "estate.property.offer"
     _description = "These are Estate Module Property Offer"
     _order = "price desc"
@@ -13,6 +15,7 @@ class EstatePropertyOffer(models.Model):
         ('check_price','CHECK(price > 0)', 'The offer price must be strictly positive!')
     ]
 
+    # ..................fields attributes..................
     price = fields.Float(string="price")
     state = fields.Selection(
         string="Status", 
@@ -22,13 +25,15 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False
     )
+    date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
 
+    # ..................relational attributes..................
     property_id = fields.Many2one(comodel_name="estate.property", string="Property", required=True)
     partner_id = fields.Many2one(comodel_name="res.partner", string="Partner", required=True)
     validity = fields.Integer(string="Validity (days)", default=7, compute="_compute_validity", inverse="_inverse_validity", store=True)
-    date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
     property_type_id = fields.Many2one(comodel_name="estate.property.type", related="property_id.property_type_id", string="Property Type", store=True)
 
+    # ..................compute methods..................
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for offer in self:
@@ -48,13 +53,12 @@ class EstatePropertyOffer(models.Model):
             date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.validity = (offer.date_deadline - date).days if offer.date_deadline else 7
 
-
     def _inverse_validity(self):
         for offer in self:
             date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.date_deadline = date + relativedelta(days=offer.validity)
 
-
+    # ..................action methods..................
     def action_accept(self):
         if "accepted" in self.mapped("property_id.property_offer_ids.state"):
             raise UserError("An Offer is already been accepted")
@@ -69,6 +73,7 @@ class EstatePropertyOffer(models.Model):
         self.state = "refused"
         return True
 
+    # ..................CRUD methods..................
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
