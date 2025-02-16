@@ -131,6 +131,7 @@
 
                             <page string="Other Info">
                                 <group>
+                                    <field name="company_id" />
                                     <field name="salesman" />
                                     <field name="buyer" />
                                 </group>

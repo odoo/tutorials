@@ -1,5 +1,5 @@
 from odoo import Command, fields, models
-
+from odoo.exceptions import AccessError
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
@@ -8,7 +8,15 @@ class EstateProperty(models.Model):
 
     def action_create_invoice(self):
         super().action_create_invoice()
-        self.env['account.move'].create({
+
+        try:
+            self.env['account.move'].check_access_rights('write')
+            self.env['account.move'].check_access_rule('write')
+        except AccessError:
+            raise AccessError("You don't have permission to update this property.")
+
+        print(" reached ".center(100, '='))
+        self.env['account.move'].sudo().create({
             'partner_id': self.buyer.id,
             'move_type': 'out_invoice',
             'invoice_line_ids': [

@@ -1,4 +1,5 @@
 from re import T
+from typing_extensions import Required
 from odoo import api, models, fields
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -27,6 +28,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area")
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.user.company_id)
     
     garden_orientation = fields.Selection(
         string="Garden Orientation", 
