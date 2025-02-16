@@ -11,6 +11,7 @@ class EstateProperty(models.Model):
 
     name = fields.Char(string='Title', required=True)
     description = fields.Text()
+    company_id = fields.Many2one('res.company',string='Company', required=True, default=lambda self: self.env.company)
     postcode = fields.Char()
     date_availability = fields.Date(string='Available From', copy=False, default=fields.Date.today()+ relativedelta(months=3))
     expected_price = fields.Float(required=True)

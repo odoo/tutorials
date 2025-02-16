@@ -5,7 +5,7 @@
             <menuitem id="estate_model_menu" action="estate_model_action" />
         </menuitem>
 
-        <menuitem id="estate_type_menu" name="Setting" sequence="2">
+        <menuitem id="estate_type_menu" name="Setting" groups="estate_group_manager" sequence="2">
             <menuitem id="estate_type_model_menu" action="estate_type_model_action" sequence="1" />
             <menuitem id="estate_tag_model_menu" action="estate_tag_model_action" sequence="2" />
         </menuitem>
