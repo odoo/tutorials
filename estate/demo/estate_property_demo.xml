@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_type_residential" model="estate.property.type">
+        <field name="name">Residential</field>
+    </record>
+
+    <record id="estate_property_view_tree_demo_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">1600000.0</field>
+        <field name="selling_price">0.0</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate_property_type_residential" />
+    </record>
+
+    <record id="estate_property_view_tree_demo_2" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000.0</field>
+        <field name="selling_price">120000.0</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">0</field>
+        <field name="property_type_id" ref="estate_property_type_residential" />
+    </record>
+
+    <record id="estate_demo_partner_azure" model="res.partner">
+        <field name="name">Azure Interior</field>
+    </record>
+    <record id="estate_demo_partner_deco" model="res.partner">
+        <field name="name">Deco Addict</field>
+    </record>
+
+    <record id="estate_property_offer_demo_1" model="estate.property.offer">
+        <field name="partner_id" ref="estate_demo_partner_azure" />
+        <field name="property_id" ref="estate_property_view_tree_demo_1" />
+        <field name="price">10000000.0</field>
+        <field name="date_deadline"
+            eval="(datetime.today() + timedelta(days=10)).strftime('%Y-%m-%d')" />
+    </record>
+    <record id="estate_property_offer_demo_2" model="estate.property.offer">
+        <field name="partner_id" ref="estate_demo_partner_azure" />
+        <field name="property_id" ref="estate_property_view_tree_demo_1" />
+        <field name="price">15000000.0</field>
+        <field name="date_deadline"
+            eval="(datetime.today() + timedelta(days=10)).strftime('%Y-%m-%d')" />
+    </record>
+    <record id="estate_property_offer_demo_3" model="estate.property.offer">
+        <field name="partner_id" ref="estate_demo_partner_deco" />
+        <field name="property_id" ref="estate_property_view_tree_demo_1" />
+        <field name="price">15000001.0</field>
+        <field name="date_deadline"
+            eval="(datetime.today() + timedelta(days=10)).strftime('%Y-%m-%d')" />
+    </record>
+
+    <function model="estate.property.offer" name="action_confirm">
+        <value eval="[ref('estate_property_offer_demo_3')]" />
+    </function>
+
+    <record id="estate_property_view_tree_demo_3" model="estate.property">
+        <field name="name">Home</field>
+        <field name="description">Home in a society</field>
+        <field name="postcode">54221</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000.0</field>
+        <field name="selling_price">120000.0</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">0</field>
+        <field name="property_type_id" ref="estate_property_type_residential" />
+        <field name="offer_ids"
+            eval="[
+              (0, 0,{'partner_id': ref('estate_demo_partner_azure'), 
+            'price': 15000001.0, 
+            'date_deadline': (datetime.today() + timedelta(days=10)).strftime('%Y-%m-%d')}),
+        ]" />
+    </record>
+
+</odoo>

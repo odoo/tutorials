@@ -25,7 +25,3 @@ class EstatePropertyType(models.Model):
                 aggregates=["id:count"],
             )
             count.offer_count = result[0][0] if result else 0
-            # offer_count = 0
-            # for property in count.property_ids:
-            #     offer_count += len(property.offer_ids)
-            # count.offer_count = offer_count
