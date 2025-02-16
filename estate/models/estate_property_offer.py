@@ -14,7 +14,6 @@ class EstatePropertyOffer(models.Model):
     create_date = fields.Date(default=fields.Date.today)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
-
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True, string="Property Type")
@@ -61,10 +60,6 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.status == 'cancelled':
                 raise exceptions.UserError("This property is cancelled.")
 
-            if not record.property_id.status == 'offer_accepted':
-                record.property_id.status = 'offer_received'
-                record.property_id.buyer_id = False
-                record.property_id.selling_price = 0
             record.status = 'refused'
         return True
 

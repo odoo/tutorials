@@ -15,6 +15,7 @@
             </list>
         </field>
     </record>
+
     <record id="estate_property_offer_view_form" model="ir.ui.view">
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
@@ -30,6 +31,7 @@
             </form>
         </field>
     </record>
+
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">estate.property.offer.action</field>
         <field name="res_model">estate.property.offer</field>

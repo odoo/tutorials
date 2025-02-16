@@ -9,9 +9,7 @@ class EstateProperty(models.Model):
     _description = "Estate Property"
     _order = 'id desc'
 
-    name = fields.Char(
-        string="Name", required=True, help="Name of the Property"
-    )
+    name = fields.Char(string="Name", required=True, help="Name of the Property")
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
@@ -36,7 +34,7 @@ class EstateProperty(models.Model):
             ("south", "South"),
             ("east", "East"),
             ("west", "West"),
-        ],
+        ]
     )
     active = fields.Boolean(string="Active", default=True)
     status = fields.Selection(
@@ -56,6 +54,7 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property Offer")
+    company_id = fields.Many2one("res.company", required=True,default=lambda self: self.env.company, string="Agency")
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive.'),
@@ -65,7 +64,7 @@ class EstateProperty(models.Model):
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
-            record.total_area = (record.living_area or 0) + (record.garden_area or 0)
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -87,7 +86,7 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("A cancelled property cannot be sold!")
 
             accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
-            if not accepted_offer or record.status != 'offer_accepted':
+            if not accepted_offer:
                 raise exceptions.UserError("You need to accept an offer first!")
 
             record.status = 'sold'

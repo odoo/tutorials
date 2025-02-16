@@ -1,5 +1,5 @@
 from datetime import date
-from odoo import models, Command
+from odoo import Command, models
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
@@ -10,7 +10,13 @@ class EstateProperty(models.Model):
         return result
 
     def create_invoice(self):
-        invoice = self.env['account.move'].create({
+        try:
+            self.check_access_rights('write')
+            self.check_access_rule('write')
+        except:
+            raise UserError("You do not have the necessary permissions to sell this property.")
+
+        invoice = self.env['account.move'].sudo().create({
         'partner_id': self.buyer_id.id,
         'move_type': 'out_invoice',
         'name' : f'INV/2025/{self.id}',
