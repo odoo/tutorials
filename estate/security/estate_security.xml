@@ -22,5 +22,33 @@
             <field name="implied_ids" eval="[(4, ref('estate.estate_group_user'))]"/>
             <field name="users" eval="[(4, ref('base.user_admin'))]"/>
         </record>
+
+        <!-- Record Rule Agent -->
+        <record id="estate_group_agent_rule" model="ir.rule">
+            <field name="name">Rules Agent</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="groups" eval="[(4, ref('estate.estate_group_user'))]"/>
+            <field name="domain_force">[
+            '|', ('salesman_id', '=', user.id), ('salesman_id', '=', False)
+        ]</field>
+        </record>
+
+        <!-- Record Rule Manager -->
+        <record id="estate_group_manager_rule" model="ir.rule">
+            <field name="name">Rules Manager</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- Rule for Company -->
+        <record model="ir.rule" id="estate_company_rule">
+            <field name="name">Rules for multi-company</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="domain_force">[
+        '|', ('company_id', '=', False),
+             ('company_id', 'in', company_ids)
+    ]</field>
+        </record>
     </data>
 </odoo>

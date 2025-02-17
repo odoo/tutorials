@@ -1,22 +1,26 @@
-from odoo import models
-from odoo.exceptions import UserError
+from odoo import fields, models, Command
 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_estate_property_sold(self):
-        print("=================== Sold button clicked from account application")
-        # for record in self:
-        #     if (
-        #         record.status == "new"
-        #         or record.status == "offer_accept"
-        #         or record.status == "offer_receive"
-        #     ):
-        #         record.status = "sold"
-        #     elif record.status == "cancelled":
-        #         raise UserError("Cancelled property can't be sold")
-        #     else:
-        #         raise UserError("Property already sold")
-
-        return super().action_estate_property_sold()
+        self.check_access('write')
+        print("Sold button clicked from account application")
+        super().action_estate_property_sold()
+        self.env["account.move"].create(
+            {
+                "partner_id": self.buyer_id.id,
+                "move_type": "out_invoice",
+                "invoice_date": fields.Date.today(),
+                "line_ids": [
+                    Command.create(
+                        {"name": self.name, "price_unit": self.selling_price}
+                    ),
+                    Command.create(
+                        {"name": "6% tax", "price_unit": self.selling_price * 0.06}
+                    ),
+                    Command.create({"name": "Administrative Fees", "price_unit": 100}),
+                ],
+            }
+        )

@@ -1,10 +1,11 @@
-from odoo import fields, models, api
 from datetime import date, timedelta
+from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ["mail.thread", "mail.message.subtype", "mail.activity.mixin"]
     _description = "Real Estate App"
     _order = "id desc"
 
@@ -41,6 +42,7 @@ class EstateProperty(models.Model):
         default="new",
         required=True,
         copy=False,
+        tracking=True,
     )
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one("estate.property.type")
@@ -51,15 +53,15 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one(
-        "res.partner",
-        string="Buyer",
-        ondelete="restrict",
-        copy=False,
+        "res.partner", string="Buyer", ondelete="restrict", copy=False, tracking=True
     )
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id")
     total_area = fields.Integer(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
+    company_id = fields.Many2one(
+        "res.company", default=lambda self: self.env.company, required=True
+    )
 
     _sql_constraints = [
         (
@@ -73,6 +75,14 @@ class EstateProperty(models.Model):
             "Expected Price should be strictly positive",
         ),
     ]
+
+    def _track_subtype(self, init_values):
+        self.ensure_one()
+        if "status" in init_values and self.status == "offer_receive":
+            return self.env.ref("estate.estate_property_offer_receive_state")
+        if "status" in init_values and self.status == "offer_accept":
+            return self.env.ref("estate.estate_property_offer_accept_state")
+        return super(EstateProperty, self)._track_subtype(init_values)
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
@@ -97,38 +107,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def action_estate_property_sold(self):
-        print("Sold button clicked")
-        for record in self:
-            if (
-                record.status == "new"
-                or record.status == "offer_accept"
-                or record.status == "offer_receive"
-            ):
-                record.status = "sold"
-            elif record.status == "cancelled":
-                raise UserError("Cancelled property can't be sold")
-            else:
-                raise UserError("Property already sold")
-
-        return True
-
-    def action_estate_property_cancel(self):
-        print("Cancel Button Clicked")
-        for record in self:
-            if (
-                record.status == "new"
-                or record.status == "offer_accept"
-                or record.status == "offer_receive"
-            ):
-                record.status = "cancelled"
-            elif record.status == "sold":
-                raise UserError("Sold property can't be cancelled")
-            else:
-                raise UserError("Property already cancelled")
-
-        return True
-
     @api.constrains("expected_price", "selling_price")
     def _check_exp_sel_price(self):
         for record in self:
@@ -136,7 +114,7 @@ class EstateProperty(models.Model):
                 record.selling_price < record.expected_price * 0.9
             ) and record.selling_price > 0:
                 raise ValidationError(
-                    f"The selling price must be atleast 90% of expected price"
+                    "The selling price must be atleast 90% of expected price"
                 )
 
     @api.ondelete(at_uninstall=False)
@@ -144,3 +122,23 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status not in ["new", "cancelled"]:
                 raise UserError("Can only delete properties in new or cancelled stage")
+
+    def action_estate_property_sold(self):
+        print("Sold button clicked")
+        for record in self:
+            if record.status == "cancelled":
+                raise UserError("Cancelled property can't be sold")
+            elif record.status == "sold":
+                raise UserError("Property already sold")
+            else:
+                record.status = "sold"
+
+    def action_estate_property_cancel(self):
+        print("Cancel Button Clicked")
+        for record in self:
+            if record.status == "sold":
+                raise UserError("Sold property can't be cancelled")
+            elif record.status == "cancelled":
+                raise UserError("Property already cancelled")
+            else:
+                record.status = "cancelled"

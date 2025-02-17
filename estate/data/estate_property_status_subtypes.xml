@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- Message Subtypes -->
+    <record id="estate_property_offer_receive_state" model="mail.message.subtype">
+        <field name="name">Offer Received</field>
+        <field name="res_model">estate.property</field>
+        <field name="default" eval="True"/>
+        <field name="description">Offer Received! Congrats</field>
+    </record>
+
+    <record id="estate_property_offer_accept_state" model="mail.message.subtype">
+        <field name="name">Offer Accepted</field>
+        <field name="res_model">estate.property</field>
+        <field name="default" eval="True"/>
+        <field name="description">Offer Accepted! BooYaay Party...</field>
+    </record>
+</odoo>

@@ -22,6 +22,7 @@
                 <field name="date_availability" string="Available From" optional="hide"/>
                 <field name="property_type_id" string="Property Type"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+
             </list>
         </field>
     </record>
@@ -86,6 +87,7 @@
                         </notebook>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -115,25 +117,34 @@
         <field name="name">Property</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_group_by="property_type_id" records_draggable="0">
                 <templates>
-                    <t t-name="kanban-box">
+                    <field name="status" />
+                    <t t-name="card">
                         <div>
-                            <b>Property Name: </b>
-                            <field name="name"/>
-                            <br/>
-                            <b>Postcode: </b>
-                            <field name="postcode"/>
-                            <br/>
-                            <b>Expected Price: </b>
-                            <field name="expected_price"/>
-                            <br/>
-                            <b>Living Area: </b>
-                            <field name="living_area"/>
-                            <br/>
-                            <b>Bedrooms: </b>
-                            <field name="bedrooms"/>
-                            <br/>
+                            <h3>
+                                <field name="property_type_id"/>
+                                    in <field name="name" />
+                            </h3>
+                            <div class="flex-row">
+                                <text>Expected price:</text>
+                                <field name="expected_price" />
+                            </div>
+                            <t t-if="record.status.raw_value == 'offer_receive'">
+                                <div class="flex-row">
+                                    <text>Best offer:</text>
+                                    <field name="best_offer" />
+                                </div>
+                            </t>
+                            <t t-if="record.status.raw_value == 'offer_accept'">
+                                <div class="flex-row">
+                                    <text>Selling price:</text>
+                                    <field name="selling_price" />
+                                </div>
+                            </t>
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
                         </div>
                     </t>
                 </templates>

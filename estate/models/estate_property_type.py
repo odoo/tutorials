@@ -6,7 +6,7 @@ class EstatePropertyType(models.Model):
     _description = "Property Types for Real Estate App"
     _order = "sequence , name"
 
-    name = fields.Char(required=True)
+    name  = fields.Char(required=True)
     property_ids = fields.One2many("estate.property", inverse_name="property_type_id")
     sequence = fields.Integer(
         "Sequence", default=1, help="Used to order property types"

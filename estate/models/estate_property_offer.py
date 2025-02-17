@@ -1,6 +1,6 @@
+from datetime import timedelta
+
 from odoo import fields, models, api
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -39,20 +39,29 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date.date() + relativedelta(
-                    days=record.validity
-                )
-            else:
-                record.date_deadline = datetime.today() + relativedelta(
-                    days=record.validity
-                )
+            create_date = (
+                record.create_date.date() if record.create_date else fields.Date.today()
+            )
+            record.date_deadline = create_date + timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline:
-                delta = record.date_deadline - datetime.today().date()
-                record.validity = delta.days
+                create_date = (
+                    record.create_date.date() if record.create_date else fields.Date.today()
+                )
+                record.validity = (record.date_deadline - create_date).days
+
+    @api.model
+    def create(self, vals):
+        offer = super().create(vals)
+        if offer.property_id.offer_ids:
+            if offer.price >= offer.property_id.best_offer:
+                offer.property_id.status = "offer_receive"
+            else:
+                raise ValidationError("The offer price should be more than best offer")
+
+        return offer
 
     def estate_property_offer_action_accept(self):
         for record in self:
@@ -80,14 +89,4 @@ class EstatePropertyOffer(models.Model):
                 record.status = "refused"
                 record.property_id.buyer_id = False
                 record.property_id.selling_price = False
-
-    @api.model
-    def create(self, vals):
-        offer = super().create(vals)
-        if offer.property_id.offer_ids:
-            if offer.price >= offer.property_id.best_offer:
-                offer.property_id.status = "offer_receive"
-            else:
-                raise ValidationError("The offer price should be more than best offer")
-
-        return offer
+    
