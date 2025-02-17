@@ -5,9 +5,6 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        """ Override the action_sold method to create and post an invoice when a property is sold. """
-        print("✅ estate_account: action_sold overridden - Creating and Posting Invoice")  # Debugging
-
         res = super().action_sold()
 
         if not self.buyer_id:
@@ -26,8 +23,6 @@ class EstateProperty(models.Model):
         ], limit=1)
         if not default_income_account:
             raise ValueError(f"❌ No valid income account found for company {self.env.company.name}!")
-
-        print(f"✅ Using Income Account: {default_income_account.id} - {default_income_account.name}")
         selling_price = self.selling_price
         commission_fee = selling_price * 0.06
         admin_fee = 100.00

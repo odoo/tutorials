@@ -15,21 +15,24 @@
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
         'views/res_users_views.xml',
-        'views/estate_property_search_views.xml'
+        'views/estate_property_search_views.xml',
+        'data/ir_sequence_data.xml',
+        'reports/estate_property_reports.xml',
+        'reports/estate_property_template.xml'
     ],
     "demo": [
         "data/estate_property_type_demo.xml",
         "data/estate_property_demo.xml",
-        "data/estate_property_offer_demo.xml",
+        "data/estate_property_offer_demo.xml"
     ],
     'assets': {
         'web.assets_backend': [
             'estate/static/description/icon.png',
-            'estate/static/src/scss/style.scss',
+            'estate/static/src/scss/style.scss'
         ],
     },
     'images': ['static/description/icon.png'],
     'installable': True,
     'application': True,
-    'license': 'LGPL-3',
+    'license': 'LGPL-3'
 }
