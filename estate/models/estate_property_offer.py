@@ -1,7 +1,7 @@
 from datetime import timedelta
-from odoo import fields, models,api,exceptions
+from odoo import api,exceptions,fields,models
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_compare
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"

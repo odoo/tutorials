@@ -1,10 +1,17 @@
 from odoo import models,Command
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        self.env["account.move"].create({
+        try:
+            self.check_access("write")
+        except:
+            raise UserError("You don't have the permission to sold on this record")
+
+        print(" reached ".center(100, '='))
+        self.env["account.move"].sudo().create({
             "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",
             'invoice_line_ids': [

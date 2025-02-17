@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="estate_property_actions" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="context">{'search_default_available_property': True}</field>
-        <field name="view_mode">list,form,kanban</field>
-    </record>
-
     <record id="list_view" model="ir.ui.view">
-        <field name="name">ListView</field>
+        <field name="name">estate.propert.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="List"
@@ -28,7 +21,7 @@
     </record>
 
     <record id="form_view" model="ir.ui.view">
-        <field name="name">FormView</field>
+        <field name="name">estate.propert.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form">
@@ -83,12 +76,13 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True" />
             </form>
         </field>
     </record>
 
     <record id="search_view" model="ir.ui.view">
-        <field name="name">SearchView</field>
+        <field name="name">estate.propert.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search">
@@ -135,5 +129,12 @@
                 </templates>
             </kanban>
         </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="context">{'search_default_available_property': True}</field>
+        <field name="view_mode">list,form,kanban</field>
     </record>
 </odoo>

@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="estate_property_tag_actions" model="ir.actions.act_window">
-        <field name="name">Property Tags</field>
-        <field name="res_model">estate.property.tag</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
     <record id="estate_property_tag_listview" model="ir.ui.view">
-        <field name="name">esate.property.tag.listview</field>
+        <field name="name">esate.property.tag.view.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <list string="List" editable="bottom">
@@ -17,7 +11,7 @@
     </record>
 
     <record id="estate_property_tag_formview" model="ir.ui.view">
-        <field name="name">estate.property.tag.fromview</field>
+        <field name="name">estate.property.tag.view.form</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <form string="Form">
@@ -26,5 +20,11 @@
                 </group>
             </form>
         </field>
+    </record>
+
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

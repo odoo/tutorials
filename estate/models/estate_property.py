@@ -1,15 +1,17 @@
 from datetime import timedelta
-from odoo import fields, models,api
+from odoo import api,fields, models
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ['mail.thread']
     _description = "Estate Property"
     _order = "id desc"
 
-    name = fields.Char(required = True)
+    name = fields.Char(required = True, tracking=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy = False,string="Available Form",default = lambda self: fields.Datetime.today() + timedelta(days=90))
@@ -49,10 +51,10 @@ class EstateProperty(models.Model):
     tags_ids = fields.Many2many("estate.property.tag", string="Tags")
     total_area = fields.Integer(string="Total area (sqm)" ,compute="_compute_total_area", store= True)
     best_price = fields.Float("Best Offer", compute="_compute_best_price", store=True)
-
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company, required=True)
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden:
+        if self.garden == True:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
