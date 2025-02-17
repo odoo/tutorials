@@ -23,7 +23,7 @@
         <field name="name">public.property.kanban</field>
         <field name="model">public.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="propertytype_id" records_draggable="False">
+            <kanban default_group_by="property_type_id" records_draggable="False">
                 <field name="state" />
                 <templates>
                     <t t-name="kanban-box">
@@ -93,7 +93,7 @@
                     </p>
                     <group>
                         <group>
-                            <field name="propertytype_id" widget="many2one"
+                            <field name="property_type_id" widget="many2one"
                                 options="{'no_create': True, 'no_open': True}" />
                             <field name="postcode" string="Post code" />
                             <field name="date_availability" />
@@ -134,6 +134,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True"/>
             </form>
         </field>
     </record>
@@ -231,14 +232,23 @@
                 <field name="bedrooms" />
                 <field name="living_area" filter_domain="[('living_area', '>', self)]" />
                 <field name="facades" />
-                <field name="propertytype_id" />
+                <field name="property_type_id" />
                 <separator />
                 <filter name="Available"
-                    domain="['|',('state','=','new'),('state','=','offer_accepted')]" />
+                    domain="['|',('state','=','new'),('state','=','offer_accepted')]" />    
                 <filter string="Postcode" name="name" context="{'group_by':'postcode'}" />
-                <filter string="Property Id" name="propertytype_id"
-                    context="{'group_by':'propertytype_id'}" />
+                <filter string="Property Id" name="property_type_id"
+                    context="{'group_by':'property_type_id'}" />
             </search>
         </field>
     </record>
+
+
+<record id="mt_state_change" model="mail.message.subtype">
+    <field name="name">State Changed</field>
+    <field name="res_model">public.property</field>
+    <!-- <field name="default" eval="True"/> -->
+    <!-- <field name="description">!</field> -->
+</record>
+
 </odoo>

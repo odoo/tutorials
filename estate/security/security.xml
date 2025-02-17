@@ -4,7 +4,6 @@
             <field name="name">Agent</field>
             <field name="category_id" ref="base.module_category_real_estate_brokerage" />
         </record>
-
         <record id="estate_group_manager" model="res.groups">
             <field name="name">Manager</field>
             <field name="category_id" ref="base.module_category_real_estate_brokerage" />
@@ -19,7 +18,6 @@
             <field name="domain_force"> ['|',('company_id','=',user.company_id.id), ('salesperson', '=', user.id), ('salesperson', '=',
                 False)]</field>
         </record>
-
         <record id="public_access_manager_properties" model="ir.rule">
             <field name="name">Manager Estate Property Access</field>
             <field name="model_id" ref="model_public_property" />

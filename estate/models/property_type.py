@@ -8,7 +8,7 @@ class PropertyType(models.Model):
 
     name = fields.Char()
     sequence = fields.Integer()
-    property_ids = fields.One2many("public.property", "propertytype_id")
+    property_ids = fields.One2many("public.property", "property_type_id")
     _sql_constraints = [
         ("uniq_property_type", "unique(name)", "A property type must be unique.")
     ]

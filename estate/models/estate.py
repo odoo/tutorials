@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "public.property"
     _description = "Estate related data"
+    _inherit = ['mail.thread']
     _order = "id desc"
 
     name = fields.Char(required=True)
@@ -15,7 +16,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(
         "Available From",
-        default=lambda self: (datetime.today() - relativedelta(month=3)).date(),
+        default=lambda self: (datetime.today() + relativedelta(month=3)).date(),
         copy=False,
     )
     expected_price = fields.Float(required=True)
@@ -49,8 +50,9 @@ class EstateProperty(models.Model):
         ],
         default="new",
         copy=False,
+        tracking=True
     )
-    propertytype_id = fields.Many2one("public.property.type", string="Property type")
+    property_type_id = fields.Many2one("public.property.type", string="Property type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson = fields.Many2one(
         "res.users", string="Sales Person", default=lambda self: self.env.user
@@ -60,8 +62,6 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total")
     best_price = fields.Float(compute="_compute_best_price")
     company_id = fields.Many2one('res.company',required=True,string="Comapany",default = lambda self : self.env.user.company_id)
-    
-    
     
     _sql_constraints = [
         (
@@ -80,7 +80,6 @@ class EstateProperty(models.Model):
 
     @api.constrains("selling_price")
     def _check_selling_price(self):
-        breakpoint()
         for record in self:
             if (float_compare(record.expected_price * 0.9,record.selling_price,precision_rounding=self.rounding_precision)>= 0):
                 raise ValidationError(
@@ -130,3 +129,9 @@ class EstateProperty(models.Model):
         for record in self : 
             if record.state not in ('new' , 'cancelled') : 
                 raise UserError("A property cannot be deleted in this stage")
+
+    def _track_state(self, init_values):
+        self.ensure_one()
+        if 'state' in init_values and self.state == 'confirmed':
+            return self.env.ref('estate.mt_state_change')
+        return super(EstateProperty, self)._track_state(init_values)

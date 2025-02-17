@@ -22,7 +22,7 @@ class PropertyOffer(models.Model):
     validity = fields.Integer(string="Validity (Days)", default=7)
 
     property_type_id = fields.Many2one(
-        "public.property.type", related="property_id.propertytype_id", store=True
+        "public.property.type", related="property_id.property_type_id", store=True
     )
 
     date_deadline = fields.Date(
@@ -78,9 +78,9 @@ class PropertyOffer(models.Model):
             record.status = "refused"
 
     
-    @api.model
-    def create(self,vals):
-        min_price = min(self.env['public.property.offer'].search([('property_id', '=', vals['property_id'])]).mapped('price'), default=0)
-        if vals['price'] <= min_price:
-            raise ValidationError("The price must be higher than any existing offer.")
-        return super().create(vals)
+    # @api.model
+    # def create(self,vals):
+    #     min_price = min(self.env['public.property.offer'].search([('property_id', '=', vals['property_id'])]).mapped('price'), default=0)
+    #     if vals['price'] <= min_price:
+    #         raise ValidationError("The price must be higher than any existing offer.")
+    #     return super().create(vals)

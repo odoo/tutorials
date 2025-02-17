@@ -3,8 +3,11 @@
     "description": "A link module between estate and account",
     "version": "1.0",
     "depends": ['base',"estate","account"],
-    "data": [],
+    "data": [
+        'report/estate_account_template.xml'
+    ],
     "author": "Lucky Prajapati (prlu)",
     "category": "A Link Module",
     "license": "LGPL-3",
+    "installable": True
 }
