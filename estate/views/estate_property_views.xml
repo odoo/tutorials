@@ -14,14 +14,15 @@
                         <button name="action_sold" type="object" string="Sold"/>
                         <button name="action_cancelled" type="object" string="Cancel"/>
                     </header>
-                    <field name="name" width="20%"/>
+                    <field name="name" width="15%"/>
+                    <field name="reference" width="10%"/>
                     <field name="postcode" width="10%"/>
                     <field name="bedrooms" width="10%"/>
                     <field name="living_area" width="10%"/>
                     <field name="total_area" width="10%"/>
                     <field name="expected_price" width="10%"/>
                     <field name="selling_price" width="10%"/>
-                    <field name="date_availability" width="20%"/>
+                    <field name="date_availability" width="15%"/>
                 </list>
             </field>
         </record>
@@ -42,6 +43,7 @@
                             <h1>
                                 <field name="name"/>
                             </h1>
+                            <field name="reference"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                         <group>
@@ -50,6 +52,7 @@
                                 <field name="date_availability"/>
                                 <field name="property_type_id" options="{'no_create': true}"/>
                                 <field name="state"/>
+                                <field name="company_id"/>
                             </group>
                             <group>
                                 <field name="expected_price"/>

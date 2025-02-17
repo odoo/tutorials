@@ -9,6 +9,10 @@ This Module provides real estate advertisements
     'data':[
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/estate_property_sequence.xml',
+        'data/estate_property_type_demo.xml',
+        'data/estate_property_demo.xml',
+        'data/estate_property_offer_demo.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_tag_views.xml',

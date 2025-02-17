@@ -8,5 +8,34 @@
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
         <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="users" eval="[(4,ref('base.user_admin'))]"/>
+    </record>
+    <record id="estate_property_own_properties" model="ir.rule">
+        <field name="name">estate_properties : Own properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="groups" eval="[(4,ref('estate_group_user'))]"/>
+        <field name="domain_force">
+        ['|', ('seller_id', '=', user.id),
+              ('seller_id', '=', False)]
+        </field>
+    </record>
+    <record id="estate_property_all_properties" model="ir.rule">
+        <field name="name">estate_properties : All properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="groups" eval="[(4,ref('estate_group_manager'))]"/>
+        <field name="domain_force"/>
+    </record>
+    <record id="estate_property_agent_rule" model="ir.rule">
+        <field name="name">Estate Agents: Restrict Access to different company records</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <!-- <field name="groups" eval="[(4, ref('estate_group_user'))]"/> -->
+        <field name="global" eval="True"/>
+        <field name="domain_force">[
+            '|', ('company_id', '=', False),
+            ('company_id', 'in', company_ids)]
+        </field>
     </record>
 </odoo>

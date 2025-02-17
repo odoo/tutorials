@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
         ("check_selling_price", "CHECK(selling_price > 0)", "Selling price must be strictly positive")  
     ]
 
-    name = fields.Char(string="Title", required=True)
+    name = fields.Char(string="Title",)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Date availability", copy=False, default=fields.Date.today() + timedelta(days=+90))
@@ -46,6 +46,8 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string="Offer Id")
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_offer = fields.Integer(string="Best Offer", compute="_compute_best_offer")
+    reference = fields.Char(string="Reference", readonly=True, copy=False)
+    company_id = fields.Many2one("res.company", string="Company", required=True, default=lambda self: self.env.company)
 
     # === COMPUTE METHODS === #
     @api.depends('living_area','garden_area')
@@ -74,6 +76,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     # === CRUD Methods === #
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('reference'):
+                vals['reference'] = self.env['ir.sequence'].next_by_code('estate.property') or '/'
+        return super().create(vals)
+
     @api.ondelete(at_uninstall=False)
     def _unlink_property(self):
         for record in self:
