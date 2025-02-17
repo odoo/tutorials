@@ -5,6 +5,7 @@ from odoo.tools.float_utils import float_compare
 
 class EstatePropertyModel(models.Model):
     _name = "estate.property"
+    _inherit=['mail.thread']
     _description = "The estate property model"
     _order = "id desc"
 
@@ -59,7 +60,6 @@ class EstatePropertyModel(models.Model):
     total_area = fields.Integer("Total Area", compute="_compute_total_area")
     best_offer = fields.Float("Best Price", compute="_compute_best_offer")
     company_id= fields.Many2one("res.company", default=lambda self:self.env.company)
-    _inherit=['mail.thread']
 
     def _track_subtype(self, initial_values):
         self.ensure_one()
@@ -124,9 +124,11 @@ class EstatePropertyModel(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("cancelled property can not be sold")
+            if record.state !='offer_accepted':
+                raise UserError("can not sell the property without an accepted offer")
             else:
                 record.state = "sold"
-                record.message_post(body='propert sold', message_type='notification', parent_id=None)
+                record.message_post(body='property sold', message_type='notification', parent_id=None)
         return True
 
     def action_set_cancel(self):

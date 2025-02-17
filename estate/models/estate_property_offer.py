@@ -19,7 +19,7 @@ class EstatePropertyOfferModel(models.Model):
     )
     # property_state = fields.Selection(
     #     related="property_id.state", string="property state", store=True
-    # )   
+    # )
 
     _sql_constraints = [
         (
@@ -39,6 +39,8 @@ class EstatePropertyOfferModel(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_obj = self.env["estate.property"].browse(vals["property_id"])
+            if property_obj.state=='sold':
+                raise UserError("can not create offers for sold property")
             property_obj.state = "offer_received"
             if vals["price"] < property_obj.best_offer:
                 raise UserError(
@@ -59,8 +61,8 @@ class EstatePropertyOfferModel(models.Model):
 
     def accept_offer(self):
         for record in self:
-            # if record.property_id.state == "sold":
-            #     raise UserError("can not cancel the sold property")
+            if record.property_id.state == "sold":
+                raise UserError("can not create offers for sold property")
             if record.property_id.selling_price:
                 raise UserError("Offer already accepted")
             record.status = "accepted"

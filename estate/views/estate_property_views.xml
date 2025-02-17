@@ -52,6 +52,13 @@
                         statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
                 <sheet>
+                <div name="button_box">
+                        <button name="%(offers_report_property)d"
+                            type="action"
+                            string="Print"
+                            class="oe_highlight"
+                            icon="fa-print" />
+                    </div>
                     <h1>
                         <field name="name"/>
                     </h1>
