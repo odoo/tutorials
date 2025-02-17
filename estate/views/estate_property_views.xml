@@ -109,29 +109,27 @@
                 <field name="selling_price"/>
                 <field name="tag_ids"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_card">
-                            <div class="oe_kanban_details">
-                                <strong>
-                                    <field name="name"/>
-                                </strong>
-                                <div>
-                                    <span>Expected Price: </span>
-                                    <span t-esc="record.expected_price.value"/>
-                                </div>
-                                <div t-if="record.best_price.raw_value">
-                                    <span>Best Price: </span>
-                                    <span t-esc="record.best_price.value"/>
-                                </div>
-                                <div t-if="record.selling_price.raw_value">
-                                    <span>Selling Price: </span>
-                                    <span t-esc="record.selling_price.value"/>
-                                </div>
-                                <div>
-                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                                </div>
+                    <t t-name="card">
+                        <main>
+                            <strong>
+                                <field name="name"/>
+                            </strong>
+                            <div>
+                                <span>Expected Price: </span>
+                                <span t-esc="record.expected_price.value"/>
                             </div>
-                        </div>
+                            <div t-if="record.best_price.raw_value">
+                                <span>Best Price: </span>
+                                <span t-esc="record.best_price.value"/>
+                            </div>
+                            <div t-if="record.selling_price.raw_value">
+                                <span>Selling Price: </span>
+                                <span t-esc="record.selling_price.value"/>
+                            </div>
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+                        </main>
                     </t>
                 </templates>
             </kanban>
