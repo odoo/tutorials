@@ -10,9 +10,9 @@ class EstateProperty(models.Model):
             if record.state == "cancelled":
                 raise UserError("Cancelled properties cannot be sold.")
 
-            prop.check_access('write')
+            record.check_access('write')
             self.env["account.move"].sudo().create({
-                "partner_id": self.partner_id.id, 
+                "buyer_id": self.buyer_id.id, 
                 "move_type": "out_invoice", 
                 "invoice_line_ids": [
                     Command.create({

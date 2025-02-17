@@ -47,7 +47,6 @@
                                     <field name="name" string="title" />
                                     <field name="expected_price" />
                                     <field name="state" />
-                                    <field name="property_type_id" />
                                 </list>
                             </field>
                         </page>

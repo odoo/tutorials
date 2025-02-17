@@ -34,8 +34,8 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
-                <sheet>
-                    <header>
+                <chatter/>
+                <header>
                         <button name="property_action_sell" type="object" string="Sold"
                             class="btn btn-primary"
                             invisible="state == 'sold' or state == 'cancelled'" />
@@ -45,6 +45,8 @@
                         <field name="state" widget="statusbar" options="{'clickable': '1'}"
                             readonly="state =='sold' or state =='cancelled'" />
                     </header>
+                <sheet>
+                    
                     <div class="oe_title">
                         <h1>
                             <field name="name" />
@@ -91,8 +93,8 @@
 
                         <page string="Other info">
                             <group>
-                                <field name="partner_id" />
-                                <field name="user_id" />
+                                <field name="buyer_id" />
+                                <field name="salesperson_id" />
                             </group>
                         </page>
                     </notebook>
@@ -134,22 +136,25 @@
         <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-             <kanban default_group_by="property_type_id" records_draggable="False">
-                <field name="state"/>
+            <kanban default_group_by="property_type_id" records_draggable="False">
+                <field name="state" />
                 <templates>
                     <t t-name="card">
                         <div>
                             <h2>
                                 <field name="name" />
                             </h2>
-                            <div> Expected Price: <field name="expected_price" string="Expected Price" />
+                            <div> Expected Price: <field name="expected_price"
+                                    string="Expected Price" />
                             </div>
                             <div>
-                                <t t-if="record.state.raw_value == 'offer_received'"> Best Price: <field name="best_price" string="Best Price" />
+                                <t t-if="record.state.raw_value == 'offer_received'"> Best Price: <field
+                                        name="best_price" string="Best Price" />
                                 </t>
                             </div>
                             <div>
-                                <t t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field name="selling_price" />
+                                <t t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
+                                        name="selling_price" />
                                 </t>
                             </div>
                             <div>

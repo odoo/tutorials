@@ -16,10 +16,9 @@
                 <field name="property_id" string="Property"/>
                 <field name="property_type_id" />
                 <field name="price" />
-                <field name="partner_id" />
+                <field name="buyer_id" />
                 <field name="validity" />
                 <field name="date_deadline" />
-                <!-- <field name="status" invisible='1'/> -->
                 <button name="property_action_accept" type="object"
                     string="Accept"
                     icon="fa-check"
@@ -40,7 +39,7 @@
                 help="Use options specified in form to list property offer">
                 <sheet>
                     <group>
-                        <field name="partner_id" string="Buyer" />
+                        <field name="buyer_id" string="Buyer" />
                         <field name="validity" string="Validity" />
                         <field name="price" string="Price" />
                         <field name="date_deadline" string="Deadline" />

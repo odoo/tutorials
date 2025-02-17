@@ -23,7 +23,7 @@ class EstatePropertyOffer(models.Model):
 
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline",inverse="_inverse_date_deadline")
     validity = fields.Integer(string="Validity (days)", default=7)
-    partner_id = fields.Many2one(
+    buyer_id = fields.Many2one(
         "res.partner", string="Buyer", default=lambda self: self.env.user)
     property_id = fields.Many2one(
         'estate.property', string="Offer")
@@ -38,7 +38,7 @@ class EstatePropertyOffer(models.Model):
         self.status = 'accepted'
         self.property_id.write({
             'selling_price': self.price,
-            'partner_id': self.partner_id.id,
+            'buyer_id': self.buyer_id.id,
             'state': 'offer_accepted'
         })
 
@@ -49,7 +49,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for record in self:
-            create_date = create_date = (record.create_date or fields.Datetime.now()).date()
+            create_date = (record.create_date or fields.Datetime.now()).date()
             record.date_deadline = create_date + timedelta(days=record.validity)
    
     

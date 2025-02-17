@@ -5,11 +5,12 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real estate property details"
+    _inherit = 'mail.thread'
     _order = "id desc"
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive.'),
-        ('check_bedroom', 'CHECK( bedroom >= 0)', ' Bedroom must be positive.'),
+        ('check_bedroom', 'CHECK(bedrooms >= 0)', ' Bedroom must be positive.'),
         ('check_living_area', 'CHECK(living_area > 0)', 'Living_area must be positive.'),
         ('check_facades', 'CHECK(facades >= 0)', 'Facades must be positive.'),
         ('check_garden_area', 'CHECK(garden_area > 0)', 'Garden_area must be positive.'),
@@ -55,14 +56,17 @@ class EstateProperty(models.Model):
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
     property_type_id = fields.Many2one(
         'estate.property.type', string="Property Type")
-    user_id = fields.Many2one(
+    salesperson_id = fields.Many2one(
         "res.users", string="Salesperson",default=lambda self: self.env.user)
-    partner_id = fields.Many2one(
+    buyer_id = fields.Many2one(
         "res.partner", string="Buyer")
     tag_ids = fields.Many2many(
         "estate.property.tag", string="Tags")
     offer_ids = fields.One2many(
         "estate.property.offer", "property_id", string="Offers")
+    company_id = fields.Many2one(
+        "res.company", string="Company", default=lambda self: self.env.user.company_id,
+        required=True)
     
     def property_action_cancel(self):
         for record in self:
