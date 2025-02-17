@@ -7,7 +7,8 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real estate property details"
     _order = "id desc"
-
+    _inherit = ['mail.thread']
+    
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description", required=True)
@@ -46,7 +47,7 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        string="Status",
+        string="Status",tracking=True,
         default="new"
     )
     total_area = fields.Float(string="Total Aream(sqm)", compute="_compute_total_area")

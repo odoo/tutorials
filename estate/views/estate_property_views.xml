@@ -40,6 +40,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+            <chatter/>
                 <header>
                     <button name="action_sold" class="btn btn-primary"
                         invisible='status != "offer_accepted" or status == "sold" or status == "canceled"'
