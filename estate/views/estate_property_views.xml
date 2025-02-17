@@ -38,6 +38,8 @@
                     </div>
                     <group>
                         <group>
+                            <field name="estate_property_seq"/>
+                            <field name="company_id"/>
                             <field name="property_type_id" options="{'no_create': true, 'no_create_edit': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>

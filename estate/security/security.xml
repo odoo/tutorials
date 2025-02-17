@@ -19,9 +19,29 @@
         <field name="perm_unlink" eval="False"/>
         <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
         <field name="domain_force">[
-            '|', ('seller_id', '=', user.id),
-                ('seller_id', '=', False)
+            '|', 
+            ('seller_id', '=', user.id),
+            ('seller_id', '=', False)
         ]</field> 
-        <!-- need to be improved -->
     </record>
+
+    <record id="manager_access_rule" model="ir.rule">
+        <field name="name">Manager Access Rule</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_manager'))]"/>
+        <field name="domain_force">[]</field>  <!-- No domain filter, so managers see all properties -->
+    </record>
+
+    <record id="multi_company_rule" model="ir.rule">
+        <field name="name">Multi-company access rule</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[
+            '|', ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+        ]</field>
+    </record>
+
 </odoo>

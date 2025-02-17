@@ -35,11 +35,13 @@ class EstateProperty(models.Model):
         ], string="Status", default='new', required=True, copy=False)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    seller_id = fields.Many2one("res.users", string="Seller", index=True, default=lambda self: self.env.user)
+    seller_id = fields.Many2one("res.users", string="Seller", index=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area", string="Total area")
     best_price = fields.Float(compute="_compute_best_price", string="Best price")
+    estate_property_seq = fields.Char(string="Estate Property Sequence", readonly=True)
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_price', 'CHECK(expected_price > 0.0)', 'The expected price must be strictly positive.'),
@@ -74,11 +76,21 @@ class EstateProperty(models.Model):
         if self.selling_price and self.selling_price < self.expected_price *0.9:
             raise exceptions.ValidationError("Selling price cannot be lower than 90% of the expected price")
 
+    @api.model_create_multi
+    def create(self,vals_list):
+        for vals in vals_list:
+            if not vals.get('estate_property_seq'):
+                vals['estate_property_seq'] = self.env['ir.sequence'].next_by_code('estate.property.seq')
+        return super().create(vals_list) 
+
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
                 raise exceptions.UserError("Cancelled property cannot be sold")
-            record.state = 'sold'
+            if record.state == 'offer accepted':
+                record.state = 'sold'
+            else:
+                raise exceptions.UserError("Offer must be accepted")
 
     def action_cancel(self):
         for record in self:
