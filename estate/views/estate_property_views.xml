@@ -16,11 +16,9 @@
                             <h1>
                                 <field name="name"/>
                             </h1>
-
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
-
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color','no_create':True}"/>
                             <group>
-                                <field name="property_type_id" string="Property Type" options="{'no_create': true,'no_open': true}"/>
+                                <field name="property_type_id" string="Property Type" options="{'no_create': True}"/>
                                 <field name="best_offer" string="Best Offer"/>
                             </group>
 
@@ -35,6 +33,7 @@
                                 <field name="postcode" string="Postcode"/>
                                 <field name="selling_price" string="Selling Price"/>
                             </group>
+
                             <group>
                                 <field name="date_availability" string="Available From"/>
                             </group>
@@ -78,6 +77,7 @@
                         </notebook>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -86,7 +86,7 @@
         <field name="name">Properties</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list decoration-success="status in ('offer_received', 'offer_accepted')" decoration-bf="status=='offer_accepted'" decoration-muted="status=='sold'" editable="bottom" open_form_view="1">
+            <list decoration-success="status in ('offer_received', 'offer_accepted')" decoration-bf="status == 'offer_accepted'" decoration-muted="status == 'sold'" editable="bottom" open_form_view="1">
                 <field name="name" string="Title" />
                 <field name="property_type_id" string="Property Type"/>
                 <field name="postcode" string="Postcode"/>
@@ -108,7 +108,7 @@
                 <field name="status" />
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="row mb4">
+                        <div>
                             <div>
                                 <b>Name: <field name="name" string="Title"/>
                                 </b>

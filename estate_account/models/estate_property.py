@@ -5,11 +5,10 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         super().action_sold()
-        move_type = "out_invoice"
         journal = self.env['account.journal'].search([('name', '=', 'Customer Invoices')]).id
         values= {
             'journal_id': journal,
-            'move_type': move_type,
+            'move_type': "out_invoice",
             'partner_id': self.buyer_id.id,
             'line_ids': [
                 Command.create({
@@ -26,5 +25,5 @@ class EstateProperty(models.Model):
                 })
             ]
         }
-
+        self._check_access_rights(self.env.user)
         move = self.env['account.move'].create(values)

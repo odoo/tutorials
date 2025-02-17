@@ -19,7 +19,7 @@
                     </div>
                     <field name="name" string="Title" />
                     <notebook>
-                        <page name="Properties">
+                        <page string="Properties">
                             <field name="property_ids">
                                 <list editable="bottom">
                                     <field name="name" string="Title" />
@@ -38,7 +38,6 @@
         <field name="name">Properties</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-
             <list>
                 <field name="sequence" widget="handle"/>
                 <field name="name" string="Title"/>
