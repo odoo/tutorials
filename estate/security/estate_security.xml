@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="implied_ids" eval="[(4,ref('base.group_user'))]" />
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="implied_ids" eval="[(4,ref('estate.estate_group_user'))]" />
+    </record>
+
+    <record id="estate_group_user_estate_property" model="ir.rule">
+        <field name="name">Agent's can't see other agent's properties.</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups" eval="[(4,ref('estate_group_user'))]" />
+        <field name="domain_force">
+            [
+                '|',
+                ('user_id', '=', user.id),
+                ('user_id', '=', False)
+            ]
+        </field>
+        <field name="perm_read" eval="1" />
+    </record>
+
+</odoo>

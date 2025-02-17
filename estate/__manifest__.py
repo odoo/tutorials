@@ -8,6 +8,7 @@
     'description' : 'Real Estate Management',
     'depends' : ['base'],
     'data' : [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/res_users_views.xml',
