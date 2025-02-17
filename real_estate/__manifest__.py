@@ -4,18 +4,21 @@
     'description': "This is the real estate module used for buying and selling properties!",
     'version': '0.1',
     'application': True,
-    'category': 'Tutorials',
+    'category': 'Real Estate/Brokerage',
     'installable': True,
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
-        'data/estate_property_data.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
-        'views/estate_menus.xml',
         'views/res_user_views.xml',
+        'views/estate_menus.xml',
+    ],
+    'demo': [
+        'demo/estate_property_data.xml'
     ],
     'license': 'AGPL-3'
 }

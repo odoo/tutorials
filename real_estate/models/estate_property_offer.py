@@ -63,29 +63,35 @@ class EstatePropertyOffer(models.Model):
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         """Compute deadline date based on create_date and validity period."""
-        for property in self:
-            property.date_deadline = (
-                property.create_date + timedelta(days=property.validity)
-                if property.create_date else False
+        for offer in self:
+            offer.date_deadline = (
+                offer.create_date + timedelta(days=offer.validity)
+                if offer.create_date else False
             )
 
     def _inverse_date_deadline(self):
         """Inverse function to calculate validity from date_deadline."""
-        for property in self:
-            property.validity = (
-                (property.date_deadline - property.create_date).days
-                if property.date_deadline else 7
+        for offer in self:
+            offer.validity = (
+                (offer.date_deadline - offer.create_date).days
+                if offer.date_deadline else 7
             )
     
     def action_confirm(self):
-        for property in self:
-            if property.property_id.state == 'sold':
-                raise UserError("Property is already Sold")
-            if property.property_id.offer_ids.filtered(lambda x: x.status == 'accepted'):
+        for offer in self:
+            # Check if the property is already sold
+            if offer.property_id.state == 'sold':
+                raise UserError("Property is already sold")
+            
+            if offer.property_id.offer_ids.filtered(lambda x: x.status == 'accepted'):
                 raise UserError("Only one offer can be accepted")
-            property.status = 'accepted'
-            property.property_id.buyer_id = property.partner_id
-            property.property_id.selling_price = property.price
+
+            # Update the offer status using CRUD method
+            offer.write({'status': 'accepted'})
+            offer.property_id.write({
+                'buyer_id': offer.partner_id.id,
+                'selling_price': offer.price
+            })
     
     def action_cancel(self):
         for property in self:

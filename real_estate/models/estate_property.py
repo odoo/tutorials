@@ -6,14 +6,15 @@ from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Property"
     _order = "id desc"
 
     _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must"
-"be positive."),
-        ("check_selling_price", "CHECK(selling_price >= 0)", "Selling price cannot"
-"be negative.")
+        ("check_expected_price", "CHECK(expected_price > 0)", 
+"Expected price must be positive."),
+        ("check_selling_price", "CHECK(selling_price >= 0)", 
+"Selling price cannot be negative.")
     ]
 
     name = fields.Char(
@@ -153,13 +154,12 @@ class EstateProperty(models.Model):
         for record in self:
             if (
                 record.selling_price > 0 
-                and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2)
-                < 0
+                and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) <
+0
             ):
                 raise ValidationError("Selling Price must be 90% of the expected price")
 
     @api.ondelete(at_uninstall=False)
     def _prevent_deletion(self):
-        for property in self:
-            if property.state not in ('new', 'cancelled'):
-                raise UserError("You cannot delete the property")
+        if any(property.state not in ('new', 'cancelled') for property in self):
+            raise UserError("You cannot delete the property")
