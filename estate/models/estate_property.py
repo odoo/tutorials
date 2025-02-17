@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread']
 
 
     _sql_constraints = [
@@ -46,6 +46,9 @@ class EstateProperty(models.Model):
 
     active = fields.Boolean(default=False)
 
+    image = fields.Image(string="Property Image")
+
+
     #  Property state
     state = fields.Selection(
         selection=[
@@ -55,7 +58,7 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        string="State", required=True, copy=False, default="new",
+        string="State", required=True, tracking = True,  copy=False, default="new",
     )
 
     # Many2one Models for Property Type

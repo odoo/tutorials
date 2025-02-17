@@ -38,7 +38,7 @@
             }),
             Command.create({
                 'partner_id': ref('base.res_partner_2'),
-                'price': 1234400,
+                'price': 12344000,
                 'validity': 10,
             }),
             Command.create({

@@ -5,7 +5,10 @@
     'license': 'LGPL-3',
     'depends': [
       'estate',
-      'account'
+      'account',
     ],
     "installable": True,
+    'data' : [
+        "report/estate_property_inherit.xml",
+    ]
 }

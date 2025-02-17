@@ -5,7 +5,7 @@ class EstateProperty(models.Model):
     _inherit="estate.property"
 
     def action_mark_property_sold(self):
-        print(" reached ".center(100, '='))
+        # print(" reached ".center(100, '='))
         self.check_access('write')
 
         self.env["account.move"].sudo().create({

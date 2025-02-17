@@ -24,6 +24,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
             </list>
+
         </field>
     </record>
 
@@ -33,6 +34,7 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
+
                     <button name="action_mark_property_sold" class="btn btn-success" type="object" string="Sold" invisible="state == 'cancelled' or state == 'sold'" />
                     <button name="action_mark_property_cancelled" class="btn btn-danger" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'" />
                     <field name="state" type ="object" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
@@ -55,6 +57,7 @@
                             <field name="date_availability" invisible="true" />
                         </group>
                         <group>
+                            <field name="image" widget="image" class="oe_avatar"/>
                             <field name="expected_price" />
                             <field name="selling_price" />
                             <field name="property_type_id" string="Property Type" options="{'no_create': true}"/>
