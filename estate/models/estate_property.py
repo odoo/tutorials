@@ -7,9 +7,10 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property" 
     _description = "Real Estate Property"
+    _inherit = ['mail.thread']
     _order = "id desc" 
 
-    name = fields.Char(string="Title", required=True)
+    name = fields.Char(string="Title", required=True , tracking=True)
     expected_price = fields.Float(string="Expected Price", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -34,27 +35,19 @@ class EstateProperty(models.Model):
         ],string="State",required=True,default='new',copy=False)
                     
     property_type_id = fields.Many2one("estate.property.type",string="Property Type")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    salesperson_id = fields.Many2one("res.users",string="Salesman",default= False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False , tracking=True)
+    salesperson_id = fields.Many2one("res.users",string="Salesman",default= False) 
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area",string="Total Area")
     best_offer = fields.Float(compute="_compute_best_offer", store=True)
     company_id = fields.Many2one("res.company", string="Company Id", default = lambda self:self.env.company, required=True)
 
-
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
-
-    # def write(self, vals):
-    #     print("working====================================")
-    #     result = super(EstateProperty, self).write(vals)
-    #     if 'living_area' in vals or 'garden_area' in vals:
-    #         self._compute_total_area()
-    #     return result
-
+        
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
@@ -72,7 +65,7 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Accept an offer first!")
             if not record.offer_ids:
                 raise exceptions.UserError("No offers available to accept!")
-            record.state = "sold"    
+            record.state = "sold"
         return True
 
     def action_cancel_property(self):
@@ -89,13 +82,10 @@ class EstateProperty(models.Model):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2):
                 if float_compare(record.selling_price, record.expected_price * 0.9,precision_digits=2) < 0:
-
                     raise ValidationError(f"The selling price cannot be lower than 90% of the expected price.")
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         for record in self:
             if record.state not in ('new', 'cancelled'):
-
                 raise exceptions.UserError("You can only delete properties in 'New' or 'Cancelled' state.")
- 

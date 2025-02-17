@@ -13,7 +13,7 @@
             <kanban default_group_by="company_id">
                 <field name="state"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div>
                             <b><field name="name"/></b>
                             <div>Expected Price: <field name="expected_price"/></div>
@@ -64,10 +64,10 @@
                     <button name="action_cancel_property" type="object" string="Cancel" class="oe_secondary" invisible="state in ('cancelled', 'sold')"/>
                 </header>
                 <header>
-                     <field name="state" widget="statusbar" options="{'clickable': '1'}" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                   <div class="oe_title">
+                <div class="oe_title">
                         <h1 class="mb16">
                             <field name="name"></field>
                         </h1>
@@ -114,6 +114,7 @@
                             </group>
                         </page>
                     </notebook>
+                <chatter open_attachments="True"/>
                 </sheet>
             </form>
         </field>

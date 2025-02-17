@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate.property_offers_report_table">
+        <div>
+            <strong>Expected Price: </strong>
+            <span t-field="property.expected_price" />
+        </div>
+        <div>
+            <strong>Status: </strong>
+            <span t-field="property.state" />
+        </div>
+        <t t-set="offers" t-value="property.offer_ids" />
+        
+        <t t-if="property.state == 'sold'">
+            <div style="color: red; font-weight: bold; margin: 10px 0;">
+                !!! Invoice has already been created !!!
+            </div>
+        </t>
+        <t t-if="not offers">No offers found :(</t>
+        <table t-else="" class="table">
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Partner</th>
+                    <th>Validity (days)</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="offers" t-as="offer">
+                    <td><span t-field="offer.price" /></td>
+                    <td><span t-field="offer.partner_id.name" /></td>
+                    <td><span t-field="offer.validity" /></td>
+                    <td><span t-field="offer.date_deadline" /></td>
+                    <td><span t-field="offer.status" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <template id="property_offers_report">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name" />
+                        </h2>
+                        <div>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.salesperson_id"/>
+                        </div>
+                        <div class="container">
+                            <t t-call="estate.property_offers_report_table" />
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_salesman_properties">
+        <t t-foreach="docs" t-as="salesman">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="container">
+                            <h2>
+                                <strong>Salesman: </strong>
+                                <span t-field="salesman.name"/>
+                            </h2>
+                            <t t-if="salesman.property_ids">
+                                <t t-set="properties" t-value="salesman.property_ids" />
+                                <t t-foreach="properties" t-as="property">
+                                    <h3>
+                                        <span t-field="property.name"/>
+                                    </h3>
+                                    <t t-call="estate.property_offers_report_table" />
+                                </t>
+                            </t>
+                            <strong t-else="">No properties found :(</strong>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

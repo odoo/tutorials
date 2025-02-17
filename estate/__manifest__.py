@@ -2,7 +2,7 @@
     'name': 'Estate Module',
     'version': '1.0',
     'category': 'Real Estate/Brokerage',
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'sequence' : 1 ,
     'description' :""" This is the real estate module """,
     'license':'LGPL-3' ,
@@ -10,6 +10,8 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'reports/estate_property_templates.xml',
+        'reports/estate_property_reports.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',

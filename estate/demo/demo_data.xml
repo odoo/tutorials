@@ -1,5 +1,4 @@
 <odoo>
-    <data noupdate="0">
         <record id="estate_property_big_villa" model="estate.property">
             <field name="name">Big Villa</field>
             <field name="state">new</field>
@@ -34,6 +33,7 @@
             <field name="garden_orientation">south</field>
             <field name="property_type_id" ref="property_type_residential"/>
         </record>
+        
         <record id="estate_property_seaside_villa" model="estate.property">
             <field name="name">Seaside Villa</field>
             <field name="state">new</field>
@@ -65,6 +65,46 @@
                 'validity': 60
                 })
                 ]"/>
-        </record>   
-    </data>
+        </record>
+        
+        <record id="estate_property_offer_received" model="estate.property">
+            <field name="name">Mountain Cabin</field>
+            <field name="state">offer_received</field>
+            <field name="description">A cozy cabin in the mountains</field>
+            <field name="postcode">24680</field>
+            <field name="date_availability">2025-09-01</field>
+            <field name="expected_price">300000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">80</field>
+            <field name="facades">1</field>
+            <field name="garage">False</field>
+            <field name="garden">True</field>
+            <field name="garden_area">500</field>
+            <field name="garden_orientation">north</field>
+            <field name="offer_ids" eval="[
+                Command.create({'price': 280000, 'partner_id': ref('base.res_partner_1'), 'validity': 20}),
+                Command.create({'price': 290000, 'partner_id': ref('base.res_partner_2'), 'validity': 30})
+            ]"/>
+        </record>
+
+        <record id="estate_property_sold" model="estate.property">
+            <field name="name">Downtown Apartment</field>
+            <field name="state">sold</field>
+            <field name="description">A modern apartment in the city center</field>
+            <field name="postcode">13579</field>
+            <field name="date_availability">2024-01-01</field>
+            <field name="expected_price">500000</field>
+            <field name="selling_price">480000</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">60</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation">east</field>
+            <field name="offer_ids" eval="[
+                Command.create({'price': 470000, 'partner_id': ref('base.res_partner_1'), 'validity': 15}),
+                Command.create({'price': 480000, 'partner_id': ref('base.res_partner_3'), 'validity': 25})
+            ]"/>
+        </record>
 </odoo>

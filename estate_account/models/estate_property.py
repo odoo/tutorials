@@ -7,8 +7,7 @@ class InheritedEstateProperty(models.Model):
 
     def action_set_sold(self):
 
-        print(" reached ".center(100, '='))
-
+        # print(" reached ".center(100, '='))
         self.check_access('write')
 
         invoice_vals = {
@@ -37,9 +36,5 @@ class InheritedEstateProperty(models.Model):
         
 
         invoice = self.env["account.move"].sudo().create(invoice_vals)
-
-        if invoice:
-            print(f"Invoice created successfully for Partner ID: {self.buyer_id.id}, Amount: {self.selling_price * 0.06 + 100.00}")
-
 
         return super().action_set_sold()
