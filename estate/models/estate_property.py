@@ -1,7 +1,7 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
-from odoo import models, fields, api
+from odoo import api,fields,models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -63,6 +63,14 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.user,
         tracking=True,
     )
+
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company.id,
+    )
+
     _sql_constraints = [
         (
             "positive_expected_price",
@@ -76,12 +84,6 @@ class EstateProperty(models.Model):
         ),
         ("unique_property_name", "UNIQUE(name)", "Property name should be unique"),
     ]
-    company_id = fields.Many2one(
-        "res.company",
-        string="Company",
-        required=True,
-        default=lambda self: self.env.company.id,
-    )
 
     @api.depends("living_area", "garden_area")
     def _compute_area(self):
@@ -109,10 +111,12 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     def sold(self):
-        if self.state != "cancelled":
+        if self.state != "cancelled" and self.state == "offer accepted":
             self.state = "sold"
+            print("Property Sold")
         else:
-            raise UserError("Cancelled Property cannot be sold!")
+            print("Property cannot be sold because it has either been cancelled or no offers have been accepted! ERROR RAISED")
+            raise UserError("Property cannot be sold because it has either been cancelled or no offers have been accepted!")
 
     def cancel(self):
         if self.state != "sold":

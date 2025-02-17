@@ -11,7 +11,7 @@
     <field name="name">estate.property.list</field>
     <field name='model'>estate.property</field>
     <field name="arch" type='xml'>
-        <list string="channel" decoration-success="state in ('offer accepted','offer received')" decoration-bf = "state in ('offer accepted','offer received')">
+        <list string="channel" decoration-success="state in ('offer accepted','offer received')" decoration-bf="state in ('offer accepted','offer received')">
             <field name="property_type_id"/>
             <field name="name" string='Title'/>
             <field name="postcode"/>
