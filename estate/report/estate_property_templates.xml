@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_property_offers">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name" />
+                        </h2>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price" />
+                        </div>
+                        <div>
+                            <strong>State: </strong>
+                            <span t-field="property.state" />
+                        </div>
+                        <t t-set="offers" t-value="property.offer_ids" />
+
+                        <t t-call="estate.estate_property_offer_subtemplate" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -8,4 +8,7 @@
     "installable": True,
     "application": True,
     'license': 'LGPL-3',
+    'data': [
+        'report/estate_property_inherit.xml',
+    ]
 }

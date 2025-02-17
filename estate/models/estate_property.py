@@ -6,8 +6,10 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Model"
+    _inherit = ["mail.thread"]
+    _order = "id desc"
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, tracking=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default= datetime.now() + timedelta(days=90))
@@ -32,7 +34,7 @@ class EstateProperty(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('canceled', 'Canceled'),
-    ], copy=False, default='new', required=True,)
+    ], copy=False, default='new', required=True,  tracking=True)
 
     # Many2one relationship
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
@@ -49,8 +51,6 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute='_compute_total_area', store=True)
 
     best_price = fields.Float(compute='_compute_best_price', store=True)
-
-    _order = "id desc"
 
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.user.company_id)
 
