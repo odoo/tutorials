@@ -88,10 +88,15 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
                     <sheet>
-                        <h1><field name="name"/></h1>
-                        <h5>
-                            <field name="property_tags_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
-                        </h5>
+                        <group>
+                            <group>
+                                <h1><field name="name"/></h1>
+                                    <field name="property_tags_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            </group>
+                            <group>
+                                <field name="image_1920" widget='image' optional="show" class="oe_avatar" style="max-width: 150px; max-height: 150px;"/>
+                            </group>
+                        </group>
                         <group>
                             <group>
                                 <field name="company_id" string="Company"/>

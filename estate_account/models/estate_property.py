@@ -1,11 +1,11 @@
 from odoo import models, fields, Command
 
+
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
         self.check_access('write')
-        print(" reached ".center(100, '='))
         for record in self:
             invoice = record.env['account.move'].sudo().create({
                 'partner_id': record.buyer_id.id,

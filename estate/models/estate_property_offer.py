@@ -1,6 +1,7 @@
-from odoo import fields,models,api
-from odoo.exceptions import UserError, ValidationError
 from datetime import timedelta
+from odoo import _,fields,models,api
+from odoo.exceptions import UserError, ValidationError
+
 
 class EstatePropertytOffer(models.Model):
     _name = "estate.property.offer"
@@ -23,9 +24,9 @@ class EstatePropertytOffer(models.Model):
             existing_offers = property_record.offer_ids
             min_existing_price = min(existing_offers.mapped('price'), default=0)
             if record.price < min_existing_price:
-                raise UserError(
-                    f"The offer price ({record.price}) must be higher than the minimum of existing offer \
-                    ({min_existing_price})."
+                raise UserError(_
+                    (f"The offer price ({record.price}) must be higher than the minimum of existing offer \
+                    ({min_existing_price}).")
                 )
             if property_record.state == 'new':
                 property_record.write({'state': 'offer_received'})
@@ -45,7 +46,7 @@ class EstatePropertytOffer(models.Model):
     def action_accept(self):
         for record in self:
             if record.property_id.buyer_id:
-                raise UserError("An offer has already been accepted for this property.")
+                raise UserError(_("An offer has already been accepted for this property."))
             record.status = 'accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price

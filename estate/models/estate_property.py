@@ -1,20 +1,22 @@
-from odoo import fields,models,api
-from odoo.tools import float_compare,float_is_zero
 from datetime import datetime, timedelta
+from odoo import _,fields,models,api
+from odoo.tools import float_compare,float_is_zero
 from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description =" Good real estate"
-    _inherit = ["mail.thread"]
+    _inherit = ["mail.thread",'website.published.mixin']
     _order= "id desc"
 
-    name= fields.Char(required=True)
+    name= fields.Char(required=True, tracking=True)
     description= fields.Text()
     postcode= fields.Char()
     date_availability = fields.Date(default= datetime.now() + timedelta(days=90))
     expected_price= fields.Float(required=True)
     selling_price= fields.Float(readonly=True)
+    image_1920 = fields.Image(store=True, verify_resolution=True)
     bedrooms= fields.Integer(default=2)
     living_area= fields.Integer()
     garden_area= fields.Integer()
@@ -84,17 +86,17 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Property is already cancelled, you cannot sell this property.")
+                raise UserError(_("Property is already cancelled, you cannot sell this property."))
             accepted_offers = record.offer_ids.filtered(lambda offer: offer.status == 'Accepted')
             if not accepted_offers:
-                raise UserError("You cannot sell this property without at least one accepted offer.")
+                raise UserError(_("You cannot sell this property without at least one accepted offer."))
             record.state = 'sold'
         return True
 
     def action_cancelled(self):
         for record in self:
             if record.state=='sold':
-                raise UserError("Property is already sold ,it cannot be cancelled")
+                raise UserError(_("Property is already sold ,it cannot be cancelled"))
             else:
                 record.state='cancelled'
         return True
@@ -106,13 +108,13 @@ class EstateProperty(models.Model):
                 continue
             min_acceptable_price= 0.9*record.expected_price
             if float_compare(record.selling_price,min_acceptable_price, precision_digits=2)==-1:
-                raise UserError(
+                raise UserError(_(
                     "Selling price must be greater than 90% of expected price. It should be more than {:.2f}".\
                     format(min_acceptable_price)
-                )
+                ))
 
     @api.ondelete(at_uninstall=False)
     def property_deletion(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
-                raise UserError("You can only delete properties in the 'New' or 'Cancelled' state.")
+                raise UserError(_("You can only delete properties in the 'New' or 'Cancelled' state."))
