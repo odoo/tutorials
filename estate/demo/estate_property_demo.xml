@@ -30,6 +30,7 @@
         <field name="garage">False</field>
     </record>
 
+
     <record id="estate_property_3" model="estate.property">
         <field name="name">Historic Mansion</field>
         <field name="state">new</field>
@@ -45,14 +46,30 @@
             eval="[
             Command.create({
                 'buyer_id':ref('base.res_partner_12'),
-                'price':100,
+                'price':10200000,
                 'validity':11,
             }),
             Command.create({
                 'buyer_id':ref('base.res_partner_2'),
-                'price':101,
+                'price':101000000,
                 'validity':11,
             })
         ]" />
+    </record>
+
+    <record id="estate_property_4" model="estate.property">
+        <field name="name">Penthouse</field>
+        <field name="state">cancelled</field>
+        <field name="description">A stunning penthouse with sunrise views</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability">2023-05-10</field>
+        <field name="expected_price">250000</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">1000</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">40000</field>
+        <field name="garden_orientation">south</field>
     </record>
 </odoo>

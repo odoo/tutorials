@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
             raise UserError("Property without buyer cannot be sold.")
         try:
             self.env["estate.property"].check_access("write")
-        except:
+        except UserError:
             raise UserError(
                 "You do not have the necessary permissions to sell this property."
             )
