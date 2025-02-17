@@ -1,7 +1,6 @@
 from datetime import date
 
 from odoo import Command, models
-
 from odoo.exceptions import AccessError
 
 

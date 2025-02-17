@@ -6,4 +6,5 @@
     <menuitem id="estate_menu_settings" name="Settings" groups="estate_group_manager" parent="estate_menu_root"/>
     <menuitem id="estate_menu_property_type" name="Property Type" action="estate_property_type_action" parent="estate_menu_settings"/>
     <menuitem id="estate_menu_property_tag" name="Property Tag" action="estate_property_tag_action" parent="estate_menu_settings"/>
+    <menuitem id="estate_property_menu_website" name="Website"  action="open_url_action" parent="estate_menu_root"/>
 </odoo>

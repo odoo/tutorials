@@ -8,7 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'website.published.mixin']
     _order = 'id desc'
 
     name = fields.Char(string="Name", required=True, help="Name of the Property", tracking=True)
@@ -57,6 +57,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property Offer")
     company_id = fields.Many2one("res.company", required=True,default=lambda self: self.env.company, string="Agency")
+    image = fields.Image(store=True, verify_resolution=True)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive.'),
