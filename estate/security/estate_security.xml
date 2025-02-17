@@ -1,6 +1,6 @@
 <odoo>
     <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
-        <field name="name">Real Estate/Brokerage</field>
+        <field name="name">Real Estate/BrokerageWala</field>
     </record>
 
     <record id="estate_group_user" model="res.groups">
@@ -11,6 +11,7 @@
     <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="users" eval="[Command.link(ref('base.user_admin'))]"/>
         <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
     </record>
 

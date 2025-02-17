@@ -6,22 +6,23 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description =" Good real estate"
-    _order="id desc"
+    _inherit = ["mail.thread"]
+    _order= "id desc"
 
     name= fields.Char(required=True)
-    description=fields.Text()
-    postcode=fields.Char()
+    description= fields.Text()
+    postcode= fields.Char()
     date_availability = fields.Date(default= datetime.now() + timedelta(days=90))
-    expected_price=fields.Float(required=True)
-    selling_price=fields.Float(readonly=True)
-    bedrooms=fields.Integer(default=2)
-    living_area=fields.Integer()
-    garden_area=fields.Integer()
+    expected_price= fields.Float(required=True)
+    selling_price= fields.Float(readonly=True)
+    bedrooms= fields.Integer(default=2)
+    living_area= fields.Integer()
+    garden_area= fields.Integer()
     total_area= fields.Integer(compute='_compute_total_area')
-    facades=fields.Integer()
+    facades= fields.Integer()
     garage= fields.Boolean()
     garden= fields.Boolean()
-    company_id = fields.Many2one(
+    company_id= fields.Many2one(
         'res.company',
         string="Company",
         required=True,
@@ -29,13 +30,13 @@ class EstateProperty(models.Model):
     )
     garden_orientation= fields.Selection(string='Garden orientation',
         selection=[
-            ('North', 'North'),
-            ('West', 'West'),
-            ('South', 'South'),
-            ('East', 'East')
+            ('north', 'North'),
+            ('west', 'West'),
+            ('south', 'South'),
+            ('east', 'East')
         ]
     )
-    active = fields.Boolean('Active', default=True)
+    active = fields.Boolean(string='Active', default=True)
     state = fields.Selection(
         selection=[
             ('new', 'New'),
@@ -52,10 +53,10 @@ class EstateProperty(models.Model):
     best_price= fields.Float(compute='_compute_best_price')
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
-    buyer_id = fields.Many2one('res.partner', copy=False, string='Buyer')
+    buyer_id= fields.Many2one('res.partner', copy=False, string='Buyer')
     property_tags_ids=fields.Many2many('estate.property.tag')
 
-    _sql_constraints = [
+    _sql_constraints= [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
     ]
@@ -75,7 +76,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.garden:
                 record.garden_area = 10
-                record.garden_orientation = 'North'
+                record.garden_orientation = 'north'
             else:
                 record.garden_area = 0
                 record.garden_orientation = False

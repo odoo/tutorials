@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <list string="Estate Properties Offer" editable='bottom'
                 decoration-success="status == 'accepted'"
-                decoration-danger="status =='Refused'">
+                decoration-danger="status =='refused'">
                 <field name="price"/>
                 <field name="property_type_id"/>
                 <field name="partner_id" string="Partner"/>
