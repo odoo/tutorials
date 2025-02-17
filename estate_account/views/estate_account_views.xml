@@ -21,4 +21,15 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
     </record>
+
+    <record id="estate_property_invoice" model="ir.ui.view">
+        <field name="name">estate.property.invoice</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_to_invoice_property" type="object" string="INVOICE" class="oe_highlight" invisible="state in ('new', 'offer_received', 'offer_accepted', 'cancelled', 'invoiced')"/>
+            </xpath>
+        </field>
+    </record>
 L</odoo>

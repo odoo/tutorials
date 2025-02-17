@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="estate.report_estate_property">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <img t-if="property.company_id"
+                            t-att-src="image_data_uri(property.company_id.logo)" alt="Company Logo"
+                            style="max-height: 50px;" />
+                        <div style="border-top: 2px solid #000; margin: 10px 0;"></div>
+                        <div>
+                            <t t-out="property.company_id.name" />
+                        </div>
+                        <div>
+                            <t t-out="property.company_id.street" />
+                        </div>
+                        <div>
+                            <t t-out="property.company_id.street2" />
+                        </div>
+                        <div>
+                            <t t-out="property.company_id.city" />
+                        </div>
+                        <div>
+                            <t t-out="property.company_id.state_id" />
+                        </div>
+                        <div>
+                            <t t-out="property.company_id.zip" />
+                        </div>
+                        <div>
+                            <t t-out="property.company_id.country_id" />
+                        </div>
+                        <div>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.sales_person" />
+                        </div>
+                        <t t-call="estate.estate_property_details" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate.estate_property_details">
+        <h2>
+            <span t-field="property.name" />
+        </h2>
+        <div>
+            <strong>Expected Price: </strong>
+            <span t-field="property.expected_price" />
+        </div>
+        <div>
+            <strong>Status: </strong>
+            <span t-field="property.state" />
+        </div>
+        <t t-if="property.offer_ids">
+            <t t-set="offers" t-value="property.mapped('offer_ids')" />
+            <t t-call="estate.offer_table" />
+        </t>
+        <t t-else="">
+            There are no offers yet!
+        </t>
+    </template>
+
+    <template id="estate.offer_table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Partner</th>
+                    <th>Validity(days)</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="offers" t-as="offer">
+                    <td>
+                        <span t-field="offer.price" />
+                    </td>
+                    <td>
+                        <span t-field="offer.partner_id" />
+                    </td>
+                    <td>
+                        <span t-field="offer.validity" />
+                    </td>
+                    <td>
+                        <span t-field="offer.date_deadline" />
+                    </td>
+                    <td>
+                        <span t-field="offer.status" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <template id="estate.estate_property_report_full">
+        <t t-call="estate.report_estate_property" />
+    </template>
+
+    <!-- Print Offers -->
+    <template id="property_offers_report">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.name" />
+                        </div>
+                        <t t-set="properties" t-value="property.mapped('property_ids')" />
+                        <t t-foreach="properties" t-as="property">
+                            <t t-call="estate.estate_property_details" />
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate_property_invoiced" name="invoiced_estate.property"
+        inherit_id="estate.offer_table">
+        <xpath expr="//table" position="inside">
+            <t t-if="property.state == 'invoiced'">
+                <strong>
+                    !!!Invoice has already been created!!!
+                </strong>
+            </t>
+        </xpath>
+    </template>
+</odoo>

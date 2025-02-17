@@ -24,9 +24,7 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
-    property_type_id = fields.Many2one(
-        related="property_id.property_type_id", store=True
-    )
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
@@ -48,24 +46,22 @@ class EstatePropertyOffer(models.Model):
                 record.validity = 7
 
     def action_confirm(self):
-        for record in self:
-            if record.status == "accepted":
-                raise ValidationError("Already accepted.")
-            else:
-                record.status = "accepted"
-                record.property_id.partner_id = record.partner_id
-                record.property_id.selling_price = record.price
-                record.property_id.state = "offer_accepted"
-                other_offers = record.property_id.offer_ids - record
-                other_offers.write({"status": "refused"})
+        if self.status == "accepted":
+            raise ValidationError("Already accepted.")
+        else:
+            self.status = "accepted"
+            self.property_id.partner_id = self.partner_id
+            self.property_id.selling_price = self.price
+            self.property_id.state = "offer_accepted"
+            other_offers = self.property_id.offer_ids - self
+            other_offers.write({"status": "refused"})
         return True
 
     def action_refuse(self):
-        for record in self:
-            if record.status == "refused":
-                raise ValidationError("Already refused.")
-            else:
-                record.status = "refused"
+        if self.status == "refused":
+            raise ValidationError("Already refused.")
+        else:
+            self.status = "refused"
         return True
 
     _sql_constraints = [
@@ -73,17 +69,10 @@ class EstatePropertyOffer(models.Model):
     ]
     @api.model_create_multi
     def create(self, vals_list):
-        # Iterate through each record's values in the batch
         for vals in vals_list:
             property_id = vals["property_id"]
             property_record = self.env["estate.property"].browse(property_id)
-
-            # Validate the price for each record
             if property_record.expected_price > vals["price"] or vals["price"] < property_record.best_price:
                 raise UserError("Price is too low!")
-
-            # Update property state for each related property
             property_record.state = "offer_received"
-
-        # Call the super method to create records in batch
         return super().create(vals_list)

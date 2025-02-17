@@ -30,7 +30,6 @@ class PropertyPlan(models.Model):
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(
         string="State",
-        required=True,
         default="new",
         copy=False,
         selection=[
@@ -39,7 +38,6 @@ class PropertyPlan(models.Model):
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
-            ("invoiced", "Invoiced"),
         ],
         help="Sate of Offer",
         tracking=True,
@@ -55,16 +53,10 @@ class PropertyPlan(models.Model):
         help="Used to decide the direction of Garden",
         tracking=True,
     )
-    property_type_id = fields.Many2one(
-        "estate.property.type", string="Property Type", tracking=True
-    )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type", tracking=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
-    partner_id = fields.Many2one(
-        "res.partner", string="Buyer", copy=False, tracking=True
-    )
-    sales_person = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user
-    )
+    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False, tracking=True)
+    sales_person = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Price")
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
@@ -99,23 +91,18 @@ class PropertyPlan(models.Model):
             self.garden_orientation = ""
 
     def action_property_cancelled(self):
-        for record in self:
-            if record.state == "sold":
-                raise ValidationError("Cannot cancel a sold property!")
-            else:
-                record.state = "cancelled"
+        if self.state == "sold":
+            raise ValidationError("Cannot cancel a sold property!")
+        else:
+            self.state = "cancelled"
         return True
 
     def action_property_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise ValidationError("Cannot sell a cancelled property!")
-            else:
-                record.state = "sold"
+        if self.state == "cancelled":
+            raise ValidationError("Cannot sell a cancelled property!")
+        else:
+            self.state = "sold"
         return True
-
-    def action_to_invoice_property(self):
-        print()
 
     _sql_constraints = [
         (
@@ -143,6 +130,6 @@ class PropertyPlan(models.Model):
                     )
 
     @api.ondelete(at_uninstall=False)
-    def _deleting_record(self):
+    def _unlink_if_state_new_cancelled(self):
         if self.state != "new" and self.state != "cancelled":
             raise UserError("Only new and cancelled properties can be deleted!")

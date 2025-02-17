@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class ResUser(models.Model):
+class ResUsers(models.Model):
     _inherit = "res.users"
     _description = "Inheriting res.users"
 

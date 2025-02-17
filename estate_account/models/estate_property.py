@@ -44,6 +44,5 @@ class EstateProperty(models.Model):
 
         self.env["account.move"].sudo().create(move_vals)
 
-        res = super(EstateProperty, self).action_property_sold()
+        super(EstateProperty, self).action_property_sold()
         self.state = "invoiced"
-        return res

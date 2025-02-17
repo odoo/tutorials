@@ -15,12 +15,13 @@
         <field name="name">estate.property.offer.view.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+            <list editable="bottom" decoration-success="status == 'accepted'"
+                decoration-danger="status == 'refused'">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="validity" />
                 <field name="date_deadline" />
-            </list> 
+            </list>
         </field>
     </record>
     <record id="estate_property_type_view_form" model="ir.ui.view">
@@ -29,10 +30,12 @@
         <field name="arch" type="xml">
             <form string="Estate Property Type Form">
                 <header>
-                    <button name="%(action_offer_list)d" class="oe_stat_button d-flex justify-content-center align-items-center gap-2" icon="fa-money" type="action">
+                    <button name="%(action_offer_list)d"
+                        class="oe_stat_button d-flex justify-content-center align-items-center gap-2"
+                        icon="fa-money" type="action">
                         <div class="o_stat_info d-flex flex-column align-items-start">
                             <div class="o_stat_text">
-                                <field name="offer_count"/>
+                                <field name="offer_count" />
                             </div>
                             <div class="o_stat_text">
                                 Offers
@@ -68,7 +71,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Estate Property Type">
-                <field name="sequence" widget="handle"/>
+                <field name="sequence" widget="handle" />
                 <field name="name" />
             </list>
         </field>
