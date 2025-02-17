@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -9,13 +10,21 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class Estateproperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate property'
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price must be positive.'),
+    ]
 
     name = fields.Char(string='Property Name',
                        required=True, default='Property')
     property_type_id = fields.Many2one(
         'estate.property.type', string='Property Type')
     salesperson_id = fields.Many2one(
-        'res.users', string='Salesperson', default=lambda self: self.env.user)
+        'res.users', string='Salesperson')
+    # salesperson_id = fields.Many2one(
+    #     'res.users', string='Salesperson', default=lambda self: self.env.user)
     buyer_id = fields.Many2one(
         'res.partner', string='Buyer', copy=False)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
@@ -36,8 +45,8 @@ class Estateproperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string='State',
-        selection=[('new', 'New'), ('offered_rec', 'Offer recieved'), ('offer_acc',
-                                                                       'Offer Accepted'), ('sold', 'Sold'), ('cancel', 'Cancelled')],
+        selection=[('new', 'New'), ('offer_received', 'Offer received'), ('offer_accepted',
+                                                                          'Offer Accepted'), ('sold', 'Sold'), ('cancel', 'Cancelled')],
         required=True,
         copy=False,
         default='new'
@@ -46,25 +55,21 @@ class Estateproperty(models.Model):
         string='Total Area', compute='_compute_total_area')
     best_price = fields.Float(
         string='Best Price', compute='_compute_best_price')
-    offer_recieved = fields.Boolean(
-        compute='_compute_offer_recieved', store=True)
+    offer_received = fields.Boolean(
+        compute='_compute_offer_received', store=True)
     postcode = fields.Char('PostCode')
     date_availability = fields.Date(
         'Available From', copy=False, default=lambda self: fields.Datetime.today() + timedelta(days=90))
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
 
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)',
-         'The expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)',
-         'The selling price must be positive.'),
-    ]
+    company_id = fields.Many2one(
+        'res.company', string='Company', required=True, default=lambda self: self.env.company)
 
     @api.depends('offer_ids')
-    def _compute_offer_recieved(self):
+    def _compute_offer_received(self):
         for record in self:
-            record.offer_recieved = bool(record.offer_ids)
+            record.offer_received = bool(record.offer_ids)
 
     @api.depends('salesperson_id.name')
     def _compute_desc(self):

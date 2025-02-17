@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 {
     'name': 'Real Estate',
     'version': '1.0',
     'depends': ['base'],
     'author': 'Author Name',
-    'category': 'Category',
+    'category': 'Real Estate/Brokerage',
     'application': True,
     'installable': True,
     'sequence': 0,
@@ -13,6 +16,7 @@
     Description text
     ''',
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_view.xml',

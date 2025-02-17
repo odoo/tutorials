@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id='res_user_view_form' model='ir.ui.view'>
-            <field name='name'>res.users.view.form.inherit.estate</field>
-            <field name='model'>res.users</field>
-            <field name='inherit_id' ref='base.view_users_form'></field>
-            <field name='arch' type='xml'>
-                <xpath expr='//notebook' position='inside'>
-                    <page string='Properties'>
+        <record id="res_user_view_form" model="ir.ui.view">
+            <field name="name">res.users.view.form.inherit.estate</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Properties">
                         <group>
-                            <field name='property_ids' mode='list'>
-                                <list editable='bottom'>
-                                    <field name='name'/>
-                                    <field name='state'/>
-                                    <field name='salesperson_id'/>
+                            <field name="property_ids" mode="list">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="state"/>
+                                    <field name="salesperson_id"/>
                                 </list>
                             </field>
                         </group>

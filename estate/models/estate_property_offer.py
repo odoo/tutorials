@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
@@ -8,6 +9,10 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property'
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)',
+         'The offer price must be strictly positive.'),
+    ]
 
     price = fields.Float(string='Price')
     status = fields.Selection(
@@ -27,11 +32,6 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string='Validity', default=7)
     date_deadline = fields.Date(
         string='Deadline', compute='_compute_deadline', inverse='_inverse_deadline')
-
-    _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0)',
-         'The offer price must be strictly positive.'),
-    ]
 
     @api.depends('create_date', 'validity')
     def _compute_deadline(self):
@@ -53,15 +53,15 @@ class EstatePropertyOffer(models.Model):
         for record in vals_list:
             property_id = record.get('property_id')
             if property_id:
-                existing_offers = self.search(
-                    [('property_id', '=', property_id)])
-                if existing_offers and any(offer.price >= vals_list[0]['price'] for offer in existing_offers):
+                existing_offer = self.search(
+                    [('property_id', '=', property_id)], limit=1, order='price DESC')
+                if existing_offer and existing_offer.price >= vals_list[0]['price']:
                     raise UserError(
-                        'You cannot create an offer lower than or equal to existing offer.')
+                        'You cannot create an offer lower than or equal to an existing offer.')
         records = super().create(vals_list)
         for record in records:
             if record.property_id.state == 'new':
-                record.property_id.state = 'offered_rec'
+                record.property_id.state = 'offer_received'
         return records
 
     def action_accept(self):
@@ -77,7 +77,7 @@ class EstatePropertyOffer(models.Model):
             offer.status = 'accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.state = 'offer_acc'
+            offer.property_id.state = 'offer_accepted'
 
     def action_refuse(self):
         for offer in self:

@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
     _description = 'Estate Property'
-    # _order="name asc"
+    _sql_constraints = [
+        ('unique_type_name', 'UNIQUE(name)',
+         'The property type name must be unique.'),
+    ]
 
     name = fields.Char(string='Property Type', required=True)
     property_ids = fields.One2many(
@@ -20,11 +24,6 @@ class EstatePropertyType(models.Model):
     )
     offer_count = fields.Integer(
         string='Offer Count', compute='_compute_offers', store=True)
-
-    _sql_constraints = [
-        ('unique_type_name', 'UNIQUE(name)',
-         'The property type name must be unique.'),
-    ]
 
     @api.depends('offer_ids')
     def _compute_offers(self):
