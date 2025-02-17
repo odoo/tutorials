@@ -1,10 +1,17 @@
 from odoo import fields, models, Command
+from odoo.exceptions import AccessError 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
     
     def action_sold_property(self):
-        self.env['account.move'].create(
+        try:
+            self.check_access('write')
+        except AccessError:
+            raise AccessError("You do not have permission to modify this property.")
+
+        print("Access check passed.")
+        self.env['account.move'].sudo().create(
             {
                 'partner_id': self.buyer_id.id,
                 'move_type': 'out_invoice',

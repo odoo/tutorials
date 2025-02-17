@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <list string="Properties" editable="top" decoration-success="state in ['offer_recieved','offer_accepted']" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
                 <field name="name"/>
-                <field name="property_type_id"/>
+                <field name="property_type_id" />
                 <field name="postcode"/>
                 <field name="property_tag_ids" />
                 <field name="bedrooms"/>

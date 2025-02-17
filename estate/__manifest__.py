@@ -1,16 +1,16 @@
 {
     'name': "estate",
     'version': '18.0',
-    'depends': ['base'],
+    'depends': ['base','account'],
     'author': "Smit",
-    'category': 'Real Estate',
+    'category': 'Real Estate/Brokerage',
     'license' : 'LGPL-3',
     'description': """
         Buy and sell properties.
     """,
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
-        'security/estate_security.xml',
         'views/estate_actions.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_types_views.xml',

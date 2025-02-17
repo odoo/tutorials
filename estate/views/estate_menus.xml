@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <menuitem id="root_menu" name="Realestate" />
+    <menuitem id="root_menu" name="Realestate" groups="estate.estate_group_user,estate.estate_group_manager"/>
 
     <menuitem id="estate_advertiesments_menu" name="Advertisements" parent="root_menu" />
     <menuitem id="estate_advertiesments_properties_menu" name="Properties" parent="estate_advertiesments_menu" action="estate_property_action" />
     
-    <menuitem id="estate_settings_menu" name="Settings" parent="root_menu" />
+    <menuitem id="estate_settings_menu" name="Settings" parent="root_menu" groups="estate.estate_group_manager"/>
     <menuitem id="estate_settings_property_types_menu" name="Property Types" parent="estate_settings_menu" action="estate_property_type_action" />
     <menuitem id="estate_settings_property_tags_menu" name="Property Tags" parent="estate_settings_menu" action="estate_property_tag_action" />
 </odoo>
