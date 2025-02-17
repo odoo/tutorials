@@ -59,6 +59,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_apartment"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_new'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_1.png"/>
     </record>
 
     <record model="estate.property" id="property_2">
@@ -70,6 +71,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_cottage"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_nature'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_2.png"/>
     </record>
 
     <record model="estate.property" id="property_3">
@@ -81,6 +83,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_villa"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_luxury'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_3.png"/>
     </record>
 
     <record model="estate.property" id="property_4">
@@ -92,6 +95,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_mansion"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_riverside'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_4.png"/>
     </record>
 
     <record model="estate.property" id="property_5">
@@ -103,6 +107,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_retreat"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_mountain'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_5.png"/>
     </record>
 
     <record model="estate.property" id="property_6">
@@ -114,6 +119,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_condo"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_beachfront'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_6.png"/>
     </record>
 
     <record model="estate.property" id="property_7">
@@ -125,6 +131,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_apartment"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_new')), (4, ref('property_tag_luxury'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_6.png"/>
     </record>
 
     <record model="estate.property" id="property_8">
@@ -136,6 +143,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_cottage"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_nature'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_5.png"/>
     </record>
 
     <record model="estate.property" id="property_9">
@@ -147,6 +155,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_villa"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_beachfront')), (4, ref('property_tag_luxury'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_4.png"/>
     </record>
 
     <record model="estate.property" id="property_10">
@@ -158,6 +167,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_mansion"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_luxury')), (4, ref('property_tag_riverside'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_3.png"/>
     </record>
 
     <record model="estate.property" id="property_11">
@@ -169,6 +179,7 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_retreat"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_mountain')), (4, ref('property_tag_nature'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_2.png"/>
     </record>
 
     <record model="estate.property" id="property_12">
@@ -180,4 +191,6 @@
         <field name="state">new</field>
         <field name="property_type_id" ref="property_type_condo"/>
         <field name="property_tag_ids" eval="[(4, ref('property_tag_luxury')), (4, ref('property_tag_new'))]"/>
+        <field name="property_image" type="base64" file="estate/static/src/img/Property_1.png"/>
+    </record>
 </odoo>

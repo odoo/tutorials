@@ -3,7 +3,7 @@ from odoo import models,fields,Command
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
-    invoice_id = fields.Integer(string='Invoice Id')
+    invoice_id  = fields.Many2one('account.move', string="Invoice", readonly=True)
     def action_sold_property(self):
         for record in self:
             if record.selling_price > 0:
