@@ -1,10 +1,9 @@
 # -- coding: utf-8 --
 # Part of Odoo. See LICENSE file for full copyright and licensing details. 
 
-from odoo import api, models, fields, exceptions, _
+from odoo import api, models, fields, _
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
-
+from odoo.exceptions import UserError, ValidationError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Property Offer'

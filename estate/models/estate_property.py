@@ -1,12 +1,8 @@
 # -- coding: utf-8 --
 # Part of Odoo. See LICENSE file for full copyright and licensing details. 
-
-from odoo import api, models, fields, exceptions, _
+from odoo import api, models, fields, _
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
-from odoo.exceptions import ValidationError
-from odoo.tools import float_compare, float_is_zero
-
+from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
@@ -19,7 +15,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string='Property Name', required=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
-    date_availability = fields.Date(string='Date Availability', copy=False, default=fields.datetime.today() + relativedelta(months=3))
+    date_availability = fields.Date(string='Date Availability', copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price', readonly=True , copy=False)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
@@ -89,9 +85,8 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if not float_is_zero(record.selling_price, precision_rounding=0.01) and \
-               float_compare(record.selling_price, 0.9 * record.expected_price, precision_rounding=0.01) < 0:
-                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
+                if record.selling_price and record.selling_price < 0.9 * record.expected_price:
+                    raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):

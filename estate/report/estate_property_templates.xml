@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="estate_property_offer_table">
+        <t t-set="offers" t-value="property.mapped('property_offer_ids')" />
+        <t t-if="offers">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Offer Price</th>
+                        <th>Partner</th>
+                        <th>Validity</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-if="offers">
+                        <tr t-foreach="offers" t-as="offer">
+                            <td><span t-field="offer.price" /></td>
+                            <td><span t-field="offer.partner_id" /></td>
+                            <td><span t-field="offer.validity" /></td>
+                            <td><span t-field="offer.date_deadline" /></td>
+                            <td><span t-field="offer.status" /></td>
+                        </tr>
+                    </t>
+                    <t t-else="">
+                        <tr>
+                            <td colspan="5">No offers yet.</td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </t>
+    </template>
+
+
+    <template id="estate_property_offer_report_template">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name" />
+                        </h2>
+                        <div class="atr">
+                            <strong>Salesman: </strong>
+                            <span t-field="property.salesperson_id" />
+                            <br />
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price" />
+                            <br />
+                            <strong>State: </strong>
+                            <span t-field="property.state" />
+                        </div>
+                    </div>
+                    <t t-if="property.state == 'sold'">
+                                <strong>!!!Invoice has already been created !!!</strong>
+                    </t>
+                    <t t-call="estate.estate_property_offer_table" />
+                </t>
+            </t>
+        </t>
+    </template>  
+
+    
+    <template id="estate_salesman_property_report_template">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Salesman: <span t-field="user.name"/></h2>
+
+                        <t t-if="user.property_ids">
+                            <t t-foreach="user.property_ids" t-as="property">
+                                <div class="property-section">
+                                    <h3>
+                                        <span t-field="property.name"/>
+                                    </h3>
+                                    <div>
+                                        <strong>Expected Price:</strong>
+                                        <span t-field="property.expected_price"/>
+                                        <br/>
+                                        <strong>Status:</strong>
+                                        <span t-field="property.state"/>
+                                    </div>
+
+                                    <t t-call="estate.estate_property_offer_table"/>
+
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <p style="color: red; font-weight: bold;">This user has no properties.</p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

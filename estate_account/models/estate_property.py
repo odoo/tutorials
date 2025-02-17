@@ -9,8 +9,7 @@ class Property(models.Model):
     def action_sold(self):
         try:
             self.ensure_one()
-            self.check_access_rights('write')  # Ensure user has write access to this model
-            self.check_access_rule('write')  # Ensure record rules allow write access
+            self.check_access('write') 
         except AccessError:
             raise AccessError(_("You do not have the permission to mark this property as sold."))
 
@@ -35,10 +34,6 @@ class Property(models.Model):
                 )
             ]
         }
-
-        print(" reached ".center(100, '='))
-
-        # Use sudo() to create invoice and bypass security
         self.env["account.move"].sudo().create(invoice_vals)
 
         return super().action_sold()
