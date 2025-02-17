@@ -24,6 +24,9 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
+                    <button name="%(action_report_property_offers)d" string="Print Offers" type="action" class="oe_highlight"/>
+                </header>
+                <header>
                     <button name="action_sell_property" type="object" string="Sold" class="oe_highlight" invisible="state in ('new', 'offer_received', 'sold', 'cancelled')" />
                     <button name="action_cancel_property" type="object" string="Cancel" class="oe_highlight" invisible="state in ('new', 'offer_received', 'sold', 'cancelled')" />
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
@@ -82,6 +85,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>

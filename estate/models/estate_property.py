@@ -8,6 +8,7 @@ from odoo.tools import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
+    _inherit = ['mail.thread']
     _description = 'Real Estate Property'
     _order = "sequence_number desc"
 
