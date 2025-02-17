@@ -73,6 +73,8 @@ class estateProperty(models.Model):
         default=lambda self: self.env.company,
         string="Company",
     )
+    invoice_id = fields.Integer(string="Inoive_id", default=0)
+
 
     #constraint
     _sql_constraints = [

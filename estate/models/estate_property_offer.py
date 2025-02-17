@@ -67,6 +67,8 @@ class estatePropertyOffer(models.Model):
 
     def refuse_offer(self):
         for offer in self:
+            if offer.property_id.state == "sold":
+                raise UserError("You cannot refuse the offer on sold properties.")
             offer.status = "refused"    
             offer.property_id.state = "new"
             offer.property_id.selling_price = False
@@ -76,10 +78,12 @@ class estatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property = self.env["estate.property"].browse(vals["property_id"])
-            property.state = "offer_received"
+            if property.state == 'sold':
+              raise UserError("You cannot create an offer for a sold property.")
             for offer in property.offer_ids:
                 if offer.price > vals["price"]:
                     raise UserError("The offer must be higher than the existing offer")
+            property.state = "offer_received"
         return super().create(vals_list)
 
     @api.model

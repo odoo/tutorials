@@ -32,5 +32,6 @@ class estateProperty(models.Model):
                ],
            })   
            # Mark the property as sold
+           property.invoice_id = invoice
            property.state = "sold"   
        return super().set_sold()

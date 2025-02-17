@@ -1,0 +1,8 @@
+<template>
+    <t t-name="awesome_owl.TodoItem">
+         <div t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+            <span class="px-2">ID: <t t-esc="props.todo.id"/></span>
+            <span>Description: <t t-esc="props.todo.description"/></span>
+        </div>
+    </t>
+</template>

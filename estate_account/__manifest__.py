@@ -7,6 +7,7 @@
         "account"
     ],
     "data": [
+        "report/estate_property_templates.xml",
     ],
     "installable": True,
     "application": False,  # Set to False because this is an add-on, not a standalone app
