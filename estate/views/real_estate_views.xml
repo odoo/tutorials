@@ -1,0 +1,14 @@
+<odoo>
+    <!-- Define the action to open your module -->
+    <record id="action_real_estate" model="ir.actions.act_window">
+        <field name="name">Real Estate</field>
+        <field name="res_model">real.estate.property</field> <!-- Replace with your model -->
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Add the menu item to the main dashboard -->
+    <menuitem id="menu_real_estate_root" name="Real Estate" sequence="10" />
+    <menuitem id="menu_real_estate" name="Properties" parent="menu_real_estate_root" action="action_real_estate" sequence="1"/>
+</odoo>
+
