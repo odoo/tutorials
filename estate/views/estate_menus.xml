@@ -2,12 +2,12 @@
     <menuitem id="action_menu_root" name="Real Estate">
     
         <menuitem id="estate_advertisement_menu" name="Advertisement">
-            <menuitem id="estate_advertisement_menu_action" action="estate_property_action" name="Properties" />
+            <menuitem id="estate_advertisement_menu_action" action="estate_property_action" name="Properties"/>
         </menuitem>
 
         <menuitem id="estate_settings_menu" name="Settings">
-            <menuitem id="estate_property_menu_tag_action" action="estate_property_tag_action" name="Property Tag" />
-            <menuitem id="estate_property_menu_type_action" action="estate_property_type_action" name="Property Type" />
+            <menuitem id="estate_property_menu_tag_action" action="estate_property_tag_action" name="Property Tag" groups="estate_group_manager"/>
+            <menuitem id="estate_property_menu_type_action" action="estate_property_type_action" name="Property Type" groups="estate_group_manager"/>
         </menuitem>
 
     </menuitem>

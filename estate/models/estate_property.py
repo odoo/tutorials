@@ -61,6 +61,7 @@ class EstateProperty(models.Model):
     property_offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string="Offers", default=[])
     user_id = fields.Many2one(comodel_name='res.users', string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one(comodel_name='res.partner', string='Buyer', copy=False)
+    company_id = fields.Many2one(comodel_name='res.company', string="Company", required=True, default=lambda self: self.env.company)
 
     # ..................compute methods..................
     @api.depends("living_area", "garden_area")
