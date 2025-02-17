@@ -55,15 +55,15 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         property_id = vals.get("property_id")
-        if property_id:
-            property_record = self.env["estate.property"].browse(property_id)
-            if property_record:
-                property_record.write({"state": "offer received"})
-
-        if vals["price"] is not None:
-            highest_price = property_record.best_price
-            if vals["price"] < highest_price:
-                raise UserError(
-                    f"Error: the price cannot be less than maximum price {highest_price}."
-                )
-        return super().create(vals)
+        property_record = self.env["estate.property"].browse(property_id)
+        if(property_record.state == "sold"):
+            raise UserError("Cannot Create offer for a sold property")
+        else:    
+            property_record.write({"state": "offer received"})
+            if vals["price"] is not None:
+                highest_price = property_record.best_price
+                if vals["price"] < highest_price:
+                    raise UserError(
+                        f"Error: the price cannot be less than maximum price {highest_price}."
+                    )
+            return super().create(vals)

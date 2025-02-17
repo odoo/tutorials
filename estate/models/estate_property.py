@@ -98,12 +98,23 @@ class EstateProperty(models.Model):
                 self.garden_area = 10
                 self.garden_orientation = "north"
             else:
-                self.garden_orientation = ""
+                self.garden_orientation = False
                 self.garden_area = 0
 
     def action_sold(self):
         if self.state == "cancelled":
             raise UserError("Cancelled property cannot be sold.")
+        if self.state != "sold":
+            accepted_offer= self.env['estate.property.offer'].search([
+                ('property_id','=',self.id),
+                ('status','=','accepted')
+            ])
+            if not accepted_offer:
+                raise UserError("You cannot sell a property without an accepted offer")
+            self.state = "sold"
+        else:
+            raise UserError("This property is already sold.")
+        return True
         self.state = "sold"
 
     def action_cancel(self):
