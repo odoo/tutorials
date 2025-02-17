@@ -24,9 +24,9 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" class="oe_highlight"/>
-                    <button name="action_cancel" type="object" string="Cancel" class="oe_normal"/>
-                    <field name="state" widget="statusbar" statusbar_visibile="new,offer_received,offer_accepted,sold,closed" />
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight" invisible="state != 'offer_accepted'"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="oe_normal" invisible="state == 'sold' or state == 'canceled'"/>
+                    <field name="state" widget="statusbar" statusbar_visibile="new,offer_received,offer_accepted,sold,canceled" />
                 </header>
                 <sheet>
                     <h1><field name="name"/></h1>

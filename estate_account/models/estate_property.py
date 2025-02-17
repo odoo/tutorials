@@ -1,11 +1,17 @@
 from odoo import models, fields, api, Command
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
 
-        self.env['account.move'].create(
+        try:
+            self.check_access('write')
+        except AccessError:
+            raise UserError("You don't have the right to edit this property in its current state.")
+        
+        self.env['account.move'].sudo().create(
             {
             "name": "Invoice from Property %s" % (self.name),
             "move_type": 'out_invoice',

@@ -4,7 +4,7 @@
     'depends': ['base'],
     'author': "Rahul Jha (jhra)",
     'website': "https://www.odoo.com",
-    'category': 'Tutorials/RealEstate',
+    'category': 'Real Estate/Brokerage',
     'description': """
     Test module for selling real estate properties.
     """,
