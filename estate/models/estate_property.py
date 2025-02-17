@@ -44,7 +44,6 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         string="State",
-        required=True,
         copy=False,
         default="new",
     )
@@ -137,11 +136,3 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError(
                     "You cannot delete a property unless it is in 'New' or 'Cancelled' state."
                 )
-
-    def action_to_invoice_property(self):
-        """Invoice button will be visible once it is sold and clicking on
-        invoice button invoice of property will be creaed and state from sold to invoiced
-        will be updated.
-        And the method is being overridden in estate account module's inherited model.
-        """
-        print(self.env.user.has_group("estate.estate_group_manager"))

@@ -34,14 +34,6 @@
         <field name="property_type_id" ref="estate.property_type_1"></field>
     </record>
 
-    <!-- Reference Data For Partner -->
-    <record id="property_partner_1" model="res.partner">
-        <field name="name">Azure Interior</field>
-    </record>
-    <record id="property_partner_2" model="res.partner">
-        <field name="name">Deco Addict</field>
-    </record>
-
     <!-- Record 3: a property offers directly added inside One2many field -->
     <record id="estate_property_pent_house" model="estate.property">
         <field name="name">Pent House</field>
@@ -59,31 +51,31 @@
             Command.create({
                 'price': 1100000,
                 'validate': 20,
-                'partner_id': ref('property_partner_1')
+                'partner_id': ref('base.res_partner_12')
             }),
             Command.create({
                 'price': 1500000,
                 'validate': 27,
-                'partner_id': ref('property_partner_2')
+                'partner_id': ref('base.res_partner_2')
             })
         ]"/>
     </record>
 
     <!-- Demo data of property offer -->
     <record id="big_villa_offer_1" model="estate.property.offer">
-        <field name="partner_id" ref="property_partner_1"/>
+        <field name="partner_id" ref="base.res_partner_12"/>
         <field name="property_id" ref="estate.estate_property_big_villa" />
         <field name="price">10000.00</field>
         <field name="validate">14</field>
     </record>
     <record id="big_villa_offer_2" model="estate.property.offer">
-        <field name="partner_id" ref="property_partner_1"/>
+        <field name="partner_id" ref="base.res_partner_12"/>
         <field name="property_id" ref="estate_property_big_villa" />
         <field name="price">1500000.00</field>
         <field name="validate">14</field>
     </record>
     <record id="big_villa_offer_3" model="estate.property.offer">
-        <field name="partner_id" ref="property_partner_2"/>
+        <field name="partner_id" ref="base.res_partner_2"/>
         <field name="property_id" ref="estate_property_big_villa" />
         <field name="price">1500001.00</field>
         <field name="validate">14</field>

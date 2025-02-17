@@ -43,6 +43,4 @@ class InheritedModel(models.Model):
                 ],
             }
         )
-        result = super().action_to_invoice_property()
         self.state = "invoiced"
-        return result

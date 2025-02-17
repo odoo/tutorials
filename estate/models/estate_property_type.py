@@ -27,5 +27,4 @@ class EstatePropertyType(models.Model):
                 groupby=[],
                 aggregates=["id:count"],
             )
-            print(result)
             record.offer_count = result[0][0] if result else 0

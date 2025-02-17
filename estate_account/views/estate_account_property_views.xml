@@ -18,4 +18,17 @@
             </xpath>
         </field>
     </record>
+
+    <!-- Invoice button implementation -->
+    <record id="estate_account_property_form_view" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="INVOICE" name="action_to_invoice_property" type="object" class="btn-primary" invisible="state in ('new', 'offer_received', 'offer_accepted', 'cancelled', 'invoiced')"/>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

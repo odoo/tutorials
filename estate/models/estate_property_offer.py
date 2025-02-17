@@ -50,29 +50,24 @@ class EstatePropertyOffer(models.Model):
 
     # Function to perform action when offer accpeted
     def action_accept(self):
-        for record in self:
-            if record.status == "accepted":
-                raise exceptions.UserError("This property has already accepted offer!")
-
-            record.property_id.selling_price = record.price
-            record.property_id.partner_id = record.partner_id
-
-            record.status = "accepted"
-            record.property_id.state = "offer_accepted"
-
-            other_offers = self.search(
-                [
-                    ("property_id", "=", record.property_id.id),
-                    ("id", "!=", record.id),
-                    ("status", "=", ""),
-                ]
-            )
-            other_offers.write({"status": "refused"})
+        if self.status == "accepted":
+            raise exceptions.UserError("This property has already accepted offer!")
+        self.property_id.selling_price = self.price
+        self.property_id.partner_id = self.partner_id
+        self.status = "accepted"
+        self.property_id.state = "offer_accepted"
+        other_offers = self.search(
+            [
+                ("property_id", "=", self.property_id.id),
+                ("id", "!=", self.id),
+                ("status", "=", ""),
+            ]
+        )
+        other_offers.write({"status": "refused"})
 
     # Function to perform action when offer refused
     def action_refuse(self):
-        for record in self:
-            record.status = "refused"
+        self.status = "refused"
 
     #! used model create multi because @api.model is deprecated
     @api.model_create_multi
@@ -82,7 +77,6 @@ class EstatePropertyOffer(models.Model):
         1. Prevents creating an offer lower than the highest existing offer for the same property.
         2. Updates the property state to 'Offer Received' when an offer is created.
         """
-        print(vals_list)
         for vals in vals_list:
             if vals["property_id"]:
                 property = self.env["estate.property"].browse(vals["property_id"])
@@ -94,4 +88,4 @@ class EstatePropertyOffer(models.Model):
             if property.state == "new":
                 property.state = "offer_received"
 
-        return super(EstatePropertyOffer, self).create(vals_list)
+        return super().create(vals_list)
