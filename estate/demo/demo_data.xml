@@ -75,9 +75,9 @@
         <field name="garden">False</field>
         <field name="property_type_id" ref="estate.property_type_industrial"/>
         <field name="offer_ids" eval="[
-         Command.create({
+            Command.create({
                 'price': 1800000,
-                'partner_id': ref('base.res_partner_1'),
+                'partner_id': ref('base.res_partner_12'),
                 'date_deadline': (DateTime.now() + timedelta(days=14))
             })]"/>
     </record>
