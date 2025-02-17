@@ -1,7 +1,7 @@
 {
     "name": "Real Estate",
     "version": "1.0",
-    "depends": ["base","mail"],
+    "depends": ["mail","website"],
     "author": "odoo",
     "license": "LGPL-3",
     "description": """

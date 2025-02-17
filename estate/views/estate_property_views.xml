@@ -67,6 +67,9 @@
                             </h1>
                                 <field name='tag_ids' widget="many2many_tags" options="{'color_field':'color'}"/>
                             </group>
+                            <group>
+                                <field name="image" widget="image" class="oe_avatar"></field>
+                            </group>
                         <newline/>
                         <group>
                             <group>

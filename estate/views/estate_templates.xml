@@ -3,4 +3,109 @@
     <template id="estate.my_template">
         <h1>Hello, <t t-out="my_variable"/>!</h1>
     </template>
+
+   <template id="estate.property_list_view" name="Property List View">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h1 class="text-center">Property Details</h1>
+                <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+                    <t t-foreach="properties" t-as="property" t-key="property.id">
+                        <div class="col">
+                            <div class="card h-100 property-card">
+                                <t t-if="property.image">
+                                    <img t-att-src="image_data_uri(property.image)" 
+                                        class="card-img-top" alt="Property Image" 
+                                        style="max-height: 200px; object-fit: cover;"/>
+                                </t>
+                                <t t-else="">
+                                    <img t-att-src="'/estate/static/src/img/placeholder.png'" 
+                                        class="card-img-top" alt="No Image Available" 
+                                        style="max-height: 200px; object-fit: cover;"/>
+                                </t>
+                                <div class="card-body">
+                                    <h5 class="card-title"><t t-esc="property.name" /></h5>
+                                    <p class="card-text text-muted">
+                                        <span class="price">₹<t t-esc="property.expected_price" /></span><br/>
+                                        <span class="type">Type: <t t-esc="property.property_type_id.name" /></span><br/>
+                                        <span class="status">Status: <t t-esc="property.status" /></span>
+                                    </p>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="#" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <style>
+                .property-card {
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+
+                .property-card:hover {
+                    transform: translateY(-10px);
+                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+                }
+
+                .property-card .card-img-top {
+                    border-bottom: 1px solid #ddd;
+                }
+
+                .property-card .card-body {
+                    padding: 15px;
+                    text-align: center;
+                }
+
+                .property-card .card-title {
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+
+                .property-card .card-text {
+                    font-size: 1rem;
+                    margin-bottom: 10px;
+                }
+
+                .property-card .price {
+                    font-size: 1.5rem;
+                    color: #e60000;
+                    font-weight: bold;
+                }
+
+                .property-card .type,
+                .property-card .status {
+                    font-size: 0.9rem;
+                    color: #666;
+                }
+
+                .property-card .card-footer {
+                    background-color: #f8f9fa;
+                    border-top: 1px solid #ddd;
+                    padding: 10px;
+                }
+
+                .property-card .btn-primary {
+                    background-color: #007bff;
+                    border-color: #007bff;
+                    padding: 8px 16px;
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    letter-spacing: 0.5px;
+                }
+
+                .property-card .btn-primary:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                }
+            </style>
+
+        </t>
+    </template>
 </odoo>

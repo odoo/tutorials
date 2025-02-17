@@ -1,18 +1,24 @@
 from odoo import http
-from odoo.http import request
+from odoo.http import request,route
 
 class MyController(http.Controller):
     
-    @http.route('/my/custom/route', auth='public', website=True)
+    @route('/my/custom/route', auth='public', website=True)
     def my_custom_route(self):
-        return http.request.render('estate.my_template', {
-            'my_variable': 'Hello, Odoo!'
+        properties = request.env['estate.property'].sudo().search([])
+        
+        return http.request.render('estate.property_list_view', {
+            'properties': properties
         })
+
+    @route('/jjj', auth='public', website=True)
+    def my_data(self, **kwargs):
+        return "Hello!!"
     
-    @http.route('/api/get_data', type='json', auth='user', csrf=False)
-    def api_get_data(self):
-        return {
-            'status': 'success',
-        }
-
-
+    @route('/my_json', auth='public',type='json', website=True, method=['POST'])
+    def my_js(self, **kwargs):
+        return({
+            "name": "mayur"
+        })
+        
+    

@@ -31,6 +31,7 @@ class EstateProperty(models.Model):
         ],
         default='north',
     )
+    image = fields.Image()
     is_garage = fields.Boolean("Garage")
     is_garden = fields.Boolean("Garden")
     living_area = fields.Integer()
