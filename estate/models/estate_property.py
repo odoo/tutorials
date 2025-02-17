@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
     _description = "This is the estate property model"
     _order = "id desc"
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, tracking=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -44,6 +44,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
+        tracking=True,
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one(
@@ -54,7 +55,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
-    company_id = fields.Many2one('res.company',default=lambda self: self.env.company)
+    company_id = fields.Many2one("res.company", default=lambda self: self.env.company)
 
     _sql_constraints = [
         (
@@ -91,7 +92,14 @@ class EstateProperty(models.Model):
     def set_as_sold(self):
         if self.state == "cancelled":
             raise UserError("Cancelled properties cannot be sold.")
+        if "accepted" not in self.offer_ids.mapped("status"):
+            raise UserError("Properties with no accepted offer cannot be sold.")
         self.state = "sold"
+        self.message_post(
+            body=f"The property {self.name} was sold at a price of {self.selling_price}",
+            subject="Property Sold",
+            message_type="notification",
+        )
         return True
 
     def set_as_cancelled(self):
@@ -103,7 +111,14 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price")
     def _selling_price_constraint(self):
         for record in self:
-            if float_compare(record.selling_price,0.9*record.expected_price,precision_digits=2) == -1:
+            if (
+                float_compare(
+                    record.selling_price,
+                    0.9 * record.expected_price,
+                    precision_digits=2,
+                )
+                == -1
+            ):
                 raise ValidationError(
                     "Selling price cannot be lower than 90% of expected price"
                 )
@@ -111,5 +126,33 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_except_state_new_or_cancelled(self):
         for record in self:
-            if record.state != 'new' and record.state != 'cancelled':
+            if record.state != "new" and record.state != "cancelled":
                 raise UserError("Only new and cancelled properties can be deleted.")
+
+    def _track_subtype(self, initial_values):
+        self.ensure_one()
+        if "state" in initial_values and self.state == "sold":
+            return self.env.ref("estate.mt_state_change")
+        return super()._track_subtype(initial_values)
+
+    def action_set_unsold(self):
+        self.write({"state": "offer_received"})
+
+    def _notify_get_recipients_groups(self, message, model_description, msg_vals=None):
+        groups = super()._notify_get_recipients_groups(
+            message, model_description, msg_vals
+        )
+        self.ensure_one()
+        trip_actions = []
+        if self.state == "sold":
+            app_action = self._notify_get_action_link(
+                "method", method="action_set_unsold"
+            )
+            trip_actions = [{"url": app_action, "title": "Set Unsold"}]
+
+        new_group = (
+            "estate_property_manager",
+            lambda pdata: True,
+            {"actions": trip_actions, "active": True, "has_button_access": True},
+        )
+        return [new_group] + groups

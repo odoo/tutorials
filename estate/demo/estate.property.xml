@@ -29,7 +29,7 @@
         <field name="garage">False</field>
         <field name="property_type_id" ref="estate.type_residential"/>
     </record>
-     <record id="estate_property_demo_3" model="estate.property">
+    <record id="estate_property_demo_3" model="estate.property">
         <field name="name">Bandra Property</field>
         <field name="state">new</field>
         <field name="description">High class bandra property.</field>

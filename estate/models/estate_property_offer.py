@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "These are all the offers for the property"
-    _order ="price desc"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -17,7 +17,9 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_deadline", inverse="_inverse_deadline"
     )
-    property_type_id = fields.Many2one(related='property_id.property_type_id',store=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
 
     _sql_constraints = [
         (
@@ -58,10 +60,12 @@ class EstatePropertyOffer(models.Model):
             record.status = "refused"
 
     @api.model_create_multi
-    def create(self,vals_list):
+    def create(self, vals_list):
         for vals in vals_list:
-            property = self.env['estate.property'].browse(vals['property_id'])
-            property.state = 'offer_received'
-            if vals['price'] < property.best_price:
+            property = self.env["estate.property"].browse(vals["property_id"])
+            if property.state == "sold":
+                raise UserError("This property is already sold.")
+            property.state = "offer_received"
+            if vals["price"] < property.best_price:
                 raise UserError(f"Offer should be higher than {property.best_price}")
         return super().create(vals_list)
