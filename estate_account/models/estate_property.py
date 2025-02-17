@@ -3,10 +3,12 @@ from odoo import Command, fields, models
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
+    invoice_id  = fields.Many2one('account.move', string="Invoice", readonly=True)
+
     def action_sold_property(self):
         self.check_access('write')
         res = super().action_sold_property()
-        self.env['account.move'].sudo().create({
+        invoice = self.env['account.move'].sudo().create({
             'partner_id': self.partner_id.id,
             'move_type': 'out_invoice',
             'invoice_line_ids': [
@@ -22,4 +24,5 @@ class EstateProperty(models.Model):
                 }),
             ],
         })
+        self.invoice_id = invoice.id
         return res

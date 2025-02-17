@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_report_user_offers">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-set="properties" t-value="user.property_ids"/>
+                    <t t-if="properties">
+                        <div style="border-bottom: 2px solid #007bff; margin-bottom: 20px; padding-bottom: 10px; text-align: center;">
+                            <span style="color: #6c757d; font-size: 20px;">All properties linked to </span>
+                            <h2 style="color: #007bff; margin: 0;">
+                                <span t-field="user.name"/>
+                            </h2>
+                        </div>
+                        <t t-foreach="properties" t-as="property">
+                            <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center">
+                                <div style="list-style: none; padding: 0; line-height: 1.6;">
+                                    <h2><span t-field="property.name"></span></h2>
+                                    <li>
+                                        <strong>Expected Price:</strong>
+                                        <span t-field="property.expected_price"/>
+                                    </li>
+                                    <li>
+                                        <strong>Property State:</strong>
+                                        <span t-field="property.state"/>
+                                    </li>
+                                </div>
+                                <div>
+                                    <img t-att-src="image_data_uri(property.property_image)" style="max-height: 300px; max-width:300px;"/>
+                                </div>
+                            </div>
+                            <t t-call="estate.estate_property_report_offers_table"/>
+                            <br/>
+                            <br/>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <h2>Currently there are no properties linked to <span t-field="user.name"/>
+                        </h2>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

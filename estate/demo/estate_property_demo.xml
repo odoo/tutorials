@@ -3,6 +3,7 @@
     <record id="estate_property_luxury_villa" model="estate.property">
         <field name="name">Luxury Villa with Pool</field>
         <field name="state">new</field>
+        <field name="property_image" type="base64" file="estate/static/img/luxury_villa.jpg"/>
         <field name="property_type_id" ref="property_type_residential"/>
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_luxury'), ref('property_tag_garden')])]"/>
         <field name="postcode">433454</field>
@@ -19,6 +20,7 @@
         <field name="name">Big Villa</field>
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
+        <field name="property_image" type="base64" file="estate/static/img/big_villa.jpg"/>
         <field name="property_type_id" ref="property_type_residential"/>
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_newly_built'), ref('property_tag_garden')])]"/>
         <field name="postcode">12345</field>
@@ -36,6 +38,7 @@
         <field name="name">Trailer home</field>
         <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
+        <field name="property_image" type="base64" file="estate/static/img/trailer_home.jpg"/>
         <field name="property_type_id" ref="property_type_commercial"/>
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_near_school'), ref('property_tag_pool')])]"/>
         <field name="postcode">54321</field>
