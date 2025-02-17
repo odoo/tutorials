@@ -7,6 +7,8 @@
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",
+        "report/estate_property_templates.xml",
+        "report/estate_property_report.xml",
         "view/estate_property_views.xml",
         "view/estate_property_offers_view.xml",
         "view/property_type_view.xml",
@@ -16,7 +18,8 @@
     ],
     "demo": [
         "demo/estate_property_demo.xml",
-        "demo/estate_offers_demo.xml",
+        "demo/estate_property_offers_demo.xml",
+        "demo/estate_property_types_demo.xml",
     ],
     "license": "LGPL-3",
     "sequence": 1,

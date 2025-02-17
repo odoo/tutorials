@@ -35,7 +35,7 @@
         <field name="description">Madrid's great great castle</field>
         <field name="postcode">15</field>
         <field name="date_availability">2025-02-15</field>
-        <field name="expected_price">150000</field>
+        <field name="expected_price">100</field>
         <field name="bedrooms">15</field>
         <field name="living_area">50</field>
         <field name="facades">2</field>
@@ -44,7 +44,7 @@
             eval="[
             Command.create({
                 'partner_id':ref('base.res_partner_12'),
-                'price':100,
+                'price':102,
                 'validity':11,
             }),
             Command.create({
