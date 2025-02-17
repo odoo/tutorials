@@ -31,26 +31,23 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity", "property_id")
     def _compute_date_deadline(self):
         for record in self:
-            record.date_deadline = fields.Date.add(
-                fields.Date.today(), days=record.validity
+            record.date_deadline = (
+                (fields.Date.add(record.create_date, days=record.validity))
+                if record.create_date
+                else fields.Date.add(fields.Date.today(), days=record.validity)
             )
 
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline:
-                create_date = (
-                    record.create_date.date()
-                    if record.create_date
-                    else fields.Date.today()
-                )
+                create_date = record.create_date.date() if record.create_date else fields.Date.today()
                 record.validity = (record.date_deadline - create_date).days
 
     @api.constrains("price", "status")
     def _check_price(self):
         for record in self:
             if (
-                record.price < ((record.property_id.expected_price * 90) / 100)
-                and record.status == "accepted"
+                record.price < (record.property_id.expected_price * 0.9)
             ):
                 raise ValidationError(
                     "The selling price must be atleast 90% of the expected price! You must reduce expected price if you want to accept this offer."
@@ -80,20 +77,27 @@ class EstatePropertyOffer(models.Model):
                     ("property_id", "=", record.property_id.id),
                     ("id", "!=", record.id),
                 ],
-                limit=1,
             )
             other_offers.write({"status": "refused"})
             record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.status = "offer_accepted"
+            record.property_id.write(
+                {
+                    "selling_price": record.price,
+                    "buyer_id": record.partner_id,
+                    "status": "offer_accepted",
+                }
+            )
 
     def action_refuse(self):
         for record in self:
             if record.status == "refused":
                 raise UserError("This offer already refused")
             if record.status == "accepted":
-                record.property_id.selling_price = 0
-                record.property_id.buyer_id = False
-                record.property_id.status = "offer_received"
+                record.property_id.write(
+                    {
+                        "selling_price": 0,
+                        "buyer_id": False,
+                        "status": "offer_received",
+                    }
+                )
             record.status = "refused"

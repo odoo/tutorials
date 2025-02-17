@@ -4,12 +4,13 @@ from odoo import Command, models
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
-    def property_sold(self):
-        self.env["account.move"].create(
+    def action_sold(self):
+        self.env["account.move"].sudo().create(
             {
                 "move_type": "out_invoice",
                 "partner_id": self.buyer_id.id,
-                "journal_id": self.env["account.journal"]
+                "journal_id": self.sudo()
+                .env["account.journal"]
                 .search([("name", "=", "Customer Invoices")])
                 .id,
                 "currency_id": 20,
@@ -38,4 +39,4 @@ class EstateProperty(models.Model):
                 ],
             }
         )
-        return super().property_sold()
+        return super().action_sold()

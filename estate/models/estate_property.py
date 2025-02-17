@@ -6,6 +6,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Propery Model"
     _order = "id desc"
+    _inherit = ["mail.thread"]
     _sql_constraints = [
         (
             "check_expected_price",
@@ -71,10 +72,7 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids")
     def _compute_best_price(self):
-        max = 0
-        for record in self.offer_ids:
-            max = record.price if record.price > max else max
-        self.best_price = max
+        self.best_price = max(record.mapped("price") for record in self.offer_ids) if len(self.mapped("offer_ids")) > 0 else 0
 
     @api.onchange("is_garden")
     def _onchange_is_garden(self):
