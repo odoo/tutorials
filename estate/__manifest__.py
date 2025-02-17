@@ -7,11 +7,13 @@
     'description': """
     Description text
     """,
+    'website': 'https://www.odoo.com/page/estate',
     # data files always loaded at installation
     'data': [
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
     ],
-    'application': True
+    'application': True,
+    'installable': True
 }
