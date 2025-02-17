@@ -77,6 +77,8 @@ class EstateOffer(models.Model):
             property_record = self.env['estate.property'].browse(property_id)
             if property_record:
                 # Update the property status to 'offer_received'
+                if(property_record.status=="sold"):
+                    raise UserError("Can not create offer for sold property")
                 property_record.write({'status': 'offer_received'})
 
         # Step 2: Raise an error if the new offer price is lower than an existing offer

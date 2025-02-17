@@ -53,7 +53,7 @@
                             <h3>
                                 <span t-field="property.name"/>
                             </h3>
-                             <t t-call="estate.report_property_bid_info"/> 
+                             <t t-call="estate.reprot_property_offer_info"/> 
                         </t>
                     </t>
                         <strong t-else="">Salesman has no properties!</strong>
@@ -62,6 +62,8 @@
         </t>
     </t>
     </template>
+
+
 
     <template id="reprot_property_offer_info">
 

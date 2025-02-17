@@ -24,7 +24,7 @@ class EstateProperty(models.Model):
     living_area = fields.Integer(string="Living Area (m²)",tracking=True)
     facades = fields.Integer(string="Number of Facades",tracking=True)
     garage = fields.Boolean(string="Has Garage")
-    garden = fields.Boolean(string="Has Garden", default=True)
+    garden = fields.Boolean(string="Has Garden")
     garden_area = fields.Integer(string="Garden Area (m²)",tracking=True)
     garden_orientation = fields.Selection(
         [  # this list contains all drop-down options
@@ -142,11 +142,10 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def sold_event(self):
-        if self.status != "sold":  # Prevent selling if already sold
+        if self.status != "canceled" and self.status == "offer_accepted":  # Prevent selling if already sold
             self.status = "sold"
         else:
             raise UserError("This property is already sold.")
-        return True
 
     def cancel_event(self):
         if self.status != "canceled":  # Only allow cancel if not canceled

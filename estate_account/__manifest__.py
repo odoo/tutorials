@@ -7,5 +7,6 @@
     'application': True,
     'depends': ['estate','account'],
     'data': [
+        'views/estate_property_report.xml'
     ]
 }
