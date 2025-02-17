@@ -19,7 +19,7 @@
         <field name="name">estate.property.tag.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list editable='top'>
+            <list editable='bottom'>
                 <field name="name" string="Tag Name"/>
                 <field name="color" widget="color_picker"/>
             </list>

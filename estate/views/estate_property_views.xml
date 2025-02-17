@@ -93,9 +93,7 @@
                                 <h1><field name="name"/></h1>
                                     <field name="property_tags_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                             </group>
-                            <group>
-                                <field name="image_1920" widget='image' optional="show" class="oe_avatar" style="max-width: 150px; max-height: 150px;"/>
-                            </group>
+                                <field name="image_1920" widget='image' class="oe_avatar" style="max-width: 150px; max-height: 150px;"/>
                         </group>
                         <group>
                             <group>
