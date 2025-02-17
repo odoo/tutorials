@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_1" model="estate.property">
+        <field name="name">Luxury Penthouse</field>
+        <field name="state">new</field>
+        <field name="description">A stunning penthouse with ocean views</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability">2023-05-10</field>
+        <field name="expected_price">25000</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">1000</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">40000</field>
+        <field name="garden_orientation">south</field>
+    </record>
+
+    <record id="estate_property_2" model="estate.property">
+        <field name="name">Cozy Cabin</field>
+        <field name="state">sold</field>
+        <field name="description">A charming cabin in the woods</field>
+        <field name="postcode">11223</field>
+        <field name="date_availability">2019-08-15</field>
+        <field name="expected_price">30000</field>
+        <field name="selling_price">280000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">80</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+    </record>
+
+    <record id="estate_property_3" model="estate.property">
+        <field name="name">Historic Mansion</field>
+        <field name="state">new</field>
+        <field name="description">A beautifully preserved historic mansion</field>
+        <field name="postcode">75001</field>
+        <field name="date_availability">2024-01-20</field>
+        <field name="expected_price">100</field>
+        <field name="bedrooms">10</field>
+        <field name="living_area">500</field>
+        <field name="facades">5</field>
+        <field name="garage">True</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'buyer_id':ref('base.res_partner_12'),
+                'price':100,
+                'validity':11,
+            }),
+            Command.create({
+                'buyer_id':ref('base.res_partner_2'),
+                'price':101,
+                'validity':11,
+            })
+        ]" />
+    </record>
+</odoo>
