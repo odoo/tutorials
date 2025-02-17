@@ -6,7 +6,9 @@
     "category": "Real Estate",
     "author": "Darshan Patel",
     "depends": ["estate", "account"],
-    "data": [],
+    "data": [
+        'report/estate_account_reports.xml'
+    ],
     "installable": True,
     "application": False,
     "auto_install": False,
