@@ -5,18 +5,18 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "this is the estate property model"
-    name = fields.Char('Name', required=True)
-    description = fields.Text('Description')
-    postcode = fields.Char('Postal Code')
-    date_availability = fields.Date(default=datetime.date.today() + relativedelta(months=5), copy=False)
+    name = fields.Char('Title', required=True)
+    description = fields.Text()
+    postcode = fields.Char()
+    date_availability = fields.Date('Available From', default=datetime.date.today() + relativedelta(months=5), copy=False)
     expected_price = fields.Float(digits=(20, 2), required=True)
     selling_price = fields.Float(digits=(20, 2), readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer()
+    garden_area = fields.Integer('Garden Area (sqm)')
     garden_orientation = fields.Selection(selection=[
         ('north', 'North'),
         ('south', 'South'),
@@ -26,7 +26,7 @@ class EstateProperty(models.Model):
         ('new', 'New'),
         ('offer', 'Offer'),
         ('received', 'Received'),
-        ('offer_accepted', 'Offer Accepted'),
+        ('accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
     ], copy=False, required=True, default='new')
