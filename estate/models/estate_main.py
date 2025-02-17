@@ -139,7 +139,7 @@ class EstateProperty(models.Model):
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
-            self.garden_area = False
+            self.garden_area = 0
             self.garden_orientation = False
 
     # unlink only if property state is 'New' or 'Cancelled'
@@ -155,6 +155,8 @@ class EstateProperty(models.Model):
 
         if self.state == "cancelled":
             raise UserError("Cancelled properties can't be sold!")
+        elif not any([offer.status == "accepted" for offer in self.offer_ids]):
+            raise UserError("You must accept an offer before selling the property.")
         else:
             self.state = "sold"
         return True
