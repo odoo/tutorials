@@ -22,6 +22,7 @@
         'security/estate_groups.xml',
         'security/estate_security.xml',
         'security/ir.model.access.csv',
+        'wizard/estate_property_offer_wizard_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
