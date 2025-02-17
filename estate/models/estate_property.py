@@ -59,6 +59,7 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     property_offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store="True")
+    company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
 
     @api.depends('property_offer_ids')
     def _compute_best_price(self):

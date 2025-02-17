@@ -16,7 +16,7 @@
     'installable': True,
 
     'data' : [
-        'security/estate_security.xml',
+        'security/group_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_offer_views.xml',
         'wizard/estate_property_multiple_offer_views.xml',
@@ -24,6 +24,7 @@
         'views/estate_property_tag_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_res_users_views.xml',
+        'security/estate_security.xml',
         'views/estate_menus.xml'
     ],
 

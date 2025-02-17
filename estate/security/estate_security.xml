@@ -1,13 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="estate_group_user" model="res.groups">
-        <field name="name">Real Estate Agent</field>
-        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    <record id="agent_rule" model="ir.rule">
+        <field name="name">A description of the rule's role</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
+        <field name="domain_force">[
+            '|', ('user_id', '=', user.id),
+                ('user_id', '=', False)
+        ]</field>
     </record>
 
-    <record id="estate_group_manager" model="res.groups">
-        <field name="name">Real Estate Manager</field>
-        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
-        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
-        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    <record id="manager_rule" model="ir.rule">
+        <field name="name">A description of the rule's role</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_manager'))]"/>
+        <field name="domain_force">[
+            (1, '=', 1)
+        ]</field>
+    </record>
+
+    <record model="ir.rule" id="estate_property_multi_company_rule">
+        <field name="name">Estate Property Multi-Company Access</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[
+                ('company_id', 'in', company_ids)
+        ]</field>
     </record>
 </odoo>
