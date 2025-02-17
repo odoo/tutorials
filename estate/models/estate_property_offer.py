@@ -38,6 +38,9 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property = self.env['estate.property'].browse(vals['property_id'])
+            
+            if property.state == 'sold':
+                raise UserError("You cannot crete offer for sold property")
             property.state = "offer_received"
             
             best_offer = self.search([('property_id', '=', vals['property_id'])], order="price desc", limit=1)

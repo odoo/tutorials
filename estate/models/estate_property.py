@@ -8,6 +8,7 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _inherit=["mail.thread", "mail.activity.mixin"]
     _order = "id desc"
     
     _sql_constraints = [
@@ -48,7 +49,8 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        string="State", required=True, copy=False, default="new"
+        string="State", required=True, copy=False, 
+        default="new", tracking=True
     )
     property_type_id=fields.Many2one(string="Property Type", comodel_name="estate.property.type", ondelete="restrict")
     buyer_id=fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False, readonly=True)

@@ -3,7 +3,8 @@
     "description": "This is a real estate listing module.",
     "category": "Real Estate/Brokerage",
     "depends": [
-        "base"
+        "base",
+        "mail"
     ],
     'data': [
         'security/security.xml',
