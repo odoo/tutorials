@@ -12,6 +12,10 @@
         <field name="arch" type="xml">
             <list decoration-success="offer_ids" decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'">
+                <header>
+                    <button name="estate.action_estate_property_add_offer_wizard" type="action"
+                        string="Add Offer" class="oe_highlight" />
+                </header>
                 <field name="name" />
                 <field name="postcode" />
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
@@ -82,6 +86,7 @@
                     <h1 class="fw-bolder">
                         <field name="name" />
                     </h1>
+                    <field name="property_image" widget="image" class="oe_avatar" />
                     <field name="tag_ids" widget="many2many_tags"
                         options="{'color_field': 'color'}"
                     />
@@ -125,6 +130,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>

@@ -1,0 +1,213 @@
+<odoo>
+    <template id="estate_website_properties" name="Website Estate Properties">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <!-- Header Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h1 class="text-center">Real Estate Properties</h1>
+                        <p class="text-center text-muted">Find your dream property</p>
+                    </div>
+                </div>
+                <form method="GET" action="/estate/properties" class="row mb-3">
+                    <div class="col-md-4">
+                        <input type="date" name="listed_after" id="listed_after"
+                            class="form-control"
+                            t-att-value="listed_after or ''" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary" id="filter-btn">Listed After</button>
+                    </div>
+                </form>
+                <!-- Properties Grid -->
+                <div class="row">
+                    <t t-if="properties">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 shadow-sm">
+                                    <t t-if="property.property_image">
+                                        <img
+                                            t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'"
+                                            class="card-img-top"
+                                            style="height: 200px; object-fit: cover;"
+                                            alt="Property Image" />
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/estate/static/img/default_property.png"
+                                            class="card-img-top"
+                                            style="height: 200px; object-fit: cover;"
+                                            alt="Default Property Image" />
+                                    </t>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary">
+                                            <t t-esc="property.name" />
+                                        </h5>
+                                        <t t-if="property.property_type_id">
+                                            <p class="badge bg-secondary mb-2">
+                                                <t t-esc="property.property_type_id.name" />
+                                            </p>
+                                        </t>
+                                        <div class="mb-3">
+                                            <small class="text-muted">
+                                                <i class="fa fa-bed me-2"></i><t
+                                                    t-esc="property.bedrooms" /> beds <span
+                                                    class="mx-2">
+                                                    |</span>
+                                            <i class="fa fa-ruler me-2"></i><t
+                                                    t-esc="property.living_area" /> m² </small>
+                                        </div>
+                                        <div
+                                            class="d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-0"> $<t
+                                                    t-esc="'{:,.2f}'.format(property.expected_price)" />
+                                            </h6>
+                                            <span
+                                                t-att-class="'badge ' + ('bg-success' if property.state == 'new' else 'bg-warning' if property.state == 'offer_received' else 'bg-danger' if property.state == 'cancelled' else 'bg-info')">
+                                                <t t-esc="property.state.replace('_', ' ').title()" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-white border-top-0">
+                                        <a t-att-href="'/estate/property/' + str(property.id)"
+                                            class="btn btn-outline-primary w-100">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <div class="col-12">
+                            <div class="alert alert-info text-center" role="alert">
+                                <i class="fa fa-info-circle me-2"></i> No properties found. Please
+                                adjust your search criteria and try again. </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <div class="container d-flex justify-content-center align-items-center my-4">
+                <t t-call="website.pager" />
+            </div>
+        </t>
+    </template>
+
+    <template id="estate_website_property_detail" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/estate/properties">Properties</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <t t-esc="property.name" />
+                        </li>
+                    </ol>
+                </nav>
+
+                <div class="row">
+                    <!-- Image Section -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <t t-if="property.property_image">
+                                <img
+                                    t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'"
+                                    class="img-fluid rounded" alt="Property Image" />
+                            </t>
+                            <t t-else="">
+                                <img src="/estate/static/img/default_property.png"
+                                    class="img-fluid rounded" alt="Default Property Image" />
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- Property Details -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h1 class="card-title mb-4">
+                                    <t t-esc="property.name" />
+                                </h1>
+
+                                <!-- Status and Price -->
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h3 class="text-primary mb-0">$<t
+                                            t-esc="'{:,.2f}'.format(property.expected_price)" /></h3>
+                                    <span
+                                        t-att-class="'badge p-2 ' + ('bg-success' if property.state == 'new' else 'bg-warning' if property.state == 'offer_received' else 'bg-danger' if property.state == 'cancelled' else 'bg-info')">
+                                        <t t-esc="property.state.replace('_', ' ').title()" />
+                                    </span>
+                                </div>
+
+                                <!-- Key Features -->
+                                <div class="row mb-4">
+                                    <div class="col-6 col-md-4 mb-3">
+                                        <div class="text-center p-3 border rounded">
+                                            <i class="fa fa-bed mb-2"></i>
+                                            <p class="mb-0"><t t-esc="property.bedrooms" /> Bedrooms</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4 mb-3">
+                                        <div class="text-center p-3 border rounded">
+                                            <i class="fa fa-square mb-2"></i>
+                                            <p class="mb-0"><t t-esc="property.living_area" /> m²</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4 mb-3">
+                                        <div class="text-center p-3 border rounded">
+                                            <i class="fa fa-building mb-2"></i>
+                                            <p class="mb-0"><t t-esc="property.facades" /> Facades</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <t t-if="property.description">
+                                    <h5 class="mb-3">Description</h5>
+                                    <p class="text-muted mb-4">
+                                        <t t-esc="property.description" />
+                                    </p>
+                                </t>
+
+                                <!-- Additional Features -->
+                                <h5 class="mb-3">Features</h5>
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2">
+                                                <i
+                                                    t-att-class="'fa fa-check-circle me-2 ' + ('text-success' if property.garage else 'text-danger')"></i>
+                                                Garage </li>
+                                            <li class="mb-2">
+                                                <i
+                                                    t-att-class="'fa fa-check-circle me-2 ' + ('text-success' if property.garden else 'text-danger')"></i>
+                                                Garden </li>
+                                        </ul>
+                                    </div>
+                                    <t t-if="property.garden">
+                                        <div class="col-md-6">
+                                            <p class="mb-2">Garden Area: <t
+                                                    t-esc="property.garden_area" /> m²</p>
+                                            <p>Orientation: <t
+                                                    t-esc="property.garden_orientation.title()" /></p>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- Best Offer -->
+                                <t t-if="property.best_price > 0">
+                                    <div class="alert alert-info">
+                                        <h6 class="mb-0">Best Offer: $<t
+                                                t-esc="'{:,.2f}'.format(property.best_price)" /></h6>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

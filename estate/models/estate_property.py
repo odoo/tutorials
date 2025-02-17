@@ -8,9 +8,11 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is the model for estate property"
     _order = "id desc"
+    _inherit = ["mail.thread"]
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string="Description")
+    property_image = fields.Binary(string="Property Image")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     postcode = fields.Char(string="PostCode")
     date_availability = fields.Date(
@@ -40,7 +42,7 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        required=True, default="new", copy=False,
+        required=True, default="new", copy=False, tracking=True,
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(

@@ -5,8 +5,11 @@
     "author" : "Mahavir Patel (pmah)",
     "website" : "https://odoo.com",
     "category" : "Tutorials/Estate_Account",
-    "depends" : ["estate", "account"],
+    "depends" : ["account","estate"],
     "installable" : True,
     "maintainer" : "Mahavir Patel (pmah)",
     "license" : "LGPL-3",
+    "data" : [
+        "report/estate_property_inherit.xml"
+    ],
 }
