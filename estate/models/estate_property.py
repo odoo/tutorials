@@ -84,7 +84,6 @@ class Property_Plan(models.Model):
             if float_is_zero(record.selling_price, precision_digits=2):
                 continue
 
-
             min_acceptable_price = record.expected_price * 0.9
             
             # Compare selling_price with min_acceptable_price
@@ -92,3 +91,9 @@ class Property_Plan(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_deletion(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise ValidationError("You can only delete properties that are 'New' or 'Cancelled'.")

@@ -1,5 +1,6 @@
 from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError,UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -12,7 +13,7 @@ class EstatePropertyOffer(models.Model):
         copy=False
     )
     partner_id = fields.Many2one('res.partner', required=True)
-    property_id = fields.Many2one('estate.property',required=True)
+    property_id = fields.Many2one('estate.property', required=True, ondelete="cascade")
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True, string="Property Type")
     validity = fields.Integer(string="Validity(days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
@@ -54,6 +55,18 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.status = 'refused'
 
-    _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0)', "The offer price must be strictly positive."),
-    ]
+    @api.model_create_multi
+    def create(self, vals_list):
+        
+        for vals in vals_list:
+            property_obj = self.env['estate.property'].browse(vals['property_id'])  
+
+            best_offer_price = property_obj.best_price or 0  
+            new_offer_price = vals.get('price', 0)  
+
+            if new_offer_price < best_offer_price:
+                raise UserError(f"The offer must be higher than the best offer ({best_offer_price}).")
+
+            property_obj.write({'state': 'offer_received'})
+
+        return super().create(vals_list)
