@@ -10,6 +10,7 @@
         <field name="name">Manager</field>
         <field name="implied_ids" eval="[(4, ref('estate_group_user'))]" />
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
 
     <record id="rule_estate_property_based_on_user" model="ir.rule">
@@ -17,8 +18,8 @@
         <field name="model_id" ref="model_estate_property"/>
         <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
         <field name="domain_force">[
-        '|', ('salesperson_id', '=', user.id),
-             ('salesperson_id', '=', False)
+            '|', ('company_id', '=', False), ('company_id', 'in', company_ids),
+            '|', ('salesperson_id', '=', False),('salesperson_id', '=', user.id)
         ]</field>
     </record>
 
