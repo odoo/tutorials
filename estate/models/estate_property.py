@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from odoo import api, exceptions,fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -7,9 +8,10 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _inherit = ['mail.thread']
     _order = 'id desc'
 
-    name = fields.Char(string="Name", required=True, help="Name of the Property")
+    name = fields.Char(string="Name", required=True, help="Name of the Property", tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(

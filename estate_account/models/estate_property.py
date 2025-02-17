@@ -1,5 +1,7 @@
 from datetime import date
+
 from odoo import Command, models
+
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"

@@ -1,5 +1,7 @@
 from datetime import timedelta
+
 from odoo import api, exceptions,fields, models
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"

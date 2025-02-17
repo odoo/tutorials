@@ -4,7 +4,7 @@
     'category': 'Real Estate',
     'summary': 'A real estate management app for listing, selling, and tracking properties.',
     'author': 'Maan Patel',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'data' : [
         'security/estate_security.xml',
         'security/ir.model.access.csv',

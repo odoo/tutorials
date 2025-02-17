@@ -52,21 +52,9 @@
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_cozy'), ref('property_tag_wooden'), ref('property_tag_ocean_view')])]"/>
         <field name="offer_ids"
             eval="[
-            Command.create({
-                'price': 350000,
-                'validity': 12,
-                'partner_id': ref('base.res_partner_12')
-            }),
-            Command.create({
-                'price': 300000,
-                'validity': 11,
-                'partner_id': ref('base.res_partner_10')
-            }),
-            Command.create({
-                'price': 400000,
-                'validity': 1,
-                'partner_id': ref('base.res_partner_2')
-            }),
+            Command.create({'price': 350000,'validity': 12,'partner_id': ref('base.res_partner_12')}),
+            Command.create({'price': 300000,'validity': 11,'partner_id': ref('base.res_partner_10')}),
+            Command.create({'price': 400000,'validity': 1,'partner_id': ref('base.res_partner_2') }),
         ]" />
     </record>
 </odoo>
