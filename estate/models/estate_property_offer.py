@@ -37,13 +37,16 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals):
         for record in vals:
-            property = record.get('property_id')
+            property = self.env['estate.property'].browse(record['property_id'])
             if property:
-                existing_offers = self.search([('property_id', '=', property)])
-                if any(offer.price >= record.get('price', 0) for offer in existing_offers):
-                    raise UserError("An existing offer has an equal or higher amount. Please submit a higher offer.")
-    
-            self.env['estate.property'].browse(record['property_id']).state = "received"
+                if property.state == "sold":
+                    raise UserError("You cannot create an offer for a sold property.")
+                else:
+                    existing_offers = self.search([('property_id', '=', property.id)])
+                    if any(offer.price >= record.get('price', 0) for offer in existing_offers):
+                        raise UserError("An existing offer has an equal or higher amount. Please submit a higher offer.")
+        
+                    property.state = "received"
         return super().create(vals)
 
     @api.depends("validity", "create_date")

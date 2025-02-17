@@ -18,8 +18,8 @@
         "views/estate_menus.xml",
     ],
     "demo": [
-        "data/estate_property_type_demo.xml",
-        "data/estate_property_demo.xml",
-        "data/estate_property_offer_demo.xml",
+        "demo/estate_property_type_demo.xml",
+        "demo/estate_property_demo.xml",
+        "demo/estate_property_offer_demo.xml",
     ],
 }

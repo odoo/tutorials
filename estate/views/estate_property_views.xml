@@ -47,7 +47,7 @@
             <form>
                 <header>
                     <button
-                        name="mark_offer_sold"
+                        name="action_sell_property"
                         type="object"
                         string="SOLD"
                         invisible="state in ('sold','cancelled') " />

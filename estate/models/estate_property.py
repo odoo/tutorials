@@ -137,13 +137,23 @@ class EstateProperty(models.Model):
                     f"This offer is in {state_label} state. You can't delete it."
                 )
 
-    def mark_offer_sold(self):
+
+    def action_sell_property(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError("Cancelled property can not be sold")
-            else:
-                record.state = "sold"
-        return True
+                raise UserError("Cancelled property cannot be sold")
+
+            # Check if there is at least one accepted offer
+            has_accepted_offer = any(
+                offer.status == "accepted" for offer in record.offer_ids
+            )
+
+            print(has_accepted_offer , "============================================") 
+
+            if not has_accepted_offer:
+                raise UserError("You cannot sell a property without an accepted offer")
+
+            record.state = "sold"  # Update state only when a valid offer is found
 
     def mark_offer_cancel(self):
         for record in self:

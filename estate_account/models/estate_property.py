@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
-    def mark_offer_sold(self):
+    def action_sell_property(self):
         if not self.partner_id.id:
             raise UserError("Property without buyer cannot be sold.")
         try:
@@ -37,4 +37,4 @@ class EstateProperty(models.Model):
             }
         )
 
-        return super().mark_offer_sold()
+        return super().action_sell_property()
