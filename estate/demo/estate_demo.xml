@@ -70,7 +70,7 @@
         ]" />
     </record>
 
-    <!-- Offers -->
+    <!-- Villa Offers -->
     <record id="villa_offer1" model="estate.property.offer">
         <field name="price">10000</field>
         <field name="validity">14</field>
