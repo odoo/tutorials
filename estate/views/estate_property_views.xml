@@ -11,6 +11,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list decoration-success="state in ['offer_accepted', 'offer_received']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <header>
+                    <button name="estate.action_estate_property_add_offer_wizard" string="Add Offer" type="action" class="oe_highlight"/>
+                </header>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
