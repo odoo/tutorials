@@ -111,7 +111,7 @@
                 <separator/>
                 <filter string="Available" name="date_availability" domain="[('date_availability', '>=', context_today())]"/>
                 <filter string="New or Offer Recieved" name="state" domain="['|', ('state', '=', 'new'),('state', '=', 'offer_received')]"/>
-                <group expand="1" string="Group By">
+                <group string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>

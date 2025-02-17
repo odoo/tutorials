@@ -6,7 +6,7 @@
             <menuitem id="estate_property_advertisement_action" action="estate_property_action"/>
         </menuitem>
         <!-- Settings Menu -->
-        <menuitem id="estate_property_settings_menu" name="Settings">
+        <menuitem id="estate_property_settings_menu" name="Settings" groups="estate_group_manager">
             <!-- Property Type-->
             <menuitem id="estate_property_settings_types_action" action="estate_property_type_action"/>
             <!-- Property Tags-->

@@ -1,4 +1,4 @@
-from odoo import Command, fields, models
+from odoo import Command, exceptions, fields, models
 
 
 class InheritedModel(models.Model):
@@ -10,7 +10,11 @@ class InheritedModel(models.Model):
 
     def action_to_invoice_property(self):
         print("Added successfully".center(100, "="))
-        self.env["account.move"].create(
+        
+        if not self.env.user.has_group("estate.estate_group_manager"):
+            raise exceptions.AccessError("You do not have permission!")
+        # breakpoint()
+        self.env["account.move"].sudo().create(
             {
                 "partner_id": self.partner_id.id,
                 "move_type": "out_invoice",

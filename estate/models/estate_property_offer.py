@@ -67,7 +67,6 @@ class EstatePropertyOffer(models.Model):
                     ("status", "=", ""),
                 ]
             )
-
             other_offers.write({"status": "refused"})
 
     # Function to perform action when offer refused
@@ -75,19 +74,24 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
 
-    @api.model
-    def create(self, vals):
+    #! used model create multi because @api.model is deprecated
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Overrides the create method to enforce business rules:
         1. Prevents creating an offer lower than the highest existing offer for the same property.
         2. Updates the property state to 'Offer Received' when an offer is created.
         """
-        property = self.env["estate.property"].browse(vals["property_id"])
-        max_price = max(property.offer_ids.mapped("price"), default=0)
-        if vals.get("price") < max_price:
-            raise exceptions.UserError(f"The offer must be higher than {max_price}.")
+        print(vals_list)
+        for vals in vals_list:
+            if vals["property_id"]:
+                property = self.env["estate.property"].browse(vals["property_id"])
+                if vals["price"] < property.best_prices:
+                    raise exceptions.UserError(
+                        f"The offer must be higher than {property.best_prices}."
+                    )
 
-        if property.state == "new":
-            property.state = "offer_received"
+            if property.state == "new":
+                property.state = "offer_received"
 
-        return super(EstatePropertyOffer, self).create(vals)
+        return super(EstatePropertyOffer, self).create(vals_list)

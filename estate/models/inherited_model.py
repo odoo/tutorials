@@ -7,5 +7,8 @@ class InheritedModel(models.Model):
     property_ids = fields.One2many(
         "estate.property",
         "user_id",
-        domain="[('date_availability', '>=', context_today())]",
+        domain=[
+            ("date_availability", ">=", fields.Date.today()),
+            ("state", "in", ["new", "offer_received", "offer_accepted"]),
+        ],
     )

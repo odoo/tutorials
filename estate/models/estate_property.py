@@ -59,6 +59,9 @@ class EstateProperty(models.Model):
         "estate.property.offer", "property_id", string="Offers"
     )  # One2Many field
     best_prices = fields.Float(string="Best Offer", compute="_compute_best_offer")
+    company_id = fields.Many2one(
+        "res.company", required=True, default=lambda self: self.env.company
+    )
 
     _sql_constraints = [
         (
@@ -141,3 +144,4 @@ class EstateProperty(models.Model):
         will be updated.
         And the method is being overridden in estate account module's inherited model.
         """
+        print(self.env.user.has_group("estate.estate_group_manager"))

@@ -19,19 +19,19 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Types">
-                <header class="oe_button_box">
-                    <button name="%(show_estate_property_offers)d" type="action" class="oe_stat_button d-flex justify-content-center align-items-center gap-2" icon="fa-money">
-                        <div class="o_stat_info d-flex flex-column align-items-start">
-                            <div class="o_stat_text">
-                                <field name="offer_count"/>
-                            </div>
-                            <div class="o_stat_text">
-                                Offers
-                            </div>
-                        </div>
-                    </button>
-                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(show_estate_property_offers)d" type="action" class="oe_stat_button" icon="fa-money">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">
+                                Offers
+                                </span>
+                                <span class="o_stat_value">
+                                    <field name="offer_count"/>
+                                </span>
+                            </div>
+                        </button>
+                    </div>
                     <group>
                         <h1 class="mb32">
                             <field name="name" class="mb16" placeholder="Property Type"/>
@@ -68,9 +68,10 @@
         <field name="name">estate.property.offer.view.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
+            <list decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="property_id"/>
                 <field name="validate"/>
                 <field name="date_deadline"/>
             </list>
