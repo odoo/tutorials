@@ -1,0 +1,4 @@
+{
+    'name': 'estate',
+    'application': True
+}
