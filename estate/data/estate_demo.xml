@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Property Types -->
+    <record id="House" model="estate.property.type">
+        <field name="name">House</field>
+    </record>
+
     <record id="property_residential" model="estate.property.type">
         <field name="name">Residential</field>
     </record>
@@ -17,13 +21,17 @@
         <field name="name">Land</field>
     </record>
 
+    <record id="base_res_partner_12" model="res.partner">
+        <field name="name">Partner 12</field>
+    </record>
+
     <!-- Properties -->
     <record id="villa" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
-        <field name="date_availability">2020-02-02</field>
+        <field name="date_availability">2025-01-17</field>
         <field name="expected_price">1600000</field>
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
@@ -31,17 +39,16 @@
         <field name="garage">True</field>
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
-        <field name="garden_orientation">S</field>
-        <field name="property_type_id" ref="property_residential"/>
-        <field name="user_id" ref="base.user_admin"/>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="House"/>
     </record>
 
     <record id="trailer" model="estate.property">
         <field name="name">Trailer Home</field>
-        <field name="state">canceled</field>
+        <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
-        <field name="date_availability">1970-01-01</field>
+        <field name="date_availability">2025-01-17</field>
         <field name="expected_price">100000</field>
         <field name="selling_price">120000</field>
         <field name="bedrooms">1</field>
@@ -50,7 +57,6 @@
         <field name="garage">False</field>
         <field name="garden">True</field>
         <field name="property_type_id" ref="property_residential"/>
-        <field name="user_id" ref="base.user_admin"/>
     </record>
 
     <record id="space_ship" model="estate.property">
@@ -58,10 +64,9 @@
         <field name="state">new</field>
         <field name="description">Aliens sometimes come visit</field>
         <field name="postcode">----</field>
-        <field name="date_availability">2030-12-31</field>
+        <field name="date_availability">2025-01-17</field>
         <field name="expected_price">45890000</field>
         <field name="property_type_id" ref="property_industrial"/>
-        <field name="user_id" ref="base.user_admin"/>
     </record>
 
     <record id="cabin" model="estate.property">
@@ -69,7 +74,7 @@
         <field name="state">sold</field>
         <field name="description">Small cabin by lake</field>
         <field name="postcode">10000</field>
-        <field name="date_availability">2020-01-01</field>
+        <field name="date_availability">2025-01-17</field>
         <field name="expected_price">80000</field>
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
@@ -77,7 +82,6 @@
         <field name="garage">False</field>
         <field name="garden">True</field>
         <field name="property_type_id" ref="property_residential"/>
-        <field name="user_id" ref="base.user_admin"/>
     </record>
 
     <!-- Offers -->
@@ -85,25 +89,25 @@
     <record id="offer_azure_villa_1" model="estate.property.offer">
         <field name="price">10000</field>
         <field name="validity">14</field>
-        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="buyer_id" ref="base_res_partner_12"/>
         <field name="property_id" ref="villa"/>
-        <field name="date_deadline" eval="str(datetime.now().year)+'-01-31'"/>
+        <field name="date_deadline">2025-01-31</field>
     </record>
 
     <record id="offer_azure_villa_2" model="estate.property.offer">
         <field name="price">1500000</field>
         <field name="validity">14</field>
-        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="buyer_id" ref="base_res_partner_12"/>
         <field name="property_id" ref="villa"/>
-        <field name="date_deadline" eval="str(datetime.now().year)+'-02-11'"/>
+        <field name="date_deadline">2025-01-31</field>
     </record>
 
     <record id="offer_deco_villa" model="estate.property.offer">
         <field name="price">1500001</field>
         <field name="validity">14</field>
-        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="buyer_id" ref="base_res_partner_12"/>
         <field name="property_id" ref="villa"/>
-        <field name="date_deadline" eval="str(datetime.now().year)+'-02-12'"/>
+        <field name="date_deadline">2025-01-31</field>
     </record>
 
     <function model="estate.property.offer" name="action_accept">
@@ -122,16 +126,16 @@
     <record id="offer_cabin_1" model="estate.property.offer">
         <field name="price">60000</field>
         <field name="validity">14</field>
-        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="buyer_id" ref="base_res_partner_12"/>
         <field name="property_id" ref="cabin"/>
-        <field name="date_deadline" eval="str(datetime.now().year)+'-02-12'"/>
+        <field name="date_deadline">2025-01-31</field>
     </record>
 
     <record id="offer_cabin_2" model="estate.property.offer">
         <field name="price">75000</field>
         <field name="validity">14</field>
-        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="buyer_id" ref="base_res_partner_12"/>
         <field name="property_id" ref="cabin"/>
-        <field name="date_deadline" eval="str(datetime.now().year)+'-02-12'"/>
+        <field name="date_deadline">2025-01-31</field>
     </record>
 </odoo>

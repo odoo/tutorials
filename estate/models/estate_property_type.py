@@ -25,21 +25,9 @@ class EstatePropertyType(models.Model):
     sequence = fields.Integer(string="Sequence", default=1, help="Used to order property types. Lower is better.")
 
     _sql_constraints = [
-        ('unique_property_type', 'UNIQUE(name)', 'A property type must be unique.'),
+        ('unique_property_type', 'UNIQUE(name)', 'A property type must be unique.')
     ]
 
     def _compute_offer_count(self):
         for offer in self:
             offer.offer_count = len(offer.offer_ids)
-
-    @api.model
-    def action_view_offers(self):
-        if not self.id:
-            raise UserError("Property Type is not set.")
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Property Offers',
-            'res_model': 'estate.property.offer',
-            'view_mode': 'tree,form',
-            'domain': [('property_type_id', '=', self.id)],  # Filter by current property type ID
-        }

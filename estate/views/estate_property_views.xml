@@ -1,18 +1,29 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
+        <record id="estate_add_offer_wizard_action" model="ir.actions.act_window">
+            <field name="name">Property Offers</field>
+            <field name="res_model">estate.add.offer.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="domain">[('property_ids', '=', active_ids)]</field>
+        </record>
+
         <record id="estate_property_list" model="ir.ui.view">
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <list string="Properties">
-                    <field name="name" decoration-success="state == 'offer_accepted'" decoration-muted="state == 'sold'"/>
+                    <header>
+                        <button name="%(estate_add_offer_wizard_action)d" type="action" string="Add Offer" class="btn-primary"/>
+                    </header>
+                    <field name="name"/>
                     <field name="postcode" string="Postcode"/>
                     <field name="bedrooms"/>
                     <field name="living_area" string="Living Area"/>
                     <field name="expected_price" string="Expected Price"/>
                     <field name="selling_price" string="Selling Price"/>
-                    <field name="date_availability" string="Available From" invisible="1"/>
+                    <field name="date_availability" string="Available From"/>
                     <field name="property_type_id" string="Property type" readonly="1" widget="many2one"/>
                 </list>
             </field>
@@ -68,7 +79,6 @@
                                 </group>
                             </group>
                         </div>
-
                         <notebook>
                             <page string="Description">
                                 <group>
@@ -84,11 +94,11 @@
                                 </group>
                             </page>
                             <page string="Offers" widget="one2many" name="offer_ids">
-                                <field name="offer_ids">
+                                <field name="offer_ids" readonly="state == 'offer_accepted'">
                                     <list>
                                         <field name="price" string="Price"/>
-                                        <button name="action_accept" states="draft" type="object" icon="fa-check" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                                        <button name="action_refuse" states="draft" type="object" icon="fa-times" attrs="{'invisible': [('accepted', '=', True)]}"/>
+                                        <button name="action_accept" type="object" icon="fa-check"/>
+                                        <button name="action_refuse" type="object" icon="fa-times" invisible="status == 'accepted'"/>
                                         <field name="status" string="Status"/>
                                         <field name="validity" string="Validity (days)"/>
                                         <field name="date_deadline" string="Deadline"/>
@@ -150,11 +160,11 @@
                                     </span>
                                 </div>
                                 <div t-if="record.state.raw_value == 'offer_received'">
-                                    <span>Best Price:<field name="best_price" />
+                                    <span>Best Price:<field name="best_price"/>
                                     </span>
                                 </div>
                                 <div t-if="record.state.raw_value == 'offer_accepted'">
-                                    <span>Selling Price:<field name="selling_price" />
+                                    <span>Selling Price:<field name="selling_price"/>
                                     </span>
                                 </div>
                                 <div>

@@ -38,11 +38,11 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <button name="%(estate_property_offer_action)d" type="action" string="View Offers" domain="[('offer_count', '>', 0)]"/>
                         <group>
                             <h1>
                                 <field name="name"/>
                             </h1>
-                            <button name="%(estate_property_offer_action)d" class="oe_stat_button" type="action" string="View Offers" domain="[('offer_count', '>', 0)]"/>
                             <field name="sequence" widget="integer" string="Sequence"/>
                         </group>
                         <notebook>

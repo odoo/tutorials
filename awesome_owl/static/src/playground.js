@@ -1,7 +1,13 @@
 /** @odoo-module **/
 
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
+import { Counter } from "./counter/counter";
+import { Card } from "./card";
 
-export class Playground extends Component {
-    static template = "awesome_owl.playground";
+
+class Playground extends Component {
+    static template = "awesome_owl.Playground"
+    static components = {Counter, Card}
 }
+
+export {Playground};

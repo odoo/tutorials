@@ -1,7 +1,7 @@
 {
-    'name' : "estate",
+    'name' : "Estate",
     'version' : '1.0',
-    'depends' : ['base', 'mail'],
+    'depends' : ['base', 'mail', 'website'],
     'category' : 'Real Estate',
     'description' : 'A module for managing real estate properties!',
     'installable' : True,
@@ -15,12 +15,14 @@
        'views/estate_property_type_views.xml',
        'views/estate_property_tag_views.xml',
        'views/res_users_views.xml',
+       'views/estate_property_template.xml',
+       'report/estate_property_report_action.xml',
+       'report/estate_property_report_template.xml',
+       'wizard/main.xml',
        'views/estate_menu.xml',
-       'report/estate_property_offer_report.xml',
-       'report/estate_property_offer_templates.xml',
     ],
     'demo' : [
         'data/estate_demo.xml',
     ],
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
 }

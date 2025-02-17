@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -15,7 +16,7 @@ class EstatePropertyOffer(models.Model):
             ('accepted', "Accepted"),
             ('refused', "Refused")
         ],
-        copy=False,
+        copy=False
     )
     amount = fields.Float(string="Offer Amount")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
@@ -30,7 +31,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     _sql_constraints = [
-        ('positive_offer_price', 'CHECK(price > 0)', 'An offer price must be strictly positive.'),
+        ('positive_offer_price', 'CHECK(price > 0)', 'An offer price must be strictly positive.')
     ]
 
     @api.model_create_multi
@@ -41,6 +42,8 @@ class EstatePropertyOffer(models.Model):
             property_id = offer.property_id.id
             offer_amount = offer.amount
             existing_offers = self.env['estate.property.offer'].search([('property_id', '=', property_id)])
+            if offer.property_id.state == 'new':
+               offer.property_id.state = 'offer_received'
             for existing_offer in existing_offers:
                 if existing_offer.amount > offer_amount:
                     raise UserError(f"Offer amount must be higher than the existing offer of {existing_offer.amount}.")
@@ -67,14 +70,18 @@ class EstatePropertyOffer(models.Model):
         property_ids = self.mapped('property_id.id')
         other_offers = self.search([('property_id', 'in', property_ids), ('id', 'not in', self.ids)])
         for offer in self:
-             if offer.property_id.state == 'sold':
-                 raise UserError("The property has already been sold, you cannot accept an offer.")    
-             if offer.property_id.state == 'cancelled':
-                 raise UserError("The property has been cancelled, you cannot accept an offer.")            
-             offer.status = 'accepted'
-             offer.property_id.state = 'offer_accepted'
-             offer.property_id.selling_price = offer.price
-             offer.property_id.buyer_id = offer.buyer_id
+            if offer.property_id.state == 'sold':
+                raise UserError("The property has already been sold, you cannot accept an offer.")    
+            elif offer.property_id.state == 'cancelled':
+                raise UserError("The property has been cancelled, you cannot accept an offer.")  
+            offer.update({
+              'status': 'accepted',
+            })
+            offer.property_id.write({
+              'state': 'offer_accepted',
+              'selling_price': offer.price,
+              'buyer_id': offer.buyer_id.id,
+            })
         other_offers.write({'status': 'refused'})
 
     def action_refuse(self):
@@ -82,9 +89,3 @@ class EstatePropertyOffer(models.Model):
             if offer.status == 'accepted':
                 raise UserError("You cannot refuse an offer that has already been accepted.")
             offer.status = 'refused'
-
-    def write(self, values):
-        for offer in self:
-            if offer.status == 'accepted':
-                raise UserError("You cannot edit an offer once it has been accepted.")
-        return super(EstatePropertyOffer, self).write(values)
