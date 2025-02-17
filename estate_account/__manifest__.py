@@ -5,6 +5,8 @@
     'license': 'LGPL-3',
     "depends": ["estate", "account"],
     'category': 'Real Estate/Brokerage',
-    "application": True,
     "installable": True,
+    'data': [
+        'report/estate_property_report_inherit.xml',
+    ]
 }
