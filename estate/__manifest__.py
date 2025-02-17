@@ -14,6 +14,10 @@
         "view/res_users_estate_view.xml",
         "view/estate_menus.xml",
     ],
+    "demo": [
+        "demo/estate_property_demo.xml",
+        "demo/estate_offers_demo.xml",
+    ],
     "license": "LGPL-3",
     "sequence": 1,
 }
