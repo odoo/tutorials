@@ -30,5 +30,13 @@
         <field name="name">Property Tags</field>
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a property tag!
+            </p>
+            <p>
+                Click on "New" to create a new tag.
+            </p>
+        </field>
     </record>
 </odoo>

@@ -112,8 +112,9 @@ class EstateProperty(models.Model):
 
     def action_sell_property(self):
         for record in self:
-            if record.state != "cancelled":
+            if record.state != "cancelled" and record.state == "offer_accepted":
                 record.state = "sold"
+                record.message_post(body=("Congratulations! It's sold."))
             else:
-                raise exceptions.UserError("Sorry! This listing is cancelled.")
+                raise exceptions.UserError("Sorry! This list cannot be sold at this stage.")
         return True

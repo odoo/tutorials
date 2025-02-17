@@ -57,5 +57,19 @@
                 })
             ]"/>
         </record>
+
+        <record id="estate_property_4" model="estate.property">
+            <field name="name">Cabin</field>
+            <field name="state">new</field>
+            <field name="description">Work Cabin</field>
+            <field name="postcode">30032</field>
+            <field name="date_availability">2025-08-09</field>
+            <field name="expected_price">1000.0</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="property_type_id" ref="estate_property_type_commercial"/>
+        </record>
     </data>
 </odoo>

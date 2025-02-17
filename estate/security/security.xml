@@ -21,9 +21,8 @@
         <field name="perm_create" eval="1"/>
         <field name="perm_unlink" eval="0"/>
         <field name="domain_force">[
-            '&amp;','|', ('salesperson_id', '=', user.id),
-            ('salesperson_id', '=', 'False'), '|', ('company_id', '=', False),
-            ('company_id', 'in', company_ids)
+            '|', ('salesperson_id', '=', user.id),
+            ('salesperson_id', '=', 'False')
         ]</field>
     </record>
 
@@ -36,5 +35,15 @@
         <field name="perm_create" eval="1"/>
         <field name="perm_unlink" eval="0"/>
         <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="agent_company_visibility" model="ir.rule">
+        <field name="name">Company visibilty</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
+        <field name="domain_force">[
+            '|', ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+        ]</field>
     </record>
 </odoo>

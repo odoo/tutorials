@@ -23,5 +23,19 @@
         </record>
 
         <function model="estate.property.offer" name="action_accept" eval="[ref('offer_azure_interior_1')]"/>
+
+        <record id="offer_deco_addict_cabin" model="estate.property.offer">
+            <field name="property_id" ref="estate_property_4"/>
+            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="price">2200</field>
+            <field name="validity">3</field>
+        </record>
+
+        <record id="offer_azure_interior_cabin" model="estate.property.offer">
+            <field name="property_id" ref="estate_property_4"/>
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="price">2350</field>
+            <field name="validity">2</field>
+        </record>
     </data>
 </odoo>

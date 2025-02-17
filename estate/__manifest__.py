@@ -13,12 +13,15 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'wizard/estate_property_offer_wizard_view.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_menus.xml',
         'views/res_users_view.xml',
+        'report/estate_offer_report_template.xml',
+        'report/estate_offer_reports.xml',
         'data/estate.property.type.csv',
     ],
     'demo': [

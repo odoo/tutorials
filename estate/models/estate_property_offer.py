@@ -47,6 +47,8 @@ class EstatePropertyOffer(models.Model):
         for val in vals:
             if(val["price"] and val["property_id"]):
                 prop = self.env["estate.property"].browse(val["property_id"])
+                if prop.state in ['sold', 'canceled']:
+                    raise exceptions.ValidationError("Cannot create an offer for a sold or canceled property.")
                 if(prop.offer_ids):
                     max_offer = max(prop.mapped("offer_ids.price"))
                     if val["price"] < max_offer:

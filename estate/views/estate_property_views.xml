@@ -8,6 +8,9 @@
                 decoration-info="state == 'offer_received'"
                 decoration-success="state == 'offer_accepted'"
                 decoration-bf="state == 'offer_accepted'">
+                <header>
+                    <button name="%(estate_property_offer_wizard_action)d" type="action" string="Add Offer"/>
+                </header>
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
@@ -159,6 +162,14 @@
             {
             "search_default_Available":1
             }
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define a new property!
+            </p>
+            <p>
+                Click on "New" to create a brand new listing.
+            </p>
         </field>
     </record>
 </odoo>
