@@ -2,7 +2,7 @@
     "name": "Estate",
     "version": "1.0",
     "category": "Real Estate/Brokerage",
-    "depends": ["base", "mail"],
+    'depends': ['base','mail'],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
@@ -19,7 +19,7 @@
         "report/res_users_templates.xml",
     ],
     "demo":[
-        "demo/estate_property_demo.xml",
+        "demo/estate_property_demo_data.xml",
     ],
     "installable": True,
     "application": True,

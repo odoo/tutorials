@@ -99,19 +99,15 @@ class EstateProperty(models.Model):
         self.state = "cancelled"
 
     def action_sold(self):
-        if self.state == "cancelled":
-            raise UserError("A cancelled property cannot be marked as sold.")
+        accepted_offer = self.offer_ids.filtered(lambda o: o.status == "accepted")
+        if not accepted_offer:
+            raise UserError("Cannot sell a property without an accepted offer.")
         self.state = "sold"
         self.message_post(
             body=f"The property '{self.name}' has been sold for {self.selling_price}!",
             subject="Property Sold",
             message_type='notification'
         )
-        print("Message posted successfully for property: %s", self.name)
-        print("Message posted successfully for property: %s", self.name)
-        print("Message posted successfully for property: %s", self.name)
-        print("Message posted successfully for property: %s", self.name)
-
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):

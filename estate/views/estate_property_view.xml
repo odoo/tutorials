@@ -37,7 +37,7 @@
         <field name="name">estate.property.form.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form>
                 <header>
                     <button name="action_sold" type="object" string="Sold"
                         invisible="state in ('offer_accepted','sold','cancelled')" />
@@ -49,13 +49,6 @@
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
-                    <div name="button_box">
-                        <button name="%(action_property_offers_report)d"
-                            type="action"
-                            string="Print Offers"
-                            class="oe_highlight"
-                            icon="fa-print" />
-                    </div>
                     <h1>
                         <field name="name" />
                     </h1>
@@ -101,10 +94,10 @@
                                     <field name="partner_id" />
                                     <button name="action_confirm" type="object" icon="fa-check"
                                         string="Confirm"
-                                        invisible="(status in ('accepted','refused')) or(parent.state in ['offer_accepted', 'sold', 'cancelled'])" />
+                                        invisible="(status in ('accepted','refused')) or (parent.state in ['offer_accepted', 'sold', 'cancelled'])" />
                                     <button name="action_refuse" type="object" icon="fa-times"
                                         string="Refuse"
-                                        invisible="parent.state in ['offer_accepted', 'sold', 'cancelled']" />
+                                        invisible="(status in ('accepted','refused')) or (parent.state in ['offer_accepted', 'sold', 'cancelled'])" />
                                 </list>
                             </field>
                         </page>

@@ -12,7 +12,6 @@ class EstateProperty(models.Model):
             raise AccessError(
                 "You do not have the necessary permissions to mark this property as sold."
             )
-        
         if not self.partner_id:
             raise ValidationError(
                 "Please define a buyer for the property before marking it as sold."

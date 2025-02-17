@@ -35,7 +35,9 @@ class EstatePropertyOffer(models.Model):
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
-            record.date_deadline = (record.create_date or fields.Datetime.today()) + timedelta(days=record.validity)
+            record.date_deadline = (
+                record.create_date or fields.Datetime.today()
+            ) + timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -58,12 +60,14 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_id = self.env["estate.property"].browse(vals.get("property_id"))
+            if property_id.state == "sold":
+                raise UserError("Cannot create an offer for a sold property.")
+
             if property_id.offer_ids and any(
                 offer.price >= vals["price"] for offer in property_id.offer_ids
             ):
                 raise UserError(
                     "You cannot create an offer with an amount lower than or equal to an existing offer."
                 )
-
         return super(EstatePropertyOffer, self).create(vals_list)
 

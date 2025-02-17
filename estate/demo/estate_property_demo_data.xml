@@ -5,7 +5,7 @@
             <field name="state">new</field>
             <field name="description">A nice and big villa</field>
             <field name="postcode">12345</field>
-            <field name="availability_date">2020-02-02</field>
+            <field name="date_availability">2020-02-02</field>
             <field name="expected_price">1600000</field>
             <field name="bedrooms">6</field>
             <field name="living_area">100</field>
@@ -21,7 +21,7 @@
             <field name="state">new</field>
             <field name="description">A bad and small villa</field>
             <field name="postcode">12345</field>
-            <field name="availability_date">2020-02-02</field>
+            <field name="date_availability">2020-02-02</field>
             <field name="expected_price">1600</field>
             <field name="bedrooms">1</field>
             <field name="living_area">10</field>
@@ -45,7 +45,7 @@
             <field name="state">cancelled</field>
             <field name="description">Home in a trailer park</field>
             <field name="postcode">54321</field>
-            <field name="availability_date">1970-01-01</field>
+            <field name="date_availability">1970-01-01</field>
             <field name="expected_price">100000</field>
             <field name="bedrooms">1</field>
             <field name="living_area">10</field>
