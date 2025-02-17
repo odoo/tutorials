@@ -4,7 +4,7 @@
     'category': 'Real Estate/Brokerage',
     'summary': 'Manage real estate advertisements and offers',
     'author': 'Khushi',
-    'depends': ['base', 'web', 'mail'],
+    'depends': ['base', 'web', 'mail','website'],
     'data': [
         'views/estate_action.xml',
         'views/estate_menus.xml',
@@ -16,7 +16,11 @@
         'views/estate_property_offer_views.xml',
         'views/res_users_views.xml',
         'views/estate_property_search_views.xml'
-
+    ],
+    "demo": [
+        "data/estate_property_type_demo.xml",
+        "data/estate_property_demo.xml",
+        "data/estate_property_offer_demo.xml",
     ],
     'assets': {
         'web.assets_backend': [
