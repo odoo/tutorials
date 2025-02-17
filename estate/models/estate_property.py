@@ -42,6 +42,8 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
     total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area')
     best_offer = fields.Float(string='Best Offer', compute='_compute_best_price')
+    reference = fields.Char(string="Reference", copy=False, readonly=True)
+    company_id = fields.Many2one('res.company', string='Company Name', default=lambda self: self.env.company, required=True)
 
     _sql_constraints = [('expected_price_check', 'CHECK(expected_price >= 0)', 'Expected price must be strickly possitive.'),
                         ('selling_price_check', 'CHECK(selling_price >= 0)', 'Selling price must be possitive.')]
@@ -64,6 +66,13 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('state') == 'new':
+                vals['reference'] = self.env['ir.sequence'].next_by_code('estate.property') or 'New'
+        return super().create(vals_list)
 
     def sold_action(self):
         for record in self:

@@ -10,6 +10,7 @@ It provides real estate module
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/estate_property_sequence.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',

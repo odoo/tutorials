@@ -39,12 +39,14 @@
                     </group>
                     <group>
                         <group>
+                            <field name="reference"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field' : 'color'}"/>
                             <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
+                            <field name="company_id"/>
                             <field name="expected_price"/>
                             <field name="best_offer"/>
                             <field name="selling_price"/>
@@ -140,7 +142,7 @@
 
     <!-- Estate property action -->
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Property action</field>
+        <field name="name">Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
