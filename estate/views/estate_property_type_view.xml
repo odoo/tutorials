@@ -17,7 +17,7 @@
                <form string="Types">
                     <sheet>
                          <div class="oe_button_box" name="button_box">
-                              <button name="estate.estate_property_offer_action" type="action" class="oe_stat_button" icon="fa-money">
+                              <button name="estate.estate_property_offer_action" type="action"  class="oe_stat_button" icon="fa-money">
                                  <field name="offer_count" />
                               </button>
                          </div>
@@ -32,7 +32,7 @@
                                         <list>
                                              <field name="name" />
                                              <field name="expected_price" />
-                                             <field name="state" />
+                                             <field name="status" />
                                         </list>
                                    </field>
                               </page>

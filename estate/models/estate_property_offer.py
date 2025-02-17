@@ -21,8 +21,8 @@ class EstatePropertyOffer(models.Model):
     partner_id=fields.Many2one("res.partner", string="Partner", required=True)
     property_id=fields.Many2one("estate.property", string="Property", required=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type", related="property_id.property_type_id", store=True)
-    validity=fields.Integer("Validity")
-    date_deadline=fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    validity=fields.Integer(string="Validity")
+    date_deadline=fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", default=lambda self:fields.Date.today())
     
     _sql_constraints=[
             ("check_price", "CHECK(price >= 0)", "Price should be positive")
@@ -41,7 +41,7 @@ class EstatePropertyOffer(models.Model):
             self.status="accepted"
             self.property_id.selling_price = self.price
             self.property_id.partner_id = self.partner_id
-            self.property_id.state="offer_accepted"
+            self.property_id.status="offer_accepted"
             
     def action_refused(self):
             self.status="refused"   
@@ -60,6 +60,6 @@ class EstatePropertyOffer(models.Model):
                             val = self.env["estate.property"].browse(rec["property_id"])
                     if rec["price"] < val.best_price:
                             raise UserError("price must be greater than best price")  
-                    if val.state == "new":
-                            val.state = "offer_received"      
+                    if val.status == "new":
+                            val.status = "offer_received"      
             return super().create(rec_list)       

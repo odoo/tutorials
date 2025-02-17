@@ -31,7 +31,7 @@ class EstateProperty(models.Model):
         string="Garden Orientation"
     )
     active = fields.Boolean("active", default=True)
-    state = fields.Selection(
+    status = fields.Selection(
         selection=[
             ('new', "New"),
             ("offer_received", "Offer Received"),
@@ -47,6 +47,7 @@ class EstateProperty(models.Model):
     offer_ids=fields.One2many("estate.property.offer", "property_id", string="offerid")
     total_area=fields.Float(compute="_compute_total_area", string="Total Area (sqm)")
     best_price=fields.Float(compute='_compute_best_price', string="Best Offer")
+    company_id=fields.Many2one("res.company", string="Company", required=True, default=lambda self:self.env.company)
     
     _sql_constraints=[
             ("check_expected_price", "CHECK(expected_price >= 0)", "Price should be positive"),
@@ -74,20 +75,20 @@ class EstateProperty(models.Model):
            
     def action_sold(self):
         for rec in self:
-            if(rec.state != "cancel"):
-                 rec.state="sold"
+            if(rec.status != "cancel"):
+                 rec.status="sold"
             else:
                 raise UserError(_("Canceled property can not be sold"))
                            
     def action_cancel(self):
         for rec in self:
-            if(rec.state != "sold"):
-                rec.state="cancel"
+            if(rec.status != "sold"):
+                rec.status="cancel"
             else:
                 raise UserError(_("Sold property can not be cancel"))
 
     @api.ondelete(at_uninstall=False)
     def _prevent_deletion(self):
         for rec in self:
-            if(rec.state not in ['new', 'canceled']):
+            if(rec.status not in ['new', 'canceled']):
                 raise UserError(_("Can't delete  this property!" ))
