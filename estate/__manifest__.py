@@ -4,12 +4,14 @@
 {
     'name': 'Real Estate',
     'depends': ['base'],
+    'category': 'Real Estate/Brokerage',
     'version': '1.0',
     'summary': 'Real estate internal machinery',
     'description': """
 This module contains all the common features of Estate property management.
     """,
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',

@@ -50,6 +50,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="offer_id")
     total_area = fields.Integer(compute='_compute_total_area', string="Total Area (sqm)")
     best_offer = fields.Float(compute= '_compute_best_offer', string="Best Offer", store=True)
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company,required=True)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
@@ -71,6 +72,12 @@ class EstateProperty(models.Model):
             else:
                 record.best_offer = 0.0
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if (record.selling_price < record.expected_price*0.9) and record.offer_ids and record.state!='new':
+                raise ValidationError("Offer price can't be less than 90% of expected price")
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -79,6 +86,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = False
             self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_new_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("Can't delete a sold property or with an offer.")
 
     def set_property_sold(self):
         for record in self:
@@ -95,18 +108,6 @@ class EstateProperty(models.Model):
             else:
                 for record in self:
                     record.state = 'cancelled'
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if (record.selling_price < record.expected_price*0.9) and record.offer_ids and record.state!='new':
-                raise ValidationError("Offer price can't be less than 90% of expected price")
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_state_new_cancelled(self):
-        for record in self:
-            if record.state not in ['new', 'cancelled']:
-                raise UserError("Can't delete a sold property or with an offer.")
 
     def check_offer(self):
         for record in self:

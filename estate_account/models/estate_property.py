@@ -1,13 +1,19 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command, fields, models
+from odoo.exceptions import AccessError
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     def set_property_sold(self):
+        try:
+            self.check_access('write')
+        except:
+            raise AccessError(_("Not enough rights!"))
+
         for record in self:
-            record.env['account.move'].create({
+            record.env['account.move'].sudo().create({
             'move_type': 'out_invoice',
             'partner_id': record.buyer.id,
             'line_ids': [
