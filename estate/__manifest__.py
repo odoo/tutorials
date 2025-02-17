@@ -11,6 +11,8 @@
     "application": True,
     "license": "LGPL-3",
 
+    # "images": ['static/description/icon.png'],
+
     "data": [
         'security/estate_security.xml',
         'security/ir.model.access.csv',
@@ -23,6 +25,9 @@
         'views/estate_menus.xml',
 
         'data/estate.property.type.csv',
+
+        'reports/estate_property_reports.xml',
+        'reports/estate_property_templates.xml',
     ],
 
     "demo": [

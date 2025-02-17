@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
-    <record id="estate_property_1" model="estate.property">
+    <record id="estate_property_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
@@ -18,7 +18,7 @@
         <field name="property_type_id" ref="estate.property_type_1"/>
     </record>
 
-    <record id="estate_property_2" model="estate.property">
+    <record id="estate_property_trailer_home" model="estate.property">
         <field name="name">Trailer home</field>
         <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
@@ -33,7 +33,7 @@
         <field name="property_type_id" ref="estate.property_type_1"/>
     </record>
 
-    <record id="estate_property_3" model="estate.property">
+    <record id="estate_property_rene_skyline" model="estate.property">
         <field name="name">Rene Skyline</field>
         <field name="state">offer_received</field>
         <field name="description">Touch the clouds</field>

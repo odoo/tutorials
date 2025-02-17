@@ -32,5 +32,5 @@ class Property(models.Model):
 
         print(" reached ".center(100, '='))
 
-        self.env["account.move"].create(invoice_vals)
-        return super().sudo().action_sold()
+        self.env["account.move"].sudo().create(invoice_vals)
+        return super().action_sold()

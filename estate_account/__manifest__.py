@@ -10,5 +10,6 @@
 
     "data": [
         'views/estate_property_views.xml',
+        'reports/estate_property_reports.xml',
     ]
 }

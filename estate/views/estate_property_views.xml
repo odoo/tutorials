@@ -100,6 +100,13 @@
                 </header>
 
                 <sheet>
+                    <field
+                        name="image"
+                        widget="image"
+                        class="oe_avatar"
+                        options="{'convert_to_webp': True}"
+                    />
+
                     <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold'"/>
                     <widget name="web_ribbon" title="Cancelled" bg_color="text-bg-danger" invisible="state != 'cancelled'"/>
 

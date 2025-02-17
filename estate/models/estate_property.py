@@ -112,6 +112,7 @@ class Property(models.Model):
     company_id = fields.Many2one(
         "res.company", required=True, default=lambda self: self.env.company,
         help="This field specifies the company to which the property belongs.", tracking=True,)
+    image = fields.Image(string="Property Image")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
