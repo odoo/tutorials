@@ -1,0 +1,132 @@
+<?xml version = "1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_details_template" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row g-4">
+                    <!-- Left: Property Image -->
+                    <div class="col-lg-6">
+                        <img t-att-src="'/web/image/estate.property/%s/image_1920' % property.id"
+                             class="img-fluid rounded-3 shadow-lg w-100 border"/>
+                    </div>
+
+                    <!-- Right: Property Details -->
+                    <div class="col-lg-6">
+                        <h2 class="text-primary fw-bold mb-3"><t t-esc="property.name"/></h2>
+                        
+                        <!-- Property Tags -->
+                        <t t-if="property.tag_ids">
+                            <div class="mb-2">
+                                <t t-foreach="property.tag_ids" t-as="tag">
+                                    <span class="badge bg-info-subtle text-info-emphasis me-2 mb-1">
+                                        <t t-esc="tag.name"/>
+                                    </span>
+                                </t>
+                            </div>
+                        </t>
+
+                        <!-- Property Status -->
+                        <div class="mb-3">
+                            <t t-if="property.status">
+                                <span t-if="property.status == 'new'" class="badge bg-primary">New</span>
+                                <span t-if="property.status == 'offer_received'" class="badge bg-warning text-dark">Offer Received</span>
+                                <span t-if="property.status == 'offer_accepted'" class="badge bg-success">Offer Accepted</span>
+                                <span t-if="property.status == 'sold'" class="badge bg-dark">Sold</span>
+                                <span t-if="property.status == 'cancelled'" class="badge bg-danger">Cancelled</span>
+                            </t>
+                        </div>
+
+                        <!-- Property Type -->
+                        <t t-if="property.property_type_id">
+                            <p class="mb-2"><strong>Property Type:</strong> <t t-esc="property.property_type_id.name"/></p>
+                        </t>
+
+                        <!-- Property Description -->
+                        <t t-if="property.description">
+                            <p class="text-secondary mb-3"><strong>Description:</strong> <t t-esc="property.description"/></p>
+                        </t>
+
+                        <!-- Property Details Grid -->
+                        <div class="row row-cols-2 g-2 mb-3">
+                            <t t-if="property.bedrooms">
+                                <div class="col"><strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/></div>
+                            </t>
+                            <t t-if="property.living_area">
+                                <div class="col"><strong>Living Area:</strong> <t t-esc="property.living_area"/> sq.ft.</div>
+                            </t>
+                            <t t-if="property.facades">
+                                <div class="col"><strong>Facades:</strong> <t t-esc="property.facades"/></div>
+                            </t>
+                            <t t-if="property.garage">
+                                <div class="col"><strong>Garage:</strong> Yes</div>
+                            </t>
+                            <t t-if="not property.garage">
+                                <div class="col"><strong>Garage:</strong> No</div>
+                            </t>
+                            <t t-if="property.garden">
+                                <div class="col"><strong>Garden:</strong> Yes</div>
+                                <t t-if="property.garden_area">
+                                    <div class="col"><strong>Garden Area:</strong> <t t-esc="property.garden_area"/> sq.ft.</div>
+                                </t>
+                            </t>
+                            <t t-if="not property.garden">
+                                <div class="col"><strong>Garden:</strong> No</div>
+                            </t>
+                            <t t-if="property.total_area">
+                                <div class="col"><strong>Total Area:</strong> <t t-esc="property.total_area"/> sq.ft.</div>
+                            </t>
+                            <t t-if="property.salesperson_id">
+                                <div class="col"><strong>Salesperson:</strong> <t t-esc="property.salesperson_id.name"/></div>
+                            </t>
+                            <t t-if="property.company_id">
+                                <div class="col"><strong>Company:</strong> <t t-esc="property.company_id.name"/></div>
+                            </t>
+                        </div>
+
+                        <!-- Price Section (At Bottom) -->
+                        <t t-if="property.expected_price">
+                            <div class="mt-4">
+                                <h3 class="text-danger fw-bold">₹ <t t-esc="property.expected_price"/> Only</h3>
+                                <a href="tel:+919876543210" class="btn btn-success btn-lg mt-3">📲 Call Now</a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Similar Properties Section -->
+                <t t-if="property.property_type_id.property_ids.filtered(lambda p: p.id != property.id)">
+                    <div class="mt-5">
+                        <h3 class="text-center fw-bold">🏠 Similar Properties</h3>
+                        <div class="row g-4">
+                            <t t-foreach="property.property_type_id.property_ids.filtered(lambda p: p.id != property.id)[:3]" t-as="similar">
+                                <div class="col-md-4">
+                                    <div class="card shadow-sm border-0">
+                                        <a t-attf-href="/property/{{ similar.id }}">
+                                            <img t-att-src="'/web/image/estate.property/%s/image_1920' % similar.id"
+                                                 class="card-img-top img-fluid rounded-top"/>
+                                        </a>
+                                        <div class="card-body text-center">
+                                            <h6 class="fw-semibold">
+                                                <a t-attf-href="/property/{{ similar.id }}" class="text-decoration-none text-dark">
+                                                    <t t-esc="similar.name"/>
+                                                </a>
+                                            </h6>
+                                            <t t-if="similar.expected_price">
+                                                <p class="text-muted">💰 ₹ <t t-esc="similar.expected_price"/> INR</p>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+
+                <!-- Back to Listings -->
+                <div class="text-center mt-4">
+                    <a href="/properties" class="btn btn-outline-primary">⬅ Back to Listings</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

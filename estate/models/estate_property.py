@@ -1,5 +1,6 @@
-from odoo import models,fields,api
+from odoo import models,fields,api,_
 from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -51,6 +52,7 @@ class EstateProperty(models.Model):
         comodel_name="res.company",
         default=lambda self: self.env.user.company_id
     )
+    image_1920 = fields.Image(store=True)
 
     _sql_constraints = [
         ('expected_price_positive','CHECK(expected_price>0)','Expected price must be positive number'),
@@ -81,15 +83,15 @@ class EstateProperty(models.Model):
     #Action methods
     def action_mark_as_sold(self):
         if self.status not in ["offer_received","offer_accepted"]:
-            raise UserError("You cannot sell a property that is not in 'Offer Received' or 'Offer Accepted' state")
+            raise UserError(_("You cannot sell a property that is not in 'Offer Received' or 'Offer Accepted' state"))
         if self.status=='canceled':
-            raise UserError("You cannot sell a canceled property")
+            raise UserError(_("You cannot sell a canceled property"))
         self.write({'status':'sold'})
         return True
 
     def action_mark_as_cancel(self):
         if self.status=='sold':
-            raise UserError("You cannot cancel a sold property")
+            raise UserError(_("You cannot cancel a sold property"))
         self.write({'status':'canceled'})
         return True
 
@@ -98,4 +100,4 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status not in ['new','canceled']:
                 status = dict(self._fields["status"].selection).get(self.status)
-                raise UserError(f"You cannot delete a property that is in {status} state.")
+                raise UserError(_(f"You cannot delete a property that is in {status} state."))

@@ -1,7 +1,8 @@
-from odoo import models,fields,api
 from datetime import timedelta
+from odoo import models,fields,api,_
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -36,8 +37,9 @@ class EstatePropertyOffer(models.Model):
 
     # Action methods
     def action_accept(self):
+        error = _("Offer already accepted")
         if any(offer.status=="accepted" for offer in self.property_id.offer_ids):
-            raise UserError("Offer already accepted.")
+            raise UserError(error)
         self.write({'status':"accepted"})
         self.property_id.write({'selling_price':self.price})
         self.property_id.write({'buyer_id':self.partner_id})
@@ -54,18 +56,20 @@ class EstatePropertyOffer(models.Model):
     # Constraint methods
     @api.constrains('price')
     def _check_price(self):
+        error = _("Offer Price must be atleast 90% of the expected price.")
         for record in self:
             compare_value=float_compare(record.price,0.9*record.property_id.expected_price,precision_digits=2)
             if compare_value==-1:
-                raise UserError("Offer Price must be atleast 90% of the expected price.")
+                raise UserError(error)
         return True
 
     @api.model_create_multi
     def create(self, vals):
+        error = _("The price must be higher than any existing offer.")
         for val in vals:
             min_price = min(self.env['estate.property.offer'].search([('property_id','=',val['property_id'])]).mapped('price'),default=0)
             if val['price'] <= min_price:
-                raise UserError("The price must be higher than any existing offer.")
+                raise UserError(error)
             status=self.env['estate.property'].browse(val['property_id']).status
             if status=='new' or not status:
                 self.env['estate.property'].browse(val['property_id']).status = 'offer_received'
