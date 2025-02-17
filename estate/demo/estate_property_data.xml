@@ -18,7 +18,7 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
-            <field name="property_type_id" ref="estate_property_type_residential" />
+            <field name="property_type_id" ref="estate.estate_property_type_residential" />
         </record>
     
         <record id="estate_property_trailer_home" model="estate.property">
@@ -33,7 +33,7 @@
             <field name="living_area">10</field>
             <field name="facades">4</field>
             <field name="garage">False</field>
-            <field name="property_type_id" ref="estate_property_type_residential" />
+            <field name="property_type_id" ref="estate.estate_property_type_residential" />
         </record>
 
         <record id="estate_property_beach_house" model="estate.property">
@@ -47,7 +47,7 @@
             <field name="living_area">240</field>
             <field name="facades">3</field>
             <field name="garage">False</field>
-            <field name="property_type_id" ref="estate_property_type_residential" />
+            <field name="property_type_id" ref="estate.estate_property_type_residential" />
             <field name="offer_ids" eval="[
                 Command.create({
                     'partner_id': ref('base.res_partner_12'),
@@ -60,6 +60,91 @@
                     'validity': 14,
                 })
             ]" />
+        </record>
+
+        <record id="estate_property_satya_homes" model="estate.property">
+            <field name="name">Satya Homes</field>
+            <field name="state">new</field>
+            <field name="description">satya homes - nice apartment</field>
+            <field name="postcode">234321</field>
+            <field name="date_availability">2005-05-05</field>
+            <field name="expected_price">2000000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">140</field>
+            <field name="facades">2</field>
+            <field name="garage">False</field>
+            <field name="property_type_id" ref="estate.estate_property_type_residential" />
+        </record>
+
+        <record id="estate_property_a2z_chemicals" model="estate.property">
+            <field name="name">A2Z chemicals</field>
+            <field name="state">offer_received</field>
+            <field name="description">Chemical factory</field>
+            <field name="postcode">543234</field>
+            <field name="date_availability">2002-01-09</field>
+            <field name="expected_price">5000000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">140</field>
+            <field name="facades">2</field>
+            <field name="garage">False</field>
+            <field name="property_type_id" ref="estate.estate_property_type_industrial" />
+        </record>
+
+        <record id="estate_property_space_ship" model="estate.property">
+            <field name="name">International Space Station</field>
+            <field name="state">new</field>
+            <field name="description">Aliens sometimes come visit</field>
+            <field name="postcode">785664</field>
+            <field name="date_availability">2030-12-31</field>
+            <field name="expected_price">45890000</field>
+            <field name="property_type_id" ref="estate.estate_property_type_industrial"/>
+        </record>
+    
+        <record id="estate_property_cabin" model="estate.property">
+            <field name="name">Cozy Cabin</field>
+            <field name="state">sold</field>
+            <field name="description">Small cabin by lake</field>
+            <field name="postcode">983647</field>
+            <field name="date_availability">2020-01-01</field>
+            <field name="expected_price">80000</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="garden">True</field>
+            <field name="property_type_id" ref="estate.estate_property_type_residential"/>
+        </record>
+
+        <record id="estate_property_wonder_land" model="estate.property">
+            <field name="name">Wonder Land</field>
+            <field name="state">offer_received</field>
+            <field name="description">wonder land - great land near river</field>
+            <field name="postcode">432543</field>
+            <field name="date_availability">2012-05-05</field>
+            <field name="expected_price">2300000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">140</field>
+            <field name="facades">0</field>
+            <field name="garage">False</field>
+            <field name="property_type_id" ref="estate.estate_property_type_land" />
+        </record>
+
+        <record id="estate_property_small_apartment" model="estate.property">
+            <field name="name">Small apartment</field>
+            <field name="state">sold</field>
+            <field name="description">small apartment - great land near river</field>
+            <field name="postcode">652348</field>
+            <field name="date_availability">2017-03-08</field>
+            <field name="expected_price">1200000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">90</field>
+            <field name="facades">0</field>
+            <field name="garage">False</field>
+            <field name="property_type_id" ref="estate.estate_property_type_residential" />
         </record>
     </data>
 

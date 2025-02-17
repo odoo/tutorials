@@ -7,6 +7,11 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,kanban,form</field>
         <field name="context">{'search_default_date_availability': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                There isn't any Properties to list
+            </p>
+        </field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -32,6 +37,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
+                <chatter />
                 <header>
                     <button name="action_set_sold" type="object" string="Sold" invisible="state=='sold' or state=='cancelled'" class="btn-primary" />
                     <button name="action_set_cancelled" type="object" string="Cancel" invisible="state=='sold' or state=='cancelled'" />
@@ -99,7 +105,7 @@
                 <field name="state" />
                 
                 <templates>
-                    <progressbar field="state" colors='{"offer_received": "success", "offer_accepted": "warning", "cancelled": "danger"}'/>
+                    <!-- <progressbar field="state" colors='{"offer_received": "success", "offer_accepted": "warning", "cancelled": "danger"}'/> -->
                     
                     <t t-name="card">
                         <div class="o_kanban_card">

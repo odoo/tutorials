@@ -2,7 +2,8 @@
     'name': 'Real Estate',
     'description': "Real Estate Management",
     'depends': [
-        'base'
+        'base',
+        'mail'
     ],
     'author': "sbbh",
     'category': 'Real Estate/Brokerage',
@@ -16,6 +17,8 @@
         'views/res_users_view.xml',
         'views/estate_menus.xml',
         'data/estate.property.type.csv',
+        'report/estate_reports.xml',
+        'report/estate_report_templates.xml'
     ],
     'demo': [
         'demo/estate_property_data.xml',

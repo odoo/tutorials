@@ -14,19 +14,28 @@
         <field name="users" eval="[(4, ref('base.user_admin'))]" />
     </record>
 
-    <record id="estate_agent_property_view_rule" model="ir.rule">
-        <field name="name">Agent: can only see their own or unassigned properties</field>
+    <record id="agent_property_view_rule" model="ir.rule">
+        <field name="name">Agent property view rule</field>
         <field name="model_id" ref="model_estate_property"/>
         <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
         <field name="domain_force">[
-            '&amp;','|', ('salesperson_id', '=', user.id), 
-            ('salesperson_id', '=', 'False'), '|', ('company_id', '=', False),
+            '|', ('salesperson_id', '=', user.id),
+            ('salesperson_id', '=', 'False'), 
+        ]</field>
+    </record>
+
+    <record id="agent_company_view_rule" model="ir.rule">
+        <field name="name">Agent company view rule</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="domain_force">[
+            '|', ('company_id', '=', 'False'), 
             ('company_id', 'in', company_ids)
         ]</field>
     </record>
 
-    <record id="estate_manager_property_view_rule" model="ir.rule">
-        <field name="name">Manager: can see all properties</field>
+    <record id="manager_property_view_rule" model="ir.rule">
+        <field name="name">Manager property view rule</field>
         <field name="model_id" ref="model_estate_property"/>
         <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>

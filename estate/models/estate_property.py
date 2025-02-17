@@ -5,6 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _inherit = "mail.thread"
     _order = "id desc"
 
     _sql_constraints = [
@@ -42,7 +43,7 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled")
         ],
-        default="new", copy=False, string="State", required=True
+        default="new", copy=False, string="State", required=True, tracking=True
     )
     property_type_id = fields.Many2one(
         string="Property Type", comodel_name="estate.property.type"

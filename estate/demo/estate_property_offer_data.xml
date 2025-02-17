@@ -3,35 +3,109 @@
 <odoo>
 
     <data noupdate="1">
-        <record id="estate_property_offer_1" model="estate.property.offer">
+        <record id="estate_property_big_villa_offer_1" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_2"/>
-            <field name="property_id" ref="estate_property_big_villa"/>
+            <field name="property_id" ref="estate.estate_property_big_villa"/>
             <field name="price">1550000</field>
             <field name="validity">7</field>
         </record>
     
-        <record id="estate_property_offer_2" model="estate.property.offer">
+        <record id="estate_property_big_villa_offer_2" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"/>
-            <field name="property_id" ref="estate_property_big_villa"/>
+            <field name="property_id" ref="estate.estate_property_big_villa"/>
             <field name="price">1560000</field>
             <field name="validity">14</field>
         </record>
     
-        <record id="estate_property_offer_3" model="estate.property.offer">
+        <record id="estate_property_trailer_home_offer_1" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_2"/>
-            <field name="property_id" ref="estate_property_trailer_home"/>
+            <field name="property_id" ref="estate.estate_property_trailer_home"/>
             <field name="price">90000</field>
             <field name="validity">10</field>
         </record>
 
-        <record id="estate_property_offer_4" model="estate.property.offer">
+        <record id="estate_property_trailer_home_offer_2" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"/>
-            <field name="property_id" ref="estate_property_trailer_home"/>
+            <field name="property_id" ref="estate.estate_property_trailer_home"/>
             <field name="price">110000</field>
             <field name="validity">15</field>
         </record>
 
-        <function model="estate.property.offer" name="action_accept" eval="[ref('estate_property_offer_1')]" />
+        <record id="estate_property_a2z_chemicals_offer_1" model="estate.property.offer">
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="property_id" ref="estate.estate_property_a2z_chemicals"/>
+            <field name="price">52000</field>
+            <field name="validity">12</field>
+        </record>
+
+        <record id="estate_property_wonder_land_offer_1" model="estate.property.offer">
+            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="property_id" ref="estate.estate_property_wonder_land"/>
+            <field name="price">2400000</field>
+            <field name="validity">15</field>
+        </record>
+
+        <record id="estate_property_wonder_land_offer_2" model="estate.property.offer">
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="property_id" ref="estate.estate_property_wonder_land"/>
+            <field name="price">2500000</field>
+            <field name="validity">12</field>
+        </record>
+
+        <record id="estate_property_wonder_land_offer_2" model="estate.property.offer">
+            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="property_id" ref="estate.estate_property_wonder_land"/>
+            <field name="price">2550000</field>
+            <field name="validity">12</field>
+        </record>
+
+        <record id="estate_property_wonder_land_offer_3" model="estate.property.offer">
+            <field name="partner_id" ref="base.res_partner_1"/>
+            <field name="property_id" ref="estate.estate_property_wonder_land"/>
+            <field name="price">2650000</field>
+            <field name="validity">17</field>
+        </record>
+
+        <record id="estate_property_small_apartment_offer_1" model="estate.property.offer">
+            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="property_id" ref="estate.estate_property_small_apartment"/>
+            <field name="price">1100000</field>
+            <field name="validity">25</field>
+        </record>
+
+        <record id="estate_property_small_apartment_offer_2" model="estate.property.offer">
+            <field name="partner_id" ref="base.res_partner_1"/>
+            <field name="property_id" ref="estate.estate_property_small_apartment"/>
+            <field name="price">1200000</field>
+            <field name="validity">20</field>
+        </record>
+
+        <record id="estate_property_small_apartment_offer_3" model="estate.property.offer">
+            <field name="partner_id" ref="base.res_partner_1"/>
+            <field name="property_id" ref="estate.estate_property_small_apartment"/>
+            <field name="price">1290000</field>
+            <field name="validity">23</field>
+        </record>
+
+        <record id="estate_property__cabin_offer_2" model="estate.property.offer">
+            <field name="price">60000</field>
+            <field name="validity">14</field>
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="property_id" ref="estate.estate_property_cabin"/>
+            <field name="date_deadline" eval="str(datetime.now().year)+'-02-12'"/>
+        </record>
+    
+        <record id="estate_property__cabin_offer_2" model="estate.property.offer">
+            <field name="price">75000</field>
+            <field name="validity">14</field>
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="property_id" ref="estate.estate_property_cabin"/>
+            <field name="date_deadline" eval="str(datetime.now().year)+'-02-12'"/>
+        </record>
+
+        <function model="estate.property.offer" name="action_accept" eval="[ref('estate_property_big_villa_offer_1')]" />
+        <function model="estate.property.offer" name="action_refuse" eval="[ref('estate_property_a2z_chemicals_offer_1')]" />
+        <function model="estate.property.offer" name="action_accept" eval="[ref('estate_property_small_apartment_offer_3')]" />
     </data>
 
 </odoo>
