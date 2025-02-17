@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models #type: ignore
 
 class InheritedUsers(models.Model):
     _inherit = 'res.users'

@@ -5,7 +5,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
-        <field name="context"> {'search_default_' : True}</field>
+        <field name="context"> {'search_default' : True}</field>
     </record>
 
     <!-- List View -->
@@ -38,8 +38,8 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="property_sold_action" type="object" string="Sold" invisible="state in ('sold', 'cancelled')"/>
-                    <button name="property_cancel_action" type="object" string="Cancelled" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_property_sold" type="object" string="Sold" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_property_cancel" type="object" string="Cancelled" invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new, sold, offer_received, offer_accepted" />
                 </header>
                 <sheet>
@@ -91,6 +91,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True"/>
             </form>
         </field>
     </record>

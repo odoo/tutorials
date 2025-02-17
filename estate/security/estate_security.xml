@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <group name="user" category_id="users" string="manager">
-    
-    </group>
-
+    <!-- User Group -->
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref='base.module_category_real_estate_brokerage'></field>
+    </record>
+    <!-- Manager Group -->
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref='base.module_category_real_estate_brokerage'></field>
+        <field name="users" eval="[(4,ref('base.user_admin'))]"></field>
+        <field name="implied_ids" eval="[(4,ref('estate.estate_group_user'))]"></field>
+    </record>
 </odoo>

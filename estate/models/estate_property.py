@@ -5,18 +5,18 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate App"
-    _order = "id desc"
+    _inherit = ['mail.thread']
     _sql_constraints = [
         ("check_selling_price","CHECK(selling_price >= 0)","Selling Price must be a positive amount"),
         ("check_expected_price","CHECK(expected_price >= 0)","Expected Price must be a positive amount")
     ]
-    
+
     #---------------------------------------------Basic Fields----------------------------------------#
     name = fields.Char(required=True, default='MY HOME')
     description = fields.Text(default="Big House in Mumbai") 
     postcode = fields.Char(default='123456')
     date_availability = fields.Date(default=lambda self:fields.Date.today() + relativedelta(months=3), copy=False)
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(required=True, tracking=True)
     selling_price = fields.Float(copy=False, readonly=True)
     bedrooms = fields.Integer(default=2)
     facades = fields.Integer(default=1)
@@ -32,7 +32,7 @@ class EstateProperty(models.Model):
     state = fields.Selection([
         ('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'), ('cancelled', 'Cancelled')
-    ], default='new')
+    ], default='new', tracking=True)
     
     measurement_unit = fields.Selection([
         ('sqm', 'Square Meters'),
@@ -65,16 +65,16 @@ class EstateProperty(models.Model):
         for prop in self:
             prop.best_price=max(prop.offer_ids.mapped("offer_price")) if prop.offer_ids else 0.0
             
-#---------------------------------------------------- Action Methods----------------------------------------#
-    def property_sold_action(self):  
-        if self.state in ('sold'):
+    #----------------------------------------------- Action Methods----------------------------------------#
+    def action_property_sold(self):
+        if self.state == 'sold':
             raise UserError('Property is Already sold')
         self.state = "sold"
         return True
 
-    def property_cancel_action(self):
-        if self.state in ('cancelled'):
-            raise UserError('Property is not for sale anymore')
+    def action_property_cancel(self):
+        if self.state == 'cancelled':
+            raise UserError('Property is already cancelled')
         self.state = "cancelled"
         return True
     
@@ -91,12 +91,12 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price','expected_price')
     def _check_selling_price(self):
         for property in self:
-            if fields.Float.compare (property.selling_price, property.expected_price * 90/100, precision_rounding=0.01) < 0 and not fields.Float.is_zero(property.selling_price, precision_rounding=0.01):
+            if property.selling_price and property.selling_price < property.expected_price * 0.90:
                 raise ValidationError ("Selling Price cannot be lower than '90%'of the expected price.")
 
-       #-------------------------------------CRUD methods------------------------------------------#
+    #-------------------------------------CRUD methods------------------------------------------#
     @api.ondelete(at_uninstall=False)
     def _unlink_except_sold_or_cancelled(self):
         for record in self:
-            if record.state not in {'new', 'cancelled'} :
+            if record.state not in ['new', 'cancelled'] :
                 raise UserError("You can only delete New or Cancelled Properties")

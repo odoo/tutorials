@@ -1,11 +1,13 @@
-from odoo import models, api, fields
+from odoo import models, api, fields #type: ignore
+
+
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     #------------------------------------------Action Methods----------------------------------------------
-    def property_sold_action(self):
+    def action_property_sold(self):
         """set property state as sold and Create invoice for sold property"""
-        res = super().property_sold_action()
+        res = super().action_property_sold()
         journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
         for property in self:
             self.env["account.move"].create({
@@ -17,7 +19,7 @@ class EstateProperty(models.Model):
                     (0,0,{
                             "name": property.name,
                             "quantity": 1.0,
-                            "price_unit": property.selling_price * 6.0 / 100.0,
+                            "price_unit": property.selling_price,
                         },
                     ),
                     (0,0,
