@@ -10,4 +10,7 @@
             <menuitem id="estate_property_tag_menu" name="Property Tag" action="estate_tag_action_menu" sequence="2" />
         </menuitem>
     </menuitem>
+
+    <menuitem id="estate_menu_settings" name="Settings" parent="estate_property_menu_root" groups="estate_group_manager" />
+
 </odoo>

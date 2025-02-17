@@ -3,9 +3,14 @@ from odoo import fields, models, Command
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
+    invoice_id  = fields.Many2one('account.move', string="Invoice", readonly=True)
+
     def sell_property(self):
         for record in self:
-            invoice_id = record.env['account.move'].create({
+            if not record.buyer.id:
+                raise ValueError("Cannot generate invoice because no buyer is assigned")
+
+            invoice = record.env['account.move'].create({
                 "partner_id": record.buyer.id,
                 "move_type": "out_invoice",
                 "line_ids": [
@@ -21,4 +26,7 @@ class EstateProperty(models.Model):
                     })
                 ]
             })
+            record.invoice_id = invoice.id
+            print(record.invoice_id)
+
         return super().sell_property()

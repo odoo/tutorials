@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_property_offers_table">
+        <t t-set="offers" t-value="property.offer_ids" />
+        <div t-if="not offers">No offers have been made yet :(</div>
+        <div t-else="">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity(days)</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="offers" t-as="offer">
+                        <td><span t-field="offer.price" /></td>
+                        <td><span t-field="offer.partner_id" /></td>
+                        <td><span t-field="offer.validity" /></td>
+                        <td><span t-field="offer.date_deadline" /></td>
+                        <td><span t-field="offer.status" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+    <template id="report_property_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2><span t-field="property.name" /></h2>
+                        <div>
+                            <strong>Salesman: </strong>
+                            <div t-field="property.user_id" />
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price" />
+                            <div class="fw-bold" t-field="property.state" />
+                        </div>
+                        <t t-call="estate.report_property_offers_table" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_salesman_properties">
+        <t t-foreach="docs" t-as="salesman">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page p-4">
+                        <h2 class="fw-bold border-bottom pb-2 mb-3">
+                            <strong>Salesman:</strong>
+                            <span t-field="salesman.partner_id.name" />
+                        </h2>
+                        <t t-set="properties" t-value="salesman.property_ids" />
+                        <t t-if="not properties">
+                            <p class="text-muted">No properties found.</p>
+                        </t>
+                        <t t-else="">
+                            <t t-foreach="properties" t-as="property">
+                                <div class="mb-4 p-3 border rounded">
+                                    <h3 class="fw-semibold mb-2">
+                                        <span t-field="property.name" />
+                                    </h3>
+                                    <p class="mb-1">
+                                        <strong>Expected Price: </strong>
+                                        <span t-field="property.expected_price" />
+                                    </p>
+                                    <div class="fw-bold" t-field="property.state" />
+                                    <t t-call="estate.report_property_offers_table" />
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_invoice" inherit_id="estate.report_property_offers">
+        <xpath expr="//div[@class='page']" position="before">
+            <t t-if="property.state == 'sold' and property.invoice_id">
+                <strong>Invoice Reference: </strong>
+                <span t-field="property.invoice_id.name" /><br />
+                <strong>Invoice Amount: </strong>
+                <span t-field="property.invoice_id.amount_total" /><br />
+                <strong>Invoice Status: </strong>
+                <span t-field="property.invoice_id.state" />
+            </t>
+            <t t-else="">
+                <strong>No Invoice created yet !</strong>
+            </t>
+        </xpath>
+    </template>
+</odoo>
