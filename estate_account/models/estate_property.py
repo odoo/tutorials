@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_status_sold(self):
-        self.env["account.move"].create(
+        self.env["account.move"].sudo().create(
             {
                 "partner_id": self.partner_id.id,
                 "move_type": "out_invoice",
@@ -31,3 +31,6 @@ class EstateProperty(models.Model):
             }
         )
         return super().action_set_status_sold()
+def action_set_status_draft(self):
+    self.status = "new"
+    return super().action_set_status_draft()

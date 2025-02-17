@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -18,7 +18,7 @@ class EstatePropertyType(models.Model):
     )
     property_ids = fields.One2many(
         "estate.property", "property_type_id"
-    )  # """string="Properties)
+    ) 
     offer_ids = fields.One2many(
         "estate.property.offer", "property_type_id", string="Offers"
     )
@@ -33,3 +33,8 @@ class EstatePropertyType(models.Model):
             "The property type name must be unique.",
         )
     ]
+
+    @api.depends("offer_ids")
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)

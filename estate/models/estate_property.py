@@ -65,6 +65,12 @@ class EstateProperty(models.Model):
         string="Best Offer", compute="_compute_best_price", store=True
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    company_id = fields.Many2one(
+        "res.company",
+        required=True,
+        default=lambda self: self.env.company,
+        string="Company"
+    )
 
     _sql_constraints = [
         (
