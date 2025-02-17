@@ -11,7 +11,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Property"
+            <list
                 decoration-success="state == 'offer_received'or state =='offer_accepted'"
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'">
@@ -33,7 +33,7 @@
         <field name="name">estate_property_form_view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="estate_property">
+            <form>
                 <chatter />
                 <header>
                     <button name="action_property_cancel" type="object" string="Cancel"
@@ -104,10 +104,10 @@
                                     <field name="status" optional="1" />
                                     <button name="action_offer_confirm" string="Confirm"
                                         type="object" icon="fa-check"
-                                        invisible="parent.state in ['offer_accepted', 'sold', 'cancelled']" />
+                                        invisible="status in ['accepted','refused'] or parent.state in ['offer_accepted', 'sold', 'cancelled']" />
                                     <button name="action_offer_cancel" string="Cancel" type="object"
                                         icon="fa-times"
-                                        invisible="parent.state in ['offer_accepted', 'sold', 'cancelled']" />
+                                        invisible="status in ['accepted','refused'] or parent.state in ['offer_accepted', 'sold', 'cancelled']" />
                                 </list>
                             </field>
                         </page>

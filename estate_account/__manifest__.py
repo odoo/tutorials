@@ -3,11 +3,13 @@
    
     'depends': [
         'estate',
-        'account'
-   
+        'account',
+    ],
+
+    'data': [
+         'report/estate_property_inherit_template.xml',
     ],
    
     'installable': True,
     'application': True,
 }
-

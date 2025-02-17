@@ -11,5 +11,3 @@ class EstatePropertyTag(models.Model):
 
     _sql_constraints = [
     ('estate_property_tag_name_unique', 'UNIQUE(name)', 'The tag must be unique.')]
-
-

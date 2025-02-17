@@ -13,9 +13,9 @@ class EstateProperty(models.Model):
 
     name = fields.Char("Name", required=True)
     description = fields.Text("Description")
-    postcode = fields.Char("Postcode")
+    postcode = fields.Char("Postcode")  
     date_availability = fields.Date( "Availability Date", copy=False,
-        default=lambda self: (fields.datetime.today() + timedelta(days=90)).strftime("%Y-%m-%d"),)
+        default=lambda self: (fields.Datetime.today() + timedelta(days=90)).strftime("%Y-%m-%d"),)
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", copy=False, readonly=True, default=0.0 )
     bedrooms = fields.Integer("Bedrooms", default=2)
@@ -78,11 +78,11 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
-        for offer in self:
-            offer.best_price = max(offer.offer_ids.mapped("price"), default=0.0)
+        for estateproperty in self:
+            estateproperty.best_price = max(estateproperty.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
-    def _onchange_partner_id(self):
+    def _onchange_garden(self):
         if self.garden:  # When garden is set to True
             self.garden_area = 10  # Set garden_area to an integer value
             self.garden_orientation = "north"  # Set to lowercase value "north"
@@ -104,14 +104,16 @@ class EstateProperty(models.Model):
             raise UserError("sold property can not be cancel.")
 
     def action_property_sold(self):
-        if self.state != "cancelled":
+        if not self.selling_price:
+            raise UserError("without offer you can not sold property")
+        elif self.state == "cancelled":
+            raise UserError("cancelled property can not be sold.")
+        else :
             self.state = "sold"
             self.message_post(
             body=f"Property '{self.name}' has been sold.",
             message_type='notification',
             subject="Property Sold",)
-        else:
-            raise UserError("cancelled property can not be sold.")
 
     @api.ondelete(at_uninstall=False)
     def _check_delete_condition(self):
@@ -119,6 +121,3 @@ class EstateProperty(models.Model):
             if record.state not in ['new', 'cancelled']:
                 raise UserError(f"You cannot delete the property '{record.name}' because its state is '{record.state}'.")
                 
-                
-
-

@@ -1,4 +1,5 @@
 <odoo>
+    <data>
         <!-- Define Property records first -->
         <record id="estate_property_big_villa" model="estate.property">
             <field name="name">Big Villa</field>
@@ -86,4 +87,5 @@
         <function model="estate.property.offer" name="action_offer_confirm">
             <value eval="[ref('estate_property_offer_big_villa_3')]" />
         </function>
+    </data>
 </odoo>
