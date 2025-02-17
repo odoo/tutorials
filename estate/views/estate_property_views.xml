@@ -37,7 +37,7 @@
                 <header>
                     <button name="action_set_sold" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
                     <button name="action_cancel_property" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"/>
-                    <button name="action_property_offer_report" type="action" string="Print Property Offer Report"/>
+                    <button name="estate.estate_property_report_action" type="action" string="Print Offer Report"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>

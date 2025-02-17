@@ -5,6 +5,9 @@
     'author': 'Tushar',
     'website': 'https://tushar.com',  
     'depends': ['estate','account'],
+    'data': [
+        'reports/property_report.xml'
+        ],
     'installable': True,
     'application': True
 }

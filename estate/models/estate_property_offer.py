@@ -32,13 +32,14 @@ class EstatePropertyOffer(models.Model):
                 record.date_deadline = fields.Date.today()+ timedelta(days=record.validity)
     
     @api.model_create_multi
-    def create(self,vals_list):
+    def create(self, vals_list):
         for vals in vals_list:
-            property_id = self.env['estate.property'].browse(vals.get('property_id'))
-            if tools.float_compare(vals.get('price', 0.0), property_id.best_price, precision_digits=2) < 0:
+            property_id = self.env["estate.property"].browse([vals.get("property_id")])
+            if property_id.state == "sold":
+                raise UserError("Offers for sold properties cannot be created.")
+            if tools.float_compare(vals.get("price", 0.0), property_id.best_price, precision_digits=2) < 0:
                 raise UserError("The offered price cannot be lower than the best price.")
-
-        return super(EstatePropertyOffer, self).create(vals_list) 
+        return super().create(vals_list) 
 
     def _inverse_date_deadline(self):
         if self.date_deadline:
