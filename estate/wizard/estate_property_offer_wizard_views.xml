@@ -19,8 +19,8 @@
                         <field name="partner_id"/>
                     </group>
                     <footer>
-                        <button name="action_make_offer" string="Make Offer" type="object"/>
-                        <button string="Cancel" special="cancel"/>
+                        <button name="action_make_offer" string="Make Offer" type="object" class="btn-primary"/>
+                        <button string="Cancel" special="cancel" class="btn-secondary"/>
                     </footer>
                 </sheet>
             </form>
