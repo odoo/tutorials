@@ -1,0 +1,6 @@
+<?xml version="1.0" unicode="UTF-8"?>
+<odoo>
+    <record id="warranty_configurations_list_view" model="ir.view">
+
+    </record>
+</odoo>
