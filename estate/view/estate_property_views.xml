@@ -19,27 +19,6 @@
         </field>
     </record>
     <!-- search view -->
-    <!-- <record id="search_view" model="ir.ui.view">
-            <field name="name">estate_search_view</field>
-            <field name="model">estate_model</field>
-            <field name="arch" type="xml">
-                <search string="search view on field">
-                    <field name="name"/>
-                    <field name="postcode"/>
-                    <field name="expected_price"/>
-                    <field name="bedrooms"/>
-                    <field name="living_area"/>
-                    <field name="facades"/>
-                    <field name="property_type_id"/>
-                    <filter string="Available Properties" name="available_properties" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
-                    <filter name="living_area" string="Living Area (>=)" domain="[('living_area', '>=', context.get('living_area_value', 0))]" />
-                    <filter name="available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
-                    <group string="Group By">
-                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
-                    </group>
-                </search>
-            </field>
-    </record> -->
     <record id="search_view" model="ir.ui.view">
         <field name="name">estate_search_view</field>
         <field name="model">estate_model</field>
@@ -71,7 +50,6 @@
             </search>
         </field>
     </record>
-
     <!-- action model -->
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
@@ -97,7 +75,7 @@
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <field name="state"/>
+                        <!-- <field name="state"/> -->
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field':'Color'}"/>
                     </group>
                     <group>

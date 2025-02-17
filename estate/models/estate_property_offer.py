@@ -3,7 +3,7 @@ from datetime import timedelta
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 
-class EstatePropertyOffer (models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate_property_offer_model"
     _description = "hiiii"
     _order = "price desc"
@@ -43,6 +43,17 @@ class EstatePropertyOffer (models.Model):
                 create_date = fields.Datetime.from_string(record.create_date)
                 validity = (fields.Datetime.from_string(record.date_deadline) - create_date).days
                 record.validity = validity
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env["estate_model"].browse(vals.get("property_id"))
+            if not property_id:
+                    raise UserError("Property must be specified for an offer.")
+            if property_id.offer_ids and vals["price"] <= max(property_id.offer_ids.mapped("price")):
+                    raise UserError("You cannot create an offer lower than an existing offer!")
+        property_id.state = "offer_received"
+        return super(EstatePropertyOffer, self).create(vals_list)
 
     def action_accept(self):
         for record in self:

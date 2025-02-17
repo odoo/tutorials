@@ -60,7 +60,7 @@ class estate_Property(models.Model):
     salesman = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     buyer = fields.Many2one('res.partner', string='Buyer')
     tag_ids = fields.Many2many("estate_property_tag_model", string="Tag")
-    offer_ids = fields.One2many("estate_property_offer_model", "property_id", string="Offers")
+    offer_ids= fields.One2many("estate_property_offer_model", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area", readonly=False)
     best_price = fields.Float(compute="_compute_best_price", store=True)
 
@@ -84,6 +84,12 @@ class estate_Property(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_delet(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError("You can only delete new or cancelled properties!")
 
     ###### action button ######
     def sold_action(self):
