@@ -7,6 +7,23 @@
     <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
-        <field name="implied_ids" eval="[4, ref('estate_group_user')]"></field>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="implied_ids" eval="[4, ref('estate.estate_group_user')]"></field>
+
     </record>
+
+    <record id="estate_property_agent_rule" model="ir.rule">
+        <field name="name">Agent allowed to see and modify their own property only</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]"/>
+        <field name="domain_force">['&amp;', ('company_id', 'in', company_ids), '|', ('salesperson', '=', user.id), ('salesperson', '=', False) ]</field>
+    </record>
+
+    <record id="estate_property_manager_rule" model="ir.rule">
+        <field name="name">Manger allowed to see and modify all properties</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
 </odoo>

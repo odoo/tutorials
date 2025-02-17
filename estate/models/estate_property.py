@@ -56,12 +56,13 @@ class EstateProperty(models.Model):
         default='new'
     )
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
-    salesperson = fields.Many2one('res.users',string='Salesman', default=lambda self:self.env.user)
-    buyer = fields.Many2one('res.partner',string='Buyer', copy=False)
+    salesperson = fields.Many2one('res.users', string='Salesman', default=lambda self:self.env.user)
+    buyer = fields.Many2one('res.partner', string='Buyer', copy=False)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id', string="Offers")
     total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area')
     best_price = fields.Integer(string='Best Offer', compute='_compute_best_price')
+    company_id = fields.Many2one('res.company', string="Company", default = lambda self: self.env.company, required = True)
 
     _sql_constraints = [
         ('expected_price_check', 'CHECK( expected_price >= 0 )', 'A property expected price must be strictly positive'),
@@ -118,3 +119,12 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new','cancelled']:
                 raise UserError(_("You can only delete a property if its state is 'New' or 'Cancelled'."))
+
+    def action_add_offers(self):
+        return {
+            'name': 'Add Offers',
+            'type': 'ir.actions.act_window',
+            'res_model': 'estate.add.offers.wizard',
+            'view_mode': 'form',
+            'target': 'new'
+        }

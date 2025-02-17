@@ -1,0 +1,20 @@
+<odoo>
+
+    <record id="estate_add_offers_wizard_view_form" model="ir.ui.view">
+        <field name="name">estate.add.offers.wizard.form</field>
+        <field name="model">estate.add.offers.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add offers">
+                <group>
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                </group>
+                <footer>
+                    <button name="action_estate_add_offer_wizard" string="Add Offer" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

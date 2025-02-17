@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
     _description = 'for adding offers of properties'
     _order = 'price desc'
 
-    price=fields.Float(string='Price')
+    price=fields.Float(string='Price', required = True)
     status=fields.Selection(
         string='Status',
         selection=[
@@ -55,9 +55,6 @@ class EstatePropertyOffer(models.Model):
     def action_offer_reject_btn(self):
         for offer in self:
             offer.status = 'refused'
-            offer.property_id.selling_price = 0
-            offer.property_id.buyer = False
-            offer.property_id.state = 'offer_received'
         return True
 
     @api.model_create_multi

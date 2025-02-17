@@ -12,6 +12,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Property List" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <header>
+                    <button string="Add Offer" name="action_add_offers" type="object"></button>
+                </header>
                 <field name="name" />
                 <field name="property_type_id"/>
                 <field name="tag_ids" widget="many2many_tags"/>
