@@ -12,6 +12,7 @@
     'version': '1.0',
     'depends': [
         'base',
+        'mail',
     ],
     'data': [
         'security/security.xml',
@@ -22,10 +23,13 @@
         'views/estate_property_tag_views.xml',
         'views/estate_menus.xml',
         'views/res_users_views.xml',
-        'data/estate_data.xml',
+        'report/estate_templates.xml',
+        'report/estate_reports.xml',
+        'data/estate.property.type.csv',
+        'data/estate.property.tag.csv',
     ],
     'demo': [
-        'data/estate_demo.xml',
+        'demo/estate_demo.xml',
     ],
     'installable': True,
     'application': True,

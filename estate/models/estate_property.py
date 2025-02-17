@@ -11,6 +11,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _inherit = ["mail.thread"]
     _order = "id desc"
     _sql_constraints = [
         ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive"),
@@ -48,7 +49,7 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled")
         ],
-        string="Status", required=True, default="new", copy=False,
+        string="Status", required=True, default="new", copy=False, tracking=True,
         help='New: A new property with no offers yet\n'
             'Offer Received: Offers by buyers are received\n'
             'Offer Accepted: An offer has been accepted\n'
@@ -99,6 +100,9 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if "cancelled" in self.mapped("state"):
             raise UserError(_("Cancelled properties cannot be sold."))
+        # This condition ensures that buyer and selling price are set before marking property sold
+        if self.mapped("state").count("offer_accepted") != len(self):
+            raise UserError(_("Cannot sell a property with no accepted offer."))
         for property in self:
             property.state = "sold"
         return True

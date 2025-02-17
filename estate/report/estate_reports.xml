@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_estate_property" model="ir.actions.report">
+            <field name="name">Property Offers</field>
+            <field name="model">estate.property</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">estate.report_property_offers</field>
+            <field name="report_file">estate.report_property_offers</field>
+            <field name="print_report_name">'Property Offers'</field>
+            <field name="binding_model_id" ref="model_estate_property"/>
+            <field name="groups_id" eval="[Command.link(ref('estate_group_user'))]"/>
+        </record>
+    </data>
+
+    <data>
+        <record id="action_report_estate_salesperson" model="ir.actions.report">
+            <field name="name">Salesperson's Properties with Offers</field>
+            <field name="model">res.users</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">estate.report_salesperson_properties</field>
+            <field name="report_file">estate.report_salesperson_properties</field>
+            <field name="print_report_name">'Salesperson Property Offers'</field>
+            <field name="binding_model_id" ref="base.model_res_users"/>
+        </record>
+    </data>
+</odoo>

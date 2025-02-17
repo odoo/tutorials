@@ -48,6 +48,8 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for offer in vals_list:
             property = self.env["estate.property"].browse(offer["property_id"])
+            if property.state == "sold":
+                raise UserError(_("You can not create an offer for a sold property"))
             if property.state != "offer_received":
                 property.state = "offer_received"
             if property.offer_ids:
@@ -58,7 +60,7 @@ class EstatePropertyOffer(models.Model):
         return super().create(vals_list)
 
     def action_accept(self):
-        if "accepted" in self.mapped("property_id.offer_ids.state"):
+        if "accepted" in self.property_id.offer_ids.mapped("state"):
             raise UserError(_("An offer has already been accepted."))
         self.write({ "state": "accepted" })
         for property in self.mapped("property_id"):
