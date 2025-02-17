@@ -45,7 +45,9 @@ class EstatePropertyOffer(models.Model):
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for offer in self:
-            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            date = (
+                offer.create_date.date() if offer.create_date else fields.Date.today()
+            )
             offer.date_deadline = date + relativedelta(days=offer.validity)
 
     # For making manual changes in computed fields.
@@ -56,24 +58,27 @@ class EstatePropertyOffer(models.Model):
             )
             offer.validity = (offer.date_deadline - date).days
     # ---------------------------------------- Offer's Action Method -------------------------------------
-    def offer_accept(self):
+    def action_offer_accept(self):
         if self.state == "accepted":
             raise UserError("This offer has already been accepted")
-        self.state = "accepted"
-        self.property_id.state = "offer_accepted"
-        self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.partner_id
+        self.write({"state": "accepted"})
+        self.property_id.write(
+            {
+                "state": "offer_accepted",
+                "selling_price": self.price,
+                "buyer_id": self.partner_id.id,
+            }
+        )
 
         for offer in self.property_id.offer_ids:
             if offer.id != self.id:
                 offer.state = "refused"
 
-    def offer_refuse(self):
+    def action_offer_refuse(self):
         for offers in self:
             if offers.state == "refused":
                 raise UserError("This offer has already been refused")
             offers.state = "refused"
-            self.property_id.state = "cancelled"
             offers.property_id.selling_price = None
             offers.property_id.buyer_id = None
         return True
@@ -82,14 +87,13 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         property = self.env["estate.property"].browse(vals.get("property_id"))
 
-        existing_offers = self.search([("property_id", "=", property.id)])
+        existing_offers = property.offer_ids
         if existing_offers:
-            max_offer_price = max(existing_offers.mapped("price")) 
+            max_offer_price = max(existing_offers.mapped("price"))
             if vals.get("price") <= max_offer_price:
                 new_price = max_offer_price - vals.get("price") + 1
                 raise UserError(
-                    f"You cannot create an offer lower than an existing offer. "
-                    f"Please add at least {new_price} more to create a new offer!"
+                    f"You cannot create an offer lower than an existing offer, Please add at least {new_price} more to create a new offer!"
                 )
         property.state = "offer_received"
-        return super(EstatePropertyOffer, self).create(vals)
+        return super().create(vals)
