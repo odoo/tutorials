@@ -4,9 +4,11 @@
     'depends': ["estate", "account"],
     'author': "Prathmesh Soni (pdso)",
     'category': "Tutorials/estate_account",
-    'summary': "A real estate app",
+    'summary': "An app for real estate account invoicing management",
     'description': "A real estate account app developed by Prathmesh Soni (pdso).",
-    'data': [],
+    "data":[
+        "report/estate_property_report.xml"
+    ],
     'sequence': 2,
     'application': True,
     'installable': True,

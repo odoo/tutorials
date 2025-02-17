@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+        <template id="estate_property_res_user_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="res_user">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h1>
+                                <span> <b>Salesman: </b></span>
+                                <span t-field="res_user.name"/>
+                            </h1>
+                            <t t-foreach="res_user.property_ids" t-as="property">
+                                <div class="page">
+                                    <h2 t-field="property.property_type_id"/>
+                                    <div>
+                                        <strong>Expected Price: </strong>
+                                        <span t-field="property.expected_price"/>
+                                    </div>
+                                    <div>
+                                        <strong>Status: </strong>
+                                        <span t-field="property.state"/>
+                                    </div>
+                                    <div>
+                                        <t t-set="offers" t-value="property.offer_ids"/>
+                                        <t t-if="len(offers) != 0">
+                                            <t t-call="estate.estate_property_offer_subtemplate"/>
+                                        </t>
+                                        <t t-else="">
+                                            <strong>No offers have been made yet :(</strong>
+                                        </t>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

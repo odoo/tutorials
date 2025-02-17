@@ -1,0 +1,9 @@
+<odoo>
+    <template id="report_estate_property_inherit_template" inherit_id="estate.estate_property_template">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <t t-if="property.state == 'sold'">
+                <p>This property is fully invoiced!</p>
+            </t>
+        </xpath>
+    </template>
+</odoo>
