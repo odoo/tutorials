@@ -9,7 +9,14 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperties(models.Model):
     _name = 'estate.properties'
     _description = 'Estate Properties'
+    _inherit = ['mail.thread']
     _order = 'id desc'
+    _sql_constraints = [
+        ('expected_price', 'CHECK(expected_price > 0)',
+         'Expected Price should be greater than 0'),
+        ('selling_price', 'CHECK(selling_price >= 0)',
+         'Selling Price should be greater than 0'),
+    ]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -25,7 +32,8 @@ class EstateProperties(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    company_id = fields.Many2one('res.company', required=True ,default=lambda self: self.env.company)
+    company_id = fields.Many2one(
+        'res.company', required=True, default=lambda self: self.env.company)
     garden_orientation = fields.Selection(string='Orientation', selection=[(
         'north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')], default='east')
     state = fields.Selection(string='State', selection=[('new', 'New'), ('offer_recieved', 'Offer Received'), (
@@ -33,21 +41,14 @@ class EstateProperties(models.Model):
     property_type_id = fields.Many2one(
         comodel_name='estate.properties.type', string='Type')
     partner_id = fields.Many2one(
-        'res.partner', string='Buyer', index=True,  copy=False)
+        'res.partner', string='Buyer', index=True, copy=False)
     users_id = fields.Many2one(
-        'res.users', string='Salesperson', index=True,  default=lambda self: self.env.user)
+        'res.users', string='Salesperson', index=True, default=lambda self: self.env.user)
     tags_id = fields.Many2many('estate.properties.tags', string='Tags')
     offer_ids = fields.One2many(
         'estate.properties.offer', 'property_id', string='Offer')
     total_area = fields.Float(compute='_compute_total_area', store=True)
     best_offer = fields.Float(compute='_compute_best_price')
-
-    _sql_constraints = [
-        ('expected_price', 'CHECK(expected_price > 0)',
-         'Expected Price should be greater than 0'),
-        ('selling_price', 'CHECK(selling_price >= 0)',
-         'Selling Price should be greater than 0'),
-    ]
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
@@ -57,45 +58,43 @@ class EstateProperties(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_offer = max(record.offer_ids.mapped('price'))
-            else:
-                record.best_offer = 0.00
-
-    @api.onchange('garden')
-    def _trace_action(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = ''
-
-    def action_property_sold(self):
-        for record in self:
-            if len(record.offer_ids) == 0 or record.state != 'offer_accepted':
-                raise UserError('Need at least one offer to be accepted')
-            elif record.state == 'cancelled':
-                raise UserError('Cancelled property cannot be sold')
-            record.state = 'sold'
-
-    def action_property_rejected(self):
-        if self.state == 'sold':
-            raise UserError('Sold property cannot be cancelled')
-        self.state = 'cancelled'
+            record.best_offer = max(
+                record.offer_ids.mapped('price'), default=0.00)
 
     @api.constrains('selling_price', 'expected_price')
     def check_price(self):
+        _ = self.env._
         for record in self:
             if (
                 not float_is_zero(record.selling_price, precision_rounding=0.01) and float_compare(
                     record.selling_price, record.expected_price * .9, precision_rounding=0.01) < 0
             ):
                 raise ValidationError(
-                    'The selling price cannot be lower than 90% of the expected price.')
+                    _('The selling price cannot be lower than 90% of the expected price.'))
+
+    @api.onchange('garden')
+    def _trace_action(self):
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'north' if self.garden else ''
 
     @api.ondelete(at_uninstall=False)
     def _prevent_accept_records(self):
+        _ = self.env._
         for record in self:
             if record.state not in ['new', 'cancelled']:
-                raise ValidationError('Cannot delete this property')
+                raise ValidationError(_('Cannot delete this property.'))
+
+    def action_property_sold(self):
+        _ = self.env._
+        for record in self:
+            if len(record.offer_ids) == 0 or record.state != 'offer_accepted':
+                raise UserError(_('Need at least one offer to be accepted.'))
+            elif record.state == 'cancelled':
+                raise UserError(_('Cancelled property cannot be sold.'))
+            record.state = 'sold'
+
+    def action_property_rejected(self):
+        _ = self.env._
+        if self.state == 'sold':
+            raise UserError(_('Sold property cannot be cancelled.'))
+        self.state = 'cancelled'

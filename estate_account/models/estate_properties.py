@@ -9,13 +9,14 @@ class EstateProperties(models.Model):
     _inherit = 'estate.properties'
 
     def action_property_sold(self):
+        _ = self.env._
         super().action_property_sold()
         journal = self.env['account.journal'].search(
             [('type', '=', 'sale')], limit=1)
 
         if not journal:
             raise UserError(
-                'No Sales Journal found. Please configure a Sales Journal.')
+                _ ('No Sales Journal found. Please configure a Sales Journal.'))
 
         for record in self:
             values = {
