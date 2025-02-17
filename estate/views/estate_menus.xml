@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <menuitem id="root_menu_estate" name="Real Estate"/>
+    <menuitem id="root_menu_estate" name="Real Estate" web_icon="estate,static/description/icon.png"/>
     <menuitem id="first_level_menu" name="Advertisement" parent="root_menu_estate"/>
     <menuitem id="test_model_menu" action="estate_property_action" parent="first_level_menu"/>
     <menuitem id="estate_setting_menu" name="Settings" groups="estate_group_manager" parent="root_menu_estate"/>

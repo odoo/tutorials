@@ -5,7 +5,6 @@ from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
-    image_1920 = fields.Image("Property Image")
 
     def action_set_sold(self):
         result = super().action_set_sold()
@@ -14,8 +13,8 @@ class EstateProperty(models.Model):
 
     def create_invoice(self):
         try:
-            self.check_access_rights('write')
-            self.check_access_rule('write')
+            self.check_access('write')
+            self.check_access('write')
             invoice = self.env['account.move'].sudo().create({
                 'partner_id': self.buyer_id.id,
                 'move_type': 'out_invoice',

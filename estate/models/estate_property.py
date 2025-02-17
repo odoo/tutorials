@@ -13,6 +13,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True, tracking=True)
     description = fields.Text()
     postcode = fields.Char()
+    image_1920 = fields.Image("Property Image")
     date_availability = fields.Date(default= lambda self: fields.Datetime.today() + timedelta(days=90), copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True , copy=False)
