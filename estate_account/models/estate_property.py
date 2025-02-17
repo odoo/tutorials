@@ -7,8 +7,6 @@ class EstateProperty(models.Model):
     def action_sell_property(self):
         if not self.buyer_id:
             raise exceptions.UserError("A buyer must be set before selling the property.")
-        if not self.selling_price:
-            raise exceptions.UserError("Choose at least one offer before selling the property!")
 
         self.env['estate.property'].check_access('write')
 

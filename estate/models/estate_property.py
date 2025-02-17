@@ -103,7 +103,6 @@ class EstateProperty(models.Model):
                 )
                 raise exceptions.ValidationError(error_message)
 
-
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden == True:
@@ -121,7 +120,16 @@ class EstateProperty(models.Model):
 
     def action_sell_property(self):
         for record in self:
-            record.state = "sold"
+            if record.state != "sold":
+                accepted_offer= record.env['estate.property.offer'].search([
+                    ('property_id','=',record.id),
+                    ('status','=','accepted')
+                ])
+                if not accepted_offer:
+                    raise exceptions.UserError("You cannot sell a property without an accepted offer")
+                record.state = "sold"
+            else:
+                raise exceptions.UserError("This property is already sold.")
         return True
     
     def action_cancel_property(self):

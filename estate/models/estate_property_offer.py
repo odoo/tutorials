@@ -41,9 +41,12 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        self.env['estate.property'].browse(vals['property_id']).state = 'offer received'
-        if int(vals['price']) < self.env['estate.property'].browse(vals['property_id']).best_offer:
+        if self.env['estate.property'].browse(vals['property_id']).state == 'sold':
+            raise exceptions.UserError("You cannot create an offer for a sold property.")
+        elif int(vals['price']) < self.env['estate.property'].browse(vals['property_id']).best_offer:
             raise exceptions.UserError(f"The offer must be higher than {self.env['estate.property'].browse(vals['property_id']).best_offer}")
+        else:
+            self.env['estate.property'].browse(vals['property_id']).state = 'offer received'
         return super(EstatePropertyOffer, self).create(vals)
     
     def action_accept_offer(self):

@@ -6,6 +6,7 @@
         'account'
     ],
     'data': [
+        'report/estate_reports.xml',
     ],
     'installable': True,
     'application': True,

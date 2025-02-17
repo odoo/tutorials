@@ -15,7 +15,9 @@
       <field name="garden">True</field>
       <field name="garden_area">100000</field>
       <field name="garden_orientation">south</field>
+      <field name="property_type_id" ref="property_type_residential"/>
     </record>
+
     <record id="estate_property_demo_data2" model="estate.property">
       <field name="name">Trailer home</field>
       <field name="state">cancelled</field>
@@ -28,6 +30,62 @@
       <field name="living_area">10</field>
       <field name="facades">4</field>
       <field name="garage">False</field>
+      <field name="property_type_id" ref="property_type_residential"/>
+    </record>
+
+    <record id="estate_property_demo_data3" model="estate.property">
+      <field name="name">New House</field>
+      <field name="state">new</field>
+      <field name="description">My new house</field>
+      <field name="postcode">123456</field>
+      <field name="date_availability">2025-02-14</field>
+      <field name="expected_price">1400000</field>
+      <field name="bedrooms">4</field>
+      <field name="living_area">100</field>
+      <field name="facades">4</field>
+      <field name="garage">False</field>
+      <field name="property_type_id" ref="property_type_residential"/>
+      <field name="offer_ids" eval="[
+        Command.create({
+          'partner_id': ref('base.res_partner_12'),
+          'price': 1400000,
+          'validity': 14,
+          'date_deadline': (datetime.now() + timedelta(days=14))
+        }),
+        Command.create({
+          'partner_id': ref('base.res_partner_2'),
+          'price': 1400500,
+          'validity': 10,
+          'date_deadline': (datetime.now() + timedelta(days=10))
+        })
+      ]"/>
+    </record>
+
+    <record id="estate_property_demo_data4" model="estate.property">
+        <field name="name">International Space Station</field>
+        <field name="state">new</field>
+        <field name="description">Aliens sometimes come visit</field>
+        <field name="postcode">----</field>
+        <field name="date_availability">2030-12-31</field>
+        <field name="expected_price">45890000</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+    </record>
+
+    <record id="estate_property_demo_data5" model="estate.property">
+        <field name="name">Cozy Cabin</field>
+        <field name="state">sold</field>
+        <field name="description">Small cabin by lake</field>
+        <field name="postcode">10000</field>
+        <field name="date_availability">2020-01-01</field>
+        <field name="expected_price">80000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
     </record>
   </data>
 </odoo>

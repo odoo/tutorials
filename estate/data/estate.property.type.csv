@@ -1,5 +1,5 @@
 id,name,sequence
-1,Residential,1
-2,Commercial,2
-3,Industrial,3
-4,Land,4
+property_type_residential,Residential,1
+property_type_commercial,Commercial,2
+property_type_industrial,Industrial,3
+property_type_land,Land,4
