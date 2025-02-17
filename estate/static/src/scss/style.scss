@@ -1,0 +1,24 @@
+.o_stat_btn_box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 5px;
+}
+
+
+.oe_stat_button.o_stat_btn_with_border {
+    border: none;
+    background: none;
+    font-size: 18px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+
+.oe_stat_button .fa-money {
+    font-size: 32px;
+    color: #555;
+    margin-right: 5px;
+}

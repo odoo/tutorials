@@ -1,6 +1,7 @@
 from datetime import timedelta
 from odoo import api, models, fields, exceptions
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
@@ -13,8 +14,8 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate.property", required=True)
-    validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+    validity = fields.Integer(default=7, string="Validity (days)")
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True, string="Deadline")
     create_date = fields.Date(default=fields.Date.today)
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True, string="Property Type")
     @api.depends("create_date", "validity")
@@ -46,13 +47,16 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             if "property_id" not in vals:
                 raise exceptions.ValidationError("Property ID is required to create an offer.")
-            property_id = self.env["estate.property"].browse(vals["property_id"])
-            if vals["price"] < property_id.best_offer:
+
+            property = self.env["estate.property"].browse(vals["property_id"])
+
+            if property.state in ['offer_accepted', 'sold', 'cancelled']:
+                raise exceptions.UserError(f"Cannot create an offer. The property is already '{property.state.replace('_', ' ').title()}'.")
+
+            if vals["price"] < property.best_offer:
                 raise exceptions.ValidationError(
-                     f"The offer must be higher than {property_id.best_offer:.2f}."
+                     f"The offer must be higher than {property.best_offer:.2f}."
                 )
-            property_id.state = "offer_received"
+            property.state = "offer_received"
+
         return super(EstatePropertyOffer, self).create(vals_list)
-    # def create (self , no operation);
-    #  for vals in vals list:
-    #     if "property_id " not in vars list :

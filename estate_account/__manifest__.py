@@ -1,12 +1,11 @@
 {
-    "name": "Real Estate Accounting",
-    "version": "1.0",
-    "author": "Khushi",
-    "summary": "Invoicing Real Estate!",
-    "category": "Tutorials/RealEstate",
-    "depends": ["estate", "account"],
-    "data": [],
-    "installable": True,
-    "application": False,
-    "license": "LGPL-3"
+    'name': 'Estate Accounting',
+    'version': '1.0',
+    'author': 'Khushi',
+    'category': 'Accounting',
+    'summary': 'Link Real Estate with Accounting',
+    'depends': ['estate', 'account'],
+    'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
 }

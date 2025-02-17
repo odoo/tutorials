@@ -3,15 +3,16 @@ from odoo import api, models, fields, exceptions, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _order = "id desc"
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
     ]
-    _order = "id desc"
-
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -27,7 +28,7 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
@@ -43,9 +44,14 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user, required=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    total_area = fields.Integer(compute="_compute_total_area", store=True)
+    total_area = fields.Integer(compute="_compute_total_area", store=True, string="Total Area (sqm)")
     best_offer = fields.Float(compute="_compute_best_offer", store=True)
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+    has_accepted_offer = fields.Boolean(
+        string="Has Accepted Offer",
+        compute="_compute_has_accepted_offer",
+        store=True
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -95,3 +101,9 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError(_("You can only delete properties in the 'New' or 'Cancelled' state."))
+
+    @api.depends("offer_ids.status")
+    def _compute_has_accepted_offer(self):
+        """Check if any offer has been accepted for the property."""
+        for record in self:
+            record.has_accepted_offer = any(offer.status == 'accepted' for offer in record.offer_ids)
