@@ -19,7 +19,8 @@ class EstateProperty(models.Model):
                         'quantity' : 1,
                         'price_unit': 100.00
                     })
-                ]
+                ],
+                'name' : record.estate_property_sequence,
             }
             self.env['account.move'].create(invoice_vals)
         return super().action_sold()

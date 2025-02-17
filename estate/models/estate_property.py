@@ -35,12 +35,14 @@ class EstateProperty(models.Model):
         ('cancelled', 'Cancelled')
     ], string='Status', required=True, copy=False, default='new')
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
-    salesperson_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
+    salesperson_id = fields.Many2one('res.users', string='Salesman')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
     total_area = fields.Float(compute='_compute_total_area', string='Total Area (sqm)')
     best_price = fields.Float(compute='_compute_best_price', string='Best Offer')
+    estate_property_sequence = fields.Char(string='Reference', readonly=True, copy=False)
+    company_id = fields.Many2one('res.company', required=True, string='Company', default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0.0)', 'The expected price must be strictly positive.'),
@@ -76,6 +78,13 @@ class EstateProperty(models.Model):
         for record in self.filtered(lambda record: record.state not in ['new', 'cancelled']):
             raise UserError(_("In order to delete a property, it must be new or cancelled."))
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('estate_property_sequence'):
+                vals['estate_property_sequence'] = self.env['ir.sequence'].next_by_code('estate.property.sequence')
+        return super().create(vals_list)
+
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
@@ -87,5 +96,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(_("Cancelled properties cannot be sold."))
+            if record.state != 'offer_accepted':
+                raise UserError(_("Offer cannot be sold without offer accepted."))
             else:
                 record.state = 'sold'

@@ -37,6 +37,8 @@
                         <field name="property_type_id" options="{'no_create' : true}"></field>
                         <field name="postcode" string="Postcode"></field>
                         <field name="date_availability"></field>
+                        <field name="company_id"></field>
+                        <field name="estate_property_sequence"></field>
                     </group>
                     <group>
                         <field name="expected_price"></field>
