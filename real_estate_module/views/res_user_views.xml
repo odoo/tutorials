@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="base.view_users_form"></field>
         <field name="arch" type="xml">
             <xpath expr="//sheet/notebook" position="inside">
-                <page string="Real Estate Properties">
+                <page string="Properties">
                     <field name="property_ids">
                         <list>
                             <field name="name"/>

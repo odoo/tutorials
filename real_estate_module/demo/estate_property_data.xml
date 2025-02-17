@@ -1,5 +1,5 @@
 <odoo>
-    <record id="prop_1" model="estate.property">
+    <record id="property_1" model="estate.property">
         <field name="name">Bhat House</field>
         <field name="expected_price">100000</field>
         <field name="description">when duplicated, status and date are not copied</field>
@@ -10,9 +10,8 @@
         <field name="garden">True</field>
         <field name="garden_area">1500</field>
         <field name="garden_orientation">north</field>
-        <field name="state">new</field>
     </record>
-    <record id="prop_2" model="estate.property">
+    <record id="property_2" model="estate.property">
         <field name="name">Chand House</field>
         <field name="expected_price">150000</field>
         <field name="description">when duplicated, status and date are not copied</field>

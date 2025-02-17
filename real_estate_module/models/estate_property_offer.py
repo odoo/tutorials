@@ -86,8 +86,7 @@ class EstatePropertyOffer(models.Model):
                 offer.validity = 7
 
     def action_confirm(self):
-        """Accepts the offer and updates the property state."""
-        
+        """Accepts the offer and updates the property state."""       
         for offer in self:
             if offer.property_id.state == 'sold':
                 raise UserError("Cannot accept an offer for a sold property.")
@@ -106,10 +105,7 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property = self.env['estate.property'].browse(vals.get('property_id'))
-
             if property.best_price >= vals['price']:
                 raise UserError("Offer Price is lower than the existing ones")
-
             property.state = 'offer_received'
-
         return super().create(vals_list)

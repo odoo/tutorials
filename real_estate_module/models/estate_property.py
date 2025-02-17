@@ -223,10 +223,10 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _restrict_property_unlink(self):
-        for property in self:
-            if property.state not in ('new', 'cancelled'):
-                raise UserError("Can't delete a property whose current state "
-                "is neither 'New' nor 'Cancelled'")
+        if any(property.state not in ('new', 'cancelled') for property in self):
+            raise UserError(
+                    "Can't delete a property whose current state is neither 'New' nor 'Cancelled'"
+                )
 
     def _default_company(self):
         return self.env.company
