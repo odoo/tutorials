@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_estate_property_offers" model="ir.actions.report">
+        <field name="name">Property Offers List Report</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property_offers_template</field>
+        <field name="report_file">event.report_property_offers_template</field>
+        <field name="print_report_name">'Property Offers - %s' % (object.name or 'List').replace('/','')</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="report_estate_property_salesperson" model="ir.actions.report">
+        <field name="name">Salesperson Property Report</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property_salesperson_template</field>
+        <field name="report_file">estate.report_property_salesperson_template</field>
+        <field name="print_report_name">'Salesperson Property List - %s' % (object.name or 'Demo File').replace('/','')</field>
+        <field name="binding_model_id" ref="base.model_res_users"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

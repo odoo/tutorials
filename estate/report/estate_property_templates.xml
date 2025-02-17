@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_property_offers_template">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.property_seller_id"/>
+                        </h2>
+                        <h3>
+                            <span t-field="property.name"/>
+                        </h3>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price"/>
+                        </div>
+                        <div class="status">
+                            <strong>Status: </strong>
+                            <span t-field="property.state"/>
+                        </div>
+                       <t t-call="estate.report_property_offers_sub_template"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="report_property_salesperson_template">
+        <t t-foreach="docs" t-as="seller">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <strong>Salesman: </strong>
+                            <span t-field="seller.name"/>
+                        </h2>
+                       <t t-foreach="seller.property_ids" t-as="property">
+                            <div class="page">
+                                <h2>
+                                    <span t-field="property.name" />
+                                </h2>
+                                <div>
+                                    <strong>Expected Price: </strong>
+                                    <span t-field="property.expected_price" />
+                                </div>
+                                <div>
+                                    <strong>Status: </strong>
+                                    <span t-field="property.state" />
+                                </div>
+                                <t t-call="estate.report_property_offers_sub_template" />
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

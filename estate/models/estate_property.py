@@ -100,8 +100,6 @@ class EstateProperty(models.Model):
     def _check_best_price(self):
         for record in self:
             if float_compare(record.expected_price * 0.9, record.selling_price, 2) == 1 and not float_is_zero(record.selling_price, 2):
-                print(record.expected_price,
-                      record.selling_price, record.best_price)
                 raise ValidationError(
                     _("The selling price must be at least 90% of the expected price!You must reduce the expected price if you want to accept this offer."))
 
@@ -113,8 +111,14 @@ class EstateProperty(models.Model):
 
     def action_sold_property(self):
         self.ensure_one()
+        # accepted_offer = self.offer_ids.filtered(
+        #     lambda x: x.status == "accepted")
+
         if self.state == "cancelled":
             raise UserError(_("Cancelled Property Cannot be Sold"))
+        # elif not accepted_offer:
+        #     raise UserError(
+        #         _("There is no accepted offer for this property"))
         else:
             self.state = "sold"
 
