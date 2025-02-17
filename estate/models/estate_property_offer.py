@@ -1,6 +1,7 @@
-from odoo import api, fields, models
 from datetime import timedelta
+from odoo import api, fields, models
 from odoo.exceptions import UserError
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"

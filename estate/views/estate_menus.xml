@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <menuitem id="root_menu_estate" name="Real Estate">
-        <menuitem id="first_level_menu" name="Advertisement">
-            <menuitem id="test_model_menu" action="estate_property_action"/>
-        </menuitem>
-        <menuitem id='estate_setting_menu' name="Settings">
-            <menuitem id="property_type_menu" name="Property Types" action="estate_property_type_action"/>
-            <menuitem id="property_tag_menu" name="Property Tags" action="estate_property_tag_action"/>
-        </menuitem>
-    </menuitem>
+    <menuitem id="root_menu_estate" name="Real Estate"/>
+    <menuitem id="first_level_menu" name="Advertisement" parent="root_menu_estate"/>
+    <menuitem id="test_model_menu" action="estate_property_action" parent="first_level_menu"/>
+    <menuitem id="estate_setting_menu" name="Settings" groups="estate_group_manager" parent="root_menu_estate"/>
+    <menuitem id="property_type_menu" name="Property Types" action="estate_property_type_action" parent="estate_setting_menu"/>
+    <menuitem id="property_tag_menu" name="Property Tags" action="estate_property_tag_action" parent="estate_setting_menu"/>
 </odoo>

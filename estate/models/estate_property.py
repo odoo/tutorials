@@ -1,14 +1,16 @@
-from odoo import api, models,fields
 from datetime import timedelta
+from odoo import api, models,fields
 from odoo import exceptions
 from odoo.exceptions import UserError, ValidationError
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _inherit = ['mail.thread']
     _order = "id desc"
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, tracking=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(default= lambda self: fields.Datetime.today() + timedelta(days=90), copy=False)
@@ -52,6 +54,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer","property_id")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price", store=True)
     user_id = fields.Many2one("res.users", string="Salesperson")
+    company_id = fields.Many2one("res.company", required=True,default=lambda self: self.env.company, string="Agency")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
