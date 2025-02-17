@@ -1,5 +1,6 @@
-from odoo import models,fields, api, exceptions
 from datetime import timedelta
+from odoo import api, exceptions,fields, models
+
 
 class EstatePropertyOffer(models.Model):
     _name="estate.property.offer"
@@ -16,10 +17,14 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default = 7, string = "Validity (days)")
     date_deadline = fields.Date(string="Deadline", compute = "_compute_date_deadline", inverse="_inverse_date_deadline", store = True)
 
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
+    ]
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            min_price = min( self.env['estate.property.offer'] .search([('property_id', '=', vals['property_id'])]) .mapped('price'), default=0 )
+            min_price = min(self.env['estate.property.offer'].search([('property_id', '=', vals['property_id'])]) .mapped('price'), default=0 )
             if vals['price'] <= min_price:
                 raise exceptions.UserError("The price must be higher than any existing offer.")
             property = self.env['estate.property'].browse(vals['property_id'])
@@ -71,7 +76,3 @@ class EstatePropertyOffer(models.Model):
                 pass
             else:
                 record.property_id.status = "offer_received"
-
-    _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
-    ]

@@ -1,10 +1,15 @@
-from odoo import fields, models, Command
+from odoo import models, Command, exceptions
+
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def property_sold(self):
-        self.env["account.move"].create({
+
+        for prop in self:
+            prop.check_access('write')
+
+        self.sudo().env["account.move"].create({
             "move_type": "out_invoice",
             "partner_id": self.buyer_id .id,
             "name": f"INV/2025/{self.id}",

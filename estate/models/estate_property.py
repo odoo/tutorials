@@ -1,18 +1,15 @@
 from datetime import timedelta
-from odoo import fields, models, api, exceptions
-from odoo.tools.float_utils import float_compare
+from odoo import api, exceptions,fields, models
+from odoo.tools.float_utils import float_compare, float_is_zero
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _inherit = ['mail.thread']
 
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
-    ]
-
-    name = fields.Char(required = True)
+    name = fields.Char(required = True,tracking=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy = False,string="Available Form",default = lambda self: fields.Datetime.today() + timedelta(days=90))
@@ -52,6 +49,12 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer","property_id")
     total_area = fields.Integer(string="Total Area (sqm)", compute = "_compute_total_area", store = True)
     best_offer = fields.Char(compute = "_compute_best_offer", store = True)
+    company_id = fields.Many2one(comodel_name='res.company', string="Company", default=lambda self: self.env.user.company_id,required=True)
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+    ]
 
     @api.ondelete(at_uninstall=False)
     def _check_state_on_delete(self):
