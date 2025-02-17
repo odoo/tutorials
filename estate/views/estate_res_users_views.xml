@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_res_users_form_view" model="ir.ui.view">
         <field name="name">estate.res.users</field>

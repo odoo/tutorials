@@ -1,3 +1,4 @@
+import re
 from dateutil.relativedelta import relativedelta
 from datetime import date
 
@@ -98,6 +99,15 @@ class EstateProperty(models.Model):
             else:
                 raise UserError('Property Is already Sold')
         return True
+
+    def action_estate_property_multiple_offer(self):
+        return {
+            "name" : 'Add Multiple Offers',
+            'type' : 'ir.actions.act_window',
+            "res_model" : 'estate.property.multiple.offer',
+            "view_mode" : 'form',
+            "target" : 'new'
+        }
 
     _sql_constraints = [
         ('positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be greater than zero!'),

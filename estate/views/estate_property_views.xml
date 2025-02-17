@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>
@@ -11,6 +12,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Property List" default_order="expected_price desc" decoration-success="state in ['offer_recevied', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <header>
+                    <button name="action_estate_property_multiple_offer" string="Add Offer" type="object"/>
+                </header>
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
