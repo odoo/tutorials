@@ -85,9 +85,11 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         """Prevents creating an offer lower than an existing offer."""
-        for vals in vals_list:  # Loop added
+        for vals in vals_list:
             property_id = self.env["estate.property"].browse(vals.get("property_id"))
 
+            if property_id.state == "sold":
+                raise UserError("A sold property cannot receive offers!")
             if not property_id:
                 raise UserError("Property must be specified for an offer.")
             if property_id.offer_ids and vals["price"] <= max(property_id.offer_ids.mapped("price")):

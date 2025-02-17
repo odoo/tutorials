@@ -8,7 +8,7 @@
     <!-- Demo Properties -->
     <record id="estate_property_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
-        <field name="state">new</field>
+        <field name="state">offer_accepted</field>
         <field name="description">A nice and big villa</field>
         <field name="property_type" ref="property_type_residential"/>
         <field name="postcode">12345</field>

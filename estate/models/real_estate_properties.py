@@ -127,8 +127,13 @@ class RealEstateProperty(models.Model):
             record.state = "cancelled"
 
     def action_sold(self):
-        """Mark a property as Sold. A cancelled property cannot be sold."""
+        """ Prevent selling without an accepted offer/ Mark a property as Sold. A cancelled property cannot be sold."""
+        if not any(offers.status == 'accepted' for offers in self.offer_ids):
+            raise UserError("You cannot sell a property without an accepted offer.")
+
         for record in self:
+            if record.state == "sold":
+                raise UserError("A sold property cannot be sold!")
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold!")
             if not record.buyer_id:
@@ -139,10 +144,14 @@ class RealEstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _prevent_delete(self):
-        """ Prevent deletion of properties if no in 'new' or 'cancelled' state. """
+        """ Prevent deletion of properties unless they are in 'new' or 'cancelled' state. """
         for record in self:
             if record.state not in {"new", "cancelled"}:
-                raise UserError("You can only delete new or cancelled properties!")
+                raise UserError(
+                    "You can only delete properties that are in 'New' or 'Cancelled' state! "
+                    "Properties with received or accepted offers cannot be deleted."
+                )
+
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
@@ -152,7 +161,7 @@ class RealEstateProperty(models.Model):
                 if not float_is_zero(record.selling_price, precision_digits=2):
                     min_price = record.expected_price * 0.9
                     if float_compare(record.selling_price, min_price, precision_digits=2) == -1:
-                        raise models.ValidationError(
-                            "The selling price cannot be lower than 90% of the expected price!"
-                        )
+                        raise models.ValidationError("The selling price cannot be lower than 90% of the expected price!")
 
+    def print_report(self):
+        return self.env.ref('estate.report_property').report_action(self)

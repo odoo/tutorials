@@ -18,6 +18,8 @@
          "views/res_users_inherit.xml",
          "views/estate_menu.xml",
          "data/master_data.xml",
+         "report/estate_reports.xml",
+         "report/estate_reports_views.xml"
     ],
     "demo": [
         "demo/demo_data.xml"

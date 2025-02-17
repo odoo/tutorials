@@ -56,6 +56,7 @@
                         <!-- "Sold" button: Only visible when the state is 'offer_accepted' -->
                         <button name="action_sold" type="object" string="Sold" class="btn-primary" invisible="state != 'offer_accepted'"/>
                         <!-- "Cancel" button: Only visible when the state is 'new' or 'offer_received' -->
+                        <button name="print_report" string="Print" type="object" class="oe_highlight"/>
                         <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" invisible="state not in ['new', 'offer_received']"/>
                         <!-- Statusbar for Property State -->
                         <field name="state" widget="statusbar" />
