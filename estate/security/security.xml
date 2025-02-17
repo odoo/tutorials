@@ -10,6 +10,7 @@
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
         <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
     </record>
 
     <data noupdate="1">
@@ -19,7 +20,7 @@
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
-            <field name="domain_force">['|', ('salesman_id', '=', user.id),('salesman_id', '=', False)]</field>
+            <field name="domain_force">['|', ('salesman_id', '=', user.id), ('salesman_id', '=', False),'|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
         </record>
 
         <record id="estate_property_specific_manager" model="ir.rule">
@@ -28,13 +29,6 @@
             <field name="perm_read" eval="True"/>
             <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]"/>
         </record>
-
-        <record id="estate_property_multicompany_rule" model="ir.rule" >
-            <field name="name">Estate property multi-company</field>
-            <field name="model_id" ref="model_estate_property"/>
-            <field name="domain_force">['|', ('company_id', '=', False),('company_id', 'in', company_ids)]</field>
-        </record>
-
     </data>
 
 </odoo>

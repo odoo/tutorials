@@ -71,7 +71,7 @@
                 <header>
                     <button name="action_set_sold" type="object" string="SOLD" invisible="state in ['sold', 'canceled']"/>
                     <button name="action_set_cancel" type="object" string="CANCEL" invisible="state in ['sold', 'canceled']"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
                     <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold'"/>
