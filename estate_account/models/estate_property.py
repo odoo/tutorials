@@ -1,12 +1,18 @@
 from odoo import Command, fields, models
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
         for record in self:
+            has_access = record.check_access_rights('write', raise_exception=False)
+            print(has_access)
+            if not has_access:
+                raise UserError("You do not have permission to modify properties.")
+            record.sequence_inv = self.env['ir.sequence'].next_by_code('estate.account')
             invoice_vals = {
-                "name" : "INV/2025/Test",
+                "name" : record.sequence_inv,
                 "partner_id" : record.buyer_id.id,
                 "move_type" : "out_invoice",
                 "invoice_line_ids" : [
@@ -22,5 +28,6 @@ class EstateProperty(models.Model):
                     }),
                 ]
             }
-            invoice = record.env["account.move"].create(invoice_vals)
+            print(" reached ".center(100, '='))
+            invoice = record.env["account.move"].sudo().create(invoice_vals)
         return super().action_sold()

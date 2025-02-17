@@ -9,6 +9,7 @@
                   decoration-success="state in ['offer_accepted', 'offer_received']" 
                   decoration-bf="state == 'offer_accepted'" 
                   decoration-muted="state == 'sold'">
+                <field name="sequence" width="20%"/>
                 <field name="name" width="20%"/>
                 <field name="postcode" width="10%"/>
                 <field name="bedrooms" width="10%"/>
@@ -43,6 +44,7 @@
                             <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability" optional="hide"/>
+                            <field name="company_id"/>
                         </group>
                         <group>
                             <field name="expected_price"/>

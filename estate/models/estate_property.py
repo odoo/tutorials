@@ -42,11 +42,14 @@ class EstateProperty(models.Model):
     ], string="Garden Orientation", help="Orientation of the garden")  
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_offer = fields.Integer(string="Best Offer", compute="_compute_best_offer")
+    sequence = fields.Char(string="Sequence", readonly=True, copy=False)
+    sequence_inv = fields.Char(string="Sequence Invoice", readonly=True, copy=False)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     seller_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    company_id = fields.Many2one("res.company", string="Company", required=True, default=lambda self: self.env.company)
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -72,12 +75,21 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            # last_property = self.search([], limit=1)
+            # last_number = int(last_property.sequence.replace("PROP", "")) if last_property and last_property.sequence else 0
+            # if last_number < 9: val['sequence'] = f"PROP00{last_number + 1}"
+            # else: val['sequence'] = f"PROP0{last_number + 1}"
+            val['sequence'] = self.env['ir.sequence'].next_by_code('estate.property') or 'PROP001'
+        return super().create(vals)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_property(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
-                raise UserError("New or cancelled properties cannot be unlinked.")
+                raise UserError("Only New or cancelled properties can be deleted.")
 
     def action_sold(self):
         for record in self:
