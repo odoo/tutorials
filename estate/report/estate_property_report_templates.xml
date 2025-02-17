@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="estate_property_offer_table">
+        <t t-if="property.offer_ids">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Partner</th>
+                        <th>Price</th>
+                        <th>Validity (days)</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="property.offer_ids" t-as="offer">
+                        <tr>
+                            <td>
+                                <span t-field="offer.partner_id.name"/>
+                            </td>
+                            <td>
+                                <span t-field="offer.price"/>
+                            </td>
+                            <td>
+                                <span t-field="offer.validity"/>
+                            </td>
+                            <td>
+                                <span t-field="offer.date_deadline"/>
+                            </td>
+                            <td>
+                                <span t-field="offer.status"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <p style="color: red; font-weight: bold;">No offers available for this property.</p>
+        </t>
+    </template>
+
+    <template id="estate_property_offer_report_template">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div class="atr">
+                            <strong>Salesman:</strong>
+                            <span t-field="property.saleperson_id"/>
+                            <br/>
+                            <strong>Expected Price:</strong>
+                            <span t-field="property.expected_price"/>
+                            <br/>
+                            <strong>Status:</strong>
+                            <span t-field="property.state"/>
+                        </div>
+                        <t t-call="estate.estate_property_offer_table"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate_salesman_property_report_template">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Salesman: <span t-field="user.name"/></h2>
+                        <t t-if="user.property_ids">
+                            <t t-foreach="user.property_ids" t-as="property">
+                                <div class="property-section">
+                                    <h3>
+                                        <span t-field="property.name"/>
+                                    </h3>
+                                    <div>
+                                        <strong>Expected Price:</strong>
+                                        <span t-field="property.expected_price"/>
+                                        <br/>
+                                        <strong>Status:</strong>
+                                        <span t-field="property.state"/>
+                                    </div>
+                                    <t t-call="estate.estate_property_offer_table"/>
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <p style="color: red; font-weight: bold;">This user has no properties.</p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -41,6 +41,7 @@ class EstateProperty(models.Model):
         ('cancel_offer', 'Cancelled'),
     ], string='Status', required=True, default='new_offer', copy=False)
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company, string='Company')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     saleperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
@@ -84,11 +85,15 @@ class EstateProperty(models.Model):
                 raise UserError(_('You can only delete properties in "New" or "Cancelled" state.'))
 
     def action_sold(self):
-        if 'cancel_offer' in self.mapped('state'):
-            raise UserError(_("Cancelled property can't be sold!"))
         for record in self:
-            record.state = 'sold_offer'
-        return True
+            if record.state == "cancelled":
+                raise UserError("Cancelled property cannot be sold")
+
+            if not record.buyer_id or not record.selling_price or not record.state=="offer_accepted":
+                raise UserError("Property must have an accepted offer before being sold")
+
+            record.state = "sold_offer"
+            return True
 
     def action_cancel(self):
         if 'sold_offer' in self.mapped('state'):

@@ -15,13 +15,13 @@
         <field name="name">Agent: Access Only Own or Unassigned Properties</field>
         <field name="model_id" ref="estate.model_estate_property"/>
         <field name="groups" eval="[(4, ref('estate.estate_group_user'))]"/>
-        <field name="domain_force">['|', ('saleperson_id', '=', False), ('saleperson_id', '=', user.id)]</field>
+        <field name="domain_force">['&amp;','|', ('saleperson_id', '=', False), ('saleperson_id', '=', user.id), ('company_id', 'in', company_ids)]</field>
     </record>
 
     <record id="estate_property_rule_manager" model="ir.rule">
         <field name="name">Manager: Access All Properties</field>
         <field name="model_id" ref="estate.model_estate_property"/>
         <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
-        <field name="domain_force">[]</field>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     </record>
 </odoo>

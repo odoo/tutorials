@@ -7,5 +7,8 @@
         'estate',
         'account',
     ],
+    'data': [
+        'report/estate_property_report.xml',
+    ],
     'license': 'LGPL-3',
 }

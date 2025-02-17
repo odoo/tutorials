@@ -14,12 +14,22 @@
     'data': [
         'security/estate_security.xml',
         'security/ir.model.access.csv',
+
+        'report/estate_property_report_templates.xml',
+        'report/estate_property_report_views.xml',
+
+        'data/master_data.xml',
+
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_views.xml',
-        'views/estate_menus.xml',
         'views/res_users_views.xml',
+
+        'views/estate_menus.xml',
+    ],
+    'demo': [
+        'demo/demo_data.xml',
     ],
     'installable': True,
     'application': True,
