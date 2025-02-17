@@ -7,8 +7,6 @@ class EstateProperty(models.Model):
     state = fields.Selection(selection_add=[('invoiced', 'Invoiced')], ondelete={'invoiced': 'cascade'})
 
     def action_create_invoice(self):
-        super().action_create_invoice()
-
         try:
             self.env['account.move'].check_access_rights('write')
             self.env['account.move'].check_access_rule('write')

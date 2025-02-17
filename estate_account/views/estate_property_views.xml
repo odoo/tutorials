@@ -28,6 +28,20 @@
         </field>
     </record>
 
+    <record id="estate_account_property_view_form" model="ir.ui.view">
+        <field name="name">estate.account.property.view.form</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_set_cancelled_status']" position="after">
+                <button name="action_create_invoice" type="object" string="Invoice" 
+                    invisible="state == 'cancelled' or state == 'new' or state == 'offer_received' or state == 'offer_accepted' or state == 'invoiced'" 
+                    class="btn-primary"
+                />
+            </xpath>
+        </field>
+    </record>
+
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="res_model">estate.property</field>
         <field name="view_id" ref="estate_account.estate_property_account_view_list" />

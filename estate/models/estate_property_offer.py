@@ -1,4 +1,3 @@
-from typing import overload
 from dateutil.relativedelta import relativedelta
 from odoo import api, models, fields
 from odoo.exceptions import UserError
@@ -48,21 +47,19 @@ class EstatePropertyOffer(models.Model):
 
     # Action Button Methods
     def action_set_offer_status_accepted(self):
-        for offer in self:
-            if offer.status == 'accepted' or offer.status == 'refused':
-                raise UserError("Property is already accepted or refused.")
-            else:
-                offer.property_id.property_offer_ids.status = 'refused'
+        if self.status == 'accepted' or self.status == 'refused':
+            raise UserError("Property is already accepted or refused.")
+        else:
+            self.property_id.property_offer_ids.status = 'refused'
 
-                offer.property_id.selling_price = offer.price
-                offer.property_id.buyer = offer.partner_id
-                offer.property_id.state = 'offer_accepted'
-                offer.status = 'accepted'
+            self.property_id.selling_price = self.price
+            self.property_id.buyer = self.partner_id
+            self.property_id.state = 'offer_accepted'
+            self.status = 'accepted'
 
     def action_set_offer_status_refused(self):
-        for record in self:
-            if record.status == 'accepted' or record.status == 'refused':
-                raise UserError("Property is already accepted or refused.")
-            else:
-                record.status = 'refused'
+        if self.status == 'accepted' or self.status == 'refused':
+            raise UserError("Property is already accepted or refused.")
+        else:
+            self.status = 'refused'
                 

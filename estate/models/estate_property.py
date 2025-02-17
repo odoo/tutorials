@@ -1,5 +1,3 @@
-from re import T
-from typing_extensions import Required
 from odoo import api, models, fields
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -117,7 +115,3 @@ class EstateProperty(models.Model):
                 raise UserError('A sold property cannot be cancelled.')
             else:
                 self.state = 'cancelled'
-
-    def action_create_invoice(self):
-        # this method is defined to be inherited by estate_account module and create the invoice
-        return True

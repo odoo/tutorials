@@ -29,7 +29,7 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offer List" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+            <list string="Offer List" multi_edit="1" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="validity" />
@@ -61,10 +61,6 @@
                     <button name="action_set_cancelled_status" type="object" string="Cancel" 
                             invisible="state == 'sold' or state == 'cancelled' or state == 'invoiced'"  
                             context="{'button_id': 'cancelled_button'}" 
-                    />
-                    <button name="action_create_invoice" type="object" string="Invoice" 
-                            invisible="state == 'cancelled' or state == 'new' or state == 'offer_received' or state == 'offer_accepted' or state == 'invoiced'" 
-                            class="btn-primary"
                     />
 
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': True}" />
