@@ -2,8 +2,10 @@
     'name': 'Estate',
     'author': 'Odoo - Utsav',
     'license': 'LGPL-3',
+    'category': 'Real Estate/Brokerage',
     'depends':['base'],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/res_users_view.xml',
         'views/estate_property_views.xml',
