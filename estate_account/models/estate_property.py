@@ -36,5 +36,5 @@ class EstateProperty(models.Model):
 
         invoice = self.env["account.move"].create(invoice_vals)
 
-        print(f"Invoice {invoice.id} created with lines for property {self.id}")  # Debugging
-        return res  # Return the result of the super() call
+        print(f"Invoice {invoice.id} created with lines for property {self.id}")  
+        return res 
