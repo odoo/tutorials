@@ -19,6 +19,15 @@
                             <span t-field="property.state"/>
                         </div>
                         <br/>
+
+                    <!-- barcode section -->
+                    <!-- <div class="barcode">
+                        <strong> Property Refernce:</strong>
+                        <br/>
+                    <img t-att-src="'/report/barcode/EAN13/%s' % property.name"/>
+                    </div>    
+                    <br/> -->
+
                         <div class="invoice_offer">
                             <t t-set="offers" t-value="property.mapped('offer_ids')"/>
                             <t t-if="offers">

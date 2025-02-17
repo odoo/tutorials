@@ -30,34 +30,7 @@
         <field name="living_area">10</field>
         <field name="facades">4</field>
         <field name="garage">False</field>
-        <field name="property_type_id" ref="estate.property_type_residential"/>
-    </record>
-
-    <record id="space_ship" model="estate.property">
-        <field name="name">International Space Station</field>
-        <field name="state">new</field>
-        <field name="description">Aliens sometimes come visit</field>
-        <field name="postcode">----</field>
-        <field name="date_availability">2030-12-31</field>
-        <field name="expected_price">45890000</field>
-        <field name="property_type_id" ref="property_industrial"/>
-        <field name="user_id" ref="base.user_admin"/>
-    </record>
-
-    <record id="cabin" model="estate.property">
-        <field name="name">Cozy Cabin</field>
-        <field name="state">sold</field>
-        <field name="description">Small cabin by lake</field>
-        <field name="postcode">10000</field>
-        <field name="date_availability">2020-01-01</field>
-        <field name="expected_price">80000</field>
-        <field name="bedrooms">1</field>
-        <field name="living_area">10</field>
-        <field name="facades">4</field>
-        <field name="garage">False</field>
-        <field name="garden">True</field>
-        <field name="property_type_id" ref="property_residential"/>
-        <field name="user_id" ref="base.user_admin"/>
+        <field name="property_type_id" ref="property_type_residential"/>
     </record>
 
     <record id="offer1" model="estate.property.offer">
@@ -73,6 +46,7 @@
         <field name="property_id" ref="property_demo_1"/>
         <field name="date_deadline" eval="(DateTime.now() + timedelta(days=14))"/>
     </record>
+    
     <record id="offer3" model="estate.property.offer">
         <field name="price">1500001</field>
         <field name="partner_id" ref="base.res_partner_2"/>
@@ -83,8 +57,9 @@
     <function model="estate.property.offer" name="action_accept">
         <value eval="[ref('offer2')]"/>
     </function>
+
     <function model="estate.property.offer" name="action_refuse">
-        <value eval="[ref('offer1', 'offer3')]"/>
+        <value eval="[ref('offer1'), ref('offer3')]"/>
     </function>
 
     <record id="new_property_id" model="estate.property">
@@ -99,17 +74,21 @@
         <field name="facades">2</field>
         <field name="garage">False</field>
         <field name="garden">False</field>
-        <field name="property_type_id" ref="estate.property_type_industrial"/>
-        <field name="offer_ids" eval="[
-        Command.create({
-                'price': 1800000,
-                'partner_id': ref('base.res_partner_1'),
-                'date_deadline': (DateTime.now() + timedelta(days=14))
-            }),
-        Command.create({
-                'price': 1900000,
-                'partner_id': ref('base.res_partner_1'),
-                'date_deadline': (DateTime.now() + timedelta(days=14))
-            })]"/>
+        <field name="property_type_id" ref="property_type_industrial"/>
     </record>
+
+    <record id="offer4" model="estate.property.offer">
+        <field name="price">1800000</field>
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="property_id" ref="new_property_id"/>
+        <field name="date_deadline" eval="(DateTime.now() + timedelta(days=14))"/>
+    </record>
+
+    <record id="offer5" model="estate.property.offer">
+        <field name="price">1900000</field>
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="property_id" ref="new_property_id"/>
+        <field name="date_deadline" eval="(DateTime.now() + timedelta(days=14))"/>
+    </record>
+
 </odoo>

@@ -24,6 +24,7 @@ class estatePropertyOffer(models.Model):
     )
     validity = fields.Integer(string="validity", default=7)
     date_deadline = fields.Date(string="date_deadline", compute="compute_date_deadline", inverse="inverse_date_deadline" , store="true")
+    
 
     _sql_constraints = [
         ("check_offer_price", "CHECK(price > 0)", "Offer Price must be positive"),

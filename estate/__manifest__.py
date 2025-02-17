@@ -8,7 +8,6 @@
         'base',
         'mail'
     ],
-    "demo": ["demo/estate_demo_data.xml"],
     'data':[
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -25,6 +24,7 @@
         'views/estate_menus.xml',
         'views/estate_property_report_inherit.xml'
     ],
+    "demo": ["demo/estate_demo_data.xml"],
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
