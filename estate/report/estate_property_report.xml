@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    
+    <record id="action_report_property_offers" model="ir.actions.report">
+        <field name="name">Print property offers</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">estate.report_property_offers</field>
+        <field name="report_file">estate.report_property_offers</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Property - %s' % object.name if object else 'Property Report'</field>
+    </record>
+
+    <record id="action_user_properties" model="ir.actions.report"> 
+        <field name="name">Print Properties</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">estate.report_user_properties</field>
+        <field name="report_file">estate.report_user_properties</field>
+        <field name="binding_model_id" ref="base.model_res_users"/> <!-- module.model_<name> -->
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'%s - properties' % object.name</field>
+    </record>
+
+</odoo>

@@ -9,6 +9,7 @@
     """,
     # data files always loaded at installation
     'data': [
+        "report/estate_property_template.xml"
     ],
     # data files containing optionally loaded demonstration data
     'demo': [

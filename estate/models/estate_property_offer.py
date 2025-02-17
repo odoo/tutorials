@@ -80,7 +80,6 @@ class EstatePropetyOffer(models.Model):
     # --------------------------- Oncreate Methods ---------------------------
     @api.model_create_multi
     def create(self, vals):
-        print(vals)
         for val in vals:
             property = self.env['estate.property'].browse(val['property_id'])
             property.status = "offer_received"

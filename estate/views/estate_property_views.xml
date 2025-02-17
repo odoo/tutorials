@@ -59,10 +59,15 @@
             </header>
             <sheet>
                 <group>
-                    <h1><field name="name" placeholder="Property Name"/></h1>
-                    <field name="company_id"></field>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"></field>
-                    <field name="property_type_id" options="{'no_create':true, 'no_one':true}"></field>
+                    <group>
+                        <h1><field name="name" placeholder="Property Name"/></h1>
+                        <field name="company_id"></field>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"></field>
+                        <field name="property_type_id" options="{'no_create':true, 'no_one':true}"></field>
+                    </group>
+                    <group>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                    </group>
                 </group>
                 <group>
                     <group>
@@ -132,7 +137,7 @@
             <group expand="1" string="Postcode">
                 <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
             </group>
-            <filter string="Available" name="filter_by_state" domain="['|',('status', '=', 'new'),('status','=','offer received')]"/>
+            <filter string="Available" name="filter_by_state" domain="['|',('status', '=', 'new'),('status','=','offer_received')]"/>
             <filter string="Archive" name="archived" domain="[('active','=', False)]" />
         </search>
     </field>

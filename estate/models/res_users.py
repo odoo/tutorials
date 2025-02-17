@@ -6,5 +6,5 @@ class User(models.Model):
 
     #---------------------------------------------------------------------
     # Relations
-    #---------------------------------------------------------------------
-    property_ids = fields.One2many("estate.property", "user_id", domain=["|", ("status", "=", "new"), ("status", "=", "offer_received")])
+    #---------------------------------------------------------------------    
+    property_ids = fields.One2many("estate.property", "user_id")

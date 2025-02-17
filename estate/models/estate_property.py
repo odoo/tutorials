@@ -29,6 +29,7 @@ class EstateProperty(models.Model):
         string="Availability Date",
         default=lambda self:fields.Datetime.today() + relativedelta(days=90),
     )
+    image = fields.Binary(string="Image")
     expected_price = fields.Float(string="Expected Price", required=True, tracking=True)
     best_price = fields.Float(compute="_compute_best_offer", string="Best Offer")
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)

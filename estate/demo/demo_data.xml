@@ -8,7 +8,7 @@
         <field name="description">A nice and Big Villa</field>
         <field name="postcode">12345</field>
         <field name="date_availability">2020-02-02</field>
-        <field name="expected_price">1600000</field>
+        <field name="expected_price">1600</field>
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
         <field name="facades">4</field>
@@ -16,6 +16,7 @@
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate.property_type_residentials"/>
     </record>
 
     <record id="property_demo_2" model="estate.property">
@@ -30,6 +31,65 @@
         <field name="living_area">10</field>
         <field name="facades">4</field>
         <field name="garage">False</field>
+        <field name="property_type_id" ref="estate.property_type_residentials"/>
+    </record>
+
+    <record id="offer_demo_1" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"></field>
+        <field name="property_id" ref="property_demo_1"/>
+        <field name="price">10000</field>
+        <field name="validity">7</field>
+        <field name="date_deadline" eval="(DateTime.now() + timedelta(days=100))"/>
+    </record>
+
+    <record id="offer_demo_2" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"></field>
+        <field name="property_id" ref="property_demo_1"/>
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+    </record>
+
+    <record id="offer_demo_3" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"></field>
+        <field name="property_id" ref="property_demo_1"/>
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+    </record>
+
+    <function model="estate.property.offer" name="action_property_offer_accept">
+        <value eval="[ref('offer_demo_1')]"/>
+    </function>
+
+    <record id="property_demo_3" model="estate.property">
+        <field name="name">Taj Hotel</field>
+        <field name="status">new</field>
+        <field name="description">The hotel located in mumbai</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="selling_price">120000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="estate.property_type_commercial"/>
+        <field name="offer_ids" eval="[
+            Command.create({
+                'price': 20000,
+                'validity': 12,
+                'partner_id': ref('base.res_partner_2')
+            }),
+            Command.create({
+                'price': 30000,
+                'validity': 5,
+                'partner_id': ref('base.res_partner_2')
+            }),
+            Command.create({
+                'price': 40000,
+                'validity': 20,
+                'partner_id': ref('base.res_partner_2')
+            })
+        ]"/>
     </record>
 
 </odoo>

@@ -17,7 +17,9 @@
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
         "views/estate_menu.xml",
-        "data/estate_property_type.xml"
+        "data/estate_property_type.xml",
+        "report/estate_property_report.xml",
+        "report/estate_property_template.xml",
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
