@@ -14,7 +14,6 @@
                                 <span> <b>Salesperson:</b> </span>
                                   <span t-field="property.user_id"/>
                             </h6>
-                            
                             <h6>
                                 <span> <b>Expected Price: </b></span>
                                 <span t-field="property.expected_price"/>

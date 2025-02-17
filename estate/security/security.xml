@@ -10,7 +10,8 @@
      <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
-        <field name="implied_ids" eval="[(4,ref('estate_group_user'),ref('estate_group_manager'))]"></field>
+        <field name="implied_ids" eval="[(4,ref('estate_group_user'))]"></field>
+        <field name="users" eval= "[Command.link(ref('base.user_admin'))]"/>
      </record>
 
      <record id="estate_property_rule_agent" model="ir.rule">

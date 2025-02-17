@@ -10,7 +10,6 @@
         <field name="report_type">qweb-html</field>
     </record>
 
-    
     <record id="report_estate_property_res_user" model="ir.actions.report">
         <field name="name">Report</field>
         <field name="model">res.users</field>
