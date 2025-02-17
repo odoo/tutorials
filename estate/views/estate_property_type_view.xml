@@ -1,25 +1,38 @@
 <!-- Estate Property Type Views -->
 <odoo>
     <record id="view_estate_property_type_form" model="ir.ui.view">
-        <field name="name">estate_property_type_form_view</field>
+        <field name="name">estate.property.type.form.view</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <h1>
+                            <field name="name" string="Property Type"/>
+                        </h1>
                     </group>
+                    <notebook>
+                        <page name="Properties" string="Associated Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="property_name" string="Property Name"/>
+                                    <field name="expected_price" string="Expected Price"/>
+                                    <field name="state" string="Status"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
     <record id="view_estate_property_type_list" model="ir.ui.view">
-        <field name="name">estate_property_type_list_view</field>
+        <field name="name">estate.property.type.list.view</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name"/>
+                <field name="name" string="Property Type"/>
             </list>
         </field>
     </record>

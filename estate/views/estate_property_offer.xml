@@ -1,7 +1,7 @@
 <!-- Estate Property Offer Views -->
 <odoo>
     <record id="view_estate_property_offer_form" model="ir.ui.view">
-        <field name="name">estate_property_offer_form_view</field>
+        <field name="name">estate.property.offer.form.view</field>
         <field name="model">estate.property.offers</field>
         <field name="arch" type="xml">
             <form string="Offers">
@@ -12,8 +12,6 @@
                         <field name="price" />
                         <field name="validity_days"/>
                         <field name="deadline" />
-                        <!-- <field name="offer_steate" /> -->
-
                     </group>
                 </sheet>
             </form>
@@ -21,16 +19,18 @@
     </record>
 
     <record id="view_estate_property_offer_list" model="ir.ui.view">
-        <field name="name">estate_property_offer_list_view</field>
+        <field name="name">estate.property.offer.list.view</field>
         <field name="model">estate.property.offers</field>
         <field name="arch" type="xml">
             <list>
                 <field name="partner_id" />
                 <field name="property_id" />
                 <field name="price" />
-                <field name="validity_days"/>
                 <field name="deadline" />
                 <field name="offer_state" />
+                <button name="action_offer_confirm" string="Confirm" type="object" icon="fa-check" invisible=" offer_state in ('accepted', 'refused')" />
+                <button name="action_offer_cancel" string="Cancel" type="object" icon="fa-times" invisible=" offer_state in ('accepted', 'refused')" />
+                <field name="validity_days"/>
             </list>
         </field>
     </record>

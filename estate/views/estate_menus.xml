@@ -9,7 +9,6 @@
     <menuitem id="estate_settings_menu" name="Settings" parent="estate_menu_root"/>
 
     <!-- Submenus under Settings -->
-    <menuitem id="estate_customer_menu" name="Customers" action="estate_customer_action" parent="estate_settings_menu"/>
+    <menuitem id="estate_property_tag" name="Property Tag" action="estate_property_tag_action" parent="estate_settings_menu" />
     <menuitem id="estate_property_type" name="Property Type" action="estate_property_type_action" parent="estate_settings_menu" />
-    <menuitem id="estate_salesperson_menu_action" name="Salesperson" action="estate_salesperson_action" parent="estate_settings_menu"/>
 </odoo>
