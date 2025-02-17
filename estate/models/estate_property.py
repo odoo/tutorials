@@ -16,6 +16,7 @@ class EstateProperty(models.Model):
     ]
 
     name = fields.Char(string='Title', required=True)
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     description = fields.Text(string='Description', translate=True)
     postcode = fields.Char(string='Postcode')
     date_availability = fields.Date(string='Available From', copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3))

@@ -15,7 +15,10 @@
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
-        'views/estate_menus.xml'
+        'views/estate_menus.xml',
+        'data/estate.property.type.csv',
+        'demo/demo_estate_property.xml',
+        'demo/demo_estate_property_offer.xml',
     ],
     'application' : True,
     'installable' : True,
