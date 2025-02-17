@@ -1,5 +1,101 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="estate_property_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="View">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <div class="oe_title">
+                        <h1 class="mb32">
+                            <field name="name" class="mb16" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                        </group>
+
+                        <group>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <group>
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" />
+                                    <field name="facades" />
+                                </group>
+
+                                <group>
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" />
+                                    <field name="garden_orientation" />
+                                    <field name="state" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+
+    </record>
+
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Property">
+                <field name="name" string="Title" />
+                <field name="postcode" string="Postcode" />
+                <field name="expected_price" string="Expected Price" />
+                <field name="bedrooms" string="Bedrooms" />
+                <field name="living_area" string="Living Area (sqm)" />
+                <field name="facades" string="Facades" />
+
+                <filter string="Available" name="available"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
+                <filter string="Archived" name="not_active" domain="[('active', '=', False)]" />
+
+                <group expand="1" string="Group By">
+                    <filter string="Postcode" name="postcode"
+                        context="{'group_by':'postcode', 'residual_visible':True}" />
+                    <filter string="Facades" name="facades"
+                        context="{'group_by':'facades', 'residual_visible':True}" />
+                    <separator />
+                    <filter string="Has Garden" name="garden"
+                        context="{'group_by':'garden', 'residual_visible':True}" />
+                    <filter string="Has Garage" name="garage"
+                        context="{'group_by':'garage', 'residual_visible':True}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="estate_properties_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
