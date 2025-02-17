@@ -10,6 +10,7 @@
     'website': 'https://www.odoo.com/page/estate',
     # data files always loaded at installation
     'data': [
+        'security/ir.model.access.csv'
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
