@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api,fields, models,_
+from odoo import api,exceptions,fields, models,_
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -71,9 +71,8 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if self.status == "cancelled":
             raise UserError("A cancelled property cannot be sold.")
-        accepted_offer = self.offer_ids.filtered(lambda offer: offer.status == "offer_accepted")
-        if not accepted_offer:
-             raise UserError("You cannot sell a property without an accepted offer.")
+        if self.status not in ["offer_accepted"]:
+            raise exceptions.UserError(("You cannot sell a property that is not in 'Offer Accepted' state"))
         self.status = "sold"
 
     @api.depends('living_area', 'garden_area')
