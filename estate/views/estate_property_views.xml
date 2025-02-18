@@ -71,7 +71,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" widget="one2many_tags" readonly="state in ('offer_accepted', 'sold', 'cancelled')">
+                            <field name="offer_ids" widget="one2many_tags">
                                 <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                                     <field name="price"/>
                                     <field name="partner_id"/>
@@ -108,8 +108,7 @@
                 <field name="garden_area"/>
                 <field name="property_type_id"/>
                 <separator/>
-                <filter string="Available" name="date_availability" domain="[('date_availability', '>=', context_today())]"/>
-                <filter string="New or Offer Recieved" name="state" domain="['|', ('state', '=', 'new'),('state', '=', 'offer_received')]"/>
+                <filter string="Available" name="date_availability" domain="['&amp;',('date_availability', '>=', context_today()),'|', ('state', '=', 'new'),('state', '=', 'offer_received')]"/>
                 <group string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>

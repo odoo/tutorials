@@ -84,8 +84,9 @@ class EstatePropertyOffer(models.Model):
                     raise exceptions.UserError(
                         f"The offer must be higher than {property.best_prices}."
                     )
-
             if property.state == "new":
                 property.state = "offer_received"
+            if property.state in ["sold","invoiced"]:
+                raise exceptions.UserError("Cannot create an offer on a sold property")
 
         return super().create(vals_list)

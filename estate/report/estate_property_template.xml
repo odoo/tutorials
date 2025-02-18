@@ -107,7 +107,7 @@
     </template>
 
     <template id="estate_property_inherit_report" inherit_id="property_report_basic">
-        <xpath expr="//div[@class='page p-4']" position="inside">
+        <xpath expr="//div[hasclass('page', 'p-4')]" position="inside">
             <t t-if="property.state=='invoiced'">
                 <strong class="text-danger fw-bold">!!! Invoice has already been created !!!
                 </strong>

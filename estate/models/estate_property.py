@@ -103,19 +103,18 @@ class EstateProperty(models.Model):
 
     # Function to perform action when property Sold
     def action_to_sold_property(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise exceptions.UserError("A cancelled property can not be sold")
-            record.state = "sold"
-        return True
+        if self.state == "cancelled":
+            raise exceptions.UserError("A cancelled property can not be sold")
+        if self.offer_ids.status == "accepted":
+            self.state = "sold"
+        else:
+            raise exceptions.UserError("Accept Offer first!")
 
     # Function to perform action when property Canceled
     def action_to_cancel_property(self):
-        for record in self:
-            if record.state == "sold":
-                raise exceptions.UserError("A sold property can not be cancelled")
-            record.state = "cancelled"
-        return True
+        if self.state == "sold":
+            raise exceptions.UserError("A sold property can not be cancelled")
+        self.state = "cancelled"
 
     # constrain of selling price not fall more lower than 90% expected price
     @api.constrains("selling_price", "expected_price")
