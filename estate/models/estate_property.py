@@ -1,9 +1,11 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 class Property(models.Model):
+    
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
@@ -25,6 +27,7 @@ class Property(models.Model):
     garage = fields.Boolean('Garage')
     garden = fields.Boolean('Garden')
     garden_area = fields.Integer('Garden Area (sqm)', default=0)
+    property_image = fields.Image()
     garden_orientation = fields.Selection(
         selection=[
             ('north', 'North'), 
@@ -80,6 +83,8 @@ class Property(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("You cannot sell a cancelled property.")
+            if record.state != 'offer_accepted':
+                raise UserError("Accept an offer to sold property")
             record.state = 'sold'
     
     def action_cancel(self):

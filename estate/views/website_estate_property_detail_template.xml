@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="estate_property_detail_template" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="card shadow-sm mt-5 p-4">
+                    <div class="row">
+                        <!-- Image Section -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <t t-if="property.property_image">
+                                    <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'" class="img-fluid rounded w-100" alt="Property Image" />
+                                </t>
+                                <t t-else="">
+                                    <img src="/estate/static/src/img/default_img.jpg" class="img-fluid rounded w-100" alt="Default Property Image" />
+                                </t>
+                            </div>
+                        </div>
+                        <!-- Details Section -->
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h3 class="card-title mb-3">
+                                    <t t-esc="property.name"/>
+                                </h3>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>Date Available:</strong> <t t-esc="property.date_availability"/></li>
+                                    <li class="list-group-item"><strong>Expected Price:</strong> <t t-esc="property.expected_price"/></li>
+                                    <li class="list-group-item"><strong>Total Area:</strong> <t t-esc="property.total_area"/> sqm</li>
+                                    <li class="list-group-item"><strong>Garage:</strong> <t t-esc="'Yes' if property.garage else 'No'"/></li>
+                                    <li class="list-group-item"><strong>Garden:</strong> <t t-esc="'Yes' if property.garden else 'No'"/></li>
+                                    <t t-if="property.garden">
+                                        <li class="list-group-item" ><strong>Garden Area:</strong> <t t-esc="property.garden_area"/> sqm</li>
+                                        <li class="list-group-item"><strong>Garden Orientation:</strong> <t t-esc="property.garden"/></li>
+                                    </t>
+                                    <li class="list-group-item"><strong>Status:</strong> <t t-esc="property.state"/></li>
+                                </ul>
+                                <a href="/properties" class="btn btn-secondary mt-4">Back to Properties</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 class PropertyOffers(models.Model):
@@ -58,10 +59,12 @@ class PropertyOffers(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_id = self.env['estate.property'].browse(vals['property_id'])
-            if property_id.state != 'offer_received':
+            if property_id.state == 'new':
                 property_id.state = 'offer_received'
             if property_id.offer_ids:
                 # we have written _order = "price desc" in the model, so the first offer is the highest one
                 if vals['price'] < property_id.offer_ids[0].price:
                     raise ValidationError("The offer price must be higher than the existing offer.")
+            if property_id.state == 'sold':
+                raise UserError('You cant create offer for sold')
         return super().create(vals_list)

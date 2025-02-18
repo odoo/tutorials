@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
@@ -11,8 +12,11 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate" decoration-success="state in ['offer_received', 'offer_accepted']"
-                decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
+            <list string="Estate" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
+                <header>
+                    <button name="estate.action_estate_property_add_offer_wizard" type="action"
+                        string="Add Offer" class="oe_highlight" />
+                </header>
                 <field name="name" />
                 <field name="postcode" />
                 <field name='tag_ids' widget="many2many_tags" options="{'color_field': 'color'}" />
@@ -40,18 +44,13 @@
                         <button name="action_sold" type="object" string="Sold" />
                         <button name="action_cancel" type="object" string="Cancel" />
                     </group>
-                    <field name="state" widget="statusbar"
-                        statusbar_visible="new, offer_received, offer_accepted, sold, cancelled" />
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold, cancelled" />
                 </header>
                 <sheet>
-                    <group>
-                        <h1>
-                            <field name="name" />
-                        </h1>
-                    </group>
-                    <div class="mb16">
-                        <field name="tag_ids" widget="many2many_tags"
-                            options="{'color_field': 'color'}" />
+                    <field name="property_image" widget="image" class="oe_avatar" options="{'convert_to_webp': True, 'preview_image': 'image_128'}" />
+                    <h1><field name="name" /></h1>
+                    <div class="mb24">
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     </div>
                     <group>
                         <group>
@@ -92,8 +91,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" string="Offers"
-                                readonly="state in ['offer_accepted','sold','cancelled']" />
+                            <field name="offer_ids" string="Offers" readonly="state in ['offer_accepted','sold','cancelled']" />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -120,8 +118,7 @@
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]" />
                 <field name="facades" />
                 <separator />
-                <filter string="Available" name="available"
-                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]">
+                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]">
                 </filter>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
@@ -160,8 +157,7 @@
                                 <field name="selling_price" />
                             </div>
                             <div class="p-1">
-                                <field name="tag_ids" widget="many2many_tags"
-                                    options="{'color_field': 'color'}" />
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                             </div>
                         </div>
                     </t>
@@ -169,4 +165,5 @@
             </kanban>
         </field>
     </record>
+
 </odoo>
