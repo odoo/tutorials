@@ -5,7 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-    _inherit = ["mail.thread"]
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "id desc"
 
     _sql_constraints = [
@@ -103,6 +103,12 @@ class EstateProperty(models.Model):
                 raise ValidationError("There isn't any offer accepted! please accept any offer to sold this property.")
             else:
                 record.state = "sold"
+                record._send_email_to_buyer()
+    
+    def _send_email_to_buyer(self):
+        template_id = self.env.ref("estate.mail_template_property_sold").id
+        if template_id and self.buyer_id.email:
+            self.env["mail.template"].browse(template_id).send_mail(self.id, force_send=True)
             
     def action_set_cancelled(self):
         for record in self:

@@ -20,6 +20,7 @@
         'views/properties_list_website.xml',
         'views/website_menus.xml',
         'data/estate.property.type.csv',
+        'data/mail_template_data.xml',
         'report/estate_reports.xml',
         'report/estate_report_templates.xml',
         'views/res_config_settings_view.xml'

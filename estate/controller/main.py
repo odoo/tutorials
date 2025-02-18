@@ -10,7 +10,9 @@ class EstatePropertyController(http.Controller):
         selected_date = kwargs.get("filter_date")
         property_search = kwargs.get("property_search")
         domain = [('state', 'in', ['new', 'offer_received'])]
-        total_properties = request.env["estate.property"].search_count([])
+        total_properties = request.env["estate.property"].search_count([
+            ("state", "in", ["new", "offer_received"]),
+        ])
 
         if selected_date:
             domain.append(('create_date', '>=', selected_date))
