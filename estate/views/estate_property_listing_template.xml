@@ -1,0 +1,20 @@
+<odoo>
+    <template id="property_listing" name="Property Listing">
+        <div class="container">
+            <h1>Available Properties</h1>
+            <div>
+                <t t-foreach="properties" t-as="property">
+                    <div>
+                        <div class="property-card">
+                            <img t-att-src="" alt="Property Image" />
+                            <h3><t t-esc="property.name"/></h3>
+                            <p><t t-esc="property.description"/></p>
+                            <p><strong>Price:</strong> <t t-esc="property.expected_price"/> $</p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </template>
+</odoo>

@@ -5,6 +5,12 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">kanban,list,form</field>
         <field name="context">{'search_default_available_property': True}</field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face"/>
+                <p>
+                    No properties exist. Please create a property to play with the pipeline.
+                </p>
+        </field>
     </record>
 
     <!-- List View Definition -->
@@ -15,6 +21,9 @@
             <list string="Property Details" default_order="id desc" 
                  decoration-muted="state=='sold'"
                  decoration-success="state in ['offer_accepted','offer_received']">
+                <header>
+                <button name="%(action_add_offer)d" string="Add Offer" type="action" class="oe_highlight" />
+                </header>
                 <field name="name"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
@@ -70,6 +79,7 @@
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
                                 <field name="facades"/>
+                                <field name="image" />
                                 <field name="garage" widget="boolean_toggle"/>
                                 <field name="garden" />
                                 <field name="garden_area" invisible="garden == False"/>
@@ -120,7 +130,7 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id">
+            <kanban default_group_by="state">
                 <field name="name"/>
                 <field name="state"/>
                 <field name="expected_price"/>

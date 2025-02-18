@@ -33,6 +33,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(string="Expected Price", required=True, default=0.0)
     selling_price = fields.Float(string="Selling Price")
+    image = fields.Image(string="Image",store=True)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Float(string="Living Area (sq.m.)")
     facades = fields.Integer(string="Number of Facades")
@@ -49,7 +50,8 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         string="State",
-        tracking=True
+        tracking=True,
+        group_expand=True
     )
     best_price = fields.Float(
         "Best Buyer Price", compute="_compute_best_price", store=True
@@ -122,9 +124,8 @@ class EstateProperty(models.Model):
         self.state = "cancelled"
 
     def action_set_sold(self):
-        for record in self:
-            if record.state == "cancelled"  :
-                raise UserError("Cancelled properties cannot be sold.")
-            if record.state != "offer_accepted":   
-                raise UserError("property can not be sold without accepting offer.")
-            record.state = "sold"
+        if self.state == "cancelled"  :
+            raise UserError("Cancelled properties cannot be sold.")
+        if self.state != "offer_accepted":   
+            raise UserError("property can not be sold without accepting offer.")
+        self.state = "sold"
