@@ -66,7 +66,6 @@
                         invisible="state == 'sold' or state == 'cancelled'" />
                     <button name="action_sold" type="object" string="Sold" class="btn-primary"
                         invisible="state == 'sold' or state == 'cancelled' or not has_accepted_offer" />
-
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold,cancelled" />
                 </header>
@@ -90,6 +89,12 @@
                             <field name="selling_price" />
                             <field name="state" />
                         </group>
+                    </group>
+                    <group>
+                        <div style="position: absolute; top: 20px; right: 20px;">
+                            <field name="image" widget="image" class="oe_avatar"
+                                style="max-width: 150px; max-height: 150px; border: 1px solid #ccc; border-radius: 5px;" />
+                        </div>
                     </group>
                     <notebook>
                         <page string="Description">
@@ -133,8 +138,13 @@
                         </page>
                     </notebook>
                 </sheet>
-                <chatter/>
+                <chatter />
             </form>
         </field>
+    </record>
+    <record id="open_url_action" model="ir.actions.act_url">
+        <field name="name">Open External Website</field>
+        <field name="url">http://localhost:8069/properties</field>
+        <field name="target">new</field>
     </record>
 </odoo>

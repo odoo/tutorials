@@ -7,13 +7,14 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin","website.published.mixin"]
     _order = "id desc"
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
     ]
     name = fields.Char(required=True)
+    image = fields.Binary("Image")
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(default=lambda self: date.today() + timedelta(days=90), copy=False)
