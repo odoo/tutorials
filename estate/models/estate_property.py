@@ -108,12 +108,12 @@ class EstateProperty(models.Model):
 
     # --------------------------- Action Methods ---------------------------
     def action_property_sold(self):
-
         if self.selling_price == 0:
             raise UserError("No any offer found")
 
-
         for record in self:
+            if record.status == "sold":
+                raise UserError("Property is already Sold")
             if record.status == "cancelled":
                 raise UserError("Cancelled property cannot be Sold")
             else:
