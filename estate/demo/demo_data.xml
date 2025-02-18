@@ -2,19 +2,6 @@
 <odoo>
     <data noupdate="1">
 
-        <!-- Partners -->
-        <record id="estate_property_partner_1" model="res.partner">
-            <field name="name">Azure Interrior</field>
-        </record>
-
-        <record id="estate_property_partner_2" model="res.partner">
-            <field name="name">Deco Addict</field>
-        </record>
-
-        <record id="estate_property_partner_3" model="res.partner">
-            <field name="name">Deco Addict Addison</field>
-        </record>
-
         <!-- Properties -->
         <record id="estate_property_1" model="estate.property">
             <field name="name">Big Villa</field>
@@ -34,17 +21,17 @@
             <field name="offer_ids" eval="[
                 Command.create({
                     'price': 50000,
-                    'partner_id': ref('estate_property_partner_1'),
+                    'partner_id': ref('base.res_partner_1'),
                     'validity':14
                 }),
                 Command.create({
                     'price': 100000,
-                    'partner_id': ref('estate_property_partner_2'),
+                    'partner_id': ref('base.res_partner_10'),
                     'validity':14
                 }),
                 Command.create({
                     'price': 100001,
-                    'partner_id': ref('estate_property_partner_3'),
+                    'partner_id': ref('base.res_partner_12'),
                     'validity':14
                 })
             ]" />
@@ -66,22 +53,21 @@
             <field name="is_garden">False</field>
         </record>
 
-
         <!-- Offers -->
         <record id="estste_property_offer_1" model="estate.property.offer">
-            <field name="partner_id" ref="estate_property_partner_1"/>
+            <field name="partner_id" ref="base.res_partner_1"/>
             <field name="price">10000</field>
             <field name="validity">14</field>
             <field name="property_id" ref="estate_property_2" />
         </record>
         <record id="estste_property_offer_2" model="estate.property.offer">
-            <field name="partner_id" ref="estate_property_partner_2"/>
+            <field name="partner_id" ref="base.res_partner_1"/>
             <field name="price">1500000</field>
             <field name="validity">14</field>
             <field name="property_id" ref="estate_property_2" />
         </record>
         <record id="estste_property_offer_3" model="estate.property.offer">
-            <field name="partner_id" ref="estate_property_partner_3"/>
+            <field name="partner_id" ref="base.res_partner_10"/>
             <field name="price">1500001</field>
             <field name="validity">14</field>
             <field name="property_id" ref="estate_property_2" />

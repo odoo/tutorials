@@ -26,9 +26,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
-            record.deadline = (
-                record.create_date and record.create_date.date() or fields.date.today()
-            ) + timedelta(days=record.validity)
+            record.deadline = record.create_date.date() if record.create_date else fields.date.today() + timedelta(days=record.validity)
 
     def _inverse_deadline(self):
         for record in self:
@@ -37,14 +35,12 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        offer = super().create(vals)
-        if offer.property_id.offer_ids:
-            if offer.price >= offer.property_id.best_offer:
-                offer.property_id.status = "offer_received"
-            else:
+        property = self.env['estate.property'].browse(vals.get('property_id'))
+        if property.offer_ids:
+            if vals.get('price') < property.best_offer:
                 raise ValidationError("The offer price should be more than best offer")
-
-        return offer
+        property.status = "offer_received"
+        return super().create(vals)
 
     def action_offer_accept(self):
         for record in self:
@@ -59,9 +55,7 @@ class EstatePropertyOffer(models.Model):
                     }
                 )
                 record.state = "accepted"
-                other_offer = record.property_id.offer_ids.filtered(
-                    lambda offer: record.id != offer.id
-                )
+                other_offer = record.property_id.offer_ids.filtered(lambda offer: record.id != offer.id)
                 other_offer.write({"state": "refused"})
 
     def action_offer_reject(self):

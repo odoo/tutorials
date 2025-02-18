@@ -37,14 +37,7 @@ class EstateProperty(models.Model):
     is_garage = fields.Boolean()
     is_garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection(
-        selection=[
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
-        ],
-    )
+    garden_orientation = fields.Selection(selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
     active = fields.Boolean(default="True")
     status = fields.Selection(
         selection=[
@@ -61,16 +54,10 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total")
     best_offer = fields.Float(compute="_compute_offer")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, tracking=True)
-    seller_id = fields.Many2one(
-        "res.users", string="Seller", default=lambda self: self.env.user
-    )
+    seller_id = fields.Many2one("res.users", string="Seller", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many(
-        "estate.property.offer", inverse_name="property_id", string="Offer"
-    )
-    company_id = fields.Many2one(
-        "res.company", required=True, default=lambda self: self.env.company
-    )
+    offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id", string="Offer")
+    company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company)
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
@@ -91,7 +78,7 @@ class EstateProperty(models.Model):
             return self.env.ref("estate.mt_offer_received")
         if "status" in init_values and self.status == "offer_accepted":
             return self.env.ref("estate.mt_offer_accepted")
-        return super(EstateProperty, self)._track_subtype(init_values)
+        return super()._track_subtype(init_values)
 
     @api.onchange("is_garden")
     def _onchange_garden(self):
@@ -105,18 +92,12 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price")
     def _check_offer_price(self):
         for record in self:
-            if record.selling_price < (record.expected_price * 0.9) and (
-                record.selling_price > 0
-            ):
-                raise ValidationError(
-                    "Selling price cannote be lower than 90% of it's expected price!"
-                )
+            if record.selling_price < (record.expected_price * 0.9) and (record.selling_price > 0):
+                raise ValidationError("Selling price cannote be lower than 90% of it's expected price!")
 
     def action_sold(self):
-        if self.selling_price < 0:
-            raise UserError(
-                "This property cannot be sold because it selling price is 0 !"
-            )
+        if self.selling_price < 0: 
+            raise UserError("This property cannot be sold because it selling price is 0 !")
         if self.status == "cancelled":
             raise UserError("This property cannot be sold it is cancelled")
         self.status = "sold"
@@ -132,8 +113,6 @@ class EstateProperty(models.Model):
             if record.status not in ["new", "cancelled"]:
                 raise UserError("A property can only delete if it is new or cancelled")
 
-    def _check_access_rights(self, invoice):
-        if self.env.user.has_group("estate.estate_group_manager"):
-            return
-        else:
-            raise UserError("you are not allow to this operation")
+    def _get_all_properties(self):
+        print(self.env.items())
+        return self.env.items()

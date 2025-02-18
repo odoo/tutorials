@@ -27,11 +27,11 @@
             <field name="domain_force"> [('company_id','=',user.company_id.id), '|', ('seller_id', '=', user.id), ('seller_id', '=', False)]</field>
         </record>
 
-         <record id="estate_access_manager_properties" model="ir.rule">
+        <record id="estate_access_manager_properties" model="ir.rule">
             <field name="name">Manager Estate Property Access</field>
             <field name="model_id" ref="model_estate_property"/>
             <field name="groups" eval="[4,(ref('estate.estate_group_manager'))]"/>
-            <field name="domain_force">[(1, '=', 1)]</field> 
+            <field name="domain_force">[(1, '=', 1)]</field>
         </record>
     </data>
 </odoo>

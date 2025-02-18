@@ -25,5 +25,4 @@ class EstateProperty(models.Model):
                 })
             ]
         }
-        self._check_access_rights(self.env.user)
         move = self.env['account.move'].create(values)

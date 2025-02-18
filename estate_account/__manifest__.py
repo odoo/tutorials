@@ -7,5 +7,8 @@
     "depends": ["base","estate","account"],
     "application": True,
     "installable": True,
+    "data": [
+      "report/estate_account_estate_property.xml",
+    ],
     "license": "AGPL-3"
 }
