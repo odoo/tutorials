@@ -13,7 +13,7 @@
                     <!-- Right: Property Details -->
                     <div class="col-lg-6">
                         <h2 class="text-primary fw-bold mb-3"><t t-esc="property.name"/></h2>
-                        
+
                         <!-- Property Tags -->
                         <t t-if="property.tag_ids">
                             <div class="mb-2">
@@ -30,9 +30,6 @@
                             <t t-if="property.status">
                                 <span t-if="property.status == 'new'" class="badge bg-primary">New</span>
                                 <span t-if="property.status == 'offer_received'" class="badge bg-warning text-dark">Offer Received</span>
-                                <span t-if="property.status == 'offer_accepted'" class="badge bg-success">Offer Accepted</span>
-                                <span t-if="property.status == 'sold'" class="badge bg-dark">Sold</span>
-                                <span t-if="property.status == 'cancelled'" class="badge bg-danger">Cancelled</span>
                             </t>
                         </div>
 

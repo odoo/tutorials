@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="estate_property_offer_report" model="ir.actions.report">
-        <field name="name">Property Offers</field>        
-        <field name="model">estate.property</field>        
-        <field name="report_type">qweb-pdf</field>        
-        <field name="report_name">estate.report_property_offers</field>        
+        <field name="name">Property Offers</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property_offers</field>
         <field name="print_report_name">"%s-Property Offers" % (object.name)</field>
         <field name="binding_model_id" ref="model_estate_property"/>
     </record>
 
     <record id="res_users_report" model="ir.actions.report">
-        <field name="name">Salesman Offers</field>        
-        <field name="model">res.users</field>        
-        <field name="report_type">qweb-pdf</field>        
-        <field name="report_name">estate.report_salesman_properties</field>        
+        <field name="name">Salesman Offers</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_salesman_properties</field>
         <field name="print_report_name">"%s-Offers" % (object.name)</field>
         <field name="binding_model_id" ref="base.model_res_users"/>
-    </record>         
-</odoo>        
+    </record>
+</odoo>

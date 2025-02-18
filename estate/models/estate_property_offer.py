@@ -43,6 +43,7 @@ class EstatePropertyOffer(models.Model):
         self.write({'status':"accepted"})
         self.property_id.write({'selling_price':self.price})
         self.property_id.write({'buyer_id':self.partner_id})
+        self.property_id.write({'status':'offer_accepted'})
         return True
 
     def action_refuse(self):
@@ -73,4 +74,6 @@ class EstatePropertyOffer(models.Model):
             status=self.env['estate.property'].browse(val['property_id']).status
             if status=='new' or not status:
                 self.env['estate.property'].browse(val['property_id']).status = 'offer_received'
+            if status=='sold' or status=='canceled':
+                raise UserError(_("You cannot add an offer to a sold or canceled property."))
         return super().create(vals)

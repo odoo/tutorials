@@ -28,7 +28,7 @@ class EstateProperty(models.Model):
                     "quantity": 1,
                     "price_unit": 100.00
                     })
-                ]   
+                ]
             })
 
         except Exception as e:

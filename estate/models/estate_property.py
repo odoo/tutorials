@@ -82,8 +82,8 @@ class EstateProperty(models.Model):
 
     #Action methods
     def action_mark_as_sold(self):
-        if self.status not in ["offer_received","offer_accepted"]:
-            raise UserError(_("You cannot sell a property that is not in 'Offer Received' or 'Offer Accepted' state"))
+        if self.status not in ["offer_accepted"]:
+            raise UserError(_("You cannot sell a property that is not in 'Offer Accepted' state"))
         if self.status=='canceled':
             raise UserError(_("You cannot sell a canceled property"))
         self.write({'status':'sold'})
