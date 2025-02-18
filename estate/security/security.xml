@@ -3,12 +3,15 @@
     <record id="estate_group_user" model="res.groups">
         <field name="name">Agent</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <!-- <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/> -->
     </record>
 
     <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <!-- These can be ommited since it is only inheriting all the restrictions of Agent -->
         <field name="implied_ids" eval="[(4, ref('estate.estate_group_user'))]"/>
+        <!-- If this is not given then Mitchell Admin will not be "Real Estate Manager" initially and so he can't open his record to change the Real Estate/Brokerage rights because we have given "Properties" list in the "Extended User Form" which he does not have access to yet -->
         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
     </record>
 
@@ -28,6 +31,9 @@
     <record id="estate_multi_company_rule" model="ir.rule">
         <field name="name">Managers and Agents can access properties of their companies only</field>
         <field name="model_id" ref="estate.model_estate_property"/>
+        <!-- here, there is no group given, so this is a "Global" Record Rule which is applied for all groups on this model -->
+        <!-- <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/> -->
+        <!-- <field name="global" eval="True"/> -->
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
 </odoo>

@@ -45,9 +45,10 @@ class EstateProperty(models.Model):
 
     def action_open_invoice(self):
         return {
+            'name': _('Open invoice of this estate property'),
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
-            'view_id': 'account_view_move_form',
+            'view_id': 'account_move_invoice_view_form',
             'views': [[False, 'form']],
             'res_model': 'account.move',
             'res_id': self.invoice_id.id,

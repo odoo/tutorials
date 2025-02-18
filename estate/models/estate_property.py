@@ -100,11 +100,11 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if "cancelled" in self.mapped("state"):
             raise UserError(_("Cancelled properties cannot be sold."))
-        # This condition ensures that buyer and selling price are set before marking property sold
-        if self.mapped("state").count("offer_accepted") != len(self):
-            raise UserError(_("Cannot sell a property with no accepted offer."))
-        for property in self:
-            property.state = "sold"
+        # Below condition ensures that buyer and selling price are set before marking property sold since an offer is accepted
+        # if self.state != "offer_accepted": # for single instance
+        if self.mapped("state").count("offer_accepted") != len(self): # for multiple instances
+            raise UserError(_("Can not sell a property without an accepted offer."))
+        self.write({ 'state': 'sold' })
         return True
 
     def action_cancel(self):
@@ -113,3 +113,16 @@ class EstateProperty(models.Model):
         for property in self:
             property.state = "cancelled"
         return True
+
+    def action_launch_offer_wizard(self):
+        return {
+            'name': 'Add offer', # name appearing on the wizard window
+            'type': 'ir.actions.act_window',
+            'res_model': 'estate.property.offer.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            # data needed to pre fill the wizard form
+            'context': {
+                'default_property_ids': self.ids,
+            }
+        }
