@@ -2,13 +2,23 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
+        <div class="p-3 d-inline-block">
             hello world
-            <!-- <div class='m-2 p-2 boarder d-inline-block'>
-            <span class="me-2">Counter: <t t-esc="state.value"/></span>
-            <button class="btn btn-primary" t-on-click="increment">Increment</button> -->
-            </div> 
-       
+            <Counter onchange.bind="incrementSum"/>
+            <Counter onchange.bind="incrementSum"/>
+            <div> the sum is: <t t-esc="sum.value"/></div>
+        </div>
+        <div class="card-body">
+            <!-- <Card title="'Card 1'" content="str1"/>
+            <Card title="'Card 2'" content="str2"/> -->
+            <card class="m-12" title="card 1">
+            content of card 1 
+            </card>
+            <card title="'card 2" class="border">
+            <Counter/>
+            </card>
+        </div>
+        <TodoList/>
     </t>
 
 </templates>
