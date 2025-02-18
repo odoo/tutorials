@@ -82,6 +82,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True" reload_on_attachment="True" reload_on_follower="True" reload_on_post="True"/>
             </form>
         </field>
     </record>

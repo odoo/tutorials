@@ -7,9 +7,10 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate property'
+    _inherit = ['mail.thread']
     _order = 'id desc'
 
-    name = fields.Char(string='Name', required=True)
+    name = fields.Char(string='Name', required=True, tracking=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode',size=6)
     date_availability = fields.Date(string='Available From', default=(fields.Date.today() + timedelta(days=90)), copy=False)
@@ -33,7 +34,7 @@ class EstateProperty(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
-        ], string='State', default='new')
+        ], string='State', default='new', tracking=True)
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
@@ -97,3 +98,9 @@ class EstateProperty(models.Model):
             for record in self:
                 if record.state not in ['new', 'cancelled']:
                     raise UserError("You cannot delete offer, when it's in %s state.", record.state)
+
+    def _track_subtype(self, vals):
+        self.ensure_one()
+        if 'state' in vals and self.state == 'offer_accepted':
+            return self.env.ref('estate.mt_state_change')
+        return super()._track_subtype(vals)
