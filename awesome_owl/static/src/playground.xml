@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve">
 
-    <t t-name="awesome_owl.playground">
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Playground">
+        <div class="p-3 border border-secondary">
+            <h3>Playground</h3>
+            <h1>Sum: <t t-esc="sum.value" /></h1>
+            <Counter  t-props="{'onChange': incrementSum}" />
+            <Counter  t-props="{'onChange': incrementSum}" />
+        </div>
+         <div class="p-3">
+            <h3>Playground</h3> 
+            <t t-foreach="cards" t-as="card" t-key="card.title">
+                <Card t-props="{'title': card.title, 'content': card.content}" />
+            </t>
+        </div>
         <div class="p-3">
-            hello world
+            <h3>Welcome to todo</h3> 
+            <TodoList />
         </div>
     </t>
-
 </templates>
