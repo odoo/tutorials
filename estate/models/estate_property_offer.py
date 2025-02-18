@@ -45,7 +45,7 @@ class EstatePropertyOffer(models.Model):
                     raise UserError(f"The offer must be higher than {offer.price}")
             offer = super().create([val])  
             if offer.property_id.state == "new":
-                 offer.property_id.state = "offer_recieved"
+                 offer.property_id.state = "offer_received"
             offers.append(offer)
         return offers
 

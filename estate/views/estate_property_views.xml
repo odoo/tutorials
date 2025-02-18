@@ -7,7 +7,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties"
-                decoration-success="state in ('offer_accepted', 'offer_recieved')"
+                decoration-success="state in ('offer_accepted', 'offer_received')"
                 decoration-bf="state in ('offer_accepted')"
                 decoration-muted="state in ('sold')">
                 <field name="sequence_number" readonly="1" />
@@ -41,11 +41,11 @@
                         <field name="name" class="fw-bolder" />
                         <div> Expected Price: <field name="expected_price" />
                         </div>
-                        <div t-if="record.state.raw_value == 'offer_recieved'"> 
-                            Best Offer: <field name="best_price" />
+                        <div t-if="record.state.raw_value == 'offer_received'"> Best Offer: <field
+                                name="best_price" />
                         </div>
-                        <div t-if="record.state.raw_value == 'offer_accepted'"> 
-                            Selling Price: <field name="selling_price" />
+                        <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
+                                name="selling_price" />
                         </div>
                         <field name="tag_ids" widget="many2many_tags" />
                     </t>
@@ -65,12 +65,12 @@
                         type="object"
                         string="Sold"
                         class="oe_highlight"
-                        invisible="state in ('new', 'offer_recieved', 'sold', 'cancelled')" />
+                        invisible="state in ('new', 'offer_received', 'sold', 'cancelled')" />
                     <button name="action_cancel"
                         type="object"
                         string="Cancel"
                         class="oe_highlight"
-                        invisible="state in ('new', 'offer_recieved', 'sold', 'cancelled')" />
+                        invisible="state in ('new', 'offer_received', 'sold', 'cancelled')" />
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
@@ -79,6 +79,12 @@
                         <span style="font-size: 32px; font-weight: normal;">
                             <field name="name" placeholder="Property name" />
                         </span>
+                        <group>
+                            <field name="property_image" widget="image"
+                                options="{'zoom': true}"
+                                style="max-width: 300px; max-height: 300px;"
+                                nolabel = "1" />
+                        </group>
                     </group>
                     <div class="mb16">
                         <field name="tag_ids"

@@ -16,7 +16,7 @@ class EstateProperty(models.Model):
         if not self.buyer_id:
             raise ValidationError("Cannot create invoice without a buyer.")
 
-        invoice = self.sudo().env["account.move"].create(
+        invoice = self.env["account.move"].sudo().create(
             {
                 "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",

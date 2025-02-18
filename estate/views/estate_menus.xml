@@ -4,7 +4,7 @@
     <menuitem id="estate_property_menu"
         name="Properties"
         parent="estate_property_root"
-        action="estate_property_action" />
+        action="estate_property_action"/>
     <menuitem id="estate_settings_menu"
         name="Settings"
         parent="estate_property_root"

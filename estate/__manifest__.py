@@ -4,7 +4,7 @@
     "name": "Real Estate",
     "author": "nmak",
     "category": "Real Estate/Brokerage",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "website"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
@@ -15,6 +15,8 @@
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
+        "views/estate_property_detail_views.xml",
+        "views/estate_property_listing_views.xml",
         "views/res_users_view.xml",
         "views/estate_menus.xml",
     ],

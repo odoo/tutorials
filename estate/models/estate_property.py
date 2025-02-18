@@ -53,7 +53,7 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         selection=[
             ("new", "New"),
-            ("offer_recieved", "Offer Recieved"),
+            ("offer_received", "Offer received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
@@ -79,7 +79,8 @@ class EstateProperty(models.Model):
     company_id = fields.Many2one(
         "res.company", required=True, default=lambda self: self.env.company
     )
-
+    property_image = fields.Image(string="Property Image", max_width=1024, max_height=1024, store=True)
+    
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -135,3 +136,10 @@ class EstateProperty(models.Model):
             if record.selling_price and record.selling_price < record.expected_price * 0.9:
                 raise ValidationError("The selling price of the property cannot be less than 90% of the expected price")
 
+    @api.model
+    def get_available_properties(self):
+        """ Fetch all active properties that are not sold or canceled """
+        return self.search([
+            ('active', '=', True),
+            ('state', 'not in', ['sold', 'cancelled'])
+        ])
