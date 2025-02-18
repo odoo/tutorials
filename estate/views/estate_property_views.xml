@@ -12,6 +12,7 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -28,12 +29,19 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <sheet>
-                    <h1>
-                        <field name="name"/>
-                    </h1>
+                    <group>
+                        <group>
+                             <h1>
+                                <field name="name">NAME</field>
+                            </h1>
+                            <field name="tags_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+
                     <separator/>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -45,14 +53,27 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area"/>
+                                    <field name="garden_orientation"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <group>
+                                    <field name="salesperson_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
                             </group>
                         </page>
                     </notebook>
@@ -67,18 +88,20 @@
         <field name="arch" type="xml">
             <search string="Properties">
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
                 <filter name="available" string="Available" domain="[
-                            '|',
-                            ('status', '=', 'new'),
-                            ('status', '=', 'offer_received')]"
+                        '|',
+                        ('status', '=', 'new'),
+                        ('status', '=', 'offer_received')]"
                 />
                 <group expand="1" string="Group By">
-                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="Type" name="property_type_id" context="{'group_by':'property_type_id'}"/>
                 </group>
             </search>
         </field>
