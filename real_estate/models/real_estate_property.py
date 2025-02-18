@@ -56,6 +56,7 @@ class RealEstateProperty(models.Model):
     offer_ids = fields.One2many(
         string="Offers", comodel_name='real.estate.offer', inverse_name='property_id'
     )
+    offer_count = fields.Integer(string="Offer Count", compute='_compute_offer_count')
     is_priority = fields.Boolean(
         string="Priority", compute='_compute_is_priority', search='_search_is_priority'
     )
@@ -80,6 +81,15 @@ class RealEstateProperty(models.Model):
     def _compute_total_area(self):
         for property in self:
             property.total_area = property.floor_area + property.garden_area
+
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        offer_data = self.env['real.estate.offer']._read_group(
+            [('property_id', 'in', self.ids)], groupby=['property_id'], aggregates=['__count'],
+        )
+        property_data = {property.id: count for property, count in offer_data}
+        for property in self:
+            property.offer_count = property_data.get(property.id, 0)
 
     @api.depends('offer_ids.expiry_date')
     def _compute_is_priority(self):
