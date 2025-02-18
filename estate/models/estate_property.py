@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -24,9 +23,13 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'),
-                   ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'), ('cancelled', 'Cancelled'),
+        ],
         copy=False,
         default='new',
-        required=True
+        required=True,
     )
