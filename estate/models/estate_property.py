@@ -3,12 +3,18 @@
 
 from odoo import fields, models, api
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare, float_is_zero
 from dateutil.relativedelta import relativedelta
 
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Real Estate Properties"
+    
+    _sql_constraints = [
+        ('check_prices', 'CHECK(expected_price > 0 AND selling_price >= 0)',
+         "Prices should be positive. Additionnaly, expected price can't be 0.")
+    ]
     
     # Metadata
     name = fields.Char('Title', required=True, translate=True, default="Best House In Town")
@@ -88,3 +94,9 @@ class Property(models.Model):
                 raise UserError("You cannot change accepted offer on a sold property")
             offer.action_refuse()
         offer_to_accept_id.accept()
+    
+    @api.constrains('selling_price', 'expected_price')
+    def check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=3) and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=3) < 0:
+                raise UserError('Selling price is too low')
