@@ -17,12 +17,6 @@ class TestEstateProperty(TransactionCase):
             'garden_orientation': 'north',
         })
 
-    # def test_create_property(self):
-    #     self.properties.living_area = 20
-    #     self.assertRecordValues(self.properties, [
-    #         {'name': 'Test Property', 'total_area': 70},
-    #     ])
-
     def test_action_sell(self):
 
         offer = self.env['estate.property.offer'].create({
@@ -54,12 +48,16 @@ class TestEstateProperty(TransactionCase):
 
         form = Form(self.properties)
 
-        initial_garden_area = form.garden_area
-        initial_orientation = form.garden_orientation
-
         form.garden = False
 
-        self.assertEqual(form.garden_area, initial_garden_area, "Garden Area should not be reset.")
-        self.assertEqual(form.garden_orientation, initial_orientation, "Orientation should not be reset.")
+        self.assertEqual(form.garden_area, 0, "Garden Area should be 0.")
+        self.assertEqual(form.garden_orientation, False, "Orientation should not be set.")
 
         self.assertFalse(form.garden, "Garden checkbox should be unchecked.")
+
+        form.garden = True
+
+        self.assertEqual(form.garden_area, 10, "Garden Area should be 10 by default if active.")
+        self.assertEqual(form.garden_orientation, 'north', "Orientation should be set to north if active.")
+
+        self.assertTrue(form.garden, "Garden checkbox should be checked.")

@@ -1,66 +1,283 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
-    <record id="estate_property_big_villa" model="estate.property">
-        <field name="name">Big Villa</field>
-        <field name="state">new</field>
-        <field name="description">A nice and big villa</field>
-        <field name="postcode">12345</field>
-        <field name="date_availability" eval="(DateTime.today() + relativedelta(days=15))" />
-        <field name="expected_price">1600000</field>
-        <field name="bedrooms">6</field>
-        <field name="living_area">100</field>
-        <field name="facades">4</field>
-        <field name="garage">True</field>
-        <field name="garden">True</field>
-        <field name="garden_area">100000</field>
-        <field name="garden_orientation">south</field>
-        <field name="property_type_id" ref="estate.property_type_1"/>
-    </record>
+    <data noupdate="1">
+        <record id="estate_property_tag_luxury" model="estate.property.tag">
+            <field name="name">Luxury</field>
+        </record>
 
-    <record id="estate_property_trailer_home" model="estate.property">
-        <field name="name">Trailer home</field>
-        <field name="state">cancelled</field>
-        <field name="description">Home in a trailer park</field>
-        <field name="postcode">54321</field>
-        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=3))" />
-        <field name="expected_price">100000</field>
-        <field name="selling_price">120000</field>
-        <field name="bedrooms">1</field>
-        <field name="living_area">10</field>
-        <field name="facades">4</field>
-        <field name="garage">False</field>
-        <field name="property_type_id" ref="estate.property_type_1"/>
-    </record>
+        <record id="estate_property_tag_family_friendly" model="estate.property.tag">
+            <field name="name">Family Friendly</field>
+        </record>
 
-    <record id="estate_property_rene_skyline" model="estate.property">
-        <field name="name">Rene Skyline</field>
-        <field name="state">offer_received</field>
-        <field name="description">Touch the clouds</field>
-        <field name="postcode">54321</field>
-        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=3))" />
-        <field name="expected_price">100000</field>
-        <field name="bedrooms">2</field>
-        <field name="living_area">1000</field>
-        <field name="facades">2</field>
-        <field name="garage">False</field>
-        <field name="property_type_id" ref="estate.property_type_1"/>
-        <field name="offer_ids" eval="[
-            Command.create({
-                'partner_id': ref('base.res_partner_12'),
-                'price': 98000,
-                'validity': 14,
-            }),
-            Command.create({
-                'partner_id': ref('base.res_partner_3'),
-                'price': 105000,
-                'validity': 14,
-            }),
-            Command.create({
-                'partner_id': ref('base.res_partner_1'),
-                'price': 110000,
-                'validity': 14,
-            }),
-        ]" />
-    </record>
+        <record id="estate_property_tag_seaside" model="estate.property.tag">
+            <field name="name">Seaside</field>
+        </record>
+
+        <record id="estate_property_tag_modern" model="estate.property.tag">
+            <field name="name">Modern</field>
+        </record>
+
+        <record id="estate_property_tag_rural" model="estate.property.tag">
+            <field name="name">Rural</field>
+        </record>
+
+        <record id="estate_property_tag_comfort" model="estate.property.tag">
+            <field name="name">Comfort</field>
+        </record>
+
+        <record id="estate_property_tag_investment" model="estate.property.tag">
+            <field name="name">Investment</field>
+        </record>
+
+        <record id="estate_property_tag_spacious" model="estate.property.tag">
+            <field name="name">Spacious</field>
+        </record>
+
+        <record id="estate_property_tag_renovated" model="estate.property.tag">
+            <field name="name">Renovated</field>
+        </record>
+
+        <record id="estate_property_tag_garden" model="estate.property.tag">
+            <field name="name">Garden</field>
+        </record>
+
+
+        <record id="estate_property_big_villa" model="estate.property">
+            <field name="name">Big Villa</field>
+            <field name="state">new</field>
+            <field name="description">A nice and big villa</field>
+            <field name="postcode">12345</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=15))" />
+            <field name="expected_price">1600000</field>
+            <field name="bedrooms">6</field>
+            <field name="living_area">100</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">100000</field>
+            <field name="garden_orientation">south</field>
+            <field name="property_type_id" ref="estate.property_type_1"/>
+            <field name="image" type="base64" file="estate/static/src/img/big_villa.jpg"/>
+        </record>
+
+        <record id="estate_property_trailer_home" model="estate.property">
+            <field name="name">Trailer home</field>
+            <field name="state">cancelled</field>
+            <field name="description">Home in a trailer park</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(months=3))" />
+            <field name="expected_price">100000</field>
+            <field name="selling_price">120000</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="property_type_id" ref="estate.property_type_1"/>
+            <field name="image" type="base64" file="estate/static/src/img/trailer_home.jpg"/>
+        </record>
+
+        <record id="estate_property_rene_skyline" model="estate.property">
+            <field name="name">Rene Skyline</field>
+            <field name="state">offer_received</field>
+            <field name="description">Touch the clouds</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(months=3))" />
+            <field name="expected_price">100000</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">1000</field>
+            <field name="facades">2</field>
+            <field name="garage">False</field>
+            <field name="property_type_id" ref="estate.property_type_1"/>
+            <field name="image" type="base64" file="estate/static/src/img/rene_skyline.jpg"/>
+            <field name="offer_ids" eval="[
+                Command.create({
+                    'partner_id': ref('base.res_partner_12'),
+                    'price': 98000,
+                    'validity': 14,
+                }),
+                Command.create({
+                    'partner_id': ref('base.res_partner_3'),
+                    'price': 105000,
+                    'validity': 14,
+                }),
+                Command.create({
+                    'partner_id': ref('base.res_partner_1'),
+                    'price': 110000,
+                    'validity': 14,
+                }),
+            ]" />
+        </record>
+
+        <record id="estate_property_luxury_apartment" model="estate.property">
+            <field name="name">Luxury Apartment</field>
+            <field name="state">new</field>
+            <field name="description">A luxury apartment located in the heart of the city.</field>
+            <field name="postcode">67890</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=30))" />
+            <field name="expected_price">850000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">150</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation">north</field>
+            <field name="property_type_id" ref="estate.property_type_1"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_luxury')])]"/>
+            <field name="image" type="base64" file="estate/static/src/img/luxury_apartment.jpg"/>
+        </record>
+
+        <record id="estate_property_seaside_cottage" model="estate.property">
+            <field name="name">Seaside Cottage</field>
+            <field name="state">new</field>
+            <field name="description">A charming seaside cottage with breathtaking views of the ocean.</field>
+            <field name="postcode">23456</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=10))" />
+            <field name="expected_price">450000</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">75</field>
+            <field name="facades">3</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">200</field>
+            <field name="garden_orientation">west</field>
+            <field name="property_type_id" ref="estate.property_type_4"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_seaside'), ref('estate_property_tag_family_friendly')])]"/>
+            <field name="image" type="base64" file="estate/static/src/img/seaside_cottage.jpg"/>
+        </record>
+
+        <record id="estate_property_country_house" model="estate.property">
+            <field name="name">Country House</field>
+            <field name="state">new</field>
+            <field name="description">A peaceful country house with a large garden and scenic views.</field>
+            <field name="postcode">98765</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=20))" />
+            <field name="expected_price">750000</field>
+            <field name="bedrooms">4</field>
+            <field name="living_area">120</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">500</field>
+            <field name="garden_orientation">north</field>
+            <field name="property_type_id" ref="estate.property_type_1"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_rural')])]"/>
+            <field name="image" type="base64" file="estate/static/src/img/country_house.jpg"/>
+        </record>
+
+        <record id="estate_property_modern_penthouse" model="estate.property">
+            <field name="name">Modern Penthouse</field>
+            <field name="state">new</field>
+            <field name="description">A spacious modern penthouse with panoramic views of the city.</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=5))" />
+            <field name="expected_price">2500000</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">200</field>
+            <field name="facades">3</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation">north</field>
+            <field name="property_type_id" ref="estate.property_type_1"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_modern')])]"/>
+            <field name="image" type="base64" file="estate/static/src/img/modern_penthouse.jpg"/>
+        </record>
+
+        <record id="estate_property_renovated_villa" model="estate.property">
+            <field name="name">Renovated Villa</field>
+            <field name="state">new</field>
+            <field name="description">A renovated villa offering modern comfort in a historical setting.</field>
+            <field name="postcode">11223</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=12))" />
+            <field name="expected_price">950000</field>
+            <field name="bedrooms">4</field>
+            <field name="living_area">200</field>
+            <field name="facades">3</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">350</field>
+            <field name="garden_orientation">east</field>
+            <field name="property_type_id" ref="estate.property_type_2"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_renovated')])]"/>
+            <field name="image" type="base64" file="estate/static/src/img/renovated_villa.jpg"/>
+        </record>
+
+        <record id="estate_property_investment_property" model="estate.property">
+            <field name="name">Investment Property</field>
+            <field name="state">new</field>
+            <field name="description">An ideal investment property with potential for great returns.</field>
+            <field name="postcode">65432</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=30))" />
+            <field name="expected_price">1200000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">180</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation">north</field>
+            <field name="property_type_id" ref="estate.property_type_2"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_investment')])]"/>
+            <field name="image" type="base64" file="estate/static/src/img/investment_property.jpg"/>
+        </record>
+
+        <record id="estate_property_small_cottage" model="estate.property">
+            <field name="name">Small Cottage</field>
+            <field name="state">new</field>
+            <field name="description">A cozy and quaint cottage for a peaceful getaway.</field>
+            <field name="postcode">78901</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=5))" />
+            <field name="expected_price">320000</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">50</field>
+            <field name="facades">2</field>
+            <field name="garage">False</field>
+            <field name="garden">True</field>
+            <field name="garden_area">100</field>
+            <field name="garden_orientation">north</field>
+            <field name="property_type_id" ref="estate.property_type_4"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_rural')])]"/>
+            <field name="image" type="base64" file="estate/static/src/img/small_cottage.jpg"/>
+        </record>
+
+        <record id="estate_property_luxury_house" model="estate.property">
+            <field name="name">Luxury House</field>
+            <field name="state">new</field>
+            <field name="description">An upscale luxury house with premium amenities and finishes.</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=7))" />
+            <field name="expected_price">1800000</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">220</field>
+            <field name="facades">3</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">450</field>
+            <field name="garden_orientation">east</field>
+            <field name="property_type_id" ref="estate.property_type_1"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_luxury')])]"/>
+            <field name="image" type="base64" file="estate/static/src/img/luxury_house.jpg"/>
+        </record>
+
+        <record id="estate_property_vintage_apartment" model="estate.property">
+            <field name="name">Vintage Apartment</field>
+            <field name="state">new</field>
+            <field name="description">A charming vintage apartment located in a historic building.</field>
+            <field name="postcode">12378</field>
+            <field name="date_availability" eval="(DateTime.today() + relativedelta(days=10))" />
+            <field name="expected_price">550000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">100</field>
+            <field name="facades">2</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation">north</field>
+            <field name="property_type_id" ref="estate.property_type_1"/>
+            <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_comfort')])]"/>
+            <field name="image" type="base64" file="estate/static/src/img/vintage_apartment.jpg"/>
+        </record>
+    </data>
 </odoo>

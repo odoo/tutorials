@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="website_property_listing_menu" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
+
+    <template id="estate_property_listing_template" name="Property Listing">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+                    <h3 t-esc="selected_availability.title() + ' Properties'">Properties</h3>
+
+                    <form method="get" action="/properties" class="d-flex">
+                        <select name="availability" class="form-select me-3" onchange="this.form.submit()">
+                            <option value="available" t-att-selected="selected_availability == 'available'">Available</option>
+                            <option value="all" t-att-selected="selected_availability == 'all'">All</option>
+                        </select>
+
+                        <select name="property_type" class="form-select me-3" onchange="this.form.submit()">
+                            <option value="all" t-att-selected="selected_property_type == 'all'">All Types</option>
+                            <t t-foreach="property_types" t-as="ptype">
+                                <option t-att-value="ptype.id" t-att-selected="selected_property_type == str(ptype.id)">
+                                    <t t-esc="ptype.name" />
+                                </option>
+                            </t>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="row mb-5">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-lg border-0 rounded-lg">
+                                <t t-if="property.state in ['sold', 'cancelled', 'offer_accepted']">
+                                    <div t-att-class="'position-absolute top-0 start-50 translate-middle-x text-white fw-bold px-3 py-2 rounded-top ' +
+                                                    ('bg-success' if property.state == 'sold' else
+                                                    'bg-secondary' if property.state == 'offer_accepted' else
+                                                    'bg-danger')"
+                                        style="width: 100%; text-align: center; z-index: 10;">
+                                        <t t-esc="property.state.replace('_', ' ').title()"/>
+                                    </div>
+                                </t>
+                                <div class="position-relative">
+                                    <img t-if="property.image"
+                                        t-att-src="'data:image/webp;base64,%s' % property.image.decode('utf-8')"
+                                        class="card-img-top img-fluid"
+                                        alt="Property Image"
+                                        style="height: 250px; object-fit: cover; width: 100%;" />
+                                    <img t-else="" src="/estate/static/description/icon.png"
+                                        class="card-img-top img-fluid"
+                                        alt="No Image Available"
+                                        style="height: 250px; object-fit: cover; width: 100%;" />
+                                </div>
+                                <div class="card-body p-4">
+                                    <h5 class="card-title text-dark fw-bold">
+                                        <t t-esc="property.name" />
+                                    </h5>
+                                    <p class="card-text text-muted">Expected Price: <strong>
+                                            <t t-esc="property.expected_price" />
+                                        </strong>
+                                    </p>
+
+                                    <p t-if="property.best_price != 0" class="card-text text-success fw-bold">Best Offer: <t
+                                            t-esc="property.best_price" /></p>
+
+                                    <t t-else="">
+                                        <p t-if="property.state == 'cancelled'" class="card-text text-danger fw-bold">Offers are closed!</p>
+                                        <p t-else="" class="card-text text-info fw-bold">Be the first to bid — no offers yet!</p>
+                                    </t>
+
+                                    <div class="tags mb-3">
+                                        <span class="badge text-bg-secondary mx-1" t-foreach="property.tag_ids"
+                                            t-as="tag">
+                                            <t t-esc="tag.name" />
+                                        </span>
+                                    </div>
+
+                                    <div>
+                                        <p><strong>Total Area: </strong><t
+                                                t-esc="property.total_area" /> m²</p>
+                                        <p>
+                                            <strong>Garden: </strong>
+                                            <t t-esc="property.garden and 'Yes' or 'No'" />
+                                        </p>
+                                        <p>
+                                            <strong>Garage: </strong>
+                                            <t t-esc="property.garage and 'Yes' or 'No'" />
+                                        </p>
+                                    </div>
+
+                                    <div class="description">
+                                        <p>
+                                            <strong>Description:</strong>
+                                            <t t-esc="property.description" />
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="card-footer text-center">
+                                    <a t-attf-href="/properties/#{property.id}"
+                                        class="btn btn-primary w-100 h-100">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="estate_property_detail_template">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <t t-if="message">
+                    <div t-if="message_type == 'success'" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> <t t-esc="message"/>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div t-if="message_type == 'error'" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oops!</strong> <t t-esc="message"/>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </t>
+
+                <div class="row">
+                    <!-- Property Image Section -->
+                    <div class="col-md-6 mb-4">
+                        <div class="property-image-container">
+                            <img t-if="property.image"
+                                t-att-src="'data:image/webp;base64,%s' % property.image.decode('utf-8')"
+                                class="img-fluid rounded shadow-sm"
+                                alt="Property Image"
+                                style="height: 460px; object-fit: cover; width: 100%;" />
+                            <img t-else=""
+                                src="/estate/static/description/icon.png"
+                                class="img-fluid rounded shadow-sm"
+                                alt="Property Image"
+                                style="height: 460px; object-fit: cover; width: 100%;" />
+                        </div>
+                    </div>
+
+                    <!-- Property Details Section -->
+                    <div class="col-md-6 mb-4">
+                        <div class="row">
+                            <h2 class="text-primary mb-3 col-10"><t t-esc="property.name"/></h2>
+
+                            <div class="text-center col-2">
+                                <a href="/properties" class="btn btn-outline-primary w-10">
+                                    ←
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Tags Below Property Name -->
+                        <div class="property-tags mb-3">
+                            <t t-foreach="property.tag_ids" t-as="tag">
+                                <span class="badge bg-info mb-2">
+                                    <t t-esc="tag.name"/>
+                                </span>
+                            </t>
+                        </div>
+
+                        <p class="text-muted mb-4"><t t-esc="property.description"/></p>
+
+                        <!-- Property Basic Information with Vertical Separator -->
+                        <div class="bg-light p-4 rounded shadow-sm d-flex mb-3">
+                            <!-- Left Column (Property Info) -->
+                            <div class="left-info flex-fill">
+                                <h5 class="text-secondary mb-3">Property Details</h5>
+                                <p><strong class="text-dark">Postcode:</strong> <t t-esc="property.postcode"/></p>
+                                <p><strong class="text-dark">Best Offer:</strong> <span class="text-success"><t t-esc="property.best_price"/></span></p>
+                                <p><strong class="text-dark">Bedrooms:</strong> <t t-esc="property.bedrooms"/></p>
+                                <p><strong class="text-dark">Living Area:</strong> <t t-esc="property.living_area"/> m²</p>
+                            </div>
+
+                            <!-- Vertical Separator -->
+                            <div class="separator"></div>
+
+                            <!-- Right Column (Additional Info) -->
+                            <div class="right-info flex-fill">
+                                <h5 class="text-secondary mb-3">More Information</h5>
+                                <p><strong class="text-dark">Available From:</strong> <t t-esc="property.date_availability"/></p>
+                                <p><strong class="text-dark">Facades:</strong> <t t-esc="property.facades"/></p>
+                                <p><strong class="text-dark">Garden:</strong> <t t-esc="property.garden_area"/> m²</p>
+                                <p><strong class="text-dark">Garage:</strong> <t t-esc="property.garage and 'Yes' or 'No'"/></p>
+                            </div>
+                        </div>
+
+                        <div t-if="property.state in ('new', 'offer_received')" class="text-center">
+                            <a t-attf-href="/offer/#{property.id}" class="btn btn-success w-100">
+                                Make an Offer
+                            </a>
+                        </div>
+
+                        <div t-else="" class="text-center">
+                            <div class="btn btn-danger w-100">
+                                Offers are closed!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="estate_offer_form_page" name="Make an Offer Page">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="property-image-container">
+                            <img t-if="property.image"
+                                t-att-src="'data:image/webp;base64,%s' % property.image.decode('utf-8')"
+                                class="img-fluid rounded shadow-sm"
+                                alt="Property Image"
+                                style="height: 460px; object-fit: cover; width: 100%;" />
+                            <img t-else=""
+                                src="/estate/static/description/icon.png"
+                                class="img-fluid rounded shadow-sm"
+                                alt="Property Image"
+                                style="height: 460px; object-fit: cover; width: 100%;" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <form action="/submit-offer" method="post">
+                            <input type="hidden" name="property_id" t-att-value="property.id"/>
+
+                            <h2 class="text-primary mb-3 mt-5"><t t-esc="property.name"/></h2>
+
+                            <p class="text-muted mb-4"><t t-esc="property.description"/></p>
+
+                            <p><strong class="text-dark">Expected Price:</strong> <t t-esc="property.expected_price"/></p>
+
+                            <div class="mb-4">
+                                <label for="price">Price</label>
+                                <input type="number" name="price" id="price" class="form-control"
+                                    t-att-value="price" required="required" />
+                            </div>
+                            <div class="mb-4">
+                                <label for="validity">Validity (Days)</label>
+                                <input type="number" name="validity" id="validity" class="form-control"
+                                    t-att-value="validity" required="required"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Offer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

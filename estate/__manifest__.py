@@ -2,7 +2,7 @@
     "name": "Real Estate",
     "version": "1.0",
     "sequence": 1,
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "website"],
     "description": """
     This is the estate application being developed as per Tutorial for Technical Training.
     """,
@@ -23,6 +23,7 @@
         'views/estate_property_tag_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
+        'views/estate_property_template.xml',
 
         'data/estate.property.type.csv',
 
