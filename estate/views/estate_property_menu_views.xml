@@ -36,4 +36,11 @@
         parent="estate_menu_setting"
         action="estate_property_tag_action"
     />
+
+    <!-- Website Menu -->
+    <menuitem
+        id="estate_menu_website"
+        parent="estate_menu_root"
+        action="estate_property_webiste_action"
+    />
 </odoo>

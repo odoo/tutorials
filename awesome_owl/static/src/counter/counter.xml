@@ -2,7 +2,9 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.counter">
         <div class="border p-3">
-            Counter: <t t-esc="state.value"/><button class="btn btn-primary" t-on-click="increment">Increment</button>
+            Counter:
+            <t t-esc="state.value" />
+            <button class="btn btn-primary" t-on-click="increment">Increment</button>
         </div>
     </t>
 </templates>

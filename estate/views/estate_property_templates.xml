@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate.estate_properties_grid">
+        <t t-call="website.layout">
+            <t t-set="title">Properties</t>
+            <div class="oe_structure">
+                <div class="container">
+                    <div class="fs-3 fw-bold text-center my-3">Available Properties</div>
+                    <div class="d-blocl d-lg-none my-3">
+                        <t t-call="estate.estate_property_filter"/>
+                    </div>
+                    <div class="row">
+                        <div class="d-none d-lg-block col-3 border-end">
+                            <div class="fw-bold fs-3 mb-3">Filters</div>
+                            <t t-call="estate.estate_property_filter"/>
+                        </div>
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-gap-4 col-12 col-lg-9">
+                            <t t-foreach="properties" t-as="property">
+                                <div class="col" t-call="estate.estate_property_card"/>
+                            </t>
+                            <div t-if="len(properties) == 0" class="fs-5">
+                                No Properties Found.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center my-2">
+                        <t t-call="website.pager">
+                            <t t-set="_classes">text-center</t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="estate.estate_property_filter">
+        <form method="get" action="/properties">
+            <div class="row gap-lg-2">
+                <div class="col col-lg-12">
+                    <label class="fw-semibold" for="listed-after-input">Listed After</label>
+                    <input name="listed_after" type="date" class="form-control" id="listed-after-input" t-att-value="property_filters['listed_after']"/>
+                </div>
+                <div class="col-auto col-lg-12 mt-auto">
+                    <button class="btn btn-primary">Apply</button>
+                    <a href="/properties" class="btn btn-secondary" t-if="property_filters['listed_after']">Clear Filter</a>
+                </div>
+            </div>
+        </form>
+    </template>
+
+    <template id="estate.estate_property_card">
+        <div class="card position-relative h-100">
+            <img class="card-img-top object-fit-cover" style="max-height: 13rem" t-attf-src="/web/image/estate.property/{{property.id}}/image"/>
+            <div class="card-body d-flex flex-column">
+                <h5 class="fw-bold card-title" t-out="property.name"/>
+                <p class="card-subtitle text-muted" t-out="property.sequence"/>
+                <p class="card-text" t-out="property.description"/>
+                <a t-attf-href="/properties/{{slug(property)}}" class="stretched-link mt-auto">Know More</a>
+            </div>
+        </div>
+    </template>
+
+    <template id="estate.single_property_view">
+        <t t-call="website.layout">
+            <t t-set="title" t-value="property.name"/>
+            <div class="oe_structure">
+                <div class="container">
+                    <div class="my-3 fs-5">
+                        <a href="/properties">Available Properties</a> / <span t-out="property.name" class="text-muted"/>
+                    </div>
+                    <div class="row g-4 bg-light my-3 rounded">
+                        <div class="col-md-5">
+                            <div class="card border-0 shadow-sm">
+                                <img t-attf-src="/web/image/estate.property/{{property.id}}/image" class="rounded w-full" alt="Property Image"/>
+                            </div>
+                        </div>
+                        <div class="col-md-7 pb-4">
+                            <h2 class="fw-bold text-primary" t-out="property.name"/>
+                            <p class="text-muted fs-5 mb-3" t-out="property.sequence"/>
+                            <div class="bg-white p-3 rounded shadow-sm">
+                                <h5 class="text-secondary fw-bold mb-2">Property Information</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="fw-semibold text-muted">Postcode</div>
+                                        <div class="fs-5" t-out="property.postcode"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="fw-semibold text-muted">Property Type</div>
+                                        <div class="fs-5" t-out="property.property_type_id.name"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded shadow-sm mt-3">
+                                <h5 class="text-secondary fw-bold mb-2">Sales And Description</h5>
+                                <div class="fw-semibold text-muted">Salesperson</div>
+                                <div class="fs-5" t-out="property.salesperson_id.name"/>
+                                <div class="fw-semibold text-muted mt-2">Description</div>
+                                <p class="fs-5 text-dark mb-0" t-out="property.description"/>
+                            </div>
+                            <div class="bg-white p-3 rounded shadow-sm mt-3">
+                                <h5 class="text-secondary fw-bold mb-2">Availability And Pricing</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="fw-semibold text-muted">Available From</div>
+                                        <div class="fs-5" t-out="property.date_availability"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="fw-semibold text-muted">Expected Price</div>
+                                        <div class="fs-5 fw-bold" t-out="property.expected_price"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded shadow-sm mt-3">
+                                <h5 class="text-secondary fw-bold mb-2">Property Dimensions</h5>
+                                <div class="fw-semibold text-muted">Total Area = Living Area + Garden Area</div>
+                                <div class="fs-5">
+                                    <t t-out="property.total_area"/> sqm =
+                                    <t t-out="property.living_area"/> sqm +
+                                    <t t-out="property.garden_area"/> sqm
+                                </div>
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-6">
+                                        <div class="fw-semibold text-muted">Bedrooms</div>
+                                        <div class="fs-5" t-out="property.bedrooms"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="fw-semibold text-muted">Facades</div>
+                                        <div class="fs-5" t-out="property.facades"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded shadow-sm mt-3" t-if="property.garden">
+                                <h5 class="text-secondary fw-bold mb-2">Garden Details</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="fw-semibold text-muted">Garden Orientation</div>
+                                        <div class="fs-5" t-out="property.garden_orientation"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="fw-semibold text-muted">Garden Area</div>
+                                        <div class="fs-5">
+                                            <t t-out="property.garden_area"/> sqm
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -109,13 +109,16 @@
                     />
                 </header>
                 <sheet>
-                    <field name="name" placeholder="Property name" class="fs-1 fw-bold d-block" nolabel="True" />
-                    <field name="sequence" class="fs-3 fw-bold d-block" nolabel="True" />
-                    <field name="tag_ids"
-                        placeholder="Property Tags"
-                        widget="many2many_tags"
-                        options="{'color_field': 'color'}"
-                    />
+                    <div class="row">
+                        <div class="col-8">
+                            <field name="name" placeholder="Property name" class="fs-1 fw-bold d-block" nolabel="True" />
+                            <field name="sequence" class="fs-3 fw-bold d-block" nolabel="True" />
+                            <field name="tag_ids" placeholder="Property Tags" widget="many2many_tags" options="{'color_field': 'color'}" />
+                        </div>
+                        <div class="col-4">
+                            <field name="image" widget="image" style="width: 7rem;"/>
+                        </div>
+                    </div>
                     <group string="Basic Details">
                         <group>
                             <field name="property_type_id" options="{'no_create': True}" />
@@ -191,6 +194,13 @@
         <field name="view_mode">list,form,kanban</field>
         <field name="search_view_id" ref="estate_property_view_search" />
         <field name="context">{'search_default_property_available': True}</field>
+    </record>
+
+    <!-- Website Action -->
+    <record id="estate_property_webiste_action" model="ir.actions.act_url">
+        <field name="name">Website Properties</field>
+        <field name="target">self</field>
+        <field name="url" eval="'/properties'"/>
     </record>
 
     <record id="res_users_view_form" model="ir.ui.view">

@@ -7,6 +7,7 @@
     <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_tutorials_realestate" />
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
     </record>
 
     <record id="estate_property_agent_rule" model="ir.rule">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
@@ -13,7 +13,7 @@
             <div t-if="statistics.isReady" class="d-flex flex-wrap gap-3 m-3">
                 <t t-foreach="items" t-as="item" t-key="item.id">
                     <DashboardItem t-if="item.isSelected" size="item.size || 1">
-                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}" />
                         <t t-component="item.Component" t-props="itemProp" />
                     </DashboardItem>
                 </t>
