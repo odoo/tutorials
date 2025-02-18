@@ -18,6 +18,11 @@
         'views/estate_menus.xml',
         'views/res_users_views.xml',
     ],
+    'demo': [
+        'demo/estate.property.type.csv',
+        'demo/estate_property_demo.xml',
+        'demo/property_with_offers.xml',
+    ],
     'application': True,
     'installable': True,
     'license': 'LGPL-3'
