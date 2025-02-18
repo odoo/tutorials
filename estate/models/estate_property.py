@@ -1,12 +1,19 @@
+from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
-from dateutil.relativedelta import relativedelta
 from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "this is the estate property model"
+    _sql_constraints = [
+        ('check_positive_amounts',
+         'CHECK (expected_price > 0 AND selling_price >= 0)',
+         'This amount must be positive')
+    ]
+    _order = 'id desc'
+
     name = fields.Char('Title', required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -19,21 +26,28 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer('Garden Area (sqm)')
-    garden_orientation = fields.Selection(selection=[
-        ('north', 'North'),
-        ('south', 'South'),
-        ('east', 'East'),
-        ('west', 'West')])
-    state = fields.Selection(string='Status', selection=[
-        ('new', 'New'),
-        ('offer', 'Offer'),
-        ('received', 'Received'),
-        ('accepted', 'Offer Accepted'),
-        ('sold', 'Sold'),
-        ('cancelled', 'Cancelled')
-    ], copy=False, required=True, default='new')
+    garden_orientation = fields.Selection(
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ]
+    )
+    state = fields.Selection(
+        string='Status',
+        selection=[
+            ('new', 'New'),
+            ('received', 'Offer Received'),
+            ('accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
+        copy=False,
+        required=True,
+        default='new'
+    )
     active = fields.Boolean(default=True)
-
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', copy=False, string='Buyer')
     salesman_id = fields.Many2one('res.users', default=lambda self: self.env.user, string='Salesman')
@@ -41,12 +55,6 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Integer('Total Area (sqm)', compute='_compute_total_area')
     best_price = fields.Float('Best Offer', digits=(20, 2), compute='_compute_best_price')
-
-    _sql_constraints = [
-        ('check_positive_amounts',
-         'CHECK (expected_price > 0 AND selling_price >= 0)',
-         'This amount must be positive')
-    ]
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
