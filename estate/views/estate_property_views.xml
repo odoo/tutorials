@@ -67,8 +67,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"
-                                readonly="state in ['sold', 'cancelled', 'offer_accepted']">
+                            <field name="offer_ids">
                                 <list editable="bottom" decoration-success="status == 'accepted'"
                                     decoration-danger="status == 'refused'">
                                     <field name="price" />

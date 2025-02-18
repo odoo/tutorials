@@ -72,7 +72,11 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             property_id = vals["property_id"]
             property_record = self.env["estate.property"].browse(property_id)
+
+            if property_record.state in ["offer_accepted", "sold", "cancelled", "invoiced"]:
+                raise UserError("Can't added offers to processed properties!")
             if property_record.expected_price > vals["price"] or vals["price"] < property_record.best_price:
                 raise UserError("Price is too low!")
             property_record.state = "offer_received"
+
         return super().create(vals_list)

@@ -122,7 +122,7 @@
 
     <template id="estate_property_invoiced" name="invoiced_estate.property"
         inherit_id="estate.offer_table">
-        <xpath expr="//table" position="inside">
+        <xpath expr="//table" position="before">
             <t t-if="property.state == 'invoiced'">
                 <strong>
                     !!!Invoice has already been created!!!

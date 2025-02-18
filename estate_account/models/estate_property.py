@@ -43,6 +43,4 @@ class EstateProperty(models.Model):
         }
 
         self.env["account.move"].sudo().create(move_vals)
-
-        super(EstateProperty, self).action_property_sold()
         self.state = "invoiced"

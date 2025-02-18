@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 from odoo.tools import float_compare, float_is_zero
 
@@ -60,7 +60,6 @@ class PropertyPlan(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Price")
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
-    priority = fields.Integer(default=1)
     company_id = fields.Many2one(
         "res.company",
         string="Company",
@@ -92,14 +91,16 @@ class PropertyPlan(models.Model):
 
     def action_property_cancelled(self):
         if self.state == "sold":
-            raise ValidationError("Cannot cancel a sold property!")
+            raise UserError("Cannot cancel a sold property!")
         else:
             self.state = "cancelled"
         return True
 
     def action_property_sold(self):
         if self.state == "cancelled":
-            raise ValidationError("Cannot sell a cancelled property!")
+            raise UserError("Cannot sell a cancelled property!")
+        elif self.offer_ids.status != "accepted":
+            raise UserError("No offers are accepted!")
         else:
             self.state = "sold"
         return True
@@ -125,7 +126,7 @@ class PropertyPlan(models.Model):
                     float_compare(price.expected_price * 0.9, price.selling_price, 2)
                     == 1
                 ):
-                    raise ValidationError(
+                    raise UserError(
                         "The selling price must be at least 90% of the expected price!You must reduce the expected price if you want to accept this offer."
                     )
 
