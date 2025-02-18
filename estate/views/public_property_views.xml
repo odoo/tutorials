@@ -84,9 +84,15 @@
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
-                    <h1>
-                        <field name="name" />
-                    </h1>
+                    <div style="display : flex">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                        <group>
+                            <field class='oe_avatar' nolabel='1' style='margin-left:600px'
+                                name='property_image' widget='image' options="{'size': [110, 110]}" />
+                        </group>
+                    </div>
                     <p>
                         <field name="tags_ids" widget="many2many_tags"
                             options="{'color_field': 'color'}" />
@@ -107,7 +113,7 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                            <field name="company_id"/>
+                                <field name="company_id" />
                                 <field name="description" height="50" />
                                 <field name="bedrooms" />
                                 <field name="living_area" string="Living Area (sqm)" />
@@ -134,7 +140,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <chatter open_attachments="True"/>
+                <chatter open_attachments="True" />
             </form>
         </field>
     </record>
@@ -235,7 +241,7 @@
                 <field name="property_type_id" />
                 <separator />
                 <filter name="Available"
-                    domain="['|',('state','=','new'),('state','=','offer_accepted')]" />    
+                    domain="['|',('state','=','new'),('state','=','offer_accepted')]" />
                 <filter string="Postcode" name="name" context="{'group_by':'postcode'}" />
                 <filter string="Property Id" name="property_type_id"
                     context="{'group_by':'property_type_id'}" />
@@ -244,11 +250,11 @@
     </record>
 
 
-<record id="mt_state_change" model="mail.message.subtype">
-    <field name="name">State Changed</field>
-    <field name="res_model">public.property</field>
-    <!-- <field name="default" eval="True"/> -->
-    <!-- <field name="description">!</field> -->
-</record>
+    <record id="mt_state_change" model="mail.message.subtype">
+        <field name="name">State Changed</field>
+        <field name="res_model">public.property</field>
+        <!-- <field name="default" eval="True"/> -->
+        <!-- <field name="description">!</field> -->
+    </record>
 
 </odoo>

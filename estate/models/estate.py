@@ -62,7 +62,7 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total")
     best_price = fields.Float(compute="_compute_best_price")
     company_id = fields.Many2one('res.company',required=True,string="Comapany",default = lambda self : self.env.user.company_id)
-    
+    property_image=fields.Image()
     _sql_constraints = [
         (
             "check_expected_price",
@@ -87,13 +87,11 @@ class EstateProperty(models.Model):
                 )
             record.state="offer_received"
 
-
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
         for record in self:
             record.total_area = self.living_area + self.garden_area
        
-
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
@@ -109,12 +107,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = ""
 
     def action_sold(self):
-        count = self.env['public.property.offer'].search_count([])
-        if count <= 0 : 
-            raise ValidationError("No records found in offers")
-        else : 
-            for record in self:
-                record.state = "sold"
+        for record in self:
+            accepted_offers=self.env['public.property.offer'].search([('property_id','=',record.id)])
+            if len(accepted_offers) == 0 : 
+                raise ValidationError("Accept at least one offer")
+            if len(self.offer_ids) == 0 : 
+                raise ValidationError("At least one valid offer needed")
+            record.state = "sold"
         if self.state == "cancelled":
             raise UserError("A cancelled property cannot be sold")
 

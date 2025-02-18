@@ -78,9 +78,10 @@ class PropertyOffer(models.Model):
             record.status = "refused"
 
     
-    # @api.model
-    # def create(self,vals):
-    #     min_price = min(self.env['public.property.offer'].search([('property_id', '=', vals['property_id'])]).mapped('price'), default=0)
-    #     if vals['price'] <= min_price:
-    #         raise ValidationError("The price must be higher than any existing offer.")
-    #     return super().create(vals)
+    @api.model_create_multi
+    def create(self,vals):
+        for val in vals : 
+            min_price = min(self.env['public.property.offer'].search([('property_id', '=', val['property_id'])]).mapped('price'), default=0)
+            if val['price'] <= min_price:
+                raise ValidationError("The price must be higher than any existing offer.")
+        return super().create(vals)
