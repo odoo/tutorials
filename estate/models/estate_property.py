@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 
@@ -22,7 +23,7 @@ class EstateProperty(models.Model):
         ('south', 'South'),
         ('east', 'East'),
         ('west', 'West')])
-    state = fields.Selection(selection=[
+    state = fields.Selection(string='Status', selection=[
         ('new', 'New'),
         ('offer', 'Offer'),
         ('received', 'Received'),
@@ -39,7 +40,6 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Integer('Total Area (sqm)', compute='_compute_total_area')
     best_price = fields.Float('Best Offer', digits=(20, 2), compute='_compute_best_price')
-    _sql_constraints = []
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
@@ -63,3 +63,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 10
             self.garden_orientation = 'north'
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError('Cancelled properties cannot be sold')
+            record.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError('Sold properties cannot be cancelled')
+            record.state = 'cancelled';
+        return True

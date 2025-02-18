@@ -22,9 +22,11 @@
             <list string="Offer">
                 <field name="price" />
                 <field name="partner_id" />
-                <field name="status" />
                 <field name="validity" />
                 <field name="date_deadline" />
+                <button string="Accept" name="action_accept" type="object" icon="fa-check" />
+                <button string="Refuse" name="action_refuse" type="object" icon="fa-times" />
+                <field name="status" />
             </list>
         </field>
     </record>
@@ -50,6 +52,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_sold" string="SOLD" type="object" />
+                    <button name="action_cancel" string="CANCEL" type="object" />
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -61,6 +67,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state" />
                             <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
@@ -93,7 +100,6 @@
                                 <field name="salesman_id" />
                                 <field name="buyer_id" />
                                 <field name="active" />
-                                <field name="state" />
                             </group>
                         </page>
                     </notebook>
