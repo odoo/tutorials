@@ -18,6 +18,11 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline",inverse="_inverse_date_deadline", store=True)
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
+    _sql_constraints = [
+        ('check_offer_price', 'CHECK(price > 0)',
+         'Offer Price must be strictly positive.')
+    ]
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -35,18 +40,16 @@ class EstatePropertyOffer(models.Model):
                 record.validity=7
     
     def action_confirm(self):
-        for record in self:
-            record.property_id.offer_ids.status = 'refused'
-            record.property_id.state="offer_accepted"
-            record.status = "accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
+            self.property_id.offer_ids.status = 'refused'
+            self.property_id.state="offer_accepted"
+            self.status = "accepted"
+            self.property_id.buyer_id = record.partner_id
+            self.property_id.selling_price = record.price
             return True
 
     def action_cancel(self):
-        for record in self:
-            record.status = "refused"
-        return True
+            self.status = "refused"
+            return True
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -59,8 +62,3 @@ class EstatePropertyOffer(models.Model):
                 raise ValidationError(f"Offer must be higher than {max_offer}")
             property.state = "offer_received"
         return super().create(vals_list)
-
-    _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0)',
-         'Offer Price must be strictly positive.')
-    ]

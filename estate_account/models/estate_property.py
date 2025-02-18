@@ -4,6 +4,8 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold(self):
+        print(" reached ".center(100, '='))
+        self.check_access('write')
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,  
             'move_type': 'out_invoice',
@@ -26,4 +28,3 @@ class EstateProperty(models.Model):
         ]
         })
         return super().action_set_sold()
-        

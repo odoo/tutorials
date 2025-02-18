@@ -142,13 +142,11 @@
                                 </b>
                             </div>
                             <div>Expected Price: <field name="expected_price"></field></div>
-                            <div>
-                                <field name="tag_ids" options="{'color_field': 'color'}"></field>
-                            </div>
                             <div t-if="record.state.raw_value  == 'offer_received'">Best Offer: <field
                                     name="best_price"></field></div>
                             <div t-if="record.state.raw_value  == 'offer_accepted'">Selling Price: <field
                                     name="selling_price"></field></div>
+                            <div><field name="tag_ids" options="{'color_field': 'color'}"></field></div>
                         </div>
                     </t>
                 </templates>

@@ -41,8 +41,16 @@ class Property_Plan(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
-    ],required=True,copy=False,default='new')
+    ],copy=False,default='new')
+    company_id = fields.Integer(default=lambda self:self.env.user.company_id,required=True)
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'Expected price must be strictly positive.'),
+         ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'Selling price must be positive.')
+    ]
+    
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -71,31 +79,21 @@ class Property_Plan(models.Model):
             self.garden_orientation = None
     
     def action_set_cancel(self):
-        for record in self:
-            if(record.state == 'sold'):
+            if(self.state == 'sold'):
                 raise exceptions.UserError("Sold properties can't be canceled")
             else:
-                record.state = 'cancelled'
-        return True
+                self.state = 'cancelled'
+            return True
     
     def action_set_sold(self):
-        for record in self:
-            if(record.state == 'cancelled'):
+            if(self.state == 'cancelled'):
                 raise exceptions.UserError("Canceled properties can't be sold")
             else:
-                record.state = 'sold'
-        return True
+                self.state = 'sold'
+            return True
     
     @api.ondelete(at_uninstall=False)
     def __unlink_except_new_cancelled(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError("You can only delete properties in 'New' or 'Cancelled' state.")
-    
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)',
-         'Expected price must be strictly positive.'),
-         ('check_selling_price', 'CHECK(selling_price >= 0)',
-         'Selling price must be positive.')
-    ]
-    

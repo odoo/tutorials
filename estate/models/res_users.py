@@ -8,4 +8,3 @@ class ResUsers(models.Model):
         'salesperson_id',
         domain=[('state', '=', 'new')]
     )
-    

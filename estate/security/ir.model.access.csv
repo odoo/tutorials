@@ -1,5 +1,9 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-estate.access_estate_property,access_estate_property,estate.model_estate_property,base.group_user,1,1,1,1
-estate.access_estate_property_type,access_estate_property_type,estate.model_estate_property_type,base.group_user,1,1,1,1
-estate.access_estate_property_tag,access_estate_property_tag,estate.model_estate_property_tag,base.group_user,1,1,1,1
-estate.access_estate_property_offer,access_estate_property_offer,estate.model_estate_property_offer,base.group_user,1,1,1,1
+real_estate_manager_access_property,Real Estate Manager Access to Property,estate.model_estate_property,estate_group_manager,1,1,1,0
+real_estate_manager_access_type,Real Estate Manager Access to Type,estate.model_estate_property_type,estate_group_manager,1,1,1,1
+real_estate_manager_access_tag,Real Estate Manager Access to Tag,estate.model_estate_property_tag,estate_group_manager,1,1,1,1
+real_estate_manager_access_offer,Real Estate Manager Access to Offer,estate.model_estate_property_offer,estate_group_manager,1,1,1,1
+real_estate_agent_access_type,Real Estate Agent Access to Type,estate.model_estate_property_type,estate_group_user,1,0,0,0
+real_estate_agent_access_tag,Real Estate Agent Access to Tag,estate.model_estate_property_tag,estate_group_user,1,0,0,0
+real_estate_agent_access_property,Real Estate Agent Access to Property,estate.model_estate_property,estate_group_user,1,1,1,0
+real_estate_agent_access_offer,Real Estate Agent Access to Offer,estate.model_estate_property_offer,estate_group_user,1,1,1,1

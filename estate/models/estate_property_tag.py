@@ -12,4 +12,3 @@ class EstatePropertyTag(models.Model):
         ('check_unique_property_tag', 'UNIQUE(name)', 
          'A property tag must be unique.')
     ]
-    
