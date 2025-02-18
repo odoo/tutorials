@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Top menu item -->
     <menuitem
         id="estate_menu_root"
         name="Estate" />
 
-    <!-- Advertisements menu -->
     <menuitem
         id="estate_menu_advertisements"
         name="Advertisements"
@@ -15,4 +13,18 @@
         id="advertisement_menu_properties_action"
         action="estate_properties_action"
         parent="estate_menu_advertisements" />
+
+    <menuitem
+        id="estate_menu_settings"
+        name="Settings"
+        parent="estate_menu_root" />
+
+    <menuitem
+        id="settings_menu_property_types_action"
+        action="estate_property_types_action"
+        parent="estate_menu_settings" />
+    <menuitem
+        id="settings_menu_property_tag_action"
+        action="estate_property_tag_action"
+        parent="estate_menu_settings" />
 </odoo>
