@@ -1,6 +1,7 @@
 from datetime import timedelta
 
-from odoo import api, exceptions,fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -39,14 +40,14 @@ class EstatePropertyOffer(models.Model):
     def action_accept_offer(self):
         for record in self:
             if record.property_id.status == 'sold':
-                raise exceptions.UserError("This property is already sold.")
+                raise UserError(_("This property is already sold."))
 
             if record.property_id.status == 'cancelled':
-                raise exceptions.UserError("This property is cancelled.")
+                raise UserError(_("This property is cancelled."))
 
             existing_accepted_offer = record.property_id.offer_ids.filtered(lambda o: o.status == 'accepted')
             if existing_accepted_offer:
-                raise exceptions.UserError("Another offer has already been accepted for this property.")
+                raise UserError(_("Another offer has already been accepted for this property."))
 
             record.status = 'accepted'
             record.property_id.status = 'offer_accepted'
@@ -57,10 +58,10 @@ class EstatePropertyOffer(models.Model):
     def action_refuse_offer(self):
         for record in self:
             if record.property_id.status == 'sold':
-                raise exceptions.UserError("This property is already sold.")
+                raise UserError(_("This property is already sold."))
 
             if record.property_id.status == 'cancelled':
-                raise exceptions.UserError("This property is cancelled.")
+                raise UserError(_("This property is cancelled."))
 
             record.status = 'refused'
         return True
@@ -70,6 +71,6 @@ class EstatePropertyOffer(models.Model):
         for record in vals_list:
             property_id = self.env["estate.property"].browse(record["property_id"])
             if record['price'] < property_id.best_price:
-                raise exceptions.UserError(f"The offer must be higher than {property_id.best_price:.2f}.")
+                raise UserError(_(f"The offer must be higher than {property_id.best_price:.2f}."))
             property_id.status = 'offer_received'
         return super().create(vals_list)

@@ -27,4 +27,4 @@ class EstateProperty(models.Model):
             })
             return invoice
         except:
-            raise AccessError("You do not have the necessary permissions to sell this property.")
+            raise AccessError(_("You do not have the necessary permissions to sell this property."))

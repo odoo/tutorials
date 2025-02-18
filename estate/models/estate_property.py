@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import api, exceptions,fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -86,11 +86,11 @@ class EstateProperty(models.Model):
     def action_property_sold(self):
         for record in self:
             if record.status == "cancelled":
-                raise exceptions.UserError("A cancelled property cannot be sold!")
+                raise UserError(_("A cancelled property cannot be sold!"))
 
             accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
             if not accepted_offer:
-                raise exceptions.UserError("You need to accept an offer first!")
+                raise UserError(_("You need to accept an offer first!"))
 
             record.status = 'sold'
         return True
@@ -98,7 +98,7 @@ class EstateProperty(models.Model):
     def action_property_cancel(self):
         for record in self:
             if record.status == 'sold':
-                raise exceptions.UserError("A sold property cannot be cancelled!")
+                raise UserError(_("A sold property cannot be cancelled!"))
             record.status = 'cancelled'
         return True
 
@@ -109,10 +109,18 @@ class EstateProperty(models.Model):
                 continue
             min_acceptable_price = record.expected_price * 0.9
             if float_compare(record.selling_price, min_acceptable_price, precision_digits=2) == -1:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
+                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price!"))
 
     @api.ondelete(at_uninstall=False)
     def _check_state_on_delete(self):
         for record in self:
             if record.status not in ['sold', 'cancelled']:
-                raise exceptions.UserError("Only properties with 'New' or 'Cancelled' status can be deleted.")
+                raise UserError(_("Only properties with 'New' or 'Cancelled' status can be deleted."))
+
+    @api.model
+    def fields_get(self, allfields=None, attributes=None):
+        res = super().fields_get(allfields, attributes)
+        if not self.env.user.has_group('estate.estate_group_manager'):
+            if 'salesperson_id' in res:
+                res['salesperson_id']['readonly'] = True
+        return res
