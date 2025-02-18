@@ -60,7 +60,7 @@ class EstatePropertyOffer(models.Model):
 
             if record['price'] < property.best_price:
                 raise UserError(
-                    _("The Offer must higher then %s", property.best_price))
+                    _("The Offer must higher then %s for %s Property", property.best_price,property.name))
             elif property.state == "sold":
                 raise UserError(_("Property Already Sold"))
 

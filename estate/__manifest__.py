@@ -7,7 +7,7 @@
     "author": "Odoo PS",
     "license": "LGPL-3",
     "website": "https://www.odoo.com/",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail","website"],
     "application": True,
     "category": "Real Estate/Brokerage",
     "description": """
@@ -18,6 +18,8 @@
         "security/security.xml",
         "security/ir.model.access.csv",
         "views/res_users_views.xml",
+        "report/estate_property_templates.xml",
+        "report/estate_property_reports.xml",
         "views/estate_property_offer_views.xml",
         "wizard/estate_property_offer_wizard_views.xml",
         "views/estate_property_views.xml",
@@ -25,9 +27,9 @@
         "views/estate_property_tag_views.xml",
         "views/estate_menus.xml",
         "report/estate_property_offer_subtemplate.xml",
-        "report/estate_property_reports.xml",
-        "report/estate_property_templates.xml",
         "report/estate_property_invoice_inherit_template.xml",
+        "views/estate_website_property_views.xml",
+        "data/website_menu_data.xml"
     ],
     "demo": [
         "demo/demo_property_data.xml",
