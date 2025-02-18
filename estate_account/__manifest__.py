@@ -14,5 +14,8 @@
     'application': True,
     'installable': True,
     'depends': ['estate', 'account'],
+    'data': [
+        'report/estate_account_reports.xml',
+    ],
     'license': 'LGPL-3'
 }

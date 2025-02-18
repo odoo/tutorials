@@ -26,6 +26,7 @@
                 <header>
                     <button name="action_sold" type="object" string="Sold" class="oe_highlight" invisible="state != 'offer_accepted'"/>
                     <button name="action_cancel" type="object" string="Cancel" class="oe_normal" invisible="state == 'sold' or state == 'canceled'"/>
+                    <button name="%(report_estate_property)d" type="action" string="Print Property Offers" class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visibile="new,offer_received,offer_accepted,sold,canceled" />
                 </header>
                 <sheet>

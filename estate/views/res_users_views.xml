@@ -6,6 +6,9 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
+            <div class="oe_button_box" name="button_box">
+                <button name="%(report_estate_property_salesman)d" string="Print Offers" type="action"/>
+            </div>
             <xpath expr="//notebook" position="inside">
                 <page string="Real Estate Properties">
                     <field name="property_ids" string="Properties" nolabel="1" />
