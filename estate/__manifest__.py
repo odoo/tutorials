@@ -3,7 +3,7 @@
     'version': '1.0',
     'description': 'anything',
     'summary': 'anything again',
-    'data': [],
+    'data': ['security/ir.model.access.csv'],
     'depends': [
         'base',
     ],
