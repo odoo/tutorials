@@ -72,32 +72,23 @@ class EstatePropertyOffer(models.Model):
             if record.status == "accepted":
                 raise UserError("This offer already accepted")
 
-            other_offers = self.search(
-                [
-                    ("property_id", "=", record.property_id.id),
-                    ("id", "!=", record.id),
-                ],
-            )
+            other_offers = self.search([("property_id", "=", record.property_id.id), ("id", "!=", record.id)])
             other_offers.write({"status": "refused"})
             record.status = "accepted"
-            record.property_id.write(
-                {
-                    "selling_price": record.price,
-                    "buyer_id": record.partner_id,
-                    "status": "offer_accepted",
-                }
-            )
+            record.property_id.write({
+                  "selling_price": record.price,
+                  "buyer_id": record.partner_id,
+                  "status": "offer_accepted",
+            })
 
     def action_refuse(self):
         for record in self:
             if record.status == "refused":
                 raise UserError("This offer already refused")
             if record.status == "accepted":
-                record.property_id.write(
-                    {
-                        "selling_price": 0,
-                        "buyer_id": False,
-                        "status": "offer_received",
-                    }
-                )
+                record.property_id.write({
+                      "selling_price": 0,
+                      "buyer_id": False,
+                      "status": "offer_received",
+                })
             record.status = "refused"

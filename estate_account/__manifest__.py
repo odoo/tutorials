@@ -10,6 +10,5 @@
     "license": "LGPL-3",
     "depends": ["base", "estate", "account"],
     "data": [],
-    # "application": True,
     "auto_install": False,
 }
