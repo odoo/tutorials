@@ -1,4 +1,5 @@
-from odoo import api, exceptions, fields, models
+from odoo import api,fields, models
+from odoo.exceptions import UserError, ValidationError
 from datetime import timedelta
 
 
@@ -7,21 +8,26 @@ class EstatePropertyOffers(models.Model):
     _description = 'Real estate property offers'
     _order = 'price desc'
     _sql_constraints = [
-        ('check_price', 'CHECK(price > 0)', 'The offered price must be greater then 0.'),
+        ('check_price', 'CHECK(price > 0)', "The offered price must be greater then 0."),
     ]
 
     price = fields.Float(string="Price")
-    partner_id = fields.Many2one("res.partner", required=True)
+    partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
+    property_type_id = fields.Many2one(related='property_id.property_type_id')
     validity_days = fields.Integer(string="Valid till")
-    deadline = fields.Date(compute='_compute_deadline', store=True, inverse="_inverse_deadline")
-    offer_state = fields.Selection(
+    deadline = fields.Date(
+        compute='_compute_deadline',
+        inverse='_inverse_deadline',
+        store=True,
+    )
+    state = fields.Selection(
         string="Offer State",
         selection=[
             ('accepted', "Accepted"),
             ('refused', "Refused")
         ], 
-        copy=False
+        copy=False,
     )
 
     # Computes deadline using validity days
@@ -41,21 +47,32 @@ class EstatePropertyOffers(models.Model):
     # Sets offer state to accepted when called
     def action_offer_confirm(self):
         for record in self:
-            if record.property_id.offers_id.filtered(lambda offer: offer.offer_state == 'accepted'):
-                raise exceptions.UserError("You can't accept two offers!")
-            record.offer_state = 'accepted'
-            record.property_id.state = 'offer accepted'
-            record.property_id.selling_price = record.price
-    
+            if record.property_id.offer_ids.filtered(lambda offer: offer.state == 'accepted'):
+                raise UserError("You can't accept two offers!")
+            
+            record.write({'state': 'accepted'})  
+            record.property_id.write({  
+                'state': 'accepted',  
+                'selling_price': record.price  
+            })  
+
     # Sets offer state to refused when called
     def action_offer_cancel(self):
         for record in self:
-            record.offer_state = 'refused'
+            record.write({'state' : 'refused'})
 
-    @api.model
+    # Chnage the state of property to offer recevied when offer is created 
+    @api._model_create_multi
     def create(self, vals_list):
-        record = super().create(vals_list)
-        for offer in self:
-            if offer.property_id:
-                offer.property_id.state = 'offer received'        
-        return record
+        for val in vals_list:
+            property_id = val.get('property_id')
+            offer_price = val.get('price')
+            if property_id and offer_price:
+                property = self.env['estate.property'].browse(property_id)
+                offered_price = property.offer_ids.mapped('price')
+                
+                if offered_price and offer_price < max(offered_price):
+                    raise ValidationError("You cannot create an offer lower than an existing one.")
+                
+                property.write({'state' :'received'})
+        return super().create(vals_list)
