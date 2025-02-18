@@ -12,8 +12,8 @@
                 <field name="partner_id" string="Partner"/>
                 <field name="date_deadline" string='Deadline'/>
                 <field name="validity" string='Validity (days)'/>
-                <button name="action_accept" type="object" icon="fa-check" invisible="status in ('accepted', 'refused')"/>
-                <button name="action_reject" type="object" icon="fa-times" invisible="status in ('accepted', 'refused')"/>
+                <button name="action_accept" type="object" icon="fa-check" invisible="status in ['accepted', 'refused'] or property_status in ['offer_accepted', 'sold', 'cancelled']"/>
+                <button name="action_reject" type="object" icon="fa-times" invisible="status in ['accepted', 'refused'] or property_status in ['offer_accepted', 'sold', 'cancelled']"/>
                 <field name="status" string='Status'/>
             </list>
         </field>

@@ -88,7 +88,7 @@
         <field name="arch" type="xml">
             <form string="Estate Detailed Info">
                 <header>
-                    <button name="action_sold" class="oe_highlight" type="object" string="Sold" invisible="state in ['sold','cancelled']"/>
+                    <button name="action_sold" class="oe_highlight" type="object" string="Sold" invisible="state in ['new','sold','cancelled']"/>
                     <button name="action_cancelled" type="object" string="Cancel" invisible="state in ['sold','cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
@@ -128,7 +128,7 @@
                                 </group>
                             </page>
                             <page string="Offers">
-                                <field name="offer_ids" string="Offers" class="mb16" readonly="state in ('offer_accepted','cancelled','sold')"/>
+                                <field name="offer_ids" string="Offers" readonly= "state in ['offer_accepted', 'sold', 'cancelled']"/>
                             </page>
                             <page string="Other Info">
                                 <group>
@@ -150,4 +150,9 @@
         <field name="context">{'search_default_available_property': True}</field>
     </record>
 
+    <record id="open_url_action" model="ir.actions.act_url">
+        <field name="name">Open External Website</field>
+        <field name="url">http://localhost:8069/properties</field>
+        <field name="target">new</field>
+    </record>
 </odoo>

@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 
+
 class AddOfferWizard(models.TransientModel):
     _name = 'add.offer.wizard'
     _description = 'Add Offer Wizard'
@@ -9,7 +10,6 @@ class AddOfferWizard(models.TransientModel):
     buyer_id = fields.Many2one('res.partner', string="Buyer", required=True)
     property_ids = fields.Many2many('estate.property', string="Properties")
 
-    # @api.model_create_multi
     def action_make_offer(self):
         for property in self.property_ids:
             self.env['estate.property.offer'].create({

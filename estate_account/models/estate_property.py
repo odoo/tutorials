@@ -10,6 +10,7 @@ class EstateProperty(models.Model):
             invoice = record.env['account.move'].sudo().create({
                 'partner_id': record.buyer_id.id,
                 'move_type':'out_invoice',
+                'name' : f'INV/2025/0000{self.id}',
                 'invoice_line_ids':[
                     Command.create({
                         "name":"Charges",
