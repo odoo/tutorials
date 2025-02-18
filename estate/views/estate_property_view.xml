@@ -20,6 +20,10 @@
                 decoration-success="state in ('offer_received','offer_accepted')"
                 decoration-muted="state == 'sold'"
                 decoration-bf="state == 'offer_accepted'">
+                <header>
+                    <button name="%(action_estate_property_offer_wizard)d" string="Add Offer"
+                        type="action" class="oe_highlight" />
+                </header>
                 <field name="name" />
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="property_type_id" />
@@ -49,9 +53,12 @@
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
-                    <h1>
-                        <field name="name" />
-                    </h1>
+                    <hbox>
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                        <field name="image_1920" widget="image" class="oe_avatar" />
+                    </hbox>
                     <group>
                         <field name="tag_ids" widget="many2many_tags"
                             options="{'color_field': 'color','no_create': True}" />
@@ -142,7 +149,7 @@
         <field name="name">estate.property.kanban.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" records_draggable="false">
+            <kanban default_group_by="state" records_draggable="false">
                 <field name="state" />
                 <templates>
                     <t t-name="kanban-box">
@@ -159,8 +166,7 @@
                             <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
                                     name="selling_price" />
                             </div>
-                            <div> 
-                                Tags: <field name="tag_ids" options="{'color_field': 'color'}"/>
+                            <div> Tags: <field name="tag_ids" options="{'color_field': 'color'}" />
                             </div>
                         </div>
                     </t>

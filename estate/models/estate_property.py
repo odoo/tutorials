@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property"
     _order = "id desc"
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     
     active = fields.Boolean(string="active", default=True)
     state = fields.Selection(
@@ -24,8 +24,11 @@ class EstateProperty(models.Model):
         compute="_compute_state",
         required=True,
         copy=False,
+        group_expand=True,
+        tracking=True
     )
     name = fields.Char(string="Property", tracking=True)
+    image_1920 = fields.Image("Image", max_width=1920, max_height=1080)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     user_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
@@ -58,7 +61,6 @@ class EstateProperty(models.Model):
         string="Total Area (sqm)", compute="_compute_total_area"
     )
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
-    
     company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [
@@ -141,4 +143,13 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "You can only delete properties in the 'New' or 'Cancelled' state."
                 )
+
+    def action_add_offer(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Add Offer',
+            'res_model': 'estate.property.offer.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+        }
 

@@ -1,0 +1,66 @@
+<odoo>
+    <template id="property_list_template" name="Property Listings">
+        <t t-call="website.layout">
+            <div class="container">
+                <br></br>
+                <h2>Available Properties</h2>
+                <br></br>
+                <form method="POST" action="/properties">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label for="listed_after">Listed After:</label>
+                            <input type="date" id="listed_after" name="listed_after"
+                                class="form-control" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary mt-4">Listed After</button>
+                        </div>
+                    </div>
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                </form>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <t t-if="property.image_1920">
+                                    <img
+                                        t-att-src="'/web/image/estate.property/%s/image_1920' % property.id"
+                                        class="card-img-top img-fluid" alt="Property Image" />
+                                </t>
+                                <div class="card-body text-center">
+                                    <h5 t-esc="property.name"></h5>
+                                    <p><t t-esc="property.expected_price" /> INR</p>
+                                    <a t-att-href="'/property/%s' % property.id"
+                                        class="btn btn-primary d-flex justify-content-center mx-auto">
+                                        View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col d-flex justify-content-center">
+                        <nav>
+                            <ul class="pagination">
+                                <t t-if="page &gt; 1">
+                                    <li class="page-item">
+                                        <a t-att-href="'/properties/page/%s' % (page - 1)"
+                                            class="page-link">Previous</a>
+                                    </li>
+                                </t>
+                                <t t-if="page &lt; total_pages">
+                                    <li class="page-item">
+                                        <a t-att-href="'/properties/page/%s' % (page + 1)"
+                                            class="page-link">Next</a>
+                                    </li>
+                                </t>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+</odoo>

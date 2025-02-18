@@ -14,7 +14,7 @@
         <field name="name">estate.property.type.list</field>
         <field name='model'>estate.property.type</field>
         <field name="arch" type='xml'>
-            <list string="channel">
+            <list string="channel" editable="bottom">
                 <field name="sequence" widget="handle" />
                 <field name="name" />
             </list>

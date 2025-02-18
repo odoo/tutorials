@@ -24,6 +24,7 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True
     )
+    
     _sql_constraints = [
         (
             "check_offer_price",
@@ -62,7 +63,6 @@ class EstatePropertyOffer(models.Model):
             property_id = self.env["estate.property"].browse(vals.get("property_id"))
             if property_id.state == "sold":
                 raise UserError("Cannot create an offer for a sold property.")
-
             if property_id.offer_ids and any(
                 offer.price >= vals["price"] for offer in property_id.offer_ids
             ):
