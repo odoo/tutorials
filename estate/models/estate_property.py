@@ -1,9 +1,13 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models, tools
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Real estate property"
+
+    rounding = 0.01
 
     name = fields.Char("Property Name", required=True)
     description = fields.Text()
@@ -59,6 +63,19 @@ class Property(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_offer = fields.Float("Best Offer", compute="_compute_best_offer")
 
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK (expected_price > 0)",
+            "The expected price should be positive.",
+        ),
+        (
+            "check_selling_price",
+            "CHECK (selling_price > 0 OR NOT (state = 'sold'))",
+            "The selling price should be positive if property is sold.",
+        ),
+    ]
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -103,7 +120,7 @@ class Property(models.Model):
             else:
                 flag = True
         if flag:
-            raise exceptions.UserError("Cancelled properties can't be sold.")
+            raise UserError("Cancelled properties can't be sold.")
         return True
 
     def action_cancel(self):
@@ -114,5 +131,22 @@ class Property(models.Model):
             else:
                 flag = True
         if flag:
-            raise exceptions.UserError("Sold properties can't be cancelled.")
+            raise UserError("Sold properties can't be cancelled.")
         return True
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=self.rounding):
+                continue
+            if (
+                float_compare(
+                    record.selling_price,
+                    0.9 * record.expected_price,
+                    precision_rounding=self.rounding,
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    "The selling price cannot be less than 90% than the expected price."
+                )

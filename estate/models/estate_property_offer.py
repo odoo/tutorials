@@ -1,4 +1,5 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class PropertyOffer(models.Model):
@@ -25,6 +26,14 @@ class PropertyOffer(models.Model):
         "Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
     )
 
+    _sql_constraints = [
+        (
+            "check_offer_price",
+            "CHECK (price > 0)",
+            "The offer price should be positive.",
+        )
+    ]
+
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
@@ -40,13 +49,16 @@ class PropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             record.state = "refused"
+            if record.property_id.state == "offer_accepted":
+                record.property_id.state = "offer_received"
+                record.property_id.selling_price = 0
+                record.property_id.buyer_id = False
         return True
 
     def action_accept(self):
         self.ensure_one()
         if self.property_id.state in ["sold", "offer_accepted"]:
-            raise exceptions.UserError("This property has another accepted offer")
-            return False
+            raise UserError("This property has another accepted offer")
         self.state = "accepted"
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
