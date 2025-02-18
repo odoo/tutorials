@@ -11,10 +11,8 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)", 
-"Expected price must be positive."),
-        ("check_selling_price", "CHECK(selling_price >= 0)", 
-"Selling price cannot be negative.")
+        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be positive."),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "Selling price cannot be negative.")
     ]
 
     name = fields.Char(
@@ -112,7 +110,6 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         string = "Best Offer",
         compute="_compute_best_price",
-        default=0.0
     )
      
     # Compute the total area 
@@ -154,12 +151,11 @@ class EstateProperty(models.Model):
         for record in self:
             if (
                 record.selling_price > 0 
-                and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) <
-0
+                and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0
             ):
                 raise ValidationError("Selling Price must be 90% of the expected price")
 
     @api.ondelete(at_uninstall=False)
-    def _prevent_deletion(self):
+    def _prevent_unlink(self):
         if any(property.state not in ('new', 'cancelled') for property in self):
             raise UserError("You cannot delete the property")

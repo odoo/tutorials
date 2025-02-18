@@ -11,7 +11,7 @@
         <field name='arch' type='xml'>
             <list string="Property Tags" editable="bottom">
                 <field name="name"/>
-                </list>
+            </list>
         </field>
     </record>
     <!-- Form View -->

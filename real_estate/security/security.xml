@@ -12,5 +12,19 @@
             <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
             <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
         </record>
+
+          <!-- Restricting Access for Agents -->
+        <record id="rule_agent_property_access" model="ir.rule">
+            <field name="name">Agent Access to Properties</field>
+            <field name="model_id" ref="real_estate.model_estate_property"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
+            <field name="domain_force">[
+                '|', 
+                ('salesperson_id', '=', user.id),
+                ('salesperson_id', '=', False)   
+            ]</field>
+        </record>
     </data>
 </odoo>

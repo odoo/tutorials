@@ -13,13 +13,11 @@
         <field name="garden">True</field>
         <field name="garden_area">500</field>
         <field name="garden_orientation">south</field>
-        <field name="state">new</field>
     </record>
     <record id="property_2" model="estate.property">
         <field name="name">House 2</field>
         <field name="expected_price">333</field>
         <field name="bedrooms">44</field>
         <field name="garden_orientation">north</field>
-        <field name="state">sold</field>
     </record>
 </odoo>

@@ -62,7 +62,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
-        """Compute deadline date based on create_date and validity period."""
+        # Compute deadline date based on create_date and validity period.
         for offer in self:
             offer.date_deadline = (
                 offer.create_date + timedelta(days=offer.validity)
@@ -70,7 +70,7 @@ class EstatePropertyOffer(models.Model):
             )
 
     def _inverse_date_deadline(self):
-        """Inverse function to calculate validity from date_deadline."""
+        # Inverse function to calculate validity from date_deadline.
         for offer in self:
             offer.validity = (
                 (offer.date_deadline - offer.create_date).days
@@ -103,14 +103,9 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self,vals):
         for val in vals:
-            property_id = val.get('property_id')
-            offer_amount = val.get('price')
-
-            if property_id and offer_amount:
+            if (property_id := val.get('property_id')) and (offer_amount := val.get('price')):
                 property = self.env['estate.property'].browse(property_id)
-                existing_offers = property.offer_ids.mapped('price')
-
-                if existing_offers and offer_amount< max(existing_offers):
+                if offer_amount < max(property.offer_ids.mapped('price')):
                     raise ValidationError("Cannot create offer less than current offer")
                 property.write({'state': 'offer_received'})
         return super().create(vals)
