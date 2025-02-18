@@ -65,6 +65,9 @@
                                     <field name="garden_orientation"/>
                                 </group>
                             </page>
+                            <page string="Offers">
+                                <field name="property_offer_ids"/>
+                            </page>
                         </notebook>
                     </group>
                 </sheet>

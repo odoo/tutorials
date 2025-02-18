@@ -11,6 +11,7 @@ class Property(models.Model):
     
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     property_tag_ids = fields.Many2many('estate.property.tag', string='Property Tags')
+    property_offer_ids = fields.One2many('estate.property.offer', 'property_id')
     
     name = fields.Char('Title', required=True, translate=True, default="Best House In Town")
     active = fields.Boolean('Active', default=True)
