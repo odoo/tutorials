@@ -104,10 +104,12 @@ class EstateProperty(models.Model):
     
     def action_mark_property_sold(self):
         """Marks the property as sold unless it is cancelled."""
+        if self.state not in ('offer_accepted'):
+            raise ValidationError("Offer should be accepted before selling the property")
         for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled properties cannot be sold")
-            record.state = "sold"
+            if(record.state == 'cancelled'):
+                raise UserError(("Cancelled property cannot be sold."))
+            record.state='sold'
         return True
 
     def action_mark_property_cancelled(self):

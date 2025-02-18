@@ -44,7 +44,8 @@ class EstatePropertyOffer(models.Model):
     ##############################################################################
 
     def action_accept_offer(self):
-    
+        if self.property_id.state == 'cancelled':
+            raise UserError("This property is already cancelled")
         self.status = "accepted"
         self.property_id.state = "offer_accepted"
         self.property_id.selling_price = self.price
@@ -64,6 +65,9 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         property_ids = {vals['property_id'] for vals in vals_list}
+        properties = self.env['estate.property'].browse(property_ids)
+        if properties.state == 'sold':
+            raise UserError("This property has already been sold and cannot receive new offers.")
         self.env['estate.property'].browse(property_ids).write({'state': 'offer_received'})
 
         offers = self.search([('property_id', 'in', list(property_ids))])
