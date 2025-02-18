@@ -1,8 +1,12 @@
 # -- coding: utf-8 --
-# Part of Odoo. See LICENSE file for full copyright and licensing details. 
-from odoo import api, models, fields, _
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, models, fields, _
 from odoo.exceptions import UserError, ValidationError
+
+
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
@@ -80,7 +84,10 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(_("Cancelled properties cannot be sold."))
-            record.state = 'sold' 
+            elif 'accepted' not in [offer.state for offer in record.property_offer_ids]:
+                raise UserError(("You cannot sell the property without an accepted offer."))
+            else: 
+                record.state = 'sold' 
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):

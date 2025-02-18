@@ -19,7 +19,7 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_menus.xml',
-        'views/inherited_user.xml',
+        'views/res_user.xml',
         'data/master_data.xml',
         'demo/demo_data.xml'
         ],
