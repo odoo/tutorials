@@ -1,0 +1,99 @@
+<odoo>
+    <template id="estate_properties_website" name="Estate Properties">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="text-center mb-4">
+                    <h1 class="fw-bold text-primary">Real Estate Properties</h1>
+                    <p class="text-muted">Find your dream property with ease</p>
+                </div>
+
+                <form method="GET" action="/estate/properties" class="row justify-content-center mb-4">
+                    <div class="col-md-4">
+                        <input type="date" name="listed_after" id="listed_after"
+                            class="form-control" t-att-value="listed_after or ''" />
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <button type="submit" class="btn btn-primary w-100" id="filter-btn">
+                            <i class="fa fa-filter me-2"/> Listed After
+                        </button>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <t t-if="properties">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 shadow-sm border-0">
+                                    <t t-if="property.property_image">
+                                        <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'"
+                                            class="card-img-top rounded-top"
+                                            style="height: 200px; object-fit: cover;" alt="Property Image" />
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/web/static/img/placeholder.png"
+                                            class="card-img-top rounded-top"
+                                            style="height: 200px; object-fit: cover;" alt="Default Property Image" />
+                                    </t>
+
+                                    <div class="card-body">
+                                        <h5 class="fw-bold text-primary">
+                                            <t t-esc="property.name" />
+                                        </h5>
+
+                                        <t t-if="property.property_type_id">
+                                            <span class="badge bg-secondary mb-2">
+                                                <t t-esc="property.property_type_id.name" />
+                                            </span>
+                                        </t>
+
+                                        <div class="mb-3">
+                                            <small class="text-muted">
+                                                <i class="fa fa-bed me-2"/><t t-esc="property.bedrooms" /> Beds
+                                                <span class="mx-2">|</span>
+                                                <i class="fa fa-ruler me-2"/><t t-esc="property.living_area" /> m²
+                                            </small>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="fw-bold text-success">
+                                                $<t t-esc="'{:,.2f}'.format(property.expected_price)" />
+                                            </h6>
+                                            <span t-att-class="'badge ' + (
+                                                'bg-success' if property.state == 'new' else
+                                                'bg-warning' if property.state == 'offer_received' else
+                                                'bg-danger' if property.state == 'cancelled' else
+                                                'bg-info')">
+                                                <t t-esc="property.state.replace('_', ' ').title()" />
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer bg-white border-0 text-center">
+                                        <a t-att-href="'/estate/property/' + str(property.id)"
+                                            class="btn btn-outline-primary w-100">
+                                            <i class="fa fa-eye me-2"/> View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+
+                    <!-- No Properties Found -->
+                    <t t-else="">
+                        <div class="col-12 text-center">
+                            <div class="alert alert-info" role="alert">
+                                <i class="fa fa-info-circle me-2"/> No properties found. Please adjust your search criteria and try again.
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="container d-flex justify-content-center align-items-center my-4">
+                <t t-call="website.pager" />
+            </div>
+        </t>
+    </template>
+</odoo>

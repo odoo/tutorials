@@ -1,7 +1,7 @@
 {
     'name': "Estate",
     'version': "1.0",
-    'depends': ["base", "mail"],
+    'depends': ["base", "mail", "website"],
     'author': "Prathmesh Soni (pdso)",
     'category': "Real Estate/Brokerage",
     'summary': "A real estate app",
@@ -9,6 +9,7 @@
     'data': [
         "security/estate_security.xml",
         "security/ir.model.access.csv",
+        "wizards/estate_property_offer_wizard.xml",
         "views/estate_property_views.xml",
         "views/estate_property_tags_views.xml",
         "views/estate_property_offer_views.xml",
@@ -20,6 +21,9 @@
         "report/estate_property_template.xml",
         "report/estate_property_res_user_template.xml",
         "report/estate_property_reports.xml",
+        "data/property_menu.xml",
+        "templates/estate_property_templates.xml",
+        "templates/estate_property_details_templates.xml",
     ],
     'demo': [
         'data/estate_property_demo.xml',

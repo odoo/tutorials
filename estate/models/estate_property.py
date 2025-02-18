@@ -26,6 +26,10 @@ class EstateProperty(models.Model):
         required=True,
         tracking=True
     )
+    property_image = fields.Image(
+        string="Property Image",
+        help="Image of the property."
+    )
     description = fields.Text(
         string="Description",
         help="Detailed description of the property."
@@ -197,9 +201,11 @@ class EstateProperty(models.Model):
     # -------------------------------------------------------------------------
 
     def action_sold(self):
-        if self.state == 'canceled':
-            raise UserError("Canceled properties cannot be sold.")
-        elif self.state != 'offer_accepted':
+        if self.state != 'offer_accepted':
+            if self.state == 'canceled':
+                raise UserError("Canceled properties cannot be sold.")
+            elif self.state != 'offer_accepted':
+                raise UserError("Only properties with accepted offers can be sold.")
             raise UserError("Only properties with accepted offers can be sold.")
 
         self.state = 'sold'

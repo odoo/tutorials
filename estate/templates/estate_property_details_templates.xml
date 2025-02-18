@@ -1,0 +1,116 @@
+<odoo>
+    <template id="estate_property_detail_website" name="Estate Property Detail">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/estate/properties/">Properties</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <t t-esc="property.name" />
+                        </li>
+                    </ol>
+                </nav>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card shadow-sm">
+                            <t t-if="property.property_image">
+                                <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'"
+                                     class="img-fluid rounded" alt="Property Image" />
+                            </t>
+                            <t t-else="">
+                                <img src="/web/static/img/placeholder.png"
+                                     class="img-fluid rounded" alt="Default Property Image" />
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <t t-if="request.env.user.has_group('base.group_system')">
+                                    <a t-att-href="'/web#id=' + str(property.id) + '&amp;model=estate.property&amp;view_type=form'"
+                                       class="position-absolute top-0 end-0 mt-2 px-2 py-1" target="_blank">
+                                        <i class="fa fa-edit fa-2x"/>
+                                    </a>
+                                </t>
+                                <h1 class="card-title text-primary"><t t-esc="property.name" /></h1>
+                                <h4 class="text-success">
+                                    $<t t-esc="'{:,.2f}'.format(property.expected_price)" />
+                                </h4>
+                                <span t-att-class="'oe_avatar badge p-2 ' + ('bg-success' if property.state == 'new' else 'bg-warning' if property.state == 'offer_received' else 'bg-danger' if property.state == 'canceled' else 'bg-info')">
+                                    <t t-esc="property.state.replace('_', ' ').title()" />
+                                </span>
+                                <t t-if="property.description">
+                                    <p class="text-muted mt-3">
+                                        <strong>Description: </strong> <t t-esc="property.description" />
+                                    </p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="mb-3"><i class="fa fa-info-circle me-2"/>General Information</h5>
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Bedrooms:</strong> <t t-esc="property.bedrooms" /></li>
+                                    <li class="list-group-item"><strong>Living Area:</strong> <t t-esc="property.living_area" /> m²</li>
+                                    <li class="list-group-item"><strong>Facades:</strong> <t t-esc="property.facades" /></li>
+                                    <li class="list-group-item"><strong>Postcode:</strong> <t t-esc="property.postcode" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="col-md-6">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="mb-3"><i class="fa fa-star me-2"/>Features</h5>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <i t-att-class="'fa fa-check-circle me-2 ' + ('text-success' if property.garage else 'text-danger')"/>
+                                        Garage
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i t-att-class="'fa fa-check-circle me-2 ' + ('text-success' if property.garden else 'text-danger')"/>
+                                        Garden
+                                    </li>
+                                    <t t-if="property.garden">
+                                        <li class="list-group-item"><strong>Garden Area:</strong> <t t-esc="property.garden_area" /> m²</li>
+                                        <li class="list-group-item"><strong>Orientation:</strong> <t t-esc="property.garden_orientation.title()" /></li>
+                                    </t>
+                                    <li class="list-group-item"><strong>Total Area:</strong> <t t-esc="property.total_area" /> m²</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="row mt-4 mb-4">
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="mb-3"><i class="fa fa-tags me-2"/>Tags</h5>
+                                <t t-if="property.tag_ids">
+                                    <span class="badge bg-primary me-1" t-foreach="property.tag_ids" t-as="tag">
+                                        <t t-esc="tag.name" />
+                                    </span>
+                                </t>
+                                <t t-else="">
+                                    <p class="text-muted">No tags assigned</p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
