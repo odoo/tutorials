@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_details_template" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h1><t t-esc="property.name"/></h1>
+                <p><strong>Expected Price:</strong> <t t-esc="property.expected_price"/> USD</p>
+                <p><strong>Status:</strong> <t t-esc="property.state"/></p>
+
+                <h3>Offers</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Buyer</th>
+                            <th>Offer Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="property.offer_ids" t-as="offer">
+                            <tr>
+                                <td><t t-esc="offer.partner_id.name"/></td>
+                                <td><t t-esc="offer.price"/> USD</td>
+                                <td><t t-esc="offer.state"/></td>
+                                <td>
+                                    <a t-att-href="'/estate/offer/%s' % offer.id" class="btn btn-primary">View Offer</a>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>

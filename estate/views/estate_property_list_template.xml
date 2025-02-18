@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate.property_list_template" name="Property List">
+        <t t-call="web.layout">
+            <div class="container mt5">
+                <h1>Available Properties</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Expected Price</th>
+                            <th>State</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <t t-foreach="properties" t-as="property">
+                        <tr>
+                            <td><t t-esc="property.name"/> </td>
+                            <td><t t-esc="property.expected_price"/></td>
+                            <td><t t-esc="property.state"/></td>
+                            <td>
+                                <a t-att-href="'/estate/property/%s' % property.id" class="btn btn-primary">View Details</a>
+                            </td>
+                        </tr>
+                    </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>
