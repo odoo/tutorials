@@ -63,3 +63,21 @@ class RealEstateOffer(models.Model):
         for offer in self.filtered(lambda o: o.state == 'accepted'):
             if len(offer.property_id.offer_ids.filtered(lambda o: o.state == 'accepted')) > 1:
                 raise ValidationError(_("Only one offer can be accepted for a property."))
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+        for offer in offers:
+            if offer.property_id.state == 'new':
+                offer.property_id.state = 'offer_received'
+        return offers
+
+    def unlink(self):
+        for offer in self:
+            property_offers = offer.property_id.offer_ids
+            if (
+                offer.property_id.state in ('offer_received', 'under_option')
+                and not (property_offers - self)  # All the property's offers are being deleted.
+            ):
+                offer.property_id.state = 'new'
+        return super().unlink()

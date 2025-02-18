@@ -48,7 +48,7 @@ class RealEstateProperty(models.Model):
         string="Garden Area", help="The garden area excluding the building."
     )
     total_area = fields.Integer(string="Total Area", compute='_compute_total_area', store=True)
-    address_id = fields.Many2one(string="Address", comodel_name='res.partner', required=True)
+    address_id = fields.Many2one(string="Address", comodel_name='res.partner')
     street = fields.Char(string="Street", related='address_id.street', readonly=False, store=True)
     seller_id = fields.Many2one(string="Seller", comodel_name='res.partner', required=True)
     salesperson_id = fields.Many2one(
@@ -153,3 +153,27 @@ class RealEstateProperty(models.Model):
                     ),
                 }
             }
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('address_id'):  # No address is provided at creation time.
+                # Create and assign a new one based on the property name.
+                address = self.env['res.partner'].create({
+                    'name': vals.get('name'),
+                })
+                vals['address_id'] = address.id
+        return super().create(vals_list)
+
+    def write(self, vals):
+        res = super().write(vals)
+        if vals.get('street'):  # The street has been updated.
+            for property in self:
+                if not property.address_id:  # The property has no address record.
+                    # Create and assign a new one based on the property name and the street.
+                    address = self.env['res.partner'].create({
+                        'name': property.name,
+                        'street': vals['street'],
+                    })
+                    property.address_id = address.id
+        return res
