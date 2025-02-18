@@ -18,6 +18,7 @@
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
         <field name="property_type_id" ref="estate.1"/>
+        <field name="image" type="base64" file="estate/static/img/villa.jpg"/>
     </record>
 
     <record id="trailer" model="estate.property">
@@ -33,6 +34,7 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
         <field name="property_type_id" ref="estate.1"/>
+        <field name="image" type="base64" file="estate/static/img/trailer.jpg"/>
     </record>
 
     <record id="korat_villa" model="estate.property">
@@ -49,6 +51,7 @@
         <field name="garden">True</field>
         <field name="garden_area">200000</field>
         <field name="garden_orientation">south</field>
+        <field name="image" type="base64" file="estate/static/img/korat.jpg"/>
         <field name="property_type_id" ref="estate.2"/>
         <field name="offer_ids"
             eval="[

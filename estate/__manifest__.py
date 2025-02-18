@@ -3,7 +3,7 @@
     "sequence": 1,
     "category": "Real Estate/Brokerage",
     "description": "",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "website"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
@@ -14,11 +14,12 @@
         "views/estate_property_tag_views.xml",
         "views/estate_menus.xml",
         "views/res_user_views.xml",
+        "views/estate_property_template.xml",
         "report/estate_property_templates.xml",
         "report/estate_property_report.xml",
     ],
     "demo":[
-        "demo/estate_demo.xml",
+        "demo/estate_property_demo.xml",
     ],
     "application": True,
     "installable": True,

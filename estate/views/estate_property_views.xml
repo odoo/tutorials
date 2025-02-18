@@ -78,6 +78,7 @@
                     <widget name="web_ribbon" title="Canceled" bg_color="text-bg-danger" invisible="state != 'canceled'"/>
                     <h1>
                         <field name="name"/>
+                        <field name="image" widget="image" optional="show" class="oe_avatar"/>
                     </h1>
                     <group>
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field' : 'color'}"/>
