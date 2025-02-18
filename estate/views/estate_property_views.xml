@@ -33,14 +33,21 @@
                             invisible="status == 'sold' or status == 'cancelled'" />
                         <field name="status" widget="statusbar" />
                     </header>
-                    <h1>
-                        <field name="name" />
-                    </h1>
+                    <group>
+                        <group>
+                            <h1>
+                                <field name="name" />
+                            </h1>
+                            <field name="tags_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
+                        </group>
+                        <field name="image_1920" widget='image' optional="show"
+                            class="oe_avatar" style="max-width: 150px; max-height: 150px;" />
+                    </group>
+
                     <group>
                         <group>
                             <field name="property_type_id" options="{'no_create': true}" />
-                            <field name="tags_ids" widget="many2many_tags"
-                                options="{'color_field': 'color'}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>

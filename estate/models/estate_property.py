@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api,fields, models
+from odoo import api,fields, models,_
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -12,6 +12,7 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     name = fields.Char(required = True, tracking=True)
+    image_1920 = fields.Image(store=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy = False,string="Available Form",default = lambda self: fields.Datetime.today() + timedelta(days=90))
