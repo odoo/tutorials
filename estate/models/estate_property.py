@@ -1,6 +1,6 @@
 from odoo import api, exceptions, fields, models
 from datetime import date, timedelta
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -32,11 +32,11 @@ class EstateProperty(models.Model):
         ('new', 'New'),('offer_received','Offer Received'),
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),('cancelled', 'Cancelled'),
-        ],string="State",required=True,default='new',copy=False)
+        ],string="State",required=True,default='new',copy=False, group_expand='_group_expand_states')
                     
     property_type_id = fields.Many2one("estate.property.type",string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False , tracking=True)
-    salesperson_id = fields.Many2one("res.users",string="Salesman",default= False) 
+    salesperson_id = fields.Many2one("res.users",string="Salesman",default=lambda self :self.env.user) 
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area",string="Total Area")
@@ -58,13 +58,17 @@ class EstateProperty(models.Model):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
+        if not self.garden:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     def action_set_sold(self):
         for record in self:
-            if  record.state != 'offer_accepted':
-                raise exceptions.UserError("Accept an offer first!")
             if not record.offer_ids:
-                raise exceptions.UserError("No offers available to accept!")
+                raise UserError("No offers available to accept!")
+            accepted_offer = record.offer_ids.filtered(lambda o: o.state == 'accepted')
+            if not accepted_offer:
+                raise UserError("Accept an offer first!")
             record.state = "sold"
         return True
 
@@ -89,3 +93,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ('new', 'cancelled'):
                 raise exceptions.UserError("You can only delete properties in 'New' or 'Cancelled' state.")
+
+    def _group_expand_states(self, states, domain):
+        return [state[0] for state in self._fields['state'].selection]
+        

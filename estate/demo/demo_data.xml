@@ -89,7 +89,7 @@
 
         <record id="estate_property_sold" model="estate.property">
             <field name="name">Downtown Apartment</field>
-            <field name="state">sold</field>
+            <field name="state">offer_accepted</field>
             <field name="description">A modern apartment in the city center</field>
             <field name="postcode">13579</field>
             <field name="date_availability">2024-01-01</field>

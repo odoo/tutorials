@@ -1,1 +1,1 @@
-from . import estate_property_tests
+from . import test_estate_property

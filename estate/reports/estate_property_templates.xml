@@ -17,6 +17,15 @@
             </div>
         </t>
         <t t-if="not offers">No offers found :(</t>
+
+        <template id="inherit_report_property_offers" inherit_id="estate.report_property_offers">
+            <xpath expr="//div[@class='page']" position='inside'>
+                <tr t-if="property.state == 'sold'">
+                    <strong>!!! Invoice has already been created !!!</strong>
+                </tr>
+            </xpath>
+        </template>
+        
         <table t-else="" class="table">
             <thead>
                 <tr>

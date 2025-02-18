@@ -6,7 +6,6 @@ class InheritedEstateProperty(models.Model):
     _inherit="estate.property"
 
     def action_set_sold(self):
-
         # print(" reached ".center(100, '='))
         self.check_access('write')
 
