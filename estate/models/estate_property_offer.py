@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class PropertyOffer(models.Model):
@@ -21,3 +19,20 @@ class PropertyOffer(models.Model):
         string="Property",
         required=True,
     )
+
+    validity = fields.Integer("Validity (days)", default=7)
+    date_deadline = fields.Date(
+        "Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
+    )
+
+    @api.depends("validity")
+    def _compute_deadline(self):
+        for record in self:
+            record.date_deadline = fields.Datetime.add(
+                record.create_date if record.create_date else fields.Datetime.today(),
+                days=record.validity,
+            )
+
+    def _inverse_deadline(self):
+        for record in self:
+            record.validity = (record.date_deadline - fields.Date.today()).days

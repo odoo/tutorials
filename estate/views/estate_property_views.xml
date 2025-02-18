@@ -11,6 +11,8 @@
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" />
+                <field name="garden_area" />
+                <field name="total_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" />
@@ -62,6 +64,8 @@
                                     <field name="garden_area" />
                                     <field name="garden_orientation" />
                                     <field name="state" />
+                                    <field name="total_area" />
+                                    <field name="best_offer" />
                                 </group>
                             </group>
                         </page>
@@ -94,6 +98,8 @@
                 <field name="expected_price" string="Expected Price" />
                 <field name="bedrooms" string="Bedrooms" />
                 <field name="living_area" string="Living Area (sqm)" />
+                <field name="garden_area" string="Garden Area (sqm)" />
+                <field name="total_area" string="Total Area (sqm)" />
                 <field name="facades" string="Facades" />
 
                 <filter string="Available" name="available"
@@ -171,11 +177,19 @@
         <field name="arch" type="xml">
             <form string="Property Offer">
                 <sheet>
+
                     <group>
-                        <field name="partner_id" />
-                        <field name="price" />
-                        <field name="status" />
+                        <group>
+                            <field name="partner_id" />
+                            <field name="price" />
+                            <field name="status" />
+                        </group>
+                        <group>
+                            <field name="date_deadline" />
+                            <field name="validity" />
+                        </group>
                     </group>
+
                 </sheet>
             </form>
         </field>
