@@ -3,10 +3,19 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <div>The sum is : <t t-esc="sum.value"/></div>
         </div>
-        <p>Counter: <t t-esc="state.value"/></p>
-        <button t-on-click="increment">Increment</button>
+        <div>
+            <Card title="'card 1'">
+                card 1
+            </Card>
+            <Card title="'card 2'">
+                <Counter />
+            </Card>
+        </div>
+        <TodoList />
     </t>
 
-</templates> 
+</templates>
