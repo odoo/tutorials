@@ -17,7 +17,7 @@
                 </header>
                 <field name="name" />
                 <field name="property_type_id"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" />
@@ -42,6 +42,7 @@
                 <sheet>
                     <h1>
                         <field name="name" placeholder="Enter your property name here" />
+                        <field name="image" class="oe_avatar" widget="image"/>
                     </h1>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group>
@@ -111,11 +112,20 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="0">
+                <progressbar field="state"
+                    colors='{
+                        "new": "primary",
+                        "offer_received": "warning",
+                        "offer_accepted": "success",
+                        "sold": "info",
+                        "cancelled": "danger"}'/>
                 <templates>
                     <field name="state"/>
                     <t t-name="card">
-                        <div class="oe_kanban_global_click">
-                            <field name="name"/>
+                        <div class="o_kanban_card_shadow">
+                            <strong class="o_kanban_record_title">
+                                <field name="name"/>
+                            </strong>
                                 <div>
                                     Expected Price: <field name="expected_price" />
                                 </div>
@@ -124,6 +134,9 @@
                                 </div>
                                 <div t-if="record.state.raw_value == 'offer_accepted'">
                                     Selling Price: <field name="selling_price"/>
+                                </div>
+                                <div>
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 </div>
                         </div>
                     </t>

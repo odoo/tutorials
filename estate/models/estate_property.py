@@ -63,6 +63,7 @@ class EstateProperty(models.Model):
     total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area')
     best_price = fields.Integer(string='Best Offer', compute='_compute_best_price')
     company_id = fields.Many2one('res.company', string="Company", default = lambda self: self.env.company, required = True)
+    image = fields.Binary("Image",attachment = True)
 
     _sql_constraints = [
         ('expected_price_check', 'CHECK( expected_price >= 0 )', 'A property expected price must be strictly positive'),
