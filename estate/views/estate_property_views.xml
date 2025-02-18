@@ -3,7 +3,7 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form String="Properties">
+            <form string="Properties">
                 <sheet>
                     <group>
                         <group colspan="2">
@@ -11,13 +11,17 @@
                                 <field name="name"/>
                             </h1>
                         </group>
-                        <group>
-                            <field name="postcode" class="oe_inline oe_left"/>
-                            <field name="date_availability" class="oe_inline oe_left" string="Available From"/>
+                        <group colspan="2">
+                            <field name="tag_ids" widget="many2many_tags" nolabel="1"/>
                         </group>
                         <group>
-                            <field name="expected_price" class="oe_inline oe_right"/>
-                            <field name="selling_price" class="oe_inline oe_right"/>
+                            <field name="property_type_id"/>
+                            <field name="postcode"/>
+                            <field name="date_availability" string="Available From"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -31,6 +35,17 @@
                                 <field name="garden"/>
                                 <field name="garden_area" string="Garden Area (sqm)"/>
                                 <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <list string="Offers">
+                                <field name="offer_ids"/>
+                            </list>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="user_id"/>
+                                <field name="partner_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -75,6 +90,18 @@
     <record id="estate_property_action_list" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_type_action_list" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_tag_action_list" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
         <field name="view_mode">list,form</field>
     </record>
 </odoo>
