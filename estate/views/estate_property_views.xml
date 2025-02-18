@@ -26,10 +26,15 @@
                     <sheet>
                         <group>
                             <group>
-                                <div class="oe_title">
-                                    <h1>
-                                        <field name="name" class="oe_inline"/>
-                                    </h1>
+                                <div class="d-flex">
+                                    <div class="oe_title">
+                                        <h1 class="oe_inline">
+                                            <field name="name" class="oe_inline"/>
+                                        </h1>
+                                    </div>
+                                    <div class="ml-4">
+                                        <field name="image" widget='image' />
+                                    </div>
                                 </div>
                                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                             </group>

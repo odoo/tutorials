@@ -1,26 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-   <template id="template_property_list_website_view" name="Property List">
+    <template id="template_property_list_website_view" name="Property List">
         <t t-call="website.layout">
-        <div class="oe_structure">
-            <div class="container">
-                <br />
+            <div class="oe_structure">
+                <div class="container">
+                    <br />
                     <h3>Property List</h3>
-                <br />
-                <div class="flex">
+                    <br />
+                    <div class="row">
                         <t t-foreach="records" t-as="property">
-                            <div>
-                                <h3>
-                                    <span t-esc="property.name" />
-                                </h3>
-                                <strong>
-                                    Rs. <span t-esc="property.expected_price" />
-                                </strong>
+                            <div class="col-md-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <t t-if="property.image">
+                                        <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'" class="card-img-top" alt="Property Image"/>
+                                    </t>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <span t-esc="property.name" />
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>Rs. <span t-esc="property.expected_price" />
+                                            </strong>
+                                            <div>Salesman: <t t-out="property.property_seller_id.name"/>
+                                            </div>
+                                        </p>
+                                        <div class="d-flex justify-content-between">
+                                            <button class="btn btn-primary">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </t>
                     </div>
+                </div>
             </div>
-        </div>
         </t>
-   </template>
+    </template>
 </odoo>

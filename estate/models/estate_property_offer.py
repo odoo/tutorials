@@ -60,11 +60,14 @@ class EstatePropertyOffer(models.Model):
 
             if record['price'] < property.best_price:
                 raise UserError(
-                    _("The Offer must higher then %s for %s Property", property.best_price,property.name))
+                    _("The Offer must higher then %s for %s Property", property.best_price, property.name))
             elif property.state == "sold":
                 raise UserError(_("Property Already Sold"))
 
             property.state = "offer received"
+
+            property.message_post({'body': _(
+                "offer created with Price %s by %s", record['price'], record['partner_id'])})
 
         return super().create(vals)
 

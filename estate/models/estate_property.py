@@ -75,6 +75,7 @@ class EstateProperty(models.Model):
         string="Best Offer", compute="_compute_best_price")
     company_id = fields.Many2one(
         comodel_name='res.company', required=True, default=lambda self: self.env.company)
+    image = fields.Binary("Image", help="Select an Image")
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):

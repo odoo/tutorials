@@ -5,7 +5,7 @@
             <t t-if="property.state == 'sold'">
                 <div>
                     <strong>!!! Invoice has already been created !!!</strong>
-                </div>   
+                </div>
             </t>
         </xpath>
     </template>
