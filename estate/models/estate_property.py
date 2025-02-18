@@ -2,6 +2,7 @@
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -44,8 +45,8 @@ class EstateProperty(models.Model):
         default='new'
     )
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    buyer = fields.Many2one('res.partner', string="Buyer", copy=False)
-    salesman = fields.Many2one('res.users', string="Salesman", default=lambda self:self.env.uid)
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
+    salesman_id = fields.Many2one('res.users', string="Salesman", default=lambda self:self.env.uid)
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="offer_id")
     total_area = fields.Integer(compute='_compute_total_area', string="Total Area (sqm)")
@@ -75,8 +76,9 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if (record.selling_price < record.expected_price*0.9) and record.offer_ids and record.state!='new':
-                raise ValidationError("Offer price can't be less than 90% of expected price")
+            if not float_is_zero(record.selling_price, precision_rounding=0.01):
+                if record.selling_price < record.expected_price * 0.9:
+                    raise ValidationError("Offer price can't be less than 90% of expected price")
 
     @api.onchange('garden')
     def _onchange_garden(self):

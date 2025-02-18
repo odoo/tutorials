@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -66,7 +66,7 @@ class EstatePropertyOffer(models.Model):
             for record in self:
                 record.property_id.selling_price = record.price
                 record.status='accepted'
-                record.property_id.buyer = record.partner_id
+                record.property_id.buyer_id = record.partner_id
                 record.property_id.state = 'offer accepted'
         else:
             raise UserError(_("One of the offer is already accepted"))

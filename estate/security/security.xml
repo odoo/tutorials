@@ -15,7 +15,7 @@
         <field name="name">Agent can view new or assigned property</field>
         <field name="model_id" ref="model_estate_property"/>
         <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
-        <field name="domain_force">["|", ("salesman", "=", False), ("salesman", "=", user.id)]</field>
+        <field name="domain_force">["|", ("salesman_id", "=", False), ("salesman_id", "=", user.id)]</field>
     </record>
 
     <record id="manager_property_rule" model="ir.rule">

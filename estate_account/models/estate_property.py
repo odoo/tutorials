@@ -15,7 +15,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.env['account.move'].sudo().create({
             'move_type': 'out_invoice',
-            'partner_id': record.buyer.id,
+            'partner_id': record.buyer_id.id,
             'line_ids': [
                 Command.create({
                     'name': record.name,
