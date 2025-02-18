@@ -26,20 +26,17 @@
                         <div>
                             <field name="name" class="fw-bold fs-5"/>
                             <div class="text-muted">
-                                <span>Expected Price:</span>
-                                <span>
+                                <span>Expected Price: 
                                     <field name="expected_price"/>
                                 </span>
                             </div>
                             <div t-if="record.state.raw_value=='offer_received'" class="text-muted">
-                                <span>Best Price:</span>
-                                <span>
+                                <span>Best Price:
                                     <field name="best_price"/>
                                 </span>
                             </div>
                             <div t-if="record.state.raw_value=='offer_accepted'" class="text-muted">
-                                <span>Selling Price:</span>
-                                <span>
+                                <span>Selling Price:
                                     <field name="selling_price"/>
                                 </span>
                             </div>
@@ -82,6 +79,7 @@
                 <sheet>
                     <h1>
                         <field name="name"/>
+                        <field name="property_image_1920" widget="image" class="oe_avatar" options="{'convert_to_webp':True,'preview_image':'property_image_128'}"/>
                     </h1>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                     <group>

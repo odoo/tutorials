@@ -4,31 +4,20 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <div>
-                            <h5 t-field="property.company_id.name" />
-                            <hr />
-                            <h5 t-field="property.company_id.partner_id.street" />
-                            <h5 t-field="property.company_id.partner_id.city" />
-                            <h5>
-                                <span t-field="property.company_id.partner_id.zip" />
-                                <span t-field="property.company_id.partner_id.state_id.name" />
-                            </h5>
-                            <h5 t-field="property.company_id.partner_id.country_id.name" />
-                            <br/>
-                            <br/>
-                            <br/>
-                        </div>
+                        <t t-call="estate.report_company_details">
+                            <t t-set="company_source" t-value="property"/>
+                        </t>
                         <h2>
                             <span t-field="property.name"/>
                         </h2>
-                        <div class="yes">
+                        <div class="property_details">
                             <strong>Expected Price: </strong>
                             <span t-field="property.expected_price"/>
                             <br/>
                             <strong>Status: </strong>
                             <span t-field="property.state"/>
                         </div>
-                        <t t-if="len(property.offer_ids)">
+                        <t t-if="property.offer_ids">
                             <t t-call="estate.report_offer_table"/>
                         </t>
                         <t t-else="">
@@ -44,20 +33,9 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <div>
-                            <h5 t-field="salesman.company_id.name" />
-                            <hr />
-                            <h5 t-field="salesman.company_id.partner_id.street" />
-                            <h5 t-field="salesman.company_id.partner_id.city" />
-                            <h5>
-                                <span t-field="salesman.company_id.partner_id.zip" />
-                                <span t-field="salesman.company_id.partner_id.state_id.name" />
-                            </h5>
-                            <h5 t-field="salesman.company_id.partner_id.country_id.name" />
-                            <br/>
-                            <br/>
-                            <br/>
-                        </div>
+                        <t t-call="estate.report_company_details">
+                            <t t-set="company_source" t-value="salesman"/>
+                        </t>
                         <t t-set="properties" t-value="salesman.property_ids"/>
                         <t t-foreach="properties" t-as="property">
                             <h2>
@@ -109,5 +87,21 @@
                 </tr>
             </tbody>
         </table>
+    </template>
+    <template id="report_company_details">
+        <div>
+            <h5 t-field="company_source.company_id.name" />
+            <hr />
+            <h5 t-field="company_source.company_id.partner_id.street" />
+            <h5 t-field="company_source.company_id.partner_id.city" />
+            <h5>
+                <span t-field="company_source.company_id.partner_id.zip" />
+                <span t-field="company_source.company_id.partner_id.state_id.name" />
+            </h5>
+            <h5 t-field="company_source.company_id.partner_id.country_id.name" />
+            <br/>
+            <br/>
+            <br/>
+        </div>
     </template>
 </odoo>

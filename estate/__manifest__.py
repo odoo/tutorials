@@ -18,7 +18,8 @@
         "views/estate_property_users.xml",
         "views/estate_menus.xml",
         "report/estate_property_templates.xml",
-        "report/estate_property_reports.xml"
+        "report/estate_property_reports.xml",
+        "views/estate_property_template.xml"
     ],
     "demo": [
         "demo/estate.property.xml",

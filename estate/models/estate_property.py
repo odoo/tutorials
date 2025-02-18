@@ -56,6 +56,30 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
     company_id = fields.Many2one("res.company", default=lambda self: self.env.company)
+    property_image_1920 = fields.Image(
+        string="Property Image", max_width=1920, max_height=1920
+    )
+    property_image_1024 = fields.Image(
+        "Property Image 1024",
+        related="property_image_1920",
+        max_width=1024,
+        max_height=1024,
+        store=True,
+    )
+    property_image_512 = fields.Image(
+        "Property Image 512",
+        related="property_image_1920",
+        max_width=512,
+        max_height=512,
+        store=True,
+    )
+    property_image_128 = fields.Image(
+        "Property Image 128",
+        related="property_image_1920",
+        max_width=128,
+        max_height=128,
+        store=True,
+    )
 
     _sql_constraints = [
         (
