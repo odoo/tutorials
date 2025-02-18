@@ -17,7 +17,7 @@
         # Views
         'views/real_estate_offer_views.xml',
         'views/real_estate_property_type_views.xml',
-        'views/real_estate_property_views.xml',
+        'views/real_estate_property_views.xml',  # Depends on `real_estate_offer_views.xml`.
         'views/real_estate_tag_views.xml',
         'views/menus.xml',  # Depends on actions in views.
     ],

@@ -43,6 +43,17 @@
                     <field name="state" widget="statusbar" options="{'clickable': True}"/>
                 </header>
                 <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button
+                            string="Offers"
+                            icon="fa-handshake-o"
+                            type="action"
+                            name="real_estate.view_offers_action"
+                            context="{'default_property_id': id}"
+                        >
+                            <field string="Offers" name="offer_count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <field name="image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <label for="name" string="Property Name"/>
@@ -79,9 +90,6 @@
                                 name="description"
                                 placeholder="Write a description about this property."
                             />
-                        </page>
-                        <page string="Offers">
-                            <field name="offer_ids"/>
                         </page>
                         <page string="Other Info">
                             <group>
