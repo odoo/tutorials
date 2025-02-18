@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 
@@ -36,6 +37,8 @@ class Property(models.Model):
     expected_price = fields.Float('Expected price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     best_price = fields.Float('Best Price', compute="_compute_best_price")
+    buyer = fields.Many2one('res.partner', string='Buyer')
+    salesperson = fields.Many2one('res.users', string='Salesperson')
     state = fields.Selection(
         string='State', 
         selection = [('new', "new"), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
@@ -61,3 +64,27 @@ class Property(models.Model):
         else:
             self.garden_orientation = False
             self.garden_area = 0
+    
+    def action_cancel(self):
+        if self.state == 'sold':
+            raise UserError("You cannot cancel a sold property")
+        elif self.state == 'cancelled':
+            raise UserError("Property already cancelled")
+        else: 
+            self.state = 'cancelled'
+    
+    def action_sold(self):
+        if self.state == 'cancelled':
+            raise UserError("You cannot sell a cancelled property")
+        elif self.state == 'sold':
+            raise UserError("Property already sold")
+        else: 
+            self.state = 'sold'
+    
+    # Called by offer.action_accept
+    def action_accept_offer(self, offer_to_accept_id):
+        for offer in self.property_offer_ids:
+            if offer.status == 'accepted' and self.state == 'sold':
+                raise UserError("You cannot change accepted offer on a sold property")
+            offer.action_refuse()
+        offer_to_accept_id.accept()

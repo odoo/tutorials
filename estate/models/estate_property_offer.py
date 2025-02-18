@@ -2,12 +2,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offers"
+    
+    _sql_constraints = [
+        ('check_prices', 'CHECK(price > 0)',
+         "Offer prices should be strictly positive.")
+    ]
     
     price = fields.Float('Price')
     status = fields.Selection(
@@ -31,3 +37,16 @@ class PropertyOffer(models.Model):
     def _reverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date).days
+    
+    def action_accept(self):
+        if self.status == 'accepted':
+            raise UserError('Offer already accepted')
+        else: self.property_id.action_accept_offer(self)
+        
+    def accept(self):
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.buyer = self.partner_id
+    
+    def action_refuse(self):
+        self.status = 'refused'
