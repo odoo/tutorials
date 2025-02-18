@@ -2,7 +2,6 @@ from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
-
     _name = 'estate.property.type'
     _description = "Detail About Particular Property"
     _order = 'name asc'
@@ -33,6 +32,12 @@ class EstatePropertyType(models.Model):
         help="Total number of offers for properties of this type"
     )
 
+
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        for offer in self:
+            offer.offer_count = len(offer.offer_ids)
+
     # SQL CONSTRAINTS
     _sql_constraints = [
         (
@@ -41,8 +46,3 @@ class EstatePropertyType(models.Model):
             'Property Type name must be Unique.'
         )
     ]
-
-    @api.depends('offer_ids')
-    def _compute_offer_count(self):
-        for offer in self:
-            offer.offer_count = len(offer.offer_ids)

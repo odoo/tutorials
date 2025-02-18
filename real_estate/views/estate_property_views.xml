@@ -14,7 +14,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties" 
-                decoration-success="state == 'offer_received' or state == 'offer_accepted'"
+                decoration-success="state in ['offer_received', 'offer_accepted']"
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'">
                 <field name="name" string="Title"/>
@@ -200,12 +200,6 @@
                 </templates>
             </kanban>
         </field>
-    </record>
-
-    <record id="estate_property_company_rule" model="ir.rule">
-        <field name="name">Estate Property Multi-Company Access</field>
-        <field name="model_id" ref="model_estate_property"/>
-        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
     </record>
 
 </odoo>

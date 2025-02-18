@@ -1,11 +1,10 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+from odoo import Command, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
-
     _name = 'estate.property'
     _description = "Property"
     _order = 'id desc'
@@ -120,9 +119,9 @@ class EstateProperty(models.Model):
     company_id = fields.Many2one(
         comodel_name='res.company',
         string="Company",
-        default=lambda self: self.env.company,
-        required=True
+        default=lambda self: self.env.company
     )
+
 
     tag_ids = fields.Many2many(
         comodel_name='estate.property.tag',
@@ -139,16 +138,15 @@ class EstateProperty(models.Model):
         string="Total Area",
         compute='_compute_total_area'
     )
+    best_price = fields.Float(
+        string="Best Offer",
+        compute='_compute_best_price',
+    )
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
         for property in self:
             property.total_area = property.garden_area + property.living_area
-
-    best_price = fields.Float(
-        string="Best Offer",
-        compute='_compute_best_price',
-    )
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
@@ -157,27 +155,6 @@ class EstateProperty(models.Model):
                 property.best_price = max(property.offer_ids.mapped('price'))
             else:
                 property.best_price = 0.0
-
-    @api.onchange('garden')
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_orientation = 'north'
-            self.garden_area=10
-        else:
-            self.garden_orientation = False
-            self.garden_area = 0
-
-    def action_set_sold(self):
-        for property in self:
-            if property.state == "cancelled":
-                raise UserError("Cancelled Property can not be sold")
-            property.state = 'sold'
-
-    def action_set_cancel(self):
-        for property in self:
-            if property.state == "sold":
-                raise UserError("Sold Property can not be cancel")
-            property.state = 'cancelled'
 
     # SQL CONSTRAINTS
     _sql_constraints = [
@@ -201,8 +178,17 @@ class EstateProperty(models.Model):
             if (not float_is_zero(product.selling_price, precision_digits=2) and 
                 float_compare(product.selling_price, min_selleing_price, 
                 precision_rounding=2) == -1
-                ):
+            ):
                 raise ValidationError("Selling Price cannot be lower than 90% of the Expected Price.")
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_orientation = 'north'
+            self.garden_area = 10
+        else:
+            self.garden_orientation = False
+            self.garden_area = 0
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_check_property_state(self):
@@ -215,3 +201,15 @@ class EstateProperty(models.Model):
                 raise UserError(
                     f"You cannot delete a property in {state_mapping[property.state]} state."
                 )
+
+    def action_set_sold(self):
+        for property in self:
+            if property.state == 'cancelled':
+                raise UserError("Cancelled Property can not be sold")
+            property.state = 'sold'
+
+    def action_set_cancel(self):
+        for property in self:
+            if property.state == 'sold':
+                raise UserError("Sold Property can not be cancel")
+            property.state = 'cancelled'

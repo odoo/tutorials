@@ -4,7 +4,6 @@ from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
-
     _name = 'estate.property.offer'
     _description = "Offers on Property"
     _order = 'price desc'
@@ -61,24 +60,15 @@ class EstatePropertyOffer(models.Model):
             else:
                 offer.date_deadline = False
 
-    def _inverse_date_deadline(self):
-        for offer in self:
-            if offer.create_date and offer.date_deadline:
-                offer.validity = (offer.date_deadline - offer.create_date).days
-            elif offer.date_deadline:
-                offer.validity = 7
-
-    def action_accept_offer(self):
-        for offer in self:
-            offer.status = 'accepted'
-            offer.property_id.state='offer_accepted'
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.selling_price = offer.price
-            print(offer.property_id.state)
-
-    def action_refuse_offer(self):
-        for offer in self:
-            offer.status = 'refused'
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals.get('property_id'))
+            if property.best_price >= vals['price']:
+                raise UserError("You cannot create an offer lower than an existing offer.")
+            if property.state == 'new':
+                property.state = 'offer_received'
+        return super().create(vals_list)
 
     # SQL CONSTRAINTS   
     _sql_constraints = [
@@ -89,12 +79,19 @@ class EstatePropertyOffer(models.Model):
         )
     ] 
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            property = self.env['estate.property'].browse(vals.get('property_id'))
-            if property.best_price >= vals['price']:
-                raise UserError("You cannot create an offer lower than an existing offer.")
-            if property.state == 'new':
-                property.state='offer_received'
-        return super().create(vals_list)
+    def _inverse_date_deadline(self):
+        for offer in self:
+            if offer.create_date and offer.date_deadline:
+                offer.validity = (offer.date_deadline - offer.create_date).days
+            elif offer.date_deadline:
+                offer.validity = 7
+
+    def action_accept_offer(self):
+        for offer in self:
+            offer.status = 'accepted'
+            offer.property_id.state = 'offer_accepted'
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+
+    def action_refuse_offer(self):
+        self.status = 'refused'
