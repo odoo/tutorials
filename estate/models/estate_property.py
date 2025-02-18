@@ -8,12 +8,12 @@ class EstateProperty(models.Model):
     _inherit = 'mail.thread'
     _order = "id desc"
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive.'),
+        ('check_expected_price', 'CHECK(expected_price >= 0)', 'Expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive.'),
         ('check_bedroom', 'CHECK(bedrooms >= 0)', ' Bedroom must be positive.'),
-        ('check_living_area', 'CHECK(living_area > 0)', 'Living_area must be positive.'),
+        ('check_living_area', 'CHECK(living_area >= 0)', 'Living_area must be positive.'),
         ('check_facades', 'CHECK(facades >= 0)', 'Facades must be positive.'),
-        ('check_garden_area', 'CHECK(garden_area > 0)', 'Garden_area must be positive.'),
+        ('check_garden_area', 'CHECK(garden_area >= 0)', 'Garden_area must be positive.'),
     ]
 
     name = fields.Char(string="Name", required=True)
@@ -51,7 +51,7 @@ class EstateProperty(models.Model):
         copy=False,
         default="new"
     )
-
+    image = fields.Image("Image") 
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
     property_type_id = fields.Many2one(
