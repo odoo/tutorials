@@ -2,6 +2,7 @@
     'name': 'RealEstate',
     'version': '1.0',
     'author': 'Odoo S.A.',
+    'depends': ['base'],
     'icon': '/estate/static/real_estate.png',
     'installable': True,
     'application': True,
