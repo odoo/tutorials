@@ -8,30 +8,41 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Title"/>
+                            <field name="name" placeholder="Title" />
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags" />
                     </div>
                     <group>
                         <group>
-                            <field name="postcode"/>
-                            <field name="date_availability"/>
+                            <field name="property_type_id" />
+                            <field name="postcode" />
+                            <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
-                            <field name="selling_price"/>
+                            <field name="selling_price" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                            <field name="description" placeholder="Description"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
+                                <field name="description" placeholder="Description" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="sales_person_id" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
@@ -44,13 +55,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
             </list>
         </field>
     </record>
@@ -59,15 +70,16 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Properties">
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="expected_price"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="facades"/>
-                <filter string="Available" name="available" domain="[('state', 'in', ['new','offer_received'])]"/>
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
+                <filter string="Available" name="available"
+                    domain="[('state', 'in', ['new','offer_received'])]" />
                 <group expand="1" string="Group By">
-                    <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
+                    <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}" />
                 </group>
             </search>
         </field>
