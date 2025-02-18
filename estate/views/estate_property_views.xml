@@ -72,27 +72,23 @@
                             <field name="name" placeholder="Property Name" />
                         </h1>
                     </group>
-
                     <group>
                         <h5>
                             <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Property Tag(s)" />
                         </h5>
                     </group>
-
                     <group>
                         <group>
                             <field name="property_type_id" options="{'no_create': true}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
-
                         <group>
                             <field name="expected_price" />
                             <field name="best_offer" />
                             <field name="selling_price" />
                         </group>
                     </group>
-
                     <group>
                         <notebook>
                             <page string="Description">
@@ -111,7 +107,7 @@
                             </page>
 
                             <page string="Offers">
-                                <field name="property_offer_ids" readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled'">
+                                <field name="property_offer_ids" readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled' or state == 'invoiced'">
                                     <list string="Offer List" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                         <field name="price" />
                                         <field name="partner_id" />
@@ -182,8 +178,7 @@
 
                 <separator />
 
-                <filter string="Availability" name="availability" domain="[('date_availability', '>=', context_today())]" />
-
+                <filter string="Availability" name="availability" domain="['&amp;', ('date_availability', '>=', context_today()), '|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
                 <filter string="New or Offer Received" name="new_received" domain="[('date_availability', '>=', context_today()), '|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
 
                 <group string="Group By">
@@ -201,5 +196,4 @@
         <field name="view_id" ref="estate_property_view_list" />
         <field name="context">{'search_default_availability': True}</field>
     </record>
-
 </odoo>
