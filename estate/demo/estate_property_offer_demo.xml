@@ -27,4 +27,5 @@
         eval="[ref('estate_property_offer_2')]" />
     <function name="action_refuse" model="estate.property.offer"
         eval="[ref('estate_property_offer_3')]" />
+
 </odoo>

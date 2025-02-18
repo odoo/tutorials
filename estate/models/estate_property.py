@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from odoo import api, exceptions,fields, models
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -7,7 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread','website.published.mixin']
 
     name = fields.Char(required = True,tracking=True)
     description = fields.Text()
@@ -15,6 +16,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(copy = False,string="Available Form",default = lambda self: fields.Datetime.today() + timedelta(days=90))
     expected_price = fields.Float(required = True)
     selling_price = fields.Float(readonly = True,copy = False, default = 0)
+    image = fields.Image(store=True, verify_resolution=True)
     bedrooms = fields.Integer(default = 2)
     living_area = fields.Integer(string = "Living Area (sqm)")
     facades = fields.Integer()

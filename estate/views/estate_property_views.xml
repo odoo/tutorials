@@ -69,7 +69,10 @@
                     <field name = "status" widget = "statusbar" />
                 </header>
                 <sheet>
-                    <h1><field name="name"/></h1>
+                    <h1>
+                        <field name="name"/>
+                        <field name="image" widget='image' optional="show" class="oe_avatar" style="max-width: 150px; max-height: 150px;"/>
+                    </h1>
                     <h3><field name="property_tag_id" widget='many2many_tags' options="{'color_field': 'color'}"/></h3>
                     <group>
                         <group>

@@ -1,7 +1,7 @@
 {
     "name": "Real Estate",
     "category": "Real Estate/Brokerage",
-    "depends":["base","mail"],
+    "depends":["base","mail","website"],
     "data": [
             "security/security.xml",
             "security/ir.model.access.csv",
@@ -10,7 +10,12 @@
             "views/estate_property_type.xml",
             "views/estate_property_tag.xml",
             "views/inherited_model.xml",
+            'views/estate_properties_template.xml',
+            'views/estate_properties_details.xml',
             "views/estate_menus.xml",
+            "report/estate_property_reports.xml",
+            "report/estate_property_report_template.xml",
+            "report/estate_property_salesman_report.xml"
     ],
     'demo': [
         "demo/estate_property_type_demo.xml",

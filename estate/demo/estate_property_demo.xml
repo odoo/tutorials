@@ -21,7 +21,7 @@
     <record id="demo_estate_property_2" model="estate.property">
         <field name="name">Modern Penthouse</field>
         <field name="property_type_id" ref="estate.property_type_residential" />
-        <field name="status">cancelled</field>
+        <field name="status">new</field>
         <field name="description">A luxurious penthouse with a rooftop pool</field>
         <field name="postcode">67890</field>
         <field name="date_availability">2023-05-10</field>
