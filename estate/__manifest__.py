@@ -16,6 +16,7 @@
     'depends': [
         'base',
         'web',
+        'website'
     ],
 
     'data':[
@@ -23,6 +24,7 @@
         'security/estate_security.xml',
         'security/ir.model.access.csv',
         'wizard/estate_property_offer_wizard_views.xml',
+        'views/estate_property_template.xml',
         'views/estate_property_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
@@ -32,10 +34,10 @@
     ],
 
     'demo':[
+        'data/estate_property_type_data.xml',
         'data/estate_property_data.xml',
         'data/estate_property_offer_data.xml',
-        'data/estate_property_tag_data.xml',
-        'data/estate_property_type_data.xml'
+        'data/estate_property_tag_data.xml'
     ],
 
     'installable':True,

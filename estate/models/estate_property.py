@@ -54,6 +54,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(string="Active", default=True)
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
+    property_image = fields.Binary(string="Property Image", attachment=True)
 
     # ..................relational attributes..................
     property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type")
