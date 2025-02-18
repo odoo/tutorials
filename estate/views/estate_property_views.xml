@@ -60,9 +60,10 @@
                 </header>
                 <sheet>
                     <group>
-                        <h1 style="max-width: 50%;">
-                            <field name="name" placeholder="Swagat Bunglows" width="50%" />
+                        <h1>
+                            <field name="name" placeholder="Swagat Bunglows"/>
                         </h1>
+                        <field name="image" widget="image" class="oe_avatar" nolabel="1" />
                     </group>
                     <field
                         name="property_tag_ids"

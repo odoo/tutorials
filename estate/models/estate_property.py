@@ -21,6 +21,7 @@ class EstateProperty(models.Model):
         string="Company",
         default=lambda self: self.env.company,
     )
+    image = fields.Binary(string="Image")
     active = fields.Boolean(default=True)
     name = fields.Char(string="Property Name", required=True, tracking=True)
     description = fields.Text(string="Description")
@@ -147,9 +148,6 @@ class EstateProperty(models.Model):
             has_accepted_offer = any(
                 offer.status == "accepted" for offer in record.offer_ids
             )
-
-            print(has_accepted_offer , "============================================") 
-
             if not has_accepted_offer:
                 raise UserError("You cannot sell a property without an accepted offer")
 

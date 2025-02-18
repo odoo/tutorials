@@ -1,45 +1,63 @@
-# -*- coding: utf-8 -*-
+from odoo import Command
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tests.form import Form
 
+
 @tagged("post_install", "-at_install")
 class EstateTestCase(TransactionCase):
-
     @classmethod
     def setUpClass(cls):
-        super().setUpClass()
+        super(EstateTestCase, cls).setUpClass()
 
-        cls.properties = cls.env["estate.property"].create([{
-            "name": "Sarthi Bunglow",
-            "expected_price": 10000,
-        }])
-        cls.offers = cls.env["estate.property.offer"].create([{
-            "partner_id": cls.env.ref(xml_id="base.res_partner_12").id,
-            "property_id": cls.properties[0].id,
-            "price": 11999,
-        }])
+        cls.properties = cls.env["estate.property"].create(
+            [
+                {
+                    "name": "Sarthi Bunglow",
+                    "expected_price": 10000,
+                }
+            ]
+        )
 
     def test_action_sell_property(self):
         """Test that everything behaves like it should when selling a property."""
         # You cannot sell a property without an accepted offer
         with self.assertRaises(UserError):
             self.properties.action_sell_property()
+        # create an offer
+        self.properties[0].offer_ids = [
+            {
+                Command.create(
+                    {
+                        "partner_id": self.env.ref(xml_id="base.res_partner_12").id,
+                        "property_id": self.properties[0].id,
+                        "price": 11999,
+                    }
+                )
+            }
+        ]
         # Accept the offer
-        self.offers[0].accept_offer()
+        self.edit(0).accept_offer()
         # Now you can sell it
         self.properties.action_sell_property()
-        self.assertRecordValues(self.properties, [
-            {"state": "sold"},
-        ])
+        self.assertRecordValues(
+            self.properties,
+            [
+                {"state": "sold"},
+            ],
+        )
         # You cannot create an offer for a sold property
         with self.assertRaises(UserError):
-            self.env["estate.property.offer"].create([{
-                "partner_id": self.env.ref(xml_id="base.res_partner_12").id,
-                "property_id": self.properties[0].id,
-                "price": 10000,
-            }])
+            self.env["estate.property.offer"].create(
+                [
+                    {
+                        "partner_id": self.env.ref(xml_id="base.res_partner_12").id,
+                        "property_id": self.properties[0].id,
+                        "price": 10000,
+                    }
+                ]
+            )
 
     def test_property_form(self):
         """Test the form view of properties."""
