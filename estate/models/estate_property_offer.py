@@ -50,26 +50,28 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         for val in vals:
             property = self.env["estate.property"].browse(val["property_id"])
+            if property.state == "sold":
+                raise UserError("You cannot create an offer for a sold property!")
             max_offer_price = max(property.offer_ids.mapped("price"), default=0.0)
             if val["price"] < max_offer_price:
                 raise UserError("The offer must be higher than an existing offer!")
             property.state = "offer received"
-            return super().create(vals)
+        return super().create(vals)
 
     def action_set_accepted(self):
         for record in self:
-            if record.property_id.selling_price == 0.0:
-                record.status = "accepted"
-                record.property_id.selling_price = record.price
-                record.property_id.buyer_id = record.partner_id
-                record.property_id.state = "offer accepted"
+            if any([offer.status == "accepted" for offer in self.property_id.offer_ids]):
+                raise UserError("An offer was already accepted for this property")
 
-                remaining_offers = record.property_id.offer_ids.filtered(
-                    lambda offer: offer.id != record.id
-                )
-                remaining_offers.write({"status": "refused"})
-            else:
-                raise UserError("One offer is already accepted")
+            self.status = "accepted"
+            self.property_id.selling_price = self.price
+            self.property_id.buyer_id = self.partner_id
+            self.property_id.state = "offer accepted"
+
+            remaining_offers = record.property_id.offer_ids.filtered(
+                lambda offer: offer.id != record.id
+            )
+            remaining_offers.write({"status": "refused"})
         return True
 
     def action_set_refused(self):

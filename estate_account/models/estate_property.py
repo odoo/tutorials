@@ -24,7 +24,7 @@ class EstateProperty(models.Model):
         },
 
         try:
-            self.check_access("write")
+            self.env["estate.property"].check_access("write")
         except AccessError:
             raise AccessError("You don't have the permission to sold on this record")
 

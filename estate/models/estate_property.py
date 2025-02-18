@@ -112,23 +112,23 @@ class EstateProperty(models.Model):
             if record.state not in ["new", "canceled"]:
                 raise UserError("You can only delete properties in 'New' or 'Canceled' state.")
 
-
     def action_set_sold(self):
         for record in self:
-            if record.state != "canceled":
-                record.state = "sold"
-            elif record.state == "canceled":
-                raise UserError("Canceled properties cannot be sold")
-            elif record.state == "sold":
-                raise UserError("It's already been sold.")
-            return True
+            if record.state == "canceled":
+                raise UserError("Cancelled property cannot be sold")
+
+            has_accepted_offer = any(offer.status == "accepted" for offer in record.offer_ids)
+            print(has_accepted_offer, ".....................................has_accepted_offer................................")
+            if not has_accepted_offer:
+                raise UserError("You cannot sell a property without an accepted offer")
+
+            record.state = "sold"
+        return True
 
     def action_set_cancel(self):
         for record in self:
-            if record.state != "sold":
+            if record.state == "sold":
+                raise UserError("Sold property can not be Cancelled")
+            else:
                 record.state = "canceled"
-            elif record.state == "sold":
-                raise UserError("Sold properties cannot be canceled.")
-            elif record.state == "canceled":
-                raise UserError("It's already been canceled.")
-            return True
+        return True
