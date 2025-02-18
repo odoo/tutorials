@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class Property(models.Model):
@@ -6,7 +6,7 @@ class Property(models.Model):
     _description = "Real estate property"
 
     name = fields.Char("Property Name", required=True)
-    description = fields.Text("Property description")
+    description = fields.Text()
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
 
     active = fields.Boolean(default=True)
@@ -23,22 +23,20 @@ class Property(models.Model):
         copy=False,
     )
 
-    postcode = fields.Char("Property postcode", required=True)
+    postcode = fields.Char(required=True)
     date_availability = fields.Date(
-        "Property availability date",
+        "Availability date",
         copy=False,
         default=fields.Datetime.add(fields.Datetime.today(), months=3),
     )
-    expected_price = fields.Float("Property expected price", required=True)
-    selling_price = fields.Float(
-        "Property selling price", readonly=True, copy=False, default=0
-    )
+    expected_price = fields.Float("Expected price", required=True)
+    selling_price = fields.Float("Selling price", readonly=True, copy=False, default=0)
     bedrooms = fields.Integer("Number of bedrooms", required=True, default=2)
-    living_area = fields.Integer("Size of the living area", required=True)
+    living_area = fields.Integer("Living area (sqm)", required=True)
     facades = fields.Integer("Number of facades", required=True)
     garage = fields.Boolean("Has a garage", required=True)
     garden = fields.Boolean("Has a garden", required=True)
-    garden_area = fields.Integer("Size of the garden")
+    garden_area = fields.Integer("Garden (sqm)")
     garden_orientation = fields.Selection(
         string="Garden orientation",
         selection=[
@@ -50,7 +48,7 @@ class Property(models.Model):
     )
     property_type_id = fields.Many2one("estate.property.type", string="Type")
 
-    total_area = fields.Float("Total Area", compute="_compute_total_area")
+    total_area = fields.Float("Total area (sqm)", compute="_compute_total_area")
 
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(
@@ -96,3 +94,25 @@ class Property(models.Model):
             self.garden = True
             if self.garden_orientation == False:
                 self.garden_orientation = "north"
+
+    def action_set_sold(self):
+        flag = False
+        for record in self:
+            if record.state != "cancelled":
+                record.state = "sold"
+            else:
+                flag = True
+        if flag:
+            raise exceptions.UserError("Cancelled properties can't be sold.")
+        return True
+
+    def action_cancel(self):
+        flag = False
+        for record in self:
+            if record.state != "sold":
+                record.state = "cancelled"
+            else:
+                flag = True
+        if flag:
+            raise exceptions.UserError("Sold properties can't be cancelled.")
+        return True

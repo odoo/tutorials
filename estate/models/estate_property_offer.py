@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class PropertyOffer(models.Model):
@@ -6,7 +6,7 @@ class PropertyOffer(models.Model):
     _description = "Real estate property offer"
 
     price = fields.Float()
-    status = fields.Selection(
+    state = fields.Selection(
         selection=[
             ("accepted", "Accepted"),
             ("refused", "Refused"),
@@ -36,3 +36,23 @@ class PropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.today()).days
+
+    def action_refuse(self):
+        for record in self:
+            record.state = "refused"
+        return True
+
+    def action_accept(self):
+        self.ensure_one()
+        if self.property_id.state in ["sold", "offer_accepted"]:
+            raise exceptions.UserError("This property has another accepted offer")
+            return False
+        self.state = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = "offer_accepted"
+        for offer in self.property_id.offer_ids:
+            if offer == self:
+                continue
+            offer.state = "refused"
+        return True
