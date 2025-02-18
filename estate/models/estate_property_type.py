@@ -2,10 +2,10 @@ from odoo import fields, models, api
 
 
 class EstatePropertyType(models.Model):
-    _name = "estate.property.type"
+    _name = 'estate.property.type'
     _description = "this is the estate property type model"
     _sql_constraints = [
-        ('check_uniqueness', 'UNIQUE (name)', 'Each property type must be unique')
+        ('check_uniqueness', 'UNIQUE (name)', 'Each property type must be unique'),
     ]
     _order = 'sequence'
 

@@ -5,12 +5,12 @@ from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
+    _name = 'estate.property'
     _description = "this is the estate property model"
     _sql_constraints = [
         ('check_positive_amounts',
          'CHECK (expected_price > 0 AND selling_price >= 0)',
-         'This amount must be positive')
+         'This amount must be positive'),
     ]
     _order = 'id desc'
 
@@ -31,8 +31,8 @@ class EstateProperty(models.Model):
             ('north', 'North'),
             ('south', 'South'),
             ('east', 'East'),
-            ('west', 'West')
-        ]
+            ('west', 'West'),
+        ],
     )
     state = fields.Selection(
         string='Status',
@@ -41,14 +41,14 @@ class EstateProperty(models.Model):
             ('received', 'Offer Received'),
             ('accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
-            ('cancelled', 'Cancelled')
+            ('cancelled', 'Cancelled'),
         ],
         copy=False,
         required=True,
         default='new'
     )
     active = fields.Boolean(default=True)
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     buyer_id = fields.Many2one('res.partner', copy=False, string='Buyer')
     salesman_id = fields.Many2one('res.users', default=lambda self: self.env.user, string='Salesman')
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
@@ -82,14 +82,14 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError('Cancelled properties cannot be sold')
+                raise UserError("Cancelled properties cannot be sold")
             record.state = 'sold'
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError('Sold properties cannot be cancelled')
+                raise UserError("Sold properties cannot be cancelled")
             record.state = 'cancelled';
         return True
 
@@ -98,3 +98,10 @@ class EstateProperty(models.Model):
         for record in self:
             if float_compare(record.selling_price, .9 * record.expected_price, precision_digits=10) < 0:
                 raise ValidationError("The selling price must be at least 90% of the expected price")
+
+    @api.ondelete(at_uninstall=True)
+    def _unlink_estate_property(self):
+        for record in self:
+            if record.state != 'new' and record.state != 'cancelled':
+                raise UserError("Removing a property is not allowed if it is neither new nor cancelled")
+
