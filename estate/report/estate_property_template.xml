@@ -102,7 +102,7 @@
                         <span t-field="offer.date_deadline"/>
                     </td>
                     <td>
-                        <t t-if="offer.status">  <!-- Changed status to state -->
+                        <t t-if="offer.status">
                             <span t-field="offer.status"/>
                         </t>
                         <t t-else="">
