@@ -12,6 +12,8 @@ class EstatePropertyModel(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
+    image_1920 = fields.Image("Image", max_width=256, max_height=256, store=True)
+    image_256 = fields.Image("Image_256", related="image_1920", max_width=256, max_height=256, store=True)
     date_availability = fields.Date(
         copy=False, default=fields.Date.add(fields.Date.today(), months=3)
     )
