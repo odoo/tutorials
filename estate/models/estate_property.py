@@ -7,7 +7,7 @@ from odoo.tools.float_utils import float_is_zero, float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _inherit = ["mail.thread","mail.activity.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Estate Property models"
     _order = "id desc"
     _sql_constraints = [
@@ -22,7 +22,6 @@ class EstateProperty(models.Model):
             "The selling price must be positive!",
         ),
     ]
-    _track_duration_field = "state"
 
     name = fields.Char("Title", default="Unknown", required=True)
     description = fields.Text("Description")
@@ -32,6 +31,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
+    property_image = fields.Image("Property Image")
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -60,8 +60,9 @@ class EstateProperty(models.Model):
         string="State",
         default="new",
         required=True,
+        group_expand=False,
         copy=False,
-        tracking=True
+        tracking=True,
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -72,9 +73,12 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     best_offer = fields.Float("Best offer", compute="_compute_best_offer")
     company_id = fields.Many2one(
-        "res.company", string="Company", required=True, default=lambda self: self.env.company
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company,
     )
-    
+
     # Python constraints -- selling price cannot be lower than 90% of the expected price
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
@@ -124,9 +128,9 @@ class EstateProperty(models.Model):
     def action_set_sold(self):
         if self.state == "cancelled":
             raise UserError("A cancelled property cannot be sold.")
-        
+
         # Check if there is an accepted offer before selling
-        accepted_offer = self.offer_ids.filtered(lambda o: o.status == 'accepted')
+        accepted_offer = self.offer_ids.filtered(lambda o: o.status == "accepted")
         if not accepted_offer:
             raise UserError("You cannot sell a property without an accepted offer.")
 
@@ -138,17 +142,17 @@ class EstateProperty(models.Model):
             raise UserError("A Sold property cannot to be cancelled.")
         self.state = "cancelled"
         return True
-    
+
     # --------------------------------------------------
     # MAILING
     # ---------------------------------------------------
 
-    def _track_subtype(self,init_values):
+    def _track_subtype(self, init_values):
         self.ensure_one()
-        if 'state' in init_values and self.state == 'offer_received':
-            return self.env.ref('estate.mt_property_received')
-        elif 'state' in init_values and self.state == 'offer_accepted':
-            return self.env.ref('estate.mt_property_accepted')
-        elif 'state' in init_values and self.state == 'sold':
-            return self.env.ref('estate.mt_property_sold')
-        return super()._track_subtype(init_values) 
+        if "state" in init_values and self.state == "offer_received":
+            return self.env.ref("estate.mt_property_received")
+        elif "state" in init_values and self.state == "offer_accepted":
+            return self.env.ref("estate.mt_property_accepted")
+        elif "state" in init_values and self.state == "sold":
+            return self.env.ref("estate.mt_property_sold")
+        return super()._track_subtype(init_values)

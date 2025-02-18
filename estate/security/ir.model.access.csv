@@ -6,3 +6,4 @@ estate_property_type_manager,Manager Type Access,model_estate_property_type,esta
 estate_property_type_user,Agent Type Read,model_estate_property_type,estate_group_user,1,0,0,0
 estate_property_tag_manager,Manager Tag Access,model_estate_property_tag,estate_group_manager,1,1,1,1
 estate_property_tag_user,Agent Tag Read,model_estate_property_tag,estate_group_user,1,0,0,0
+estate_property_offer_wizard,Wizard Access,model_estate_property_offer_wizard,estate_group_user,1,1,1,1

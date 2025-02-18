@@ -8,14 +8,14 @@
     """,
     "category": "Real Estate/Brokerage",
     "author": "Darshan Patel",
-    "website": "",
-    "depends": ["base","mail"],
+    "depends": ["base", "mail","website"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
         "views/estate_property_tag.xml",
         "views/res_user.xml",
         "views/estate_property_offer.xml",
+        "views/estate_property_offer_wizard.xml",
         "views/estate_property_type.xml",
         "views/estate_property_views.xml",
         "views/estate_menus.xml",
@@ -23,6 +23,7 @@
         "data/mail_message_subtype_data.xml",
         "report/estate_property_report_view.xml",
         "report/estate_property_templates.xml",
+        "views/controller_views.xml"
     ],
     "demo": [
         "demo/estate_demo_properties.xml",
@@ -30,5 +31,5 @@
     ],
     "installable": True,
     "application": True,
-    "auto_install": False,
+    "auto_install": True,
 }

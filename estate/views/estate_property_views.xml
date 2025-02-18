@@ -11,6 +11,9 @@
                 decoration-bf="state == 'offer_accepted'"
                 decoration-danger="state == 'cancelled'"
                 decoration-muted="state == 'sold'">
+                <header>
+                    <button name="%(estate.action_add_offer)d" type="action" string="Add Offer" class="btn-primary"/>
+                </header>
                 <field name="name" />
                 <field name="postcode" />
                 <field name="bedrooms" />
@@ -39,12 +42,19 @@
                 </header>
                 <sheet>
                     <group>
-                        <div>
-                            <h1>
-                                <field name="name" />
-                            </h1>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create': True, 'no_open': True}" />
-                        </div>
+                        <group>
+                            <div>
+                                <h1>
+                                    <field name="name" />
+                                </h1>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create': True, 'no_open': True}" />
+                            </div>
+                        </group>
+                        <group>
+                            <div>
+                                <field name="property_image" widget="image" class="oe_avatar"/>
+                            </div>
+                        </group>
                     </group>
                     <group>
                         <group>
@@ -118,7 +128,7 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" group_create="true" quick_create="true" records_draggable="False">
+            <kanban default_group_by="state" group_create="false" quick_create="false" records_draggable="False">
                 <templates>
                 <t t-name="kanban-box">
                     <div class="card">
@@ -178,6 +188,15 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">kanban,list,form</field>
         <field name="context">{'search_default_available_properties':1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage the stages of your property listings efficiently.
+            </p>
+            <p>
+                Stages help track the progress of a property, from listing to sold, 
+                ensuring a smooth workflow for estate property management.
+            </p>
+        </field>
     </record>
 
 </odoo>
