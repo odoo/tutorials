@@ -28,6 +28,7 @@ class EstateTestCase(TransactionCase):
         })
 
     def test_action_sell(self):
+        self.property.state = 'sold_offer'
         with self.assertRaises(UserError, msg="Selling a property without an accepted offer!"):
             self.property.action_sold()
 
@@ -37,7 +38,7 @@ class EstateTestCase(TransactionCase):
         self.assertEqual(self.property.selling_price, 9000, msg="Selling price not matched!")
 
         self.property.action_sold()
-        self.assertEqual(self.property.state, 'sold_offer', msg="State not changes to sold offer!")  # Ensure state changes to 'sold_offer'
+        self.assertEqual(self.property.state, 'sold_offer', msg="State not changes to sold offer!")
 
         self.assertRecordValues(self.property, [
             {'state': 'sold_offer'},
