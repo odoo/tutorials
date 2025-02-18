@@ -13,7 +13,10 @@
              "views/res_users.xml",
              "views/estate_menus.xml",
              "views/estate_properties_template.xml",
-             "views/estate_property_details.xml"
+             "views/estate_property_details.xml",
+             "report/estate_property_reports.xml",
+             "report/estate_property_templates.xml",
+             "report/estate_property_saleman_report.xml"
              ],
     "demo": [
             "demo/estate_property_type_demo.xml",
