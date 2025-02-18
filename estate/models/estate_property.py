@@ -16,6 +16,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string="Description", required=True)
     postcode = fields.Char(string="Postcode")
+    image = fields.Image()
     date_availability = fields.Date(string="Date Availability", copy=False, default=lambda self: fields.Datetime.today()+relativedelta(days=90))
     expected_price = fields.Float(string="Expected Price")
     selling_price = fields.Float(string="Selling Price", copy=False, readonly=True)
@@ -48,6 +49,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
+        group_expand=True,
     )
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type", string="Property Type")

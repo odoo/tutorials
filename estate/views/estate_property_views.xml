@@ -9,7 +9,7 @@
                 decoration-success="state == 'offer_accepted'"
                 decoration-bf="state == 'offer_accepted'">
                 <header>
-                    <button name="%(estate_property_offer_wizard_action)d" type="action" string="Add Offer"/>
+                    <button name="%(estate_property_offer_wizard_action)d" type="action" string="Add Offer" class="btn-primary"/>
                 </header>
                 <field name="name"/>
                 <field name="property_type_id"/>
@@ -42,6 +42,11 @@
                         </h1>
                         <field name="tag_ids" widget="many2many_tags"
                             options="{'color_field' : 'color'}"/>
+                    </group>
+                    <group>
+                        <div>
+                            <field name="image" nolabel="1" widget="image" class='w-25'/>
+                        </div>
                     </group>
                     <group>
                         <group>
@@ -128,8 +133,11 @@
                 <templates>
                     <t t-name="card">
                         <div>
+                            <field name="image" widget="image"/>
+                        </div>
+                        <div>
                             <h2>
-                                <field name="name" />
+                                <field name="name"/>
                             </h2>
                             <div> Expected Price: 
                                 <field name="expected_price" string="Expected Price"/>

@@ -1,8 +1,9 @@
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import tagged, TransactionCase
+from odoo.tests import Form
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install', '-at_install', 'estate_test')
 class TestEstateProperty(TransactionCase):
     def setUp(self):
         super().setUp()
@@ -34,3 +35,12 @@ class TestEstateProperty(TransactionCase):
         self.property.state = 'offer_accepted'
         self.property.action_sell_property()
         self.assertEqual(self.property.state, 'sold')
+
+    def test_onchange_garden_in_form(self):
+        with Form(self.property) as form:
+            form.garden = True
+            self.assertEqual(form.garden_area, 10, "Garden Area should be set as 10")
+            self.assertEqual(form.garden_orientation, 'north', "Garden Orientation should be set as North")
+            form.garden = False
+            self.assertEqual(form.garden_area, 0, "Garden Area should be set to 0 once set Garden is unset")
+            self.assertEqual(form.garden_orientation, False, "Garden Orientation should be set to False when Garden unset")
