@@ -6,9 +6,10 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property"
     _order = "id desc"
+    _inherit = "mail.thread"
 
     name = fields.Char(
-        "Property Name", required=True
+        "Property Name", required=True, tracking=True
     )  # required make property not nullable
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
@@ -45,6 +46,7 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
+        tracking=True,
     )
     property_type_id = fields.Many2one("estate.property.type")
     buyer_id = fields.Many2one(
@@ -141,10 +143,14 @@ class EstateProperty(models.Model):
                 raise UserError(message)
             else:
                 record.state = "cancelled"
-            return True
-    
-    # @api.model_create_multi
-    # def create(self, vals_list):
-    #     property = self.env["estate.property"].browse(vals["property_id"])
+            return True 
 
-    #     return super().create(vals_list)
+    @api.model_create_multi
+    def create(self, vals_list):
+        created_property = super().create(vals_list)
+        # breakpoint()
+        # print(created_property)
+        for record in created_property:
+            message = "{} created a property named ' {} '".format(self.env.user.name, record.name)
+            record.message_post(body=message)
+        return created_property

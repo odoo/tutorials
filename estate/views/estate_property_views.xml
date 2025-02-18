@@ -96,6 +96,7 @@
                     </notebook>
 
                 </sheet>
+                <chatter reload_on_post="True" />
             </form>
 
         </field>
@@ -106,19 +107,20 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Property Search">
-                <field name="name" string="Title"  />
+                <field name="name" string="Title" />
                 <field name="property_type_id" />
-                <field name="postcode" string="Postcode"  />
-                <field name="expected_price"  string="Expected Price" />
-                <field name="bedrooms" string="Bedrooms"  />
-                <field name="living_area" string="Living Area (sqm)" 
+                <field name="postcode" string="Postcode" />
+                <field name="expected_price" string="Expected Price" />
+                <field name="bedrooms" string="Bedrooms" />
+                <field name="living_area" string="Living Area (sqm)"
                     filter_domain="[('living_area' ,'>=' ,self)]" />
-                <field name="facades" string="Facades"  />
-                <filter name="date_availability" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
-                <filter name="postcode" string="Postcode"  context="{'group_by':'postcode'}" />
+                <field name="facades" string="Facades" />
+                <filter name="date_availability" string="Available"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
+                <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}" />
                 <!-- added extra group by filter other than given exercise -->
-                <filter name="state" string="State"  context="{'group_by':'state'}" />
-                <filter name="bedrooms" string="Bedrooms"  context="{'group_by':'bedrooms'}" />
+                <filter name="state" string="State" context="{'group_by':'state'}" />
+                <filter name="bedrooms" string="Bedrooms" context="{'group_by':'bedrooms'}" />
             </search>
         </field>
     </record>
@@ -127,8 +129,7 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id">offer_accepted
-                <field name="state" />
+            <kanban default_group_by="property_type_id">offer_accepted <field name="state" />
                 <template>
                     <t t-name="card">
                         <field name="name" class="fw-bold fs-4 me-auto" />

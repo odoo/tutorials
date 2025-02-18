@@ -3,7 +3,7 @@
     "version": "1.0",
     "license": "LGPL-3",
     "category":"Real Estate/Brokerage",
-    "depends": ["base"],
+    "depends": ["base","mail"],
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",
