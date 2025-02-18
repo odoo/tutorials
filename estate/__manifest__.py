@@ -18,6 +18,8 @@
         'views/res_users_views.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+        'demo/estate.property.type.csv',
+        'demo/estate_property.xml',
     ],
     'installable': True,
     'application': True,

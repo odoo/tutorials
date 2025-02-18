@@ -63,4 +63,3 @@ class EstatePropertyOffer(models.Model):
             property.state = 'offer_recieved'
         return super().create(vals_list)
  
-    
