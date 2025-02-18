@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import api, exceptions,fields, models
+from odoo import api, exceptions,fields, models, _
 
 
 class EstatePropertyOffer(models.Model):
@@ -27,10 +27,12 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             min_price = min(self.env['estate.property.offer'].search([('property_id', '=', vals['property_id'])]) .mapped('price'), default=0 )
             if vals['price'] <= min_price:
-                raise exceptions.UserError("The price must be higher than any existing offer.")
+                raise exceptions.UserError(_("The price must be higher than any existing offer."))
             property = self.env['estate.property'].browse(vals['property_id'])
             if property.status == 'new' or not property.status:
                 property.status = 'offer_received'
+            if property.status=='sold' or property.status=='cancelled':
+                raise exceptions.UserError(_("You cannot add an offer to a sold or cancelled property."))
         return super().create(vals_list)
 
     @api.depends("create_date","validity")
@@ -50,17 +52,17 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             if record.property_id.status == "sold":
-                raise exceptions.UserError("This property is already sold")
+                raise exceptions.UserError(_("This property is already sold"))
             if record.property_id.status == "cancelled":
-                raise exceptions.UserError("This property is already cancelled")
+                raise exceptions.UserError(_("This property is already cancelled"))
             accepted_offer = self.search([
                     ('property_id', '=', record.property_id.id),
                     ('status', '=', 'accepted')
                 ]   )
             if accepted_offer:
-                raise exceptions.UserError("Only one offer can be accepted per property!")
+                raise exceptions.UserError(_("Only one offer can be accepted per property!"))
             if record.price < (record.property_id.expected_price*0.9):
-                raise exceptions.UserError("The selling price cannot be lower than 90% of the expected price.")
+                raise exceptions.UserError(_("The selling price cannot be lower than 90% of the expected price."))
             record.status = "accepted"
             record.property_id.status = "offer_accepted"
             record.property_id.buyer_id = record.partner_id
@@ -69,9 +71,9 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             if record.property_id.status == "sold":
-                raise exceptions.UserError("This property is already sold")
+                raise exceptions.UserError(_("This property is already sold"))
             if record.property_id.status == "cancelled":
-                raise exceptions.UserError("This property is already cancelled")
+                raise exceptions.UserError(_("This property is already cancelled"))
             record.status = "refused"
             if record.property_id.status == "offer_accepted":
                 pass

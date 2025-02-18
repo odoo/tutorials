@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import api, exceptions,fields, models
+from odoo import api, exceptions,fields, models, _
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -62,7 +62,7 @@ class EstateProperty(models.Model):
     def _check_state_on_delete(self):
         for record in self:
             if record.status not in ['new', 'cancelled']:
-                raise exceptions.UserError("You can only delete properties in the 'New' or 'Cancelled' state.")
+                raise exceptions.UserError(_("You can only delete properties in the 'New' or 'Cancelled' state."))
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -85,16 +85,16 @@ class EstateProperty(models.Model):
 
     def property_sold(self):
         if self.status == 'cancelled':
-            raise exceptions.UserError("A Cancelled property cannot be sold!")
+            raise exceptions.UserError(_("A Cancelled property cannot be sold!"))
         accepted_offer = self.offer_ids.filtered(lambda o: o.status == 'accepted')
-        if not accepted_offer or self.status != 'offer_accepted':
-            raise exceptions.UserError("You need to accept an offer first!")
+        if not accepted_offer :
+            raise exceptions.UserError(_("You need to accept an offer first!"))
         self.status = "sold"
         return True
 
     def property_cancel(self):
         if self.status == 'sold':
-            raise exceptions.UserError("A Sold property cannot be cancelled!")
+            raise exceptions.UserError(_("A Sold property cannot be cancelled!"))
         self.status = "cancelled"
         return True
 
@@ -105,6 +105,6 @@ class EstateProperty(models.Model):
                 continue
             min_allowed_price = record.expected_price * 0.9
             if fields.float_compare(record.selling_price, min_allowed_price, precision_digits=2) == -1:
-                raise models.ValidationError(
+                raise models.ValidationError(_(
                     "Offer price cannot be lower than 90% of the expected price!"
-                )
+                ))

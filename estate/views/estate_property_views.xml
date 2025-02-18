@@ -13,27 +13,27 @@
                 <field name="property_tag_id"/>
                 <templates>
                     <t t-name="card">
-                    <main>
-                        <strong>
-                            <field name="name"/>
-                        </strong>
-                        <div>
-                            <span>Expected Price: </span>
-                            <span t-esc="record.expected_price.value"/>
-                        </div>
-                        <div t-if="record.best_offer.raw_value">
-                            <span>Best Price: </span>
-                            <span t-esc="record.best_offer.value"/>
-                        </div>
-                        <div t-if="record.selling_price.raw_value">
-                            <span>Selling Price: </span>
-                            <span t-esc="record.selling_price.value"/>
-                        </div>
-                        <div>
-                            <field name="property_tag_id" widget="many2many_tags"
-                                options="{'color_field': 'color'}" />
-                        </div>
-                    </main>
+                        <main>
+                            <strong>
+                                <field name="name"/>
+                            </strong>
+                            <div>
+                                <span>Expected Price: </span>
+                                <span t-esc="record.expected_price.value"/>
+                            </div>
+                            <div t-if="record.best_offer.raw_value">
+                                <span>Best Price: </span>
+                                <span t-esc="record.best_offer.value"/>
+                            </div>
+                            <div t-if="record.selling_price.raw_value">
+                                <span>Selling Price: </span>
+                                <span t-esc="record.selling_price.value"/>
+                            </div>
+                            <div>
+                                <field name="property_tag_id" widget="many2many_tags"
+                                    options="{'color_field': 'color'}" />
+                            </div>
+                        </main>
                     </t>
                 </templates>
             </kanban>

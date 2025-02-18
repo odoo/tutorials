@@ -1,6 +1,6 @@
 from datetime import date
 
-from odoo import models, Command, exceptions
+from odoo import models, Command, exceptions, _
 
 
 class EstateProperty(models.Model):
@@ -26,4 +26,4 @@ class EstateProperty(models.Model):
             })
             return invoice
         except:
-            raise exceptions.UserError("You do not have the necessary permissions to sell this property.")
+            raise exceptions.UserError(_("You do not have the necessary permissions to sell this property."))
