@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 
 
 class PropertyOffer(models.Model):
@@ -23,3 +23,18 @@ class PropertyOffer(models.Model):
                record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
            else:
                record.date_deadline = fields.Date.add(fields.Date.today(), days=record.validity)
+
+    def accept_offer(self):
+        for record in self:
+            if record.property_id.offer_ids.mapped("status").count("accepted") >= 1:
+                raise exceptions.UserError("More than one offer can't be accepted for the same property")
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.status = "offer_accepted"
+        return True
+
+    def refuse_offer(self):
+        for record in self:
+            record.status = "refused"
+        return True
