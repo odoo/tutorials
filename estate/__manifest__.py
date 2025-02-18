@@ -3,6 +3,7 @@
     "category": "Real Estate/Brokerage",
     "depends": ["base", "mail"],  # Add 'mail' module
     "data": [
+        "wizard/estate_property_offer_wizard_view.xml",
         "views/res_user_views.xml",
         "views/estate_property_offer.xml",
         "views/estate_property_type_views.xml",
@@ -15,6 +16,7 @@
         "report/res_users_reports.xml",
         "security/estate_security.xml",
         "security/ir.model.access.csv",
+        "views/estate_property_webpage.xml",
     ],
     "demo": ["demo/estate_demo.xml"],
     "application": True,

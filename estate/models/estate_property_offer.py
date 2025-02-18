@@ -11,7 +11,7 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
     _inherit = ["mail.thread", "mail.activity.mixin"]  # enables the chatter
 
-    price = fields.Float(allow_negative=False)
+    price = fields.Float()
     status = fields.Selection(
         copy=False, selection=[("refused", "Refused"), ("accepted", "Accepted")]
     )

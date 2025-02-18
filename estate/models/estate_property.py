@@ -1,7 +1,7 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
-from odoo import api,fields,models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -70,7 +70,7 @@ class EstateProperty(models.Model):
         required=True,
         default=lambda self: self.env.company.id,
     )
-
+    property_image = fields.Image("Property Image", max_width=1024, max_height=1024)
     _sql_constraints = [
         (
             "positive_expected_price",
@@ -115,14 +115,22 @@ class EstateProperty(models.Model):
             self.state = "sold"
             print("Property Sold")
         else:
-            print("Property cannot be sold because it has either been cancelled or no offers have been accepted! ERROR RAISED")
-            raise UserError("Property cannot be sold because it has either been cancelled or no offers have been accepted!")
+            print(
+                "Property cannot be sold because it has either been cancelled or no offers have been accepted! ERROR RAISED"
+            )
+            raise UserError(
+                "Property cannot be sold because it has either been cancelled or no offers have been accepted!"
+            )
 
     def cancel(self):
         if self.state != "sold":
             self.state = "cancelled"
         else:
             raise UserError("Sold Property cannot be cancelled!")
+
+    def action_offer(self):
+        print("function called!")
+        pass
 
     def unlink(self):
         for property in self:
