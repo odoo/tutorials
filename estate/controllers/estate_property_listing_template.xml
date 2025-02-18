@@ -1,0 +1,44 @@
+<odoo>
+    <template id="estate_property_listing_template" name="Estate Properties">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h2>Available Properties</h2>
+                <div class="row">
+                    <!-- Loop through properties and display each one as a card -->
+                    <t t-foreach="properties" t-as="pro">
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm">
+                                <img t-att-src="'/web/image/estate.property/' + str(pro.id) + '/image_1920'" 
+                                     class="card-img-top" alt="Property Image"/>
+                                <div class="card-body">
+                                    <h5 class="card-title" t-esc="pro.name"/>
+                                    <p class="card-text">
+                                        <strong>Status:</strong> <t t-esc="pro.state"/>
+                                    </p>
+                                    <a t-att-href="'/properties/' + str(pro.id)" class="btn btn-primary">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- <div class="pagination mt-4 d-flex justify-content-between">
+          
+                    <t t-if="current_page &gt; 1">
+                        <a t-att-href="'/properties?page=' + str(current_page - 1)" class="btn btn-outline-secondary">
+                            Previous
+                        </a>
+                    </t>
+              
+                    <t t-if="current_page &lt; total_pages">
+                        <a t-att-href="'/properties?page=' + str(current_page + 1)" class="btn btn-outline-secondary">
+                            Next
+                        </a>
+                    </t>
+                </div> -->
+            </div>
+        </t>
+    </template>
+</odoo>

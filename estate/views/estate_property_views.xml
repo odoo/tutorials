@@ -9,8 +9,11 @@
     <record id="estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
-        <field name="arch" type="xml">
+        <field name="arch" type="xml"> 
             <list decoration-muted="state =='sold'" decoration-success="state in ['offer received','offer accepted']" decoration-bf="state=='offer accepted'">
+                <header>
+                    <button name="%(estate_property_offer_wizard_action)d" string="Add Offer" type="action" class="oe_highlight"/>
+                </header>
                 <field name="name"/>              
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -36,7 +39,7 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" invisible="state in ['sold','cancelled']"/>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight" invisible="state in ['sold','cancelled']"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold','cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
                 </header>

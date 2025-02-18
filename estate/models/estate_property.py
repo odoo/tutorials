@@ -13,6 +13,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="tags")
     description = fields.Text()
     postcode = fields.Char()
+    image_1920= fields.Image()
     date_availability = fields.Date(
         copy=False,
         default=lambda self: fields.Datetime.today() + relativedelta(days=90),
