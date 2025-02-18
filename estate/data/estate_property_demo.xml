@@ -55,7 +55,7 @@
                 'partner_id': ref('base.res_partner_10')
             }),
             Command.create({
-                'price': 40000,
+                'price': 45000,
                 'validity': 1,
                 'partner_id': ref('base.res_partner_2')
             }),

@@ -9,6 +9,13 @@
                 decoration-success="state in ('offer_received', 'offer_accepted')"
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'">
+                <header>
+                    <button name="%(action_estate_property_offer_wizard)d"
+                        type="action"
+                        string="Add Offer"
+                        class="btn-primary"
+                        icon="fa-plus" />
+                </header>
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="postcode" />

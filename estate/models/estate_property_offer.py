@@ -1,3 +1,4 @@
+from copy import error
 from datetime import timedelta
 from odoo import api, models, fields, exceptions
 
@@ -5,6 +6,8 @@ from odoo import api, models, fields, exceptions
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
+
     _sql_constraints = [
         (
             "check_price",
@@ -12,7 +15,6 @@ class EstatePropertyOffer(models.Model):
             "The offer price must be strictly positive.",
         )
     ]
-    _order = "price desc"
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -52,6 +54,10 @@ class EstatePropertyOffer(models.Model):
 
     def action_accepted(self):
         for record in self:
+            if any(
+                offer.status == "accepted" for offer in record.property_id.offer_ids
+            ):
+                raise exceptions.UserError(error)
             if record.property_id.offer_ids.filtered(
                 lambda offer: offer.status == "accepted"
             ):
