@@ -51,7 +51,7 @@ class EstateProperty(models.Model):
         "res.partner", string="Buyer", copy=False
     )  # a buyer is a external person - therefore in partner relation
     salesperson_id = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user
+        "res.users", string="Salesman", default=lambda self: self.env.user, domain=lambda self:[('company_id' ,'=', self.env.company.id)]
     )  # a salesman is considered a internal entity - therefore in user relation
     tag_ids = fields.Many2many("estate.property.tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
@@ -61,6 +61,7 @@ class EstateProperty(models.Model):
         help="Calculate by adding Living area and Garden Area",
     )
     best_price = fields.Float("Best Price", compute="_compute_best_price")
+    company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -141,3 +142,9 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
             return True
+    
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     property = self.env["estate.property"].browse(vals["property_id"])
+
+    #     return super().create(vals_list)

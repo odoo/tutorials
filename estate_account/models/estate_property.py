@@ -12,9 +12,13 @@ class EstateProperty(models.Model):
         #         self.check_access_rule("write")
         #     except AccessError:
         #         return self.env["account.move"]
-
+        print(" reached ".center(100, '='))
+        print(self.env.user)
+        print(self.env.user.has_group)
+        self.env["account.move"].check_access("write")
         for record in self:
-            self.env["account.move"].create(
+            # sudo to bypass access and record rules to any user
+            self.env["account.move"].sudo().create(
                 {
                     "partner_id": record.buyer_id.id,
                     "move_type": "out_invoice",
