@@ -1,5 +1,5 @@
 from odoo import Command, api, models
-
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
@@ -7,11 +7,11 @@ class EstateProperty(models.Model):
     def action_sold(self):
         res =  super().action_sold()
         if not self.buyer_id:
-            raise ValueError("A buyer must be specified before selling the property.")
-        journal = self.env['account.journal'].search([('type', '=', 'sale')], limit = 1)
-
+            raise UserError("A buyer must be specified before selling the property.")
+        
+        journal = self.env['account.journal'].search([('type', '=', 'sale')],limit = 1)
         if not journal:
-            raise ValueError("No sales journal found.")
+            raise UserError("No sales journal found.")
 
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,
