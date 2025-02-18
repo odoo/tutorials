@@ -4,7 +4,7 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'author': 'Author Name',
     'category': 'Real Estate/Brokerage',
     'application': True,
@@ -24,8 +24,10 @@
         'views/estate_property_tag_view.xml',
         'views/estate_salesperson.xml',
         'views/estate_menus.xml',
-
+        'data/master_data.xml',
     ],
     'demo': [
-    ],
+        'demo/demo_data.xml',
+        'demo/demo_offer_data.xml'
+    ]
 }

@@ -41,6 +41,9 @@
           <sheet>
             <group>
               <group>
+                <div>
+                  <p t-if="True">ok</p>
+                </div>
                 <div class="oe_title">
                   <div class="oe_edit_only">
                     <label for="name"/>
@@ -107,6 +110,7 @@
               </page>
             </notebook>
           </sheet>
+          <chatter open_attachments="True"/>
         </form>
       </field>
     </record>

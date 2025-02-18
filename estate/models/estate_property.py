@@ -9,6 +9,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class Estateproperty(models.Model):
     _name = 'estate.property'
+    _inherit = ['mail.thread']
     _description = 'Estate property'
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
@@ -49,7 +50,8 @@ class Estateproperty(models.Model):
                                                                           'Offer Accepted'), ('sold', 'Sold'), ('cancel', 'Cancelled')],
         required=True,
         copy=False,
-        default='new'
+        default='new',
+        tracking=True
     )
     total_area = fields.Integer(
         string='Total Area', compute='_compute_total_area')

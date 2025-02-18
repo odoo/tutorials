@@ -18,7 +18,7 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         string='Status',
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
-        copy=False
+        copy=False,
     )
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one(
@@ -62,6 +62,13 @@ class EstatePropertyOffer(models.Model):
         for record in records:
             if record.property_id.state == 'new':
                 record.property_id.state = 'offer_received'
+
+            record.property_id.message_post(
+                body=f"A new offer of {record.price} has been received by {record.partner_id.name}.",
+                subject="New Offer Received",
+                message_type="notification",
+                subtype_xmlid="mail.mt_comment",
+            )
         return records
 
     def action_accept(self):
@@ -84,4 +91,5 @@ class EstatePropertyOffer(models.Model):
             offer.status = 'refused'
             offer.property_id.selling_price = 0.00
             offer.property_id.buyer_id = False
-            offer.property_id.state = 'new'
+            if offer.property_id.state == 'offer_received':
+                offer.property_id.state = 'new'
