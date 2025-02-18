@@ -1,0 +1,53 @@
+<odoo>
+    <template id="property_page" name="Estate Properties">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <!-- Loop through properties and display each one as a card -->
+                    <t t-foreach="properties" t-as="pro">
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm">
+                                <t t-if="pro.image">
+                                    <!-- Convert binary image data to base64 -->
+                                    <img t-att-src="'data:image/png;base64,' + pro.image.decode('utf-8')" class="card-img-top" alt="Property Image"/>
+                                </t>
+                                <div class="card-body">
+                                    <h5 class="card-title" t-esc="pro.name"/>
+                                    <p class="card-text">
+                                        <strong>Status:</strong> <t t-esc="pro.status"/>
+                                    </p>
+                                    <a t-att-href="'/properties/' + str(pro.id)" class="btn btn-primary">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination-container mt-4">
+                    <t t-if="total_pages > 1">
+                        <ul class="pagination">
+                            <t t-if="page > 1">
+                                <li class="page-item">
+                                    <a class="page-link" t-att-href="'/properties?page=' + str(page-1)">Previous</a>
+                                </li>
+                            </t>
+                            <t t-foreach="range(1, total_pages+1)" t-as="p">
+                                <li class="page-item" t-class="{'active': p == page}">
+                                    <a class="page-link" t-att-href="'/properties?page=' + str(p)"><t t-esc="p"/></a>
+                                </li>
+                            </t>
+                            <t t-if="page &lt; total_pages">
+                                <li class="page-item">
+                                    <a class="page-link" t-att-href="'/properties?page=' + str(page+1)">Next</a>
+                                </li>
+                            </t>
+                        </ul>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

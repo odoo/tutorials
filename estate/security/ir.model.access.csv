@@ -6,3 +6,4 @@ access_estate_property_tag,access_estate_property_tag,model_estate_property_tag,
 access_estate_property_tag_manager,access_estate_property_tag,model_estate_property_tag,estate_group_manager,1,1,1,1
 access_estate_property_offer,access_estate_property_offer,model_estate_property_offer,base.group_user,1,1,1,1
 access_model_res_users,access_res_users,base.model_res_users,base.group_user,1,1,1,1
+access_estate_property_wizard_offer,access_estate_property_wizard_offer,model_estate_property_wizard_offer,base.group_user,1,1,1,0

@@ -8,7 +8,10 @@
             decoration-success="status in ('offer_received','offer_accepted')"
             decoration-bf="status=='offer_accepted'"
             decoration-muted="status == 'sold'"
-        > 
+        >   
+            <header>
+                <button name="%(estate.estate_wizard_offer_action)d" string="Make An Offer" type="action" />
+            </header>
             <field name="name"></field> <!-- here the name of the field will be written not the string which is define inside the Fields.Char(name="")-->
             <field name="property_type_id"/>
             <field name="postcode"></field>
@@ -41,6 +44,7 @@
                     <group>
                         <h1><field name="name"></field></h1>
                          <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                         <field name="image"/>
                           <field name="status"></field> 
                     </group>
 
@@ -172,5 +176,16 @@
     <field name="res_model">estate.property</field>
     <field name="view_mode">kanban,list,form,search</field>
     <field name="context">{'search_default_filter_available': 1}</field>  <!-- Set the default filter -->
+    <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create Your FIrst Property Listing
+        </p>
+        <p>
+         THere are no properties listed yet. Click the button below to add your first estate property
+        </p>
+        <a href="/web#action=estate_property_action" class="btn btn-primary">
+            Create a Property
+        </a>
+    </field>
 </record>
 </odoo>

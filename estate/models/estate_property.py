@@ -12,6 +12,7 @@ class EstateProperty(models.Model):
     _order = "id desc"
     name = fields.Char(string="Property Name", required=True,tracking=True)
     description = fields.Text(string="Description")
+    image = fields.Image("Property Image", max_width=1024, max_height=1024)
     postcode = fields.Char(string="Postcode",tracking=True)
     date_availability = fields.Date(
         string="Date Availability",
@@ -75,7 +76,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status not in ["new", "canceled"]:
                 raise UserError(
-                    f"Cannot delete the property '{record.name}' because its state is '{record.state}'."
+                    f"Cannot delete the property '{record.name}' because its state is '{record.status}'."
                 )
 
         # After applying the business logic, call the parent unlink() method
