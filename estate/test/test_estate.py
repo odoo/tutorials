@@ -1,3 +1,4 @@
+from odoo import Command
 from odoo.tests import Form
 from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
@@ -40,33 +41,23 @@ class EstateTestCase(TransactionCase):
         with self.assertRaises(UserError):
             self.properties.action_sold()
 
-    def test_selling_a_property_correctly_marks_it_as_sold(self):
-        """Ensure that selling a property updates its state correctly."""
-
-        # Accept an offer
-        self.offers[0].action_accept()
-        # Sell the property
-        self.properties.action_sold()
-
-        # Check that the property is now marked as sold
-        self.assertEqual(self.properties.state, "sold")
-
     def test_cannot_create_offer_for_sold_property(self):
         """Ensure that once a property is sold, new offers cannot be created."""
 
-        # Accept an offer and sell the property
         self.offers[0].action_accept()
         self.properties.action_sold()
 
-        # Attempt to create a new offer for a sold property
+        self.assertEqual(self.properties.state, "sold")
+
         with self.assertRaises(UserError):
-            self.env["property.offers"].create(
-                {
-                    "partner_id": self.env.ref("base.res_partner_2").id,
-                    "property_id": self.properties[0].id,
-                    "price": 102,
-                }
-            )
+            self.properties[0].offer_ids = [
+                Command.create(
+                    {
+                        "partner_id": self.env.ref(xml_id="base.res_partner_12").id,
+                        "price": 140000,
+                    },
+                )
+            ]
 
     def test_garden_uncheck_resets_values(self):
         """Ensure that unchecking the garden checkbox resets area and orientation."""

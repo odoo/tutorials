@@ -45,7 +45,6 @@ class PropertyOffers(models.Model):
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
-            # need a fallback to prevent crashing at time of creation.
             create_date = record.create_date or fields.Datetime.now()
             record.date_deadline = create_date + timedelta(days=record.validity)
 
@@ -66,8 +65,6 @@ class PropertyOffers(models.Model):
             property_id = val.get("property_id")
             if property_id:
                 property_obj = self.env["estate.property"].browse(property_id)
-                # Ensures we're only looking for offers related to property_obj.
-                # This condition ensures that the query is looking for an offer with a higher price than the one being passed in val.get('price').
                 is_offer_exists = self.env["property.offers"].search(
                     [
                         ("property_id", "=", property_obj.id),
@@ -92,7 +89,6 @@ class PropertyOffers(models.Model):
 
             offer.status = "accepted"
 
-            # set other offers status to refused
             for other_offer in offer.property_id.offer_ids:
                 if other_offer.id != offer.id:
                     other_offer.status = "refused"

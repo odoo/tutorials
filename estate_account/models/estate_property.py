@@ -1,12 +1,10 @@
-from odoo import Command, fields, models
-from odoo.exceptions import UserError
+from odoo import Command, models
 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        # print("---------------------------------sold_called")
         print(" reached ".center(100, "="))
         self.check_access("write")
         invoice = (

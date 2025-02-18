@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="estate_group_user" model="res.groups">
         <field name="name">Agent</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage" />
@@ -43,5 +42,4 @@
         <field name="perm_create" eval="True" />
         <field name="perm_unlink" eval="True" />
     </record>
-
 </odoo>

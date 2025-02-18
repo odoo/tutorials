@@ -10,7 +10,6 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     # sql constraints
-    # expected price must not be negative
     _sql_constraints = [
         (
             "expected_price",
@@ -78,6 +77,7 @@ class EstateProperty(models.Model):
         required=True,
         default=lambda self: self.env.company,
     )
+    image = fields.Image(store=True, verify_resolution=True)
 
     # Relationships
     property_type_id = fields.Many2one(
@@ -111,11 +111,6 @@ class EstateProperty(models.Model):
             is_offer_accepted = any(
                 offer.status == "accepted" for offer in record.offer_ids
             )
-            # check if selling price is greater than zero (i.e selling price is not zero)
-            # skip the validation if no offers yet created.
-            # A > B, it returns 1
-            # A == B, it returns 0
-            # A < B, it returns -1
             if is_offer_accepted and not float_is_zero(
                 record.selling_price,
                 precision_digits=2,

@@ -2,8 +2,8 @@
 <odoo>
     <!-- Define the Action for estate.property -->
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>  <!-- Name to show in the UI -->
-        <field name="res_model">estate.property</field>  <!-- Model name should be correct -->
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,search,kanban</field>
         <field name="context">{'search_default_available_properties': True}</field>
         <field name="help" type="html">
@@ -11,6 +11,12 @@
                 No Properties Here!
             </p>
         </field>
+    </record>
+
+    <record id="open_url_action" model="ir.actions.act_url">
+        <field name="name">Open External Website</field>
+        <field name="url">http://localhost:8069/properties</field>
+        <field name="target">new</field>
     </record>
 
     <!-- Property list view-->
@@ -49,19 +55,19 @@
                 </header>
                 <sheet>
                     <group>
-                        <h1>
-                            <field name="name" />
-                        </h1>
-                        <field name="tags_ids" widget="many2many_tags"
-                            options="{'color_field': 'color'}" />
-                    </group>
-                    <group>
                         <group>
-                            <field name="state" />
+                            <h1>
+                                <field name="name" />
+                            </h1>
+                            <field name="tags_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
                             <field name="property_type_id"
-                                options="{'no_create': true, 'no_open': true}" />
-                            <field name="postcode" string="Postcode" />
-                            <field name="available_from" string="Available From" />
+                                options="{'no_create':True, 'no_open':True}"></field>
+                            <field name="postcode" />
+                        </group>
+                        <group style="float: right; max-width: 150px; max-height: 150px;">
+                            <field name="image" widget="image" class="oe_avatar"
+                                style="max-width: 150px; max-height: 150px;" nolabel='1' />
                         </group>
                         <group>
                             <field name="expected_price" />
