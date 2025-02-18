@@ -12,6 +12,8 @@ This is Real Estate application which makes easy to sold property
         "security/estate_security.xml",
         "security/ir.model.access.csv",
         "data/estate_data.xml",
+        "report/estate_property_templates.xml",
+        "report/estate_property_reports.xml",
         "views/estate_templates.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_views.xml",

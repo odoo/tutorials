@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_estate_property_property" t-name="report_estate_property_property">
+        <t t-if="docs">
+            <t t-foreach="docs" t-as="property" t-if="property">
+                <t t-call="web.html_container">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 style="text-align: center; font-size: 32px; margin-bottom: 20px;">
+                                <span t-field="property.name"/>
+                            </h2>
+
+                            <div style="margin-bottom: 20px;">
+                                <p><strong>Salesman: </strong><span t-field="property.salesman_id"/></p>
+                                <p><strong>Expected Price: </strong><span t-field="property.expected_price"/></p>
+                                <p><strong>Status: </strong><span t-field="property.status"/></p>
+                            </div>
+                                <t t-call="estate.report_estate_property_offer" />
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+        <t t-else="">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="text-align: center; padding: 50px;">
+                        <h2>No data available to generate the report.</h2>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_estate_property_offer" t-name="offer_table">
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; margin-bottom: 20px">
+            <thead>
+                <tr style="background-color: #f5f5f5; text-align: left;">
+                    <th style="padding: 10px; border: 1px solid #ddd;">Price</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Partner</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Validity (days)</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">Deadline</th>
+                    <th style="padding: 10px; border: 1px solid #ddd;">State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                <t t-if="offers">
+                    <tr t-foreach="offers" t-as="offer">
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <span t-field="offer.price"/>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <span t-field="offer.partner_id.name"/>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <span t-field="offer.validity"/>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <span t-field="offer.deadline"/>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <span t-field="offer.status"/>
+                        </td>
+                    </tr>
+                </t>
+                <t t-else="">
+                    <tr>
+                        <td colspan="5" style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                            No offers available for this property.
+                        </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </template>
+
+    <template id="report_estate_property_users">
+        <t t-call="web.html_container">
+            hello
+            <t t-foreach="docs" t-as="user">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <div style="font-size: 32px; margin-bottom: 20px;">
+                            <strong>Salesman: </strong>
+                            <span t-field="user.name"/>
+                        </div>
+
+
+                        <t t-set="properties" t-value="user.mapped('property_ids')"/>
+                        <t t-foreach="properties" t-as="property">
+                            <div>
+                                <h3>
+                                    <span t-field="property.name"/>
+                                </h3>
+                            </div>
+                            <div>
+                                <strong>Expected Price: </strong>
+                                <span t-field="property.expected_price"/>
+                            </div>
+                            <div>
+                                <strong>Status: </strong>
+                                <span t-field="property.status"/>
+                            </div>
+                            <t t-call="estate.report_estate_property_offer"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

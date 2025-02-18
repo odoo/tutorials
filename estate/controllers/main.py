@@ -19,6 +19,5 @@ class MyController(http.Controller):
     def my_js(self, **kwargs):
         return({
             "name": "mayur"
-        })
-        
+        })        
     
