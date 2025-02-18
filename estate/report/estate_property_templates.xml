@@ -19,7 +19,7 @@
         <t t-set="offers" t-value="property.mapped('offer_ids')" />
         <t t-if="offers">
             <table class="table table-bordered table-striped table-hover">
-                <thead class="thead-dark">
+                <thead class="table-dark">
                     <tr>
                         <th>Price</th>
                         <th>Buyer</th>
@@ -31,8 +31,8 @@
                 <tbody>
                     <t t-foreach="offers" t-as="offer">
                         <tr>
-                            <td class="text-right">
-                                <span t-field="offer.price" class="font-weight-bold" />
+                            <td class="text-end">
+                                <span t-field="offer.price" class="fw-bold" />
                             </td>
                             <td>
                                 <span t-field="offer.partner_id.name" />
@@ -45,7 +45,7 @@
                             </td>
                             <td>
                                 <span t-field="offer.status"
-                                    t-att-class="'badge ' + (offer.status == 'Accepted' and 'badge-success' or offer.status == 'Rejected' and 'badge-danger' or 'badge-secondary')" />
+                                    t-att-class="'badge ' + (offer.status == 'Accepted' and 'bg-success' or offer.status == 'Rejected' and 'bg-danger' or 'bg-secondary')" />
                             </td>
                         </tr>
                     </t>
@@ -60,7 +60,7 @@
     <template id="report_offer_basic" name="Offer Basic">
         <div class="page p-4">
             <h2 class="text-primary mb-4 fw-bold fs-20">
-                <span t-field="property.name" class="font-weight-bold" />
+                <span t-field="property.name" class="fw-bold" />
             </h2>
             <div class="mb-4">
                 <strong class="text-black">Salesman: </strong>
@@ -96,7 +96,7 @@
                 <t t-call="web.external_layout">
                     <div class="page p-4">
                         <h2 class="text-primary mb-4"> Salesman: <span t-field="user_id.name"
-                                class="font-weight-bold" />
+                                class="fw-bold" />
                         </h2>
                         <t t-set="properties" t-value="user_id.mapped('property_ids')" />
                         <t t-foreach="properties" t-as="property">

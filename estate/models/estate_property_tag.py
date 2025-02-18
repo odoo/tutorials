@@ -16,4 +16,3 @@ class EstatePropertyTag(models.Model):
     def _default_color(self):
         return random.randint(1, 11)
     color = fields.Integer(string="Color Index", default=_default_color)
-    

@@ -6,7 +6,6 @@
     "description": """
         Linkage mdule between Estate and Account
     """,
-    "author": "Rohit Kalsariya",
     "category": "Tutorials/Estate_Account",
     "version": "0.1",
     "installable": True,

@@ -1,9 +1,8 @@
 {
     "name": "Estate",
-    "author": "Rohit Kalsariya",
     "license": "LGPL-3",
     "application": True,
-    "depends": ["base",'mail'],
+    "depends": ["base",'mail','website'],
     'category': 'Real Estate/Brokerage',
     "description": """ 
     The Real Estate Advertisement module.
@@ -19,7 +18,10 @@
         "views/estate_property_tag_views.xml",
         "views/estate_menus.xml",
         "views/res_users_views.xml",
-        
+        "views/estate_website_template.xml",
+        "views/res_config_settings.xml",
+        "wizard/estate_property_wizard_view.xml",  
+        "data/estate_property_menu.xml",      
     ],
     "demo": ["demo/estate_property_demo.xml",
             "demo/estate_property_offers.xml",

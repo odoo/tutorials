@@ -11,6 +11,7 @@ class InheritedModel(models.Model):
                 "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",
                 "invoice_date": fields.Date.today(),
+                "property_id":self.id,
                 "invoice_line_ids": [
                     Command.create(
                         {
@@ -36,6 +37,4 @@ class InheritedModel(models.Model):
                 ],
             }
         )
-
-        return super().action_sold()
-        
+    return super().action_sold() 

@@ -27,7 +27,7 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )
-    
+
     @api.depends("validate")
     def _compute_date_deadline(self):
         for record in self:
@@ -61,6 +61,11 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_obj = self.env["estate.property"].browse(vals["property_id"])
+
+            if property_obj.status in ["offer_accepted", "sold", "cancelled"]:
+                raise ValidationError(
+                    f"Cannot create an offer for a property that is {property_obj.status}."
+                )
 
             if vals["price"] < property_obj.best_prices:
                 raise ValidationError(
