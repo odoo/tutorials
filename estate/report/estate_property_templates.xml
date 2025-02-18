@@ -1,5 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <odoo>
+
+    <template id="offer_table_template">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Partner</th>
+                    <th>Validity (days)</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="property.offer_ids" t-as="offer">
+                    <tr>
+                        <td><span t-field="offer.price"/></td>
+                        <td><span t-field="offer.partner_id.name"/></td>
+                        <td><span t-field="offer.validity"/></td>
+                        <td><span t-field="offer.date_deadline"/></td>
+                        <td><span t-field="offer.status"/></td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </template>
+
     <template id="report_property_offers">
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container">
@@ -9,68 +35,48 @@
                             <span t-field="property.name"/>
                         </h2>
                         <div>
-                            <strong>Salesman: </strong>
-                            <span t-field="property.salesperson_id"/>
-                        </div>
-                        <div>
                             <strong>Expected Price: </strong>
                             <span t-field="property.expected_price"/>
                         </div>
                         <div>
-                            <strong>Status: </strong>
-                            <span t-field="property.state"/>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.salesperson_id.name"/>
                         </div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <td>Price</td>
-                                    <td>Partner</td>
-                                    <td>Validity</td>
-                                    <td>Deadline</td>
-                                    <td>State</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
-                                <tr t-foreach="offers" t-as="offer">
-                                    <td><span t-field="offer.price"/></td>
-                                    <td><span t-field="offer.partner_id"/></td>
-                                    <td><span t-field="offer.validity"/></td>
-                                    <td><span t-field="offer.date_deadline"/></td>
-                                    <td><span t-field="offer.status"/></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <!-- <div>
+                            <strong>Status: </strong>
+                            <t t-set="property_state_dict" t-value="dict(property._fields['state'].selection)" />
+                            <span t-out="property_state_dict[property.state]" />
+                        </div> -->
+
+                        <t t-if="property.offer_ids">
+                            <t t-call="estate.offer_table_template"/>
+                        </t>
+                        <t t-else="">
+                            <p>No offers available for this property.</p>
+                        </t>
                     </div>
                 </t>
             </t>
         </t>
     </template>
-    <!-- there are some errors -->
-    <!-- <template id="estate_property_template">
+
+    <template id="report_salesman_properties">
+    <t t-foreach="docs" t-as="salesman">
         <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="property">
-                <t t-set="property_state_dict" t-value="dict(property._fields['state'].selection)" />
-                <t t-call="web.external_layout">
-                    <div class="page">
-                        <h1 t-out="property.name" />
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Properties of <span t-field="salesman.name"/></h2>
+                    <t t-foreach="salesman.property_ids" t-as="property">
                         <div>
-                            <span class="fw-bold">Salesman: </span>
-                            <span t-out="user.name" />
+                            <h3 t-field="property.name"/>
+                            <strong>Expected Price:</strong> <span t-field="property.expected_price"/>
                         </div>
-                        <div>
-                            <span class="fw-bold">Expected Price: </span>
-                            <span t-out="property.expected_price" />
-                        </div>
-                        <div id="status">
-                            <span class="fw-bold">Status: </span>
-                            <span t-out="property_state_dict[property.state]" />
-                        </div>
-                        <t t-call="estate.report_property_offers" />
-                    </div>
-                </t>
+                        <t t-call="estate.offer_table_template"/>
+                    </t>
+                </div>
             </t>
         </t>
-    </template> -->
-</odoo>
+    </t>
+    </template>
+
 </odoo>

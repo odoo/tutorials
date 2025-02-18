@@ -92,7 +92,7 @@
     <function model="estate.property.offer" name="action_refuse">
         <value eval="[ref('offer_azure_1500000')]"/>
     </function>
-    
+
     <function model="estate.property.offer" name="action_refuse">
         <value eval="[ref('offer_deco_1500001')]"/>
     </function>

@@ -107,7 +107,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold.")
-            if not record.buyer_id or not record.selling_price:
+            if not record.buyer_id or not record.selling_price or not record.state=="offer_accepted":
                 raise UserError("Property must have an accepted offer before being sold")
             record.state = "sold"
 
@@ -124,7 +124,7 @@ class EstateProperty(models.Model):
                 continue
             min_valid_price = record.expected_price * 0.9
             if float_compare(record.selling_price, min_valid_price, precision_digits=2) == -1:
-                raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+                raise ValidationError("Selling price cannot be lower than 90 percentage of the expected price.")
 
     @api.model_create_multi
     def create(self, vals_list):

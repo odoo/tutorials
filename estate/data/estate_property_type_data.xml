@@ -16,5 +16,5 @@
     <record id="property_type_land" model="estate.property.type">
         <field name="name">Land</field>
     </record>
-    
+
 </odoo>

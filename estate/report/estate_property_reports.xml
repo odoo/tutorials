@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
     <record id="action_report_property_offers" model="ir.actions.report">
@@ -6,19 +5,17 @@
         <field name="model">estate.property</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">estate.report_property_offers</field>
-        <field name="print_report_name">'Property_Offers_%s' % (object.name)</field>
         <field name="binding_model_id" ref="estate.model_estate_property"/>
+        <field name="binding_type">report</field>
     </record>
 
-    <!-- there are some errors -->
-    <!-- <record id="estate_property_users_report" model="ir.actions.report">
-            <field name="name">Property Offers</field>
-            <field name="model">res.users</field>
-            <field name="report_type">qweb-pdf</field>
-            <field name="report_name">estate.estate_property_template</field>
-            <field name="print_report_name">'%s Report' % object.name</field>
-            <field name="print_report_name">'Salesman Property Offers'</field>
-            <field name="binding_model_id" ref="base.model_res_users"/>
-            <field name="binding_type">report</field>
-        </record> -->
+        <record id="action_report_salesman_properties" model="ir.actions.report">
+        <field name="name">Salesman's Properties Report</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_salesman_properties</field>
+        <field name="binding_model_id" ref="base.model_res_users"/>
+        <field name="binding_type">report</field>
+    </record>
+
 </odoo>

@@ -1,21 +1,19 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, Command
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sell_property(self):
-        if not self.buyer_id.id:
-            raise UserError("No buyer set for this property.")
-
         try:
-            self.check_access_rights("write", raise_exception=True)
-            self.check_access_rule("write")
+            self.check_access("write")
         except AccessError:
-            raise UserError("You do not have the required permissions to update this property.")
+            raise ValidationError("You do not have the required permissions to update this property.")
+        if not self.buyer_id.id:
+            raise ValidationError("No buyer set for this property.")
 
         self.env["account.move"].sudo().create({
             "move_type": "out_invoice",
