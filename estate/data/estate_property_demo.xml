@@ -71,6 +71,7 @@
         <field name="garden_area">150</field>
         <field name="garden_orientation">south</field>
         <field name="state">new</field>
+        <field name="image" type="base64" file="estate/static/src/img/Property_1.png"/>
     </record>
 
     <record id="property_2" model="estate.property">
@@ -82,6 +83,7 @@
         <field name="postcode">388505</field>
         <field name="bedrooms">2</field>
         <field name="state">offer_received</field>
+        <field name="image" type="base64" file="estate/static/src/img/Property_2.png"/>
     </record>
 
     <record id="property_3" model="estate.property">
@@ -96,6 +98,7 @@
         <field name="garden_area">100</field>
         <field name="garden_orientation">east</field>
         <field name="state">new</field>
+        <field name="image" type="base64" file="estate/static/src/img/Property_3.png"/>
     </record>
 
     <record id="property_4" model="estate.property">
@@ -110,6 +113,7 @@
         <field name="garden_area">200</field>
         <field name="garden_orientation">west</field>
         <field name="state">new</field>
+        <field name="image" type="base64" file="estate/static/src/img/Property_4.png"/>
     </record>
 
     <record id="property_5" model="estate.property">
@@ -121,6 +125,7 @@
         <field name="postcode">388345</field>
         <field name="bedrooms">3</field>
         <field name="state">new</field>
+        <field name="image" type="base64" file="estate/static/src/img/Property_5.png"/>
     </record>
 
     <record id="property_6" model="estate.property">
@@ -132,6 +137,7 @@
         <field name="postcode">898245</field>
         <field name="bedrooms">4</field>
         <field name="state">new</field>
+        <field name="image" type="base64" file="estate/static/src/img/Property_6.png"/>
     </record>
 
     <record id="property_7" model="estate.property">
@@ -143,6 +149,7 @@
         <field name="postcode">389207</field>
         <field name="bedrooms">2</field>
         <field name="state">new</field>
+        <field name="image" type="base64" file="estate/static/src/img/Property_3.png"/>
     </record>
 
     <record id="property_8" model="estate.property">
@@ -157,6 +164,7 @@
         <field name="garden_area">150</field>
         <field name="garden_orientation">north</field>
         <field name="state">new</field>
+        <field name="image" type="base64" file="estate/static/src/img/Property_5.png"/>
     </record>
 
     <record id="property_9" model="estate.property">
@@ -171,6 +179,7 @@
         <field name="garden_area">300</field>
         <field name="garden_orientation">south</field>
         <field name="state">new</field>
+        <field name="image" type="base64" file="estate/static/src/img/Property_3.png"/>
     </record>
 
     <record id="property_10" model="estate.property">
@@ -182,6 +191,7 @@
         <field name="postcode">389828</field>
         <field name="bedrooms">1</field>
         <field name="state">new</field>
+        <field name="image" type="base64" file="estate/static/src/img/Property_1.png"/>
     </record>
 
     <!-- Property Offers -->

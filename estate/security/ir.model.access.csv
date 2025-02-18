@@ -1,4 +1,5 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_estate_property_admin,access.property.admin,model_estate_property,base.group_system,1,1,1,1
 access_estate_group_manager_property,access_estate_group_manager,model_estate_property,estate_group_manager,1,1,1,0
 access_estate_group_manager_property_type,access_estate_group_manager,model_estate_property_type,estate_group_manager,1,1,1,1
 access_estate_group_manager_property_tag,access_estate_group_manager,model_estate_property_tag,estate_group_manager,1,1,1,1

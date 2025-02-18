@@ -27,6 +27,5 @@ class EstateProperty(models.Model):
                 ]
             })
             record.invoice_id = invoice.id
-            print(record.invoice_id)
 
         return super().sell_property()

@@ -1,0 +1,114 @@
+<odoo>
+    <template id="property_listing_template">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <h2 class="mb-4">Properties</h2>
+                <div class="row mb-4 d-flex align-items-center justify-content-between">
+                    <div class="col-md-6">
+                        <form action="/property/filter" class="d-flex flex-row align-items-center flex-wrap gap-2">
+                            <input type="text" id="search_input" name="query" class="form-control w-50"
+                                   placeholder="Search properties..." t-att-value="query or ''"/>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <form action="/property/filter" class="d-flex flex-row align-items-center flex-wrap gap-2">
+                            <input type="date" id="date_picker" name="selected_date" class="form-control w-50"
+                                   t-att-value="selected_date or ''"/>
+                            <button type="submit" class="btn btn-primary">Listed After</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 col-sm-6 mb-4">
+                            <div class="card shadow-sm border-0 position-relative hover-card" style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                                <div t-if="property.state == 'sold'" class="o_widget o_widget_web_ribbon">
+                                    <div class="ribbon ribbon-top-right">
+                                        <span class="text-bg-success position-absolute rotate-45" style="width: 135px; text-align: center; padding: 8px 0px; top: 8px; transform: rotate(45deg); right:-38px" title="Sold">
+                                            Sold
+                                        </span>
+                                    </div>
+                                </div>
+                                <a href="#" t-att-href="'/property/detail/' + str(property.id)" class="card-link">
+                                    <t t-if="property.image">
+                                        <img t-att-src="'data:image/png;base64,%s' % property.image.decode('utf-8')"
+                                             class="card-img-top img-fluid" alt="Property Image" style="height: 250px; object-fit: cover;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/web/static/src/img/placeholder.png" class="card-img-top img-fluid" alt="No Image" style="height: 250px; object-fit: cover;"/>
+                                    </t>
+                                </a>
+                                <div class="card-body">
+                                    <div class="tags mb-2">
+                                        <t t-foreach="property.tag_ids" t-as="tag">
+                                            <span class="badge rounded-pill p-2" t-attf-style="background-color: #{tag.color};">
+                                                <t t-out="tag.name"/>
+                                            </span>
+                                        </t>
+                                    </div>
+                                    <h3 class="card-title"><t t-out="property.name" /></h3>
+                                    <p class="mb-1"><strong>Expected Price:</strong><t t-out="property.expected_price" /></p>
+                                    <t t-if="property.state == 'sold'">
+                                        <p class="mb-1"><strong>Selling Price:</strong><t t-out="property.expected_price" /></p>
+                                    </t>
+                                    <t t-else="">
+                                        <p class="mb-1"><strong>Best Price:</strong><t t-out="property.expected_price" /></p>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <t t-if="pager">
+                        <t t-call="website.pager"/>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_detail_template" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-md-6">
+                        <t t-if="property.image">
+                            <img t-att-src="'data:image/png;base64,%s' % property.image.decode('utf-8')"
+                                 class="img-fluid rounded shadow" style="width: 100%; max-height: 400px; object-fit: cover;" alt="Property Image"/>
+                        </t>
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="mb-3"><t t-out="property.name" /></h2>
+                        <p class="text-muted"><t t-out="property.description" /></p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Type:</strong> <t t-out="property.property_type_id.name or 'N/A'" /></li>
+                            <li class="list-group-item"><strong>Postcode:</strong> <t t-out="property.postcode or 'Not Available'" /></li>
+                            <li class="list-group-item"><strong>Expected Price:</strong> <t t-out="property.expected_price" /> €</li>
+                            <li class="list-group-item"><strong>Selling Price:</strong> <t t-out="property.selling_price or 'Not Sold Yet'" /></li>
+                            <li class="list-group-item"><strong>Availability:</strong> <t t-out="property.date_availability.strftime('%d %B %Y')" /></li>
+                            <li class="list-group-item"><strong>Area:</strong> <t t-out="property.total_area" /> sqm</li>
+                            <li class="list-group-item"><strong>Bedrooms:</strong> <t t-out="property.bedrooms" /></li>
+                            <li class="list-group-item"><strong>Garage:</strong> <t t-out="'Yes' if property.garage else 'No'" /></li>
+                            <li class="list-group-item"><strong>Garden:</strong> <t t-out="'Yes' if property.garden else 'No'" />
+                                <t t-if="property.garden"> (Orientation: <t t-out="property.garden_orientation or 'N/A'" />,
+                                <t t-out="property.garden_area" /> sqm) </t>
+                            </li>
+                            <li class="list-group-item"><strong>Best Offer:</strong> <t t-out="property.best_price or 'No Offers Yet'" /></li>
+                            <li class="list-group-item">
+                                <strong>Status:</strong>
+                                <span t-att-class="'badge ' + ('bg-success' if property.state == 'sold' else 'bg-info')">
+                                    <t t-out="property.state.replace('_', ' ').title()" />
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h2 class="mt-4 mb-3">Property Offers</h2>
+                <t t-call="estate.report_property_offers_table" />
+                <a href="/properties" class="btn btn-outline-primary mt-4">Back to Listings</a>
+            </div>
+        </t>
+    </template>
+</odoo>

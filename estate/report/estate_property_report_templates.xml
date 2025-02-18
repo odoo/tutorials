@@ -32,14 +32,20 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <h2><span t-field="property.name" /></h2>
-                        <div>
-                            <strong>Salesman: </strong>
-                            <div t-field="property.user_id" />
-                            <strong>Expected Price: </strong>
-                            <span t-field="property.expected_price" />
-                            <div class="fw-bold" t-field="property.state" />
+                        <div class="d-flex align-items-center justify-content-between mb-5">
+                            <div>
+                                <h1><span t-field="property.name" /></h1>
+                                <strong>Salesman: </strong>
+                                <span t-field="property.user_id" /><br />
+                                <strong>Expected Price: </strong>
+                                <span t-field="property.total_area" /><br />
+                                <strong>Total area: </strong>
+                                <span t-field="property.expected_price" />
+                                <div class="fw-bold" t-field="property.state" />
+                            </div>
+                            <img t-att-src="image_data_uri(property.image)" style="max-height: 300px; max-width:300px;"/>
                         </div>
+                        <h2>Offers</h2>
                         <t t-call="estate.report_property_offers_table" />
                     </div>
                 </t>
@@ -82,7 +88,7 @@
     </template>
 
     <template id="report_invoice" inherit_id="estate.report_property_offers">
-        <xpath expr="//div[@class='page']" position="before">
+        <xpath expr="//div[@class='page']" position="after">
             <t t-if="property.state == 'sold' and property.invoice_id">
                 <strong>Invoice Reference: </strong>
                 <span t-field="property.invoice_id.name" /><br />
