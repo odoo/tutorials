@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from datetime import timedelta
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -5,10 +8,11 @@ from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
+    _inherit = ['mail.thread']
     _description = 'Estate Property model'
     _order = 'id desc'
 
-    name = fields.Char(string='Title', required=True)
+    name = fields.Char(string='Title', required=True, tracking=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
     date_availability = fields.Date(string='Available From', copy=False, default=fields.Date.today() + timedelta(days=90))
@@ -33,10 +37,10 @@ class EstateProperty(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
-    ], string='Status', required=True, copy=False, default='new')
+    ], string='Status', required=True, copy=False, default='new', tracking=True)
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
-    salesperson_id = fields.Many2one('res.users', string='Salesman')
-    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    salesperson_id = fields.Many2one('res.users', string='Salesman', tracking=True)
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False, tracking=True)
     tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
     total_area = fields.Float(compute='_compute_total_area', string='Total Area (sqm)')
@@ -91,6 +95,7 @@ class EstateProperty(models.Model):
                 raise UserError(_("Sold properties cannot be cancelled."))
             else:
                 record.state = 'cancelled'
+        return True
 
     def action_sold(self):
         for record in self:
@@ -100,3 +105,10 @@ class EstateProperty(models.Model):
                 raise UserError(_("Offer cannot be sold without offer accepted."))
             else:
                 record.state = 'sold'
+        return True
+
+    def _track_subtype(self, init_values):
+        self.ensure_one()
+        if 'state' in init_values and self.state == 'offer_accepted':
+            return self.env.ref('estate.mt_state_change')
+        return super()._track_subtype(init_values)

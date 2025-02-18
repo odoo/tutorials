@@ -1,4 +1,6 @@
-from datetime import timedelta
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -14,7 +16,7 @@ class EstatePropertyOffer(models.Model):
         ('refused', 'Refused')
     ], string='Status', copy=False, readonly=True)
     partner_id = fields.Many2one('res.partner', required=True)
-    property_id = fields.Many2one('estate.property', required=True)
+    property_id = fields.Many2one('estate.property', string="Property ID")
     validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(compute='_compute_total_days', inverse='_inverse_total_days', string='Deadline')
     property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
@@ -57,6 +59,8 @@ class EstatePropertyOffer(models.Model):
             self.property_id.state = "offer_accepted"
             self.property_id.buyer_id = self.partner_id
             self.property_id.selling_price = self.price
+        return True
 
     def action_refused(self):
         self.status = 'refused'
+        return True

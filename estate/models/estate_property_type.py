@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import api, fields, models
 
 
@@ -8,7 +11,7 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(string='Title', required=True)
     property_ids = fields.One2many('estate.property', 'property_type_id', string='Properties')
-    sequence = fields.Integer('Sequence')
+    sequence = fields.Integer(string='Sequence')
     offer_ids = fields.One2many('estate.property.offer', 'property_type_id', string='Offer')
     offer_count = fields.Integer(compute='_compute_offer_count', string='Offer count')
 
