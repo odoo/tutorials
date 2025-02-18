@@ -6,17 +6,8 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        if not self.buyer_id.id:
-            raise UserError("Property without buyer cannot be sold.")
-        # Ensure that the current user has write access to the property
-        try:
-            # Check if the current user can write to this property
-            self.check_access_rights("write")
-            self.check_access_rule(
-                "write"
-            )  # Optional: additional check for record rules
-        except AccessError:
-            raise UserError("You do not have permission to modify this property.")
+        # Check if the current user can write to this property
+        self.check_access("write")
 
         self.sudo().env["account.move"].create(
             {

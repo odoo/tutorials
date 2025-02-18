@@ -68,29 +68,31 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals):
         for val in vals:
-            property_id = val.get("property_id")
-            # set state to offer_received
-            if property_id:
-                property_record = self.env["estate.property"].browse(property_id)
-                property_record.status = "offer_received"
+            property = self.env["estate.property"].browse(val["property_id"])
+            max_offer_price = max(property.offer_ids.mapped("price") or [0])
 
-            # check if offer is there or not
-            existing_offer = self.env["estate.property.offer"].search(
-                [("property_id", "=", property_id), ("price", ">", val.get("price"))]
-            )
+            if property:
+                if property.status == "sold":
+                    raise UserError("You cannot create an offer for a sold property")
+                elif val.get("price") < max_offer_price:
+                    raise UserError(
+                        "New offer should contain price higher than current one"
+                    )
 
-            if existing_offer:
-                raise UserError(
-                    "You cannot create an offer with a lower amount than an existing offer"
-                )
-        return super(EstatePropertyOffer, self).create(vals)
+            property.status = "offer_received"
+        return super().create(vals)
 
     def action_accepted(self):
         for offer in self:
+            if offer.state == "accepted":
+                raise UserError("This offer is already accepted")
+
             offer.state = "accepted"
+
             for other_offers in offer.property_id.offer_ids:
                 if other_offers.id != offer.id:
                     other_offers.state = "refused"
+
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.status = "offer_accepted"
