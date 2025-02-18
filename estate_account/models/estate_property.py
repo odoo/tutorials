@@ -8,9 +8,6 @@ class EstatePropertyAccount(models.Model):
   _inherit = 'estate.property'
 
   def action_set_property_sold(self):
-    self.check_access_rights('write')
-    self.check_access_rule('write')
-
     journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
 
     for record in self:

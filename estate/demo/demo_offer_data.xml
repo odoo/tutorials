@@ -3,7 +3,7 @@
   <record id="estate.property_offer_azure_interior_10" model="estate.property.offer">
     <field name="partner_id" ref="base.res_partner_12"/>
     <field name="property_id" ref="estate.demo_villa"/>
-    <field name="price">10000</field>
+    <field name="price">1000000</field>
     <field name="validity">14</field>
     <field name="date_deadline" eval="datetime.now() + relativedelta(14)"/>
   </record>
@@ -21,13 +21,14 @@
     <field name="validity">14</field>
     <field name="date_deadline" eval="datetime.now() + relativedelta(14)"/>
   </record>
-  <function model="estate.property.offer" name="action_refuse_offer">
+  <function model="estate.property.offer" name="action_refused">
     <value eval="[ref('estate.property_offer_azure_interior_10')]"/>
   </function>
-  <function model="estate.property.offer" name="action_refuse_offer">
+  <function model="estate.property.offer" name="action_refused">
     <value eval="[ref('estate.property_offer_azure_interior_15')]"/>
   </function>
-  <function model="estate.property.offer" name="action_accept_offer">
+  <function model="estate.property.offer" name="action_accepted">
     <value eval="[ref('estate.property_offer_deco_addict')]"/>
   </function>
 </odoo>
+

@@ -9,6 +9,7 @@ from odoo.tools import float_compare
 
 class EstateProperty(models.Model):
   _name = 'estate.property'
+  _inherit = ['mail.thread']
   _description = 'estate property'
 
   _sql_constraints = [
@@ -101,10 +102,16 @@ class EstateProperty(models.Model):
       raise UserError('Cancelled properties cannot be Sold.')
     else:
       self.state = 'sold'
+    self.message_post(
+      body=f"Property sold to {self.buyer_id.name} for {self.selling_price}."
+    )
   
   def action_set_property_cancel(self):
     if self.state == 'sold':
       raise UserError('Sold properties cannot be cancelled.')
     else:
       self.state = 'cancelled'
+    self.message_post(
+      body=f"Property {self.name} has been cancelled."
+    )
 

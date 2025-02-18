@@ -9,6 +9,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
   _name = 'estate.property.offer'
   _description = 'estate property offer'
+  _inherit = ['mail.thread']
 
   _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0.00)',
@@ -42,17 +43,19 @@ class EstatePropertyOffer(models.Model):
 
   @api.model_create_multi
   def create(self, vals_list):
-    for vals in vals_list:
-      property_record = self.env['estate.property'].browse(vals.get('property_id'))
-      new_offer_price = vals.get('price', 0.0)
-
-      if new_offer_price < property_record.best_price:
+    records = super().create(vals_list)
+    for record in records:
+      if record.price < record.property_id.best_price:
         raise UserError('You cannot create an offer lower than an existing best offer.')
 
-      if property_record.state == 'new':
-        property_record.state = 'offer received'
+      if record.property_id.state == 'new':
+        record.property_id.state = 'offer received'
 
-    return super().create(vals_list)
+      record.property_id.message_post(
+        body=f"New offer of {record.price} received from {record.partner_id.name}."
+      )
+
+    return records
 
   def action_accepted(self):
     for record in self:
@@ -65,7 +68,10 @@ class EstatePropertyOffer(models.Model):
       record.property_id.state = 'offer accepted'
       record.property_id.buyer_id = record.partner_id
       record.property_id.selling_price = record.price
-
+      record.property_id.message_post(
+        body=f"Offer of {record.partner_id.name} accepted at a price of {record.price}."
+      )
+      
   def action_refused(self):
     for record in self:
       if record.status == 'accepted':
@@ -74,3 +80,4 @@ class EstatePropertyOffer(models.Model):
         record.property_id.state = 'new'
 
       record.status = 'refused'
+

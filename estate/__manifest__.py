@@ -1,7 +1,7 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'author': 'Odoo PS',
     'website': 'https://www.odoo.com/',
     'license': 'LGPL-3',
