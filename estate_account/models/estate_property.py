@@ -5,8 +5,6 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_estate_property_sold(self):
-        self.check_access('write')
-        print("Sold button clicked from account application")
         super().action_estate_property_sold()
         self.env["account.move"].create(
             {

@@ -39,29 +39,23 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
-            create_date = (
-                record.create_date.date() if record.create_date else fields.Date.today()
-            )
+            create_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.date_deadline = create_date + timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline:
-                create_date = (
-                    record.create_date.date() if record.create_date else fields.Date.today()
-                )
+                create_date = record.create_date.date() if record.create_date else fields.Date.today()
                 record.validity = (record.date_deadline - create_date).days
 
     @api.model
     def create(self, vals):
-        offer = super().create(vals)
-        if offer.property_id.offer_ids:
-            if offer.price >= offer.property_id.best_offer:
-                offer.property_id.status = "offer_receive"
-            else:
+        property = self.env["estate.property"].browse(vals.get("property_id"))
+        if property.offer_ids:
+            if vals.get("price") < property.best_offer:
                 raise ValidationError("The offer price should be more than best offer")
-
-        return offer
+        property.status = "offer_receive"
+        return super().create(vals)
 
     def estate_property_offer_action_accept(self):
         for record in self:
@@ -70,10 +64,13 @@ class EstatePropertyOffer(models.Model):
             else:
                 # accept the selected offer
                 record.status = "accepted"
-                record.property_id.status = "offer_accept"
-                record.property_id.buyer_id = record.partner_id
-                record.property_id.selling_price = record.price
-
+                record.property_id.write(
+                    {
+                        "status": "offer_accept",
+                        "buyer_id": record.partner_id,
+                        "selling_price": record.price,
+                    }
+                )
                 # reject the other offers for same property
                 other_offers = record.property_id.offer_ids.filtered(
                     lambda o: o.id != record.id
@@ -87,6 +84,4 @@ class EstatePropertyOffer(models.Model):
             else:
                 # refuse the selected offer
                 record.status = "refused"
-                record.property_id.buyer_id = False
-                record.property_id.selling_price = False
-    
+                record.property_id.write({"buyer_id": False, "selling_price": False})

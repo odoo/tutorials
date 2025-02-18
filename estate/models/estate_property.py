@@ -82,11 +82,10 @@ class EstateProperty(models.Model):
             return self.env.ref("estate.estate_property_offer_receive_state")
         if "status" in init_values and self.status == "offer_accept":
             return self.env.ref("estate.estate_property_offer_accept_state")
-        return super(EstateProperty, self)._track_subtype(init_values)
+        return super()._track_subtype(init_values)
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
-        # breakpoint() self.env['estate.property'].search([])
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
@@ -111,8 +110,9 @@ class EstateProperty(models.Model):
     def _check_exp_sel_price(self):
         for record in self:
             if (
-                record.selling_price < record.expected_price * 0.9
-            ) and record.selling_price > 0:
+                record.selling_price
+                and record.selling_price < record.expected_price * 0.9
+            ):
                 raise ValidationError(
                     "The selling price must be atleast 90% of expected price"
                 )
@@ -124,21 +124,17 @@ class EstateProperty(models.Model):
                 raise UserError("Can only delete properties in new or cancelled stage")
 
     def action_estate_property_sold(self):
-        print("Sold button clicked")
         for record in self:
             if record.status == "cancelled":
                 raise UserError("Cancelled property can't be sold")
             elif record.status == "sold":
                 raise UserError("Property already sold")
-            else:
-                record.status = "sold"
+            record.status = "sold"
 
     def action_estate_property_cancel(self):
-        print("Cancel Button Clicked")
         for record in self:
             if record.status == "sold":
                 raise UserError("Sold property can't be cancelled")
             elif record.status == "cancelled":
                 raise UserError("Property already cancelled")
-            else:
-                record.status = "cancelled"
+            record.status = "cancelled"
