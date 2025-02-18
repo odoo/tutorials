@@ -10,7 +10,8 @@ class Property(models.Model):
     _description = "Real Estate Properties"
     
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
-    property_tags_id = fields.Many2many('estate.property.tags', string='Property Tags')
+    property_tag_ids = fields.Many2many('estate.property.tag', string='Property Tags')
+    
     name = fields.Char('Title', required=True, translate=True, default="Best House In Town")
     active = fields.Boolean('Active', default=True)
     description = fields.Text('Description', default="Yo yo yo, no dup for date and status !")

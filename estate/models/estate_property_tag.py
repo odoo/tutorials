@@ -4,9 +4,9 @@
 from odoo import fields, models
 
 
-class PropertyTags(models.Model):
-    _name = "estate.property.tags"
-    _description = "Real Estate Property Types"
+class PropertyTag(models.Model):
+    _name = "estate.property.tag"
+    _description = "Real Estate Property Tags"
     
     name = fields.Char('Name', required=True, translate=True)
-    property_ids = fields.Many2many('estate.property', 'property_tags_id')
+    property_ids = fields.Many2many('estate.property', 'property_tag_ids')
