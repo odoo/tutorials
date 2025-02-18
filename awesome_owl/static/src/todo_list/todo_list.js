@@ -1,4 +1,4 @@
-import { Component, useState} from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { TodoItem } from "./todo_item"; // Import TodoItem
 import { useAutofocus } from "../utils";
 
@@ -9,23 +9,34 @@ export class TodoList extends Component {
     setup() {
         // Initialize the list of todos with some hardcoded data
         this.todos = useState([]);
-        this.idCounter = useState({count : 1});
-        const inputRef = useAutofocus("input");
+        this.idCounter = useState({ count: 1 });
+        useAutofocus("input");
     }
+
     addTodo(ev) {
-        // Check if the 'Enter' key was pressed (keyCode 13)
         if (ev.key === "Enter") {
-            const description = this.inputRef.el.value.trim(); // Get input value
-            // Don't add if the input is empty
+            const description = ev.target.value.trim(); // Get input value
             if (!description) return;
-            // Add a new todo with a unique id
             this.todos.push({
                 id: this.idCounter.count++, // Increment the id for uniqueness
                 description: description,
                 isCompleted: false,
             });
-            // Clear the input field
-            this.inputRef.el.value = "";
+            ev.target.value = "";
+        }
+    }
+
+    toggleTodoState = (todoId) => {
+        const todo = this.todos.find((t) => t.id === todoId);
+        if (todo) {
+            todo.isCompleted = !todo.isCompleted;  // Toggle the isCompleted state
+        }
+    }
+
+    removeTodo = (todoId) => {
+        const index = this.todos.findIndex((todo) => todo.id === todoId);
+        if (index >= 0) {
+            this.todos.splice(index, 1); // Remove from array
         }
     }
 }

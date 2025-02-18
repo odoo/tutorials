@@ -1,6 +1,8 @@
 <template>
     <t t-name="awesome_owl.TodoItem">
          <div t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+            <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="()=> props.toggleState(props.todo.id)" />
+            <span class="p-2 fa fa-remove text-danger" role="button" t-on-click="() => props.removeTodo(props.todo.id)"/>
             <span class="px-2">ID: <t t-esc="props.todo.id"/></span>
             <span>Description: <t t-esc="props.todo.description"/></span>
         </div>

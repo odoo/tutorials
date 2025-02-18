@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="property_listing" name="Property Listing">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <h1 class="text-center">
+                    Available Properties
+                </h1>
+                <div class="row">
+                    <div class="col-md-12 text-center mb-4">
+                        <a href="/properties" class="btn btn-primary">View All Properties</a>
+                    </div>
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <t t-if="property.image">
+                                    <img
+                                        t-att-src="'data:image/png;base64,%s' % property.image.decode()"
+                                        class="card-img-top" />
+                                </t>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-esc="property.name" />
+                                    </h5>
+                                    <p class="card-text">
+                                        <t t-esc="property.description" />
+                                    </p>
+                                    <a t-att-href="'/property/%s' % property.id"
+                                        class="btn btn-primary">
+                                        View Property
+                                    </a>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-muted"> Price: <t
+                                            t-esc="property.expected_price" />
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <t t-call="website.pager" t-set="pager" />
+            </div>
+        </t>
+    </template>
+</odoo>

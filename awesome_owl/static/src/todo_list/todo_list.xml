@@ -7,7 +7,7 @@
             </div>
             <div>
                 <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo" />
+                    <TodoItem todo="todo" toggleState="toggleTodoState" removeTodo="removeTodo" />
                 </t>
             </div>
         </div>

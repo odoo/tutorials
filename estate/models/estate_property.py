@@ -10,6 +10,7 @@ class estateProperty(models.Model):
     _description = "Estate Property"
     _order = "id desc"
     _check_company_auto = True  # Ensures consistency across company-dependent fields.
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -18,7 +19,7 @@ class estateProperty(models.Model):
         copy=False, 
         default=lambda self: fields.Date.today() + timedelta(days=90)
     )  
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(required=True,tracking=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)  
     living_area = fields.Integer()
@@ -47,7 +48,8 @@ class estateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
-    )
+        tracking=True
+        )
     property_type_id = fields.Many2one(
         "estate.property.type", 
         string="Property Type"
@@ -74,13 +76,21 @@ class estateProperty(models.Model):
         string="Company",
     )
     invoice_id = fields.Integer(string="Inoive_id", default=0)
-
+    image = fields.Image(string="Property Image")
 
     #constraint
     _sql_constraints = [
         ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive."),
         ("check_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive."),
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        created_property = super().create(vals_list)
+        for record in created_property:
+            message = "{} created a property named ' {} '".format(self.env.user.name, record.name)
+            record.message_post(body=message)
+        return created_property
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -115,6 +125,8 @@ class estateProperty(models.Model):
             if property.state == "cancelled":
                 raise UserError("A cancelled property cannot be set as sold.")
             property.state = "sold"
+            message = "Property {} has been sold to ' {} '".format(property.name,property.buyer_id.name)
+            property.message_post(body=message)
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):

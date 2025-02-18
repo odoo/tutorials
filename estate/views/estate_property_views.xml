@@ -6,7 +6,7 @@
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{"search_default_filter_available": 1}</field>
     </record>
-    
+
     <!-- Define the List View -->
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
@@ -56,6 +56,7 @@
                     <group class="mb32">
                         <!-- First Row -->
                         <group>
+                            <field name="image" string="image" widget="image"/>
                             <field name="state" string="Status"/>
                             <field name="property_type_id"
                                 options="{'no_create': True, 'no_open': True}"
@@ -128,6 +129,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -143,7 +145,7 @@
                     name="filter_available"
                     string="Available Properties"
                     domain="[('state', 'in', ['new', 'offer_received'])]"
-              />
+               />
                 <!-- Add a Filter for Living Area -->
                 <field name="living_area" string="Living Area(sqm)"
                     filter_domain="[('living_area', '>=', self)]"/>

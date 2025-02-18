@@ -1,10 +1,12 @@
 {
     "name": "Real_estate",
     "version": "1.8",
-    'category': 'Real Estate/Brokerage', 
+    "category": "Real Estate/Brokerage", 
     "summary": "Track leads and close opportunities",
     "depends": [
         "base",
+        "mail",
+        "website",
     ],
     "data": [
         "security/security.xml",
@@ -13,7 +15,10 @@
         "data/estate.property.type.csv",
         "data/estate.property.demo.xml",
         "data/estate.property.offer.demo.xml",
+        "data/website_menu.xml",
 
+        "views/property_detail.xml",
+        "views/property_listing.xml",
         "views/res_users_views.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",

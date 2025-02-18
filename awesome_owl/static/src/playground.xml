@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.Playground">
-    <div>
-        <h1>Playground</h1>
-        <div class="d-flex">
-            <Counter onChange.bind="incrementSum"/>
-            <Counter onChange.bind="incrementSum"/>
+        <div class="w-50 mx-auto">
+            <h1 class="text-center">Playground</h1>
+            <div class="d-flex justify-content-center gap-3">
+                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
+            </div>
+            <div>
+                <span>The Sum is: </span>
+                <t t-esc="sum.count"/>
+            </div>
+            <!-- <div>
+                <t t-foreach="cards" t-as="card" t-key="card.title">
+                    <Card title="card.title" content="card.content"/>
+                </t>
+            </div> -->
+            <div>
+                <Card title="'First Card'">/</Card>
+                <Card title="'Counter Card'">
+                    <Counter/>
+                </Card>
+            </div>
+            <div>
+                <TodoList/>
+            </div>
         </div>
-        <div>
-            <span>The Sum is: </span>
-            <t t-esc="sum.count"/>
-        </div>
-        <div>
-            <t t-foreach="cards" t-as="card" t-key="card.title">
-                <Card title="card.title" content="card.content"/>
-            </t>
-        </div>
-        <div>
-            <TodoList/>
-        </div>
-    </div>
    </t>
 </templates>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="property_detail" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1 class="display-4">
+                            <t t-esc="property.name" />
+                        </h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <t t-if="property.image">
+                            <img t-att-src="'data:image/png;base64,%s' % property.image.decode()" class="img-fluid rounded shadow" alt="Property Image" />
+                        </t>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Property Details</h5>
+                                <p class="card-text">
+                                    <strong>Description: </strong>
+                                    <t t-esc="property.description" />
+                                </p>
+                                <p class="card-text">
+                                    <strong>Price: </strong>
+                                    <t t-esc="property.expected_price" />
+                                </p>
+                                <p class="card-text">
+                                    <strong>Bedrooms: </strong>
+                                    <t t-esc="property.bedrooms" />
+                                </p>
+                                <p class="card-text">
+                                    <strong>Living Area: </strong>
+                                    <t t-esc="property.living_area" />sqm
+                                </p>
+                                <t t-if="property.garden">
+                                    <p class="card-text">
+                                        <strong>Garden Area: </strong>
+                                        <t t-esc="property.garden_area" />sqm
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Garden Orientation: </strong>
+                                        <t t-esc="property.garden_orientation" />
+                                    </p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>    
