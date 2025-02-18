@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from datetime import timedelta
-from odoo import api,exceptions,fields,models
+from odoo import api,fields,models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -13,7 +17,7 @@ class EstatePropertyOffer(models.Model):
         ('refused','Refused'),
     ], string="Status", copy=False, readonly=True)
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
-    property_id = fields.Many2one('estate.property', string="Property ID", required=True)
+    property_id = fields.Many2one('estate.property', string="Property ID")
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     validity = fields.Integer(string="Validity(days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
@@ -37,14 +41,14 @@ class EstatePropertyOffer(models.Model):
             if self.price > existing_accepted_offer.price:
                 existing_accepted_offer.status = 'refused'
                 self.status = 'accepted'
-                self.property_id.state = 'offer accepted'
+                self.property_id.state = 'offer_accepted'
                 self.property_id.buyer_id = self.partner_id
                 self.property_id.selling_price = self.price
             else:   
-                raise exceptions.UserError("One offer can only be accepted at a time")
+                raise UserError("One offer can only be accepted at a time")
         else:
             self.status = 'accepted'
-            self.property_id.state = 'offer accepted'
+            self.property_id.state = 'offer_accepted'
             self.property_id.buyer_id = self.partner_id
             self.property_id.selling_price = self.price
     
@@ -57,6 +61,7 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             if vals.get('property_id'):
                 property = self.env['estate.property'].browse(vals['property_id'])
-                property.state = "offer recieved"
+                property.state = "offer_received"
             if any(offer.price < property.best_price for offer in offers):
-                raise exceptions.UserError("Enter offer Price greater than the existing ones")
+                raise UserError("Enter offer Price greater than the existing ones")
+        return offers

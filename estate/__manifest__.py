@@ -1,7 +1,7 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'author': "djsh",
     'category': 'Real Estate/Brokerage',
     'description': """
@@ -10,16 +10,20 @@ Real Estate Properties with the information regarding buyers, sellers, propertie
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/ir_sequence_data.xml',
+        'data/mail_message_subtype.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
-        'views/estate_property_menus.xml',
         'views/res_users_views.xml',
-        'data/ir_sequence_data.xml',
-        'data/estate_property_type_demo.xml',
-        'data/estate_property_demo.xml',
+        'views/estate_property_menus.xml',
     ],
-    'license': 'LGPL-3',
+    'demo':[ 
+        'demo/estate_property_type_demo.xml',
+        'demo/estate_property_demo.xml',
+        'demo/estate_property_offer_demo.xml',
+    ],
     'application': True,
+    'license': 'LGPL-3',
 }

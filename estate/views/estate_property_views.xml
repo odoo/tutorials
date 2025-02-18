@@ -4,7 +4,7 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list name="estate_property_list" string="Property" decoration-success="state in ('offer accepted','offer recieved')" decoration-muted="state == 'sold'" decoration-bf="state == 'offer accepted'">
+            <list name="estate_property_list" string="Property" decoration-success="state in ('offer_accepted','offer_received')" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
                 <field name="name" width="10%"></field>
                 <field name="postcode" width="10%"></field>
                 <field name="bedrooms" width="10%"></field>
@@ -27,7 +27,7 @@
                 <header>
                     <button name="action_sold" type="object" string="Sold" invisible="state == 'sold' or state == 'cancelled'"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer recieved,offer accepted,sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -66,7 +66,7 @@
                         </page>
                         <page name="offer" string="Offers">
                             <group>
-                                <field name="offer_ids" nolabel="1" readonly="state == 'offer accepted' or state == 'sold' or state == 'cancelled'"/>
+                                <field name="offer_ids" nolabel="1" readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled'"/>
                             </group>
                         </page>
                         <page name="other_info" string="Other Info">
@@ -77,6 +77,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True"/>
             </form>
         </field>
     </record>
@@ -95,7 +96,7 @@
                 <field name="property_type_id"/>
                 <field name="buyer_id"/>
                 <field name="seller_id"/>
-                <filter name="available" string="Available" domain="[('state', 'in', ['new','offer recieved'] )]"/>
+                <filter name="available" string="Available" domain="[('state', 'in', ['new','offer_received'] )]"/>
                 <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>
@@ -116,12 +117,12 @@
                             </div>
                             <field name="state" invisible="1"/>
                             <div>
-                                <t t-if="record.state.raw_value == 'offer recieved'">
+                                <t t-if="record.state.raw_value == 'offer_received'">
                                     Best Offer: <field name="best_price"/>
                                 </t>
                             </div>
                             <div>
-                                <t t-if="record.state.raw_value == 'offer accepted'">
+                                <t t-if="record.state.raw_value == 'offer_accepted'">
                                     Selling Price: <field name="selling_price"/>
                                 </t>
                             </div>

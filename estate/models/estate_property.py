@@ -1,13 +1,18 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from datetime import timedelta
-from odoo import _, api, exceptions, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
-    _name="estate.property"
-    _description="Estate Property"
+    _name = "estate.property"
+    _inherit = ['mail.thread']
+    _description = "Estate Property"
     _order = "id desc"
 
-    name = fields.Char(string="Title", required=True)
+    name = fields.Char(string="Title", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Available from", copy=False, default = fields.Date.today() + timedelta(days=+90))
@@ -28,14 +33,14 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection([
             ('new','New'),
-            ('offer recieved','Offer Recieved'),
-            ('offer accepted','Offer Accepted'),
+            ('offer_received','Offer Received'),
+            ('offer_accepted','Offer Accepted'),
             ('sold','Sold'),
             ('cancelled','Cancelled'),
-        ], string="Status", default='new', required=True, copy=False)
+        ], string="Status", default='new', required=True, copy=False, tracking=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    seller_id = fields.Many2one("res.users", string="Seller", index=True)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, tracking=True)
+    seller_id = fields.Many2one("res.users", string="Seller", tracking=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area", string="Total area")
@@ -74,7 +79,7 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         if self.selling_price and self.selling_price < self.expected_price *0.9:
-            raise exceptions.ValidationError("Selling price cannot be lower than 90% of the expected price")
+            raise ValidationError("Selling price cannot be lower than 90% of the expected price")
 
     @api.model_create_multi
     def create(self,vals_list):
@@ -86,16 +91,16 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise exceptions.UserError("Cancelled property cannot be sold")
-            if record.state == 'offer accepted':
+                raise UserError("Cancelled property cannot be sold")
+            if record.state == 'offer_accepted':
                 record.state = 'sold'
             else:
-                raise exceptions.UserError("Offer must be accepted")
+                raise UserError("Offer must be accepted")
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError("Sold property cannot be cancelled")
+                raise UserError("Sold property cannot be cancelled")
             else:
                 record.state = 'cancelled'
 
@@ -103,4 +108,10 @@ class EstateProperty(models.Model):
     def _unlink_if_new_or_cancelled(self):
         for record in self:
             if record.state not in ('new', 'cancelled'):
-                raise exceptions.UserError("Only New and Cancelled properties can be deleted")
+                raise UserError("Only New and Cancelled properties can be deleted")
+
+    def _track_subtype(self, init_values):
+        self.ensure_one()
+        if 'state' in init_values and self.state == 'offer_accepted':
+            return self.env.ref('estate.mt_state_accept')
+        return super()._track_subtype(init_values)

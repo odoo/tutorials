@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='account_security']" position="after">
                 <page name="users_property" string="Real Estate properties">
-                    <field name="property_ids" domain="[('state', 'in', ['new','offer recieved'] )]"/>
+                    <field name="property_ids" domain="[('state', 'in', ['new','offer_received'] )]"/>
                 </page>
             </xpath>
         </field>
