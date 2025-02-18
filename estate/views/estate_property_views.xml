@@ -68,6 +68,9 @@
                                 <field name="active"/>
                                 <field name="total_area"/>
                             </group>
+                            <group>
+                                <field name="image" />
+                            </group>
                         </page>
                         <page string="Offers">
                             <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
@@ -117,25 +120,19 @@
                 "sold": "dark",
                 "cancelled": "danger"}'/>
                 <templates>
+                    <field name="state" />
                     <t t-name="card">
                         <div class="o_kanban_record_body">
                             <h3><field name="name"/></h3>
                             <div>
-                                <text>Expected Price: </text>
-                                <field name="expected_price" widget="monetary"/>
+                                Expected Price: <field name="expected_price"/>
                             </div>
-                            <t t-if="record.state and record.state.raw_value == 'offer_received' and record.best_price">
-                                <div>
-                                    <text>Best Offer: </text>
-                                    <field name="best_price" widget="monetary"/>
-                                </div>
-                            </t>
-                            <t t-if="record.state and record.state.raw_value in ('offer_accepted', 'sold') and record.selling_price">
-                                <div>
-                                    <text>Selling Price: </text>
-                                    <field name="selling_price" widget="monetary"/>
-                                </div>
-                            </t>
+                            <div t-if="record.state.raw_value == 'offer_received'">
+                                Best Price: <field name="best_price"/>
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
+                                Selling Price: <field name="selling_price"/>
+                            </div>
                         </div>
                         <footer>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>

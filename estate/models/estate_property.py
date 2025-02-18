@@ -52,6 +52,7 @@ class EstateProperty(models.Model):
     total_area =fields.Integer(string="Total Area", compute="_compute_total_area")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
     company_id = fields.Many2one(comodel_name="res.company", string="Company", default=lambda self:self.env.user.company_id)
+    image = image = fields.Binary(string="Image", attachment=True)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_check_state(self):

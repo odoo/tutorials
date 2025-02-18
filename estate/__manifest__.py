@@ -6,10 +6,12 @@
     "website": "https://odoo.com",
     "category": "Real Estate/Brokerage",
     "version": "0.1",
-    "depends": ["base"],
+    "depends": ["base", "website"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
+        "views/estate_property_listing_template.xml",
+        "views/estate_property_template.xml",
         "views/res_users_views.xml",
         "wizard/estate_property_add_offer_wizard.xml",
         "views/estate_property_views.xml",
