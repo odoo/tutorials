@@ -13,6 +13,17 @@
         <field name="arch" type="xml">
             <form string="Property Types">
                 <h1 class="mb32"><field name="name"/></h1>
+                <notebook>
+                    <page string="Properties">
+                        <field name="property_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="expected_price"/>
+                                <field name="state"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>
