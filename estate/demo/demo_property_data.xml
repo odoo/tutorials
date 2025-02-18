@@ -39,11 +39,11 @@
             <field name="selling_price">2000</field>
             <field name="offer_ids" eval="[
                         Command.create({
-                            'price': 1800,
+                            'price': 18000,
                             'partner_id':ref('base.res_partner_12')
                         }),
                         Command.create({
-                            'price': 2200,
+                            'price': 22000,
                             'partner_id':ref('base.res_partner_12')
                         }),
             ]"/>
