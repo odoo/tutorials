@@ -33,4 +33,7 @@ class EstateProperty(models.Model):
         default='new',
     )
 
-    active = fields.Boolean('Active', default=False)
+    active = fields.Boolean('Active', default=True)
+
+    def action_set_cancelled(self):
+        self.write({'state': 'cancelled'})
