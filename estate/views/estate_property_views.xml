@@ -26,13 +26,13 @@
                 <header>
                     <button name="property_sold_action" type="object" invisible="state in ['sold', 'cancelled']" string="SOLD" class="btn btn-primary" />
                     <button name="property_cancel_action" type="object" invisible="state in ['sold', 'cancelled']" string="CANCEL" />
-
                     <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
+                            <field name="property_image" widget="image" class="oe_avatar"/>
                         </h1>
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field' : 'color'}"/>
                     </div>
