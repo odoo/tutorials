@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -17,7 +18,7 @@ class EstatePropertyOffer(models.Model):
         selection=[("refuse", "Refuse"), ("accepted", "Accepted")],
     )
     property_type_id = fields.Many2one(
-        "estate.property.type",
+        "estate.property.types",
         string="Property Type",
         related="property_id.property_type_id",
         store=True,
@@ -55,14 +56,19 @@ class EstatePropertyOffer(models.Model):
                 ).days
 
     @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            property = self.env["estate.property"].browse(vals["property_id"])
+    def create(self, vals):
+        for val in vals:
+            property = self.env["estate.property"].browse(val["property_id"])
+
+            max_offer_price = max(property.offer_ids.mapped("price") or [0])
+            if val.get("price", 0) <= max_offer_price:
+                raise UserError(
+                    "New offer should contain price higher than current one"
+                )
+
             property.state = "offer received"
-            for offer in property.offer_ids:
-                if offer.price > vals["price"]:
-                    raise UserError("The offer must be higher than the existing offer")
-        return super().create(vals_list)
+
+        return super().create(vals)
 
     @api.model
     def unlink(self):
@@ -81,13 +87,18 @@ class EstatePropertyOffer(models.Model):
 
     def action_status_accepted(self):
         for record in self:
-            if record.property_id.partner_id:
-                message = "Property has already accepted an offer."
-                raise UserError(message)
-            else:
+            if record.status != "refuse":
                 record.status = "accepted"
-                record.property_id.partner_id = record.partner_id
                 record.property_id.selling_price = record.price
+                record.property_id.partner_id = record.partner_id
+                record.property_id.state = "offer accepted"
+                other_offers = record.property_id.offer_ids.filtered(
+                    lambda offer: offer.id != record.id
+                )
+                other_offers.write({"status": "refuse"})
+
+            else:
+                raise UserError("One offer is already accepted")
         return True
 
     def action_status_refused(self):

@@ -1,18 +1,19 @@
 from datetime import timedelta
+
 from odoo import api, exceptions, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
-from odoo.exceptions import UserError
-from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property Name"
     _order = "id desc"
-
+    _inherit = ["mail.thread"]
+    
     name = fields.Char("Property Name", required=True)
     description = fields.Text("Description")
-    postcode = fields.Char("Postcode", size=6)
+    postcode = fields.Char("Postcode", size=6, tracking=True)
     date_availability = fields.Date(
         "Date Availability",
         copy=False,
@@ -25,7 +26,7 @@ class EstateProperty(models.Model):
         copy=False,
     )
     bedrooms = fields.Integer("Bedrooms", default=2)
-    living_area = fields.Integer("Living Area")
+    living_area = fields.Integer("Living Area(sqm)")
     facades = fields.Integer("Facades")
     garage = fields.Boolean("Garage")
     garden = fields.Boolean("Garden")
@@ -64,7 +65,7 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         string="Best Offer", compute="_compute_best_price", store=True
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_id = fields.Many2one("estate.property.types", string="Property Type")
     company_id = fields.Many2one(
         "res.company",
         required=True,
@@ -107,6 +108,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     # Constaints
+    @api.constrains("offer_ids")
+    def _check_offer_price(self):
+        for record in self:
+            for offer in record.offer_ids:
+                if offer.price < 0:
+                    raise ValidationError("The offer price must be positive")
+
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
@@ -114,10 +122,9 @@ class EstateProperty(models.Model):
             if float_is_zero(record.selling_price, precision_rounding=0.01):
                 continue
             # selling_price is at least 90% of expected_price
-            min_acceptable_price = 0.9 * record.expected_price
             if (
                 float_compare(
-                    record.selling_price, min_acceptable_price, precision_rounding=0.01
+                    record.selling_price, (record.expected_price*0.9), precision_rounding=2
                 )
                 < 0
             ):
@@ -138,14 +145,22 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cancelled Property cannot be Sold")
-            record.state = "sold"
+            elif not record.offer_ids.filtered(
+                lambda offer: offer.status == "accepted"
+            ):
+                raise UserError("No offer is accepted")
+            elif record.state != "cancelled":
+                record.state = "sold"
+            else:
+                raise UserError("It is already sold")
         return True
 
     def action_set_status_cancel(self):
         for record in self:
             if record.state == "sold":
-                message = "Sold Property cannot be Cancelled"
-                raise UserError(message)
-            else:
                 record.state = "cancelled"
-            return True
+            elif record.state == "sold":
+                raise UserError("It cannot be canceled once sold")
+            elif record.state == "cancelled":
+                raise UserError("It is already canceled")
+        return True

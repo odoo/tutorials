@@ -1,4 +1,4 @@
-from odoo import api, Command, fields, models
+from odoo import Command, models
 from odoo.exceptions import UserError
 
 
@@ -6,6 +6,14 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_status_sold(self):
+        if not self.partner_id.id:
+            raise UserError("Property without buyer cannot be sold.")
+        try:
+            self.env["estate.property"].check_access("write")
+        except UserError:
+            raise UserError(
+                "You do not have the necessary permissions to sell this property."
+            )
         self.env["account.move"].sudo().create(
             {
                 "partner_id": self.partner_id.id,

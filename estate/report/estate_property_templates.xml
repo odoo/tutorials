@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Template for Estate Property Offers -->
+    <template id="estate_property_offers_template">
+        <t t-if="property.offer_ids">
+            <table class="table table-sm mt-4">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity (days)</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="property.offer_ids" t-as="offer">
+                        <tr>
+                            <td>
+                                <span t-field="offer.price" />
+                            </td>
+                            <td>
+                                <span t-field="offer.partner_id.name" />
+                            </td>
+                            <td>
+                                <span t-field="offer.validity" />
+                            </td>
+                            <td>
+                                <span t-field="offer.date_deadline" />
+                            </td>
+                            <td>
+                                <span t-field="offer.status" />
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <p class="mt-4">
+                <em>No offers have been made for this property yet </em>
+            </p>
+        </t>
+    </template>
+    <!-- Template for Estate Property Report -->
+    <template id="estate_property_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-set="property_state_dict" t-value="dict(property._fields['state'].selection)" />
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div>
+                            <div>
+                                <h1 t-field="property.name" />
+                            </div>
+                            <div>
+                                <p>
+                                    <span t-field="property.salesman_id.name" />
+                                </p>
+                            </div>
+                            <div>
+                                <p>
+                                    <span t-field="property.expected_price" />
+                                </p>
+                            </div>
+                            <div id="status">
+                                <p>
+                                    <span t-field="property.state" />
+                                </p>
+                            </div>
+                        </div>
+                        <t t-call="estate.estate_property_offers_template" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <!-- Template for Salesman Estate Properties -->
+    <template id="res_users_estate_property_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="user">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!--<t t-call="estate.company_details_template"/>-->
+                        <h1 class="text-primary mt-5">
+                            <span>Salesman:</span>
+                            <span t-field="user.name"/>
+                        </h1>
+                        <t t-foreach="user.property_ids" t-as="property">
+                            <h2 t-field="property.name"/>
+                            <p>
+                                <span class="fw-bold">Expected Price:</span>
+                                <span t-field="property.expected_price"/>
+                            </p>
+                            <p>
+                                <span class="fw-bold">Status:</span>
+                                <span t-field="property.state"/>
+                            </p>
+                            <t t-call="estate.estate_property_offers_template"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
