@@ -35,6 +35,7 @@ class EstateProperty(models.Model):
     bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (m²)")
     facades = fields.Integer(string="Number of Facades")
+    image = fields.Image(store=True, verify_resolution=True)
     garage = fields.Boolean(string="Has Garage")
     garden = fields.Boolean(string="Has Garden", default=True)
     garden_area = fields.Integer(string="Garden Area (m²)", default=False)

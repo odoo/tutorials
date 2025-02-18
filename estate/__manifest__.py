@@ -3,7 +3,7 @@
     "description": "This is a real estate app",
     "category": "Real Estate/Brokerage",
     "application": True,
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "website"],
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",
@@ -14,6 +14,7 @@
         "view/property_type_view.xml",
         "view/estate_property_tags_view.xml",
         "view/res_users_estate_view.xml",
+        "view/estate_template_list.xml",
         "view/estate_menus.xml",
     ],
     "demo": [

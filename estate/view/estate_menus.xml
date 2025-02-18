@@ -10,6 +10,8 @@
                 name="Property Types" />
             <menuitem id="property_tags_menu_action" name="Property Tags"
                 action="property_tag_action" />
+            <menuitem id="property_website_menu" name="Website"
+                action="open_url_action" />
         </menuitem>
     </menuitem>
 </odoo>
