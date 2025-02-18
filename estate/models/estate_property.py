@@ -8,12 +8,13 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _inherit = 'mail.thread'
     _sql_constraints = [
         ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be strictly positive"),
         ("check_selling_price", "CHECK(selling_price > 0)", "Selling price must be strictly positive")  
     ]
 
-    name = fields.Char(string="Title",)
+    name = fields.Char(string="Title",tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Date availability", copy=False, default=fields.Date.today() + timedelta(days=+90))
@@ -37,9 +38,9 @@ class EstateProperty(models.Model):
         ('offeraccepted', 'Offer Accepted'), 
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled')
-    ], string="State", default = "new")
+    ], string="State", default = "new", tracking=True)
     active = fields.Boolean("Active", default=True)
-    seller_id = fields.Many2one(comodel_name="res.users", string="Salesperson", default=lambda self: self.env.user)
+    seller_id = fields.Many2one(comodel_name="res.users", string="Salesperson")
     buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
     property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type")
     tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
@@ -103,3 +104,9 @@ class EstateProperty(models.Model):
                 raise UserError("sold properties cannot be cancelled")
             else:
                 record.state = "cancelled"
+
+    def _track_subtype(self, vals):
+        self.ensure_one()
+        if 'state' in vals and self.state == 'offeraccepted':
+            return self.env.ref('estate.mt_state_change')
+        return super()._track_subtype(vals)

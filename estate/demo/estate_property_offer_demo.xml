@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <record id="estate_property_offer_1" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"></field>
             <field name="property_id" ref="estate.estate_property_1"></field>
-            <field name="price">10000.00</field>
+            <field name="price">100000.00</field>
             <field name="validity">14</field>
+            <!-- <field name="date_deadline" eval="(datetime.now() + timedelta(days=7)).date()"></field> -->
         </record>
 
         <record id="estate_property_offer_2" model="estate.property.offer">
@@ -21,5 +22,15 @@
             <field name="price">1500001.00</field>
             <field name="validity">14</field>
         </record>
+        
+        <function model="estate.property.offer" name="action_refused">
+            <value eval="[ref('estate_property_offer_1')]"/>
+        </function>
+        <function model="estate.property.offer" name="action_accepted">
+            <value eval="[ref('estate_property_offer_2')]"/>
+        </function>
+        <function model="estate.property.offer" name="action_refused">
+            <value eval="[ref('estate_property_offer_3')]"/>
+        </function>
     </data>
 </odoo>

@@ -15,8 +15,8 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
+            <field name="property_type_id" ref="estate.estate_property_residential"></field>
         </record>
-
         <record id="estate_property_2" model="estate.property">
             <field name="name">Trailer home</field>
             <field name="state">cancelled</field>
@@ -29,6 +29,28 @@
             <field name="living_area">10</field>
             <field name="facades">4</field>
             <field name="garage">False</field>
+            <field name="property_type_id" ref="estate.estate_property_residential"></field>
         </record>
+        <record id="estate_property_3" model="estate.property">
+            <field name="name">Home in Infocity</field>
+            <field name="state">offerreceived</field>
+            <field name="description">Home in Gandhinagar's IT hub</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability">2025-01-01</field>
+            <field name="expected_price">100000.00</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="property_type_id" ref="estate.estate_property_residential"></field>
+            <field name="offer_ids" eval="[
+                (0, 0, {
+                    'partner_id': ref('base.res_partner_12'),
+                    'price': 100000.00,
+                    'validity': 14,
+                }),
+            ]"/>
+        </record>
+        
     </data>
 </odoo>
