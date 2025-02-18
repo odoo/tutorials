@@ -21,6 +21,8 @@ class EstatePropertytOffer(models.Model):
         records = super().create(vals_list)
         for record in records:
             property_record = record.property_id
+            if property_record.state=='sold':
+                raise UserError("Can't add a new offer to already sold property")
             existing_offers = property_record.offer_ids
             min_existing_price = min(existing_offers.mapped('price'), default=0)
             if record.price < min_existing_price:
@@ -45,7 +47,7 @@ class EstatePropertytOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if record.property_id.buyer_id:
+            if record.filtered(lambda self: self.status == 'accepted'):
                 raise UserError(_("An offer has already been accepted for this property."))
             record.status = 'accepted'
             record.property_id.buyer_id = record.partner_id

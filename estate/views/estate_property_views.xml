@@ -36,16 +36,20 @@
         </field>
     </record>
 
-   <record id="estate_property_view_list" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-        <list decoration-muted="state == 'sold'"
-              decoration-info="state == 'offer_received'"
-              decoration-success="state == 'offer_accepted'">
+            <list decoration-muted="state == 'sold'"
+                  decoration-info="state == 'offer_received'"
+                  decoration-success="state == 'offer_accepted'">
+                <header>
+                    <button name="%(action_add_offer_wizard)d" type="action"
+                            string="Add Offer" class="oe_highlight" />
+                </header>
                 <field name="name" string='Name'/>
-                <field name="property_tags_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
-                <field name="postcode" string= 'Postcode'/>
+                <field name="property_tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="postcode" string='Postcode'/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area"/>
                 <field name="expected_price" string="Expected Price"/>
@@ -56,6 +60,7 @@
             </list>
         </field>
     </record>
+
 
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
