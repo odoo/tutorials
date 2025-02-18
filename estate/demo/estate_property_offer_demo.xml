@@ -44,9 +44,5 @@
     <function model="estate.property.offer" name="action_accept_offer">
         <value eval="[ref('estate_property_offer_demo_data3')]"/>
     </function>
-
-    <function model="estate.property" name="action_sell_property">
-        <value eval="[ref('estate_property_demo_data1')]"/>
-    </function>
   </data>
 </odoo>

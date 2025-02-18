@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
         if not self.buyer_id:
             raise exceptions.UserError("A buyer must be set before selling the property.")
 
-        self.env['estate.property'].check_access('write')
+        self.check_access('write')
 
         invoicing_price = self.selling_price * 0.06
         admin_fee = 100

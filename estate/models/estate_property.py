@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+import base64
 
 from odoo import fields, models, api, exceptions, _
 
@@ -7,6 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate properties"
     _order = "id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'), 
         ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.')
@@ -59,6 +61,8 @@ class EstateProperty(models.Model):
         ('cancelled', 'Cancelled')],
         help="Status of the Property",
         required=True, copy=False,
+        group_expand=True,
+        tracking=True,
         default="new")
     tag_count = fields.Integer('Tag Count',
         compute="_compute_tag_count")
@@ -68,6 +72,7 @@ class EstateProperty(models.Model):
         comodel_name='res.company', 
         required=True, 
         default=lambda self: self.env.user.company_id.id)
+    image = fields.Image()
 
     @api.depends("living_area", "garden_area")
     def _compute_total_amount(self):
@@ -136,3 +141,13 @@ class EstateProperty(models.Model):
         for record in self:
             record.state = "cancelled"
         return True
+
+    def action_open_add_offer_wizard(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Add Offer',
+            'res_model': 'estate.add.property.offer',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'active_ids': self.ids}
+        }

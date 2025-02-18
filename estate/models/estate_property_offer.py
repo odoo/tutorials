@@ -41,21 +41,29 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        if self.env['estate.property'].browse(vals['property_id']).state == 'sold':
+        property_record = self.env['estate.property'].browse(vals['property_id'])
+
+        if property_record.state == 'sold':
             raise exceptions.UserError("You cannot create an offer for a sold property.")
-        elif int(vals['price']) < self.env['estate.property'].browse(vals['property_id']).best_offer:
-            raise exceptions.UserError(f"The offer must be higher than {self.env['estate.property'].browse(vals['property_id']).best_offer}")
+        elif property_record.state == 'offer accepted':
+            raise exceptions.UserError("Other offer has already been accepted for a property.")
+        elif property_record.state == 'cancelled':
+            raise exceptions.UserError("You cannot create an offer for a cancelled property.")
+        elif int(vals['price']) < property_record.best_offer:
+            raise exceptions.UserError(f"The offer must be higher than {property_record.best_offer}")
         else:
-            self.env['estate.property'].browse(vals['property_id']).state = 'offer received'
+            property_record.state = 'offer received'
+
         return super(EstatePropertyOffer, self).create(vals)
     
     def action_accept_offer(self):
         for record in self:
             record.status = 'accepted'
-            for offer in record.property_id.offer_ids:
+            property = record.property_id
+            for offer in property.offer_ids:
                 if offer.id != record.id:
                     offer.status = 'refused'
-            record.property_id.selling_price, record.property_id.buyer_id, record.property_id.state = record.price, record.partner_id, 'offer accepted'
+            property.selling_price, property.buyer_id, property.state = record.price, record.partner_id, 'offer accepted'
                 
     def action_refuse_offer(self):
         for record in self:

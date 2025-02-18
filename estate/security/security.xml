@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
-        <field name="description">Helps you manage your properties.</field>
+        <field name="name">Brokerage</field>
+        <field name="description">User access levels for Real Estate module.</field>
     </record>
 
     <record id="estate_group_user" model="res.groups">
@@ -17,14 +18,21 @@
     </record>
 
     <data noupdate="1">
-        <record id="estate_rule_property_com_agent" model="ir.rule">
-            <field name="name">Agent exclusive property and company rule</field>
+        <record id="estate_rule_property_agent" model="ir.rule">
+            <field name="name">Agent exclusive property rule</field>
             <field name="model_id" ref="model_estate_property"/>
             <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
             <field name="domain_force">[
-                '&amp;', ('company_id', 'in', company_ids),
                 '|', ('salesperson_id', '=', user.id),
                     ('salesperson_id', '=', False)
+            ]</field>
+        </record>
+        <record id="estate_rule_com_agent" model="ir.rule">
+            <field name="name">Agent company rule</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="domain_force">[
+                '|', ('company_id', 'in', company_ids),
+                    ('company_id', '=', False)
             ]</field>
         </record>
         <record id="estate_rule_manager" model="ir.rule">

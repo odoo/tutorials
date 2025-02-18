@@ -19,6 +19,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Property" decoration-success="state=='offer received' or state=='offer accepted'" decoration-bf="state=='offer accepted'" decoration-muted="state=='sold'">
+                <header>
+                    <button name="action_open_add_offer_wizard" string="Add Offer" type="object" />
+                </header>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -37,12 +40,12 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sell_property" type="object" string="SOLD" class="me-3" invisible="state == 'sold' or state == 'cancelled'"/>
+                    <button name="action_sell_property" type="object" string="SOLD" class="oe_highlight" invisible="state == 'sold' or state == 'cancelled'"/>
                     <button name="action_cancel_property" type="object" string="CANCEL" class="me-3" invisible="state == 'sold' or state == 'cancelled'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new, offer received, offer accepted, sold"/>
                 </header>
                 <sheet>
-                    <group class="w-25">
+                    <group>
                         <h1>
                             <field name="name"/>
                         </h1>
@@ -51,6 +54,11 @@
                         <h3>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </h3>
+                    </group>
+                    <group>
+                        <div class="d-flex justify-content-center align-items-center" style="width: 450px; height: 300px; overflow: hidden;">
+                            <field name="image" widget="image"/>
+                        </div>
                     </group>
                     <group>
                         <group>
@@ -91,6 +99,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

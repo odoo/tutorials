@@ -1,7 +1,7 @@
 from odoo.exceptions import UserError
 
 from odoo.tests.common import TransactionCase
-from odoo.tests import tagged
+from odoo.tests import tagged, Form
 
 
 @tagged('post_install', '-at_install')
@@ -51,4 +51,14 @@ class EstateTestCase(TransactionCase):
 
     def test_successful_property_sale(self):
         self.property.action_sell_property()
-        self.assertEqual(self.property.state, 'sold', "Property should be marked as sold.")
+        self.assertEqual(self.property.state, 'sold',
+            "Property should be marked as sold.")
+
+    def test_garden_checkbox_reset(self):
+        with Form(self.property) as form:
+            form.garden = True
+            form.garden = False
+            self.assertEqual(form.garden_area, 0,
+                "Garden Area should be reset to 0 when Garden checkbox is unchecked")
+            self.assertEqual(form.garden_orientation, False,
+                "Garden Orientation should be reset to False when Garden checkbox is unchecked")
