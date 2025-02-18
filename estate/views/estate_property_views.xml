@@ -17,12 +17,16 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list 
+            <list
                 string="Listed Properties"
                 decoration-success="state == 'offer_received' or state == 'offer_accepted'"
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'"
             >
+                <header>
+                    <button name="%(estate_property_multi_offer_wizard_action)d" string="Add offer" type="action" class="btn-primary" />
+                </header>
+            
                 <field name="name" string="Title" />
                 <field name="tag_ids" widget="many2many_tags" />
                 <field name="postcode" />
@@ -91,6 +95,9 @@
                                 <field name="salesperson_id" />
                             </group>
                         </page>
+                        <page string="Property Image">
+                            <field name="property_image" widget="image" />
+                        </page>
                     </notebook>
                 </sheet>
                 <chatter />
@@ -148,7 +155,10 @@
                 <field name="state" />
                 <templates>
                     <t t-name="card">
-                        <div>
+                        <div class="w-50">
+                            <field name="property_image" widget="image"/>
+                        </div>
+                        <div class="mt-3">
                             <field name="name" />
                         </div>
                         <div>

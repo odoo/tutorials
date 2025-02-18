@@ -29,6 +29,8 @@
             <field name="partner_id" ref="base.res_partner_2"/>
         </record>
 
-        <function model="estate.property.offer" name="action_accept_offer" eval="[ref('estate_property_offer_2')]" />
+        <function model="estate.property.offer" name="action_accept_offer" eval="[ref('estate.estate_property_offer_2')]" />
+        <function model="estate.property" name="action_mark_property_cancelled" eval="[ref('estate.trailer_home')]" />
+        
     </data>
 </odoo>

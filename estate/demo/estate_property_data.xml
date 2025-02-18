@@ -21,7 +21,7 @@
 
         <record id="trailer_home" model="estate.property">
             <field name="name">Trailer home</field>
-            <field name="state">cancelled</field>
+            <field name="state">new</field>
             <field name="description">Home in a trailer park</field>
             <field name="postcode">54321</field>
             <field name="date_availability">1970-01-01</field>

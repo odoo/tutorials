@@ -39,19 +39,18 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             property = self.env['estate.property'].browse(vals['property_id'])
             
-            if property.state == 'sold':
-                raise UserError("You cannot crete offer for sold property")
-            property.state = "offer_received"
+            if property.state in ['sold', 'offer_accepted', 'cancelled']:
+                raise UserError(f"Cannot create offer for property in '{property.state}' state.")
             
             best_offer = self.search([('property_id', '=', vals['property_id'])], order="price desc", limit=1)
-            
             if best_offer and best_offer.price > vals['price']:
                 raise UserError(f"The offer price must be higher than {best_offer.price}")
+            
+            property.state = "offer_received"
         
         return super().create(vals_list)
 
     def unlink(self):
-        print(self)
         properties = self.mapped("property_id")
         res = super().unlink();
         
@@ -60,7 +59,7 @@ class EstatePropertyOffer(models.Model):
             
             if linked_offers == 0:
                 property.state = 'new'
-                property.buyer = ''
+                property.buyer_id = ''
                 property.selling_price = 0
         return res
     

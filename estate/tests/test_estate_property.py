@@ -1,5 +1,6 @@
-from odoo.exceptions import UserError
+from odoo.tests import Form
 from odoo.tests.common import TransactionCase
+from odoo.exceptions import UserError
 
 
 class TestEstateProperty(TransactionCase):
@@ -35,3 +36,20 @@ class TestEstateProperty(TransactionCase):
         }).action_accept_offer()
         self.property.action_mark_property_sold()
         self.assertEqual(self.property.state, "sold", msg="Property not marked sold")        
+
+    def test_garden_checkbox(self):
+        with Form(self.property) as form:
+            form.garden = True
+
+        self.property = form.save()
+        
+        self.assertEqual(self.property.garden_area, 10)
+        self.assertEqual(self.property.garden_orientation, "north")
+        
+        with Form(self.property) as form:
+            form.garden = False
+
+        self.property = form.save()
+        
+        self.assertEqual(self.property.garden_area, 0)
+        self.assertEqual(self.property.garden_orientation, False)
