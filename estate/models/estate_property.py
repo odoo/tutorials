@@ -35,6 +35,7 @@ class EstateProperty(models.Model):
         ('sold', 'Sold'),
         ('canceled', 'Canceled'),
     ], copy=False, default='new', required=True,  tracking=True)
+    image = fields.Image(string="Property Image")
 
     # Many2one relationship
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
@@ -101,6 +102,15 @@ class EstateProperty(models.Model):
             raise UserError("You cannot sell a canceled property")
         else:
             self.state = 'sold'
+
+        offers = self.offer_ids
+        any_offer_accept = False
+        for offer in offers:
+            if offer.status == 'accepted':
+                any_offer_accept = True
+                continue
+        if any_offer_accept == False:
+            raise ValidationError("At least one offer must be accepted before selling the property.")
 
         self.active = False
         return True

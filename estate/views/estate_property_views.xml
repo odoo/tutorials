@@ -4,7 +4,7 @@
         <field name="name">Estate</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
-        <field name="context">{'search_default_availible_property': 1}</field>
+        <field name="context">{'search_default_available_property': 1}</field>
     </record>
 
     <record id="property_view" model="ir.ui.view">
@@ -22,11 +22,15 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" optional="1" />
+                <header>
+                    <button name="%(estate_property_offer_wizard_action)d" string="Add Offer"
+                        type="action" class="btn-primary" />
+                </header>
             </list>
         </field>
     </record>
 
-    <record id="propety_form" model="ir.ui.view">
+    <record id="property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -52,6 +56,7 @@
                             <field name="date_availability" />
                         </group>
                         <group>
+                            <field name="image" widget="image" class="oe_avatar" />
                             <field name="expected_price" />
                             <field name="selling_price" />
                             <field name="best_price" string="Best Offer" />
@@ -92,7 +97,7 @@
                     </notebook>
                 </sheet>
                 <!-- Chatter -->
-                <chatter/>
+                <chatter />
             </form>
         </field>
     </record>
@@ -101,7 +106,8 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" class="o_res_partner_kanban" records_draggable="False">
+            <kanban default_group_by="property_type_id" class="o_res_partner_kanban"
+                records_draggable="False">
                 <field name="state" />
                 <templates>
                     <t t-name="card">
@@ -131,7 +137,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Property">
-                <filter string="Available" name="availible_property"
+                <filter string="Available" name="available_property"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
                 <!-- domain :  static and predefined (ORM) level -->
 

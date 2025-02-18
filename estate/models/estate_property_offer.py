@@ -80,13 +80,20 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
 
+            # Sold Property can't make a new offer
+            property = self.env['estate.property'].browse(vals.get('property_id'))
+            if not property.exists():
+                raise UserError("The property you are referring to doesn't exist.")
+            elif property.state == 'sold':
+                raise UserError("You cannot create an offer for a sold property.")
+
             offer_price = vals.get('price')
             current_maximum_offer = self.search([('property_id', '=', vals['property_id'])], order="price desc", limit=1) # Fetch the current maximum offer for the property, already stored in the descending order of price.
 
             if offer_price < current_maximum_offer.price:
                 raise UserError(f"The offer price must be higher than {current_maximum_offer.price}")
             else:
-                offer_reccived_property = self.env['estate.property'].browse(vals.get('property_id'))
-                offer_reccived_property.state = "offer_received"
+                offer_received_property = self.env['estate.property'].browse(vals.get('property_id'))
+                offer_received_property.state = "offer_received"
 
         return super().create(vals_list)

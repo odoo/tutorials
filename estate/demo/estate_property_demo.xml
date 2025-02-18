@@ -20,6 +20,227 @@
     </record>
 
     <record id="estate_property_2" model="estate.property">
+        <field name="name">Luxury Mansion</field>
+        <field name="description">An elegant and luxurious mansion</field>
+        <field name="postcode">54321</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">25</field>
+        <field name="bedrooms">8</field>
+        <field name="living_area">250</field>
+        <field name="facades">6</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">50000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3" />
+    </record>
+    
+    <record id="estate_property_3" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="description">A stylish and modern apartment</field>
+        <field name="postcode">67890</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">15</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">90</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">east</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1" />
+    </record>
+    
+    <record id="estate_property_4" model="estate.property">
+        <field name="name">Countryside Cottage</field>
+        <field name="description">A cozy cottage in the countryside</field>
+        <field name="postcode">13579</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">8</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">120</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">20000</field>
+        <field name="garden_orientation">west</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3" />
+    </record>
+    
+    <record id="estate_property_5" model="estate.property">
+        <field name="name">Skyline Penthouse</field>
+        <field name="description">A penthouse with a breathtaking skyline view</field>
+        <field name="postcode">24680</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">30</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">180</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">north</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1" />
+    </record>
+    
+    <record id="estate_property_6" model="estate.property">
+        <field name="name">Seaside Bungalow</field>
+        <field name="description">A relaxing bungalow by the sea</field>
+        <field name="postcode">11223</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">12</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">110</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">15000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3" />
+    </record>
+
+    <record id="estate_property_7" model="estate.property">
+        <field name="name">Mountain Retreat</field>
+        <field name="description">A peaceful retreat in the mountains</field>
+        <field name="postcode">33445</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">20</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">160</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">40000</field>
+        <field name="garden_orientation">west</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1" />
+    </record>
+
+     <record id="estate_property_8" model="estate.property">
+        <field name="name">Lake House</field>
+        <field name="description">A beautiful house by the lake</field>
+        <field name="postcode">55667</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">18</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">140</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">30000</field>
+        <field name="garden_orientation">east</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3" />
+    </record>
+
+    <record id="estate_property_9" model="estate.property">
+        <field name="name">Urban Loft</field>
+        <field name="description">A modern loft in the city</field>
+        <field name="postcode">66778</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">22</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">85</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">north</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1" />
+    </record>
+
+    <record id="estate_property_10" model="estate.property">
+        <field name="name">Desert Villa</field>
+        <field name="description">A luxurious villa in the desert</field>
+        <field name="postcode">77889</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">35</field>
+        <field name="bedrooms">7</field>
+        <field name="living_area">200</field>
+        <field name="facades">5</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">70000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3" />
+    </record>
+
+    <record id="estate_property_11" model="estate.property">
+        <field name="name">Eco Cabin</field>
+        <field name="description">A sustainable eco-friendly cabin</field>
+        <field name="postcode">88990</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">14</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">95</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">25000</field>
+        <field name="garden_orientation">west</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1" />
+    </record>
+
+    <record id="estate_property_12" model="estate.property">
+        <field name="name">Cliffside Retreat</field>
+        <field name="description">A serene retreat on the cliffs</field>
+        <field name="postcode">99001</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">28</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">150</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">35000</field>
+        <field name="garden_orientation">north</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3" />
+    </record>
+
+    <record id="estate_property_13" model="estate.property">
+        <field name="name">Seaside Bungalow</field>
+        <field name="description">A cozy bungalow by the sea</field>
+        <field name="postcode">10101</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">20</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">120</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">28000</field>
+        <field name="garden_orientation">east</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1" />
+    </record>
+
+    <record id="estate_property_14" model="estate.property">
+        <field name="name">Hilltop Mansion</field>
+        <field name="description">A grand mansion on the hills</field>
+        <field name="postcode">20202</field>
+        <field name="state">new</field>
+        <field name="active">True</field>
+        <field name="expected_price">50</field>
+        <field name="bedrooms">8</field>
+        <field name="living_area">300</field>
+        <field name="facades">6</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">80000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3" />
+    </record>
+
+    <record id="estate_property_2" model="estate.property">
         <field name="name">Trailer home</field>
         <field name="description">Home in a tariler park</field>
         <field name="postcode">54321</field>
@@ -34,7 +255,7 @@
         <field name="garden_area">3</field>
         <field name="garden_orientation">south</field>
         <field name="property_type_id" ref="estate.estate_property_type_2" />
-                <field name="offer_ids" eval="[
+        <field name="offer_ids" eval="[
             Command.create({
                 'partner_id': ref('base.res_partner_1'),
                 'price': 280000,
