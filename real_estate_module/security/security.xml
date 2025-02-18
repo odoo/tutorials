@@ -16,7 +16,7 @@
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="False"/>
-        <field name="domain_force">['|',('salesman_id', '=', user.id),('salesman_id', '=', False)]</field>
+        <field name="domain_force">[('salesman_id', 'in', (user.id, False))]</field>
     </record>
     <record id="estate_property_company_rule" model="ir.rule">
     <field name="name">Estate Property Company Rule</field>
@@ -24,5 +24,4 @@
     <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
     <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
 </record>
-
 </odoo>

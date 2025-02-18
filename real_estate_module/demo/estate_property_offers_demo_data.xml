@@ -1,26 +1,23 @@
 <odoo>
     <record id="offer_azure_interior_big_villa_1" model="estate.property.offer">
-        <field name="name">Offer from Azure Interior</field>
-        <field name="partner_id" ref="base.partner_azure_interior" />
+        <!-- <field name="name">Offer from Azure Interior</field> -->
+        <field name="partner_id" ref="base.res_partner_12" />
         <field name="property_id" ref="property_big_villa" />
         <field name="price">10000</field>
         <field name="validity">14</field>
-        <field name="date_availability" eval="context_today() + timedelta(days=-14)"/>
     </record>
     <record id="offer_azure_interior_big_villa_2" model="estate.property.offer">
-        <field name="name">Offer from Azure Interior</field>
-        <field name="partner_id" ref="base.partner_azure_interior" />
+        <!-- <field name="name">Offer from Azure Interior</field> -->
+        <field name="partner_id" ref="base.res_partner_12" />
         <field name="property_id" ref="property_big_villa" />
         <field name="price">1500000</field>
         <field name="validity">14</field>
-        <field name="date_availability" eval="context_today() + timedelta(days=-14)"/>
     </record>
     <record id="offer_deco_addict_big_villa" model="estate.property.offer">
-        <field name="name">Offer from Deco Addict</field>
-        <field name="partner_id" ref="base.partner_deco_addict" />
+        <!-- <field name="name">Offer from Deco Addict</field> -->
+        <field name="partner_id" ref="base.res_partner_2" />
         <field name="property_id" ref="property_big_villa" />
         <field name="price">15000001</field>
         <field name="validity">14</field>
-        <field name="date_availability" eval="context_today() + timedelta(days=-14)"/>
     </record>
 </odoo>

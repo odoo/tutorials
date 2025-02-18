@@ -2,6 +2,8 @@ from odoo import fields, models
 
 
 class ResUsers(models.Model):
+    """Extends the res.users model to include properties assigned to a salesperson."""
+
     _inherit = 'res.users'
 
     property_ids = fields.One2many(

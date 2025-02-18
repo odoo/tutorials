@@ -1,12 +1,33 @@
 <odoo>
+    <record id="property_new_villa" model="estate.property">
+        <field name="name">Sunset Villa</field>
+        <field name="state">offer_received</field>
+        <field name="description">A Villa having great Sunset view for sale</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <!-- <field name="offer_ids" eval="[
+            Command.create({
+                'partner_id': ref('base.res_partner_2'),
+                'price': 100000,
+                'validity': 20,
+            })
+        ]"
+        /> -->
+        <field name="property_type_id" ref="real_estate_module.property_type_residential" />
+</record>
     <record id="property_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
-        <field name="date_availabiltiy">2020-02-02</field>
+        <field name="date_availability">2020-02-02</field>
         <field name="expected_price">1600000</field>
-        <field name="selling_price">0.0</field>
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
         <field name="facades">4</field>
@@ -21,16 +42,14 @@
         <field name="state">cancelled</field>
         <field name="description">Home in a Trailer Park</field>
         <field name="postcode">54321</field>
-        <field name="date_availabiltiy">1970-01-01</field>
+        <field name="date_availability">1970-01-01</field>
         <field name="expected_price">100000</field>
         <field name="selling_price">120000</field>
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
         <field name="garage">False</field>
-        <field name="garden"></field>
-        <field name="garden_area"></field>
-        <field name="garden_orientation"></field>
+        <field name="garden">False</field>
         <field name="property_type_id" ref="real_estate_module.property_type_residential" />
     </record>
 </odoo>
