@@ -1,4 +1,4 @@
-from datetime import  timedelta  # Import required libraries
+from datetime import timedelta  # Import required libraries
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
@@ -7,17 +7,25 @@ from odoo.tools import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _inherit = ['mail.thread']
+    _inherit = ["mail.thread"]
     _description = "Estate Property"
     _order = "id desc"
 
     name = fields.Char("Name", required=True)
     description = fields.Text("Description")
-    postcode = fields.Char("Postcode")  
-    date_availability = fields.Date( "Availability Date", copy=False,
-        default=lambda self: (fields.Datetime.today() + timedelta(days=90)).strftime("%Y-%m-%d"),)
+    postcode = fields.Char("Postcode")
+    date_availability = fields.Date(
+        "Availability Date",
+        copy=False,
+        default=lambda self: (fields.Datetime.today() + timedelta(days=90)).strftime(
+            "%Y-%m-%d"
+        ),
+    )
+    image = fields.Image(string="Property Image", max_width=1920, max_height=1080)
     expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price", copy=False, readonly=True, default=0.0 )
+    selling_price = fields.Float(
+        "Selling Price", copy=False, readonly=True, default=0.0
+    )
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living Area")
     facades = fields.Integer("Facades")
@@ -46,15 +54,24 @@ class EstateProperty(models.Model):
         default="new",  # Default state is 'New'
         required=True,  # Make this field required
         copy=False,  # Do not copy this field when duplicating a record
+        group_expand="_group_expand_states",
+        tracking=True 
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    user_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    user_id = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user
+    )
     partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer("Total Area", compute="_compute_total_area")
     best_price = fields.Integer("Best Price", compute="_compute_best_price")
-    company_id = fields.Many2one("res.company", string="Company Id", default = lambda self:self.env.company, required=True)
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company Id",
+        default=lambda self: self.env.company,
+        required=True,
+    )
 
     _sql_constraints = [
         (
@@ -69,6 +86,11 @@ class EstateProperty(models.Model):
         ),
     ]
 
+    @api.model
+    def _group_expand_states(self, states, domain):
+        """Ensures all states appear in grouped views, even if empty."""
+        return ["new", "offer_received", "offer_accepted", "sold", "cancelled"]
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for estateproperty in self:
@@ -79,7 +101,9 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for estateproperty in self:
-            estateproperty.best_price = max(estateproperty.offer_ids.mapped("price"), default=0.0)
+            estateproperty.best_price = max(
+                estateproperty.offer_ids.mapped("price"), default=0.0
+            )
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -90,12 +114,18 @@ class EstateProperty(models.Model):
             self.garden_area = 0  # If no garden, reset the area
             self.garden_orientation = ""
 
-    @api.constrains('selling_price', 'expected_price')
+    @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-        if not float_is_zero(self.selling_price, precision_rounding=2) and float_compare(self.selling_price,
-            self.expected_price * 0.9, precision_rounding=2) < 0:
-                 raise UserError("Selling price must be at least 90% greater than expected price.")
-                  
+        if (
+            not float_is_zero(self.selling_price, precision_rounding=2)
+            and float_compare(
+                self.selling_price, self.expected_price * 0.9, precision_rounding=2
+            )
+            < 0
+        ):
+            raise UserError(
+                "Selling price must be at least 90% greater than expected price."
+            )
 
     def action_property_cancel(self):
         if self.state != "sold":
@@ -108,16 +138,13 @@ class EstateProperty(models.Model):
             raise UserError("without offer you can not sold property")
         elif self.state == "cancelled":
             raise UserError("cancelled property can not be sold.")
-        else :
+        else:
             self.state = "sold"
-            self.message_post(
-            body=f"Property '{self.name}' has been sold.",
-            message_type='notification',
-            subject="Property Sold",)
 
     @api.ondelete(at_uninstall=False)
     def _check_delete_condition(self):
         for record in self:
-            if record.state not in ['new', 'cancelled']:
-                raise UserError(f"You cannot delete the property '{record.name}' because its state is '{record.state}'.")
-                
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(
+                    f"You cannot delete the property '{record.name}' because its state is '{record.state}'."
+                )

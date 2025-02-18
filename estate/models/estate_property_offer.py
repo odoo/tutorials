@@ -34,8 +34,7 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for offer in self:
-            create_date = fields.Date.from_string(offer.create_date)
-            offer.validity = (offer.date_deadline - create_date).days
+            offer.validity = (offer.date_deadline - offer.create_date.date()).days
 
     # Action methods
     def action_offer_confirm(self):
@@ -56,10 +55,11 @@ class EstatePropertyOffer(models.Model):
     
     @api.model_create_multi
     def create(self, vals_list):
-      
         for vals in vals_list:
             # Validate that the new offer amount is greater than existing offers
             property_id = self.env["estate.property"].browse(vals.get("property_id"))
+            if property_id.state == "sold":
+                raise UserError("sold property does not sold")
             if property_id.best_price >= vals["price"]:
                 raise UserError(
                     "You cannot create an offer with an amount lower than or equal to an existing offer.")
