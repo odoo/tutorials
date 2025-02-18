@@ -1,6 +1,6 @@
 {
     'name': 'Estate',
-    'depends': ['base'],
+    'depends': ['base', 'website'],
     'category': 'Estate/Brokerage',
     'data': [
         'security/estate_security.xml',
@@ -11,9 +11,9 @@
         'views/estate_property_tag_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
+        'views/estate_property_web_template.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
-        'report/estate_property_user_templates.xml',
         'data/estate.property.type.csv',
         'data/estate.property.tag.csv',
     ],

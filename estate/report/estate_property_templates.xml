@@ -1,5 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <template id="estate_property_template" name="Single Property">
+        <div class="container my-5">
+            <h1 class="text-center mb-4" t-field="property.name"></h1>
+            <div class="d-flex align-items-center gap-5">
+                <div style="max-width: 50%;">
+                    <img t-if="property.property_image" 
+                        t-att-src="image_data_uri(property.property_image)" 
+                        class="img-fluid rounded shadow-sm w-100" 
+                        style="height: 300px; object-fit: cover;" 
+                        alt="Property Image"/>
+                </div>
+                <div style="margin-left: 30px;">
+                    <div>
+                        <strong>Description: </strong>
+                        <span t-field="property.description"/>
+                    </div>
+                    <div>
+                        <strong>Expected Price: </strong>
+                        <span t-field="property.expected_price"/>
+                    </div>
+                    <div>
+                        <strong>Available From: </strong>
+                        <span t-field="property.date_availability"/>
+                    </div>
+                    <div>
+                        <strong>Bedrooms: </strong>
+                        <span t-field="property.bedrooms"/>
+                    </div>
+                    <div>
+                        <strong>Living Area: </strong>
+                        <span t-field="property.living_area"/> sqm
+                    </div>
+                    <div>
+                        <strong>Garden: </strong>
+                        <span t-if="property.garden">Yes</span>
+                        <span t-if="not property.garden">No</span>
+                        <t t-if="property.garden">
+                            <span> (Area: <t t-esc="property.garden_area"/> sqm, 
+                            Orientation: <t t-esc="dict([('north','North'), ('south','South'), ('east','East'), ('west','West')]).get(property.garden_orientation)"/>)</span>
+                        </t>
+                    </div>
+                    <div>
+                        <strong>Garage: </strong>
+                        <span t-if="property.garage">Yes</span>
+                        <span t-if="not property.garage">No</span>
+                    </div>
+                    <div>
+                        <strong>Facades: </strong>
+                        <span t-field="property.facades"/>
+                    </div>
+                    <div>
+                        <strong>Postcode: </strong>
+                        <span t-field="property.postcode"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
     <template id="estate_property_report_offers_table">
         <t t-set="offers" t-value="property.offer_ids"/>
         <div style="margin-top: 15px;">
@@ -46,33 +106,36 @@
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
-                    <div class="page" style="padding: 20px; font-family: Arial, sans-serif;">
+                    <t t-call="estate.estate_property_template"/>
+                    <t t-call="estate.estate_property_report_offers_table"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate_property_report_user_offers">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-set="properties" t-value="user.property_ids"/>
+                    <t t-if="properties">
                         <div style="border-bottom: 2px solid #007bff; margin-bottom: 20px; padding-bottom: 10px; text-align: center;">
+                            <span style="color: #6c757d; font-size: 20px;">All properties linked to </span>
                             <h2 style="color: #007bff; margin: 0;">
-                                <span t-field="property.name"/>
+                                <span t-field="user.name"/>
                             </h2>
                         </div>
-                        <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center">
-                            <div style="list-style: none; padding: 0; line-height: 1.6;">
-                                <li>
-                                    <strong>Salesman:</strong>
-                                    <span t-field="property.user_id.name"/>
-                                </li>
-                                <li>
-                                    <strong>Expected Price:</strong>
-                                    <span t-field="property.expected_price"/>
-                                </li>
-                                <li>
-                                    <strong>Property State:</strong>
-                                    <span t-field="property.state"/>
-                                </li>
+                        <t t-foreach="properties" t-as="property">
+                            <div style="page-break-inside: avoid;">
+                                <t t-call="estate.estate_property_template"/>
                             </div>
-                            <div>
-                                <img t-att-src="image_data_uri(property.property_image)" style="max-height: 300px; max-width:300px;"/>
-                            </div>
-                        </div>
-                        <t t-call="estate.estate_property_report_offers_table"/>
-                    </div>
+                            <t t-call="estate.estate_property_report_offers_table"/>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <h2>Currently there are no properties linked to <span t-field="user.name"/>
+                        </h2>
+                    </t>
                 </t>
             </t>
         </t>

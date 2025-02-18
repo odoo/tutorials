@@ -110,7 +110,7 @@
                     &quot;canceled&quot;: &quot;danger&quot;
                 }"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <h4 class="fw-bold"><field name="name"/></h4>
