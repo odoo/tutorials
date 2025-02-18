@@ -1,6 +1,6 @@
 {
     'name': 'Real Estate',
-    'version': '18.0',
+    'version': '1.0',
     'description': 'anything',
     'summary': 'anything again',
     'data': [],
@@ -9,4 +9,5 @@
     ],
     'application': True,
     'installable': True,
+    'license': 'AGPL-3'
 }
