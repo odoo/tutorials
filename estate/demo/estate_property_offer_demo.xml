@@ -3,7 +3,7 @@
     <record id="estate_property_offer_1" model="estate.property.offer">
         <field name="property_id" ref="estate.demo_estate_property_1" />
         <field name="partner_id" ref="base.res_partner_12" />
-        <field name="price">1450000</field>
+        <field name="price">14500000</field>
         <field name="validity">14</field>
     </record>
 

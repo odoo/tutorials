@@ -9,6 +9,7 @@
         "reports/estate_property_offer_report.xml",
         "reports/estate_property_offer_template.xml",
         "reports/res_users_template.xml",
+        "views/estate_offer_wizard_views.xml",
         "views/estate_property_views.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",

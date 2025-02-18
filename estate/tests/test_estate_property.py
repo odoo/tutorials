@@ -64,7 +64,7 @@ class EstateTestCase(TransactionCase):
         """Test that everything behaves like it should when selling a property."""
         self.property.action_mark_as_sold()
         self.assertRecordValues(self.property, [
-            {'name': 'Test Property 2', 'status': 'sold'},
+            {'name': 'Test Property', 'status': 'sold'},
         ])
 
     def test_action_sell_no_offer(self):

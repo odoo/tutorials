@@ -27,7 +27,7 @@
                         </t>
                         <footer class="d-flex justify-content-between align-items-center">
                             <div>
-                                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             </div>
                         </footer>
                     </t>
@@ -43,8 +43,11 @@
             <list string='Channel' decoration-muted="status=='sold'"
                 decoration-bf="status=='offer_accepted'" 
                 decoration-success="status=='offer_received' or status=='offer_accepted'"> 
+                <header>
+                    <button name="%(estate_offer_wizard)d" type="action" string="Add Offer" class="oe_highlight"/>
+                </header>
                 <field name='name' string="Title"/>
-                <field name='tag_ids' widget='many2many_tags'/>
+                <field name='tag_ids' widget='many2many_tags' options="{'color_field': 'color'}"/>
                 <field name='property_type_id'/>
                 <field name='postcode'/>
                 <field name='bedrooms'/>
@@ -72,7 +75,8 @@
                     <group>
                         <group>
                             <h1><field name='name'/></h1>
-                            <field name='tag_ids' widget='many2many_tags'/>
+                            <field name='tag_ids' widget='many2many_tags' options="{'color_field': 'color'}"
+                            />
                         </group>
                         <field name="image_1920" widget='image' class="oe_avatar" style="max-width: 150px; max-height: 150px;"/>
                     </group>
