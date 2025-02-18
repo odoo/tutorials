@@ -8,5 +8,9 @@
             <menuitem id="menu_action_property_types" action="action_property_types" />
             <menuitem id="menu_action_property_tags" action="action_property_tags" />
         </menuitem>
+        <menuitem id="estate_menu_website" name="Website">
+            <menuitem id="estate_property_menu_website" name="View Properties"
+                action="open_url_action" />
+        </menuitem>
     </menuitem>
 </odoo>

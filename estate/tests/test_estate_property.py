@@ -1,3 +1,4 @@
+from odoo import Command
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import tagged
@@ -5,7 +6,7 @@ from odoo.tests.form import Form
 
 
 @tagged("post_install", "-at_install")
-class EstateTestCase(TransactionCase):
+class EstatePropertyTestCase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
@@ -38,15 +39,14 @@ class EstateTestCase(TransactionCase):
         self.properties.action_set_sold()
 
         with self.assertRaises(UserError):
-            self.env["estate.property.offer"].create(
-                [
+            self.properties[0].offer_ids = [
+                Command.create(
                     {
                         "buyer_id": self.env.ref(xml_id="base.res_partner_12").id,
-                        "property_id": self.properties[0].id,
                         "price": 10000,
                     }
-                ]
-            )
+                )
+            ]
 
     def test_property_form(self):
         """Test the form view of properties."""

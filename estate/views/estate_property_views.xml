@@ -55,6 +55,10 @@
                             </h1>
                             <field name='tags_ids' widget="many2many_tags"
                                 options="{'color_field': 'color'}" />
+                            <group>
+                                <field name="image" widget='image' optional="show" class="oe_avatar"
+                                    style="max-width: 150px; max-height: 150px;" />
+                            </group>
                             <field name="postcode" />
                             <field name="date_availability" />
                             <field name="property_type_id" string="Property Type"
@@ -144,4 +148,11 @@
             </kanban>
         </field>
     </record>
+
+    <record id="open_url_action" model="ir.actions.act_url">
+        <field name="name">Open External Website</field>
+        <field name="url">http://localhost:8069/properties</field>
+        <field name="target">new</field>
+    </record>
+
 </odoo>
