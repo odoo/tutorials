@@ -2,13 +2,19 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command, models
+from odoo.exceptions import AccessError
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold_property(self): # method for sold button
         for record in self:
-            self.env['account.move'].create({
+            try:
+                self.env['account.move'].check_access('create')
+            except AccessError:
+                raise AccessError("You do not have permission to sell this property.")
+
+            self.env['account.move'].sudo().create({   #sudo() for bypass access rights and record rules.
                 'partner_id': record.buyer_id.id,
                 'move_type': 'out_invoice',
                 'line_ids': [

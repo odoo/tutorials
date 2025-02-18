@@ -8,6 +8,10 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _sql_constraints = [
+        ('check_positive_value_offer_price', 'CHECK(price >= 0)',
+         'Offer price must be positive')
+    ]
 
     price = fields.Float(string="Price", required=True)
     status = fields.Selection(
@@ -52,11 +56,6 @@ class EstatePropertyOffer(models.Model):
             record.status = "refused"
         return True
 
-    _sql_constraints = [
-        ('check_positive_value_offer_price', 'CHECK(price >= 0)',
-         'Offer price must be positive')
-    ]
-
     @api.model_create_multi
     def create(self, vals_list):
         for offer in vals_list:
@@ -69,3 +68,14 @@ class EstatePropertyOffer(models.Model):
             if max_offer > offer["price"]:
                     raise UserError(f"The new offer must be higher than the maximum offer of {max_offer:.2f}")
         return super().create(vals_list)
+
+    def action_property_offer_accept(self):
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        for offer in self.property_id.offer_ids:
+            if offer == self:
+                offer.status = "accepted"
+                self.property_id.state = "offer accepted"
+            else:
+                offer.status = "refused"
+        return True

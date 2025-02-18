@@ -6,7 +6,7 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "Raj Pavara",
-    'category': 'Property',
+    'category': 'Real Estate/Brokerage',
     'description': """
     Basic Real Estate application
     """,
@@ -14,12 +14,17 @@
     'application': True,
     'license': 'LGPL-3',
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml', # Maintain the sequance for loading of the data files
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml', 
         'views/estate_property_tag_views.xml', 
         'views/estate_menus.xml',
-        'views/res_users_views.xml'
+        'views/res_users_views.xml',
+        'data/estate.property.type.csv'
+    ],
+    'demo': [
+        'demo/demo_data.xml'
     ]
 }

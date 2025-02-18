@@ -64,6 +64,7 @@
                                     <field name="garden"/>
                                     <field name="garden_orientation" invisible="not garden"/>
                                     <field name="garden_area" invisible="not garden"/>
+                                    <field name="company_id"/>
                                 </group>
                             </group>
                         </page>

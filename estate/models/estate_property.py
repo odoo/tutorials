@@ -10,6 +10,12 @@ from odoo.exceptions import UserError,ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _sql_constraints = [
+        ('check_positive_values_expected_price', 'CHECK(expected_price>0)',
+         'Expected price must be positive'),
+         ('check_positive_values_selling_price', 'CHECK(selling_price>0)',
+         'Selling price must be positive')
+    ]
 
     name = fields.Char(string="Property Name", required=True, default="Unknown name")
     property_tag_ids = fields.Many2many("estate.property.tag", string="Property Condition") # all many2many fields have suffix _ids.
@@ -17,6 +23,7 @@ class EstateProperty(models.Model):
     salesmen_id = fields.Many2one("res.users", string="Salesmen", default=lambda self: self.env.user) # many2one field by default display name field of other model, self.env.user return current user's name
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    company_id = fields.Many2one("res.company",string="Company", required=True, default=lambda self: self.env.company)
     active=fields.Boolean(default=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -88,13 +95,6 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
-
-    _sql_constraints = [
-        ('check_positive_values_expected_price', 'CHECK(expected_price>0)',
-         'Expected price must be positive'),
-         ('check_positive_values_selling_price', 'CHECK(selling_price>0)',
-         'Selling price must be positive')
-    ]
 
     @api.constrains('selling_price', 'expected_price')
     def _check_minimum_selling_price(self):

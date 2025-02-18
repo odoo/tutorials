@@ -1,0 +1,35 @@
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[(4, ref('estate.estate_group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>  <!-- make admin to manager -->
+    </record>
+
+    <record id="estate_porperty_access" model="ir.rule">
+        <field name="name">estate.property.access</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="domain_force">['|', ('salesmen_id', '=', False), ('salesmen_id', '=', user.id )]</field>
+        <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+    </record>
+
+    <record id="estate_property_manager_all_rule" model="ir.rule">
+        <field name="name">Manager can access all properties of their companies</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
+        <field name="domain_force"></field>  <!--all records are accesiable-->
+    </record>
+
+    <record id="estate_property_company_access" model="ir.rule">
+        <field name="name">estate.property.agent.company.access</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>
