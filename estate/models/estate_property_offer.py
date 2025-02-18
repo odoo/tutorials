@@ -49,6 +49,9 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_obj = self.env['estate.property'].browse(vals['property_id'])
+
+            if property_obj.state in ["offer_accepted", "sold", "cancelled"]:
+                raise ValidationError(f"Can't create offer for property in {property_obj.state} state!")
             
             if property_obj.state == "new":
                 property_obj.state = 'offer_received'

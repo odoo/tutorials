@@ -19,6 +19,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Property List" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-danger="state == 'cancelled'" decoration-muted="state == 'sold'" >
+                <header>
+                    <button name="%(action_estate_wizard_multi_offer)d"
+                        string="Add Offer"
+                        type="action"
+                        class="btn-primary"/>
+                </header>
                 <field name="name" string="Title"/>
                 <field name="property_type_id" />
                 <field name="postcode" string="Postcode"/>
@@ -44,16 +50,21 @@
                     <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold" />
                 </header>
                 <sheet>
-                    <label for="name"/>
-                    <h1>
-                        <field name="name" class="mb16"/>
-                    </h1>
+                    <div class="d-flex justify-content-between">
+                       <div>
+                           <label for="name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                       </div>
+                    </div>
                     <group>
                         <group class="mb32">
                             <field name="tag_ids" string="Tags" widget="many2many_tags" options="{'color_field': 'color', }" />
                             <field name="property_type_id" options="{'no_create': true}" />
                             <field name="postcode" />
                             <field name="date_availability" string="Available From" />
+                            <field name="property_image" widget="image" />
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -105,7 +116,7 @@
                 <field name="state" />
                 
                 <templates>
-                    <!-- <progressbar field="state" colors='{"offer_received": "success", "offer_accepted": "warning", "cancelled": "danger"}'/> -->
+                    <progressbar field="state" colors='{"offer_received": "success", "offer_accepted": "warning", "cancelled": "danger"}'/>
                     
                     <t t-name="card">
                         <div class="o_kanban_card">

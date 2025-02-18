@@ -6,11 +6,12 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         self.env['account.move'].sudo().create({
-            'partner_id': self.buyer_id.id, 
+            'property_id': self.id,
+            'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice', 
             "invoice_line_ids": [
                 Command.create({
-                    "name": "Property Sale Commission",
+                    "name": self.name + ": Sale Commission",
                     "quantity": 1,
                     "price_unit": self.selling_price * 0.06
                 }),

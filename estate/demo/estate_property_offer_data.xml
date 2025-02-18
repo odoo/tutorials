@@ -106,6 +106,10 @@
         <function model="estate.property.offer" name="action_accept" eval="[ref('estate_property_big_villa_offer_1')]" />
         <function model="estate.property.offer" name="action_refuse" eval="[ref('estate_property_a2z_chemicals_offer_1')]" />
         <function model="estate.property.offer" name="action_accept" eval="[ref('estate_property_small_apartment_offer_3')]" />
+        <function model="estate.property.offer" name="action_accept" eval="[ref('estate_property__cabin_offer_2')]" />
+        <function model="estate.property" name="action_set_sold" eval="[ref('estate_property_small_apartment')]" />
+        <function model="estate.property" name="action_set_sold" eval="[ref('estate_property_cabin')]" />
+        <function model="estate.property" name="action_set_cancelled" eval="[ref('estate_property_trailer_home')]" />
     </data>
 
 </odoo>

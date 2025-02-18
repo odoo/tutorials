@@ -5,7 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-    _inherit = "mail.thread"
+    _inherit = ["mail.thread"]
     _order = "id desc"
 
     _sql_constraints = [
@@ -63,6 +63,7 @@ class EstateProperty(models.Model):
     company_id = fields.Many2one(
         'res.company', string="Company", required=True, default=lambda self: self.env.company
     )
+    property_image = fields.Image(string="Property Image", max_width=256, max_height=256)
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
