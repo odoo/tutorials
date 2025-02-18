@@ -12,6 +12,9 @@
             <field name="model">estate.properties</field>
             <field name="arch" type="xml">
                 <list decoration-success="state in ['offer_accepted','offer_recieved']" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
+                    <header>
+                        <button name="%(wizard_action)d" string="Add Offer" type="action" class="btn-primary"/>
+                    </header>
                     <field string="Title" name="name" width="150"/>
                     <field string="Postcode" name="postcode" width="150"/>
                     <field string="Bedrooms" name="bedrooms"/>
@@ -107,7 +110,7 @@
                     <field string="Bedrooms" name="bedrooms"/>
                     <field string="Living Area (sqm)" name="living_area" filter_domain="[('living_area','>=',self)]"/>
                     <field string="Facades" name="facades"/>
-                    <filter string="Available" name="state" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                    <filter name="available" string="Available" domain="[('state','in',('new','offer received'))]" />
                     <group expand="1" string="Group By">
                         <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                     </group>

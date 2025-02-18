@@ -4,13 +4,15 @@
 {
     'name': 'Estate',
     'version': '1.0',
-    'depends': ['base','mail'],
+    'depends': ['base','mail','website'],
     'icon': '/real_estate/static/description/estate_icon.png',
     'author': 'Odoo',
     'category': 'Real Estate/Brokerage',
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'views/estate_properties_web_views.xml',
+        'views/estate_properties_wizard_view.xml',
         'report/estate_properties_main_template.xml',
         'report/estate_properties_template.xml',
         'report/estate_properties_offer_template.xml',
@@ -28,6 +30,7 @@
     'demo': [
         'demo/estate_property.xml',
         'demo/estate_property_offer.xml',
+        'demo/web_menu_demo.xml',
     ],
     'installable': True,
     'application': True,

@@ -47,6 +47,9 @@ class EstatePropertiesOffer(models.Model):
         if vals['price'] < property.expected_price:
             raise ValidationError(
                 _('Offer price should not be less than Expected price'))
+        if property.state in ['sold', 'cancelled']:
+            raise ValidationError(
+                _('Property Already sold out.'))
         property.state = 'offer_recieved'
         return super().create(vals)
 

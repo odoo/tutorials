@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -88,13 +88,14 @@ class EstateProperties(models.Model):
         _ = self.env._
         for record in self:
             if len(record.offer_ids) == 0 or record.state != 'offer_accepted':
-                raise UserError(_('Need at least one offer to be accepted.'))
+                raise ValidationError(
+                    _('Need at least one offer to be accepted.'))
             elif record.state == 'cancelled':
-                raise UserError(_('Cancelled property cannot be sold.'))
+                raise ValidationError(_('Cancelled property cannot be sold.'))
             record.state = 'sold'
 
     def action_property_rejected(self):
         _ = self.env._
         if self.state == 'sold':
-            raise UserError(_('Sold property cannot be cancelled.'))
+            raise ValidationError(_('Sold property cannot be cancelled.'))
         self.state = 'cancelled'
