@@ -106,6 +106,8 @@ class EstateProperty(models.Model):
                 raise UserError("This property is already sold")
             if record.state == "cancelled":
                 raise UserError("You cannot sell a cancelled property")
+            if record.state != 'offer_accepted':
+                raise UserError("You can only sell property whose state is Offer Accepted")
             record.state = "sold"
 
     def action_estate_property_cancel(self):

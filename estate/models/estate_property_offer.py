@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -61,6 +61,8 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_id = self.env['estate.property'].browse(vals['property_id'])
+            if property_id.state == 'sold':
+                raise UserError("You can't create offer on sold properties")
             if property_id.state != 'offer_received':
                 property_id.state = 'offer_received'
             if property_id.offer_ids:
