@@ -111,14 +111,14 @@ class EstateProperty(models.Model):
 
     def action_sold_property(self):
         self.ensure_one()
-        # accepted_offer = self.offer_ids.filtered(
-        #     lambda x: x.status == "accepted")
+        accepted_offer = self.offer_ids.filtered(
+            lambda x: x.status == "accepted")
 
         if self.state == "cancelled":
             raise UserError(_("Cancelled Property Cannot be Sold"))
-        # elif not accepted_offer:
-        #     raise UserError(
-        #         _("There is no accepted offer for this property"))
+        elif not accepted_offer:
+            raise UserError(
+                _("There is no accepted offer for this property"))
         else:
             self.state = "sold"
 
