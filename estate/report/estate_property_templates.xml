@@ -28,7 +28,7 @@
         </t>
     </template>
     <template id="offer_table_template">
-        <t t-set="offers" t-value="property.mapped(offer_ids)" />
+        <t t-set="offers" t-value="property.mapped('offer_ids')" />
         <t t-if="offers">
             <table class="table">
                 <thead>
@@ -44,6 +44,15 @@
                     <tr t-foreach="offers" t-as="offer">
                         <td>
                             <span t-field="offer.partner_id"></span>
+                        </td>
+                        <td>
+                            <span t-field="offer.validity"></span>
+                        </td>
+                        <td>
+                            <span t-field="offer.date_deadline"></span>
+                        </td>
+                        <td>
+                            <span t-field="offer.price"></span>
                         </td>
                         <td>
                             <span t-field="offer.status"></span>
@@ -68,8 +77,6 @@
                         </h2>
                         <t t-set="propertys" t-value="user.mapped('property_ids')" />
                         <t t-foreach="propertys" t-as="property">
-
-
                             <h2>
                                 <h1 t-field="property.name" />
                             </h2>

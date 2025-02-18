@@ -18,7 +18,7 @@
         </record>
         <record id="property_id_2" model="estate.property">
             <field name="name">Trailer home</field>
-            <field name="status">cancel</field>
+            <field name="status">new</field>
             <field name="description">Home in a trailer park</field>
             <field name="postcode">54321</field>
             <field name="date_availability">1970-01-01</field>
@@ -38,7 +38,7 @@
         </record>
         <record id="property_id_4" model="estate.property">
             <field name="name">Cozy Cabin</field>
-            <field name="status">sold</field>
+            <field name="status">new</field>
             <field name="description">Small cabin by lake</field>
             <field name="postcode">10000</field>
             <field name="date_availability">2020-01-01</field>

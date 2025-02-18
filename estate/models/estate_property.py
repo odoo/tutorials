@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-    _order = "id asc"
 
     name = fields.Char(string="Name", required=False, copy=False)
     description = fields.Text(copy=True)
@@ -75,11 +74,13 @@ class EstateProperty(models.Model):
            
     def action_sold(self):
         for rec in self:
-            if(rec.status != "cancel"):
-                 rec.status="sold"
+            if(rec.status == "cancel" ):
+                 raise UserError(_("Canceled property can not be sold"))
+            elif('accepted' not in [offer.status for offer in rec.offer_ids]):
+                raise UserError(_("You cannot sell the property without an accepted offer."))
             else:
-                raise UserError(_("Canceled property can not be sold"))
-                           
+                rec.status='sold'
+
     def action_cancel(self):
         for rec in self:
             if(rec.status != "sold"):

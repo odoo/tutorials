@@ -113,9 +113,7 @@
                 <field name="postcode" string="Postcode" />
                 <field name="expected_price" string="Expected Price" />
                 <field name="bedrooms" string="Bedrooms" />
-                <field name="living_area" string="Living Area (sqm)"
-                    filter_domain="[('living_area', '&gt;', self)]" />
-                <!-- <field name="facades" string="Facades" /> -->
+                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '&gt;', self)]" />
                 <filter name="status" domain="[('status','=','new')]" />
                 <filter name="total_area" />
                 <filter name="Available" domain="[('status', 'not in', ['sold', 'cancel'])]" />

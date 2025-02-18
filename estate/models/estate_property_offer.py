@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
 from dateutil.relativedelta import relativedelta
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -58,6 +59,8 @@ class EstatePropertyOffer(models.Model):
             for rec in rec_list:
                     if rec["property_id"]:
                             val = self.env["estate.property"].browse(rec["property_id"])
+                    if val.status == 'sold':
+                            raise UserError("property is already sold")
                     if rec["price"] < val.best_price:
                             raise UserError("price must be greater than best price")  
                     if val.status == "new":

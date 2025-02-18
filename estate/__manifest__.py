@@ -8,7 +8,7 @@
     'category': 'Real Estate/Brokerage',
     'license': 'LGPL-3',
     'description': "A module for managing real estate properties",
-    'depends':['base',"website"],
+    'depends':['base'],
     'data': [
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
@@ -18,7 +18,7 @@
         "views/estate_property_type_view.xml",
         "views/estate_property_tag_view.xml",
         "views/estate_property_view.xml",
-        "views/inherited_user_view.xml",
+        "views/res_users_view.xml",
         "views/estate_menus.xml",
         "data/estate_data.xml"
     ],
