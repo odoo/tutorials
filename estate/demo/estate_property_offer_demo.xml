@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_utsav" model="res.partner">
+        <field name="name">Utsav</field>
+    </record>
+
+    <record id="res_partner_ronak" model="res.partner">
+        <field name="name">Ronak</field>
+    </record>
+
+    <record id="res_partner_rushil" model="res.partner">
+        <field name="name">Rushil</field>
+    </record>
+
+    <record id="res_partner_het" model="res.partner">
+        <field name="name">Het</field>
+    </record>
+
+    <record id="estate_property_offer1" model="estate.property.offer">
+        <field name="price">15000</field>
+        <field name="validity">8</field>
+        <field name="partner_id" ref="res_partner_utsav"/>
+        <field name="property_id" ref="estate_property_luxury_villa"/>
+    </record>
+
+    <record id="estate_property_offer2" model="estate.property.offer">
+        <field name="price">100000</field>
+        <field name="validity">10</field>
+        <field name="partner_id" ref="res_partner_ronak"/>
+        <field name="property_id" ref="estate_property_luxury_villa"/>
+    </record>
+
+    <record id="estate_property_offer3" model="estate.property.offer">
+        <field name="price">20000</field>
+        <field name="validity">2</field>
+        <field name="partner_id" ref="res_partner_rushil"/>
+        <field name="property_id" ref="estate_property_trailer_home"/>
+    </record>
+
+    <record id="estate_property_offer4" model="estate.property.offer">
+        <field name="price">30000</field>
+        <field name="validity">5</field>
+        <field name="partner_id" ref="res_partner_het"/>
+        <field name="property_id" ref="estate_property_big_villa"/>
+    </record>
+
+    <record id="estate_property_offer5" model="estate.property.offer">
+        <field name="price">35000</field>
+        <field name="validity">3</field>
+        <field name="partner_id" ref="res_partner_utsav"/>
+        <field name="property_id" ref="estate_property_trailer_home"/>
+    </record>
+
+    <record id="estate_property_offer6" model="estate.property.offer">
+        <field name="price">39000</field>
+        <field name="validity">8</field>
+        <field name="partner_id" ref="res_partner_ronak"/>
+        <field name="property_id" ref="estate_property_trailer_home"/>
+    </record>
+
+    <record id="estate_property_offer7" model="estate.property.offer">
+        <field name="price">50000</field>
+        <field name="validity">9</field>
+        <field name="partner_id" ref="res_partner_rushil"/>
+        <field name="property_id" ref="estate_property_big_villa"/>
+    </record>
+
+    <record id="estate_property_offer8" model="estate.property.offer">
+        <field name="price">55000</field>
+        <field name="validity">12</field>
+        <field name="partner_id" ref="res_partner_utsav"/>
+        <field name="property_id" ref="estate_property_trailer_home"/>
+    </record>
+
+    <record id="estate_property_offer9" model="estate.property.offer">
+        <field name="price">65000</field>
+        <field name="validity">2</field>
+        <field name="partner_id" ref="res_partner_ronak"/>
+        <field name="property_id" ref="estate_property_big_villa"/>
+    </record>
+
+    <record id="estate_property_offer10" model="estate.property.offer">
+        <field name="price">85000</field>
+        <field name="validity">6</field>
+        <field name="partner_id" ref="res_partner_het"/>
+        <field name="property_id" ref="estate_property_trailer_home"/>
+    </record>
+</odoo>

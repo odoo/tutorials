@@ -7,4 +7,4 @@ access_estate_property_offer_manager,estate.property.offer.manager,model_estate_
 access_estate_property_user,estate.property.user,model_estate_property,estate_group_user,1,1,1,0
 access_estate_property_type_user,estate.property.type.user,model_estate_property_type,estate_group_user,1,0,0,0
 access_estate_property_tag_user,estate.property.tag.user,model_estate_property_tag,estate_group_user,1,0,0,0
-access_estate_property_offer_user,estate.property.offer.user,model_estate_property_offer,estate_group_user,1,1,1,0
+access_estate_property_offer_user,estate.property.offer.user,model_estate_property_offer,estate_group_user,1,0,0,0

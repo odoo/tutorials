@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_big_villa" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">This is big villa</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_newly_built'), ref('property_tag_garden')])]"/>
+        <field name="postcode">111111</field>
+        <field name="expected_price">1600000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">100</field>
+        <field name="facades">2</field>
+        <field name="garage">true</field>
+        <field name="garden">true</field>
+        <field name="garden_area">250</field>
+        <field name="garden_orientation">east</field>
+    </record>
+
+    <record id="estate_property_luxury_villa" model="estate.property">
+        <field name="name">Luxury Villa with Pool</field>
+        <field name="state">new</field>
+        <field name="description">This is Luxury villa.</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_luxury'), ref('property_tag_garden')])]"/>
+        <field name="postcode">222222</field>
+        <field name="expected_price">500000.00</field>
+        <field name="living_area">258</field>
+        <field name="bedrooms">1</field>
+        <field name="garage">true</field>
+        <field name="garden">true</field>
+        <field name="garden_area">685</field>
+        <field name="garden_orientation">west</field>
+    </record>
+
+    <record id="estate_property_trailer_home" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="property_type_id" ref="property_type_commercial"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_near_school'), ref('property_tag_pool')])]"/>
+        <field name="postcode">333333</field>
+        <field name="expected_price">100000</field>
+        <field name="bedrooms">7</field>
+        <field name="living_area">10</field>
+        <field name="facades">8</field>
+        <field name="garage">false</field>
+        <field name="garden">false</field>
+    </record>
+</odoo>
