@@ -1,4 +1,6 @@
-from odoo import api, fields, models
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.from odoo import api, fields, models
+
 from odoo.exceptions import UserError, ValidationError
 
 class EstatePropertyOffer(models.Model):
@@ -15,7 +17,7 @@ class EstatePropertyOffer(models.Model):
         ('refused', 'Refused')
     ], string="Status" ,copy=False)
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-    property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_id = fields.Many2one("estate.property", string="Property")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type", related="property_id.property_type_id", store=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)

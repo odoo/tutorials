@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from datetime import timedelta
 
 from odoo import api, fields, models
@@ -8,6 +11,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _inherit = ['mail.thread']
     _sql_constraints = [
         ('expected_price_positive', 'CHECK(expected_price >= 1)', 'The expected price must be strictly positive.'),
         ('selling_price_positive', 'CHECK(selling_price >= 1)', 'The selling price must be strictly positive.')
@@ -18,10 +22,10 @@ class EstateProperty(models.Model):
     state = fields.Selection([
         ('new', 'New'), 
         ('offer_received', 'Offer Received'), 
-        ('offer_accepted', 'Offer Accepted'), 
+        ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'), 
         ('cancelled', 'Cancelled')
-    ], default="new", string="State")
+    ], default="new", string="State", tracking=True)
     last_seen = fields.Datetime(string="Last Seen", default=fields.Datetime.now)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -43,7 +47,6 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_offer = fields.Integer(string="Best Offer", compute="_compute_best_offer")
     sequence = fields.Char(string="Sequence", readonly=True, copy=False)
-    sequence_inv = fields.Char(string="Sequence Invoice", readonly=True, copy=False)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     seller_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
@@ -78,10 +81,6 @@ class EstateProperty(models.Model):
     @api.model_create_multi
     def create(self, vals):
         for val in vals:
-            # last_property = self.search([], limit=1)
-            # last_number = int(last_property.sequence.replace("PROP", "")) if last_property and last_property.sequence else 0
-            # if last_number < 9: val['sequence'] = f"PROP00{last_number + 1}"
-            # else: val['sequence'] = f"PROP0{last_number + 1}"
             val['sequence'] = self.env['ir.sequence'].next_by_code('estate.property') or 'PROP001'
         return super().create(vals)
 
@@ -104,3 +103,9 @@ class EstateProperty(models.Model):
                 raise UserError("Sold properties cannot be cancelled")
             else:
                 record.state = 'cancelled'
+                
+    def _track_subtype(self, init_values):
+        self.ensure_one()
+        if 'state' in init_values and self.state == 'offer_accepted':
+            return self.env.ref('estate.mt_state_change')
+        return super()._track_subtype(init_values)
