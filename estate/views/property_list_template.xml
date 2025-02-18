@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+    </record>
+
+    <template id="property_list_template" name="Property List">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <h1 class="text-center text-primary mb-5">Available Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-lg border-0 rounded-3">
+
+                                <img t-if="property.image" t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'" class="card-img-top rounded-3" alt="Property Image"/>
+
+                                <div class="card-body">
+                                    <h5 class="card-title text-center text-dark mb-3"><t t-esc="property.name"/></h5>
+                                    <p class="card-text text-muted mb-3">
+                                        <strong>Price:</strong> <span class="text-success"><t t-esc="property.expected_price"/> $</span>
+                                    </p>
+                                    <p class="card-text text-muted mb-3">
+                                        <strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/>
+                                    </p>
+                                    <p class="card-text text-muted mb-3">
+                                        <strong>Living Area:</strong> <t t-esc="property.living_area"/> m²
+                                    </p>
+
+                                    <div class="text-center">
+                                        <a t-att-href="'/properties/%d' % property.id" class="btn btn-primary btn-md">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <t t-if="pager">
+                    <div class="pagination mt-4 text-center">
+                        <t t-call="website.pager" t-set="pager"/>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

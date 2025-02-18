@@ -11,8 +11,9 @@ class EstateProperty(models.Model):
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'A property selling price must be positive.')
     ]
     _order = "id desc"
+    _inherit = "mail.thread"
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, tracking=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date("Availability Date", copy=False, default=lambda self : fields.Date.add(fields.Date.today() , months=3))
@@ -33,6 +34,8 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
     )
+    image = fields.Image(string="Property Image")
+
 
     active = fields.Boolean(default=True)
 
@@ -47,6 +50,7 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         copy=False,
+        tracking=True,
     )
 
     company_id = fields.Many2one(
@@ -113,3 +117,11 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ("new", "canceled"):
                 raise UserError("Only new or canceled properties can be deleted")
+            
+    @api.model_create_multi
+    def create(self, vals_list):
+        created_property = super().create(vals_list)
+        for record in created_property:
+            message = "{} created a property named ' {} '".format(self.env.user.name, record.name)
+            record.message_post(body=message)
+        return created_property

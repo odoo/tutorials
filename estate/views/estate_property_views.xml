@@ -34,13 +34,22 @@
                     <button name="action_property_cancel" type="object" string="Cancel" title="Canceled" invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar"/>
                 </header>
-                <sheet>
-                    <h1><field name="name" placeholder="My New House"/></h1>
 
-                    <field name="tags_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
-                    <separator/>
+                <sheet>
                     <group>
                         <group>
+                            <h1><field name="name" placeholder="My New House"/></h1>
+                            <field name="tags_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            <separator/>
+                        </group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group>
+                            
                             <field name="state" string="Status"/>
                             <field name="property_type_id" string="Property Type" options="{'no_create': true, 'no_create_edit': true}"/>
                             <field name="postcode" string="Postcode" placeholder="1000"/>
@@ -52,6 +61,7 @@
                             <field name="best_price" string="Best Offer"/>
                         </group>
                     </group>
+
                     <notebook>
                         <page string="Description">
                             <group>
@@ -66,6 +76,7 @@
                                 <field name="total_area" string="Total Area"/>
                             </group>
                         </page>
+
                         <page string="Offers">            
                             <field name="offer_ids">
                                 <list editable="bottom" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
@@ -88,6 +99,7 @@
                                 </form>
                             </field>                        
                         </page>
+
                         <page string="Other info">
                             <group>
                                 <field name="salesperson_id" string="Salesman"/>
@@ -96,6 +108,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter reload_on_post="True" />
             </form>
         </field>
     </record>
