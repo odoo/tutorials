@@ -8,11 +8,13 @@
             <Counter  t-props="{'onChange': incrementSum}" />
             <Counter  t-props="{'onChange': incrementSum}" />
         </div>
-         <div class="p-3">
-            <h3>Playground</h3> 
-            <t t-foreach="cards" t-as="card" t-key="card.title">
-                <Card t-props="{'title': card.title, 'content': card.content}" />
-            </t>
+         <div>
+            <Card title="'card 1'">
+                content of card 1
+            </Card>
+            <Card title="'card 2'">
+                <Counter t-props="{'onChange': incrementSum}"/>
+            </Card>
         </div>
         <div class="p-3">
             <h3>Welcome to todo</h3> 

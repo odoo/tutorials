@@ -9,7 +9,7 @@ export class Counter extends Component {
            
         onChange:{
             type : Function,
-            required : false
+            optional : true
         }
     };
 
@@ -19,7 +19,7 @@ export class Counter extends Component {
 
     increment(){
         this.state.value++;
-        
+
         if(this.props.onChange()){
             this.props.onChange()
         }

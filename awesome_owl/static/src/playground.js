@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import {Component , useState} from "@odoo/owl";
+import {Component , useState } from "@odoo/owl";
 import { Counter } from "./counter/counter";
 import { Card } from "./card/card";
-import { TodoList } from "./TodoList";
+import { TodoList } from "./todo_list/TodoList";
 
 export class Playground extends Component{ 
 
@@ -12,12 +12,9 @@ export class Playground extends Component{
 
         setup() {
         
+        
         this.sum = useState({value : 0});
-        this.cards = [
-            { title: "Card 1", content: "122" },
-            { title: "Card 2", content: "This is the content for Card 2." },
-            { title: "Card 3", content: "This is the content for Card 3." }
-        ];
+       
 
         this.incrementSum = () => {
               
