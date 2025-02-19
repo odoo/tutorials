@@ -10,6 +10,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'  # . will be shown as _ in actual database 
     _description = 'listing for the properties'
     _order = 'id desc'
+    _inherit = 'mail.thread'
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")

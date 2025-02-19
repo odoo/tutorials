@@ -15,6 +15,8 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">north</field>
+            <field name="image" type="base64" file="estate/static/src/img/image1.png"></field>
+
         </record>
 
         <record id="demo_property_2" model="estate.property">
@@ -30,6 +32,22 @@
             <field name="facades">4</field>
             <field name="garage">False</field>
             <field name="garden">False</field>
+            <field name="image" type="base64" file="estate/static/src/img/image2.png"></field>
+        </record>
+
+        <record id="demo_property_3" model="estate.property">
+            <field name="name">suzie home</field>
+            <field name="state">new</field>
+            <field name="description">Home in a suzie park</field>
+            <field name="postcode">54322</field>
+            <field name="date_availability">2025-05-15</field>
+            <field name="expected_price">100000.0</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">12</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="image" type="base64" file="estate/static/src/img/image3.png"></field>
         </record>
 
     </data>
