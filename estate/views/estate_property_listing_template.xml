@@ -1,20 +1,53 @@
 <odoo>
     <template id="property_listing" name="Property Listing">
-        <div class="container">
-            <h1>Available Properties</h1>
-            <div>
-                <t t-foreach="properties" t-as="property">
-                    <div>
-                        <div class="property-card">
-                            <img t-att-src="" alt="Property Image" />
-                            <h3><t t-esc="property.name"/></h3>
-                            <p><t t-esc="property.description"/></p>
-                            <p><strong>Price:</strong> <t t-esc="property.expected_price"/> $</p>
-                            <a href="#" class="btn btn-primary">View Details</a>
+        <t t-call="website.layout">
+            <div class="container">
+                <center><h3 style="margin-top:30px;">Available Properties</h3></center>
+                <form method="POST" action="/properties">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="row mb-4 justify-content-center align-items-end">
+                        <div class="col-md-3">
+                            <label for="listed_after">Listed After:</label>
+                            <input type="date" id="listed_after" name="listed_after"
+                                   class="form-control"
+                                   t-att-value="listed_after if listed_after else ''"/>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="search_property">Search Property:</label>
+                            <input type="text" id="search_property" name="search_property"
+                                   class="form-control"
+                                   placeholder="Search Property By Name"
+                                   t-att-value="search_property if search_property else ''"/>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
                         </div>
                     </div>
-                </t>
+                </form>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm p-3">
+                                <a t-att-href="'/properties/' + str(property.id)">
+                                    <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                                        alt="Property Image" style="height: 200px; object-fit: cover; width:100%;"/>
+                                </a>
+                                <div>
+                                    <h4><a t-att-href="'/properties/' + str(property.id)"><t t-esc="property.name"/></a></h4>
+                                    <p><t t-esc="property.description"/></p>
+                                    <p><strong>Price:</strong> <t t-esc="property.expected_price"/> $</p>
+                                    <a t-att-href="'/properties/' + str(property.id)" class="btn btn-primary btn-block">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="row mt-4 mb-4">
+                    <div class="col d-flex justify-content-center">
+                        <t t-call='website.pager'/>
+                    </div>
+                </div>
             </div>
-        </div>
+        </t>
     </template>
 </odoo>

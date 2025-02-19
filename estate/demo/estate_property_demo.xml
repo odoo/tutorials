@@ -86,5 +86,86 @@
             <field name="partner_id" ref="base.res_partner_3"/>
             <field name="validity">14</field>
         </record>
+
+        <record id="estate_property_4" model="estate.property">
+            <field name="name">Beach House</field>
+            <field name="state">new</field>
+            <field name="description">Beautiful house with sea view</field>
+            <field name="postcode">600001</field>
+            <field name="date_availability">2025-01-10</field>
+            <field name="expected_price">2000000</field>
+            <field name="selling_price">1900000</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">180</field>
+            <field name="facades">3</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">500</field>
+            <field name="garden_orientation">east</field>
+        </record>
+
+        <record id="estate_property_5" model="estate.property">
+            <field name="name">Penthouse Suite</field>
+            <field name="state">offer_accepted</field>
+            <field name="description">Top floor suite with skyline view</field>
+            <field name="postcode">110011</field>
+            <field name="date_availability">2023-11-30</field>
+            <field name="expected_price">3000000</field>
+            <field name="selling_price">2900000</field>
+            <field name="bedrooms">4</field>
+            <field name="living_area">250</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+        </record>
+
+        <record id="estate_property_6" model="estate.property">
+            <field name="name">Suburban House</field>
+            <field name="state">new</field>
+            <field name="description">Family-friendly house in suburb</field>
+            <field name="postcode">560100</field>
+            <field name="date_availability">2024-06-15</field>
+            <field name="expected_price">750000</field>
+            <field name="selling_price">700000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">140</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">350</field>
+            <field name="garden_orientation">west</field>
+        </record>
+
+        <record id="estate_property_7" model="estate.property">
+            <field name="name">City Studio</field>
+            <field name="state">new</field>
+            <field name="description">Compact studio in city center</field>
+            <field name="postcode">500081</field>
+            <field name="date_availability">2024-09-20</field>
+            <field name="expected_price">450000</field>
+            <field name="selling_price">420000</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">60</field>
+            <field name="facades">1</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+        </record>
+
+        <record id="estate_property_8" model="estate.property">
+            <field name="name">Countryside Cottage</field>
+            <field name="state">offer_received</field>
+            <field name="description">Quiet cottage in countryside</field>
+            <field name="postcode">382721</field>
+            <field name="date_availability">2024-12-01</field>
+            <field name="expected_price">550000</field>
+            <field name="selling_price">500000</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">80</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">600</field>
+            <field name="garden_orientation">north</field>
+        </record>
     </data>    
 </odoo>

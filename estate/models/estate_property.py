@@ -33,7 +33,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(string="Expected Price", required=True, default=0.0)
     selling_price = fields.Float(string="Selling Price")
-    image = fields.Image(string="Image",store=True)
+    image = fields.Image(string="Image",max_width=1920,max_height=1920)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Float(string="Living Area (sq.m.)")
     facades = fields.Integer(string="Number of Facades")
@@ -129,3 +129,6 @@ class EstateProperty(models.Model):
         if self.state != "offer_accepted":   
             raise UserError("property can not be sold without accepting offer.")
         self.state = "sold"
+        if self.buyer_id.email:
+            template=self.env.ref('estate.estate_property_sold_email_template')
+            template.send_mail(self.id,)

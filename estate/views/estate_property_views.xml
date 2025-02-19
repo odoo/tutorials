@@ -50,6 +50,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                 <field name="image" widget="image" options="{'size':[150,150]}"  class="oe_avatar" />
                     <group>
                         <field name="name"/>
                         <field name="state"/>
@@ -79,7 +80,6 @@
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
                                 <field name="facades"/>
-                                <field name="image" />
                                 <field name="garage" widget="boolean_toggle"/>
                                 <field name="garden" />
                                 <field name="garden_area" invisible="garden == False"/>

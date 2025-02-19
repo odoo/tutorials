@@ -1,0 +1,69 @@
+<odoo>
+    <template id="property_details_template" name="Property Details Page">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h2 class="text-center display-5 text-primary mb-4"><t t-out="property.name"/></h2>
+                 <div class="row mb-5">
+                    <div class="col-md-6">
+                        <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                             class="img-fluid rounded shadow-sm w-100"
+                             alt="Property Image"/>
+                    </div>
+                    <div class="col-md-6 bg-light p-4 rounded shadow-sm">
+                        <h4>🏷 Property Details</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">💰 <strong>Price:</strong> $ <t t-out="property.expected_price"/></li>
+                            <li class="list-group-item">🏠 <strong>Best Offer:</strong> $ <t t-out="property.best_price"/></li>
+                            <li class="list-group-item">📅 <strong>Available From:</strong> <t t-out="property.date_availability.strftime('%d %B, %Y')"/></li>
+                            <li class="list-group-item">🛏 <strong>Bedrooms:</strong> <t t-out="property.bedrooms"/></li>
+                            <li class="list-group-item">📐 <strong>Living Area:</strong> <t t-out="property.living_area"/> m²</li>
+                            <li class="list-group-item">🌿 <strong>Garden:</strong> <t t-out="'Yes' if property.garden else 'No'"/></li>
+                            <t t-if="property.garden">
+                                <li class="list-group-item">🌳 <strong>Garden Area:</strong> <t t-out="property.garden_area"/> m²</li>
+                                <li class="list-group-item">🧭 <strong>Orientation:</strong> <t t-out="property.garden_orientation"/></li>
+                            </t>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <h4>📜 Description</h4>
+                    <p class="lead text-justify"><t t-out="property.description"/></p>
+                </div>
+                <div class="bg-white rounded shadow-sm p-4 mt-5">
+                    <h4 class="mb-4 text-primary">💵 Offers for this Property</h4>
+                    <t t-if="property.offer_ids">
+                        <div>
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>💵 Offer Price</th>
+                                        <th>🙍 Buyer Name</th>
+                                        <th>📅 Offer Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="property.offer_ids" t-as="offer">
+                                        <tr>
+                                            <td><span class="badge bg-success fs-6">$ <t t-out="offer.price"/></span></td>
+                                            <td><t t-out="offer.partner_id.name"/></td>
+                                            <td><t t-out="offer.create_date.strftime('%d %B, %Y')"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                    <t t-if="not property.offer_ids">
+                        <div class="alert alert-info text-center" role="alert">
+                            ❌ <strong>No offers yet.</strong>
+                        </div>
+                    </t>
+                </div>
+                <div class="text-center mt-4">
+                                    <a href="/properties" class="btn btn-outline-primary btn-m">🔙 Back to All Properties</a>
+                                </div>
+
+            </div>
+        </t>
+    </template>
+</odoo>
