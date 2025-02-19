@@ -31,7 +31,6 @@ class EstateTestCase(TransactionCase):
 
     def test_prevent_offer_creation_for_sold_property(self):
         print("---------------------------------------1--------------------------------------------------")
-        self.offer.write({"status": "accepted"})
         self.property.state = "sold"
         with self.assertRaises(UserError):
             self.env["estate.property.offer"].create(
@@ -44,6 +43,7 @@ class EstateTestCase(TransactionCase):
 
     def test_prevent_selling_property_without_accepted_offer(self):
         print("---------------------------------------2--------------------------------------------------")
+        self.offer.write({"status": "refused"})
         with self.assertRaises(UserError):
             self.property.action_property_sold()
 

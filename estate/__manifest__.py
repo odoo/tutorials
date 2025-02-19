@@ -23,6 +23,9 @@
 
          'wizard/estate_property_offer_wizard_views.xml',
 
+         'views/estate_property_whatsapp_template.xml',
+         'views/estate_property_email_template.xml',
+         'views/estate_property_details_website.xml',
          'views/estate_property_website.xml',
          'views/estate_property_offer_views.xml',
          'views/estate_property_views.xml',

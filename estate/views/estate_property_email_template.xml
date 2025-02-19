@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+        <record id="email_template_property_sold" model="mail.template">
+            <field name="name">Sold Property Email</field>
+            <field name="subject">Congratulations! Your Property Has Been Sold</field>
+            <field name="email_from">{{object.user_id.email}}</field>
+            <field name="email_to">{{object.partner_id.email}}</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="body_html" type="html">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Hello, <strong><t t-out="object.partner_id.name"/></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>We are pleased to inform you that the property <strong><t t-out="object.name"/></strong> has been successfully sold.</p>
+                                <p><strong>Property Details:</strong></p>
+                                <table>
+                                    <tr>
+                                        <td><strong>Description</strong></td>
+                                        <td><t t-out="object.description"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Selling Price</strong></td>
+                                        <td><t t-out="object.selling_price"/></td>
+                                    </tr>
+                                </table>
+                                <br></br>
+                                <p>Thank you for trusting us with your real estate transaction.</p>
+                                <p>Best Regards,<br/>
+                                   <strong><t t-out="object.user_id.name"/></strong><br/>
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </field>
+        </record>
+    </data>
+</odoo>

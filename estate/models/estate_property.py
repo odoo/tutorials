@@ -72,6 +72,11 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.company,
         required=True,
     )
+    wa_property_sold_template_id = fields.Many2one(
+        "whatsapp.template",
+        string="Property Sold WhatsApp Template",
+        config_parameter="estate.wa_property_sold_template_id",
+    )
 
     _sql_constraints = [
         (
@@ -140,6 +145,19 @@ class EstateProperty(models.Model):
             raise UserError("cancelled property can not be sold.")
         else:
             self.state = "sold"
+            if self.partner_id:
+                template = self.env.ref('estate.email_template_property_sold')  # Replace with your template XML ID
+                if template:
+                    template.send_mail(self.id, force_send=True)
+                message_body = f"Hello {self.partner_id.name}, Congratulations! Your property '{self.name}' has been successfully sold. Thank you!"
+                whatsapp_message = self.env['whatsapp.message'].create({
+                    'body': message_body,
+                    'mobile_number': self.partner_id.mobile,  # assuming mobile is in international format like +123456789
+                    'message_type': 'outbound',
+                })
+                whatsapp_message._send()
+
+
 
     @api.ondelete(at_uninstall=False)
     def _check_delete_condition(self):
@@ -148,3 +166,4 @@ class EstateProperty(models.Model):
                 raise UserError(
                     f"You cannot delete the property '{record.name}' because its state is '{record.state}'."
                 )
+                

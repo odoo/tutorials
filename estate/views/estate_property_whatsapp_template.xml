@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- <data>
+        <record id="wa_template_property_sold" model="whatsapp.template">
+            <field name="name">Property Sold Notification</field>
+            <field name="model_id" ref="model_estate_property" />
+            <field name="phone_field">{{partner_id.mobile}}</field>
+            <field name="lang_code">en</field>
+            <field name="body">
+               Here is your whatsapp message
+            </field>
+        </record>
+    </data> -->
+</odoo>
