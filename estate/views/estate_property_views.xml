@@ -5,6 +5,20 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
+                <header>
+                    <button
+                        name="action_sell_property"
+                        string="SOLD"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="action_cancel_property"
+                        string="CANCEL"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -52,6 +66,7 @@
             </form>
         </field>
     </record>
+
     <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -67,6 +82,7 @@
             </list>
         </field>
     </record>
+
     <record id="estate_property_search_view" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -86,6 +102,7 @@
             </search>
         </field>
     </record>
+
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
