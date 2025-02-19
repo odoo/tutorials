@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError, UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -48,6 +49,11 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price should be greater than 0.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price should be positive.'),
+    ]
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for property in self:
@@ -56,7 +62,7 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for property in self:
-            property.best_price = max(property.offer_ids.mapped('price')) if len(property.offer_ids) > 0 else 0.0
+            property.best_price = max(property.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -67,18 +73,24 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ''
 
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for property in self:
+            if float_compare(property.selling_price, float(property.expected_price * 90 / 100), 2) == -1:
+                raise ValidationError("The selling price must be at least 90% of your expected price.")
+
     def action_set_status_sold(self):
         for property in self:
-            if property.state != 'cancelled':
-                property.state = 'sold'
-            else:
+            if property.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold.")
+
+            property.state = 'sold'
         return True
 
     def action_set_status_cancelled(self):
         for property in self:
-            if property.state != 'sold':
-                property.state = 'cancelled'
-            else:
+            if property.state == 'sold':
                 raise UserError("Sold properties cannot be cancelled.")
+
+            property.state = 'cancelled'
         return True

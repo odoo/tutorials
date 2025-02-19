@@ -22,6 +22,10 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
     )
 
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)', 'The price of an offer must be strictly positive.'),
+    ]
+
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for offer in self:
@@ -36,12 +40,12 @@ class EstatePropertyOffer(models.Model):
             offer.validity = (offer.date_deadline - offer.create_date.date()).days
 
     def action_accept_offer(self):
-        if not any(offer.status == 'accepted' for offer in self.property_id.offer_ids):
-            self.status = 'accepted'
-            self.property_id.partner_id = self.partner_id
-            self.property_id.selling_price = self.price
-        else:
+        if any(offer.status == 'accepted' for offer in self.property_id.offer_ids):
             raise UserError('An offer is already accepted.')
+
+        self.status = 'accepted'
+        self.property_id.partner_id = self.partner_id
+        self.property_id.selling_price = self.price
 
     def action_refuse_offer(self):
         self.status = 'refused'
