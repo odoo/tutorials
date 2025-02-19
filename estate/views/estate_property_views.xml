@@ -55,6 +55,7 @@
                     <h3>
                         <field name="property_tag_id" widget='many2many_tags'  options="{'color_field': 'color'}"/>
                     </h3>
+                    <field name="image_1920" widget='image' optional="show" class="oe_avatar" style="max-width: 150px; max-height: 150px;" />
                 <group>
                     <group>
                         <field name="property_type_id"/>
@@ -105,6 +106,9 @@
                 decoration-success="status == 'offer received'"
                 decoration-warning="status == 'offer accepted'"
                 decoration-muted="status == 'sold'">
+                 <header>
+                    <button name="%(estate_offer_wizard)d" type="action" string="Add Offer" class="oe_highlight"/>
+                </header>
                 <field name="name" string="Title" />
                 <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                 <field name="postcode" />

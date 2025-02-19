@@ -43,7 +43,7 @@ class EstatePropertyOffer(models.Model):
                 ('status', '=', 'accepted')
             ], limit=1)
             if accepted_offer:
-                raise UserError("Only one offer can be accepted per property!")
+                raise UserError(_("Only one offer can be accepted per property!"))
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price

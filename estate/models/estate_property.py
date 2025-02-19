@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api, models,fields
+from odoo import _, api, models,fields
 from odoo import exceptions
 from odoo.exceptions import UserError, ValidationError
 
@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True, tracking=True)
     description = fields.Text()
     postcode = fields.Char()
-    image_1920 = fields.Image("Property Image")
+    image_1920 = fields.Image(store=True)
     date_availability = fields.Date(default= lambda self: fields.Datetime.today() + timedelta(days=90), copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True , copy=False)
@@ -80,11 +80,11 @@ class EstateProperty(models.Model):
     def action_set_sold(self):
         for record in self:
             if record.status == "cancelled":
-                raise UserError(("A cancelled property cannot be sold!"))
+                raise UserError(_("A cancelled property cannot be sold!"))
 
             accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
             if not accepted_offer:
-                raise UserError(("You need to accept an offer first!"))
+                raise UserError(_("You need to accept an offer first!"))
 
             record.status = 'sold'
         return True
@@ -92,7 +92,7 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         for record in self:
             if record.status == 'sold':
-                raise UserError("A sold property cannot be cancelled.")
+                raise UserError(_("A sold property cannot be cancelled."))
             record.status = 'cancelled'
 
     _sql_constraints = [
@@ -126,4 +126,4 @@ class EstateProperty(models.Model):
     def _prevent_deletion_if_not_new_or_cancelled(self):
         for record in self:
             if record.status not in ('new', 'cancelled'):
-                raise exceptions.UserError("You can only delete properties in 'New' or 'Cancelled' state.")
+                raise exceptions.UserError(_("You can only delete properties in 'New' or 'Cancelled' state."))

@@ -1,5 +1,5 @@
 from datetime import date
-from odoo import Command,fields, models
+from odoo import _, Command, models
 from odoo.exceptions import UserError
 
 
@@ -35,4 +35,4 @@ class EstateProperty(models.Model):
             })
             return invoice
         except Exception as e:
-            raise UserError("You do not have the necessary permissions to sell this property.")
+            raise UserError(_("You do not have the necessary permissions to sell this property."))
