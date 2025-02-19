@@ -1,4 +1,4 @@
-from odoo import api, fields, models, tools
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
 
@@ -141,3 +141,8 @@ class Property(models.Model):
                 raise ValidationError(
                     "The selling price cannot be less than 90% than the expected price."
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_active_properties(self):
+        if self.filtered(lambda record: record.state not in ["cancelled", "new"]):
+            raise UserError("You can only delete new or cancelled properties.")

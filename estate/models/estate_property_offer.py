@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class PropertyOffer(models.Model):
@@ -72,3 +73,22 @@ class PropertyOffer(models.Model):
                 continue
             offer.state = "refused"
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if (
+                float_compare(
+                    vals["price"],
+                    self.env["estate.property"].browse(vals["property_id"]).best_offer,
+                    precision_rounding=self.env["estate.property"]
+                    .browse(vals["property_id"])
+                    .rounding,
+                )
+                < 0
+            ):
+                raise UserError("Cannot add an offer lower than the current best one.")
+            self.env["estate.property"].browse(
+                vals["property_id"]
+            ).state = "offer_received"
+        return super().create(vals_list)
