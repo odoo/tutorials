@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.TodoList">
+        <div class="p-3">
+            <input type="text" placeholder="Enter a new task." t-on-keyup="addTodo" t-ref="todo_input"/>
+            <t t-if="todos.length != 0">
+                <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                    <TodoItem todo="todo" toggleState.bind="toggleState"/>
+                </t>
+            </t>
+            <t t-else="">
+                <p>No tasks yet.</p>
+            </t>
+        </div>
+    </t>
+
+</templates>
