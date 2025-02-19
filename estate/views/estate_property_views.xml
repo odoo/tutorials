@@ -9,6 +9,7 @@
                 <field name="postcode" width="10%"></field>
                 <field name="bedrooms" width="10%"></field>
                 <field name="living_area" width="10%"></field>
+                <field name="currency_id" column_invisible="1"/>
                 <field name="expected_price" width="10%"></field>
                 <field name="selling_price" width="10%"></field>
                 <field name="date_availability" width="10%" optional="show"></field>
@@ -45,6 +46,7 @@
                             <field name="date_availability"/>
                         </group>
                         <group>
+                            <field name="currency_id" invisible="1"/>
                             <field name="expected_price"/>
                             <field name="best_price"/>
                             <field name="selling_price"/>
@@ -113,6 +115,7 @@
                         <div>
                             <field name="name" class="fw-bold fs-5"/>
                             <div>
+                                <field name="currency_id" invisible="1"/>
                                 Expected Price: <field name="expected_price"/>
                             </div>
                             <field name="state" invisible="1"/>

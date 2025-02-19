@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta
 from odoo import api,fields,models
 from odoo.exceptions import UserError
 
@@ -11,7 +10,8 @@ class EstatePropertyOffer(models.Model):
     _description="Estate Property Offer"
     _order = "price desc"
  
-    price = fields.Float(string="Price")
+    currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id.id)
+    price = fields.Monetary(string="Price")
     status = fields.Selection([
         ('accepted','Accepted'),
         ('refused','Refused'),
@@ -45,15 +45,17 @@ class EstatePropertyOffer(models.Model):
                 self.property_id.buyer_id = self.partner_id
                 self.property_id.selling_price = self.price
             else:   
-                raise UserError("One offer can only be accepted at a time")
+                raise UserError(_("One offer can only be accepted at a time"))
         else:
             self.status = 'accepted'
             self.property_id.state = 'offer_accepted'
             self.property_id.buyer_id = self.partner_id
             self.property_id.selling_price = self.price
+        return True
     
     def action_refused(self):
         self.status = 'refused'
+        return True
 
     @api.model_create_multi
     def create(self,vals_list):
@@ -63,5 +65,5 @@ class EstatePropertyOffer(models.Model):
                 property = self.env['estate.property'].browse(vals['property_id'])
                 property.state = "offer_received"
             if any(offer.price < property.best_price for offer in offers):
-                raise UserError("Enter offer Price greater than the existing ones")
+                raise UserError(_("Enter offer Price greater than the existing ones"))
         return offers

@@ -21,5 +21,11 @@
             <field name="price">1500001.00</field>
             <field name="validity">14</field>
         </record>
+        <function model="estate.property.offer" name="action_accepted">
+            <value eval="[ref('estate_property_offer_3')]"/>
+        </function>
+        <function model="estate.property.offer" name="action_refused">
+            <value eval="[ref('estate_property_offer_1'), ref('estate_property_offer_2')]"/>
+        </function>
     </data>
 </odoo>
