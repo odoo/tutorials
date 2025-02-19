@@ -1,34 +1,42 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="public_property_single_web_render">
-        <!-- Link to Bootstrap CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"></link>
-        
+
+    <template id="estate_property_detail_template" name="Property Details">
         <t t-call="website.layout">
-            <t t-set="title">Property Details</t>
-            <div class="oe_structure">
-                <div class="container">
-                <a t-attf-href="/properties/"><h3>Back</h3></a>
-                    <t t-foreach="properties" t-as="prop">
-                        <div class="row mb-4">
-                            <div class="col-md-4">
-                                <img t-att-src="'/web/image/public.property/' + str(prop.id) + '/property_image'" 
-                                     class="img-fluid" 
-                                     style="object-fit: cover; height: 300px; width: 100%;" 
-                                     alt="Property Image" />
-                            </div>
-                            <div class="col-md-8">
-                                <h2><t t-esc="prop.name" /></h2>
-                                <p><strong>Price: </strong><t t-esc="prop.selling_price" /> €</p>
-                                <p><strong>Description: </strong><t t-esc="prop.description" /></p>
-                                <p><strong>Available From: </strong><t t-esc="prop.date_availability" /></p>
-                                <p><strong>Bedrooms: </strong><t t-esc="prop.bedrooms" /></p>
-                                <p><strong>Living Area: </strong><t t-esc="prop.living_area" /> m²</p>
-                                <p><strong>Garden Area: </strong><t t-esc="prop.garden_area" /> m²</p>
-                                <p><strong>State: </strong><t t-esc="prop.state" /></p>
+            <div class="container">
+                <div class="card shadow-sm mt-5 p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <t t-if="property.property_image">
+                                    <img t-att-src="'/web/image/public.property/' + str(property.id) + '/property_image'" class="img-fluid rounded w-100" alt="Property Image" />
+                                </t>
+                                <t t-else="">
+                                    <img src="/estate/static/src/img/default_img.jpg" class="img-fluid rounded w-100" alt="Default Property Image" />
+                                </t>
                             </div>
                         </div>
-                    </t>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h3 class="card-title mb-3">
+                                    <t t-esc="property.name"/>
+                                </h3>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>Date Available:</strong> <t t-esc="property.date_availability"/></li>
+                                    <li class="list-group-item"><strong>Expected Price:</strong> <t t-esc="property.expected_price"/></li>
+                                    <li class="list-group-item"><strong>Total Area:</strong> <t t-esc="property.total_area"/> sqm</li>
+                                    <li class="list-group-item"><strong>Garage:</strong> <t t-esc="'Yes' if property.garage else 'No'"/></li>
+                                    <li class="list-group-item"><strong>Garden:</strong> <t t-esc="'Yes' if property.garden else 'No'"/></li>
+                                    <t t-if="property.garden">
+                                        <li class="list-group-item" ><strong>Garden Area:</strong> <t t-esc="property.garden_area"/> sqm</li>
+                                        <li class="list-group-item"><strong>Garden Orientation:</strong> <t t-esc="property.garden"/></li>
+                                    </t>
+                                    <li class="list-group-item"><strong>Status:</strong> <t t-esc="property.state"/></li>
+                                </ul>
+                                <a href="/properties" class="btn btn-secondary mt-4">Back to Properties</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </t>

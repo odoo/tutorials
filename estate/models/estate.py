@@ -108,14 +108,11 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            accepted_offers=self.env['public.property.offer'].search([('property_id','=',record.id)])
-            if len(accepted_offers) == 0 : 
-                raise ValidationError("Accept at least one offer")
-            if len(self.offer_ids) == 0 : 
-                raise ValidationError("At least one valid offer needed")
-            record.state = "sold"
-        if self.state == "cancelled":
-            raise UserError("A cancelled property cannot be sold")
+            if record.state == 'cancelled':
+                raise UserError("You cannot sell a cancelled property.")
+            if record.state != 'offer_accepted':
+                raise UserError("Accept an offer to sold property")
+            record.state='sold'
 
     def action_cancelled(self):
         if self.state == "sold":
@@ -123,10 +120,10 @@ class EstateProperty(models.Model):
         for record in self:
             record.state = "cancelled"
 
-    @api.ondelete(at_uninstall = False) 
-    def _unlink_public_property_offer(self): 
-        for record in self : 
-            if record.state not in ('new' , 'cancelled') : 
+    @api.ondelete(at_uninstall = False)
+    def _unlink_public_property_offer(self):
+        for record in self :
+            if record.state not in ('new' , 'cancelled') :
                 raise UserError("A property cannot be deleted in this stage")
 
     def _track_state(self, init_values):
@@ -134,3 +131,5 @@ class EstateProperty(models.Model):
         if 'state' in init_values and self.state == 'confirmed':
             return self.env.ref('estate.mt_state_change')
         return super(EstateProperty, self)._track_state(init_values)
+
+    

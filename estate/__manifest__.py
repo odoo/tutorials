@@ -6,6 +6,7 @@
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
+        "wizard/wizard_public_property.xml",
         "report/public_property_templates.xml",
         "report/public_property_report.xml",
         "report/public_property_web_template.xml",

@@ -1,6 +1,6 @@
 from odoo import models, fields, api 
 from datetime import timedelta
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 from odoo.tools.float_utils import float_compare
 
 
@@ -66,6 +66,8 @@ class PropertyOffer(models.Model):
                 deadline = record.date_deadline
                 record.validity = (deadline - record.create_date.date()).days
 
+
+    
     def action_confirm(self):
         for record in self:
             self.property_id.offer_ids.status = "refused"
@@ -81,6 +83,9 @@ class PropertyOffer(models.Model):
     @api.model_create_multi
     def create(self,vals):
         for val in vals : 
+            property_record = self.env['public.property'].browse(val['property_id'])
+            if property_record.state == 'sold':
+                raise UserError("You cannot create an offer for a sold property.")
             min_price = min(self.env['public.property.offer'].search([('property_id', '=', val['property_id'])]).mapped('price'), default=0)
             if val['price'] <= min_price:
                 raise ValidationError("The price must be higher than any existing offer.")

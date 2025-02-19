@@ -1,0 +1,1 @@
+from . import wizard_public_property

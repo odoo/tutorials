@@ -18,7 +18,6 @@
         <field name="view_mode">list,form</field>
     </record>
 
-
     <record id="public_property_view_kanban" model="ir.ui.view">
         <field name="name">public.property.kanban</field>
         <field name="model">public.property</field>
@@ -58,19 +57,17 @@
             <list string="channel" decoration-muted="state=='sold'"
                 decoration-success="state=='offer_accepted'" decoration-bf="state=='offer_accepted'"
                 decoration-danger="state=='cancelled'">
-                <field name="name" width="200" />
-                <field name="postcode" width="200" />
-                <field name="bedrooms" width="200" />
-                <field name="living_area" width="200" />
-                <field name="expected_price" width="200" />
-                <field name="selling_price" width="200" />
-                <field name="date_availability" width="200" optional="hide" />
-                <field name="tags_ids" widget="many2many_tags" width="200"
-                    options="{'color_field': 'color'}" />
+                <field name="name" width="200"/>
+                <field name="postcode" width="200"/>
+                <field name="bedrooms" width="200"/>
+                <field name="living_area" width="200"/>
+                <field name="expected_price" width="200"/>
+                <field name="selling_price" width="200"/>
+                <field name="date_availability" width="200" optional="hide"/>
+                <field name="tags_ids" widget="many2many_tags" width="200" options="{'color_field': 'color'}"/>
             </list>
         </field>
     </record>
-
     <record id="public_property_view_form" model="ir.ui.view">
         <field name="name">public.property.form</field>
         <field name="model">public.property</field>
@@ -94,42 +91,39 @@
                         </group>
                     </div>
                     <p>
-                        <field name="tags_ids" widget="many2many_tags"
-                            options="{'color_field': 'color'}" />
+                        <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </p>
                     <group>
                         <group>
-                            <field name="property_type_id" widget="many2one"
-                                options="{'no_create': True, 'no_open': True}" />
-                            <field name="postcode" string="Post code" />
-                            <field name="date_availability" />
+                            <field name="property_type_id" widget="many2one" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="postcode" string="Post code"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price" />
-                            <field name="best_price" string="Best Offer" />
-                            <field name="selling_price" />
+                            <field name="expected_price"/>
+                            <field name="best_price" string="Best Offer"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="company_id" />
-                                <field name="description" height="50" />
-                                <field name="bedrooms" />
-                                <field name="living_area" string="Living Area (sqm)" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
+                                <field name="company_id"/>
+                                <field name="description" height="50"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area" string="Living Area (sqm)"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
                                 <field name="garden_area" string="Garden Area (sqm)"
-                                    invisible="garden!=True" />
-                                <field name="garden_orientation" invisible="garden!=True" />
-                                <field name="total_area" string="Total area" />
+                                    invisible="garden!=True"/>
+                                <field name="garden_orientation" invisible="garden!=True"/>
+                                <field name="total_area" string="Total area"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" nolabel="1"
-                                    readonly="state=='offer_accepted' or state=='sold' or state=='cancelled'" />
+                                <field name="offer_ids" nolabel="1"/>
                             </group>
                         </page>
                         <page string="Other info">
