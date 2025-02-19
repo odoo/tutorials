@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.counter">
+        <t t-name="my_module.Counter">
+            <div class="border d-inline-block p-2">
+                <p class="d-inline-flex">Counter: <t t-esc="count.value"/></p>
+                <button class="btn btn-primary ms-2" t-on-click="increment">Increment</button>
+            </div>
+        </t>
+    </t>
+
+</templates>
