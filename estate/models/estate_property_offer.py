@@ -7,6 +7,7 @@ class EstatePropertyOffers(models.Model):
     _name = 'estate.property.offers'
     _description = 'Real estate property offers'
     _order = 'price desc'
+    _check_company_auto=True
     _sql_constraints = [
         ('check_price', 'CHECK(price > 0)', "The offered price must be greater then 0."),
     ]
@@ -44,6 +45,22 @@ class EstatePropertyOffers(models.Model):
             if record.validity_days:
                 record.deadline = fields.Date.today() - timedelta(days=record.validity_days)
 
+    # Chnage the state of property to offer recevied when offer is created 
+    @api._model_create_multi
+    def create(self, vals_list):
+        for val in vals_list:
+            property_id = val.get('property_id')
+            offer_price = val.get('price')
+            if property_id and offer_price:
+                property = self.env['estate.property'].browse(property_id)
+                offered_price = property.offer_ids.mapped('price')
+                
+                if offered_price and offer_price < max(offered_price):
+                    raise ValidationError("You cannot create an offer lower than an existing one.")
+                
+                property.write({'state' :'received'})
+        return super().create(vals_list)
+
     # Sets offer state to accepted when called
     def action_offer_confirm(self):
         for record in self:
@@ -60,19 +77,3 @@ class EstatePropertyOffers(models.Model):
     def action_offer_cancel(self):
         for record in self:
             record.write({'state' : 'refused'})
-
-    # Chnage the state of property to offer recevied when offer is created 
-    @api._model_create_multi
-    def create(self, vals_list):
-        for val in vals_list:
-            property_id = val.get('property_id')
-            offer_price = val.get('price')
-            if property_id and offer_price:
-                property = self.env['estate.property'].browse(property_id)
-                offered_price = property.offer_ids.mapped('price')
-                
-                if offered_price and offer_price < max(offered_price):
-                    raise ValidationError("You cannot create an offer lower than an existing one.")
-                
-                property.write({'state' :'received'})
-        return super().create(vals_list)

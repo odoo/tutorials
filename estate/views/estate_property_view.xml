@@ -70,7 +70,8 @@
                         <page string="Other Info.">
                             <group>
                                 <field name="partner_id" string="Owner" />
-                                <field name="salseperson_id" string="Salesperson" />
+                                <field name="user_id" string="Salesperson" />
+                                <field name="company_id" string="Company" />
                             </group>
                         </page>
                     </notebook>
@@ -91,12 +92,12 @@
                 <field name="active" />
                 <field name="name" />
                 <field name="expected_price" />
-                <field name="selling_price" />
                 <field name="bedrooms" />
                 <field name="total_area" />
                 <field name="state" />
                 <field name="partner_id" string="Owner" />
-                <field name="salseperson_id" string="Salesperson" />
+                <field name="user_id" string="Salesperson" />
+                <field name="company_id" string="Company" />
                 <field name="date_availability" />
             </list>
         </field>

@@ -29,12 +29,18 @@ class EstateProperty(models.Model):
         inverse_name="property_id", 
         string="Offers"
     )
-    salseperson_id = fields.Many2one(
-        comodel_name="res.users", 
-        string="Salesperson", 
+    user_id = fields.Many2one(
+        comodel_name="res.users",
+        string="Salesperson",
         default=lambda self: self.env.user
     )
     partner_id = fields.Many2one("res.partner", string="Partner")
+    company_id = fields.Many2one(
+        string="Company",
+        comodel_name='res.company', 
+        required=True, 
+        # default=lambda self: 
+    )
 
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postal Code")
@@ -83,20 +89,41 @@ class EstateProperty(models.Model):
     def _compute_totalarea(self):
         for property in self:
             property.total_area = property.living_area + property.garden_area
-    
-    # sets default value when garden is enabled 
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-    
+
     # find max offered price
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for property in self:
             price_list = property.offer_ids.mapped('price')
             property.best_price = max(price_list) if price_list else 0
+
+    # sets default value when garden is enabled 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+
+    # checks if selling price is greater then or equal to 90% expected price
+    @api.constrains("selling_price")
+    def check_selling_price(self):
+        if any(property.selling_price < (property.expected_price * 0.90) for property in self):
+            raise ValidationError("The selling price must be 90'%' of expected price."
+                                    " You must Lower the expected price to accpect offer.")
+        
+    @api.constrains("property_type_id", "partner_id")
+    def check_partner_id(self):
+        for property in self:
+            if property.property_type_id.name == 'commercial':
+                if property.partner_id and property.partner_id.company_type != 'company':
+                    raise UserError("When a property is of commercial type, the partner must be a company.")
+
+    # Prevent delete if property is in new or cancelled state
+    @api.ondelete(at_uninstall=False)
+    def check_on_delete(self):
+        for property in self:
+            if property.state == 'new' or property.state =='cancelled':
+                raise UserError("Can't perform this operation!!")
 
     # sets property state to sold
     def action_property_sold(self):
@@ -105,21 +132,19 @@ class EstateProperty(models.Model):
                 raise UserError(message="Cancelled property can't be sold.")
             else:
                 property.state = 'sold'
-    
+
     # sets property state to cancelled
     def action_property_cancel(self):
         self.state = 'cancelled'
 
-    # checks if selling price is greater then or equal to 90% expected price
-    @api.constrains("selling_price")
-    def check_selling_price(self):
-        if any(property.selling_price < (property.expected_price * 0.90) for property in self):
-            raise ValidationError("The selling price must be 90'%' of expected price."
-                                    " You must Lower the expected price to accpect offer.")
+    # def _accept_offer(self):
+    #     price_list = self.offer_ids.mapped('price')
+    #     max_price = max(price_list) if price_list else 0
 
-    # Prevent delete if property is in new or cancelled state 
-    @api.ondelete(at_uninstall=False)
-    def check_on_delete(self):
-        for property in self:
-            if property.state == 'new' or property.state =='cancelled':
-                raise UserError("Can't perform this operation!!")
+    #     best_offer = self.env['estate.property.offers'].search([
+    #         ('property_id', '=', self.id),
+    #         ('price', '=', max_price)
+    #     ], limit=1)
+
+    #     if (self.date_availability - fields.Date.today()) < 0:
+    #         best_offer.write({'state': 'accepted'})
