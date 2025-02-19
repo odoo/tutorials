@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_details" name="Estate Property Details">
+        <t t-call="website.layout">
+            <t t-set="title">Estate Property Details</t>
+
+            <div class="container my-5">
+                <!-- Check if a valid property record is passed -->
+                <t t-if="property">
+                    <div class="row">
+                        <!-- Left Column: Property Image -->
+                        <div class="col-md-6">
+                            <t t-if="property.property_image">
+                                <img t-att-src="'/web/image/%s/%s/property_image' % (property._name, property.id)"
+                                     class="img-fluid mb-3"
+                                     alt="Property Image"/>
+                            </t>
+                            <t t-else="">
+                                <p>No image available</p>
+                            </t>
+                        </div>
+
+                        <!-- Right Column: Property Details -->
+                        <div class="col-md-6">
+                            <h2><t t-esc="property.name"/></h2>
+                            <p>
+                                <strong>Expected Price:</strong>
+                                <t t-esc="property.expected_price"/>
+                            </p>
+                            <p>
+                                <strong>Date of Availability:</strong>
+                                <t t-esc="property.date_availability"/>
+                            </p>
+                            <p>
+                                <strong>Seller:</strong>
+                                <t t-esc="property.seller_id.name"/>
+                            </p>
+                            <p>
+                                <strong>Status:</strong>
+                                <t t-esc="property.state"/>
+                            <p>  
+                            <t t-if="property.garage">
+                                <strong>Garage:</strong>
+                                Yes
+                            
+                            </t>
+                            <t t-else="">
+                                <strong>Garage:</strong>
+                                 No
+                            </t>
+                            </p>  
+                            </p>
+                            <p>
+                            <t t-if="property.garden">
+                                <strong>Garden Details:</strong>
+                                <p>
+                                 <strong>Garden Area:</strong>
+                                <t t-esc="property.garden_area"/>
+                                </p>
+                                <p>
+                                 <strong>Garden Orientation:</strong>
+                                <t t-esc="property.garden_orientation"/>
+                                </p>
+
+                            </t>
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr class="my-4"/>
+
+                    <!-- Offers Table -->
+                    <h3>Offers</h3>
+                    <t t-if="property.offer_ids">
+                        <p>
+                            <strong>Best Offer:</strong>
+                            <t t-esc="property.best_price "/>
+                        </p>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Buyer</th>
+                                    <th>Price</th>
+                                    <th>Validity</th>
+                                    <th>Status</th>
+                                    <th>Created On</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="property.offer_ids" t-as="offer">
+                                    <td><t t-esc="offer.partner_id.name"/></td>
+                                    <td><t t-esc="offer.price"/></td>
+                                    <td><t t-esc="offer.validity"/> days</td>
+                                    <td><t t-esc="offer.status"/></td>
+                                    <td><t t-esc="offer.create_date"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-else="">
+                        <p>No offers yet.</p>
+                    </t>
+
+                </t>
+                <t t-else="">
+                    <p>Property not found.</p>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

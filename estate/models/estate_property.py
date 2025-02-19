@@ -15,7 +15,8 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=fields.Datetime.today() + relativedelta(months=3)
+        copy=False,
+        default=lambda self: fields.Datetime.today() + relativedelta(months=3),
     )
     expected_price = fields.Float(required=True, string="Expected Price:")
     selling_price = fields.Integer(readonly=True, copy=False, string="Selling Price:")
@@ -70,6 +71,9 @@ class EstateProperty(models.Model):
         required=True,
         default=lambda self: self.env.company.id,
     )
+    create_date = fields.Date(
+        default=lambda self: fields.Datetime.today(), readonly=True, store=True
+    )
     property_image = fields.Image("Property Image", max_width=1024, max_height=1024)
     _sql_constraints = [
         (
@@ -113,7 +117,17 @@ class EstateProperty(models.Model):
     def sold(self):
         if self.state != "cancelled" and self.state == "offer accepted":
             self.state = "sold"
+            template = self.env.ref('estate.estate_property_email_template')
+            template.send_mail(self.id,force_send=True)
+            print("Email has successfuly been sent!!")
             print("Property Sold")
+            message_body = f"Hello {self.buyer_id.name}, Congratulations! Your property '{self.name}' has been successfully sold. Thank you!"
+            whatsapp_message = self.env['whatsapp.message'].create({
+                'body': message_body,
+                'mobile_number': self.buyer_id.mobile,  # assuming mobile is in international format like +123456789
+                'message_type': 'outbound',
+            })
+            whatsapp_message._send()
         else:
             print(
                 "Property cannot be sold because it has either been cancelled or no offers have been accepted! ERROR RAISED"

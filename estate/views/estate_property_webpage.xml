@@ -6,7 +6,24 @@
             <div class="container">
                 <h1 class="text-center">Available Estate Properties</h1>
                 <p>Browse through the list of available properties.</p>
-
+                <form action="/properties" method="get">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <input type="date" id="date-picker" name="listed_after" class="form-control" t-att-value="listed_after"/>
+                        </div>
+                        <div class="col-md-2">
+                            <button type ="submit" id="filter-btn" class="btn btn-primary">Listed After</button>
+                        </div>
+                    </div>
+                </form>
+                <form action="/properties" method="get" class="mb-4">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control"
+                            placeholder="Search by property name..."
+                            t-att-value="search"/>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
                 <div class="row">
                     <t t-if="properties">
                         <t t-foreach="properties" t-as="property">
@@ -30,11 +47,17 @@
                                             <strong>Living Area:</strong> <t t-esc="property.living_area"/> sq.ft <br/>
                                             <strong>Garden:</strong> <t t-esc="'Yes' if property.garden else 'No'"/> <br/>
                                         </p>
-                                        <a href="/properties/details" class="btn btn-primary">View Details</a>
+                                        <a t-att-href="'/properties/details/%s' % (property.id)" class="btn btn-primary">View Details</a>
                                     </div>
                                 </div>
                             </div>
                         </t>
+                <div class='navbar mb-3 w-100'>
+                    <t t-call="website.pager">
+                        <t t-set="classname" t-valuef="mx-auto" />
+                    </t>
+                </div>
+                    
                     </t>
                     <t t-else="">
                         <p>No properties available at the moment.</p>

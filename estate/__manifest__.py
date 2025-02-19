@@ -14,9 +14,11 @@
         "report/estate_property_reports.xml",
         "report/res_users_template.xml",
         "report/res_users_reports.xml",
+        "report/estate_property_mail_template.xml",
         "security/estate_security.xml",
         "security/ir.model.access.csv",
         "views/estate_property_webpage.xml",
+        "views/estate_property_webpage_property_detail.xml"
     ],
     "demo": ["demo/estate_demo.xml"],
     "application": True,
