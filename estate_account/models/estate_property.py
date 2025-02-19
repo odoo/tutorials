@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import Command, fields, models
+from odoo import Command, models, _
 from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
@@ -12,9 +12,8 @@ class EstateProperty(models.Model):
             has_access = record.check_access_rights('write', raise_exception=False)
             print(has_access)
             if not has_access:
-                raise UserError("You do not have permission to modify properties.")
+                raise UserError(_("You do not have permission to modify properties."))
             invoice_vals = {
-                "name" : record.sequence_inv,
                 "partner_id" : record.buyer_id.id,
                 "move_type" : "out_invoice",
                 "invoice_line_ids" : [

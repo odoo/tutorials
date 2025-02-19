@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.from odoo import api, fields, models
 
+from odoo import api, fields, models, _
+
 from odoo.exceptions import UserError, ValidationError
 
 class EstatePropertyOffer(models.Model):
@@ -41,13 +43,13 @@ class EstatePropertyOffer(models.Model):
                 property_id.write({'state': 'offer_received'})
 
             if val['price'] < property_id.best_offer:
-                raise UserError("Your price is lower than an existing offer.")
+                raise UserError(_("Your price is lower than an existing offer."))
 
         return super(EstatePropertyOffer, self).create(vals)
 
     def action_accept(self):
         if self.property_id.state == 'offer_accepted':
-            raise ValidationError("You can't accept more than one offer")
+            raise ValidationError(_("You can't accept more than one offer"))
             
         self.status = 'accepted'
         self.property_id.buyer_id = self.partner_id.id

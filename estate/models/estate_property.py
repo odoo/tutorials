@@ -3,15 +3,14 @@
 
 from datetime import timedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _sql_constraints = [
         ('expected_price_positive', 'CHECK(expected_price >= 1)', 'The expected price must be strictly positive.'),
         ('selling_price_positive', 'CHECK(selling_price >= 1)', 'The selling price must be strictly positive.')
@@ -68,7 +67,7 @@ class EstateProperty(models.Model):
     def _check_sellings_price(self):
         for record in self:
             if record.selling_price and record.selling_price < record.expected_price * 0.9:
-                raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+                raise ValidationError(_("Selling price cannot be lower than 90% of the expected price."))
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -88,19 +87,19 @@ class EstateProperty(models.Model):
     def _unlink_property(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
-                raise UserError("Only New or cancelled properties can be deleted.")
+                raise UserError(_("Only New or cancelled properties can be deleted."))
 
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled': 
-                raise UserError("Cancelled properties cannot be sold")
+                raise UserError(_("Cancelled properties cannot be sold"))
             else: 
                 record.state = 'sold'
 
     def action_cancelled(self):
         for record in self:
             if record.state == 'sold': 
-                raise UserError("Sold properties cannot be cancelled")
+                raise UserError(_("Sold properties cannot be cancelled"))
             else:
                 record.state = 'cancelled'
                 
