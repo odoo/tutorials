@@ -29,7 +29,6 @@
                         invisible="status in ('sold', 'cancel')" class="oe_highlight" />
                     <button name="action_cancel" type="object" string="CANCEL"
                         invisible="status in ('sold', 'cancel')" class="oe_highlight" />
-
                     <field name="status" widget="statusbar"
                         statusbar_visible="new, offer_received, offer_accepted, sold"></field>
                 </header>
@@ -60,6 +59,7 @@
                             <field name="expected_price" />
                             <field name="best_price" />
                             <field name="selling_price" />
+                            <field name="image" />
                         </group>
                     </group>
                     <notebook>

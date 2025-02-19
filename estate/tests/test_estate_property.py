@@ -10,10 +10,8 @@ from odoo.tests import Form
 class EstateTestCase(TransactionCase):
 
     @classmethod
-    def setUpClass(cls):
-        
+    def setUpClass(cls): 
         super(EstateTestCase, cls).setUpClass()
-
         cls.buyer = cls.env['res.partner'].create({
             'name': 'buyer_1',
         })
@@ -28,17 +26,14 @@ class EstateTestCase(TransactionCase):
         })
 
     def test_action_sell(self):
-        
         with self.assertRaises(UserError, msg="Selling a property without an accepted offer!"):
             self.property.action_sold()
 
         self.offer.action_accepted()
         self.assertEqual(self.property.partner_id, self.buyer, msg="Buyer not matched!")
         self.assertEqual(self.property.selling_price, 9000, msg="Selling price not matched!")
-
         self.property.action_sold()
         self.assertEqual(self.property.status, 'sold', msg="State not changes to sold offer!")  
-
         self.assertRecordValues(self.property, [
             {'status': 'sold'},
         ])
@@ -51,16 +46,12 @@ class EstateTestCase(TransactionCase):
             })
 
     def test_property_form(self):
-        
-        with Form(self.property) as prop:
-            
+         with Form(self.property) as prop:
             self.assertEqual(prop.garden_area, 0, msg="check default value of garden_area")
             self.assertIs(prop.garden_orientation, False, msg="check default value of garden_orientation")
-
             prop.garden = True
             self.assertEqual(prop.garden_area, 10, msg="Garden is set, so default value would'nt work!")
             self.assertEqual(prop.garden_orientation, "north")
-
             prop.garden = False
             self.assertEqual(prop.garden_area, 0, msg="Garden is reset, default value would work!")
             self.assertIs(prop.garden_orientation, False)
