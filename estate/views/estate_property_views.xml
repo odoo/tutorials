@@ -40,11 +40,11 @@
                     <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"></field>
                 </header>
                 <sheet>
-                    <!--  Title at the top -->
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <h1><field name="name"></field></h1>
                          <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                         <field name="image"/>
+                         
                           <field name="status"></field> 
                     </group>
 

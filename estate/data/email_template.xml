@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+       <record id="property_sold_email_template" model="mail.template">
+           <field name="name">Estate Property Email template</field>
+           <field name="model_id" ref="estate.model_estate_property"/>
+           <field name="subject">{{ object.company_id.name }}</field>
+           <field name="email_from">{{ (object.company_id.email) }}</field>
+           <field name="partner_to">{{ object.property_buyer_id.name }}</field>
+           <field name="description">Add Description</field> 
+           <field name="body_html" type="html">
+            <tr>
+                <td style="min-width: 590px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                        <tr>
+                            <td valign="top" style="font-size: 13px;">
+                                <div>
+                                    <p>Dear <t t-out="object.property_buyer_id.name or 'Valued Customer'"/>,</p>
+
+                                    <p>Congratulations! We are pleased to inform you that the property <strong><t t-out="object.name"/></strong> has been successfully sold to you.</p>
+
+                                    <p>Thank you for your trust in <strong><t t-out="object.company_id.name or 'Our Company'"/></strong>. If you have any further inquiries, feel free to contact us.</p>
+
+                                    <p>Best regards,<br/>
+                                    <strong><t t-out="object.company_id.name or 'The Real Estate Team'"/></strong></p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+           </field>
+       </record>
+   </data>
+</odoo>

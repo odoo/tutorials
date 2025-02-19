@@ -145,6 +145,25 @@ class EstateProperty(models.Model):
     def sold_event(self):
         if self.status != "canceled" and self.status == "offer_accepted":  # Prevent selling if already sold
             self.status = "sold"
+            template=self.env.ref('estate.property_sold_email_template')
+            
+            print("PROPERTY HAS BEEN SOLD!!!!!")
+            if template:
+                print("TEMPLATE HAS BEEN SELECTED!!!!")
+                template.send_mail(self.id, force_send=True,email_layout_xmlid='mail.mail_notification_light')
+            
+            for property in self:
+                if property.property_buyer_id:
+                    print("Anshik i rproooooooooooooooooooo")
+                    message_body = f"Hello {property.property_buyer_id.name}, Congratulations! Your property '{property.name}' has been successfully sold. Thank you!"
+                    whatsapp_message = self.env['whatsapp.message'].create({
+                        'body': message_body,
+                        'mobile_number': property.property_buyer_id.mobile,  # assuming mobile is in international format like +123456789
+                        'message_type': 'outbound',
+                    })
+                    whatsapp_message._send()
+            
+
         else:
             raise UserError("This property is already sold.")
 

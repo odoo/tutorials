@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="whatsapp_property_sold_template" model="whatsapp.template">
+            <field name="name">Property Sold Notification</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="body">
+                Hello {{ object.property_buyer_id.name }},
+
+                Congratulations! You have successfully purchased **{{ object.name }}** for **{{ object.selling_price }} USD**.
+
+                Your seller: {{ object.property_seller_id.name }}
+
+                If you have any questions, feel free to reach out.
+
+                        Best Regards,  
+                {{ object.company_id.name }}
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -50,12 +50,12 @@
 
            <field name="offer_ids" eval="[
     Command.create({
-        'partner_id': ref('base.res_partner_15'),
+        'partner_id': ref('base.res_partner_12'),
         'price': 2200000,
         'validity': 14
     }),
     Command.create({
-        'partner_id': ref('base.res_partner_deco_addict'),
+        'partner_id': ref('base.res_partner_2'),
         'price': 2300000,
         'validity': 21
     })
@@ -64,28 +64,28 @@
         </record>
  
         <record id="estate_property_azure_1" model="estate.property.offer"> 
-            <field name="partner_id" ref="base.res_partner_15"></field>
+            <field name="partner_id" ref="base.res_partner_12"></field>
             <field name="property_id" ref="estate_property_big_villa"></field>
             <field name="price">144000</field>
             <field name="validity">14</field>
         </record>
 
         <record id="estate_property_azure_2" model="estate.property.offer"> 
-            <field name="partner_id" ref="base.res_partner_15"></field>
+            <field name="partner_id" ref="base.res_partner_12"></field>
             <field name="property_id" ref="estate_property_big_villa"></field>
             <field name="price">150000</field>
             <field name="validity">14</field>
         </record>
 
         <record id="estate_property_deco_addict_1" model="estate.property.offer"> 
-            <field name="partner_id" ref="base.res_partner_deco_addict"></field>
+            <field name="partner_id" ref="base.res_partner_2"></field>
             <field name="property_id" ref="estate_property_big_villa"></field>
             <field name="price">150001</field>
             <field name="validity">14</field>
         </record>
 
         <record id="estate_property_deco_addict_2" model="estate.property.offer"> 
-            <field name="partner_id" ref="base.res_partner_deco_addict"></field>
+            <field name="partner_id" ref="base.res_partner_2"></field>
             <field name="property_id" ref="estate_property_big_villa"></field>
             <field name="price">1500001</field>
             <field name="validity">14</field>
