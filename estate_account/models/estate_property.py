@@ -7,12 +7,10 @@ class EstateProperty(models.Model):
 
     def property_action_sell(self):
         for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled properties cannot be sold.")
-
             record.check_access('write')
             self.env["account.move"].sudo().create({
-                "buyer_id": self.buyer_id.id, 
+                "invoice_origin": self.name,
+                "partner_id": self.buyer_id.id, 
                 "move_type": "out_invoice", 
                 "invoice_line_ids": [
                     Command.create({
@@ -32,7 +30,5 @@ class EstateProperty(models.Model):
                     }),
                 ],   
             })
-
-            record.state = "sold" 
 
         return super().property_action_sell()

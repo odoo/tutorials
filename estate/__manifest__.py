@@ -19,6 +19,7 @@
         'views/estate_menus.xml',
         'views/estate_property_controllor_templates.xml',
         'data/estate.property.type.csv',
+        'report/estate_offer_report_templates.xml',
         'report/estate_offer_reports.xml',
     ],
     'demo': [

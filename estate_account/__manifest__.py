@@ -5,6 +5,7 @@
     'application': True,
     'depends': ['estate', 'account'], 
     'data': [
+        'report/estate_property_invoice_templates.xml',
     ],
     'installable': True,
     

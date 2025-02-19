@@ -1,12 +1,12 @@
 from odoo import http
 from odoo.http import request
 
-class Estate(http.Controller):
+class EstatePropertyController(http.Controller):
     
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
     def properties(self, page=1, listed_after=None, **kwargs):
         Property = request.env['estate.property']
-        domain = [('state', '!=', 'sold'), ('state', '!=', 'canceled'), ('state', '!=', 'archived')]
+        domain = [('state', '!=', 'sold'), ('state', '!=', 'cancelled')]
         
         if listed_after:
             domain.append(('create_date', '>=', listed_after))

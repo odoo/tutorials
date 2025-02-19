@@ -1,0 +1,31 @@
+<odoo>
+    <template id="report_property_offers_invoice" inherit_id="estate.report_property_offers">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <t t-if="property">
+                <t t-set="invoice" 
+                   t-value="env['account.move'].search([('invoice_origin', '=', property.name), ('move_type', '=', 'out_invoice')], limit=1)"/>
+                
+                <t t-if="property.state == 'sold' and invoice">
+                    <div class="container my-3">
+                        <div class="card border-primary shadow-sm">
+                            <div class="card-header bg-primary text-white fw-bold">
+                                Invoice Details
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-1"><strong>Invoice Date:</strong> 
+                                    <span t-esc="invoice.invoice_date.strftime('%d/%m/%Y') if invoice.invoice_date else 'N/A'"/>
+                                </p>
+                                <p class="mb-1"><strong>Total Amount:</strong> 
+                                    <span t-esc="invoice.amount_total"/> $
+                                </p>
+                                <p class="mb-1"><strong>Payment Status:</strong> 
+                                    <span class="text-uppercase text-muted" t-esc="invoice.state"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </template>
+</odoo>
