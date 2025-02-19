@@ -13,9 +13,11 @@
                 <sheet>
                     <group>
                         <group>
+
                             <h1>
                                 <field name="name"/>
                             </h1>
+                            <field name="property_image" string="Property Image" widget="image" class="oe_avatar" options="{'size': [250,250]}" nolabel="1"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color','no_create':True}"/>
                             <group>
                                 <field name="property_type_id" string="Property Type" options="{'no_create': True}"/>
@@ -25,18 +27,15 @@
                             <newline/>
 
                             <group>
-                                <field name="status" string="Status" />
                                 <field name="expected_price" string="Expected Price"/>
-                            </group>
-
-                            <group>
                                 <field name="postcode" string="Postcode"/>
-                                <field name="selling_price" string="Selling Price"/>
                             </group>
 
                             <group>
+                                <field name="selling_price" string="Selling Price"/>
                                 <field name="date_availability" string="Available From"/>
                             </group>
+                            
                         </group>
                         <notebook>
                             <page string="Description">

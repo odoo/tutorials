@@ -58,7 +58,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id", string="Offer")
     company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company)
-
+    property_image = fields.Image("Property Image")
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
         for record in self:
@@ -96,9 +96,11 @@ class EstateProperty(models.Model):
                 raise ValidationError("Selling price cannote be lower than 90% of it's expected price!")
 
     def action_sold(self):
-        if self.selling_price < 0: 
+        if self.status!="offer_accepted":
+            raise UserError("This property cannot be sold because there is no offer accepted!")
+        elif self.selling_price < 0: 
             raise UserError("This property cannot be sold because it selling price is 0 !")
-        if self.status == "cancelled":
+        elif self.status == "cancelled":
             raise UserError("This property cannot be sold it is cancelled")
         self.status = "sold"
 
@@ -112,7 +114,3 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status not in ["new", "cancelled"]:
                 raise UserError("A property can only delete if it is new or cancelled")
-
-    def _get_all_properties(self):
-        print(self.env.items())
-        return self.env.items()

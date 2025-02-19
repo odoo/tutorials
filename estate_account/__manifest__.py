@@ -4,7 +4,7 @@
     "author": "Odoo",
     "category": "Tutorials/estate_account",
     "version": "1.0",
-    "depends": ["base","estate","account"],
+    "depends": ["base","estate","account","website"],
     "application": True,
     "installable": True,
     "data": [
