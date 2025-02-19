@@ -74,7 +74,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = None
+            self.garden_orientation = ''
 
     # Python Constraints
     @api.constrains('selling_price', 'expected_price')
@@ -92,10 +92,12 @@ class EstateProperty(models.Model):
     # Action Button Methods
     # This methods were used earlier for different sold and cancel button of the property form
     def action_set_sold_status(self):
+        if not self.property_offer_ids.filtered(lambda offer: offer.status == 'accepted'):
+            raise UserError("You cannot sell a property with no offer accepted")
         if self.state == 'cancelled':
             raise UserError('A cancelled property cannot be sold.')
-        else:
-            self.state = 'sold'
+        
+        self.state = 'sold'
 
     def action_set_cancelled_status(self):
         if self.state == 'sold':

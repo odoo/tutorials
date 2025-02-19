@@ -38,6 +38,11 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             best_offer_price = self.env['estate.property'].browse(vals['property_id']).best_offer
+            property_state = self.env['estate.property'].browse(vals['property_id']).state
+
+            if property_state == 'sold' or property_state == 'invoiced':
+                raise UserError("You cannot create offer for sold or invoiced property")
+
             if best_offer_price:
                 if vals.get('price') < best_offer_price:
                     raise UserError(f"The offer must be higher than best offer {best_offer_price}")

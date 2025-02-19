@@ -8,8 +8,7 @@ class EstateProperty(models.Model):
 
     def action_create_invoice(self):
         try:
-            self.env['account.move'].check_access_rights('write')
-            self.env['account.move'].check_access_rule('write')
+            self.env['account.move'].check_access('write')
         except AccessError:
             raise AccessError("You don't have permission to update this property.")
 

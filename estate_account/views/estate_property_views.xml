@@ -3,7 +3,6 @@
         <field name="name">estate.property.account.list</field>
         <field name="model">estate.property</field>
         <field name="inherit_id" ref="estate.estate_property_view_list" />
-        <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//list" position="replace">
                 <list string="Property" multi_edit="1" decoration-success="state == 'offer_received'" decoration-bf="state == 'offer_received'" decoration-muted="state == 'sold'">
