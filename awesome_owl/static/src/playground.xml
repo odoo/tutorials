@@ -2,20 +2,18 @@
 
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-    <div class="p-3 d-flex flex-column gap-3">
-        <div class="p-3">
-            hello world
-        <Card title="'Counter 1'">
-            <Counter incrementSum.bind="incrementSum"/>
-        </Card>
-        <Card title="'Title 2'"/>
-        <Card title="'Counter 2'">
-            <Counter incrementSum.bind="incrementSum"/>
-        </Card>
-        <div class="p-3 border mb-2">
-            Sum is: <t t-esc="sum.value"/>
+    <div class="p-3 d-flex flex-column gap-4 align-items-center">
+        <div class="d-flex gap-4 flex-wrap justify-content-center">
+                <Card title="'Counter 1'">
+                    <Counter incrementSum.bind="incrementSum"/>
+                </Card>
+                <Card title="'Counter 2'">
+                    <Counter incrementSum.bind="incrementSum"/>
+                </Card>
+            </div>
+        <div class="p-4 border rounded bg-primary text-white text-center shadow w-50">
+                <h4 class="fw-bold mb-0">Sum is: <t t-esc="sum.value"/></h4>
+            </div>
         </div>
-        </div>
-    </div>
     </t>
 </templates>
