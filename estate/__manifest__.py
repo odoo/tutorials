@@ -18,12 +18,12 @@
         'views/estate_menus.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
-        # 'data/estate.property.type.csv'
+        'data/estate.property.type.csv'
     ],
     'demo' : [
-        # 'demo/demo_estate_property.xml',
-        # 'demo/demo_estate_property_offer.xml',
-        'demo/estate_demo.xml', #demo data for report
+        'demo/demo_estate_property.xml',
+        'demo/demo_estate_property_offer.xml',
+        # 'demo/estate_demo.xml', #demo data for report
     ],
     'application' : True,
     'installable' : True,

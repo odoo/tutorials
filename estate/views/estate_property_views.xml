@@ -12,7 +12,8 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Property List View" decoration-success="offer_ids" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+            <list string="Estate Property List View" decoration-success="offer_ids"
+                decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="tag_ids" widget="many2many_tags" />
@@ -33,22 +34,25 @@
             <form string="Estate Property Form View">
                 <header>
                     <group invisible="state in ['sold','cancelled']">
-                        <button string="SOLD" name="action_sold" type="object" class="oe_highlight"/>
-                        <button string="CANCEL" name="action_cancel" type="object"/>
+                        <button string="SOLD" name="action_sold" type="object" class="oe_highlight" />
+                        <button string="CANCEL" name="action_cancel" type="object" />
                     </group>
-                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new, offer_received, offer_accepted, sold" />
                 </header>
                 <sheet>
                     <group>
-                            <h1>
-                                <field name="name" placeholder="My new house"/>
-                            </h1>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                        <h1>
+                            <field name="name" placeholder="My new house" />
+                        </h1>
+                        <field name="image" />
+                        <field name="tag_ids" widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
                     </group>
                     <group>
                         <group>
                             <field name="postcode" />
-                            <field name="date_availability" string="Available From"/>
+                            <field name="date_availability" string="Available From" />
                         </group>
                         <group>
                             <field name="expected_price" />
@@ -59,7 +63,7 @@
                     <notebook>
                         <page name="description" string="Description">
                             <group>
-                                <field name="property_type_id" options="{'no_create': true}"/>
+                                <field name="property_type_id" options="{'no_create': true}" />
                                 <field name="description" />
                                 <field name="bedrooms" />
                                 <field name="living_area" />
@@ -72,7 +76,8 @@
                             </group>
                         </page>
                         <page name="offers" string="Offers">
-                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']" />
+                            <field name="offer_ids"
+                                readonly="state in ['offer_accepted', 'sold', 'cancelled']" />
                         </page>
                         <page name="other_info" string="Other Info">
                             <group>
@@ -98,7 +103,8 @@
                 <field name="bedrooms" />
                 <field name="living_area" filter_domain="[('living_area','>=',self)]" />
                 <field name="facades" />
-                <filter name="available_properties" string="Available Properties" domain="['|', ('state', '=', 'new'), ('state','=','offer_received')]" />
+                <filter name="available_properties" string="Available Properties"
+                    domain="['|', ('state', '=', 'new'), ('state','=','offer_received')]" />
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
             </search>
         </field>
@@ -114,18 +120,18 @@
                     <t t-name="kanban-box">
                         <div>
                             <div class="fw-bold fs-4">
-                                <field name="name"/>
+                                <field name="name" />
                             </div>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                            <field name="tag_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
 
-                            <div>
-                                Expected Price: <field name="expected_price"/>
+                            <div> Expected Price: <field name="expected_price" />
                             </div>
-                            <div t-if="record.state.raw_value == 'offer_received'">
-                                Best Offer: <field name="best_price"/>
+                            <div t-if="record.state.raw_value == 'offer_received'"> Best Offer: <field
+                                    name="best_price" />
                             </div>
-                            <div t-if="record.state.raw_value == 'offer_accepted'">
-                                Selling Price: <field name="selling_price"/>
+                            <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
+                                    name="selling_price" />
                             </div>
                         </div>
                     </t>
@@ -133,5 +139,38 @@
             </kanban>
         </field>
     </record>
+
+<template id="properties_template">
+    <t t-call="website.layout">
+        <div class="container mt-4 bg-dark text-white">
+            <div class="row g-4">
+                <t t-foreach="properties" t-as="property">
+                    <div class="col-md-3 mt-2">
+                        <div class="card p-2 shadow-sm bg-light text-dark h-100">
+                            <img t-if="property.image"
+                                 t-att-src="image_data_uri(property.image)"
+                                 class="card-img-top img-fluid rounded"
+                                 style="height: 200px; object-fit: cover;"
+                                 alt="Property Image"/>
+                            <div class="card-body">
+                                <h5 class="card-title" t-out="property.name"></h5>
+                                <p class="card-text">
+                                    <strong>Price:</strong> $<t t-out="property.selling_price" />
+                                </p>
+                                <p class="card-text">
+                                    <strong>Expected Price:</strong> $<t t-out="property.expected_price" />
+                                </p>
+                                <p class="card-text">
+                                    <strong>Living Area:</strong> <t t-out="property.living_area" /> sqft
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+                <t t-call="website.pager"/>
+            </div>
+        </div>
+    </t>
+</template>
 
 </odoo>

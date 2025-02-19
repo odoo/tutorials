@@ -8,4 +8,7 @@
     'depends': ['estate','account'],
     'auto_install': True,
     'license': 'LGPL-3',
+    'data': [
+        'report/estate_property_templates.xml',
+    ]
 }
