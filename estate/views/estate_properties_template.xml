@@ -1,4 +1,4 @@
-<?xml version = "1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="property_listing_template" name="Property Listings">
         <t t-call="website.layout">
@@ -37,20 +37,20 @@
             </div>
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                    let filterBtn = document.getElementById("filter-btn");
-                    let filterDateInput = document.getElementById("filter-date");
-                    let propertyItems = document.querySelectorAll(".property-item");
+                    let filterBtn=document.getElementById("filter-btn");
+                    let filterDateInput=document.getElementById("filter-date");
+                    let propertyItems=document.querySelectorAll(".property-item");
                     filterBtn.addEventListener("click", function() {
-                        let selectedDate = filterDateInput.value;
+                        let selectedDate=filterDateInput.value;
                         if (!selectedDate) {
                             alert("Please select a date!");
                             return;
                         }
-                        let selectedTimestamp = new Date(selectedDate).getTime();
+                        let selectedTimestamp=new Date(selectedDate).getTime();
                         propertyItems.forEach(function(item) {
-                            let propertyDate = item.getAttribute("data-date");
-                            let propertyTimestamp = new Date(propertyDate).getTime();
-                            item.style.display = propertyTimestamp >= selectedTimestamp ? "block" : "none";
+                            let propertyDate=item.getAttribute("data-date");
+                            let propertyTimestamp=new Date(propertyDate).getTime();
+                            item.style.display=propertyTimestamp >= selectedTimestamp ? "block" : "none";
                         });
                     });
                 });

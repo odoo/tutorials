@@ -64,15 +64,15 @@ class EstateProperty(models.Model):
 
     def action_cancel(self):
         if self.status == "sold":
-            raise UserError("A sold property cannot be cancelled.")
+            raise UserError(_("A sold property cannot be cancelled."))
         else:
             self.status = "cancelled"
 
     def action_sold(self):
         if self.status == "cancelled":
-            raise UserError("A cancelled property cannot be sold.")
+            raise UserError(_("A cancelled property cannot be sold."))
         if self.status not in ["offer_accepted"]:
-            raise exceptions.UserError(("You cannot sell a property that is not in 'Offer Accepted' state"))
+            raise exceptions.UserError(_("You cannot sell a property that is not in 'Offer Accepted' state"))
         self.status = "sold"
 
     @api.depends('living_area', 'garden_area')
@@ -97,10 +97,10 @@ class EstateProperty(models.Model):
                 continue
             min_valid_price = record.expected_price * 0.9
             if float_compare(record.selling_price, min_valid_price, precision_rounding=0.01) == -1:
-                  raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+                  raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
 
     @api.ondelete(at_uninstall=False)
     def _prevent_delete(self):
         for record in self:
             if record.status not in ['new','cancelled']:
-                raise UserError("You can only delete properties in 'New' or 'Cancelled' state.")
+                raise UserError(_("You can only delete properties in 'New' or 'Cancelled' state."))

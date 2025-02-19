@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api,exceptions,fields,models
+from odoo import api,exceptions,fields,models,_
 from odoo.exceptions import UserError
 
 
@@ -37,7 +37,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             accepted_offer = record.property_id.offer_ids.filtered(lambda offer: offer.status == "offer_accepted")
             if accepted_offer:
-                raise UserError("An offer has already been accepted for this property.")
+                raise UserError(_("An offer has already been accepted for this property."))
             record.status = "offer_accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
@@ -52,7 +52,7 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             min_price = min( self.env['estate.property.offer'] .search([('property_id', '=', vals['property_id'])]) .mapped('price'), default=0 )
             if vals['price'] <= min_price:
-                raise exceptions.UserError("The price must be higher than any existing offer.")
+                raise exceptions.UserError(_("The price must be higher than any existing offer."))
             property = self.env['estate.property'].browse(vals['property_id'])
             if property.status == 'new' or not property.status:
                 property.status = 'offer_received'

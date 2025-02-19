@@ -4,13 +4,13 @@
         <field name="name">esate.property.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="List" editable="bottom" decoration-success = "status == 'accepted'" decoration-danger = "status == 'refused'" >
+            <list string="List" editable="bottom" decoration-success="status == 'offer_accepted'" decoration-danger="status == 'refused'" >
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="validity" />
                 <field name="date_deadline" />
-                <button name="action_accept" title="Accept" type="object" icon="fa-check" invisible="status in ['accepted', 'refused'] or property_status in ['offer_accepted', 'sold', 'cancelled']"/>
-                <button name="action_reject" title="Refuse" type="object" icon="fa-times" invisible="status in ['accepted', 'refused'] or property_status in ['offer_accepted', 'sold', 'cancelled']"/>
+                <button name="action_accept" title="Accept" type="object" icon="fa-check" invisible="status in ['offer_accepted', 'refused'] or property_status in ['offer_accepted', 'sold', 'cancelled']"/>
+                <button name="action_reject" title="Refuse" type="object" icon="fa-times" invisible="status in ['offer_accepted', 'refused'] or property_status in ['offer_accepted', 'sold', 'cancelled']"/>
                 <field name="status" />
             </list>
         </field>

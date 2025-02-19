@@ -7,6 +7,9 @@
             <list string="List"
                 decoration-success="status == 'offer_received' or status == 'offer_accepted'"
                 decoration-muted="status == 'sold'" decoration-bf="status == 'offer_accepted'">
+                <header>
+                 <button name="%(action_estate_property_offer_wizard)d" string="Add Offer" type="action" class="btn-primary"/>
+                </header>
                 <field name="name" string="Title" />
                 <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="property_type_id" options="{'no_create': True, 'no_open': True}" />
