@@ -1,9 +1,13 @@
-from odoo import api, models, fields, exceptions
+from odoo import api, models, fields, exceptions, tools
 
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _sql_constraints = [
+        ("positive_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive"),
+        ("positive_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive"),
+    ]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -74,3 +78,11 @@ class Property(models.Model):
             record.state = 'sold'
         return True
 
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price_close_to_expected(self):
+        for record in self:
+            if not (
+                tools.float_utils.float_is_zero(record.selling_price, precision_digits=2) or
+                tools.float_utils.float_compare(0.9 * record.expected_price, record.selling_price, precision_digits=2) <= 0
+            ):
+                raise exceptions.ValidationError("The selling price must be at least 90% of the expected price. Lower the expected price, or find a better offer")
