@@ -1,8 +1,27 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="estate_menu_root" name="Estate">
-        <menuitem id="esate_first_level_menu" name="Advertisements">
-            <menuitem id="estate_model_menu_action" action="estate_view_action" />
-        </menuitem>
-    </menuitem>
+    <menuitem
+        id="estate_menu_root"
+        name="Estate" />
+
+    <menuitem
+        id="estate_menu_adv"
+        name="Advertisements"
+        parent="estate_menu_root" />
+
+    <menuitem
+        id="estate_menu_adv_action"
+        parent="estate_menu_adv"
+        action="estate_view_action" />
+
+    <menuitem
+        id="estate_menu_settings"
+        name="Settings"
+        sequence="30"
+        parent="estate_menu_root" />
+
+    <menuitem
+        id="estate_menu_settings_action"
+        parent="estate_menu_settings"
+        action="estate_type_view_action" />
 </odoo>
