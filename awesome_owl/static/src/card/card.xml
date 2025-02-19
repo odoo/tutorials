@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">        
+                <t t-slot="default" t-if="showContent.value">
+                    <p class="card-text">
+                        This is default content
+                    </p>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
