@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="docs_estate_property_report" name="docs Estate Property Report">
-         <t t-call="web.html_container">
-                <t t-call="web.external_layout">
-                    <div class="page">
-                        <h1 class="mb-1">
-                            <strong>Salesman: </strong>
-                            <span t-field="docs.name"/>
-                        </h1>
-                        <t t-foreach="docs.property_ids" t-as="property">
-                            <div class="mb-1">
-                                <span t-field="property.name"/>
-                            </div>
-                            <div class="mb-1">
-                                <strong>Expected Price: </strong>
-                                <span t-field="property.expected_price"/>
-                            </div>
-                            <div class="mb-1">
-                                <strong>Status: </strong>
-                                <span t-field="property.status"/>
-                            </div>
-                        </t>
-                        <t t-set="property" t-value="property"/>
-                        <t t-call="estate.estate_property_offer_report"/>
-                    </div>
+    <template id="user_estate_property_report" name="docs Estate Property Report">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h1 class="mb-1">
+                                <strong>Salesman: </strong>
+                                <span t-field="user.name"/>
+                            </h1>
+                            <t t-foreach="user.property_ids" t-as="property">
+                                <div class="mb-1">
+                                    <span t-field="property.name"/>
+                                </div>
+                                <div class="mb-1">
+                                    <strong>Expected Price: </strong>
+                                    <span t-field="property.expected_price"/>
+                                </div>
+                                <div class="mb-1">
+                                    <strong>Status: </strong>
+                                    <span t-field="property.status"/>
+                                </div>
+                                <t t-set="property" t-value="property"/>
+                                <t t-call="estate.estate_property_offer_report"/>
+                            </t>
+                        </div>
+                    </t>
                 </t>
             </t>
     </template>

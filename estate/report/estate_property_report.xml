@@ -27,4 +27,13 @@
             </t>
         </t>
     </template>
+    <template id="inherit_estate_property_report" inherit_id="estate.estate_property_report">
+       <xpath expr="(//div[@class='page']/div)[3]" position="after">
+            <t t-if="property.status == 'sold'">
+                <div class="mb-1">
+                    <h2>!!!Invoice has already been created!!!</h2>
+                </div>
+            </t>
+        </xpath>
+    </template>
 </odoo>

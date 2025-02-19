@@ -2,7 +2,7 @@
 <odoo>
     <record id='estate_property_data_1' model="estate.property">
         <field name="name">Big Villa</field>
-        <field name="status">new</field>
+        <field name="status">offer_received</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
         <field name="date_availability">2020-02-02</field>

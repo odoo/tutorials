@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="report_estate_property" model="ir.actions.report">
         <field name="name">Estate Property Report</field>
         <field name="model">estate.property</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">estate.estate_property_report</field>
         <field name="report_file">estate.estate_property_report</field>
-        <field name="print_report_name">'Estate Property - %s' % (object.name or 'Attendee').replace('/','')</field>
+        <field name="print_report_name">'Estate Property - {}'.format(object.name or 'Attendee').replace('/','')</field>
         <field name="binding_model_id" ref="model_estate_property"/>
         <field name="binding_type">report</field>
     </record>
@@ -17,7 +16,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">estate.estate_property_offer_report</field>
         <field name="report_file">estate.estate_property_offer_report</field>
-        <field name="print_report_name">'Estate Property Offer - %s' % (object.name or 'Attendee').replace('/','')</field>
+        <field name="print_report_name">'Estate Property Offer - {}'.format(object.name or 'Attendee').replace('/','')</field>
         <field name="binding_model_id" ref="model_estate_property_offer"/>
         <field name="binding_type">report</field>
     </record>
@@ -27,7 +26,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">estate.user_estate_property_report</field>
         <field name="report_file">estate.user_estate_property_report</field>
-        <field name="print_report_name">'User Estate Property</field>
+        <field name="print_report_name">'User Estate Property - {}'.format(object.name or 'Attendee').replace('/','')</field>
         <field name="binding_model_id" ref="model_res_users"/>
         <field name="binding_type">report</field>
     </record>

@@ -64,6 +64,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id")
     total_area = fields.Float(compute="_compute_area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+    image = fields.Image()
 
     @api.depends("living_area", "garden_area")
     def _compute_area(self):
@@ -95,7 +96,11 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status == "cancelled":
                 raise UserError("cancelled properties cannot be sold!")
-            record.status = "sold"
+            if record.offer_ids:
+                for offer in record.offer_ids:
+                    if offer.status == 'accepted':
+                        record.status = "sold"
+            raise UserError("You cannot sold properties which don't have any accepted offers")
 
     def action_cancelled(self):
         for record in self:

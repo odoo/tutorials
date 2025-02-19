@@ -46,6 +46,7 @@
                     <group>
                         <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
                     </group>
+                    
                 </search>
             </field>
         </record>
@@ -63,11 +64,9 @@
                         <h1>
                             <field name="name" class="oe_title"/>
                         </h1>
-                        <group>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                        </group>
-                        <group>
+                        <group col="3">
                             <group>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 <field name="property_type_id" options="{'no_create':true}"/>
                                 <field name="postcode"/>
                                 <field name="expected_price"/>
@@ -77,6 +76,9 @@
                                 <field name="selling_price"/>
                                 <field name="total_area"/>
                                 <field name="best_price"/>
+                            </group>
+                            <group>
+                               <field name="image" widget="image" string="" style="max-width: 120px; max-height: 120px;"/>
                             </group>
                         </group>
                         <notebook>

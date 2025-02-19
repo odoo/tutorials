@@ -12,7 +12,12 @@
                         <th class="text-center">State</th>
                     </tr>
                 </thead>
-                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                <t t-if="property">
+                    <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                </t>
+                <t t-else="">
+                    <t t-set="offers" t-value="[]"/>
+                </t>
                 <t t-if="offers">
                     <tbody>
                         <t t-foreach="offers" t-as="offer">
