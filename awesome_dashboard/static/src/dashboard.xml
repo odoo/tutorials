@@ -1,8 +1,47 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="display">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-secondary" t-on-click="openLeads">Leads</button>
+            </t>
+            <t t-set-slot="default">
+                <!-- <div class="d-flex flex-wrap">
+                    <DashboardItem size="2">
+                        <p>Large Card (Size 2)</p>
+                    </DashboardItem>
+                    <DashboardItem>
+                        <p>Small Card</p>
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        <p>Large Card (Size 2)</p>
+                    </DashboardItem>
+                </div> -->
+                <!-- <div class="d-flex flex-wrap">
+                    <t t-foreach="statistics" t-as="stat" t-key="stat.label">
+                          <DashboardItem size="2">
+                               <strong><t t-esc="stat.label" /></strong>
+                               <p><t t-esc="stat.value" /></p>
+                          </DashboardItem>
+                    </t>
+                </div> -->
+                <div class="d-flex flex-wrap p-4">
+                    <t t-foreach="Object.entries(statistics.data)" t-as="stat" t-key="stat[0]">
+                        <DashboardItem size="1">
+                            <div class="text-center">
+                                <h5 class="text-muted"><t t-esc="stat[0]"/></h5> 
+                                <h3 class="fw-bold"><t t-esc="stat[1]"/></h3> 
+                            </div>
+                        </DashboardItem>
+                    </t>
+                </div>
+                 <div>
+                     <DashboardItem>
+                         <PieChart t-if="statistics.data.orders_by_size" data="statistics.data.orders_by_size"/>
+                     </DashboardItem>
+                 </div>
+            </t>
+        </Layout>
     </t>
-
 </templates>

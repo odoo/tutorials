@@ -125,7 +125,7 @@ class estateProperty(models.Model):
             if property.state == "cancelled":
                 raise UserError("A cancelled property cannot be set as sold.")
             property.state = "sold"
-            message = "Property {} has been sold to ' {} '".format(property.name,property.buyer_id.name)
+            message = "Property {} has been sold to ' {}'".format(property.name,property.buyer_id.name)
             property.message_post(body=message)
 
     @api.constrains("selling_price", "expected_price")
