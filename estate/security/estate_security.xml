@@ -4,7 +4,6 @@
     <record id="estate_group_user" model="res.groups">
         <field name="name">Agent</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage" />
-        <!-- <field name="implied_ids" eval="[(4,ref('base.group_user'))]" /> -->
     </record>
 
     <record id="estate_group_manager" model="res.groups">
@@ -15,7 +14,7 @@
     </record>
 
     <record id="estate_group_user_estate_property" model="ir.rule">
-        <field name="name">Agent's can't see other agent's properties.</field>
+        <field name="name">Agent's can't see other agent's or other company's properties.</field>
         <field name="model_id" ref="model_estate_property" />
         <field name="groups" eval="[(4,ref('estate_group_user'))]" />
         <field name="domain_force">

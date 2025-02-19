@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo noupdate="1">
 
     <record id="demo_property_1" model="estate.property">
         <field name="name">Big Villa</field>
@@ -31,6 +31,21 @@
         <field name="living_area">10</field>
         <field name="facades">4</field>
         <field name="garage">False</field>
+    </record>
+
+    <record id="demo_property_3" model="estate.property">
+        <field name="name">Houzon</field>
+        <field name="expected_price">500000</field>
+        <field name="offer_ids" eval="[
+            Command.create({
+                'price': 9999,
+                'partner_id': ref('base.res_partner_12')
+            }),
+            Command.create({
+                'price': 777777,
+                'partner_id': ref('base.res_partner_2')
+            })
+        ]" />
     </record>
 
 </odoo>
