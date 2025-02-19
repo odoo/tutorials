@@ -1,6 +1,6 @@
 from odoo import fields, models, api,exceptions
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -43,8 +43,8 @@ class EstatePropertyOffer(models.Model):
             self.property_id.offer_ids.status = 'refused'
             self.property_id.state="offer_accepted"
             self.status = "accepted"
-            self.property_id.buyer_id = record.partner_id
-            self.property_id.selling_price = record.price
+            self.property_id.buyer_id = self.partner_id
+            self.property_id.selling_price = self.price
             return True
 
     def action_cancel(self):
@@ -55,6 +55,8 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property = self.env['estate.property'].browse(vals.get("property_id"))
+            if(property.state == 'sold'):
+                raise UserError("Cannot create offer for sold properties.")
             price = vals.get("price")
             existing_offers = self.search([("property_id", "=", property.id)])
             max_offer = max(existing_offers.mapped("price"), default=0)

@@ -1,4 +1,4 @@
- <odoo>
+<odoo>
     <record id="property_type_residential" model="estate.property.type">
         <field name="name">Residential</field>
     </record>

@@ -85,4 +85,50 @@
         Command.link(ref('offer3'))
     ]" />
   </record>
+
+  <record id="cabin" model="estate.property">
+    <field name="name">Cozy Cabin</field>
+    <field name="state">sold</field>
+    <field name="description">Small cabin by lake</field>
+    <field name="postcode">10000</field>
+    <field name="date_availability">2020-01-01</field>
+    <field name="expected_price">80000</field>
+    <field name="bedrooms">1</field>
+    <field name="living_area">10</field>
+    <field name="facades">4</field>
+    <field name="garage">False</field>
+    <field name="garden">True</field>
+    <field name="property_type_id" ref="property_residential" />
+    <field name="user_id" ref="base.user_admin" />
+  </record>
+
+  <record id="prop1" model="estate.property">
+    <field name="name">Recieved 1</field>
+    <field name="state">offer_received</field>
+    <field name="description">Small cabin by lake</field>
+    <field name="postcode">10000</field>
+    <field name="date_availability">2020-01-01</field>
+    <field name="expected_price">80000</field>
+    <field name="bedrooms">1</field>
+    <field name="living_area">10</field>
+    <field name="facades">4</field>
+    <field name="garage">False</field>
+    <field name="garden">True</field>
+    <field name="property_type_id" ref="property_residential" />
+    <field name="user_id" ref="base.user_admin" />
+  </record>
+
+  <record id="soldo1" model="estate.property.offer">
+    <field name="partner_id" ref="base.res_partner_12" />
+    <field name="property_id" ref="cabin" />
+    <field name="price">10000</field>
+    <field name="validity">14</field>
+  </record>
+
+  <record id="soldo2" model="estate.property.offer">
+    <field name="partner_id" ref="base.res_partner_10" />
+    <field name="property_id" ref="cabin" />
+    <field name="price">10000</field>
+    <field name="validity">14</field>
+  </record>
 </odoo>

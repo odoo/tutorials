@@ -88,8 +88,9 @@ class Property_Plan(models.Model):
     def action_set_sold(self):
             if(self.state == 'cancelled'):
                 raise exceptions.UserError("Canceled properties can't be sold")
-            else:
-                self.state = 'sold'
+            elif(self.state != 'offer_accepted'):
+                raise UserError("Cannot sell property without an accepted offer.")
+            self.state = 'sold'
             return True
     
     @api.ondelete(at_uninstall=False)
@@ -97,3 +98,4 @@ class Property_Plan(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError("You can only delete properties in 'New' or 'Cancelled' state.")
+ 

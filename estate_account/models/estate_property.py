@@ -1,11 +1,14 @@
 from odoo import models,Command
+from odoo import fields
+from odoo.exceptions import ValidationError,UserError
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
-
+    state = fields.Selection(selection_add=[('invoiced', 'Invoiced')])
+    
     def action_set_sold(self):
-        print(" reached ".center(100, '='))
-        self.check_access('write')
+        super().action_set_sold()
+        self.state = 'invoiced'
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,  
             'move_type': 'out_invoice',
@@ -27,4 +30,3 @@ class EstateProperty(models.Model):
         })
         ]
         })
-        return super().action_set_sold()

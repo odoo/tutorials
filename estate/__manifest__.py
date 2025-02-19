@@ -10,10 +10,15 @@
         'views/estate_menus.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
-        'data/master_data.xml'
+        'data/master_data.xml',
+        'report/estate_report_views.xml',
+        'report/estate_reports.xml'
     ],
     "demo": [
         "demo/estate_demo.xml"
+    ],
+    'test': [
+        'tests/test_estate',  
     ],
     'category':'Real Estate/Brokerage',
     'license': 'LGPL-3'  
