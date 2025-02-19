@@ -2,26 +2,86 @@
     <template id="properties_page" name="Properties Page">
         <t t-call="website.layout">
             <div class="container mt-5">
-                <h1>Available Properties</h1>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1>Available Properties</h1>
+                    <!-- Search Bar -->
+                    <div class="col-md-4">
+                        <form t-action="/properties" method="GET" class="d-flex">
+                            <input type="text" name="search" class="form-control" placeholder="Search Property" />
+                            <button class="btn btn-outline-success ms-2" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
                 <div class="row">
+                    <!-- Date Filter -->
+                     <div class="row align-items-end justify-content-between my-3">
+                        <div class="col-md-6 col-lg-4">
+                            <form t-action="/properties" method="GET">
+                                <div class="input-group">
+                                    <input type="date" id="listed_after" name="listed_after" class="form-control" t-att-value="listed_after"/>
+                                    <button type="submit" class="btn btn-primary">Listed After</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     <!-- Loop through properties and display each one as a card -->
                     <t t-foreach="properties" t-as="pro">
                         <div class="col-md-4 mb-4">
-                            <div class="card shadow-sm">
-                                <img t-att-src="'/web/image/estate.property/' + str(pro.id) + '/image_1920'" 
-                                     class="card-img-top" alt="Property Image"/>
-                                <div class="card-body">
-                                    <h5 class="card-title" t-esc="pro.name"/>
+                            <div class="card shadow-sm" style="width: 100%; ">
+                                <img t-att-src="'/web/image/estate.property/%s/property_image' % pro.id"
+                                    class="card-img-top" alt="Property Image"
+                                    style="height: 200px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;" />
+                                <div class="card-body" style="padding: 15px;">
+                                    <h5 class="card-title" t-esc="pro.name" />
                                     <p class="card-text">
-                                        <strong>Status:</strong> <t t-esc="pro.state"/>
+                                        <strong>Status:</strong>
+                                        <t t-esc="pro.state" />
                                     </p>
-                                    <a t-att-href="'/properties/' + str(pro.id)" class="btn btn-primary">
+                                    <a t-att-href="'/property/' + str(pro.id)"
+                                        class="btn btn-primary"
+                                        style="width: 100%; border-radius: 5px;">
                                         View Details
                                     </a>
                                 </div>
                             </div>
+
                         </div>
                     </t>
+                </div>
+
+                <!-- Pager -->
+                <div class='navbar mb-3 w-100'>
+                    <t t-call="website.pager">
+                        <t t-set="classname" t-valuef="mx-auto" />
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_detail" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container my-5">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Property Image -->
+                        <img t-att-src="'/web/image/estate.property/%s/property_image' % property.id" 
+                            class="img-fluid rounded" alt="Property Image" />
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Property Details -->
+                        <h2 t-esc="property.name" class="mb-3"></h2>
+                        <p><strong>Price:</strong> <span t-esc="property.expected_price" class="text-success"></span></p>
+                        <p><strong>Description:</strong> <span t-esc="property.description" class="text-muted"></span></p>
+                        <p><strong>Location:</strong> <span t-esc="property.postcode"></span></p>
+                        <p><strong>Bedrooms:</strong> <span t-esc="property.bedrooms"></span></p>
+                        <p><strong>Living Area:</strong> <span t-esc="property.living_area"></span> m²</p>
+                        <p><strong>Status:</strong> <span t-esc="property.state"></span></p>
+                    </div>
                 </div>
             </div>
         </t>

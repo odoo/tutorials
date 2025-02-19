@@ -58,4 +58,74 @@
         ]"/>
     </record>
 
+    <record id="property_pm_home" model="estate.property">
+        <field name="name">PM Home</field>
+        <field name="state">new</field>
+        <field name="description">Home in a PM park</field>
+        <field name="postcode">4342</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+    </record>
+
+    <record id="property_p1_home" model="estate.property">
+        <field name="name">P1 Home</field>
+        <field name="state">new</field>
+        <field name="description">Home in a Hospital road</field>
+        <field name="postcode">424364</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">110000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+    </record>    
+
+    <record id="property_p2_home" model="estate.property">
+        <field name="name">P2 Home</field>
+        <field name="state">new</field>
+        <field name="description">Home in a P2 park</field>
+        <field name="postcode">75765</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">130000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+    </record>    
+
+    <record id="property_p3_home" model="estate.property">
+        <field name="name">P3 Home</field>
+        <field name="state">new</field>
+        <field name="description">Home in a P3 park</field>
+        <field name="postcode">78763</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">150000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+    </record>    
+
+    <record id="property_p4_home" model="estate.property">
+        <field name="name">P4 Home</field>
+        <field name="state">new</field>
+        <field name="description">Home in a P4 park</field>
+        <field name="postcode">423235</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">170000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+    </record>
+
 </odoo>

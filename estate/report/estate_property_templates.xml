@@ -56,7 +56,9 @@
                             <div>
                                 <strong>Status: </strong>
                                 <span t-field="property.state"/>
+                                
                             </div>
+                             
                             <br/>
                             <t t-call="estate.subtemplate_property_offers"/>
                         </div>

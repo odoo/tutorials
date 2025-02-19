@@ -135,6 +135,12 @@ class EstateProperty(models.Model):
             raise UserError("You cannot sell a property without an accepted offer.")
 
         self.state = "sold"
+
+        # Send email notification
+        template = self.env.ref("estate.email_template_property_sold")
+        if template:
+            template.send_mail(self.id, force_send=True, email_layout_xmlid='mail.mail_notification_light')
+
         return True
 
     def action_set_cancelled(self):
