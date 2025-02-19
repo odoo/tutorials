@@ -79,11 +79,15 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         for record in self:
-            if record.status not in ["offer accepted"]:
-                raise UserError("You cannot sell a property that is not in 'Offer Accepted' state")
-            if record.status == 'cancelled':
-                raise UserError("A cancelled property cannot be set as sold.")
+            if record.status == "cancelled":
+                raise UserError(("A cancelled property cannot be sold!"))
+
+            accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
+            if not accepted_offer:
+                raise UserError(("You need to accept an offer first!"))
+
             record.status = 'sold'
+        return True
 
     def action_cancel(self):
         for record in self:

@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -51,8 +51,15 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         for record in self:
+            if record.property_id.status == 'sold':
+                raise UserError(_("You cannot refuse an offer after the property is sold."))
             record.status = "refused"
-            record.property_id.status = "new"
+            remaining_offers = self.search([
+            ('property_id', '=', record.property_id.id),
+            ('status', '!=', 'refused')
+                ])
+            if not remaining_offers:
+                record.property_id.status = "new"
 
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
