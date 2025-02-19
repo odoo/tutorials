@@ -14,10 +14,11 @@ class EstateProperty(models.Model):
         ('check_expected_price','CHECK(expected_price > 0)', 'The expected price must be strictly positive!'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive!')
     ]
+    _inherit = "mail.thread"
 
 
     # ..................fields attributes..................
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Date Availability", default=lambda self: fields.Date.add(fields.Date.today(), months=3))

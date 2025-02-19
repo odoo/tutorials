@@ -39,6 +39,7 @@
                     <button name="action_sold" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
                     <button name="action_cancel" type="object" string="Cancel"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <button name="%(estate.action_estate_property_report)d" type="action" string="Print" class="btn-primary" invisible="state != 'sold'" target="new"/>
                 </header>
                 <sheet>
                     <h1>
@@ -84,6 +85,7 @@
                         </notebook>
                     </group>
                 </sheet>
+                <chatter open_attachments="True"/>
             </form>
         </field>
     </record>

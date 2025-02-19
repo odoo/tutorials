@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
     <record id="menu_properties" model="website.menu">
@@ -80,7 +81,7 @@
                             <p><b>Bedrooms:</b> <span t-esc="property.bedrooms"/></p>
                             <p><b>Living Area:</b> <span t-esc="property.living_area"/> sqm</p>
                             <p><b>Garden:</b> <span t-esc="'Yes' if property.garden else 'No'"/></p>
-                            <p><b>State:</b> <span class="badge badge-info" t-esc="property.state"/></p>
+                            <p><b>State:</b> <span class="badge" t-esc="property.state"/></p>
                         </div>
                     </div>
 
