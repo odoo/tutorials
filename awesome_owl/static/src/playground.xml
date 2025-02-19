@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 	<t t-name="awesome_owl.playground">
-		<div class="d-flex align-items-center">
-			<p class="m-0">Hello World</p>
-			<Counter />
-			<Counter />
+		<div>
+			<div class="d-flex align-items-center">
+				<p class="m-0">
+					Hello World
+				</p>
+				<Counter IncrementSum="incrementSum" />
+				<Counter IncrementSum="incrementSum" />
+			</div>
+			The Sum is :
+			<t t-esc="state.sum" />
 		</div>
-		<Card title="'card 1'" content="'content of card 1'" />
-		<Card title="'card 2'" content="this.html_markup" />
+		<div>
+			<Card title="'card 1'">
+				<Counter IncrementSum="incrementSum" />
+			</Card>
+			<Card title="'card 2'">
+				<t t-out="this.html_markup" />
+			</Card>
+		</div>
+		<TodoList />
 	</t>
 </templates>

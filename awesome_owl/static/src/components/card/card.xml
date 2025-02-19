@@ -5,9 +5,16 @@
 			<div class="card-body">
 				<h5 class="card-title">
 					<t t-out="props.title" />
+					<button class="btn btn-primary ms-2" t-on-click="toggleContent">
+						Toggle
+					</button>
 				</h5>
 				<p class="card-text">
-					<t t-out="props.content" />
+					<t t-if="this.state.isOpen" t-slot="default">
+						<p>
+							No content provided
+						</p>
+					</t>
 				</p>
 			</div>
 		</div>
