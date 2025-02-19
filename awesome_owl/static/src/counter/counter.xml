@@ -3,7 +3,7 @@
     <t t-name="awesome_owl.counter">
         <div class="card d-inline-block m-2 p-4" style="width: fit-content;">
             <p>Counter: <t t-esc="state.value"/> </p>
-            <button class="btn bg-info" t-on-click="increment">COUNT</button>
+            <button class="btn bg-info" t-on-click="increment">Increment</button>
         </div>
     </t>
 </templates>

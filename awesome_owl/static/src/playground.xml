@@ -2,8 +2,11 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
         <h1 class="mt-2 ms-2">Hello World</h1>
-        <Counter />
-        <Counter />
+        <div class="card d-inline-block ms-2 p-3">
+            <Counter onChange.bind="totalsum" />
+            <Counter onChange.bind="totalsum" />
+            <div class="font-weight-bold text-center">Total Count --- <t t-esc="sum.value"/> </div>
+        </div>
         <Card title="'Title of Card 1'" content="str1" />
         <Card title="'Title of Card 2'" content="'Content of the card 2'" />
         <Card title="'Title of Card 3'" content="'Content of the card 3'" />
