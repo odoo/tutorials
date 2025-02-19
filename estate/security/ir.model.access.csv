@@ -10,3 +10,6 @@ access_estate_property_tag,access_estate_property_tag,model_estate_property_tag,
 
 access_estate_property_offer_manager,access_estate_property_offer,model_estate_property_offer,estate_group_manager,1,1,1,1
 access_estate_property_offer,access_estate_property_offer,model_estate_property_offer,estate_group_user,1,1,1,1
+
+estate.access_offer_wizard_manager,access_offer_wizard,estate.model_offer_wizard,estate_group_manager,1,1,1,1
+estate.access_offer_wizard,access_offer_wizard,estate.model_offer_wizard,estate_group_user,1,1,1,1

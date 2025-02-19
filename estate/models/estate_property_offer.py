@@ -18,11 +18,11 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one("estate.property.type",string="Property Type",related="property_id.property_type_id",store=True )
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline",store=True ) 
     validity = fields.Integer(default=7)
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('accepted', 'Accepted'),
-        ('refused', 'Refused'),
-    ], default='draft', string='Status')
+    # state = fields.Selection([
+    #     ('draft', 'Draft'),
+    #     ('accepted', 'Accepted'),
+    #     ('refused', 'Refused'),
+    # ], default='draft', string='Status')
 
     _sql_constraints = [('check_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.')]
 
@@ -63,8 +63,10 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             property = self.env['estate.property'].browse(vals['property_id'])
 
-            if property.state == 'sold':
-                raise UserError("Cannot create an offer for a sold property.")
+            if property.state in ['sold' , 'cancelled']:
+                raise UserError("Cannot create an offer for a sold or cancelled property.")
+            if property.state == 'offer_accepted':
+                raise UserError("Cannot create an offer for property with received offer")
 
             if property and property.best_offer:
                 if vals['price'] < property.best_offer:

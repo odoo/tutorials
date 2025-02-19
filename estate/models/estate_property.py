@@ -42,6 +42,7 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area",string="Total Area")
     best_offer = fields.Float(compute="_compute_best_offer", store=True)
     company_id = fields.Many2one("res.company", string="Company Id", default = lambda self:self.env.company, required=True)
+    image = fields.Binary(attachment=True)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -66,7 +67,7 @@ class EstateProperty(models.Model):
         for record in self:
             if not record.offer_ids:
                 raise UserError("No offers available to accept!")
-            accepted_offer = record.offer_ids.filtered(lambda o: o.state == 'accepted')
+            accepted_offer = record.offer_ids.filtered(lambda o: o.property_id.state == 'accepted')
             if not accepted_offer:
                 raise UserError("Accept an offer first!")
             record.state = "sold"
@@ -96,4 +97,14 @@ class EstateProperty(models.Model):
 
     def _group_expand_states(self, states, domain):
         return [state[0] for state in self._fields['state'].selection]
+    
+    def action_open_add_offer_wizard(self):
+        return {
+            'name': 'Add Offer',
+            'type': 'ir.actions.act_window',
+            'res_model': 'offer.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_property_ids': [(6, 0, self.ids)]}
+        }
         

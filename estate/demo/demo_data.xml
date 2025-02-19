@@ -13,6 +13,7 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
+            <field name="image" type="base64" file="estate/static/img/big_villa.jpg"/>
             <field name="property_type_id" ref="property_type_residential"/>
         </record>
 
@@ -31,6 +32,7 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
+            <field name="image" type="base64" file="estate/static/img/trailer_home.jpg"/>
             <field name="property_type_id" ref="property_type_residential"/>
         </record>
         
@@ -48,7 +50,8 @@
             <field name="garden">False</field>
             <field name="garden_area">0</field>
             <field name="garden_orientation">south</field>
-             <field name="offer_ids" eval="[
+            <field name="image" type="base64" file="estate/static/img/seaside_villa.jpg"/>
+            <field name="offer_ids" eval="[
                 Command.create({
                 'price': 1600000,
                 'partner_id': ref('base.res_partner_1'),
@@ -81,6 +84,7 @@
             <field name="garden">True</field>
             <field name="garden_area">500</field>
             <field name="garden_orientation">north</field>
+            <field name="image" type="base64" file="estate/static/img/mountain_cabin.jpg"/>
             <field name="offer_ids" eval="[
                 Command.create({'price': 280000, 'partner_id': ref('base.res_partner_1'), 'validity': 20}),
                 Command.create({'price': 290000, 'partner_id': ref('base.res_partner_2'), 'validity': 30})
@@ -89,7 +93,7 @@
 
         <record id="estate_property_sold" model="estate.property">
             <field name="name">Downtown Apartment</field>
-            <field name="state">offer_accepted</field>
+            <field name="state">offer_received</field>
             <field name="description">A modern apartment in the city center</field>
             <field name="postcode">13579</field>
             <field name="date_availability">2024-01-01</field>
@@ -102,6 +106,7 @@
             <field name="garden">False</field>
             <field name="garden_area">0</field>
             <field name="garden_orientation">east</field>
+            <field name="image" type="base64" file="estate/static/img/downtown_img.jpg"/>
             <field name="offer_ids" eval="[
                 Command.create({'price': 470000, 'partner_id': ref('base.res_partner_1'), 'validity': 15}),
                 Command.create({'price': 480000, 'partner_id': ref('base.res_partner_3'), 'validity': 25})

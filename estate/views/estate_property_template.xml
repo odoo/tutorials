@@ -1,0 +1,94 @@
+<odoo>
+    <template id="estate.property_listing" name="Property Listing">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h2 class="mb-4 text-center">Available Properties</h2>
+
+                <form method="GET" action="/properties" class="d-flex flex-wrap align-items-center gap-2 w-75 mb-3">
+                    <div class="flex-grow-1 order-1">
+                        <input type="text" id="search_property" name="search_property" placeholder="Search property" class="form-control"/>
+                    </div>
+                    <div class="flex-grow-1 order-2">
+                        <input type="date" id="listed_after" name="listed_after" class="form-control"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary order-3">Listed After</button>
+                </form>
+
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+                                    <img t-if="property.image" t-att-src="'data:image/png;base64,' + property.image.decode()" class="card-img-top" alt="Property Image"/>
+                                    <div class="card-body">
+                                        <h5 class="card-title" t-esc="property.name"></h5>
+                                        <p class="text-primary"><t t-esc="property.description"/></p>
+                                        <a t-attf-href="/properties/{{ property.id }}" class="btn btn-secondary mt-3">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination mt-4">
+                    <t t-if="total_pages > 1">
+                        <ul class="pagination justify-content-center">
+                            <li t-if="current_page > 1" class="page-item">
+                                <a t-att-href="'/properties?page=%d' % (current_page - 1)" class="page-link">Previous</a>
+                            </li>
+                            <t t-foreach="range(1, total_pages+1)" t-as="page_num">
+                                <li class="page-item" t-att-class="'active' if page_num == current_page else ''">
+                                    <a t-att-href="'/properties?page=%d' % page_num" class="page-link"><t t-esc="page_num"/></a>
+                                </li>
+                            </t>
+                            <li t-if="current_page &lt; total_pages" class="page-item">
+                                <a t-att-href="'/properties?page=%d' % (current_page + 1)" class="page-link">Next</a>
+                            </li>
+                        </ul>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Detailed View -->
+    <template id="estate.property_detail" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card shadow-lg p-4">
+                    <div
+                        class="row">
+                        <!-- Left Section: Image -->
+                        <div class="col-md-6">
+                            <img t-if="property.image" t-att-src="'data:image/png;base64,' + property.image.decode()" class="img-fluid rounded shadow" alt="Property Image"/>
+                        </div>
+
+                        <!-- Right Section: Property Info -->
+                        <div class="col-md-6">
+                            <h2 class="text-primary"><t t-esc="property.name"/></h2>
+                            <p>
+                                <strong>Description:</strong><t t-esc="property.description"/></p>
+                            <h4 class="text-success">₹
+                                <t t-esc="property.expected_price"/></h4>
+                            <!-- <p><strong>Location:</strong> <t t-esc="property.location"/></p> -->
+                            <p>
+                                <strong>Size:</strong>
+                                <t t-esc="property.living_area"/>
+                                sqft</p>
+                            <p>
+                                <strong>Bedrooms:</strong>
+                                <t t-esc="property.bedrooms"/></p>
+                            <!-- <strong>Baths:</strong> <t t-esc="property.baths"/> -->
+                            <!-- <strong>Balconies:</strong> <t t-esc="property.balconies"/></p> -->
+                            <!-- <p><strong>Furnished:</strong> <t t-esc="property.furnishing"/></p> -->
+                            <!-- <p><strong>Status:</strong> <t t-esc="property.status"/></p> -->
+                                <a href="/properties" class="btn btn-secondary mt-3"> Back to Listings</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
