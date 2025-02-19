@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_template">
+        <div class="card p-2 mb-2 shadow-sm">
+            <strong class="text-primary">ID: <t t-esc="props.todo.id"/></strong>
+            <p class="text-dark">Task: <t t-esc="props.todo.description"/></p>
+        </div>
+    </t>
+
+    <t t-name="awesome_owl.todolist_template">
+        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+            <TodoItem t-props="todo"/>
+        </t>
+    </t>
+</templates>
