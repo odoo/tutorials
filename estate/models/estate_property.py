@@ -26,7 +26,12 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer('Garden Area')
     garden_orientation = fields.Selection(
         string='Garden Orientation',
-        selection=[('north', 'North'), ('west', 'West'), ('south', 'South'), ('east', 'East')]
+        selection=[
+            ('north', 'North'),
+            ('west', 'West'),
+            ('south', 'South'),
+            ('east', 'East'),
+        ]
     )
     total_area = fields.Integer('Total Area', compute='_compute_total_area', readonly=True)
     state = fields.Selection(
@@ -35,7 +40,7 @@ class EstateProperty(models.Model):
             ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
-            ('cancelled', 'Cancelled')
+            ('cancelled', 'Cancelled'),
         ],
         default='new',
     )
