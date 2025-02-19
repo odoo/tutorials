@@ -5,32 +5,45 @@
 """
 
 from odoo import models, fields
-from .constants import (
-    PROPERTY_ORM_NAME,
-    PROPERTY_ORM_DESC,
-    PROPERTY_DEFAULT_GARAGE,
-    PROPERTY_DEFAULT_GARDEN,
-    PROPERTY_DEFAULT_GARDEN_ORIENTATION_SELECTION,
-    PROPERTY_GARDEN_ORIENTATION_SELECTION,
-    PROPERTY_UI_GARDEN_ORIENTATION_SELECTION,
-)
+from datetime import datetime, timedelta
+
 
 class Property(models.Model):
-    _name = PROPERTY_ORM_NAME 
-    _description = PROPERTY_ORM_DESC
+    _name = 'estate_property' 
+    _description = 'estate property model'
 
     postcode = fields.Char(required=True)
-    date_availability = fields.Date(required=True)
+    date_availability = fields.Date(required=True, 
+                                    copy=False, 
+                                    default=lambda self: (datetime.now() + timedelta(days=3*30)))
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(required=True)
-    bedrooms = fields.Integer(required=True) 
+    selling_price = fields.Float(required=True, default=0, readonly=True, copy=False)
+    bedrooms = fields.Integer(required=True, default=2) 
     living_area = fields.Integer(required=True)
     facades = fields.Integer(required=True)
-    garage = fields.Boolean(required=False, default=PROPERTY_DEFAULT_GARAGE)
-    garden = fields.Boolean(required=False, default=PROPERTY_DEFAULT_GARDEN)
+    garage = fields.Boolean(required=False, default=False)
+    garden = fields.Boolean(required=False, default=False)
     garden_area = fields.Integer(required=True)
     garden_orientation = fields.Selection(
-        selection=PROPERTY_GARDEN_ORIENTATION_SELECTION,
-        string=PROPERTY_UI_GARDEN_ORIENTATION_SELECTION,
-        default=PROPERTY_DEFAULT_GARDEN_ORIENTATION_SELECTION,
+        selection=[
+            ('north', 'North'), 
+            ('south', 'South'), 
+            ('east', 'East'), 
+            ('west', 'West'),
+        ],
+        string='Garden Orientation',
+        default='north',
     )
+    name = fields.Char(default='Uknown')
+    last_seen = fields.Datetime('Last seen', default=fields.Datetime.now)
+    state = fields.Selection(
+        selection=[
+                ('New', 'new'),
+                ('Offer Received', 'offer_received'),
+                ('Offer Accepted', 'offer_accepted'),
+                ('Sold', 'sold'),
+                ('Cancelled', 'cancelled')],
+        default="New",
+        string="state",
+    )
+    active = fields.Boolean(default=True)

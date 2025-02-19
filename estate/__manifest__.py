@@ -5,6 +5,8 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
+        'views/estate_menus.xml',
     ],
     'icon': '/estate/static/real_estate.png',
     'installable': True,
