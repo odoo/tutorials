@@ -6,7 +6,7 @@ from odoo.exceptions import UserError
 
 class estateProperty(models.Model):
     _name = "estate.property"
-    _description = "Real Estate Property"
+    _des5iption = "Real Estate Property"
     _order="id desc"
     _inherit = ["mail.thread"]
 
@@ -15,6 +15,7 @@ class estateProperty(models.Model):
     name = fields.Char(string="Property name", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
+    image = fields.Image("Property Image") 
     date_availability = fields.Date(
         string="Availability Date",
         default=lambda self: fields.Date.today() + relativedelta(months=3)  
@@ -77,6 +78,14 @@ class estateProperty(models.Model):
     ("check_selling_price", "CHECK(selling_price >= 0 OR selling_price IS NULL)", "The selling price must be positive."),
     ]
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        created_property = super().create(vals_list)
+        for record in created_property:
+            message = "{} created a property named ' {} '".format(self.env.user.name, record.name)
+            record.message_post(body=message)
+        return created_property
+
     @api.depends("living_area", "garden_area")
     def compute_total_area(self):
         for record in self:
@@ -123,16 +132,12 @@ class estateProperty(models.Model):
         return True
 
     def action_set_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled properties cannot be sold.")
-
-            accepted_offers = record.offer_ids.filtered(lambda o: o.state == "accepted")
-            if not accepted_offers:
-                raise UserError("You cannot sell a property without an accepted offer.")
-
-            record.state = "sold"
-        return True
+        for property in self:
+            if property.state == "cancelled":
+                raise UserError("A cancelled property cannot be set as sold.")
+            property.state = "sold"
+            message = "Property {} has been sold to ' {} '".format(property.name,property.buyer_id.name)
+            property.message_post(body=message)
 
 
     

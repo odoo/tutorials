@@ -6,16 +6,20 @@
     'category': 'Real Estate/Brokerage',
     'depends': [
         'base',
-        'mail'
+        'mail',
+        'website'
     ],
     'data':[
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/website_menu.xml',
         'data/estate_property_type.xml',
         'report/estate_property_reports.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_subtemplate.xml',
         'report/estate_property_user_template.xml',
+        'wizard/estate_property_offer_wizard.xml',
+        'views/estate_property_template.xml',
         'views/res_users_views.xml',
         'views/estate_property_offer.xml',
         'views/estate_property_type_view.xml',

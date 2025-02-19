@@ -6,7 +6,9 @@
             hello world
             <Counter onchange.bind="incrementSum"/>
             <Counter onchange.bind="incrementSum"/>
-            <div> the sum is: <t t-esc="sum.value"/></div>
+            <div class="mt-3 font-weight-bold text-dark">
+                    The sum is: <t t-esc="sum.value"/>
+                </div>
         </div>
         <div class="card-body">
             <!-- <Card title="'Card 1'" content="str1"/>

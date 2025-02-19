@@ -11,3 +11,5 @@ access_estate_property_tag_manager,Access Estate Property Tag Manager,model_esta
 access_estate_property_tag_user,Access Estate Property Tag User,model_estate_property_tag,estate.estate_group_user,1,1,1,0
 access_estate_property_offer_manager,Access Estate Property Offer Manager,model_estate_property_offer,estate.estate_group_manager,1,1,1,0
 access_estate_property_offer_user,Access Estate Property Offer User,model_estate_property_offer,estate.estate_group_user,1,1,1,0
+access_estate_property_offer_wizard,estate.property.offer.wizard,model_estate_property_offer_wizard,,1,1,1,1
+access_estate_property_add_offer,access_estate_property_add_offer,estate.model_estate_property_offer_wizard,estate.estate_group_user,1,1,1,0

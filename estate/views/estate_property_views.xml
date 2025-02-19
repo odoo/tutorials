@@ -25,6 +25,9 @@
                 <field name="selling_price" string="Selling Price" />
                 <field name="bedrooms" string="Bedrooms" />
                 <field name="living_area" string="Living Area" />
+                 <header>
+                    <button name="%(action_estate_property_offer_wizard)d" string="Add Offer" type="action" class="btn-primary"/>
+                </header>
             </list>
         </field>
     </record>
@@ -38,9 +41,9 @@
             <form string="Property Form">
                 <header>
                     <button name="action_cancel_property" string="Cancel" type="object"
-                        invisible="state != 'offer_accepted'" />
+                        invisible="state in ['sold','cancelled']" />
                     <button name="action_set_sold" string="Sold" type="object"
-                        invisible="state not in ['new','offer_received']" />
+                        invisible="state in ['sold','cancelled']" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
@@ -57,6 +60,7 @@
                         <group class="mb32">
                             <!-- <field name"partner_id" class="w-50" /> -->
                             <field string="State" name="state" />
+                            <field string="image" name="image" widget="image"/>
                             <field name="property_type_id" string="property_type" />
                             <field name="tag_ids" string="propert tag" widget="many2many_tags"
                                 options="{'color_field': 'color'}" />

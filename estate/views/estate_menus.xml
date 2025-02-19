@@ -1,6 +1,6 @@
 <odoo>
     <!-- Root menu -->
-    <menuitem id="estate_menu_root" name="Real Estate" sequence="1"/>
+    <menuitem id="estate_menu_root" name="Real Estate" sequence="1" web_icon="estate,static/description/realestate.png"/>
 
     <!-- First-level menu -->
     <menuitem id="estate_first_level_menu_action" name="Properties" parent="estate_menu_root" sequence="1"/>
@@ -10,7 +10,7 @@
     <menuitem id="estate_property_menu_action" name="Properties List" parent="estate_first_level_menu_action" action="estate.estate_property_action" sequence="1"/>
     <menuitem id="menu_estate_property" name="Properties_type" parent="estate_property_type_menu_action" action="estate.action_estate_property_type_view"/>
     <menuitem id="menu_estate_property_id" name="Properties_tag" parent="estate_property_type_menu_action" action="estate.action_estate_property_tag"/>
-
+    <!-- <menuitem id="menu_properties" name="Properties" parent="website.main_menu" action="estate.menu_estate_property"/> -->
 </odoo>
 
 
