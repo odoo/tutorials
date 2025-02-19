@@ -29,13 +29,13 @@
                     <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="name"/>
-                            <field name="property_image" widget="image" class="oe_avatar"/>
-                        </h1>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field' : 'color'}"/>
-                    </div>
+                    <h1>
+                        <field name="name" />
+                        <field name="property_image" widget="image" class="oe_avatar"/>
+                    </h1>
+                    <p>
+                        <field name="tag_ids" widget='many2many_tags' options="{'color_field': 'color'}"/>
+                    </p>
                     <group>
                         <group>
                             <field name="property_type_id" widget="Many2one_tags" options="{'no_create': True, 'no_open': True}" />
@@ -77,32 +77,37 @@
         </field>
     </record>
 
-    <record id="view_estate_property_kanban" model="ir.ui.view">
-        <field name="name">view.estate.property.kanban</field>
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" records_draggable="False">
-                <field name="state"/>
+            <kanban string="Property" default_group_by="property_type_id" records_draggable="False">
+                <progressbar field="state" colors="{
+                    &quot;new&quot;: &quot;success-done&quot;,
+                    &quot;offer_received&quot;: &quot;info&quot;,
+                    &quot;offer_accepted&quot;: &quot;warning&quot;,
+                    &quot;sold&quot;: &quot;success&quot;,
+                    &quot;canceled&quot;: &quot;danger&quot;
+                }"/>
                 <templates>
                     <t t-name="card">
-                        <div class="oe_kanban_global_click">
-                            <strong>
-                                <field name="name"/>
-                            </strong>
-                            <div>
-                                Expected price : <field name="expected_price"/>
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="fw-bold"><field name="name"/></h4>
+                                <span class="badge" t-att-class="
+                                    record.state.raw_value == 'new' and 'bg-warning text-dark' or
+                                    record.state.raw_value == 'sold' and 'bg-success text-white' or
+                                    record.state.raw_value == 'cancelled' and 'bg-danger text-white'
+                                "><field name="state"/></span>
                             </div>
-                            <div>
-                                <t t-if="record.state.raw_value == 'offer_received'">
-                                    Best offer : <field name="best_price"/>
-                                </t>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span class="fw-bold text-primary">Expected : <field name="expected_price"/></span>
+                                <span t-if="record.state.raw_value == 'offer_accepted'" class="fw-bold text-primary">Selling : <field name="selling_price"/></span>
+                                <span t-elif="record.state.raw_value == 'offer_received'" class="fw-bold text-primary">Best : <field name="best_price"/></span>
                             </div>
-                            <div>
-                                <t t-if="record.state.raw_value == 'offer_accepted'">
-                                    Selling price : <field name="selling_price"/>
-                                </t>
+                            <div class="d-flex justify-content-between mt-2">
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             </div>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field' : 'color'}"/>
                         </div>
                     </t>
                 </templates>

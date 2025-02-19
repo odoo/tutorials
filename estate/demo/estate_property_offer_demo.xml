@@ -85,4 +85,74 @@
         <field name="partner_id" ref="res_partner_het"/>
         <field name="property_id" ref="estate_property_trailer_home"/>
     </record>
+
+    <record id="estate_property_offer11" model="estate.property.offer">
+        <field name="price">550000</field>
+        <field name="validity">15</field>
+        <field name="partner_id" ref="res_partner_utsav"/>
+        <field name="property_id" ref="estate_property_luxury_villa"/>
+    </record>
+
+    <record id="estate_property_offer12" model="estate.property.offer">
+        <field name="price">320000</field>
+        <field name="validity">10</field>
+        <field name="partner_id" ref="res_partner_utsav"/>
+        <field name="property_id" ref="estate_property_modern_apartment"/>
+    </record>
+
+    <record id="estate_property_offer13" model="estate.property.offer">
+        <field name="price">270000</field>
+        <field name="validity">20</field>
+        <field name="partner_id" ref="res_partner_utsav"/>
+        <field name="property_id" ref="estate_property_cozy_cottage"/>
+    </record>
+
+    <record id="estate_property_offer14" model="estate.property.offer">
+        <field name="price">750000</field>
+        <field name="validity">18</field>
+        <field name="partner_id" ref="res_partner_ronak"/>
+        <field name="property_id" ref="estate_property_beach_house"/>
+    </record>
+
+    <record id="estate_property_offer15" model="estate.property.offer">
+        <field name="price">780000</field>
+        <field name="validity">25</field>
+        <field name="partner_id" ref="res_partner_rushil"/>
+        <field name="property_id" ref="estate_property_beach_house"/>
+    </record>
+
+    <record id="estate_property_offer16" model="estate.property.offer">
+        <field name="price">620000</field>
+        <field name="validity">12</field>
+        <field name="partner_id" ref="res_partner_het"/>
+        <field name="property_id" ref="estate_property_luxury_villa"/>
+    </record>
+
+    <record id="estate_property_offer17" model="estate.property.offer">
+        <field name="price">350000</field>
+        <field name="validity">14</field>
+        <field name="partner_id" ref="res_partner_ronak"/>
+        <field name="property_id" ref="estate_property_modern_apartment"/>
+    </record>
+
+    <record id="estate_property_offer18" model="estate.property.offer">
+        <field name="price">290000</field>
+        <field name="validity">22</field>
+        <field name="partner_id" ref="res_partner_het"/>
+        <field name="property_id" ref="estate_property_cozy_cottage"/>
+    </record>
+
+    <record id="estate_property_offer19" model="estate.property.offer">
+        <field name="price">800000</field>
+        <field name="validity">30</field>
+        <field name="partner_id" ref="res_partner_rushil"/>
+        <field name="property_id" ref="estate_property_beach_house"/>
+    </record>
+
+    <record id="estate_property_offer20" model="estate.property.offer">
+        <field name="price">450000</field>
+        <field name="validity">10</field>
+        <field name="partner_id" ref="res_partner_utsav"/>
+        <field name="property_id" ref="estate_property_cozy_cottage"/>
+    </record>
 </odoo>

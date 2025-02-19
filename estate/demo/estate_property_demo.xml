@@ -2,7 +2,8 @@
 <odoo>
     <record id="estate_property_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
-        <field name="state">new</field>
+        <field name="state">sold</field>
+        <field name="property_image" type="base64" file="estate/static/img/big_villa.jpg"/>
         <field name="description">This is big villa</field>
         <field name="property_type_id" ref="property_type_residential"/>
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_newly_built'), ref('property_tag_garden')])]"/>
@@ -19,7 +20,8 @@
 
     <record id="estate_property_luxury_villa" model="estate.property">
         <field name="name">Luxury Villa with Pool</field>
-        <field name="state">new</field>
+        <field name="state">offer_received</field>
+        <field name="property_image" type="base64" file="estate/static/img/luxury_villa.jpg"/>
         <field name="description">This is Luxury villa.</field>
         <field name="property_type_id" ref="property_type_residential"/>
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_luxury'), ref('property_tag_garden')])]"/>
@@ -36,6 +38,7 @@
     <record id="estate_property_trailer_home" model="estate.property">
         <field name="name">Trailer home</field>
         <field name="state">cancelled</field>
+        <field name="property_image" type="base64" file="estate/static/img/trailer_home.jpg"/>
         <field name="description">Home in a trailer park</field>
         <field name="property_type_id" ref="property_type_commercial"/>
         <field name="tag_ids" eval="[(6, 0, [ref('property_tag_near_school'), ref('property_tag_pool')])]"/>
@@ -46,5 +49,63 @@
         <field name="facades">8</field>
         <field name="garage">false</field>
         <field name="garden">false</field>
+    </record>
+
+    <record id="estate_property_suburban_home" model="estate.property">
+        <field name="name">Suburban Family Home</field>
+        <field name="state">new</field>
+        <field name="property_image" type="base64" file="estate/static/img/p1.jpg"/>
+        <field name="property_type_id" ref="property_type_commercial"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_family')])]"/>
+        <field name="postcode">998877</field>
+        <field name="expected_price">400000.00</field>
+        <field name="living_area">250</field>
+        <field name="bedrooms">4</field>
+        <field name="garden">true</field>
+        <field name="garden_area">120</field>
+        <field name="garden_orientation">north</field>
+    </record>
+
+    <record id="estate_property_modern_apartment" model="estate.property">
+        <field name="name">Modern Apartment in City Center</field>
+        <field name="state">offer_received</field>
+        <field name="property_image" type="base64" file="estate/static/img/p2.jpg"/>
+        <field name="property_type_id" ref="property_type_industrial"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_modern')])]"/>
+        <field name="postcode">560011</field>
+        <field name="expected_price">300000.00</field>
+        <field name="living_area">120</field>
+        <field name="bedrooms">2</field>
+        <field name="garden">false</field>
+    </record>
+
+    <record id="estate_property_cozy_cottage" model="estate.property">
+        <field name="name">Cozy Cottage in Countryside</field>
+        <field name="state">offer_accepted</field>
+        <field name="property_image" type="base64" file="estate/static/img/p3.jpg"/>
+        <field name="property_type_id" ref="property_type_commercial"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_countryside')])]"/>
+        <field name="postcode">781234</field>
+        <field name="expected_price">250000.00</field>
+        <field name="living_area">180</field>
+        <field name="bedrooms">3</field>
+        <field name="garden">true</field>
+        <field name="garden_area">100</field>
+        <field name="garden_orientation">east</field>
+    </record>
+
+    <record id="estate_property_beach_house" model="estate.property">
+        <field name="name">Beach House with Sea View</field>
+        <field name="state">offer_accepted</field>
+        <field name="property_image" type="base64" file="estate/static/img/p4.jpg"/>
+        <field name="property_type_id" ref="property_type_land"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_luxury'), ref('property_tag_beach')])]"/>
+        <field name="postcode">123456</field>
+        <field name="expected_price">800000.00</field>
+        <field name="living_area">350</field>
+        <field name="bedrooms">5</field>
+        <field name="garden">true</field>
+        <field name="garden_area">200</field>
+        <field name="garden_orientation">west</field>
     </record>
 </odoo>
