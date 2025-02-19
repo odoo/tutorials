@@ -32,12 +32,94 @@
                                     </p>
                                 </div>
                                 <div class="card-footer text-center">
-                                    <a href="#" class="btn btn-primary">View Details</a>
+                                    <a t-att-href="'/estate/property/%s' % property.id"  class="btn btn-primary">View Details</a>
                                 </div>
                             </div>
                         </div>
                     </t>
                 </div>
-            </div>        </t>
+            </div>
+        </t>
     </template>
+
+    <template id="property_detail_page" name="Property Detail Page">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+
+                <t t-if="request.params.get('error_message')">
+                    <div class="alert alert-danger" role="alert">
+                        <t t-esc="request.params.get('error_message')" />
+                    </div>
+                </t>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <t t-if="property.status not in ['sold', 'cancelled']">
+                            <a t-att-href="'/estate/property/%s/sold' % property.id" 
+                            class="btn btn-success me-2">Mark as Sold</a>
+                            <a t-att-href="'/estate/property/%s/cancelled' % property.id" 
+                            class="btn btn-danger">Cancelled</a>
+                        </t>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <img t-att-src="image_data_uri(property.image)" 
+                            class="img-fluid rounded shadow" 
+                            alt="Property Image" 
+                            style="max-height: 400px; object-fit: cover; width: 100%;"/>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h1 class="mb-3"><t t-esc="property.name" /></h1>
+                        <p><strong>Price:</strong> ₹<t t-esc="property.expected_price" /></p>
+                        <p><strong>Selling Price:</strong> ₹<t t-esc="property.selling_price or 'N/A'" /></p>
+                        <p><strong>Best Offer:</strong> ₹<t t-esc="max(property.offer_ids.mapped('price') or [0])" /></p>
+                        <p><strong>Type:</strong> <t t-esc="property.property_type_id.name" /></p>
+                        <p><strong>Status:</strong> <t t-esc="property.status" /></p>
+                        <p><strong>Description:</strong></p>
+                        <p><t t-esc="property.description" /></p>
+                        <a href="/estate/property" class="btn btn-primary mt-3">Back to Listings</a>
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <h3>Offers</h3>
+                    <t t-if="property.offer_ids">
+                        <table class="table table-hover table-striped table-bordered mt-3 shadow-sm">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="text-center">Partner</th>
+                                    <th class="text-center">Offer Price</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Deadline</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="property.offer_ids" t-as="offer">
+                                    <tr>
+                                        <td class="text-center"><t t-esc="offer.partner_id.name" /></td>
+                                        <td class="text-center">₹<t t-esc="offer.price" /></td>
+                                        <td class="text-center">
+                                            <span t-att-class="'badge ' + ('bg-success' if offer.status == 'accepted' else 'bg-danger' if offer.status == 'refused' else 'bg-secondary')">
+                                                <t t-esc="dict(accepted='Accepted', refused='Refused').get(offer.status, 'Pending')" />
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-esc="offer.deadline.strftime('%Y-%m-%d') if offer.deadline else 'N/A'" />
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-else="">
+                        <p>No offers available for this property.</p>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
 </odoo>

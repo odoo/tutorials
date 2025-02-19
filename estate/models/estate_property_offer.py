@@ -26,7 +26,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
-            record.deadline = fields.Date.today() + relativedelta(days=record.validity) or record.create_date.date() + relativedelta(days=record.validity)
+            record.deadline = record.create_date.date() + relativedelta(days=record.validity) or fields.Date.today() + relativedelta(days=record.validity)
     
     def _inverse_validity(self):
         for record in self:
@@ -36,6 +36,8 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_id = self.env['estate.property'].browse(vals['property_id'])
+            if property_id.status == 'sold':
+                raise UserError('Offer cannot be created for sold property')
             if property_id.offer_ids:
                 max_offer = max(property_id.offer_ids.mapped('price'))
                 if vals['price'] <= max_offer:

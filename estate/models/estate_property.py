@@ -31,7 +31,7 @@ class EstateProperty(models.Model):
         ],
         default='north',
     )
-    image = fields.Image()
+    image = fields.Image(string=" ")
     is_garage = fields.Boolean("Garage")
     is_garden = fields.Boolean("Garden")
     living_area = fields.Integer()
@@ -108,10 +108,9 @@ class EstateProperty(models.Model):
             record.status='cancelled'
 
     def _track_subtype(self,init_values):
-        # breakpoint()
         self.ensure_one()
         if 'state' in init_values:
             return self.env.ref('estate.mt_state_change')
         if 'expected_price' in init_values:
             return self.env.ref('estate.mt_state_change')
-        return super(EstateProperty,self)._track_subtype(init_values)
+        return super()._track_subtype(init_values)

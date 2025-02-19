@@ -6,9 +6,6 @@
     'version': '1.0',
     'author': 'odoo',
     'license': 'LGPL-3',
-    'depends': [
-        'estate',
-        'account'
-    ],
+    'depends': ['estate','account'],
     'application': True
 }
