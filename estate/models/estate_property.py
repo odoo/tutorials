@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 import datetime
 
@@ -48,7 +49,20 @@ class EstateProperty(models.Model):
     active = fields.Boolean('Active', default=True)
 
     def action_set_cancelled(self):
-        self.write({'state': 'cancelled'})
+        if self.state == 'sold':
+            raise UserError('Sold properties can not be cancelled')
+        else:
+            self.write({'state': 'cancelled'})
+        
+        return True
+
+    def action_set_sold(self):
+        if self.state == 'cancelled':
+            raise UserError('Cancelled properties can not be sold')
+        else:
+            self.write({'state': 'sold'})
+        
+        return True
     
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
@@ -58,7 +72,7 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids')
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max(record.offer_ids.mapped('price') + [0])
+            record.best_offer = max(record.offer_ids.mapped('price'), default=0.0)
     
     @api.onchange("garden")
     def _onchange_garden(self):

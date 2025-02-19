@@ -31,10 +31,12 @@
             <form string="Estate Property">
                 <header>
                     <button string="Cancel" type="object" name="action_set_cancelled" invisible="state == 'cancelled'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': 1}"/>
+                    <button string="Sell" type="object" name="action_set_sold" invisible="state == 'sold'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted" options="{'clickable': 1}" invisible="state in ['sold', 'cancelled']"/>
                 </header>
                 <sheet>
                     <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" invisible="state != 'cancelled'"/>
+                    <widget name="web_ribbon" title="Sold" bg_color="bg-success" invisible="state != 'sold'"/>
                     <div class="oe_title">
                         <div class="oe_edit_only">
                             <label for="name"/>
@@ -110,6 +112,8 @@
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="state"/>
+                <button name="action_set_accepted" string="Accept" type="object" icon="fa-check"/>
+                <button name="action_set_refused" string="Refuse" type="object" icon="fa-times"/>
             </list>
         </field>
     </record>

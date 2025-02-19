@@ -1,6 +1,8 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 import datetime
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -22,15 +24,26 @@ class EstatePropertyOffer(models.Model):
     )
 
     def action_set_accepted(self):
-        self.write({'state': 'accepted'})
+        if 'accepted' in self.property_id.offer_ids.mapped('state'):
+            raise UserError('Another offer has already been accepted')
+        
+        self.property_id.partner_id = self.partner_id
+        self.property_id.selling_price = self.price
+        self.property_id.state = 'offer_accepted'
+
+        self.state = 'accepted'
+
+        return True
 
     def action_set_refused(self):
-        self.write({'state': 'refused'})
+        self.state = 'refused'
+
+        return True
 
     @api.depends('validity')
     def _compute_deadline(self):
-        for record in self:
-            record.date_deadline = (record.create_date if record.create_date else fields.Date.today()) + datetime.timedelta(days=record.validity)
+        for offer in self:
+            offer.date_deadline = (offer.create_date or fields.Date.today()) + datetime.timedelta(days=offer.validity)
 
     def _inverse_deadline(self):
         for record in self:
