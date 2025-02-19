@@ -54,6 +54,8 @@ class EstateProperty(models.Model):
         ('expected_price', 'CHECK(expected_price > 0)', 'Prices must be strictly positive.'),
     ]
 
+    _order = "id desc"
+
     def action_set_cancelled(self):
         if self.state == 'sold':
             raise UserError('Sold properties can not be cancelled')
@@ -92,6 +94,6 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for estate in self:
-            if estate.state == 'offer_accepted' and float_compare(estate.selling_price, estate.expected_price*0.8, precision_rounding=0.01) < 0:
+            if estate.state == 'offer_accepted' and float_compare(estate.selling_price, estate.expected_price*0.8, precision_rounding=0.01) == -1:
                 raise ValidationError('Selling price must be at least 80% of expected price.')
 
