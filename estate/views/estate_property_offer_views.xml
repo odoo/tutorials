@@ -18,20 +18,18 @@
         </field>
     </record>
 
-    <record id="estate_property_offers_view_tree" model="ir.ui.view">
+    <record id="estate_property_offers_view_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offers">
+            <list string="Offers" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <button name="accept_offer" string="Accept" type="object" icon="fa-check"/>
-                <button name="refuse_offer" string="Refuse" type="object" icon="fa-times"/>
-                <field name="status"/>
+                <button name="accept_offer" string="Accept" type="object" icon="fa-check" invisible="status"/>
+                <button name="refuse_offer" string="Refuse" type="object" icon="fa-times" invisible="status"/>
             </list>
         </field>
     </record>
-
 </odoo>
