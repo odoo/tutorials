@@ -4,6 +4,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Channel" decoration-success="state=='offer_received' or state=='offer_accepted'" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
+                <header>
+                    <button type="action" name="estate.add_offer_wizard_action" string="Add Offer" class="btn-secondary"/>
+                </header>
                 <field name="name" string='Title'/>
                 <field name="postcode"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>

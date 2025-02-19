@@ -1,33 +1,34 @@
 <odoo>
     <template id="estate_property_display" name="Estate Property Display">
-        <t t-call="web.html_container">
+        <t t-call="website.layout">
             <div class="container mt-4">
-            <form action="/properties" method="get">
-                <div class="row mb-3">
+                <div class="row mb-3 align-items-center justify-content-end">
                     <div class="col-md-4">
-                        <input type="date" id="listed_after" name="listed_after" t-att-value="listed_after"/>
+                        <form action="/properties" method="get" class="d-flex gap-2 justify-content-end">
+                            <t t-foreach="params.keys()" t-as="param">
+                                <t t-if="param!='listed_after'">
+                                    <input type="hidden" t-att-name="param" t-att-value="params.get(param)"/>
+                                </t>
+                            </t>
+                            <input type="date" id="listed_after" name="listed_after" t-att-value="params.get('listed_after')"/>
+                            <button type="submit" class="btn btn-primary">Listed After</button>
+                        </form>
+                    </div>
+                    <div class="col-md-4">
+                        <form action="/properties" method="get" class="d-flex gap-2">
+                            <t t-foreach="params.keys()" t-as="param">
+                                <t t-if="param!='search'">
+                                    <input type="hidden" t-att-name="param" t-att-value="params.get(param)"/>
+                                </t>
+                            </t>
+                            <input type="text" name="search" class="form-control" placeholder="Search properties..." t-att-value="params.get('search')"/>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
                     </div>
                     <div class="col-md-2">
-                        <button class="btn btn-primary" type="submit">Listed After</button>
-                    </div>
-                </div>
-            </form>
-                <div class="row mt-4">
-                    <div class="col text-center">
-                        <nav>
-                            <ul class="pagination">
-                                <t t-if="page &gt; 1">
-                                    <li class="page-item">
-                                        <a t-att-href="'/properties/page/%s' % (page - 1)" class="page-link">Previous</a>
-                                    </li>
-                                </t>
-                                <t t-if="page &lt; total_pages">
-                                    <li class="page-item">
-                                        <a t-att-href="'/properties/page/%s' % (page + 1)" class="page-link">Next</a>
-                                    </li>
-                                </t>
-                            </ul>
-                        </nav>
+                        <div t-if="pager">
+                            <t t-call="website.pager"/>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -52,7 +53,7 @@
         </t>
     </template>
     <template id="estate_property_details_display" name="Estate Property Details Display">
-        <t t-call="web.html_container">
+        <t t-call="website.layout">
             <div class="container mt-5">
                 <div class="row mt-4">
                     <div class="col-md-12">

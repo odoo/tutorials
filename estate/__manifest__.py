@@ -11,6 +11,7 @@
         "security/estate_property_security.xml",   
         "security/ir.model.access.csv",
         "data/estate.property.type.csv",
+        "wizard/make_offers_views.xml",
         "views/estate_property_views.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
