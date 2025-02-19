@@ -6,6 +6,7 @@ from odoo.tools import float_compare, float_is_zero
 class Property(models.Model):
     _name = "estate.property"
     _description = "Real estate property"
+    _order = "id desc"
 
     rounding = 0.01
 
@@ -113,25 +114,15 @@ class Property(models.Model):
                 self.garden_orientation = "north"
 
     def action_set_sold(self):
-        flag = False
-        for record in self:
-            if record.state != "cancelled":
-                record.state = "sold"
-            else:
-                flag = True
-        if flag:
+        if self.filtered(lambda record: record.state == "cancelled"):
             raise UserError("Cancelled properties can't be sold.")
+        self.state = "sold"
         return True
 
     def action_cancel(self):
-        flag = False
-        for record in self:
-            if record.state != "sold":
-                record.state = "cancelled"
-            else:
-                flag = True
-        if flag:
+        if self.filtered(lambda record: record.state == "sold"):
             raise UserError("Sold properties can't be cancelled.")
+        self.state = "cancelled"
         return True
 
     @api.constrains("selling_price", "expected_price")
