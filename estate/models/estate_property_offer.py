@@ -10,7 +10,8 @@ class EstatePropertyOffer(models.Model):
     _description = 'Estate property offer'
     _order = 'price desc'
 
-    price = fields.Float(string='Price')
+    price = fields.Monetary(string='Price', currency_field='currency_id')
+    currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id)
     status = fields.Selection([
         ('accepted', 'Accepted'),
         ('refused', 'Refused')

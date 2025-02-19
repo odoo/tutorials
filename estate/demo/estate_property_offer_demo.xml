@@ -26,7 +26,7 @@
             <field name="partner_id" ref="base.res_partner_3"></field>
             <field name="property_id" ref="estate.estate_property_1"></field>
             <field name="price">1500001.00</field>
-            <field name="date_deadline" eval="(datetime.now() + timedelta(days=7)).date()"></field>
+            <field name="validity">7</field>
         </record>
 
         <function model="estate.property.offer" name="action_accepted">

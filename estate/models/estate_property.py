@@ -8,7 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
-    _inherit = ['mail.thread']
+    _inherit = ['rating.mixin', 'mail.thread', 'mail.activity.mixin']
     _description = 'Estate Property model'
     _order = 'id desc'
 
@@ -16,8 +16,9 @@ class EstateProperty(models.Model):
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
     date_availability = fields.Date(string='Available From', copy=False, default=fields.Date.today() + timedelta(days=90))
-    expected_price = fields.Float(string='Expected Price', default=2, required=True)
-    selling_price = fields.Float(string='Selling Price', readonly=True)
+    expected_price = fields.Monetary(string='Expected Price', default=2, required=True, currency_field='currency_id')
+    currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id)
+    selling_price = fields.Monetary(string='Selling Price', readonly=True, currency_field='currency_id')
     bedrooms = fields.Integer(string='Bedrooms')
     living_area = fields.Integer(string='Living Area (sqm)')
     facades = fields.Integer(string='Facades')
@@ -44,7 +45,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
     total_area = fields.Float(compute='_compute_total_area', string='Total Area (sqm)')
-    best_price = fields.Float(compute='_compute_best_price', string='Best Offer')
+    best_price = fields.Monetary(compute='_compute_best_price', string='Best Offer', currency_field='currency_id')
     estate_property_sequence = fields.Char(string='Reference', readonly=True, copy=False)
     company_id = fields.Many2one('res.company', required=True, string='Company', default=lambda self: self.env.company)
 
@@ -105,7 +106,19 @@ class EstateProperty(models.Model):
                 raise UserError(_("Offer cannot be sold without offer accepted."))
             else:
                 record.state = 'sold'
+        template = self.env.ref('estate.estate_rating_template')
+        for record in self:
+            if record.buyer_id:
+                template.send_mail(record.id, force_send=True)
         return True
+
+    def rating_get_partner_id(self):
+        """Defines which partner is providing the rating (e.g., the customer)"""
+        return self.buyer_id
+
+    def rating_get_rated_partner_id(self):
+        """Defines which partner is being rated (e.g., the responsible user)"""
+        return self.salesperson_id.buyer_id
 
     def _track_subtype(self, init_values):
         self.ensure_one()

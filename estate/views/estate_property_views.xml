@@ -5,6 +5,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list name="estate_property_list" decoration-bf="state == 'offer_accepted'" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-muted="state == 'sold'">
+                <field name="currency_id" column_invisible="1"></field>
                 <field name="name" width="30%"></field>
                 <field name="postcode" width="10%"></field>
                 <field name="bedrooms" width="10%"></field>
@@ -42,6 +43,7 @@
                             <field name="estate_property_sequence"></field>
                         </group>
                         <group>
+                            <field name="currency_id" invisible="1"></field>
                             <field name="expected_price"></field>
                             <field name="selling_price"></field>
                             <field name="best_price"></field>
@@ -106,6 +108,7 @@
                 <templates>
                     <t t-name="card">
                         <field name="name"></field>
+                        <field name="currency_id" invisible="1"></field>
                         <div>
                             Expected Price: <field name="expected_price"></field>
                         </div>

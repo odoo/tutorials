@@ -5,6 +5,7 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list name="estate_property_offer_list" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+                <field name="currency_id" column_invisible="1"></field>
                 <field name="price" width="30%"></field>
                 <field name="partner_id" width="10%"></field>
                 <field name="validity" width="10%"></field>
