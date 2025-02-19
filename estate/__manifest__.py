@@ -1,7 +1,7 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base','mail'],
+    'depends': ['base','mail','website'],
     'author': "Dhruv Godhani",
     'category': 'Real Estate/Brokerage',
     'description': """
@@ -17,6 +17,7 @@
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
         "views/estate_menu.xml",
+        "views/estate_properties_website_views.xml",
         "data/estate_property_type.xml",
         "report/estate_property_report.xml",
         "report/estate_property_template.xml",

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+    </record>
+
+    <!-- ====================================
+                Properties Template
+    ==================================== -->
+    <template id="estate_web_properties">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <h2 class="text-center mb-4 text-primary">Available Properties</h2>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4 rounded">
+                            <div class="card shadow-sm ">
+                                <div class="position-relative p-1">
+                                    <t t-if="property.image">
+                                        <img t-att-src="'/web/image/estate.property/' + str(property.id) +'/image'"
+                                            class="card-img-top img-fluid rounded mb-3 w-100"
+                                            style="height: 200px; object-fit: cover;"
+                                            alt="Property Image"/>
+                                    </t>
+                                </div>
+                                <div class="px-3 mb-3">
+                                    <h5 class="card-title fs-3 fw-bold text-primary" t-field="property.name"></h5>
+                                    <p class="card-text text-muted">
+                                        Price: <span class="fw-semibold" t-field="property.expected_price"></span>
+                                    </p>
+                                    <t t-foreach="property.tag_ids" t-as="tag">
+                                        <span class="badge bg-info text-dark me-1" t-field="tag.name"></span>
+                                    </t>
+                                    <a t-att-href="'/property/' + str(property.id)"
+                                        class="btn border rounded w-100 fw-bold"
+                                        style="color: rgba(113,75, 103, 1);"
+                                        onmouseover="this.style.backgroundColor='rgba(113, 75, 103, 1)'; this.style.color='rgb(255, 255, 255)';"
+                                        onmouseout="this.style.backgroundColor=''; this.style.borderColor=''; this.style.color='rgba(113, 75, 103, 1)';">
+                                        View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ====================================
+                Property Template
+    ==================================== -->
+    <template id="estate_web_property_details">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row d-flex align-items-stretch">
+                    <div class="col-md-6 d-flex">
+                        <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                            class="card-img-top img-fluid rounded w-100 h-100"
+                            style="object-fit: cover;"
+                            alt="Property Image"/>
+                    </div>
+                    <div class="col-md-6 d-flex">
+                        <div class="card p-3 w-100 h-100 d-flex flex-column ">
+                            <h5 class="card-title fs-3 fw-bold text-primary mb-3" t-field="property.name"></h5>
+                            <h4 class="text-primary border-bottom py-2">Details</h4>
+                            <p>
+                                Bedrooms: <span class="fw-semibold" t-field="property.bedrooms"></span>
+                            </p>
+                            <p>
+                                Living Area: <span class="fw-semibold" t-field="property.living_area"></span>
+                            </p>
+                            <p>
+                                Availability: <span class="fw-semibold" t-field="property.date_availability"></span>
+                            </p>
+                            <p>
+                                Status: <span class="fw-semibold" t-field="property.status"></span>
+                            </p>
+                            <a t-att-href="'/property/make_offer/' + str(property.id)"
+                                        class="btn border rounded w-100 fw-bold"
+                                        style="color: rgba(113,75, 103, 1);"
+                                        onmouseover="this.style.backgroundColor='rgba(113, 75, 103, 1)'; this.style.color='rgb(255, 255, 255)';"
+                                        onmouseout="this.style.backgroundColor=''; this.style.borderColor=''; this.style.color='rgba(113, 75, 103, 1)';">
+                                        Make an offer
+                                    </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <!-- ====================================
+                Make an Offer Template
+    ==================================== -->
+    <template id="estate_make_offer">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row d-flex align-items-stretch">
+                    <div class="col-md-6 d-flex">
+                        <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                            class="card-img-top img-fluid rounded w-100 h-100"
+                            style="object-fit: cover;"
+                            alt="Property Image"/>
+                    </div>
+                    <div class="col-md-6 d-flex">
+                        <div class="card p-4 w-100 h-100 d-flex flex-column justify-content-between">
+                            <h5 class="card-title fs-3 fw-bold text-primary mb-3" t-field="property.name"></h5>
+                            <h4 class="text-primary border-bottom py-2">Create Offer</h4>
+                            <form method="post" action="/make_offer">
+                                <div class="mb-3 ">
+                                    <label for="price" class="form-label text-muted fw-bold">Offer Price</label>
+                                    <input id="price" name="price" type="number" class="form-control mb-3" 
+                                        placeholder="Enter Price"/>
+                                    <label for="price" class="form-label text-muted fw-bold">Validity</label>
+                                    <input id="validity" name="validity" type="number" class="form-control" 
+                                        placeholder="Enter Validity days"/>
+                                </div>
+                                <button type="submit" class="btn border rounded w-100 fw-bold"
+                                    style="color: rgba(113,75,103,1);"
+                                    onmouseover="this.style.backgroundColor='rgba(113, 75, 103, 1)'; this.style.color='white';"
+                                    onmouseout="this.style.backgroundColor=''; this.style.borderColor=''; this.style.color='rgba(113, 75, 103, 1)';">
+                                    Make an Offer
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+</odoo>
