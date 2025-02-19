@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 {
     'name':'Real Estate',
     'version':'1.0',
@@ -10,6 +13,8 @@ This Module provides real estate advertisements
     'data':[
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/company_data.xml',
+        'data/currency_data.xml',
         'data/estate_property_sequence.xml',
         'data/mail_message_subtype_data.xml',
         'views/estate_property_views.xml',

@@ -1,4 +1,7 @@
-from odoo import api, fields, models
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -40,7 +43,7 @@ class EstatePropertyOffer(models.Model):
                 property_id.write({'state' : 'offerreceived'})
 
             if property_id.best_offer > record['price']:
-                raise UserError("Offer Price entered is lower than the existing offer price.")
+                raise UserError(_("Offer Price entered is lower than the existing offer price."))
 
         return super().create(vals)
 
