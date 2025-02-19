@@ -15,7 +15,7 @@ class EstateProperty(models.Model):
     best_offer = fields.Float('Best Offer', readonly=True, compute='_compute_best_offer')
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Availability Date', copy=False, default=lambda _: fields.Date.today()+datetime.timedelta(days=90))
+    date_availability = fields.Date('Availability Date', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
