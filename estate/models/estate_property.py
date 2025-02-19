@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from datetime import timedelta
 
 
@@ -22,6 +22,8 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     active = fields.Boolean("Active", default=True)
+    total_area = fields.Integer(compute="_compute_total")
+    best_price = fields.Float(compute="_compute_best_offer")
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     tag_ids = fields.Many2many("estate.property.tag")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -50,3 +52,13 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
     )
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids")
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)

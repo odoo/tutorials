@@ -10,7 +10,7 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Tests">
+            <list>
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="status" />

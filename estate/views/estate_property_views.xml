@@ -44,6 +44,7 @@
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
+                            <field name="best_price" />
                         </group>
                     </group>
                     <notebook>
@@ -59,6 +60,7 @@
                                 <field name="garden_orientation" />
                                 <field name="state" />
                                 <field name="property_type_id" />
+                                <field name="total_area" />
                             </group>
                         </page>
                         <page string="Other info">
@@ -68,9 +70,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <group>
-                                <field name="offer_ids" />
-                            </group>
+                            <field name="offer_ids" />
                         </page>
                     </notebook>
                 </sheet>
