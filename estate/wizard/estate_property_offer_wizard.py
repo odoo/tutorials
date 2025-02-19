@@ -16,7 +16,7 @@ class EstatePropertyWizard(models.TransientModel):
         active_property_id = self.env.context.get("active_ids")
         properties = self.env["estate.property"].browse(active_property_id)
         properties = list(filter(lambda x: x.state in (
-            'new', 'offer received'), properties))
+            'new', 'offer_received'), properties))
 
         for property in properties:
             self.env["estate.property.offer"].create({

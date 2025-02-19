@@ -64,7 +64,7 @@ class EstatePropertyOffer(models.Model):
             elif property.state == "sold":
                 raise UserError(_("Property Already Sold"))
 
-            property.state = "offer received"
+            property.state = "offer_received"
 
             property.message_post({'body': _(
                 "offer created with Price %s by %s", record['price'], record['partner_id'])})
@@ -73,7 +73,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
-            if record.property_id.state == "offer accepted":
+            if record.property_id.state == "offer_accepted":
                 raise UserError(
                     _("An offer Already Accepted for this Property"))
 
@@ -83,7 +83,7 @@ class EstatePropertyOffer(models.Model):
         elif self.property_id.state == "sold":
             raise UserError(_("Property Already Sold"))
 
-        self.property_id.state = "offer accepted"
+        self.property_id.state = "offer_accepted"
         self.status = "accepted"
         self.property_id.selling_price = self.price
         self.property_id.property_buyer_id = self.partner_id.id
@@ -95,7 +95,7 @@ class EstatePropertyOffer(models.Model):
             raise UserError(
                 _("You can't Refuse an offer it's already %s", self.status.capitalize()))
         elif self.status == "accepted":
-            self.property_id.state = "offer received"
+            self.property_id.state = "offer_received"
             self.property_id.selling_price = None
             self.property_id.property_buyer_id = None
 

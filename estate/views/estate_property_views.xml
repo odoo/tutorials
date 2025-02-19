@@ -17,7 +17,7 @@
                         <button name="action_sold_property" type="object" string="SOLD" invisible="state in ('sold','cancelled')"/>
                         <button name="action_cancel_property" type="object" string="CANCEL" invisible="state in ('sold','cancelled')"/>
 
-                        <field name="state" string="Status" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
+                        <field name="state" string="Status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
 
                         <div class="oe_button_box" name="button_box" position="inside" invisible="state != 'sold'">
                             <button name="%(report_estate_property_offers)d" type="action" string="Print" class="oe_stat_button" icon="fa-print"/>
@@ -32,7 +32,7 @@
                                             <field name="name" class="oe_inline"/>
                                         </h1>
                                     </div>
-                                    <div class="ml-4">
+                                    <div>
                                         <field name="image" widget='image' />
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                 </group>
                             </page>
                             <page string="Offers">
-                                <field name="offer_ids" id="offers" readonly="state in ('sold','cancelled','offer accepted')">
+                                <field name="offer_ids" id="offers" readonly="state in ('sold','cancelled','offer_accepted')">
                                     <list edit="True" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                         <field name="price"/>
                                         <field name="partner_id"/>
@@ -95,7 +95,7 @@
             <field name="name">estate.property.view.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Name" decoration-success="state in ('offer received','offer accepted')" decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
+                <list string="Name" decoration-success="state in ('offer_received','offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                     <header>
                         <button name="estate.action_estate_property_offer_wizard" string="Add Offer" type="action"/>
                     </header>
@@ -123,7 +123,7 @@
                     <field name="bedrooms"/>
                     <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
                     <field name="fascades"/>
-                    <filter name="available" string="Available" domain="[('state','in',('new','offer received'))]" />
+                    <filter name="available" string="Available" domain="[('state','in',('new','offer_received'))]" />
                     <group string="Group By">
                         <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                     </group>
