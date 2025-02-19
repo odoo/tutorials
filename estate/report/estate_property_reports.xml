@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_print_property_info_report" model="ir.actions.report">
+        <field name="name">Property Offers</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">estate.print_property_info_report</field>
+        <field name="print_report_name">'PropertyOffers%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+    </record>
+</odoo>

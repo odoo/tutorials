@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_offers_table">
+        <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+        <t t-if="offers">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity (days)</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="offers" t-as="offer">
+                        <td>
+                            <span t-field="offer.price"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.partner_id"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.validity"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.date_deadline"/>
+                        </td>
+                        <td>
+                            <span t-field="offer.status"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <p>No offers have been made for this property yet :(</p>
+        </t>
+    </template>
+
+    <template id="print_property_info_report">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.sales_person_id"/>
+                            <br/>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price"/>
+                            <br/>
+                            <strong>Offer Status: </strong>
+                            <span t-field="property.state"/>
+                        </div>
+                        <t t-if="property.state == 'sold'">
+                            <div>
+                                <strong>Invoice Status:</strong> Invoice Created
+                            </div>
+                        </t>
+                        <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                        <t t-call="estate.property_offers_table"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

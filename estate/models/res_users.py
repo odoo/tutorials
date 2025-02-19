@@ -5,6 +5,10 @@ from odoo import fields, models
 
 
 class InheritedSalesPerson(models.Model):
-  _inherit = 'res.users'
+    _inherit = "res.users"
 
-  property_ids = fields.One2many('estate.property', inverse_name='sales_person_id',  domain=[('state', 'in', ['new', 'offer received'])])
+    property_ids = fields.One2many(
+        "estate.property",
+        inverse_name="sales_person_id",
+        domain=[("state", "in", ["new", "offer received"])],
+    )
