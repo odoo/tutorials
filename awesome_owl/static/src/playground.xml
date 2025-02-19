@@ -4,7 +4,7 @@
         <h1 class="mt-2 ms-2">Hello World</h1>
         <Counter />
         <Counter />
-        <Card title="'Title of Card 1'" content="'Content of the card 1'" />
+        <Card title="'Title of Card 1'" content="str1" />
         <Card title="'Title of Card 2'" content="'Content of the card 2'" />
         <Card title="'Title of Card 3'" content="'Content of the card 3'" />
     </t>
