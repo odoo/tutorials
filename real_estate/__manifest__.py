@@ -6,7 +6,7 @@
     'application': True,
     'category': "Real Estate/Brokerage",
     'installable': True,
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -14,7 +14,7 @@
         'views/estate_menus.xml',
         'views/res_user_views.xml',
         'views/estate_property_offer_views.xml',
-        'demo/property_types.xml',
+        'data/property_types.xml',
         'demo/estate_property_demo_data.xml',
         'demo/estate_property_offers_demo_data.xml',
     ],

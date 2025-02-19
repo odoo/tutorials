@@ -22,6 +22,6 @@
     <field name="name">Estate Property Company Rule</field>
     <field name="model_id" ref="model_estate_property"/>
     <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
-    <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+    <field name="domain_force">[('company_id', '=', company_ids)]</field>
 </record>
 </odoo>

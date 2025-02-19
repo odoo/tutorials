@@ -5,6 +5,6 @@
     'version': '0.1',
     'category': "Tutorials",
     'installable': True,
-    'depends': ['real_estate_module','account'],
+    'depends': ['real_estate','account'],
     'license': 'AGPL-3'
 }

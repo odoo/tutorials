@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
     _order = 'id desc'  # Sort properties by latest created ID
+    _inherit = ['mail.thread','mail.activity.mixin']
 
     # Basic Property Details
     name = fields.Char(
@@ -105,10 +106,15 @@ class EstateProperty(models.Model):
         string="Property Type",
         help="The type of the property (e.g., Apartment, House, etc.)"
     )
+    _is_commercial = fields.Boolean(
+        compute='_compute_is_commercial',
+        store=True
+    )
     buyer_id = fields.Many2one(
         comodel_name='res.partner',
         string="Buyer",
-        help="The buyer who purchased the property"
+        help="The buyer who purchased the property",
+        domain="[('is_company','=',_is_commercial)]",
     )
     salesman_id = fields.Many2one(
         comodel_name='res.users',
@@ -156,18 +162,27 @@ class EstateProperty(models.Model):
             "The Selling Price must be strictly positive."
         )
     ]
+
+    @api.depends('property_type_id')
+    def _compute_is_commercial(self):
+        for property in self:
+            property._is_commercial = property.property_type_id.name=='Commercial'
+
     # Compute Total Area
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         """Computes the total property area by adding living area and garden area."""
         for property in self:
             property.total_area = property.living_area + property.garden_area
+
     # Compute Best Offer Price
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         """Computes the highest offer price received for the property."""
         for property in self:
-            property.best_price = max(property.offer_ids.mapped('price'), default=0.0)
+            valid_offers = property.offer_ids.filtered(lambda offer: offer.status!='reject')
+            property.best_price = max(valid_offers.mapped('price'), default=0.0)
+
     # Onchange Method for Garden Fields
     @api.onchange('garden')
     def _onchange_garden_area_orientation(self):
@@ -178,6 +193,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
     # Button Actions
     def action_cancel_button(self):
         """Cancel the property sale. Prevent cancellation if the property is already sold."""
@@ -189,6 +205,7 @@ class EstateProperty(models.Model):
         if self.state == 'cancelled':
             raise UserError("Cancelled properties cannot be sold.")
         self.state = 'sold'
+
     # Constraint on Selling Price
     @api.constrains('selling_price', 'expected_price')
     def check_selling_price(self):
@@ -206,6 +223,7 @@ class EstateProperty(models.Model):
                     "The selling price must be at least 90% of the expected price! "
                     "You must reduce the expected price if you want to accept this offer."
                 )
+
     # Restrict Deletion of Properties
     @api.ondelete(at_uninstall=False)
     def _restrict_property_unlink(self):

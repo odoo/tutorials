@@ -39,6 +39,7 @@ class EstatePropertyType(models.Model):
             "The name of the property type must be unique."
         )
     ]
+
     @api.depends('offer_ids')
     def _compute_offer_count(self):
         """Computes the total number of offers related to properties of this type."""

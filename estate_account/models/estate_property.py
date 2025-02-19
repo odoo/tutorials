@@ -14,15 +14,17 @@ class EstateProperty(models.Model):
         
         # Call the original action_sold_button method
         res = super().action_sold_button()
-        if not self.buyer_id:
+        if not self.buyer_id:   
             raise UserError("A buyer must be specified before selling the property.")
         # Ensure the journal is filtered by the property’s company
         journal = self.env['account.journal'].sudo().search([
             ('type', '=', 'sale'),
-            ('company_id', '=', self.company_id.id)
+            *self.env['account.journal']._check_company_domain(self.company_id.id),
         ], limit=1)
         if not journal:
-            raise UserError(f"No sales journal found for company {self.company_id.name}. Please ensure there is a journal of type 'Sale'.")
+            raise UserError(f"No sales journal found for company {self.company_id.name}."
+                " Please ensure there is a journal of type 'Sale'."
+            )
         # Create an invoice linked to the same company as the property
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,

@@ -69,6 +69,7 @@ class EstatePropertyOffer(models.Model):
             "The Offer Price must be strictly positive"
         )
     ]
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         """Compute the offer's deadline date as the creation date + validity days.
@@ -80,6 +81,7 @@ class EstatePropertyOffer(models.Model):
                 offer.date_deadline = date.today() + timedelta(days=offer.validity)
             else:
                 offer.date_deadline = False
+
     def _inverse_date_deadline(self):
         """Update the validity period based on the difference between deadline and creation date.
         
@@ -90,6 +92,7 @@ class EstatePropertyOffer(models.Model):
                 offer.validity = (offer.date_deadline - offer.create_date.date()).days
             else:
                 offer.validity = 7
+
     def action_confirm(self):
         """Accept an offer and update the property's state accordingly.
         
@@ -103,6 +106,7 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.state = 'offer_accepted'
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
+
     def action_reject(self):
         """Reject an offer by setting its status to 'reject'."""
         self.status = 'reject'
