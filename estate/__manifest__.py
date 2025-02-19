@@ -5,7 +5,7 @@
     """,
     "author": "Odoo",
     "category": "Real Estate/Brokerage",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail" , "website"],
     "application": True,
     "data": [
         "security/estate_security.xml",

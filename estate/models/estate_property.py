@@ -62,6 +62,8 @@ class EstateProperty(models.Model):
     company_id = fields.Many2one(
         "res.company", default=lambda self: self.env.company, required=True
     )
+    image = fields.Image("Image")
+
 
     _sql_constraints = [
         (
@@ -129,8 +131,9 @@ class EstateProperty(models.Model):
                 raise UserError("Cancelled property can't be sold")
             elif record.status == "sold":
                 raise UserError("Property already sold")
-            record.status = "sold"
-
+            elif record.status != 'offer_accept':
+                raise UserError("Cannot sold property if there is no offer accept")
+                
     def action_estate_property_cancel(self):
         for record in self:
             if record.status == "sold":
