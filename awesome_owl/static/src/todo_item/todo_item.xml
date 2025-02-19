@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- TodoItem Component -->
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <div class="card p-2 mb-2 d-flex flex-row">
+            <p class="fw-semibold text-dark"><t t-esc="props.todo.id"/>.</p>
+            <p class="fw-semibold text-dark" t-att-class="props.todo.isCompleted ? 'text-decoration-line-through': ''"><t t-esc="props.todo.task"/></p>
+        </div>
+    </t>
+
+</templates>

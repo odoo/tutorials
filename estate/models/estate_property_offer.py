@@ -73,7 +73,7 @@ class EstatePropetyOffer(models.Model):
             if record.status == 'accepted':
                 record.property_id.partner_id = ""
                 record.property_id.selling_price = 0.00
-            self.status = 'refused'
+            record.status = 'refused'
         return True
 
 
