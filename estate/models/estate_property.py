@@ -1,5 +1,6 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 import datetime
 
@@ -48,6 +49,11 @@ class EstateProperty(models.Model):
 
     active = fields.Boolean('Active', default=True)
 
+    _sql_constraints = [
+        ('selling_price', 'CHECK(selling_price > 0)', 'Prices must be strictly positive.'),
+        ('expected_price', 'CHECK(expected_price > 0)', 'Prices must be strictly positive.'),
+    ]
+
     def action_set_cancelled(self):
         if self.state == 'sold':
             raise UserError('Sold properties can not be cancelled')
@@ -82,4 +88,10 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+    
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for estate in self:
+            if estate.state == 'offer_accepted' and float_compare(estate.selling_price, estate.expected_price*0.8, precision_rounding=0.01) < 0:
+                raise ValidationError('Selling price must be at least 80% of expected price.')
 

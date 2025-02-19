@@ -23,6 +23,10 @@ class EstatePropertyOffer(models.Model):
         default='new',
     )
 
+    _sql_constraints = [
+        ('price', 'CHECK(price > 0)', 'Prices must be strictly positive.'),
+    ]
+
     def action_set_accepted(self):
         if 'accepted' in self.property_id.offer_ids.mapped('state'):
             raise UserError('Another offer has already been accepted')
