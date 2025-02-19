@@ -2,11 +2,16 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <Counter/>
-        <Counter/>
         <div>
+            <div class="d-flex gap-3">
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+            </div>
+            <div class="fs-3">The sum is: <t t-esc="sum.value"/></div>
+            <div class="border border-2">
                 <Card title="'Infocity'" content="str1"/>
                 <Card title="'Sabarmati'" content="str2"/>
+            </div>
         </div>
     </t>
 
