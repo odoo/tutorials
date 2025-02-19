@@ -4,7 +4,7 @@ import datetime
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Property of the estate"
+    _description = "Estate property"
 
     name = fields.Char('Name', required=True)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')

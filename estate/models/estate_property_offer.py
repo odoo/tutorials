@@ -4,6 +4,7 @@ import datetime
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
+    _description = "Offer on estate property"
 
     price = fields.Float('Price')
     partner_id = fields.Many2one('res.partner', string='Buyer', copy=False, required=True)
