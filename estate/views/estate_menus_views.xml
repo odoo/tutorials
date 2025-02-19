@@ -21,7 +21,11 @@
         parent="estate_menu_root" />
 
     <menuitem
-        id="estate_menu_settings_action"
+        id="estate_menu_type_action"
         parent="estate_menu_settings"
         action="estate_type_view_action" />
+    <menuitem
+        id="estate_menu_tags_action"
+        parent="estate_menu_settings"
+        action="estate_tag_view_action" />
 </odoo>
