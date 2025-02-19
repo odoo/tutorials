@@ -30,7 +30,11 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form>
+                <header>
+                    <button name="sell_property" type="object" string="SOLD"/>
+                    <button name="cancel_property" type="object" string="CANCEL"/>
+                </header>
                 <sheet>
                     <group>
                         <h1>
@@ -70,6 +74,8 @@
                                 <list>
                                     <field name="price"/>
                                     <field name="partner_id"/>
+                                    <button name="action_validate" string="" type="object" icon="fa-check"/>
+                                    <button name="action_refuse" string="" type="object" icon="fa-cross"/>
                                     <field name="status"/>
                                 </list>
                             </field>
