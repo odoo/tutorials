@@ -4,19 +4,20 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Property">
+            <list string="Estate Property" decoration-muted="state=='sold'" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state in ['offer_accepted']">
                 <field name="name"/>
                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" optional="hide"/>
@@ -104,14 +105,20 @@
         </field>
     </record>
 
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Estate Property Offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+
     <record id="estate_property_offer_view_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Estate Property Offer" editable="bottom">
+            <list string="Estate Property Offer" editable="bottom" decoration-danger="state=='refused'" decoration-success="state=='accepted'">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <field name="state"/>
                 <button name="action_set_accepted" string="Accept" type="object" icon="fa-check" invisible="state != 'new'"/>
                 <button name="action_set_refused" string="Refuse" type="object" icon="fa-times" invisible="state != 'new'"/>
             </list>
@@ -167,6 +174,9 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
+                <header>
+                    <button type="action" name="%(estate.estate_property_offer_action)d" string="Offers"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <div class="oe_edit_only">
