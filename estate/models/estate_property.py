@@ -18,7 +18,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date('Available From', default=fields.Date.today() + relativedelta(months=5), copy=False)
-    expected_price = fields.Float(digits=(20, 2), required=True)
+    expected_price = fields.Float(digits=(20, 2), required=True, default=1000)
     selling_price = fields.Float(digits=(20, 2), readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer('Living Area (sqm)')
@@ -45,7 +45,7 @@ class EstateProperty(models.Model):
         ],
         copy=False,
         required=True,
-        default='new'
+        default='new',
     )
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
@@ -58,17 +58,13 @@ class EstateProperty(models.Model):
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        for record in self:
-            best_price = 0.0
-            for offer in record.offer_ids:
-                if (offer.price > best_price):
-                    best_price = offer.price
-            record.best_price = best_price
+        for property in self:
+            property.best_price = max(property.offer_ids.mapped('price') + [0.0])
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -80,28 +76,27 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
+        for property in self:
+            if property.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold")
-            record.state = 'sold'
+            property.state = 'sold'
         return True
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
+        for property in self:
+            if property.state == 'sold':
                 raise UserError("Sold properties cannot be cancelled")
-            record.state = 'cancelled';
+            property.state = 'cancelled';
         return True
 
     @api.constrains('selling_price')
     def _check_offer_good_enough(self):
-        for record in self:
-            if float_compare(record.selling_price, .9 * record.expected_price, precision_digits=10) < 0:
+        for property in self:
+            if float_compare(property.selling_price, .9 * property.expected_price, precision_digits=10) < 0:
                 raise ValidationError("The selling price must be at least 90% of the expected price")
 
     @api.ondelete(at_uninstall=True)
     def _unlink_estate_property(self):
-        for record in self:
-            if record.state != 'new' and record.state != 'cancelled':
-                raise UserError("Removing a property is not allowed if it is neither new nor cancelled")
+        if self.filtered(lambda property: property.state not in ('new', 'cancelled')):
+            raise UserError("Removing a property is not allowed if it is neither new nor cancelled")
 

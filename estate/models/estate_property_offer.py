@@ -32,39 +32,41 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
-        for record in self:
-            if not record.create_date:
-                record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
+        for property_offer in self:
+            if property_offer.create_date:
+                create_date = property_offer.create_date.date()
             else:
-                record.date_deadline = record.create_date.date() + relativedelta(days=record.validity)
+                create_date = fields.Date.today()
+            property_offer.date_deadline = create_date + relativedelta(days=property_offer.validity)
 
     @api.onchange('date_deadline')
     def _inverse_date_deadline(self):
-        for record in self:
-            if not record.create_date:
-                record.validity = (record.date_deadline - fields.Date.today()).days
+        for property_offer in self:
+            if property_offer.create_date:
+                create_date = property_offer.create_date.date()
             else:
-                record.validity = (record.date_deadline - record.create_date.date()).days
+                create_date = fields.Date.today()
+            property_offer.validity = (property_offer.date_deadline - create_date).days
 
     def action_accept(self):
-        for record in self:
-            record.status = 'accepted'
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.state = 'accepted'
+        for property_offer in self:
+            property_offer.status = 'accepted'
+            property_offer.property_id.selling_price = property_offer.price
+            property_offer.property_id.buyer_id = property_offer.partner_id
+            property_offer.property_id.state = 'accepted'
         return True
 
     def action_refuse(self):
-        for record in self:
-            record.status = 'refused'
+        for property_offer in self:
+            property_offer.status = 'refused'
         return True
 
     # TODO: should maybe modify vals_list variable and then call super().create
     @api.model_create_multi
     def create(self, vals_list):
-        records = super().create(vals_list)
-        for record in records:
-            if float_compare(record.price, record.property_id.best_price, precision_digits=10) < 0:
+        property_offers = super().create(vals_list)
+        for property_offer in property_offers:
+            if float_compare(property_offer.price, property_offer.property_id.best_price, precision_digits=10) < 0:
                 raise UserError("Creating an offer which is worse than another is not allowed")
-            record.property_id.state = 'received'
-        return records
+            property_offer.property_id.state = 'received'
+        return property_offers
