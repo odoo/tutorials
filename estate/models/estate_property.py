@@ -44,7 +44,7 @@ class EstateProperty(models.Model):
         string="Status",
         selection=[
             ('new','New'),
-            ('offer_recevied','Offer Received'),
+            ('offer_received','Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold','Sold'),
             ('cancelled','Cancelled')
@@ -60,6 +60,8 @@ class EstateProperty(models.Model):
     property_offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store="True")
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
+    _inherit = ["mail.thread"]
+    property_image = fields.Binary("Image", attachment=True)
 
     @api.depends('property_offer_ids')
     def _compute_best_price(self):

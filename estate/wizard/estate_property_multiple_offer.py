@@ -12,7 +12,7 @@ class EstatePropertyMultipleOffer(models.TransientModel):
         active_ids = self._context.get('active_ids', [])
         property_obj = self.env['estate.property'].browse(active_ids)
         for property in property_obj:
-            if property.state in ['new', 'offer_recevied']:
+            if property.state in ['new', 'offer_received']:
                 val = [{
                     'price' : self.price,
                     'partner_id' : self.partner_id.id,

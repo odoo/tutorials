@@ -60,7 +60,7 @@ class EstatePropertyOffer(models.Model):
                 record.status = 'refused'
                 record.property_id.selling_price = 0.0
                 record.property_id.buyer_id = False
-                record.property_id.state = 'offer_recevied'
+                record.property_id.state = 'offer_received'
             else:
                 record.status = 'refused'
         return True
@@ -76,6 +76,6 @@ class EstatePropertyOffer(models.Model):
         min_price = min(prices, default=property_obj.best_price)
         if min_price < property_obj.best_price:
             raise UserError(_("offer with a lower amount than an existing offer"))
-        property_obj.state = 'offer_recevied'
+        property_obj.state = 'offer_received'
 
         return super().create(vals)

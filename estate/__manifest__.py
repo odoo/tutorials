@@ -11,11 +11,12 @@
     'category': 'Real Estate/Brokerage',
     'version': '0.1',
 
-    'depends': ['base'],
+    'depends': ['base', 'website'],
     'application': True,
     'installable': True,
 
     'data' : [
+        'views/estate_property_templete.xml',
         'security/group_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_offer_views.xml',
