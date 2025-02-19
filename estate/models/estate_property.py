@@ -39,6 +39,7 @@ class EstateProperty(models.Model):
         ],
         string="Garden Orientation"
     )
+    property_image = fields.Image(string="Property Image")
 
     active = fields.Boolean("Active", default=True)
     state = fields.Selection(

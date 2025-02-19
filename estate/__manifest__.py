@@ -4,19 +4,20 @@
 {
     'name': 'Real Estate',
     'category': 'Real Estate/Brokerage',
-    'summary': 'Manage real estate properties',
+    'summary': 'Manage and sell real estate properties',
     'description': """
-    This module allows the users to manage their real estate properties.
-    It also enables them to advertise them.
-    """,
+This module allows users to run real estate agencies. They can advertise and sell estate properties after potential buyers make their offer.
+""",
     'version': '1.0',
     'depends': [
         'base',
         'mail',
+        'website',
     ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'views/estate_property_actions.xml',
         'wizard/estate_property_offer_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
@@ -25,6 +26,8 @@
         'views/estate_menus.xml',
         'views/res_users_views.xml',
         'report/estate_templates.xml',
+        'views/estate_property_list_template.xml',
+        'views/estate_property_detail_template.xml',
         'report/estate_reports.xml',
         'data/estate.property.type.csv',
         'data/estate.property.tag.csv',

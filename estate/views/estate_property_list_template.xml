@@ -1,0 +1,40 @@
+<odoo>
+    <template id="property_list_template" name="Property List">
+        <t t-call="website.layout">
+            <div class="container pt-4">
+                <h2>Browse available real estate properties</h2>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="card col-md-4 p-2">
+                            <t t-if="property.property_image">
+                                <img t-att-src="image_data_uri(property.property_image)" class="mb-4 rounded" alt="Property Image" width="400" height="300"/>
+                            </t>
+                            <h5 t-out="property.name"></h5>
+                            <p><t t-out="property.expected_price"/></p>
+                            <a t-att-href="'/property/%s' % property.id" class="btn btn-primary d-flex justify-content-center">View</a>
+                        </div>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-center my-4">
+                    <t t-call="website.pager"/>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <record id="properties_page" model="website.page">
+        <field name="url">/properties</field>
+        <field name="is_published">True</field>
+        <field name="view_id" ref="property_list_template"/>
+        <field name="track">True</field>
+        <field name="website_meta_description">This page lists all real estate properties</field>
+    </record>
+
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="page_id" ref="properties_page"/>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">50</field>
+    </record>
+</odoo>
