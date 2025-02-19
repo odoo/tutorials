@@ -2,9 +2,40 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <h2 class="text-center mb-2 mt-4">Counters</h2>
+        <div class="d-flex justify-content-around">
+            <Counter onChange.bind="incrementSum" />
+            <Counter onChange.bind="incrementSum" />
+            <Counter />
         </div>
+
+        <h3 class="text-center fw-bold mb-4">The sum is: <t t-esc="state.sum" /></h3>
+
+        <hr class='mb-4' />
+
+        <h2 class="text-center mb-4">Cards</h2>
+        <div class="d-flex justify-content-center px-5">
+            <Card title="'Card 1'">
+                <Counter />
+            </Card>
+            <Card title="'Card 2'">
+                <ul>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                </ul>
+            </Card>
+            <Card title="'Card 3'">
+                <TodoList />
+            </Card>
+        </div>
+
+        <hr class='mb-4' />
+
+        <div class="d-flex justify-content-center">
+            <TodoList />
+        </div>
+
     </t>
 
 </templates>
