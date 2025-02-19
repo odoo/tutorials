@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="property_list_detail_page" name="Property Detail Page">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h1 class="text-center mb-4 text-primary fw-bold">
+                   <i class="fa fa-home me-2"></i> <t t-esc="property.name"/>
+                </h1>
+                <div class="row mt-4">
+                    <div class="col-md-6 d-flex justify-content-center">
+                        <t t-if="property.property_image">
+                            <img t-att-src="image_data_uri(property.property_image)"
+                                 class="img-fluid rounded"
+                                 alt="Property Image"/>
+                        </t>
+                        <t t-else="">
+                            <div class="text-center border p-5 rounded bg-light">
+                                No Image Available
+                            </div>
+                        </t>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-4 border rounded bg-white">
+                            <p><strong>Description:</strong></p>
+                            <p><t t-esc="property.description"/></p>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Expected Price:</strong>
+                                        <t t-esc="property.expected_price"/> USD
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Bedrooms:</strong>
+                                        <t t-esc="property.bedrooms"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Living Area:</strong>
+                                        <t t-esc="property.living_area"/> sqm
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Total Area:</strong>
+                                        <t t-esc="property.total_area"/> sqft
+                                    </p>
+                                </div>
+                            </div>
+                            <p><strong>Availability From:</strong>
+                                <t t-esc="property.date_availability"/>
+                            </p>
+                            <p><strong>Garden:</strong>
+                                <t t-esc="property.garden and 'Yes' or 'No'"/>
+                            </p>
+                            <t t-if="property.garden">
+                                <p><strong>Garden Area:</strong>
+                                    <t t-esc="property.garden_area"/> sqm
+                                </p>
+                                <p><strong>Garden Orientation:</strong>
+                                    <t t-esc="property.garden_orientation"/>
+                                </p>
+                            </t>
+                            <p><strong>Garage:</strong>
+                                <t t-esc="property.garage and 'Yes' or 'No'"/>
+                            </p>
+                            <p><strong>Facades:</strong>
+                                <t t-esc="property.facades"/>
+                            </p>
+                            <div class="text-center mt-4">
+                                <a href="/contactus" class="btn btn-primary px-4 py-2">
+                                    Contact Us for <t t-esc="property.name"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>
+                p{
+                    font-size: 1.1rem;
+                }
+            </style>
+        </t>
+    </template>
+</odoo>

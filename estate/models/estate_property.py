@@ -40,6 +40,7 @@ class EstateProperty(models.Model):
         ('sold_offer', 'Sold'),
         ('cancel_offer', 'Cancelled'),
     ], string='Status', required=True, default='new_offer', copy=False)
+    property_image = fields.Image(string="Property Image", max_width=1024, max_height=1024, store=True)
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company, string='Company')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)

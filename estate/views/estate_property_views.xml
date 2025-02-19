@@ -81,13 +81,21 @@
                         <button name="estate.estate_property_offer_report_action" type="action" string="Print" class="btn-primary" icon="fa-print"/>
                     </div>
                     <div class="oe_title">
-                        <h1>
+                    <group>
+                        <span style="font-size: 32px; font-weight: normal;">
                             <field name="name" placeholder="My new house"/>
-                        </h1>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </span>
+                        <group>
+                            <field name="property_image" widget="image"
+                                options="{'zoom': true}"
+                                style="max-width: 300px; max-height: 300px;"
+                                nolabel = "1" />
+                        </group>
+                    </group>
                     </div>
                     <group>
                         <group>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="state"/>
                             <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
