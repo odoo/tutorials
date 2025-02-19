@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3" style="display: flex; gap: 10px;">
-            <span>hello world</span>
-            <span >
-                <Counter label="'Counter 1'"/>
-            </span>
-            <span >
-                <Counter label="'Counter 2'"/>
-            </span>
+        <div class="p-3">
+            <span>Hello World!</span>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <Counter label="'Counter 1'" onChange.bind="increment" />
+                <Counter label="'Counter 2'" onChange.bind="increment" />
+            </div>
+            <div>Sum is: <t t-esc="sum.value" /> </div>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <Card title="'Card 1'">
+                    <Counter label="'Counter 3'"/>
+                </Card>
+                <Card title="'Card 2'">
+                    <Counter label="'Counter 4'"/>
+                </Card>
+            </div>
+            <div>
+                <TodoList />
+            </div>
         </div>
     </t>
 </templates>
