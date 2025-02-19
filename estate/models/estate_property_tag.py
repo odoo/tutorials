@@ -1,4 +1,5 @@
-from odoo import fields,models # type: ignore
+from odoo import fields
+from odoo import models
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.tag"

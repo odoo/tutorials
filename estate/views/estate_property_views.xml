@@ -52,6 +52,7 @@
                             <field name="property_type_id" string="Property Type" options="{'no_create' : True, 'no_edit' : True}"/>
                             <field name="postcode" string="Post Code"/>
                             <field name="date_availability" string="Available From"/>
+                            <field name="image" widget="image"></field>
                         </group>
                         <group>
                             <field name="expected_price" string="Expected Price" />

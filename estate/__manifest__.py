@@ -5,7 +5,7 @@
     'author': "Odoo",
     'category': 'Real Estate/Brokerage',
     'version': '1.0',
-    'depends': ['base','mail'],
+    'depends': ['base','mail', 'web', 'website'],
     'data':[
         'security/estate_security.xml',
         'security/ir.model.access.csv',
@@ -16,6 +16,7 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_details_template.xml',
         'views/estate_property_list_template.xml',
+        #'views/estate_property_make_offer_template.xml',
         'views/estate_menus.xml',
         'data/estate_property_type_data.xml',
         'report/estate_reports.xml',

@@ -1,31 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="estate.property_list_template" name="Property List">
-        <t t-call="web.layout">
-            <div class="container mt5">
-                <h1>Available Properties</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Property</th>
-                            <th>Expected Price</th>
-                            <th>State</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+    <template id="property_list_template" name="Property List">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+
+                <!-- Page Title -->
+                <h1 class="text-center text-odoo fw-bold mb-4">Available Properties</h1>
+
+                <!-- Property Grid -->
+                <div class="row row-cols-1 row-cols-md-3 g-4">
                     <t t-foreach="properties" t-as="property">
-                        <tr>
-                            <td><t t-esc="property.name"/> </td>
-                            <td><t t-esc="property.expected_price"/></td>
-                            <td><t t-esc="property.state"/></td>
-                            <td>
-                                <a t-att-href="'/estate/property/%s' % property.id" class="btn btn-primary">View Details</a>
-                            </td>
-                        </tr>
+                        <div class="col">
+                            <div class="card shadow-sm h-100 border-0">
+                                <a t-att-href="'/properties/%d' % property.id">
+                                    <img t-if="property.image"
+                                         t-att-src="image_data_uri(property.image)"
+                                         class="card-img-top img-fluid"
+                                         alt="Property Image"
+                                         style='height:250px;'
+                                    />
+                                    <img t-if="not property.image"
+                                         src="/estate/static/src/img/estate.jpeg"
+                                         class="card-img-top img-fluid"
+                                         alt="Default Image"/>
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title text-odoo fw-bold">
+                                        <t t-esc="property.name"/>
+                                    </h5>
+                                    <p class="card-text">
+                                        <strong>Expected Price:</strong> $<t t-esc="property.expected_price"/>
+                                    </p>
+                                    <p>
+                                        <strong>State:</strong>
+                                        <t t-if="property.state == 'new'">
+                                            <span class="badge bg-success px-3 py-2">New</span>
+                                        </t>
+                                        <t t-elif="property.state == 'cancelled'">
+                                            <span class="badge bg-danger px-3 py-2">Cancelled</span>
+                                        </t>
+                                        <t t-elif="property.state == 'sold'">
+                                            <span class="badge bg-warning px-3 py-2">Sold</span>
+                                        </t>
+                                        <t t-elif="property.state == 'offer_received'">
+                                            <span class="badge bg-info px-3 py-2">Offer Received</span>
+                                        </t>
+                                        <t t-elif="property.state == 'offer_accepted'">
+                                            <span class="badge bg-primary px-3 py-2">Offer Accepted</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="badge bg-secondary px-3 py-2">Unknown</span>
+                                        </t>
+                                    </p>
+                                    <a t-att-href="'/properties/%s' % property.id"
+                                       class="btn btn-primary w-100">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </t>
-                    </tbody>
-                </table>
+                </div>
             </div>
         </t>
     </template>

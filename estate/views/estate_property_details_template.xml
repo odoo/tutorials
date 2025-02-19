@@ -3,34 +3,140 @@
     <template id="estate_property_details_template" name="Property Details">
         <t t-call="website.layout">
             <div class="container mt-5">
-                <h1><t t-esc="property.name"/></h1>
-                <p><strong>Expected Price:</strong> <t t-esc="property.expected_price"/> USD</p>
-                <p><strong>Status:</strong> <t t-esc="property.state"/></p>
-
-                <h3>Offers</h3>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Buyer</th>
-                            <th>Offer Price</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="property.offer_ids" t-as="offer">
-                            <tr>
-                                <td><t t-esc="offer.partner_id.name"/></td>
-                                <td><t t-esc="offer.price"/> USD</td>
-                                <td><t t-esc="offer.state"/></td>
-                                <td>
-                                    <a t-att-href="'/estate/offer/%s' % offer.id" class="btn btn-primary">View Offer</a>
-                                </td>
-                            </tr>
-                        </t>
-                    </tbody>
-                </table>
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="card shadow-lg p-4 border-0 rounded">
+                            <div class="row align-items-center">
+                                <!-- Property Image -->
+                                <div class="col-md-6 text-center">
+                                    <t t-if="property.image">
+                                        <img t-att-src="'data:image/png;base64,%s' % property.image.decode('utf-8')"
+                                            class="img-fluid rounded shadow-lg w-100" alt="Property Image" />
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/estate/static/src/img/estate.jpeg"
+                                            class="img-fluid rounded shadow-lg w-100" alt="No Image" />
+                                    </t>
+                                </div>
+                                <!-- Property Details -->
+                                <div class="col-md-6">
+                                    <h1 class="fw-bold text-primary">
+                                        <t t-esc="property.name" />
+                                    </h1>
+                                    <hr class="mb-3"/>
+                                    <p><strong>Price:</strong> $<t t-esc="property.expected_price" /></p>
+                                    <p><strong>Living Area:</strong> <t t-esc="property.living_area" /> sqft</p>
+                                    <p><strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/></p>
+                                    <p><strong>Garden:</strong> <t t-esc="property.is_garden"/></p>
+                                    <p><strong>Description:</strong> <t t-esc="property.description or 'No description available'" /></p>
+                                    <!-- Property State -->
+                                    <p class="mt-3">
+                                        <strong>State:</strong>
+                                        <t t-if="property.state == 'new'">
+                                            <span class="badge bg-info text-white px-3 py-2">New</span>
+                                        </t>
+                                        <t t-if="property.state == 'offer_accepted'">
+                                            <span class="badge bg-warning text-dark px-3 py-2">Offer Accepted</span>
+                                        </t>
+                                        <t t-if="property.state == 'offer_received'">
+                                            <span class="badge bg-warning text-dark px-3 py-2">Offer Received</span>
+                                        </t>
+                                        <t t-if="property.state == 'sold'">
+                                            <span class="badge bg-success px-3 py-2">Sold</span>
+                                        </t>
+                                        <t t-if="property.state == 'cancelled'">
+                                            <span class="badge bg-danger px-3 py-2">Cancelled</span>
+                                        </t>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Offers  -->
+                        <h2 class="mt-5 text-center text-odoo fw-bold">Offers</h2>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Buyer</th>
+                                        <th>Offer Price</th>
+                                        <th>State</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="best_offer" t-value="max(property.offer_ids, key=lambda o: o.offer_price) if property.offer_ids else None"/>
+                                    <t t-foreach="property.offer_ids" t-as="offer">
+                                        <tr t-att-class="'table-success' if offer == best_offer else ''">
+                                            <td><t t-esc="offer.partner_id.name"/></td>
+                                            <td class="text-success fw-bold">$<t t-esc="offer.offer_price"/></td>
+                                            <td>
+                                                <t t-if="offer.state == 'offer_accepted'">
+                                                    <span class="badge bg-success px-3 py-2">Offer Accepted</span>
+                                                </t>
+                                                <t t-if="offer.state == 'offer_rejected'">
+                                                    <span class="badge bg-danger px-3 py-2">Offer Rejected</span>
+                                                </t>
+                                                <t t-if="offer == best_offer">
+                                                    <span class="badge bg-warning text-dark px-3 py-2">Best Offer</span>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Offer Form -->
+                        <h3 class="mt-5 text-center text-odoo fw-bold">Make an Offer</h3>
+                        <form t-att-action="'/properties/%s/make_offer' % property.id" method="post" class="mt-3 p-4 border rounded shadow">
+                            <div class="mb-3">
+                                <label for="partner_id" class="form-label">Buyer</label>
+                                <select name="partner_id" class="form-control" required="True">
+                                    <t t-foreach="request.env['res.partner'].sudo().search([])" t-as="partner">
+                                        <option t-att-value="partner.id"><t t-esc="partner.name"/></option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="offer_price" class="form-label">Offer Price ($)</label>
+                                <input type="number" name="offer_price" class="form-control" required="True" min="1"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Submit Offer</button>
+                        </form>
+                        <!-- Back Button -->
+                        <div class="text-center mt-4">
+                            <a href="/properties" class="btn btn-lg btn-outline-primary px-4 py-2 fw-bold shadow-sm transition">
+                                <i class="fa fa-arrow-left"></i> Back to Properties
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- Custom Styles -->
+            <style>
+                .card {
+                    background: #ffffff;
+                    border-radius: 15px;
+                    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+                }
+                h1 {
+                    font-size: 2rem;
+                }
+                .badge {
+                    font-size: 1rem;
+                    border-radius: 5px;
+                }
+                .btn-outline-primary {
+                    transition: 0.3s ease-in-out;
+                }
+                .btn-outline-primary:hover {
+                    background: #0d6efd;
+                    color: white !important;
+                    transform: scale(1.05);
+                }
+                .img-fluid {
+                    max-height: 350px;
+                    object-fit: cover;
+                }
+            </style>
         </t>
     </template>
 </odoo>

@@ -1,5 +1,8 @@
-from odoo import fields, models, api # type: ignore
-from odoo.exceptions import ValidationError, UserError # type: ignore
+from odoo import fields
+from odoo import models
+from odoo import api
+from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
@@ -23,6 +26,7 @@ class EstateProperty(models.Model):
     is_garage = fields.Boolean(default=False)
     is_garden = fields.Boolean(default=False)
     active = fields.Boolean(default=True)
+    image = fields.Image(string="Image")
 
     #--------------------------------------------Selection Fields---------------------------------------#
     garden_orientation = fields.Selection(
@@ -53,12 +57,10 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     
     # --------------------------------------------Compute Methods----------------------------------------#
-    @api.depends("living_area", "garden_area", "measurement_unit")
+    @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for property in self:
             property.total_area = property.living_area + property.garden_area
-            if property.measurement_unit == 'sqft':
-                property.total_area *= 10.764
 
     @api.depends("offer_ids.offer_price")
     def _compute_best_price(self):
@@ -70,13 +72,11 @@ class EstateProperty(models.Model):
         if self.state == 'sold':
             raise UserError('Property is Already sold')
         self.state = "sold"
-        return True
 
     def action_property_cancel(self):
         if self.state == 'cancelled':
             raise UserError('Property is already cancelled')
         self.state = "cancelled"
-        return True
     
     # --------------------------------------------Constrain and Onchange Methods------------------------------------------------#
     @api.onchange("is_garden")

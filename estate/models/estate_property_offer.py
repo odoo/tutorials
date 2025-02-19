@@ -1,6 +1,9 @@
 from dateutil.relativedelta import relativedelta
-from odoo import fields, api, models # type: ignore
-from odoo.exceptions import ValidationError, UserError # type: ignore
+from odoo import fields
+from odoo import api
+from odoo import models
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -60,14 +63,10 @@ class EstatePropertyOffer(models.Model):
 
     #-------------------------------------CRUD methods------------------------------------------#
     @api.model_create_multi
-    def create(self, vals_list):
-        """Override the create() method to only allow offers bigger than existing
-        offers and update the property state when a new valid offer is created"""
-        for vals in vals_list:
-            property = self.env['estate.property'].browse(vals['property_id'])
-            best_price = property.best_price
-            if vals['offer_price'] < best_price:
-                raise UserError(f"Please Increase your offer amount. It should be more than {best_price}")
-            property.state = "offer_received"
-        return super().create(vals_list)
-
+    def create(self, vals):
+        property = self.env['estate.property'].browse(vals.get('property_id'))
+        if property.offer_ids:
+            if vals.get('offer_price') < property.best_price:
+                raise ValidationError("The offer price should be more than best offer")
+        property.state = "offer_received"
+        return super().create(vals)

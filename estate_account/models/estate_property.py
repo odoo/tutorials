@@ -1,4 +1,6 @@
-from odoo import models, api, fields #type: ignore
+from odoo import models 
+from odoo import api
+from odoo import fields 
 
 
 class EstateProperty(models.Model):

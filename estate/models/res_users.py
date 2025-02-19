@@ -1,6 +1,7 @@
-from odoo import fields, models #type: ignore
+from odoo import fields
+from odoo import models 
 
-class InheritedUsers(models.Model):
+class ResUsers(models.Model):
     _inherit = 'res.users'
 
 # ------------------------------Relational Fields--------------------------------------#
