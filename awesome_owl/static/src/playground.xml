@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
-
+   <t t-name="awesome_owl.Playground">
+      <h1>Welcome to the Playground</h1>
+      <Counter/>
+      <Counter/>
+      <Card title="'Card 1'" content="'This is the first card'"/>
+      <Card title="'Card 2'" content="'This is the second card'"/>
+      <Card title="'Card 3'" content="'This is the third card'"/>
+   </t>
 </templates>
