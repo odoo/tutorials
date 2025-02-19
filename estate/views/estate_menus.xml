@@ -3,9 +3,9 @@
     <menuitem id="estate_menu_root" name="Real Estate">
         <menuitem id="estate_first_level_menu" name="Advertisements">
             <menuitem
-                    id="estate_model_menu_action"
-                    action="estate_property_action"
-                    name="Properties"
+                id="estate_model_menu_action"
+                action="estate_property_action"
+                name="Properties"
             />
         </menuitem>
     </menuitem>
