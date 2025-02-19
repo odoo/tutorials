@@ -29,3 +29,4 @@ class EstatePropertyOfferWizard(models.TransientModel):
 
     def cancel_offer(self):
         return {'type': 'ir.actions.act_window_close'}
+

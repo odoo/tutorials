@@ -10,14 +10,25 @@
                         <div class="col-md-4">
                             <label for="listed_after">Listed After:</label>
                             <input type="date" id="listed_after" name="listed_after"
-                                class="form-control" />
+                                class="form-control" t-att-value="listed_after or ''" />
                         </div>
                         <div class="col-md-2">
                             <button type="submit" class="btn btn-primary mt-4">Listed After</button>
                         </div>
+                        <div class="col-md-4 offset-md-2">
+                            <label for="search">Search Property:</label>
+                            <div class="input-group">
+                                <input type="text" id="search" name="search"
+                                    class="form-control" placeholder="Enter property name"
+                                    t-att-value="search_query" />
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                     </div>
-                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+
                 </form>
+
                 <div class="row">
                     <t t-foreach="properties" t-as="property">
                         <div class="col-md-4">
@@ -41,25 +52,13 @@
 
                 <div class="row mt-4">
                     <div class="col d-flex justify-content-center">
-                        <nav>
-                            <ul class="pagination">
-                                <t t-if="page &gt; 1">
-                                    <li class="page-item">
-                                        <a t-att-href="'/properties/page/%s' % (page - 1)"
-                                            class="page-link">Previous</a>
-                                    </li>
-                                </t>
-                                <t t-if="page &lt; total_pages">
-                                    <li class="page-item">
-                                        <a t-att-href="'/properties/page/%s' % (page + 1)"
-                                            class="page-link">Next</a>
-                                    </li>
-                                </t>
-                            </ul>
-                        </nav>
+                        <t t-if="pager">
+                            <t t-call="website.pager">
+                                <t t-set="pager" t-value="pager" />
+                            </t>
+                        </t>
                     </div>
                 </div>
-
             </div>
         </t>
     </template>

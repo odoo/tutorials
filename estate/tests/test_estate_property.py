@@ -1,7 +1,6 @@
-from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import Form, tagged 
-
+from odoo.tests.common import TransactionCase
 
 @tagged("post_install", "-at_install")
 class EstateTestCase(TransactionCase):
@@ -11,7 +10,7 @@ class EstateTestCase(TransactionCase):
         cls.property_type = cls.env["estate.property.type"].create(
             {"name": "Apartment"}
         )
-        cls.partner = cls.env["res.partner"].search([("name", "=", "Deco Addict")], limit=1)
+        cls.partner = cls.env['res.partner'].create({'name': 'Krishna Patel'})
         cls.property = cls.env["estate.property"].create(
             {
                 "name": "Test Property",
@@ -19,7 +18,6 @@ class EstateTestCase(TransactionCase):
                 "expected_price": 100000,
                 "user_id": cls.env.user.id,
                 "state": "new",
-                "garden": True,
             }
         )
         cls.offer = cls.env["estate.property.offer"].create(
@@ -60,8 +58,9 @@ class EstateTestCase(TransactionCase):
             form.garden = False
             self.assertEqual(form.garden_area, 0, "Garden Area should be reset to 0 when Garden checkbox is unchecked")
             self.assertEqual(form.garden_orientation, False, "Garden Orientation should be reset to False when Garden checkbox is unchecked")
+
             form.garden = True
-            self.assertNotEqual(form.garden_area, 10, "Garden Area should be 10 when Garden checkbox is checked")
-            self.assertNotEqual(form.garden_orientation, 'north', "Garden Orientation should North when Garden checkbox is checked")
+            self.assertEqual(form.garden_area, 10, "Garden Area should be 10 when Garden checkbox is checked")
+            self.assertEqual(form.garden_orientation, 'north', "Garden Orientation should North when Garden checkbox is checked")
  
             

@@ -8,8 +8,8 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property"
     _order = "id desc"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
-    
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+
     active = fields.Boolean(string="active", default=True)
     state = fields.Selection(
         [
@@ -17,7 +17,7 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("cancelled", "Cancelled")
+            ("cancelled", "Cancelled"),
         ],
         default="new",
         store="True",
@@ -25,7 +25,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         group_expand=True,
-        tracking=True
+        tracking=True,
     )
     name = fields.Char(string="Property", tracking=True)
     image_1920 = fields.Image("Image", max_width=1920, max_height=1080)
@@ -33,7 +33,7 @@ class EstateProperty(models.Model):
     user_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
-    partner_id = fields.Many2one('res.partner', string="Responsible", tracking=True)
+    partner_id = fields.Many2one("res.partner", string="Buyer", tracking=True)
     description = fields.Text(string="Description")
     selling_price = fields.Float(readonly=True, copy=False)
     postcode = fields.Char(string="Postcode")
@@ -57,11 +57,14 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many(
         "estate.property.offer", "property_id", string="Property Offers"
     )
-    total_area = fields.Float(
-        string="Total Area (sqm)", compute="_compute_total_area"
-    )
+    total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
-    company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company)
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company,
+    )
 
     _sql_constraints = [
         (
@@ -108,8 +111,23 @@ class EstateProperty(models.Model):
         self.message_post(
             body=f"The property '{self.name}' has been sold for {self.selling_price}!",
             subject="Property Sold",
-            message_type='notification'
+            message_type="notification",
         )
+        template = self.env.ref("estate.mail_template_property_sold")
+        template.send_mail(
+            self.id, force_send=True, email_layout_xmlid="mail.mail_notification_light"
+        )
+        message_body = f"Hello {self.partner_id.name}, Congratulations! Your property '{self.name}' has been successfully sold. Thank you!"
+        whatsapp_message = self.env[
+            "whatsapp.message"
+        ].create(
+            {
+                "body": message_body,
+                "mobile_number": self.partner_id.mobile,  # assuming mobile is in international format like +123456789
+                "message_type": "outbound",
+            }
+        )
+        whatsapp_message._send()
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
@@ -121,7 +139,7 @@ class EstateProperty(models.Model):
                 precision_rounding=0.01,
             )
             < 0
-        ): 
+        ):
             raise ValidationError(
                 "The selling price cannot be lower than 90% of the expected price. Please adjust the selling price or expected price."
             )
@@ -146,10 +164,10 @@ class EstateProperty(models.Model):
 
     def action_add_offer(self):
         return {
-            'type': 'ir.actions.act_window',
-            'name': 'Add Offer',
-            'res_model': 'estate.property.offer.wizard',
-            'view_mode': 'form',
-            'target': 'new',
+            "type": "ir.actions.act_window",
+            "name": "Add Offer",
+            "res_model": "estate.property.offer.wizard",
+            "view_mode": "form",
+            "target": "new",
         }
 

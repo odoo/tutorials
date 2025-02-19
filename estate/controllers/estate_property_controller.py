@@ -1,22 +1,25 @@
+import math
 from datetime import datetime
 from odoo import http
 from odoo.http import request
 
 
 class EstatePropertyController(http.Controller):
-
     @http.route(
-        ["/properties", "/properties/page/<int:page>"],
+        ["/properties","/properties/page/<int:page>"],
         type="http",
         auth="public",
         website=True,
     )
-    def list_properties(self, page=1, **kwargs):
+    def list_properties(self, listed_after=None, search=None, page=1, **kwargs):
         # print("POST data received:", request.params)
         properties_per_page = 6
         offset = (page - 1) * properties_per_page
         domain = [("state", "in", ("new", "offer_received"))]
-        listed_after = request.httprequest.form.get("listed_after")
+
+        if search:
+            domain.append(('name', 'ilike', search))
+
         if listed_after:
             try:
                 listed_after_date = datetime.strptime(listed_after, "%Y-%m-%d").date()
@@ -24,19 +27,23 @@ class EstatePropertyController(http.Controller):
             except ValueError:
                 pass
         total_properties = request.env["estate.property"].sudo().search_count(domain)
-        properties = (
-            request.env["estate.property"]
-            .sudo()
-            .search(domain, limit=properties_per_page, offset=offset)
+        properties = request.env["estate.property"].sudo().search(
+            domain, limit=properties_per_page, offset=offset
         )
-        total_pages = total_properties / properties_per_page
+        pager = request.website.pager(
+            url="/properties",
+            total=total_properties,
+            page=page,
+            step=properties_per_page,
+            url_args={"listed_after": listed_after, "search": search},
+        )
         return request.render(
             "estate.property_list_template",
             {
                 "properties": properties,
-                "page": page,
-                "total_pages": total_pages,
-                "listed_after": listed_after,
+                "pager": pager, 
+                'listed_after': listed_after or '',
+                'search_query': search or ''
             },
         )
 
