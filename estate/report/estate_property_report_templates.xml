@@ -92,7 +92,7 @@
 
 
     <template id="estate_property_company_header">
-        <div class="text-left">
+        <div>
             <strong>YourCompany</strong><br/>
             <hr/>
             250 Executive Park Blvd, Suite 3400<br/>
