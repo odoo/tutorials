@@ -8,7 +8,7 @@ from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
-    _description = 'Estate Property'
+    _description = 'Estate Property Offer'
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)',
          'The offer price must be strictly positive.'),
@@ -45,8 +45,8 @@ class EstatePropertyOffer(models.Model):
     def _inverse_deadline(self):
         for offer in self:
             if offer.create_date and offer.date_deadline:
-                dayys = (offer.date_deadline - offer.create_date).days
-                offer.validity = dayys
+                offer_days = (offer.date_deadline - offer.create_date).days
+                offer.validity = offer_days
 
     @api.model_create_multi
     def create(self, vals_list):

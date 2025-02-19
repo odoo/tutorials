@@ -10,7 +10,7 @@
 
     <!-- estate property list view -->
     <record id="estate_property_view_list" model="ir.ui.view">
-      <field name="name">estate.property.list</field>
+      <field name="name">estate.property.view.list</field>
       <field name="model">estate.property</field>
       <field name="arch" type="xml">
         <list string="Channel" default_order="id desc" decoration-muted="state == 'sold'" decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-danger="state == 'cancel'">
@@ -29,7 +29,7 @@
 
     <!-- estate property form view -->
     <record id="estate_property_view_form" model="ir.ui.view">
-      <field name="name">estate.property.form.view</field>
+      <field name="name">estate.property.view.form</field>
       <field name="model">estate.property</field>
       <field name="arch" type="xml">
         <form string="Property">
@@ -37,13 +37,11 @@
             <button type="object" name="action_sold" invisible="state=='sold' or state=='cancel'">SOLD</button>
             <button type="object" name="action_cancel" invisible="state=='sold' or state=='cancel'">CANCEL</button>
             <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancel"/>
+            <button string="Print" icon="fa-print" type="action" name="%(action_report_property_offer)d"></button>
           </header>
           <sheet>
             <group>
               <group>
-                <div>
-                  <p t-if="True">ok</p>
-                </div>
                 <div class="oe_title">
                   <div class="oe_edit_only">
                     <label for="name"/>
@@ -59,7 +57,6 @@
               </group>
               <group>
                 <group>
-                  <!-- <field name="state" string="Status"/> -->
                   <field name="property_type_id" options="{'no_create': True}"/>
                   <field name="postcode"/>
                   <field name="date_availability"/>
@@ -83,7 +80,6 @@
                   <field name="garden_area" invisible="not garden"></field>
                   <field name="garden_orientation" invisible="not garden"></field>
                   <field name="active"></field>
-                  <!-- <field name="state"></field> -->
                   <field name="total_area"></field>
                 </group>
               </page>
@@ -91,7 +87,6 @@
                 <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancel')">
                   <list editable="bottom" edit="True" default_order="price desc" decoration-success="status =='accepted'" decoration-danger="status =='refused'">
                     <field name="price"/>
-                    <!-- <field name="status"/> -->
                     <field name="partner_id"/>
                     <field name="create_date"/>
                     <field name="validity"/>
@@ -117,7 +112,7 @@
 
     <!-- estate property search view -->
     <record id="estate_property_view_search" model="ir.ui.view">
-      <field name="name">estate.property.list</field>
+      <field name="name">estate.property.view.search</field>
       <field name="model">estate.property</field>
       <field name="arch" type="xml">
         <search string="Estate Property">

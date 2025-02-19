@@ -9,8 +9,8 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class Estateproperty(models.Model):
     _name = 'estate.property'
-    _inherit = ['mail.thread']
     _description = 'Estate property'
+    _inherit = ['mail.thread']
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
          'The expected price must be strictly positive.'),
@@ -23,9 +23,7 @@ class Estateproperty(models.Model):
     property_type_id = fields.Many2one(
         'estate.property.type', string='Property Type')
     salesperson_id = fields.Many2one(
-        'res.users', string='Salesperson')
-    # salesperson_id = fields.Many2one(
-    #     'res.users', string='Salesperson', default=lambda self: self.env.user)
+        'res.users', string='Salesperson', default=lambda self: self.env.user)
     buyer_id = fields.Many2one(
         'res.partner', string='Buyer', copy=False)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
@@ -40,14 +38,19 @@ class Estateproperty(models.Model):
     garden_area = fields.Integer(string='Garden Area')
     garden_orientation = fields.Selection(
         string='Type',
-        selection=[('north', 'North'), ('south', 'South'),
-                   ('east', 'East'), ('west', 'West')]
+        selection=[('north', 'North'),
+                   ('south', 'South'),
+                   ('east', 'East'),
+                   ('west', 'West')]
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string='State',
-        selection=[('new', 'New'), ('offer_received', 'Offer received'), ('offer_accepted',
-                                                                          'Offer Accepted'), ('sold', 'Sold'), ('cancel', 'Cancelled')],
+        selection=[('new', 'New'),
+                   ('offer_received', 'Offer received'),
+                   ('offer_accepted', 'Offer Accepted'),
+                   ('sold', 'Sold'),
+                   ('cancel', 'Cancelled')],
         required=True,
         copy=False,
         default='new',
@@ -64,7 +67,6 @@ class Estateproperty(models.Model):
         'Available From', copy=False, default=lambda self: fields.Datetime.today() + timedelta(days=90))
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
-
     company_id = fields.Many2one(
         'res.company', string='Company', required=True, default=lambda self: self.env.company)
 
@@ -112,12 +114,8 @@ class Estateproperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'north' if self.garden else False
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_property_in_cancel_or_new_state(self):
@@ -139,5 +137,8 @@ class Estateproperty(models.Model):
                 raise UserError('A cancelled property cannot be sold.')
             if not property.offer_ids:
                 raise UserError('Cannot sold without any offer.')
-            else:
+            if property.state == "offer_accepted":
                 property.state = 'sold'
+            else:
+                raise UserError(
+                    "Cannot sold property without offer being accepted.")

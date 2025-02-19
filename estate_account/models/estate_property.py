@@ -8,16 +8,12 @@ class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     def action_sold(self):
-        print(self)
         journal = self.env['account.journal'].search(
             [('type', '=', 'sale')], limit=1)
-
         if not journal:
             raise exceptions.UserError(
                 'No Sales Journal found. Please configure a Sales Journal.')
-
         for record in self:
-
             self.env['account.move'].create({
                 'partner_id': record.buyer_id.id,
                 'move_type': 'out_invoice',
@@ -35,5 +31,4 @@ class EstateProperty(models.Model):
                     })
                 ]
             })
-
         return super().action_sold()

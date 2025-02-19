@@ -31,9 +31,6 @@
       <field name="living_area">10</field>
       <field name="facades">4</field>
       <field name="garage">False</field>
-      <!-- <field name="garden">True</field>
-    <field name="garden_area">100000</field>
-    <field name="garden_orientation">South</field> -->
     </record>
 
     <record id="estate.demo_villa2" model="estate.property">
