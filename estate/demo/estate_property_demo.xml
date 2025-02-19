@@ -3,7 +3,7 @@
 
     <record id="property_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
-        <field name="state">New</field>
+        <field name="state">new</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
         <field name="date_availability">2020-02-02</field>
@@ -11,16 +11,16 @@
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
         <field name="facades">4</field>
-        <field name="garage">True</field>
-        <field name="garden">True</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
         <field name="garden_area">100000</field>
-        <field name="garden_orientation">South</field>
-        <field name="property_type_id" ref="estate.property_type_residential" />
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="property_type_residential"/>
     </record>
 
     <record id="property_trailer_home" model="estate.property">
-        <field name="name">Trailer home</field>
-        <field name="state">Cancelled</field>
+        <field name="name">Trailer Home</field>
+        <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
         <field name="date_availability">1970-01-01</field>
@@ -29,13 +29,13 @@
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
-        <field name="garage">False</field>
-        <field name="property_type_id" ref="estate.property_type_residential" />
+        <field name="garage" eval="False"/>
+        <field name="property_type_id" ref="property_type_residential"/>
     </record>
 
     <record id="property_new_villa" model="estate.property">
         <field name="name">New Villa</field>
-        <field name="state">New</field>
+        <field name="state">new</field>
         <field name="description">A newly listed villa with amazing views</field>
         <field name="postcode">67890</field>
         <field name="date_availability">2025-05-01</field>
@@ -43,28 +43,23 @@
         <field name="bedrooms">5</field>
         <field name="living_area">300</field>
         <field name="facades">3</field>
-        <field name="garage">True</field>
-        <field name="garden">True</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
         <field name="garden_area">5000</field>
-        <field name="garden_orientation">East</field>
-        <field name="offer_ids" eval="[
-            Command.create({
-                'price': 2000000,
-                'validity': 30,
-                'partner_id': ref('base.res_partner_2'),
-            }),
-            Command.create({
-                'price': 2100000,
-                'validity': 30,
-                'partner_id': ref('base.res_partner_3'),
-            })
+        <field name="garden_orientation">east</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="offer_ids"
+            eval="[
+            Command.create({'price': 20000,'validity': 12,'partner_id': ref('base.res_partner_12')}),
+            Command.create({'price': 30000,'validity': 11,'partner_id': ref('base.res_partner_10')}),
+            Command.create({'price': 40000,'validity': 1,'partner_id': ref('base.res_partner_2')}),
         ]" />
     </record>
 
     <record id="offer_azure_10000" model="estate.property.offer">
         <field name="price">10000</field>
         <field name="validity">14</field>
-        <field name="date_deadline" eval="(datetime.now() + relativedelta(years=1)).strftime('%Y-%m-%d')" />
+        <field name="date_deadline" eval="(datetime.now() + relativedelta(years=1)).strftime('%Y-%m-%d')"/>
         <field name="partner_id" ref="base.res_partner_2"/>
         <field name="property_id" ref="property_big_villa"/>
     </record>
@@ -72,7 +67,7 @@
     <record id="offer_azure_1500000" model="estate.property.offer">
         <field name="price">1500000</field>
         <field name="validity">14</field>
-        <field name="date_deadline" eval="(datetime.now() + relativedelta(years=1)).strftime('%Y-%m-%d')" />
+        <field name="date_deadline" eval="(datetime.now() + relativedelta(years=1)).strftime('%Y-%m-%d')"/>
         <field name="partner_id" ref="base.res_partner_2"/>
         <field name="property_id" ref="property_big_villa"/>
     </record>
@@ -80,21 +75,15 @@
     <record id="offer_deco_1500001" model="estate.property.offer">
         <field name="price">1500001</field>
         <field name="validity">14</field>
-        <field name="date_deadline" eval="(datetime.now() + relativedelta(years=1)).strftime('%Y-%m-%d')" />
-        <field name="partner_id" ref="base.res_partner_3" />
-        <field name="property_id" ref="property_big_villa" />
+        <field name="date_deadline" eval="(datetime.now() + relativedelta(years=1)).strftime('%Y-%m-%d')"/>
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="property_big_villa"/>
     </record>
 
-    <function model="estate.property.offer" name="action_accept">
-        <value eval="[ref('offer_azure_10000')]"/>
-    </function>
-
-    <function model="estate.property.offer" name="action_refuse">
-        <value eval="[ref('offer_azure_1500000')]"/>
-    </function>
-
-    <function model="estate.property.offer" name="action_refuse">
-        <value eval="[ref('offer_deco_1500001')]"/>
-    </function>
-
+    <function name="action_refuse" model="estate.property.offer"
+        eval="[ref('offer_azure_10000')]" />
+    <function name="action_refuse" model="estate.property.offer"
+        eval="[ref('offer_azure_1500000')]" />
+    <function name="action_accept" model="estate.property.offer"
+        eval="[ref('offer_deco_1500001')]" />
 </odoo>
