@@ -7,3 +7,4 @@ access_estate_property_agent,estate.property agent,model_estate_property,estate.
 access_estate_property_type_agent,estate.property.type agent,model_estate_property_type,estate.estate_group_user,1,0,0,0
 access_estate_property_tag_agent,estate.property.tag agent,model_estate_property_tag,estate.estate_group_user,1,0,0,0
 access_estate_property_offer_agent,estate.property.offer agent,model_estate_property_offer,estate.estate_group_user,1,1,1,1
+access_estate_property_offer_agent,estate_offer_wizard,model_estate_offer_wizard,estate.estate_group_user,1,1,1,1

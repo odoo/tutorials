@@ -8,6 +8,9 @@
                     decoration-success="status == 'offer_received' or status == 'offer_accepted'"
                     decoration-muted="status == 'sold'"
                     decoration-bf="status == 'offer_accepted'">
+                <header>
+                    <button name="estate.action_estate_offer_wizard" string="Add Offer" type="action" class="btn-primary"/>
+                </header>
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -34,9 +37,7 @@
                 <sheet>
                     <h1><field name="name"/></h1>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                     <group>
-                        <field name="image" widget='image' optional="show" class="oe_avatar" style="max-width: 150px; max-height: 150px;"/>
-                    </group>
+                        <field name="image" string="" widget='image' optional="show" class="oe_avatar" style="max-width: 250px; max-height: 250px;"/>
                     <group>
                         <group>
                             <field name="property_type_id" options='{"no_create": true}'/>
@@ -144,11 +145,5 @@
         <field name="res_model">estate.property</field>
         <field name="context">{'search_default_available_property':True}</field>
         <field name="view_mode">list,form,kanban</field>
-    </record>
-
-    <record id="open_url_action" model="ir.actions.act_url">
-        <field name="name">Open External Website</field>
-        <field name="url">http://localhost:8069/properties</field>
-        <field name="target">new</field>
     </record>
 </odoo>
