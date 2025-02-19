@@ -1,6 +1,6 @@
 <odoo>
     <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
-        <field name="name">Real Estate/BrokerageWala</field>
+        <field name="name">Real Estate/Brokerage</field>
     </record>
 
     <record id="estate_group_user" model="res.groups">

@@ -22,10 +22,10 @@ class EstatePropertytOffer(models.Model):
         records = super().create(vals_list)
         for record in records:
             property_record = record.property_id
-            if record.price< property_record.best_price:
-                raise UserError("Offer price must be greater than existing best price")
             if property_record.state=='sold':
                 raise UserError("Can't add a new offer to already sold property")
+            if record.price< property_record.best_price:
+                raise UserError(f"Offer price must be greater than existing best price ({property_record.best_price})")
             if property_record.state == 'new':
                 property_record.write({'state': 'offer_received'})
         return records

@@ -149,10 +149,4 @@
         <field name="view_mode">kanban,list,form</field>
         <field name="context">{'search_default_available_property': True}</field>
     </record>
-
-    <record id="open_url_action" model="ir.actions.act_url">
-        <field name="name">Open External Website</field>
-        <field name="url">http://localhost:8069/properties</field>
-        <field name="target">new</field>
-    </record>
 </odoo>

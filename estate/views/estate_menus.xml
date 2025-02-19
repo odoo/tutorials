@@ -9,5 +9,4 @@
                 <menuitem id ='estate_property_tag_action' action='estate_property_tag'/>
             </menuitem>
         </menuitem>
-        <menuitem id="estate_property_menu_website" name="Properties"  action="open_url_action" parent="estate_property_menu_root"/>
 </odoo>
