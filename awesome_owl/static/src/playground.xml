@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
         <Counter/>
-        <Card title="'Title1'" content="'Content1'"/>
-        <Card title="'Title2'" content="'Content2'"/>
+        <Card title="'Title1'" content="value1"/>
+        <Card title="'Title2'" content="value2"/>
     </t>
 </templates>
