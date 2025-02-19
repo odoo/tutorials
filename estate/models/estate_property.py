@@ -1,11 +1,12 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_is_zero, float_compare
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstatePropertyModel(models.Model):
     _name = "estate.property"
     _description = "Defines the model of a real estate property"
+    _order = "id desc"
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text()
@@ -45,6 +46,8 @@ class EstatePropertyModel(models.Model):
         copy=False,
         default="new",
     )
+    state_active = fields.Boolean(compute="_compute_state_active")
+    offers_readonly = fields.Boolean(compute="_compute_offers_readonly")
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     sales_person_id = fields.Many2one(
@@ -58,6 +61,18 @@ class EstatePropertyModel(models.Model):
     total_area = fields.Integer(string="Total area", compute="_compute_total_area")
     best_offer = fields.Float(string="Best offer", compute="_compute_best_offer")
 
+    @api.depends("offer_ids.status")
+    def _compute_offers_readonly(self):
+        readonly_offers_states = ("sold", "cancelled", "offer_accepted")
+        for estate_property in self:
+            estate_property.offers_readonly = estate_property.state in readonly_offers_states
+
+    @api.depends("state")
+    def _compute_state_active(self):
+        readonly_states = ("sold", "cancelled")
+        for estate_property in self:
+            estate_property.state_active = estate_property.state not in readonly_states
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for estate_property in self:
@@ -66,7 +81,7 @@ class EstatePropertyModel(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for estate_property in self:
-            estate_property.best_offer = max(estate_property.offer_ids.mapped("price"), default=0)
+            estate_property.best_offer = max(estate_property.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
