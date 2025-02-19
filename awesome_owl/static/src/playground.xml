@@ -6,14 +6,17 @@
         </div>
         <hr/>
         <div class="text-center">
-            <h2>The sum is : <t t-out="sum.value"/></h2>
+            <h2>The sum is : <t t-out="sum.value"/>
+            </h2>
             <Counter onChange.bind="incrementSum"/>
             <Counter onChange.bind="incrementSum"/>
         </div>
         <hr/>
-        <div class="text-center">
-            <Card title="'card title 1'" content="state.safeHtml"/>
-            <Card title="'card title 2'" content="state.normalText"/>
+        <div class="d-flex align-items-center justify-content-center text-center">
+            <Card title="'card 1'" content="state.safeHtml"/>
+            <Card title="'card 2'">
+                <Counter/>
+            </Card>
         </div>
         <hr/>
         <div class="text-center">

@@ -1,6 +1,6 @@
 {
     'name': 'Estate',
-    'depends': ['base', 'website'],
+    'depends': ['base', 'website','mail'],
     'category': 'Estate/Brokerage',
     'data': [
         'security/estate_security.xml',

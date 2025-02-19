@@ -3,8 +3,12 @@
     <t t-name="awesome_owl.Card">
         <div class="card d-inline-block m-2">
             <div class="card-body">
-                <h5 class="card-title" t-out="props.title" />
-                <p class="card-text" t-out="props.content" />
+                <h5 class="card-title">
+                    <t t-out="props.title"/>
+                    <button class="btn bg-warning ms-2" t-if="props.slots" t-on-click="toggleSlot">Toggle</button>
+                </h5> 
+                <p class="card-text" t-if="props.content" t-out="props.content"/>
+                <p class="card-text" t-if="state.isOpen" t-slot="default" />
             </div>
         </div>
     </t>

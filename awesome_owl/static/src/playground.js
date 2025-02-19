@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { Component, markup, useState } from "@odoo/owl";
-
 import { Counter } from "./counter/counter";
 import { Card } from "./card/card";
 import { TodoList } from "./todo/todo_list";
@@ -17,6 +16,7 @@ export class Playground extends Component {
         });
         this.sum = useState({ value:2 });
     }
+
     incrementSum(){
         this.sum.value++;
     }
