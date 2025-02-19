@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
@@ -14,7 +14,6 @@ class EstatePropertiesWizard(models.TransientModel):
         'res.partner', string='Buyer', index=True, copy=False, required=True)
 
     def action_select_offer(self):
-        _ = self.env._
         properties = self.env['estate.properties'].browse(
             self._context.get('active_ids'))
         for property_data in properties:

@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -41,7 +41,6 @@ class EstatePropertiesOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        _ = self.env._
         property = self.env['estate.properties'].browse(
             vals['property_id'])
         if vals['price'] < property.expected_price:
@@ -54,7 +53,6 @@ class EstatePropertiesOffer(models.Model):
         return super().create(vals)
 
     def accept_offer(self):
-        _ = self.env._
         for record in self:
             if record.property_id.selling_price > 0 or record.status == 'accepted':
                 raise UserError(_('Offer already accepted'))

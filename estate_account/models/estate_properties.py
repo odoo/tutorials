@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import Command, models
+from odoo import _, Command, models
 from odoo.exceptions import UserError
 
 
@@ -9,7 +9,6 @@ class EstateProperties(models.Model):
     _inherit = 'estate.properties'
 
     def action_property_sold(self):
-        _ = self.env._
         super().action_property_sold()
         journal = self.env['account.journal'].search(
             [('type', '=', 'sale')], limit=1)

@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="card d-inline-block m-2" style="width: 21.5rem;">
+            <div class="card-body">
+                <Card t-props="{'titles':'Card Parent'}">
+                    <div class="p-3">
+                        <p>Counter <t t-esc="state.value"></t>
+                        </p>
+                        <button class="btn btn-primary" t-on-click="increment">Increment</button>
+                        <button class="btn btn-secondary" t-on-click="decrement">Decrement</button>
+                    </div>
+                </Card>
+                <Counter t-props="{'onChange':calculateSum}"/>
+            </div>
+            <span style="padding-left: 10px;">
+                <strong>
+            The sum is :
+                </strong>
+                <span class="text-primary">
+                    <t t-esc="state.sum"></t>
+                </span>
+            </span>
         </div>
     </t>
-
 </templates>

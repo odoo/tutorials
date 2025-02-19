@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.counter">
+        <Card t-props="{'title':'Card Child'}">
+            <div class="p-3">
+                <p>Counter <t t-esc="state.value"></t>
+                </p>
+                <button class="btn btn-primary" t-on-click="counter_increment">Increment</button>
+                <button class="btn btn-secondary" t-on-click="counter_decrement">Decrement</button>
+            </div>
+        </Card>
+    </t>
+</templates>

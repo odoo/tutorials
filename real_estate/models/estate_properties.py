@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -63,7 +63,6 @@ class EstateProperties(models.Model):
 
     @api.constrains('selling_price', 'expected_price')
     def check_price(self):
-        _ = self.env._
         for record in self:
             if (
                 not float_is_zero(record.selling_price, precision_rounding=0.01) and float_compare(
@@ -79,13 +78,11 @@ class EstateProperties(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _prevent_accept_records(self):
-        _ = self.env._
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise ValidationError(_('Cannot delete this property.'))
 
     def action_property_sold(self):
-        _ = self.env._
         for record in self:
             if len(record.offer_ids) == 0 or record.state != 'offer_accepted':
                 raise ValidationError(
@@ -95,7 +92,6 @@ class EstateProperties(models.Model):
             record.state = 'sold'
 
     def action_property_rejected(self):
-        _ = self.env._
         if self.state == 'sold':
             raise ValidationError(_('Sold property cannot be cancelled.'))
         self.state = 'cancelled'
