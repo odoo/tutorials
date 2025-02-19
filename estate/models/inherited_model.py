@@ -5,7 +5,7 @@ class InheritedModel(models.Model):
     
     property_ids = fields.One2many(
         'estate_model', 
-        'salesman', 
+        'salesman_id', 
         string='Properties', 
         domain=[('state', 'in', ['new', 'offer_received'])]
     )

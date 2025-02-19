@@ -1,9 +1,10 @@
 {  "name" : "estate",
     "version": "1.2",
-    "category": "",
+    "category": "Real Estate/Brokerage",
     "description": "",
     "depends" : [ "base" ],
     "data" : [ 
+        "security/security.xml",
         "security/ir.model.access.csv",
         "view/estate_pro_tag_view.xml",
         "view/estate_pro_offer_view.xml",

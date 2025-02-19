@@ -65,8 +65,8 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="sold_action" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
-                    <button name="cancle_action" type="object" string="Cancle" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_cancle" type="object" string="Cancle" invisible="state in ['sold', 'cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <sheet>
@@ -121,8 +121,8 @@
 
                         <page string="Other Info">
                             <group>
-                                <field name="salesman"/>
-                                <field name="buyer"/>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>

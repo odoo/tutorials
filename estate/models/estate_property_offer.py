@@ -44,17 +44,7 @@ class EstatePropertyOffer(models.Model):
                 validity = (fields.Datetime.from_string(record.date_deadline) - create_date).days
                 record.validity = validity
     
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            property_id = self.env["estate_model"].browse(vals.get("property_id"))
-            if not property_id:
-                    raise UserError("Property must be specified for an offer.")
-            if property_id.offer_ids and vals["price"] <= max(property_id.offer_ids.mapped("price")):
-                    raise UserError("You cannot create an offer lower than an existing offer!")
-        property_id.state = "offer_received"
-        return super(EstatePropertyOffer, self).create(vals_list)
-
+    ###### action methods ######
     def action_accept(self):
         for record in self:
             if record.status == "accepted":
@@ -66,7 +56,7 @@ class EstatePropertyOffer(models.Model):
 
             record.status = "accepted"
             record.property_id.write({
-                "buyer" : record.partner_id.id,
+                "buyer_id" : record.partner_id.id,
                 "selling_price" : record.price,
                 "state" : "offer_accepted"
             })
@@ -78,3 +68,15 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("offer is already accepted thats why you cant refuse it")
             record.status = "refused"
         return True
+
+    ##### CRUD methods #####
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env["estate_model"].browse(vals.get("property_id"))
+            if not property_id:
+                    raise UserError("Property must be specified for an offer.")
+            if property_id.offer_ids and vals["price"] <= max(property_id.offer_ids.mapped("price")):
+                    raise UserError("You cannot create an offer lower than an existing offer!")
+        property_id.state = "offer_received"
+        return super(EstatePropertyOffer, self).create(vals_list)
