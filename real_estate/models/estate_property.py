@@ -173,14 +173,34 @@ class EstateProperty(models.Model):
     # PYTHON CONSTRAINTS
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
-        for product in self:
-            min_selleing_price = 0.9 * product.expected_price
-            if (not float_is_zero(product.selling_price, precision_digits=2) and 
-                float_compare(product.selling_price, min_selleing_price, 
+        for property in self:
+            min_selleing_price = 0.9 * property.expected_price
+            if (not float_is_zero(property.selling_price, precision_digits=2) and 
+                float_compare(property.selling_price, min_selleing_price, 
                 precision_rounding=2) == -1
             ):
                 raise ValidationError("Selling Price cannot be lower than 90% of the Expected Price.")
 
+    # @api.constrains('buyer_id', 'property_type_id')
+    # def _check_property_type_id(self):
+    #     for property in self:
+    #         if property.property_type_id.name.lower() == 'commercial' and not property.buyer_id.is_company:
+    #             raise ValidationError("For Commercial properties, the buyer must be a company.")
+    @api.constrains('buyer_id   ', 'property_type_id')
+    def _check_property_type_id(self):
+        commercial_type_id = self.env.ref('real_estate.property_type_commercial').id
+        print("Property Type ID : ",commercial_type_id)
+        for property in self:
+            if property.property_type_id.id == commercial_type_id and not property.buyer_id.is_company:
+                # self.buyer_id = fields.Many2one(
+                #     comodel_name='res.partner',
+                #     string="Buyer",
+                #     copy=False,
+                #     domain="['&',('is_company','=',True),('parent_id','=',False)]"
+                # )
+                print(self.buyer_id)
+                # return {'domain': 'buyer_id'['&',('is_company','=',True),('parent_id','=',False)]}
+                # raise ValidationError("For Commercial properties, the buyer must be a company.")
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:

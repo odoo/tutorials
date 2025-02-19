@@ -1,16 +1,5 @@
 <odoo>
 
-    <record id="rule_real_estate_agent_restrict" model="ir.rule">
-        <field name="name">Limit Agents to Assigned or Unassigned Properties</field>
-        <field name="model_id" ref="model_estate_property"/>
-        <field name="domain_force">[('salesperson_id', 'in', (user.id, False))]</field>
-        <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="False"/>
-    </record>
-
     <record id="estate_group_user" model="res.groups">
         <field name="name">Agent</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
@@ -22,4 +11,36 @@
         <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
     </record>
 
+    <record id="rule_real_estate_agent_restrict" model="ir.rule">
+        <field name="name">Limit Agents to Assigned or Unassigned Properties</field>
+        <field name="model_id" ref="real_estate.model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="domain_force">[('salesperson_id', 'in', (user.id, False))]</field>
+    </record>
+    
+    <record id="rule_manager_property_access" model="ir.rule">
+        <field name="name">Manager Access to Properties</field>
+        <field name="model_id" ref="real_estate.model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_manager'))]"/>
+        <field name="domain_force">[]</field>
+    </record>
+
+    <record id="estate_property_multi_company_rule" model="ir.rule">
+        <field name="name">Real Estate Property Multi-Company Access</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[
+            '|', ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+        ]</field>
+        <field name="groups" eval="[(4, ref('estate_group_user')), (4, ref('estate_group_manager'))]"/>
+    </record>
+    
 </odoo>
