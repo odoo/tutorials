@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-   <t t-name="awesome_owl.playground">
-      <h1>Owuuuuuuuuuuul</h1>
+   <t t-name="awesome_owl.Playground">
+      <h1>Owuuuuuuuul</h1>
+      <Counter/>
    </t>
 </templates>
