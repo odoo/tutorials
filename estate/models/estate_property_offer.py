@@ -22,7 +22,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one(comodel_name="estate.property", required=True, ondelete="cascade")
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Date Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
-    property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type", compute="_compute_property_type_id", store=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -51,11 +51,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             create_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - create_date).days
-
-    @api.depends("property_id.property_type_id")
-    def _compute_property_type_id(self):
-        for record in self:
-            record.property_type_id = record.property_id.property_type_id
 
     def action_offer_accepted(self):
         for record in self:

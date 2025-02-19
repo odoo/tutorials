@@ -7,6 +7,9 @@
     "category": "Tutorials/EstateAccount",
     "version": "0.1",
     "depends": ["account", "estate"],
+    "data": [
+        "report/estate_property_report.xml"
+    ],
     "application": True,
     "installable": True,
     "license": "LGPL-3"
