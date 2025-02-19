@@ -20,11 +20,13 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="property_type_id"/>
+                <field name="property_tag_ids" widget="many2many_tags"/>
             </list>
         </field>
     </record>
 
-    <record id="crm_lost_reason_view_form" model="ir.ui.view">
+    <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -34,6 +36,7 @@
                         <h1>
                             <field name="name"/>
                         </h1>
+                        <field name="property_tag_ids" widget="many2many_tags"/>
                     </group>
                     <group>
                         <group>
@@ -57,8 +60,25 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="property_type_id"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids" >
+                                <list>
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="user_id"/>
+                                <field name="partner_id"/>
+                            </group>
+                        </page>
+                        
                     </notebook>
                 </sheet>
             </form>
@@ -77,6 +97,8 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="property_type_id"/>
+                <field name="property_tag_ids"/>
                 <separator/>
                 <filter string="Available properties" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer-received')]"/>
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>

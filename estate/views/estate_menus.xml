@@ -13,6 +13,20 @@
                 action="estate_action_advertisements">
             </menuitem>
         </menuitem>
+        <menuitem
+            id="estate_menu_settings"
+            name="Settings">
+            <menuitem
+                id="menu_estate_settings_property_types"
+                name="Property Types"
+                action="estate_action_property_types">
+            </menuitem>
+            <menuitem
+                id="menu_estate_settings_property_tags"
+                name="Property Tags"
+                action="estate_action_property_tags">
+            </menuitem>
+        </menuitem>
     </menuitem>
         
 </odoo>
