@@ -35,9 +35,6 @@
                                         <img t-att-src="'data:image/png;base64,%s' % property.image.decode('utf-8')"
                                              class="card-img-top img-fluid" alt="Property Image" style="height: 250px; object-fit: cover;"/>
                                     </t>
-                                    <t t-else="">
-                                        <img src="/web/static/src/img/placeholder.png" class="card-img-top img-fluid" alt="No Image" style="height: 250px; object-fit: cover;"/>
-                                    </t>
                                 </a>
                                 <div class="card-body">
                                     <div class="tags mb-2">
