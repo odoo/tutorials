@@ -5,6 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Property Offers"
     _order = 'price desc'
     _check_company_auto = True
@@ -67,6 +68,8 @@ class EstatePropertyOffer(models.Model):
                 'selling_price': offer.price,
                 'buyer_id': offer.partner_id,
             })
+            offer.property_id.offer_ids.filtered(lambda x: x.id != offer.id).write({'status': 'refused'})
+
     # action to change offer status to refused
     def action_refuse(self):
         self.status = 'refused'
@@ -88,3 +91,15 @@ class EstatePropertyOffer(models.Model):
 
                 property.write({'state': 'received'})
         return super().create(vals_list)    
+
+    # Individual cannot buy commercial properties.
+    @api.constrains('partner_id', 'property_id')
+    def _check_property_buyer(self):
+        if any(
+            offer.partner_id 
+            and offer.property_id.property_type_id 
+            and offer.property_id.property_type_id.id == offer.env.ref("estate.property_type_commercial").id
+            and not offer.partner_id.is_company
+            for offer in self
+        ):
+            raise UserError("Individuals cannot buy Commercial properties. Only companies are allowed.")

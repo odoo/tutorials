@@ -5,7 +5,7 @@
             <menuitem id="menu_estate_properties" action="estate_property"/>
         </menuitem>
         <!-- Setting Menu -->
-        <menuitem id="estate_menu_setting" name="Setting">
+        <menuitem id="estate_menu_setting" name="Setting" groups="estate_group_manager">
             <menuitem id="menu_estate_property_type" action="estate_property_type"/>
             <menuitem id="menu_estate_property_tag" action="estate_property_tag"/>
         </menuitem>

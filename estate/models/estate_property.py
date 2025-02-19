@@ -64,6 +64,13 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one('res.partner', string="Buyer", tracking=True)
     best_offer = fields.Float(string="Best Offer", compute='_compute_best_offer', store=True)
 
+    company_id = fields.Many2one(
+        'res.company',
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company
+    )
+
     # Computing Total Area from living_area and garden_area
     @api.depends('living_area','garden_area')
     def _compute_total_area(self):
@@ -95,7 +102,7 @@ class EstateProperty(models.Model):
         if self.state == 'cancelled':
             raise UserError("Cancelled Property can not be sold")
         self.state = 'sold'
-
+    
     # checks that selling price cannot be lower than 90% of the expected price.
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
