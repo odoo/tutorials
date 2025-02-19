@@ -6,7 +6,7 @@
             hello world
             <Counter onchange.bind="incrementSum"/>
             <Counter onchange.bind="incrementSum"/>
-            <div class="mt-3 font-weight-bold text-dark">
+            <div class="mt-3 fw-bold  text-dark">
                     The sum is: <t t-esc="sum.value"/>
                 </div>
         </div>
@@ -22,5 +22,4 @@
         </div>
         <TodoList/>
     </t>
-
 </templates>
