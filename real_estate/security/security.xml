@@ -19,12 +19,36 @@
             <field name="model_id" ref="real_estate.model_estate_property"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
             <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
             <field name="domain_force">[
                 '|', 
                 ('salesperson_id', '=', user.id),
                 ('salesperson_id', '=', False)   
             ]</field>
+        </record>
+        <!-- Manager can see and edit all properties-->
+        <record id="rule_manager_property_access" model="ir.rule">
+            <field name="name">Manager Access to Properties</field>
+            <field name="model_id" ref="real_estate.model_estate_property"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="groups" eval="[Command.link(ref('estate_group_manager'))]"/>
+            <field name="domain_force">[]</field>
+        </record>
+        <record id="estate_property_company_rule" model="ir.rule">
+            <field name="name">Restrict Estate Properties by Company</field>
+            <field name="model_id" ref="real_estate.model_estate_property"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[
+            '|', 
+            ('company_id', '=', False),
+            ('company_id', 'in', user.company_ids.ids)
+            ]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         </record>
     </data>
 </odoo>

@@ -87,9 +87,11 @@ class EstateProperty(models.Model):
         "estate.property.type", string="Property Type",
         help="Type of the Property"
     )
+    is_commercial = fields.Boolean(compute="_compute_is_commercial", store=True)
     buyer_id = fields.Many2one(
         'res.partner', string="Buyer", copy=False,
-        help="Buyer of the Property"
+        help="Buyer of the Property", 
+        domain="[('is_company', '=', is_commercial)]"
     )
     salesperson_id = fields.Many2one(
         'res.users', string="Salesperson",
@@ -111,7 +113,18 @@ class EstateProperty(models.Model):
         string = "Best Offer",
         compute="_compute_best_price",
     )
-     
+    company_id = fields.Many2one(
+        'res.company', 
+        string="Company", 
+        default=lambda self: self.env.company, 
+        index=True
+    )
+    
+    @api.depends("property_type_id")
+    def _compute_is_commercial(self):
+        for property in self:
+            property.is_commercial = property.property_type_id.name == 'commercial'
+
     # Compute the total area 
     @api.depends("living_area","garden_area")
     def _compute_total_area(self):

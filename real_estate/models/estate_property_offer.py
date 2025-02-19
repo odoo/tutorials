@@ -93,7 +93,7 @@ class EstatePropertyOffer(models.Model):
                 'selling_price': offer.price
             })
     
-    def action_cancel(self):
+    def action_refused(self):
         for property in self:
             if property.status == 'accepted':
                 property.property_id.buyer_id = False
@@ -105,7 +105,8 @@ class EstatePropertyOffer(models.Model):
         for val in vals:
             if (property_id := val.get('property_id')) and (offer_amount := val.get('price')):
                 property = self.env['estate.property'].browse(property_id)
-                if offer_amount < max(property.offer_ids.mapped('price')):
+                existing_offer = property.offer_ids.mapped('price')
+                if existing_offer and offer_amount < max(existing_offer):
                     raise ValidationError("Cannot create offer less than current offer")
                 property.write({'state': 'offer_received'})
         return super().create(vals)

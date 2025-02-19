@@ -9,15 +9,24 @@
         <field name="bedrooms">3</field>
         <field name="living_area">1500</field>
         <field name="facades">4</field>
-        <field name="garage">True</field>
-        <field name="garden">True</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
         <field name="garden_area">500</field>
         <field name="garden_orientation">south</field>
     </record>
     <record id="property_2" model="estate.property">
         <field name="name">House 2</field>
-        <field name="expected_price">333</field>
-        <field name="bedrooms">44</field>
+        <field name="description">A compact house with a modern design.</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">2025-06-01</field>
+        <field name="expected_price">333000</field>
+        <field name="selling_price">320000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">1200</field>
+        <field name="facades">3</field>
+        <field name="garage">0</field>
+        <field name="garden">0</field>
+        <field name="garden_area">0</field>
         <field name="garden_orientation">north</field>
     </record>
 </odoo>
