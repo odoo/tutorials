@@ -1,4 +1,5 @@
 from odoo import api, fields, models, exceptions
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Property(models.Model):
@@ -39,6 +40,29 @@ class Property(models.Model):
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
     best_offer = fields.Float("Best Offer", compute="_compute_best_offer")
 
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0.0)",
+         "The expected price should be strictly positive."),
+        ("check_selling_price", "CHECK(selling_price >= 0.0)",
+         "The selling price should be positive.")
+    ]
+
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for property in self:
+            if float_is_zero(property.selling_price, precision_digits=2):
+                return
+            if float_compare(property.expected_price * 0.9, property.selling_price, precision_digits=2) > 0:
+                raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price")
+
+    @api.constrains("expected_price")
+    def _check_expected_price(self):
+        for property in self:
+            if float_is_zero(property.selling_price, precision_digits=2):
+                return
+            if float_compare(property.expected_price * 0.9, property.selling_price, precision_digits=2) > 0:
+                raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price")
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -46,11 +70,8 @@ class Property(models.Model):
 
     @api.depends("offer_ids")
     def _compute_best_offer(self):
-        for record in self:
-            if record.offer_ids:
-                record.best_offer = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_offer = 0
+        for property in self:
+            property.best_offer = max(property.offer_ids.mapped("price") + [0.0])
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -62,15 +83,13 @@ class Property(models.Model):
             self.garden_orientation = None
 
     def cancel_property(self):
-        for record in self:
-            if record.status == "sold":
-                raise exceptions.UserError("Sold properties cannot be cancelled")
-            record.status = "cancelled"
+        if self.filtered(lambda property: property.status == "sold"):
+            raise exceptions.UserError("Sold properties cannot be cancelled")
+        self.status = "cancelled"
         return True
 
     def sold_property(self):
-        for record in self:
-            if record.status == "cancelled":
-                raise(exceptions.UserError("Cancelled properties cannot be sold"))
-            record.status = "sold"
+        if self.filtered(lambda property: property.status == "cancelled"):
+            raise exceptions.UserError("Cancelled properties cannot be sold")
+        self.status = "sold"
         return True

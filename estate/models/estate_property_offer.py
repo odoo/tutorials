@@ -12,29 +12,32 @@ class PropertyOffer(models.Model):
     validity = fields.Integer(string="Validity (days)", default=7,)
     date_deadline = fields.Date("Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
 
+    _sql_constraints = [
+        ("check_offer_price", "CHECK(price >= 0.0)",
+         "The offer price should be strictly positive."),
+    ]
+
     def _inverse_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.today()).days
 
     @api.depends("validity")
     def _compute_deadline(self):
-        for record in self:
-           if record.create_date:
-               record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
-           else:
-               record.date_deadline = fields.Date.add(fields.Date.today(), days=record.validity)
+        for offer in self:
+            create_date = offer.create_date or fields.Date.today()
+            offer.date_deadline = fields.Date.add(create_date, days=offer.validity)
 
     def accept_offer(self):
-        for record in self:
-            if record.property_id.offer_ids.mapped("status").count("accepted") >= 1:
+        for offer in self:
+            if offer.property_id.offer_ids.filtered(lambda o: o.status == 'accepted'):
                 raise exceptions.UserError("More than one offer can't be accepted for the same property")
-            record.status = "accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
-            record.property_id.status = "offer_accepted"
+            offer.status = "accepted"
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            offer.property_id.status = "offer_accepted"
         return True
 
     def refuse_offer(self):
-        for record in self:
-            record.status = "refused"
+        for offer in self:
+            offer.status = "refused"
         return True
