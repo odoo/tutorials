@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import fields, models
 
 
@@ -8,4 +11,3 @@ class EstatePropertyTag(models.Model):
 
     name = fields.Char(string='Tags', required=True)
     color = fields.Integer(string='Color')
-    

@@ -1,13 +1,16 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from datetime import timedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate property'
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
 
     name = fields.Char(string='Name', required=True, tracking=True)
@@ -15,7 +18,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char(string='Postcode',size=6)
     date_availability = fields.Date(string='Available From', default=(fields.Date.today() + timedelta(days=90)), copy=False)
     expected_price = fields.Float(string='Expected Price')
-    selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
+    selling_price = fields.Float(string='Selling Price', readonly=True, copy=False, tracking=True)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
     living_area = fields.Integer(string='Living Area (sqm)')
     facades = fields.Integer(string='Facades')
@@ -84,8 +87,9 @@ class EstateProperty(models.Model):
     def cancel_action(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("sold properties cannot be cancelled.")
+                raise UserError(_("sold properties cannot be cancelled."))
             record.state = 'cancelled'
+            self.write({'state': 'cancelled'})
                 
     @api.constrains('selling_price', 'expected_price')
     def check_range_selling_price(self):
@@ -104,3 +108,22 @@ class EstateProperty(models.Model):
         if 'state' in vals and self.state == 'offer_accepted':
             return self.env.ref('estate.mt_state_change')
         return super()._track_subtype(vals)
+
+    def _is_estate_manager(self, partner):
+        for user in partner.user_ids:
+            if user.sudo().has_group('estate_group_manager'):
+                return True
+        return False
+
+    def _notify_get_groups(self, message, groups):
+        groups = super()._notify_get_groups(message, groups)
+        self.ensure_one()
+        if self.state == 'offer_accepted':
+            app_action = self._notify_get_action_link('method', method='cancel_action')
+            estate_actions = [{'url': app_action, 'title': _('Cancel')}]
+        new_group = (
+            'estate_group_manage',
+            self._is_estate_manager,
+            {'actions': estate_actions} if estate_actions else {},
+        )
+        return [new_group] + groups

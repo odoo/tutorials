@@ -1,7 +1,7 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'depends': ['mail'],
+    'depends': ['base', 'mail'],
     'author': 'matd',
     'category': 'Real Estate/Brokerage',
     'description': """
@@ -18,6 +18,8 @@ It provides real estate module
         'views/estate_property_menus.xml',
         'data/estate_property_sequence.xml',
         'data/estate.property.type.csv',
+        'data/company_data.xml',
+        'data/currency_data.xml',
     ],
     'demo': [
         'demo/estate_property_demo.xml',

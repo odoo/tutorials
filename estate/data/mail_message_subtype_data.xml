@@ -4,6 +4,6 @@
         <field name="name">state</field>
         <field name="res_model">estate.property</field>
         <field name="default" eval="True"/>
-        <field name="description">Offer accepted!</field>
+        <field name="description">Your Offer is accepted!</field>
     </record>
 </odoo>
