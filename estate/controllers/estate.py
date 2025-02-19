@@ -5,19 +5,17 @@ from datetime import datetime
 
 
 class EstatePropertyController(http.Controller):
-    @http.route(
-        ["/properties", "/properties/page/<int:page>"],
-        type="http",
-        auth="public",
-        website=True,
-    )
+    @http.route(["/properties", "/properties/page/<int:page>"], type="http", auth="public", website=True)
     def properties(self, page=1, **kwargs):
         property = request.env["estate.property"]
         offset = (page - 1) * 6
         filter_date = kwargs.get("filter_date")
+        search_property = kwargs.get("search_property")
         domain = ["|", ("state", "=", "new"), ("state", "=", "offer_received")]
         if filter_date:
             domain.append(("create_date", ">", filter_date))
+        if search_property:
+            domain.append(("name", "ilike", search_property))
         properties_count = property.search_count(domain)
         total_pages = math.ceil(properties_count / 6)
 
@@ -29,9 +27,7 @@ class EstatePropertyController(http.Controller):
             {"properties": properties, "page": int(page), "total_pages": total_pages},
         )
 
-    @http.route(
-        "/properties/<int:property_id>", type="http", auth="public", website=True
-    )
+    @http.route("/properties/<int:property_id>", type="http", auth="public", website=True)
     def estate_property_detail(self, property_id):
         property = request.env["estate.property"].browse(property_id)
         if not property.exists():

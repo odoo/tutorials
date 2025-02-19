@@ -1,18 +1,18 @@
 <odoo>
     <template id="estate.estate_property_view_template">
-    <t t-call="web.html_container">
+    <t t-call="website.layout">
     <div class="container">
         <div class="row mt-4">
             <div class="col text-center">
                 <nav>
-                    <ul class="pagination">
+                    <ul class="pagination w-100 d-flex">
                         <t t-if="page &gt; 1">
-                            <li class="page-item">
+                            <li class="page-item me-auto">
                                 <a t-att-href="'/properties/page/%s' % (page - 1)" class="page-link">Previous</a>
                             </li>
                         </t>
                         <t t-if="page &lt; total_pages">
-                            <li class="page-item">
+                            <li class="page-item ms-auto">
                                 <a t-att-href="'/properties/page/%s' % (page + 1)" class="page-link">Next</a>
                             </li>
                         </t>
@@ -21,15 +21,21 @@
             </div>
         </div>
         <t t-if="properties">
-            <form method="GET" action="/properties" class="mb-3 text-center">
+        <div class="d-flex w-100">
+            <form method="GET" action="/properties" class="mb-10 me-auto">
+                <input type="text" name="search_property" t-att-value='search_property' class="form-control d-inline w-auto"/>
+                <button type="submit" class="btn btn-primary">search</button>
+            </form>
+            <form method="GET" action="/properties" class="mb-3 ms-auto">
                 <input type="date" name="filter_date" t-att-value='filter_date' class="form-control d-inline w-auto"/>
                 <button type="submit" class="btn btn-primary">Listed After</button>
             </form>
+        </div>
             <div class="row">
                 <t t-foreach="properties" t-as="property">
                         <div class="col-md-4 col-sm-6 mt-4 mb-4 ">
                             <div class="card border border-success h-100">
-                                <img t-att-src="image_data_uri(property.image_256)" class="card-img-top img-fluid h-50" alt="Property Image"/>
+                                <img t-att-src="image_data_uri(property.image_1920)" class="card-img-top img-fluid h-50" alt="Property Image"/>
                                 <div class="card-body">
                                     <h5 class="card-title font-weight-bold"><t t-esc="property.name"/></h5>
                                     <p class="card-text">Postcode: <t t-esc="property.postcode"/></p>
@@ -56,16 +62,16 @@
         </t>
     </template>
     <template id="estate.estate_property_detail_template">
-        <t t-call="web.html_container">
+        <t t-call="website.layout">
             <div class="container mt-5">
-                <div class="row mt-4">
+                <div class="row mt-4 mb-4">
                     <div class="col">
                         <a href="/properties" class="btn btn-secondary">Back to Properties</a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <img t-att-src="image_data_uri(property.image_256)" class="img-fluid h-100" alt="Property Image"/>
+                        <img t-att-src="image_data_uri(property.image_1920)" class="img-fluid h-100" alt="Property Image"/>
                     </div>
                     <div class="col-md-6">
                         <h3 class="font-weight-bold"><t t-esc="property.name"/></h3>

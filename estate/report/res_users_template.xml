@@ -26,23 +26,7 @@
                     </h1>
                     <hr />
                     <t t-foreach="salesman.property_ids" t-as="property">
-                        <h2>
-                            <span t-field="property.name" />
-                        </h2>
-                        <div>
-                            <strong>Expected Price: </strong>
-                            <span t-field="property.expected_price" />
-                        </div>
-                        <div>
-                            <span>Status: </span>
-                            <span t-field="property.state" />
-                        </div>
-                        <t t-if="property.offer_ids">
-                            <t t-call="estate.estate_property_subtemplate" />
-                        </t>
-                        <t t-else="">
-                            <span>No offer has been made yet</span>
-                        </t>
+                        <t t-call="estate.estate_property_subtemplate"/>
                     </t>
                 </div>
             </t>

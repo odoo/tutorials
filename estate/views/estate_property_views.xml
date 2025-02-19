@@ -5,6 +5,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="estate list" decoration-success="state=='offer_received' or state=='offer_accepted'" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
+            <header>
+                <button name="%(action_estate_property_offer_wizard)d" string="Add offer" type="action" class="oe_highlight"/>
+            </header>
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"
@@ -119,7 +122,7 @@
             </form>
         </field>
     </record>
-    <record id="estate_property_kanban" model="ir.ui.view">
+    <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">Estate Property Kanban View</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">

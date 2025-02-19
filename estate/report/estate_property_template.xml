@@ -6,43 +6,51 @@
                     <div>
                         <img t-if="property.company_id.logo"
                             t-att-src="'data:image/png;base64,%s' % property.company_id.logo"
-                            alt="Company Logo" style="max-height: 80px;" />
-                        <h5 t-field="property.company_id.name" />
-                        <hr />
-                        <h5 t-field="property.company_id.partner_id.street" />
-                        <h5 t-field="property.company_id.partner_id.city" />
+                            alt="Company Logo" style="max-height: 80px;"/>
+                        <h5 t-field="property.company_id.name"/>
+                        <hr/>
+                        <h5 t-field="property.company_id.partner_id.street"/>
+                        <h5 t-field="property.company_id.partner_id.city"/>
                         <h5>
-                            <span t-field="property.company_id.partner_id.zip" />
-                            <span t-field="property.company_id.partner_id.state_id.name" />
+                            <span t-field="property.company_id.partner_id.zip"/>
+                            <span t-field="property.company_id.partner_id.state_id.name"/>
                         </h5>
-                        <h5 t-field="property.company_id.partner_id.country_id.name" />
-                        <br />
-                        <br />
-                        <br />
+                        <h5 t-field="property.company_id.partner_id.country_id.name"/>
+                        <br/>
+                        <br/>
+                        <br/>
                     </div>
                     <div class="page">
                         <div>
                             <strong>Salesman: </strong>
                             <span t-field="property.salesperson_id"/>
                         </div>
-                        <h2>
-                            <span t-field="property.name"/>
-                        </h2>
-                        <div>
-                            <strong>Expected Price: </strong>
-                            <span t-field="property.expected_price"/>
-                        </div>
-                        <div>
-                            <strong>status: </strong>
-                            <span t-field="property.state"/>
-                        </div>
+                        <t t-call="estate.estate_property_subtemplate"/>
                     </div>
-                    <t t-call="estate.estate_property_subtemplate"/>
                 </t>
             </t>
         </t>
     </template>
     <template id="estate_property_subtemplate">
+        <h2>
+            <span t-field="property.name" />
+        </h2>
+        <div>
+            <strong>Expected Price: </strong>
+            <span t-field="property.expected_price" />
+        </div>
+        <div>
+            <span>Status: </span>
+            <span t-field="property.state" />
+        </div>
+        <t t-if="property.offer_ids">
+            <t t-call="estate.estate_property_offer_subtemplate" />
+        </t>
+        <t t-else="">
+            <span>No offer has been made yet</span>
+        </t>
+    </template>
+    <template id="estate_property_offer_subtemplate">
         <table class="table">
             <thead>
                 <tr>
@@ -54,23 +62,23 @@
                 </tr>
             </thead>
             <tbody>
-                <t t-set="offers" t-value="property.mapped('offer_ids')" />
+                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
                 <t t-foreach="offers" t-as="offer">
                     <tr>
                         <td>
-                            <span t-field="offer.price" />
+                            <span t-field="offer.price"/>
                         </td>
                         <td>
-                            <span t-field="offer.partner_id.name" />
+                            <span t-field="offer.partner_id.name"/>
                         </td>
                         <td>
-                            <span t-field="offer.validity" />
+                            <span t-field="offer.validity"/>
                         </td>
                         <td>
-                            <span t-field="offer.date_deadline" />
+                            <span t-field="offer.date_deadline"/>
                         </td>
                         <td>
-                            <span t-field="offer.status" />
+                            <span t-field="offer.status"/>
                         </td>
                     </tr>
                 </t>
