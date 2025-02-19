@@ -12,5 +12,4 @@ export class Playground extends Component {
 
     value1 = "<div>some text 1</div>";
     value2 = markup("<div>some text 2</div>");
-
 }
