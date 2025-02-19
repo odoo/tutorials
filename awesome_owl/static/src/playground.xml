@@ -1,10 +1,26 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="d-flex align-items-center justify-content-center" style="height: -webkit-fill-available;">
+            <div class="row border p-5 rounded shadow bg-light">
+                <div class="text-center">
+                    <span class="fw-semibold">Hello, World!</span>
+                </div>
+                <div class="col-12 d-flex align-items-center justify-content-center mt-3 gap-3">
+                    <div>
+                        <Counter t-props="{'onChange': incrementSum}"/>
+                        <Counter t-props="{'onChange': incrementSum}"/>
+                    </div>
+
+                    <div class="m-2 p-4 border rounded shadow d-inline-block text-center bg-light">
+                        <h4 class="fw-bold text-primary">Sum: <t t-esc="sum.value"/></h4>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-center gap-3 mt-4">
+                    <Card title="'Card 1'" description="card1Description"/>
+                    <Card title="'Card 2'" description="card2Description"/>
+                </div>
+            </div>
         </div>
     </t>
-
 </templates>

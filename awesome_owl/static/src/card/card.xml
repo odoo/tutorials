@@ -1,0 +1,10 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Card">
+       <div class="card m-2 shadow bg-light border-0" style="width: 18rem;">
+           <div class="card-body text-center">
+               <h5 class="card-title text-primary fw-bold" t-esc="props.title">Card Title</h5>
+               <p class="card-text text-muted" t-out="props.description">Some content here</p>
+           </div>
+       </div>
+    </t>
+</templates>
