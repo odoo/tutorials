@@ -20,7 +20,9 @@ This is test version of estate (for learning purpose).
         "data/estate.property.type.csv",
         "report/estate_property_reports.xml",
         "report/estate_property_reports_templates.xml",
+        "views/estate_website_menu.xml",
         "views/estate_property_list_template.xml",
+        "views/estate_property_details_template.xml",
     ],
     "demo": [
         "demo/estate_property_demo.xml",

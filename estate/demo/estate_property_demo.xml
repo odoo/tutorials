@@ -4,6 +4,7 @@
         <record id="estate_property_big_villa" model="estate.property">
             <field name="name">Big Villa</field>
             <field name="state">new</field>
+            <field name="image" type="base64" file="estate/static/src/img/image1.jpg" />
             <field name="description">A nice and big villa</field>
             <field name="postcode">123456</field>
             <field name="date_availability">2020-02-02</field>
@@ -19,6 +20,7 @@
         </record>
         <record id="estate_property_trailer" model="estate.property">
             <field name="name">Trailer Home</field>
+            <field name="image" type="base64" file="estate/static/src/img/image2.jpg" />
             <field name="state">cancelled</field>
             <field name="description">Home in a trailer park</field>
             <field name="postcode">654321</field>
@@ -50,7 +52,7 @@
             <field name="property_id" ref="estate.estate_property_big_villa"></field>
             <field name="partner_id" ref="base.res_partner_12"></field>
         </record>
-        
+
         <record id="estate_property_partner_1" model="res.partner">
             <field name="name">Azure Interrior</field>
         </record>
@@ -61,6 +63,7 @@
 
         <record id="estate_property_space_ship" model="estate.property">
             <field name="name">International Space Station</field>
+            <field name="image" type="base64" file="estate/static/src/img/image3.jpg" />
             <field name="state">new</field>
             <field name="description">Aliens sometimes come visit</field>
             <field name="postcode">123456</field>

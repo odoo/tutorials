@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_details_template" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="card shadow-lg p-4 border-0 rounded">
+                            <div class="row">
+                                <!-- Image Section -->
+                                <div class="col-md-6">
+                                    <t t-if="property.image">
+                                        <img
+                                            t-att-src="'data:image/png;base64,%s' % property.image.decode('utf-8')"
+                                            class="img-fluid rounded" alt="Property Image" />
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/web/static/src/img/placeholder.png"
+                                            class="img-fluid rounded" alt="No Image" />
+                                    </t>
+                                </div>
+                                <!-- Details Section -->
+                                <div class="col-md-6">
+                                    <h1 class="fw-bold text-primary">
+                                        <t t-esc="property.name" />
+                                    </h1>
+                                    <hr class="mb-3" />
+                                    <p class="text-muted"><strong>Price:</strong> <t
+                                            t-esc="property.expected_price" /> $</p>
+                                    <p>
+                                        <strong>Bedrooms:</strong>
+                                        <t t-esc="property.bedrooms" />
+                                    </p>
+                                    <p><strong>Living Area:</strong> <t t-esc="property.living_area" />sq ft</p>
+                                    <p>
+                                        <strong>Description:</strong>
+                                        <t t-esc="property.description" />
+                                    </p>
+                                    <!-- Property State -->
+                                    <p class="mt-3">
+                                        <strong>State:</strong>
+                                        <t t-if="property.state == 'new'">
+                                            <span class="badge bg-info text-white px-3 py-2">New</span>
+                                        </t>
+                                        <t t-if="property.state == 'offer_received'">
+                                            <span class="badge bg-warning text-dark px-3 py-2">Offer
+                                                Received</span>
+                                        </t>
+                                        <t t-if="property.state == 'offer_accepted'">
+                                            <span class="badge bg-primary text-dark px-3 py-2">Offer
+                                                Accepted</span>
+                                        </t>
+                                        <t t-if="property.state == 'sold'">
+                                            <span class="badge bg-success px-3 py-2">Sold</span>
+                                        </t>
+                                        <t t-if="property.state == 'cancelled'">
+                                            <span class="badge bg-danger px-3 py-2">Cancelled</span>
+                                        </t>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Back Button -->
+                        <div class="text-center mt-4">
+                            <a href="/properties"
+                                class="btn btn-lg btn-outline-primary px-4 py-2 fw-bold shadow-sm transition">
+                                <i class="fa fa-arrow-left"></i> Back to Properties </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Custom Styles -->
+            <style>
+                .card {
+                background: #e9ecef;
+                border-radius: 15px;
+                box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+                }
+                h1 {
+                font-size: 2rem;
+                }
+                .badge {
+                font-size: 1rem;
+                border-radius: 5px;
+                }
+                .btn-outline-primary {
+                transition: 0.3s ease-in-out;
+                }
+                .btn-outline-primary:hover {
+                color: white !important;
+                transform: scale(1.05);
+                }
+            </style>
+        </t>
+    </template>
+</odoo>

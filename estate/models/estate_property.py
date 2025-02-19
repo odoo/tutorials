@@ -26,6 +26,7 @@ class EstateProperty(models.Model):
     # --------------------------------------- Fields Declaration ----------------------------------
     name = fields.Char(required=True)
     description = fields.Text()
+    image = fields.Image("Property Image")
     postcode = fields.Char()
     date_availability = fields.Date("Available From", default=datetime.now() + timedelta(90))
     sequence = fields.Integer(default="1", help="Used to order records. Lower is better.")

@@ -2,16 +2,46 @@
 <odoo>
     <template id="estate_property_list_template" name="Property List">
         <t t-call="website.layout">
-            <div>
-                <h1>Available Properties</h1>
-                <div>
+            <div class="container py-5">
+                <h1 class="text-center mb-4">Available Properties</h1>
+
+                <div class="row">
                     <t t-foreach="properties" t-as="property">
-                        <div>
-                            <h5>
-                                <t t-esc="property.name" />
-                            </h5>
-                            <p>Price: <t t-esc="property.expected_price" /> $</p>
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm">
+
+                                <div class="card-body">
+                                    <t t-if="property.image">
+                                        <img
+                                            t-att-src="'data:image/png;base64,%s' % property.image.decode('utf-8')"
+                                            class="card-img-top img-fluid" alt="Property Image"
+                                            style="height: 250px; object-fit: cover;" />
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/web/static/src/img/placeholder.png"
+                                            class="card-img-top img-fluid" alt="No Image"
+                                            style="height: 250px; object-fit: cover;" />
+                                    </t>
+                                    <h5 class="card-title">
+                                        <t t-esc="property.name" />
+                                    </h5>
+                                    <p class="card-text">
+                                        <strong>Price:</strong> <t t-esc="property.expected_price" />
+                                        $ </p>
+                                    <a t-att-href="'/property/%s' % property.id"
+                                        class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
                         </div>
+                    </t>
+                </div>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-center mt-4">
+                    <t t-call="website.pager">
+                        <t t-set="total" t-value="total_pages" />
+                        <t t-set="page" t-value="current_page" />
+                        <t t-set="url" t-value="'/properties?page=%d'" />
                     </t>
                 </div>
             </div>
