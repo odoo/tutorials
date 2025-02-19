@@ -1,6 +1,6 @@
 {
     "name" : "estate",
-    "depends" : ['base','mail','web'],
+    "depends" : ['base','mail','web','whatsapp'],
     "category" : "Real Estate/Brokerage",
     'data' : [
         'views/res_users.xml',
@@ -12,6 +12,8 @@
         'views/estate_property_tag.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+        'views/sold_email_template.xml',
+        'views/whatsapp_template.xml',
         'report/res_users_report.xml',
         'report/estate_property_report_template.xml',
         'report/estate_property_reports.xml',

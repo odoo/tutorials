@@ -44,6 +44,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
                 </header>
                 <sheet>
+                        <field name="image_1920" widget="image" class="oe_avatar"/>
                         <group>
                             <h1><field name="name"/></h1>
                         </group>

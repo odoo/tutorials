@@ -1,3 +1,4 @@
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
@@ -30,14 +31,20 @@ class EstatePropertyOffer(models.Model):
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
-            record.date_deadline = record.create_date + relativedelta(
-                days=record.validity
-            )
+            # added fallback
+            start_date = (
+                record.create_date if record.create_date else datetime.now()
+            )  # if create_date is not there then it will be calculate based on the current date.
+            if start_date and record.validity:
+                record.date_deadline = start_date + relativedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
-            delta = record.date_deadline - record.create_date
-            record.validity = delta.days
+            if record.date_deadline and record.create_date:
+                delta = record.date_deadline - record.create_date.date()
+                record.validity = delta.days
+            else:
+                record.validity = 7
 
     def action_confirm(self):
         for record in self:
@@ -56,9 +63,9 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         property_id = vals.get("property_id")
         property_record = self.env["estate.property"].browse(property_id)
-        if(property_record.state == "sold"):
+        if property_record.state == "sold":
             raise UserError("Cannot Create offer for a sold property")
-        else:    
+        else:
             property_record.write({"state": "offer received"})
             if vals["price"] is not None:
                 highest_price = property_record.best_price

@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="tags")
     description = fields.Text()
     postcode = fields.Char()
-    image_1920= fields.Image()
+    image_1920 = fields.Image()
     date_availability = fields.Date(
         copy=False,
         default=lambda self: fields.Datetime.today() + relativedelta(days=90),
@@ -106,17 +106,36 @@ class EstateProperty(models.Model):
         if self.state == "cancelled":
             raise UserError("Cancelled property cannot be sold.")
         if self.state != "sold":
-            accepted_offer= self.env['estate.property.offer'].search([
-                ('property_id','=',self.id),
-                ('status','=','accepted')
-            ])
+            accepted_offer = self.env["estate.property.offer"].search(
+                [("property_id", "=", self.id), ("status", "=", "accepted")]
+            )
             if not accepted_offer:
                 raise UserError("You cannot sell a property without an accepted offer")
             self.state = "sold"
         else:
             raise UserError("This property is already sold.")
-        return True
         self.state = "sold"
+        email_template = self.env.ref("estate.email_template_property_sold")
+        if email_template:
+            email_template.send_mail(
+                self.id,
+                force_send=True,
+                email_layout_xmlid="mail.mail_notification_light",
+            )
+        for property in self:
+            if property.buyer_id:
+                message_body = f"Hello {property.buyer_id.name}, Congratulations! Your property '{property.name}' has been successfully sold. Thank you!"
+                whatsapp_message = self.env[
+                    "whatsapp.message"
+                ].create(
+                    {
+                        "body": message_body,
+                        "mobile_number": property.buyer_id.mobile,  # assuming mobile is in international format like +123456789
+                        "message_type": "outbound",
+                    }
+                )
+                whatsapp_message._send()
+        return True
 
     def action_cancel(self):
         if self.state == "sold":
