@@ -11,8 +11,7 @@ Author: Hicham (hime)
 """
 
 # ORM Related fields
-
-PROPERTY_ORM_NAME='estate'
+PROPERTY_ORM_NAME='estate_property'
 PROPERTY_ORM_DESC='estate property'
 
 # Default values

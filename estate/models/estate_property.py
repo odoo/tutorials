@@ -22,7 +22,7 @@ class Property(models.Model):
     postcode = fields.Char(required=True)
     date_availability = fields.Date(required=True)
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(reqiured=True)
+    selling_price = fields.Float(required=True)
     bedrooms = fields.Integer(required=True) 
     living_area = fields.Integer(required=True)
     facades = fields.Integer(required=True)

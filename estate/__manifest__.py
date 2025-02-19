@@ -3,6 +3,9 @@
     'version': '1.0',
     'author': 'Odoo S.A.',
     'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'icon': '/estate/static/real_estate.png',
     'installable': True,
     'application': True,
