@@ -20,6 +20,8 @@ This module contains all the common features of Estate property management.
         'views/estate_property_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
     ],
     'demo': [
         'demo/property_demo.xml',
