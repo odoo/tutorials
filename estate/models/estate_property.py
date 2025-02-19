@@ -51,6 +51,7 @@ class EstateProperty(models.Model):
 
     total_area = fields.Float(compute = "_compute_total_area")
     best_offer = fields.Float(compute = "_compute_best_offer" , store = True)
+    image = fields.Image(string = "Property Image" , max_width=1024 , max_height=1024)
 
     company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company,
         help="This field specifies the company to which the property belongs.")

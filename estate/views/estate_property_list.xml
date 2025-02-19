@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="estate_property_list" model="ir.ui.view">
+            <field name="name">Estate Property List</field>
+            <field name="type">qweb</field>
+            <field name="key">estate.estate_property_list</field>
+            <field name="arch" type="xml">
+                <t t-name="estate.estate_property_list">
+                    <t t-call="website.layout">
+                        <div class="container">
+                            <h1 class="text-center">🏡 Explore Your Dream Home 🏡</h1>
+
+                            <div class="row g-4">
+                                <t t-foreach="properties" t-as="property">
+                                    <div class="col-md-3">
+                                        <div class="card shadow-lg">
+                                            <img t-if="property.image"
+                                                t-att-src="'data:image/webp;base64,%s' % property.image.decode('utf-8')"
+                                                class="card-img-top img-fluid"
+                                                alt="Property Image"
+                                                style="height: 250px; object-fit: cover; width: 100%;" />
+                                            <div class="card-body">
+                                                <h5 class="card-title" t-esc="property.name" />
+
+                                                <div class="tags mb-3">
+                                                    <span class="badge text-bg-secondary mx-1"
+                                                        t-foreach="property.property_tag_ids"
+                                                        t-as="tag">
+                                                        <t t-esc="tag.name" />
+                                                    </span>
+                                                </div>
+
+                                                <p class="card-type">
+                                                    <t t-esc="property.property_type_id.name" />
+                                                </p>
+                                                <p class="card-text"><strong>Price:</strong> <t
+                                                        t-esc="property.expected_price" /> $</p>
+                                                <div>
+                                                    <p><strong>Total Area: </strong> <t
+                                                            t-esc="property.total_area" /> m²</p>
+                                                    <p>
+                                                        <strong>Garden: </strong>
+                                                        <t t-esc="property.garden and 'Yes' or 'No'" />
+                                                    </p>
+                                                    <p>
+                                                        <strong>Garage: </strong>
+                                                        <t t-esc="property.garage and 'Yes' or 'No'" />
+                                                    </p>
+                                                </div>
+
+                                                
+                                                <div class="text-center mt-3">
+                                                    <a t-att-href="'/properties/%s' % property.id"
+                                                        class="btn btn-lg btn-purple text-white shadow-sm px-4 py-2 d-block mx-auto"
+                                                        style="background-color: #b069db; border-radius: 8px; font-size: 1.1rem; font-weight: 600;">
+                                                        🔍 View Details
+                                                    </a>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <div class="pagination mt-4">
+                                <t t-if="pager">
+                                    <t t-call="website.pager">
+                                        <t t-set="pager" t-value="pager" />
+                                    </t>
+                                </t>
+                            </div>
+
+                        </div>
+                    </t>
+                </t>
+            </field>
+        </record>
+    </data>
+</odoo>

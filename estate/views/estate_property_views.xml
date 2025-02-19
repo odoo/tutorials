@@ -53,6 +53,7 @@
                             <field name="date_availability"/>
                         </group>
                         <group>
+                            <field name="image" widget="image"/>
                             <field name="expected_price"/>
                             <field name="best_offer"/>
                             <field name="selling_price"/>

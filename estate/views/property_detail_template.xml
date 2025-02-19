@@ -1,0 +1,24 @@
+<odoo>
+    <template id="property_detail_template" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="card mx-auto shadow-lg p-4" style="max-width: 800px;">
+                    <h2 class="text-center text-uppercase font-weight-bold mb-4" t-esc="property.name" />
+                    <img t-if="property.image"
+                        t-att-src="'data:image/webp;base64,%s' % property.image.decode('utf-8')"
+                        class="img-fluid mx-auto d-block rounded"
+                        alt="Property Image"
+                        style="height: 300px; object-fit: cover; width: 100%;" />
+                    <div class="mt-3">
+                        <p class="text-primary font-weight-bold h5">
+                            Price: <span class="text-dark" t-esc="property.expected_price" /> $
+                        </p>
+                        <p class="text-secondary mt-2">
+                            <strong>Description:</strong> <t t-esc="property.description" />
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
