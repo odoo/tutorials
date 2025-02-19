@@ -1,4 +1,4 @@
-from odoo import api, models, fields
+from odoo import api, models, fields, exceptions
 
 
 class Offer(models.Model):
@@ -29,3 +29,22 @@ class Offer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.to_date(record.create_date)).days
+
+    def action_accept(self):
+        for record in self:
+            if record.status == 'refused':
+                raise exceptions.UserError("Refused offers cannot be accepted")
+            if record.property_id.state not in ['new', 'received']:
+                raise exceptions.UserError("Only properties that are new or have only received offers can have an offer accepted")
+            record.status = 'accepted'
+            record.property_id.state = 'accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            if record.status == 'accepted':
+                raise exceptions.UserError("Accepted offers cannot be refused")
+            record.status = 'refused'
+        return True

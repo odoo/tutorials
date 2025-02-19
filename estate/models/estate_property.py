@@ -1,4 +1,4 @@
-from odoo import api, models, fields
+from odoo import api, models, fields, exceptions
 
 
 class Property(models.Model):
@@ -28,7 +28,7 @@ class Property(models.Model):
             ('received', 'Offer Received'),
             ('accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
-            ('cancelled', 'Cancelled'),
+            ('canceled', 'Canceled'),
         ],
         default='new',
         required=True,
@@ -59,3 +59,18 @@ class Property(models.Model):
         else:
             self.garden_area = False
             self.garden_orientation = False
+
+    def action_mark_canceled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError("Sold properties cannot be canceled")
+            record.state = 'canceled'
+        return True
+
+    def action_mark_sold(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise exceptions.UserError("Canceled properties cannot be sold")
+            record.state = 'sold'
+        return True
+
