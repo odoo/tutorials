@@ -16,8 +16,10 @@ class EstatePropertyOffer(models.Model):
     ]
     _order = 'price desc'
 
-    price = fields.Float(digits=(20,2))
-    partner_id = fields.Many2one('res.partner', string='Partner', required=True)
+    price = fields.Float(digits=(20, 2))
+    partner_id = fields.Many2one(
+        'res.partner', string='Partner', required=True
+    )
     status = fields.Selection(
         selection=[
             ('accepted', 'Accepted'),
@@ -25,10 +27,21 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False, readonly=True
     )
-    property_id = fields.Many2one('estate.property', string='Property', required=True)
-    property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id', store=True, string='Property Type')
+    property_id = fields.Many2one(
+        'estate.property', string='Property', required=True
+    )
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        related='property_id.property_type_id',
+        store=True,
+        string='Property Type'
+    )
     validity = fields.Integer('Validity (days)', default=7)
-    date_deadline = fields.Date('Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
+    date_deadline = fields.Date(
+        'Deadline',
+        compute='_compute_date_deadline',
+        inverse='_inverse_date_deadline'
+    )
 
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
@@ -37,7 +50,8 @@ class EstatePropertyOffer(models.Model):
                 create_date = property_offer.create_date.date()
             else:
                 create_date = fields.Date.today()
-            property_offer.date_deadline = create_date + relativedelta(days=property_offer.validity)
+            property_offer.date_deadline = \
+                create_date + relativedelta(days=property_offer.validity)
 
     @api.onchange('date_deadline')
     def _inverse_date_deadline(self):
@@ -46,7 +60,8 @@ class EstatePropertyOffer(models.Model):
                 create_date = property_offer.create_date.date()
             else:
                 create_date = fields.Date.today()
-            property_offer.validity = (property_offer.date_deadline - create_date).days
+            property_offer.validity = \
+                (property_offer.date_deadline - create_date).days
 
     def action_accept(self):
         for property_offer in self:
@@ -61,12 +76,18 @@ class EstatePropertyOffer(models.Model):
             property_offer.status = 'refused'
         return True
 
-    # TODO: should maybe modify vals_list variable and then call super().create
     @api.model_create_multi
     def create(self, vals_list):
         property_offers = super().create(vals_list)
         for property_offer in property_offers:
-            if float_compare(property_offer.price, property_offer.property_id.best_price, precision_digits=10) < 0:
-                raise UserError("Creating an offer which is worse than another is not allowed")
+            if float_compare(
+                property_offer.price,
+                property_offer.property_id.best_price,
+                precision_digits=10
+            ) < 0:
+                raise UserError(
+                    "Creating an offer which is worse \
+                     than another is not allowed"
+                )
             property_offer.property_id.state = 'received'
         return property_offers
