@@ -1,10 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
-
+  <t t-name="awesome_owl.playground">
+    <div class="p-3 border d-flex gap-4">
+      <h1>hello world</h1>
+      <CounterComponent value="state.value" increment.bind="increment" />
+      <CounterComponent value="state.value" increment.bind="increment" />
+    </div>
+    <div class="border mt-3">
+      <Card title="'card 1'" content="'content of card 1'"/>
+      <Card title="'card 2'" content="'content of card 2'"/>
+    </div>
+  </t>
 </templates>

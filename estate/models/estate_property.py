@@ -66,6 +66,8 @@ class PropertyPlan(models.Model):
         required=True,
         default=lambda self: self.env.company,
     )
+    image = fields.Binary(string="Property Image", attachment=True)
+    website_published = fields.Boolean(string="Publish Website", default=False)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

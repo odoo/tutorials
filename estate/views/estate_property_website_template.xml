@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_detail_page" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <!-- Property Image -->
+                <div class="text-center mb-5">
+                    <img t-att-src="image_data_uri(property.image)" 
+                         class="img-fluid rounded shadow-lg w-100" 
+                         alt="Property Image" 
+                         style="max-height: 500px; object-fit: cover;" />
+                </div>
+
+                <!-- Property Title -->
+                <h1 class="text-center text-primary fw-bold mb-4">
+                    <t t-esc="property.name"/>
+                </h1>
+
+                <!-- Property Highlights -->
+                <div class="row gy-4">
+                    <!-- Left Column: Key Details -->
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm p-4 border-0">
+                            <h3 class="text-secondary fw-bold mb-3">Property Details</h3>
+                            <ul class="list-unstyled fs-5">
+                                <li class="mb-2">
+                                    <strong>Available From:</strong> 
+                                    <span class="text-muted"><t t-esc="property.date_availability"/></span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Expected Price:</strong> 
+                                    ₹<span class="text-muted"><t t-esc="property.expected_price"/></span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Selling Price:</strong> 
+                                    ₹<span class="text-muted"><t t-esc="property.selling_price"/></span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Total Area:</strong> 
+                                    <span class="text-muted"><t t-esc="property.total_area"/> sqm</span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Bedrooms:</strong> 
+                                    <span class="text-muted"><t t-esc="property.bedrooms"/></span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Living Area:</strong> 
+                                    <span class="text-muted"><t t-esc="property.living_area"/> sqm</span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Garden:</strong> 
+                                    <span class="text-muted"><t t-esc="'Yes' if property.garden else 'No'"/></span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Garden Orientation:</strong> 
+                                    <span class="text-muted"><t t-esc="property.garden_orientation or 'Not Specified'"/></span>
+                                </li>
+                                <li class="mb-2">
+                                    <strong>Facades:</strong> 
+                                    <span class="text-muted"><t t-esc="property.facades or 'N/A'"/></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Description & Highlights -->
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm p-4 border-0">
+                            <h3 class="text-secondary fw-bold mb-3">Description</h3>
+                            <p class="fs-5 text-muted">
+                                <t t-esc="property.description"/>
+                            </p>
+                            <div class="mt-4">
+                                <h4 class="text-secondary fw-bold">Key Highlights</h4>
+                                <div class="d-flex flex-wrap gap-3 mt-3">
+                                    <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">Postcode: <t t-esc="property.postcode or 'N/A'"/></span>
+                                    <span class="badge bg-success rounded-pill px-3 py-2 fs-6">State: <t t-esc="property.state"/></span>
+                                    <span class="badge bg-info rounded-pill px-3 py-2 fs-6">Type: <t t-esc="property.property_type_id.name or 'N/A'"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Offers Section -->
+                <div class="mt-5">
+                    <h2 class="text-primary fw-bold">Offers</h2>
+                    <div class="table-responsive mt-3">
+                        <table class="table table-hover shadow-sm">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Price (₹)</th>
+                                    <th>Buyer</th>
+                                    <th>Validity (days)</th>
+                                    <th>Deadline</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="property.offer_ids" t-as="offer">
+                                    <tr t-att-class="'table-success' if offer.status == 'accepted' else 'table-danger'">
+                                        <td><t t-esc="offer.price"/></td>
+                                        <td><t t-esc="offer.partner_id.name or 'Unknown'"/></td>
+                                        <td><t t-esc="offer.validity"/></td>
+                                        <td><t t-esc="offer.date_deadline"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Back Button -->
+                <div class="text-center mt-5">
+                    <a href="/estate_properties" class="btn btn-secondary rounded-pill shadow-sm px-5">
+                        <i class="fa fa-arrow-left"></i> Back to Properties
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

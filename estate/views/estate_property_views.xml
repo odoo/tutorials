@@ -3,8 +3,7 @@
         <field name="name">estate.property.view.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list decoration-success="state in ['offer_received', 'offer_accepted']"
-                decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+            <list decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name" />
                 <field name="postcode" />
                 <field name="bedrooms" />
@@ -22,23 +21,22 @@
         <field name="arch" type="xml">
             <form string="Estate Property Form">
                 <header>
-                    <button name="action_property_sold" type="object" string="SOLD"
-                        invisible="state not in ['new', 'offer_received']" />
-                    <button name="action_property_sold" type="object" string="SOLD"
-                        class="oe_highlight"
-                        invisible="state in ['sold', 'cancelled', 'new', 'offer_received','invoiced']" />
-                    <button name="action_property_cancelled" type="object" string="CANCEL"
-                        invisible="state in ['sold', 'cancelled','invoiced']" />
-                    <field name="state" widget="statusbar"
-                        statusbar_visible="new,offer_received,offer_accepted,sold" />
+                    <button name="action_property_sold" type="object" string="SOLD" invisible="state not in ['new', 'offer_received']" />
+                    <button name="action_property_sold" type="object" string="SOLD" class="oe_highlight" invisible="state in ['sold', 'cancelled', 'new', 'offer_received','invoiced']" />
+                    <button name="action_property_cancelled" type="object" string="CANCEL" invisible="state in ['sold', 'cancelled','invoiced']" />
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <group>
-                        <h1>
-                            <field name="name" placeholder="Name" />
-                        </h1>
-                        <field name="tag_ids" widget="many2many_tags"
-                            options="{'color_field': 'color'}" />
+                        <group>
+                            <h1>
+                                <field name="name" placeholder="Name" />
+                            </h1>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                        </group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar" nolabel="1"/>
+                        </group>
                     </group>
                     <group>
                         <group>
@@ -56,6 +54,7 @@
                         <page string="Description">
                             <group>
                                 <field name="description" />
+                                <field name="website_published" />
                                 <field name="bedrooms" />
                                 <field name="living_area" />
                                 <field name="facades" />
@@ -68,18 +67,13 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids">
-                                <list editable="bottom" decoration-success="status == 'accepted'"
-                                    decoration-danger="status == 'refused'">
+                                <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="validity" />
                                     <field name="date_deadline" />
-                                    <button name="action_confirm" type="object" icon="fa-check"
-                                        help="Accept" string=" "
-                                        invisible="status in ['accepted', 'refused']" />
-                                    <button name="action_refuse" type="object" icon="fa-times"
-                                        help="Refuse" string=" "
-                                        invisible="status in ['accepted', 'refused']" />
+                                    <button name="action_confirm" type="object" icon="fa-check" help="Accept" string=" " invisible="status in ['accepted', 'refused']" />
+                                    <button name="action_refuse" type="object" icon="fa-times" help="Refuse" string=" " invisible="status in ['accepted', 'refused']" />
                                 </list>
                             </field>
                         </page>
@@ -104,13 +98,10 @@
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="living_area"
-                    filter_domain="['|', ('living_area', '&gt;', self), ('living_area', '=', self)]" />
+                <field name="living_area" filter_domain="['|', ('living_area', '&gt;', self), ('living_area', '=', self)]" />
                 <field name="facades" />
-                <filter string="Available" name="date_availability"
-                    domain="[('date_availability', '>=', context_today())]" />
-                <filter string="New or Offer Recieved" name="state"
-                    domain="[('date_availability', '>=', context_today()), '|', ('state', '=', 'new'),('state', '=', 'offer_received')]" />
+                <filter string="Available" name="date_availability" domain="[('date_availability', '>=', context_today())]" />
+                <filter string="New or Offer Recieved" name="state" domain="[('date_availability', '>=', context_today()), '|', ('state', '=', 'new'),('state', '=', 'offer_received')]" />
                 <separator />
                 <group string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
@@ -123,8 +114,7 @@
         <field name="name">estate_property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" records_draggable="False"
-                groups_draggable="False">
+            <kanban default_group_by="property_type_id" records_draggable="False" groups_draggable="False">
                 <field name="state" />
                 <templates>
                     <t t-name="kanban-box">
@@ -134,15 +124,12 @@
                             </strong>
                             <div class="mt-2"> Expected Price : <field name="expected_price" />
                             </div>
-                            <div t-if="record.state.raw_value == 'offer_received'"> Best price : <field
-                                    name="best_price" />
+                            <div t-if="record.state.raw_value == 'offer_received'"> Best price : <field name="best_price" />
                             </div>
-                            <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price : <field
-                                    name="selling_price" />
+                            <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price : <field name="selling_price" />
                             </div>
                             <div>
-                                <field name="tag_ids" options="{'color_field': 'color'}"
-                                    class="mt-1" />
+                                <field name="tag_ids" options="{'color_field': 'color'}" class="mt-1" />
                             </div>
                         </div>
                     </t>
