@@ -22,9 +22,10 @@
         'views/estate_property_list.xml',
         'views/estate_menus.xml',
         'views/res_user.xml',
+        'wizard/estate_property_offer_wizard_view.xml',
         'data/master_data.xml',
         'demo/demo_data.xml',
-        'views/property_detail_template.xml'
+        'views/property_detail_template.xml',
         ],
     'installable': True,
     'application': True,

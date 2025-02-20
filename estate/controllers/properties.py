@@ -8,7 +8,6 @@ class PropertyController(http.Controller):
 
     @http.route(['/properties', '/properties/page/<int:page>'], type="http", auth="public", website=True)
     def properties(self, page=1, **kwargs):
-
         property_model = request.env['estate.property']
         filter = [('state', 'not in', ['sold', 'cancelled'])]
         properties_count = property_model.search_count(filter)
@@ -38,3 +37,21 @@ class PropertyController(http.Controller):
         return request.render('estate.property_detail_template', {
             'property': property_record
         })
+
+    @http.route('/offer/create', auth='user', methods=['POST'], website=True)
+    def create_offer(self, **kw):
+        property_id = int(kw.get('property_id'))
+        price = float(kw.get('price'))
+        
+        property_record = request.env['estate.property'].browse(property_id)
+        max_offer = max(property_record.property_offer_ids.mapped('price'), default=0)
+
+        if price <= max_offer:
+            return request.redirect(f'/properties/{property_id}?error=Offer must be higher than {max_offer}')
+
+        offer = request.env['estate.property.offer'].create({
+            'partner_id': request.env.user.partner_id.id,
+            'property_id': property_id,
+            'price': price,
+        })
+        return request.redirect(f'/properties/{property_id}')
