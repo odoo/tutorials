@@ -13,6 +13,8 @@ class Property_Plan(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tag")
     #One2Many
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="OfferID")
+    property_img = fields.Binary("Image")
+    website_published = fields.Boolean("Published", default=False)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type" )
     salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
@@ -43,6 +45,8 @@ class Property_Plan(models.Model):
         ('cancelled', 'Cancelled')
     ],copy=False,default='new')
     company_id = fields.Integer(default=lambda self:self.env.user.company_id,required=True)
+    published = fields.Boolean('Is Published', default=False)
+    date_listed = fields.Datetime('Date Listed', default=fields.Datetime.now)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',

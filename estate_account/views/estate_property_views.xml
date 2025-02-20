@@ -9,7 +9,6 @@
                 <list string="Properties"
                     decoration-success="state in ['offer_received','offer_accepted']"
                     decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
-                    <field name="tag_ids" widget="many2many_tags" />
                     <field name="name" />
                     <field name="property_type_id" />
                     <field name="postcode" />
@@ -17,6 +16,7 @@
                     <field name="living_area" />
                     <field name="expected_price" />
                     <field name="selling_price" />
+                     <field name="tag_ids" widget="many2many_tags" />
                     <field name="date_availability" optional="hide" />
                 </list>
             </xpath>

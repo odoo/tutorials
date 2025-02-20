@@ -1,6 +1,6 @@
 {
     'name': "estate",
-    'depends': ['base','mail'],
+    'depends': ['base','mail','website'],
     'application': True,
     'data': [
         'views/estate_property_views.xml',
@@ -12,7 +12,8 @@
         'security/ir.model.access.csv',
         'data/master_data.xml',
         'report/estate_report_views.xml',
-        'report/estate_reports.xml'
+        'report/estate_reports.xml',
+        'views/property_templates.xml'
     ],
     "demo": [
         "demo/estate_demo.xml"
