@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-    <div class= "d-box border border 3 my-3 py-3">
-        <div class="d-flex gap-3 my-2">
-            <Counter onChange.bind="incrementSum"/>
-            <Counter onChange.bind="incrementSum"/>
+    <div>
+        <div class= "d-box border border 3 my-3 py-3">
+            <div class="d-flex gap-3 my-2">
+                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
+            </div>
+            <div class="d-inline mx-2 px-2 py-2 border border 2">sum:<t t-esc="sum.value"/></div>
         </div>
-        <div class="d-inline mx-4 px-2 py-2 border border 2">sum:<t t-esc="sum.value"/></div>
-    </div>
 
-    <div class="border boredr 2">
-        <Card title="'Title1'" content="str1"/>
-        <Card title="'Title2'" content="str2"/>
+        <div class="border boredr 2">
+            <Card title="'Title1'" content="str1"/>
+            <Card title="'Title2'" content="str2"/>
+        </div>
+
+        <div class="p-2">
+            <TodoList/>
+        </div>
     </div>
     </t>
 </templates>
