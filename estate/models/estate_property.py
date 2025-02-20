@@ -56,6 +56,11 @@ class Property(models.Model):
     total_area = fields.Integer(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price', string="Best Offer")
 
+
+    def action_do_something(self):
+        print('**** ACTION DO SOMETHING HAS BEEN CALLED ****')
+        return True
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:

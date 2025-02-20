@@ -33,6 +33,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="New estate property">
+                    <header>
+                        <button name="action_do_something" type="object" string="Do Something"/>
+                    </header>
                     <sheet>
                         <h1><field name="name" /></h1>
                         <group>
