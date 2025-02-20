@@ -1,7 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <templates xml:space="preserve">
    <t t-name="awesome_owl.Playground">
-      <h1>Owuuuuuuuul</h1>
-      <Counter/>
+      <div class="container mt-5">
+         <div class="text-center">
+            <h1 class="mb-4 text-danger">Welcome To Owl WebFrameworks</h1>
+         </div>
+         <div class="row justify-content-center">
+            <div class="col-md-5 mb-3">
+               <div class="card shadow-sm border-secondary hover-card">
+                  <div class="card-body text-center">
+                     <h5 class="card-title">Property 1</h5>
+                     <p class="card-text text-success fw-bold">Rs 4000</p>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-md-5 mb-3">
+               <div class="card shadow-sm border-secondary hover-card">
+                  <div class="card-body text-center">
+                     <h5 class="card-title">Property 2</h5>
+                     <p class="card-text text-success fw-bold">Rs 8000</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="text-center mt-4">
+            <Counter/>
+         </div>
+      </div>
    </t>
 </templates>
