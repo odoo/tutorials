@@ -13,7 +13,6 @@
             <list string="Types">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
-<!--                <field name="offer_count"/>-->
             </list>
         </field>
     </record>
@@ -23,6 +22,11 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Types">
+                <header>
+                    <button id="estate_property_offers_button_action" type="action" class="btn btn-primary" name="%(estate.estate_property_offers_action)d">
+                        <field name="offer_count" string="Offers" widget="statinfo"/>
+                    </button>
+                </header>
                 <sheet>
                     <group>
                         <group>
