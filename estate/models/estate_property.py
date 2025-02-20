@@ -48,6 +48,8 @@ class EstateProperty(models.Model):
     property_offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(string="Toatal Area (sqm)", compute="_compute_total_area")
     best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
+    property_img = fields.Binary(string="Property Image", attachment=True)
+    published = fields.Boolean(string="Published", default=False, tracking=True)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),

@@ -72,6 +72,7 @@
                             <field name="name" placeholder="Property Name" />
                         </h1>
                     </group>
+                    <field name="property_img" widget="image" class="oe_avatar" nolabel="1" />
                     <group>
                         <h5>
                             <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Property Tag(s)" />
@@ -82,6 +83,7 @@
                             <field name="property_type_id" options="{'no_create': true}" />
                             <field name="postcode" />
                             <field name="date_availability" />
+                            <field name="published" widget="boolean_toggle"/>
                         </group>
                         <group>
                             <field name="expected_price" />

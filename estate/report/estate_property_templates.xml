@@ -90,4 +90,139 @@
             </t>
         </t>
     </template>
+
+    <!-- Template of properties card in website -->
+    <template id="property_list_template">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 mt-5">
+                    <h1>Properties</h1>
+                    <form method="GET" action="/estate_properties" class="d-flex gap-2 col-md-4">
+                        <input type="date" id="filter_date" name="filter_date" class="form-control" t-att-value="filter_date"/>
+                        <button type="submit" class="btn btn-primary">Listed After</button>
+                    </form>
+                </div>
+
+                <!-- Property Grid -->
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <a t-att-href="'property/%s' % property.id">
+                                <div class="card">
+                                    <img t-if="property.property_img" t-att-src="image_data_uri(property.property_img)" class="card-img-top" alt="Property Image"/>
+                                    <img t-else="" t-att-src="'/estate/static/img/default.png'" alt="Default Image" />
+                                    <div class="card-body">
+                                        <h5 class="card-title" t-out="property.name"/>
+                                        <p class="card-text">Expected Price: <t t-out="property.expected_price"/></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Pagination -->
+                <nav>
+                    <ul class="pagination justify-content-center align-items-center">
+                        <t t-if="page &gt; 1">
+                            <li class="page-item">
+                                <a class="page-link" t-att-href="'/estate_properties?page=%s&amp;filter_date=%s' % (page-1, filter_date or '')">Previous</a>
+                            </li>
+                        </t>
+                        <t t-out="page" />
+                        <t t-if="has_next">
+                            <li class="page-item">
+                                <a class="page-link" t-att-href="'/estate_properties?page=%s&amp;filter_date=%s' % (page+1, filter_date or '')">Next</a>
+                            </li>
+                        </t>
+                    </ul>
+                </nav>
+            </div>
+        </t>
+    </template>
+
+    <template id="website_property_details">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="property-banner">
+                    <img t-if="property.property_img" t-att-src="image_data_uri(property.property_img)" class="img-fluid rounded shadow" alt="Property Image"/>
+                    <img t-else="" t-att-src="'/estate/static/img/default.png'" alt="Default Image" class="img-fluid rounded shadow" width="100%" />
+                </div>
+
+                <!-- Property Info -->
+                <div class="row mt-4">
+                    <div class="col-md-8">
+                        <h1 class="fw-bold" t-out="property.name"/>
+                        <h4 class="text-primary">Rs. <t t-out="property.expected_price" /></h4>
+                        <p class="text-muted"><i class="fa fa-map-marker"></i> <t t-out="property.postcode"/></p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <i class="fa fa-user"></i> <t t-out="property.salesman.name" tooltip="Salesman" />
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-4 text-center mt-2">
+                        <div class="p-3 bg-light rounded shadow-sm">
+                            <i class="fa fa-bed fa-2x text-primary"></i>
+                            <h5 class="mt-2">Bedrooms</h5>
+                            <p class="fw-bold" t-out="property.bedrooms"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mt-2">
+                        <div class="p-3 bg-light rounded shadow-sm">
+                            <i class="fa fa-tree fa-2x text-primary"></i>
+                            <h5 class="mt-2">Garden</h5>
+                            <t t-if="property.garden">
+                                <p class="fw-bold">Available</p>
+                            </t>
+                            <t t-else="">
+                                <p class="fw-bold">Not Available</p>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mt-2">
+                        <div class="p-3 bg-light rounded shadow-sm">
+                            <i class="fa fa-expand fa-2x text-primary"></i>
+                            <h5 class="mt-2">Living Area</h5>
+                            <p class="fw-bold"><t t-out="property.living_area"/> sqm</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property Description -->
+                <div class="mt-5">
+                    <h3 class="fw-bold">Property Description</h3>
+                    <p class="text-muted" t-out="property.description"/>
+                </div>
+
+                <!-- Offers Section -->
+                <div class="mt-5 mb-3">
+                    <h3 class="fw-bold">Offers</h3>
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Buyer</th>
+                                <th>Offer Price</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="property.property_offer_ids" t-as="offer">
+                                <tr>
+                                    <td t-out="offer.partner_id.name"/>
+                                    <td>$<t t-out="offer.price"/></td>
+                                    <td>
+                                        <span t-att-class="'badge ' + ('bg-success' if offer.status == 'accepted' else 'bg-warning' if offer.status == 'pending' else 'bg-danger')">
+                                            <t t-out="offer.status"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
 </odoo>

@@ -25,7 +25,7 @@ class TestEstateProperty(TransactionCase):
     def test_sold_property_cannot_create_offers(self):
         self.property.state = 'sold'
 
-        with self.assertRaises(UserError, msg=""):
+        with self.assertRaises(UserError, msg="You cannot create offer for sold property"):
             self.env['estate.property.offer'].create({
                 'price': 50000,
                 'partner_id': self.env.ref('base.res_partner_1').id,
