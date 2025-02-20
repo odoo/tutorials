@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Estate Property Offer" editable="bottom" decoration-danger="state=='refused'" decoration-success="state=='accepted'">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <button name="action_set_accepted" string="Accept" type="object" icon="fa-check" invisible="state != 'new'"/>
+                <button name="action_set_refused" string="Refuse" type="object" icon="fa-times" invisible="state != 'new'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property">
+                <header>
+                    <button string="Accept" type="object" name="action_set_accepted" invisible="state != 'new'"/>
+                    <button string="Refuse" type="object" name="action_set_refused" invisible="state != 'new'"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Refused" bg_color="bg-danger" invisible="state != 'refused'"/>
+                    <widget name="web_ribbon" title="Accepted" bg_color="bg-success" invisible="state != 'accepted'"/>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="validity"/>
+                        </group>
+                        <group>
+                            <field name="price"/>
+                            <field name="date_deadline"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
