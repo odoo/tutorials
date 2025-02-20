@@ -135,7 +135,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <chatter />
+                <chatter open_attachments="True"/>
             </form>
         </field>
     </record>

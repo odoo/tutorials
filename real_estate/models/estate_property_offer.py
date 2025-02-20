@@ -28,6 +28,11 @@ class EstatePropertyOffer(models.Model):
         string="Validity (days)",
         default=7
     )
+    date_deadline = fields.Date(
+        string="Deadline Date",
+        compute='_compute_date_deadline', 
+        inverse='_inverse_date_deadline', 
+    )
 
     partner_id = fields.Many2one(
         comodel_name='res.partner',
@@ -45,12 +50,14 @@ class EstatePropertyOffer(models.Model):
         related='property_id.property_type_id',
         store=True
     )
-
-    date_deadline = fields.Date(
-        string="Deadline Date",
-        compute='_compute_date_deadline', 
-        inverse='_inverse_date_deadline', 
-    )
+     # SQL CONSTRAINTS   
+    _sql_constraints = [
+        (
+            'check_offer_price',
+            'CHECK(price>0)',
+            'Offer Price must be positive'
+        )
+    ] 
     
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -69,15 +76,6 @@ class EstatePropertyOffer(models.Model):
             if property.state == 'new':
                 property.state = 'offer_received'
         return super().create(vals_list)
-
-    # SQL CONSTRAINTS   
-    _sql_constraints = [
-        (
-            'check_offer_price',
-            'CHECK(price>0)',
-            'Offer Price must be positive'
-        )
-    ] 
 
     def _inverse_date_deadline(self):
         for offer in self:

@@ -8,10 +8,8 @@ class EstateProperty(models.Model):
     def action_set_sold(self):
         
         try:
-            # self.check_access_rights('write')
-            # self.check_access_rule('write')
-                self.check_access('write')
-                self.env['account.move'].check_access_rights('create', raise_exception=True)
+            self.check_access('write')
+            self.env['account.move'].check_access_rights('create', raise_exception=True)
         except AccessError:
             raise ValidationError('Access nahi hai')
         res = super().action_set_sold()
@@ -30,13 +28,13 @@ class EstateProperty(models.Model):
             'company_id': self.company_id.id, 
             'invoice_line_ids': [
                 Command.create({
-                    'name':'6% of the selling price',
-                    'quantity':'1',
-                    'price_unit':self.selling_price*0.06
+                    'name': "6% of the selling price",
+                    'quantity': '1',
+                    'price_unit': self.selling_price * 0.06
                 }),
                 Command.create({
-                    'name':'administrative fees',
-                    'quantity':'1',
+                    'name': "Administrative fees",
+                    'quantity': '1',
                     'price_unit':100
                 })
             ]

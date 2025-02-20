@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 from odoo import Command, api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -8,6 +9,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Property"
     _order = 'id desc'
+    _inherit = 'mail.thread'
 
     name = fields.Char(
         string="Name",
@@ -68,7 +70,6 @@ class EstateProperty(models.Model):
     )
     garden_area = fields.Integer(
         string="Garden Area (sq meters)",
-        required=True,
         help="Enter the area of the garden"
     )
     garden_orientation = fields.Selection(
@@ -79,7 +80,6 @@ class EstateProperty(models.Model):
             ('west', "West")
         ],
         string="Garden Orientation",
-        required=True, 
         help="Select the orientation of the garden"
     )
     active = fields.Boolean(
@@ -101,6 +101,10 @@ class EstateProperty(models.Model):
         copy=False,
         help="Current state of the property."
     )
+    date_of_deadline = fields.Date(
+        string="property deadline",
+        compute='_compute_property_deadline'
+    )
 
     property_type_id = fields.Many2one(
         comodel_name='estate.property.type',
@@ -109,7 +113,8 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one(
         comodel_name='res.partner',
         string="Buyer",
-        copy=False
+        copy=False,
+        domain="[('is_company', '=', True)]"
     )
     salesperson_id = fields.Many2one(
         comodel_name='res.users',
@@ -121,7 +126,6 @@ class EstateProperty(models.Model):
         string="Company",
         default=lambda self: self.env.company
     )
-
 
     tag_ids = fields.Many2many(
         comodel_name='estate.property.tag',
@@ -142,20 +146,6 @@ class EstateProperty(models.Model):
         string="Best Offer",
         compute='_compute_best_price',
     )
-
-    @api.depends('garden_area', 'living_area')
-    def _compute_total_area(self):
-        for property in self:
-            property.total_area = property.garden_area + property.living_area
-
-    @api.depends('offer_ids.price')
-    def _compute_best_price(self):
-        for property in self:
-            if property.offer_ids:
-                property.best_price = max(property.offer_ids.mapped('price'))
-            else:
-                property.best_price = 0.0
-
     # SQL CONSTRAINTS
     _sql_constraints = [
         (
@@ -170,6 +160,24 @@ class EstateProperty(models.Model):
         )
     ]
 
+    @api.depends('date_availability')
+    def _compute_property_deadline(self):
+        for property in self:
+            if property.date_availability:
+                property.date_of_deadline = property.date_availability + timedelta(days=10)
+    @api.depends('garden_area', 'living_area')
+    def _compute_total_area(self):
+        for property in self:
+            property.total_area = property.garden_area + property.living_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for property in self:
+            if property.offer_ids:
+                property.best_price = max(property.offer_ids.mapped('price'))
+            else:
+                property.best_price = 0.0
+
     # PYTHON CONSTRAINTS
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
@@ -181,26 +189,15 @@ class EstateProperty(models.Model):
             ):
                 raise ValidationError("Selling Price cannot be lower than 90% of the Expected Price.")
 
-    # @api.constrains('buyer_id', 'property_type_id')
-    # def _check_property_type_id(self):
-    #     for property in self:
-    #         if property.property_type_id.name.lower() == 'commercial' and not property.buyer_id.is_company:
-    #             raise ValidationError("For Commercial properties, the buyer must be a company.")
-    @api.constrains('buyer_id   ', 'property_type_id')
-    def _check_property_type_id(self):
-        commercial_type_id = self.env.ref('real_estate.property_type_commercial').id
-        print("Property Type ID : ",commercial_type_id)
-        for property in self:
-            if property.property_type_id.id == commercial_type_id and not property.buyer_id.is_company:
-                # self.buyer_id = fields.Many2one(
-                #     comodel_name='res.partner',
-                #     string="Buyer",
-                #     copy=False,
-                #     domain="['&',('is_company','=',True),('parent_id','=',False)]"
-                # )
-                print(self.buyer_id)
-                # return {'domain': 'buyer_id'['&',('is_company','=',True),('parent_id','=',False)]}
-                # raise ValidationError("For Commercial properties, the buyer must be a company.")
+    @api.onchange('property_type_id')
+    def _onchange_proprty_type_domain(self):
+        if self.property_type_id:
+            commercial_type_id = self.env.ref('real_estate.property_type_commercial').id
+            if commercial_type_id and commercial_type_id == self.property_type_id.id:
+                return {'domain': {'buyer_id': [('is_company', '=', true)]}}
+            else:
+                return {'domain': {'buyer_id': []}}
+                
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -233,3 +230,16 @@ class EstateProperty(models.Model):
             if property.state == 'sold':
                 raise UserError("Sold Property can not be cancel")
             property.state = 'cancelled'
+
+    def _cron_property_offer_accept(self):
+        expired_properties = self.search([('date_of_deadline', '<=', date.today()), ('state', '=', 'offer_received')])
+        for property in expired_properties:
+            print(property.name)
+            if property.best_price > 0:
+                for offer_id in property.offer_ids:
+                    if offer_id.price == property.best_price:
+                        best_offer = offer_id
+            if best_offer:
+                property.selling_price = best_offer.price
+                property.buyer_id = best_offer.partner_id
+                property.state = 'offer_accepted'
