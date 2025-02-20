@@ -2,7 +2,7 @@
     "name": "Real Estate",
     "version": "1.0",
     "category": "Real Estate/Brokerage",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "website"],
     "data": [
         "report/salesperson_property_template.xml",
         "report/estate_property_offers_template.xml",
@@ -17,8 +17,9 @@
         "views/estate_property_listing_template.xml",
         "views/estate_property_details_template.xml",
         "views/estate_property_views.xml",
-        "views/estate_property_sold_email_template.xml",
-        "views/res_users_inherited_views.xml",
+        "views/website_menu.xml",
+        "data/mail_templates.xml",
+        "views/res_users_views.xml",
         "views/estate_menus.xml",
         "data/estate.property.type.csv"
     ],

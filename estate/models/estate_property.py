@@ -131,4 +131,4 @@ class EstateProperty(models.Model):
         self.state = "sold"
         if self.buyer_id.email:
             template=self.env.ref('estate.estate_property_sold_email_template')
-            template.send_mail(self.id,)
+            template.send_mail(self.id,force_send=True)

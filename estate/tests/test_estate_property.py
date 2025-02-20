@@ -17,8 +17,7 @@ class EstateTestCase(TransactionCase):
         cls.partner = cls.env["res.partner"].create({"name": "Test Partner"})
 
     def test_offer_creation_and_selling_without_accepted_offer_should_fail(self):
-        print("-----------------------Test 1 --------------------------")
-
+        
         # Attempt to sell a property without an accepted offer
         with self.assertRaises(UserError):
             self.property.action_set_sold()
@@ -45,21 +44,11 @@ class EstateTestCase(TransactionCase):
         )
 
     def test_reset_garden_area_and_orientation_when_garden_is_unchecked(self):
-        print("-----------------------Test 2--------------------------")
         estate_form = Form(self.property)
-
-        print("Uncheck funtion")
-        print(estate_form.garden_area)
-        print(estate_form.garden_orientation)
         estate_form.garden = False
         self.assertEqual(estate_form.garden_orientation, False)
         self.assertEqual(estate_form.garden_area, 0)
-        print(estate_form.garden_area)
-        print(estate_form.garden_orientation)
 
-        print("Check funtion")
         estate_form.garden = True
         self.assertEqual(estate_form.garden_orientation, "north")
         self.assertEqual(estate_form.garden_area, 10)
-        print(estate_form.garden_area)
-        print(estate_form.garden_orientation)

@@ -23,7 +23,7 @@ class PropertyController(http.Controller):
         if search_property:
             domain.append(('name', 'ilike', search_property))
 
-        Property = request.env['estate.property'].sudo()
+        Property = request.env['estate.property']
         total_properties = Property.search_count(domain)
         properties_per_page = 6
         pager = request.website.pager(
@@ -53,7 +53,7 @@ class PropertyController(http.Controller):
 
     @http.route("/properties/<int:property_id>", type="http", auth="public", website=True)
     def property_details(self, property_id):
-        property = request.env['estate.property'].sudo().browse(property_id)
+        property = request.env['estate.property'].browse(property_id)
         if not property.exists():
             return request.not_found()
         return request.render('estate.property_details_template', {

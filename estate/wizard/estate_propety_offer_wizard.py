@@ -20,6 +20,3 @@ class EstatePropertyOfferWizard(models.TransientModel):
                 "partner_id": self.partner_id.id,
             })
         return {"type": "ir.actions.act_window_close"}
-
-    def action_cancel(self):
-        return {"type": "ir.actions.act_window_close"}

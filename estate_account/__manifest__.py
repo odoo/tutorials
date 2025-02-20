@@ -8,7 +8,6 @@
     'data': [
         'reports/property_report.xml'
         ],
-    'installable': True,
-    'application': True
+    'installable': True
 }
 
