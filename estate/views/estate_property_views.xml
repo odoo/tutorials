@@ -74,8 +74,8 @@
                                 <list>
                                     <field name="price"/>
                                     <field name="partner_id"/>
-                                    <button name="action_validate" string="" type="object" icon="fa-check"/>
-                                    <button name="action_refuse" string="" type="object" icon="fa-cross"/>
+                                    <button name="action_validate" string=" " type="object" icon="fa-check"/>
+                                    <button name="action_refuse" string=" " type="object" icon="fa-times"/>
                                     <field name="status"/>
                                 </list>
                             </field>

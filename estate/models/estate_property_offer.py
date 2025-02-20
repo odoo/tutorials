@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 
 
 class EstatePropertyOffer(models.Model):
@@ -32,7 +32,15 @@ class EstatePropertyOffer(models.Model):
             print((record.date_deadline - record.create_date).days)
 
     def action_validate(self):
+        if self.property_id.selling_price != 0.0:
+            raise exceptions.UserError("An offer has already been accepted.")
         self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.partner_id = self.partner_id
+        
 
     def action_refuse(self):
+        if self.status == 'accepted':
+            self.property_id.selling_price = 0.0
+            self.property_id.partner_id = None
         self.status = 'refused'

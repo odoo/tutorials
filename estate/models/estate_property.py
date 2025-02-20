@@ -57,7 +57,7 @@ class EstateProperty(models.Model):
             record.total_area = record.garden_area + record.living_area
     
 
-    best_price = fields.Integer(compute="_compute_best_price", readonly=True)
+    best_price = fields.Float(compute="_compute_best_price", readonly=True)
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -65,7 +65,7 @@ class EstateProperty(models.Model):
             if len(record.offer_ids) > 0:
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
-                record.best_price = 0
+                record.best_price = 0.0
 
 
     @api.onchange("garden")
