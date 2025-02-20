@@ -87,3 +87,9 @@ class Property(models.Model):
                 tools.float_utils.float_compare(0.9 * record.expected_price, record.selling_price, precision_digits=2) <= 0
             ):
                 raise exceptions.ValidationError("The selling price must be at least 90% of the expected price. Lower the expected price, or find a better offer")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_canceled(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise exceptions.UserError("Only new and canceled properties can be deleted")

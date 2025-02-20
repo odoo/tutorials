@@ -53,3 +53,13 @@ class Offer(models.Model):
                 raise exceptions.UserError("Accepted offers cannot be refused")
             record.status = 'refused'
         return True
+
+    @api.model
+    def create(self, vals):
+        property_ = self.env['estate.property'].browse(vals['property_id'])
+        best_price = max(property_.offer_ids.mapped('price'), default=0.0)
+        if vals['price'] < best_price:
+            raise exceptions.UserError("The offer must be higher than %s" % best_price)
+        if property_.state == 'new':
+            property_.state = 'received'
+        return super().create(vals)
