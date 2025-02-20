@@ -32,10 +32,5 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline and record.create_date:
-                # Convertir create_date en date (en ignorant l'heure)
-                create_date = (
-                    record.create_date.date()
-                )  # .date() extrait la date sans l'heure
-                record.validity = (
-                    record.date_deadline - create_date
-                ).days  # On obtient le nombre de jours
+                create_date = record.create_date.date()
+                record.validity = (record.date_deadline - create_date).days
