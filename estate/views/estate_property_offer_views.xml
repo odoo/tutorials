@@ -1,5 +1,4 @@
 <odoo>
-
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Estate Property Offer</field>
         <field name="res_model">estate.property.offer</field>
@@ -13,8 +12,6 @@
         <field name="arch" type="xml">
             <list editable="bottom" decoration-danger="status == 'refused'"
                 decoration-success="status == 'accepted'">
-                <field name="property_id" string="Property"/>
-                <field name="property_type_id" />
                 <field name="price" />
                 <field name="buyer_id" />
                 <field name="validity" />
@@ -49,5 +46,4 @@
             </form>
         </field>
     </record>
-
 </odoo>

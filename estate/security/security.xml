@@ -15,29 +15,21 @@
     <record id="restrict_user_property" model="ir.rule">
         <field name="name">Salesperson</field>
         <field name="model_id" ref="model_estate_property" />
-        <field name="groups" eval="[Command.link(ref('estate_group_user'))]" />
-        <field name="perm_read" eval="1" />
+        <field name="groups" eval="[(4, ref('estate_group_user'))]" />
         <field name="perm_write" eval="1" />
         <field name="perm_create" eval="1" />
-        <field name="perm_unlink" eval="0" />
         <field name="domain_force">[
-            '&amp;','|', ('salesperson_id', '=', user.id),
-            ('salesperson_id', '=', 'False'),'|', ('company_id', '=', False),
-            ('company_id', 'in', company_ids)
+            '|', ('salesperson_id', '=', False), ('salesperson_id', '=', user.id)
             ]
         </field>
     </record>
 
-    <record id="access_manager_property" model="ir.rule">
-        <field name="name">An agent manager managers property types and tags and oversees all the
-            properties.</field>
-        <field name="model_id" ref="estate.model_estate_property" />
-        <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]" />
-        <field name="perm_read" eval="1" />
-        <field name="perm_write" eval="1" />
-        <field name="perm_create" eval="1" />
-        <field name="perm_unlink" eval="0" />
-        <field name="domain_force">[(1, '=', 1)]</field>
+    <record model="ir.rule" id="estate_property_record_rule_multi-company">
+        <field name="name">Shared Record: multi-company</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="global" eval="True" />
+        <field name="domain_force">
+            ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
     </record>
-
 </odoo>

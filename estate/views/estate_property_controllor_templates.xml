@@ -5,11 +5,17 @@
                 <h2 class="my-4">Available Properties</h2>
                 <form method="get" action="/properties">
                     <div class="input-group mb-3">
-                        <input type="date" name="listed_after" class="form-control" />
+                        <div class="input-group w-25">
+                            <input type="date" name="listed_after" class="form-control" />
+                        </div>
                         <div class="input-group">
                             <button class="btn btn-primary" type="submit">Listed After</button>
                         </div>
-                    </div>
+                        <div class="input-group">
+                            <input type="text" name="search_query" class="form-control" placeholder="Search by name..." t-att-value="search_query or ''" />
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </div>             
                 </form>
                 <div class="row">
                     <t t-foreach="properties" t-as="property">
@@ -18,6 +24,9 @@
                                 <img t-if="property.image"
                                     t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
                                     class="card-img-top" />
+                                <img t-else=""
+                                    t-att-src="'https://media.istockphoto.com/id/1396856251/photo/colonial-house.jpg?s=612x612&amp;w=0&amp;k=20&amp;c=_tGiix_HTQkJj2piTsilMuVef9v2nUwEkSC9Alo89BM='" 
+                                    class="img-fluid"/>
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         <t t-esc="property.name" />
@@ -43,12 +52,17 @@
     <template id="property_detail" name="Property Details">
         <t t-call="website.layout">
             <div class="container">
-                <h2 class="my-4" t-esc="property.name" />
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="row d-flex justify-content-center">
+                    <h2 class="my-4 text-center" t-esc="property.name" />
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-6 text-center mb-4">
                         <img t-if="property.image"
                             t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
                             class="img-fluid" />
+                        <img t-else=""
+                            t-att-src="'https://media.istockphoto.com/id/1396856251/photo/colonial-house.jpg?s=612x612&amp;w=0&amp;k=20&amp;c=_tGiix_HTQkJj2piTsilMuVef9v2nUwEkSC9Alo89BM='" 
+                            class="img-fluid"/>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-6">

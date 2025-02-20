@@ -50,7 +50,8 @@ class EstateProperty(models.Model):
         ],
         required=True,
         copy=False,
-        default="new"
+        default="new",
+        group_expand=True
     )
     image = fields.Image("Image") 
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
@@ -75,7 +76,16 @@ class EstateProperty(models.Model):
 
     def property_action_sell(self):
         for record in self:
+            if record.state != "offer_accepted":
+                raise UserError(
+                    "Property can only be sold after offer is accepted."
+                )
             record.state = 'sold'
+    
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -112,4 +122,3 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "You cannot delete a property unless its state is 'New' or 'Cancelled'."
                 )
-    

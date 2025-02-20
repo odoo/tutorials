@@ -1,21 +1,22 @@
 from odoo import http
 from odoo.http import request
 
+
 class EstatePropertyController(http.Controller):
     
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
-    def properties(self, page=1, listed_after=None, **kwargs):
+    def properties(self, page=1, listed_after=None, search_query=None, **kwargs):
         Property = request.env['estate.property']
-        domain = [('state', '!=', 'sold'), ('state', '!=', 'cancelled')]
+        # domain = [('state', '!=', 'sold'), ('state', '!=', 'cancelled')]
         
         if listed_after:
             domain.append(('create_date', '>=', listed_after))
+
+        if search_query:
+            domain.append(('name', 'ilike', search_query))
         
         properties_count = Property.search_count(domain)
         properties = Property.search(domain, order='create_date desc', limit=6, offset=(page-1)*6)
-        
-        if not properties:
-            return request.render('website.404')
         
         return request.render('estate.property_list', {
             'properties': properties,
