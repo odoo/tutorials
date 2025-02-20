@@ -19,7 +19,7 @@
                 </group>
                 <footer>
                     <button string="Make Offer" type="object" name="make_offer" class="oe_highlight"/>
-                    <button string="Cancel" type="object" name="cancel_offer" class="oe_link"/>
+                    <button string="Cancel" type="object" special="cancel" class="oe_link"/>
                 </footer>
             </form>
         </field>

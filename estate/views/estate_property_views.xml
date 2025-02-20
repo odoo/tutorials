@@ -72,9 +72,9 @@
         <field name="arch" type='xml'>
             <form string="Test">
                 <header>
-                    <button name="sold" type='object' string="SOLD"
+                    <button name="action_sold" type='object' string="SOLD"
                         invisible="state in ['sold','cancelled']" />
-                    <button name='cancel' type='object' string='CANCEL'
+                    <button name='action_cancel' type='object' string='CANCEL'
                         invisible="state in ['sold','cancelled']" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer received,offer accepted,sold,cancelled" />

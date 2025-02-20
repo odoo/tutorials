@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <template id="estate_property_webpage" name="Estate Properties">
         <t t-call="website.layout">
@@ -6,17 +5,12 @@
             <div class="container">
                 <h1 class="text-center">Available Estate Properties</h1>
                 <p>Browse through the list of available properties.</p>
-                <form action="/properties" method="get">
+                <form action="/properties" method="get" class="mb-4">
                     <div class="row mb-4">
                         <div class="col-md-4">
                             <input type="date" id="date-picker" name="listed_after" class="form-control" t-att-value="listed_after"/>
                         </div>
-                        <div class="col-md-2">
-                            <button type ="submit" id="filter-btn" class="btn btn-primary">Listed After</button>
-                        </div>
                     </div>
-                </form>
-                <form action="/properties" method="get" class="mb-4">
                     <div class="input-group">
                         <input type="text" name="search" class="form-control"
                             placeholder="Search by property name..."
@@ -56,8 +50,7 @@
                     <t t-call="website.pager">
                         <t t-set="classname" t-valuef="mx-auto" />
                     </t>
-                </div>
-                    
+                </div>   
                     </t>
                     <t t-else="">
                         <p>No properties available at the moment.</p>

@@ -17,26 +17,21 @@ class EstatePropertyController(http.Controller):
         domain = [("state", "in", ["new", "offer received"])]
         # current issue is that the list and search wont be stacked it will rather overwrite will add this feature soon.
         if search:
-            domain = [
-                "&",
-                ("state", "in", ["new", "offer received"]),
-                ("name", "ilike", search),
-            ]
+            domain.append(("name", "ilike", search))
+            domain.insert(0,"&")
         if listed_after:
             try:
                 date_filter = datetime.strptime(listed_after, "%Y-%m-%d")
-                domain = [
-                    "&",
-                    ("state", "in", ["new", "offer received"]),
-                    ("create_date", ">", date_filter),
-                ]
+                domain.insert(0,"&")
+                domain.append(("create_date", ">", date_filter))
             except ValueError:
                 pass
-        properties = (
-            request.env["estate.property"]
-            .sudo()
-            .search(domain, limit=6, offset=(int(page) - 1) * 6)
-        )
+        if listed_after and search:
+            domain.insert(0,"&")
+            domain.insert(1,"&")
+            domain.append(("create_date", ">", date_filter))
+            domain.append(("name", "ilike", search))
+        print(domain)
         total_properties = request.env["estate.property"].sudo().search_count(domain)
 
         total_pages = math.ceil(total_properties / 6)
@@ -46,8 +41,15 @@ class EstatePropertyController(http.Controller):
             page=page,  # current page
             step=6,  # items per page
             scope=total_pages,  # typically `self`
-            url_args={},  # additional GET params if needed
+            url_args={'search':search,'listed_after':listed_after}if listed_after or search else{},  # additional GET params if needed
         )
+        properties = (
+            request.env["estate.property"]
+            .sudo()
+            .search(domain, limit=6, offset=pager["offset"])
+        )
+
+  
         return request.render(
             "estate.estate_property_webpage",
             {

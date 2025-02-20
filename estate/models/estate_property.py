@@ -114,7 +114,7 @@ class EstateProperty(models.Model):
             self.garden_area = None
             self.garden_orientation = None
 
-    def sold(self):
+    def action_sold(self):
         if self.state != "cancelled" and self.state == "offer accepted":
             self.state = "sold"
             template = self.env.ref('estate.estate_property_email_template')
@@ -136,15 +136,11 @@ class EstateProperty(models.Model):
                 "Property cannot be sold because it has either been cancelled or no offers have been accepted!"
             )
 
-    def cancel(self):
+    def action_cancel(self):
         if self.state != "sold":
             self.state = "cancelled"
         else:
             raise UserError("Sold Property cannot be cancelled!")
-
-    def action_offer(self):
-        print("function called!")
-        pass
 
     def unlink(self):
         for property in self:

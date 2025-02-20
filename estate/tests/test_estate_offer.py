@@ -48,7 +48,7 @@ class EstateTestCase(TransactionCase):
             "---------------------------Test1-----------------------------------------"
         )
         print()
-        self.properties2.sold()
+        self.properties2.action_sold()
         print("CREATING OFFER FOR SOLD PROPERTY!!!!")
         print()
         print()
@@ -68,7 +68,7 @@ class EstateTestCase(TransactionCase):
         print()
         print("SELLING PROPERTY")
         with self.assertRaises(UserError):
-            self.properties.sold()
+            self.properties.action_sold()
 
         print("Selling property without accepting offer test completed!")
 

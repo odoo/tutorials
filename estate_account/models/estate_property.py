@@ -5,7 +5,7 @@ from odoo import Command, models
 class EstateProperty(models.Model):
     _inherit = ["estate.property"]
 
-    def sold(self):
+    def action_sold(self):
         self.env["account.move"].sudo().create(
             {
                 "move_type": "out_invoice",
@@ -39,10 +39,4 @@ class EstateProperty(models.Model):
                 ],
             }
         )
-
-        print()
-        print()
-        print("Empty invoice is created!")
-        print()
-        print()
-        return super(EstateProperty, self).sold()
+        return super(EstateProperty, self).action_sold()
