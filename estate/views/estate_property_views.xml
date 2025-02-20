@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="awesome_action" model="ir.actions.act_window">
-        <field name="name">Awesome actions yay</field>
+        <field name="name">Awesome Propeties yay</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
@@ -31,8 +31,10 @@
         <field name="arch" type="xml">
             <form string="Awesome Action">
                 <header>
-                    <button name="action_cancel" type="object" string="Cancel"/>
-                    <button name="action_sold" type="object" string="Sold"/>
+                    <button name="action_reset" type="object" string="Reset to draft" invisible="state != 'cancelled'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state == 'cancelled' or state == 'sold'"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state == 'offer_accepted' or state == 'cancelled' or state == 'sold'"/>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight" invisible="state != 'offer_accepted'"/>
                     <field name="state" widget='statusbar'/>
                 </header>
                 <sheet>
@@ -68,8 +70,8 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="garden == False"/>
+                                    <field name="garden_orientation" invisible="garden == False"/>
                                     <field name="total_area"/>
                                 </group>
                             </page>

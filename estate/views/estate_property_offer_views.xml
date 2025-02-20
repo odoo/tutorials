@@ -5,14 +5,14 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Channel" editable="top">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <button name="action_accept" type="object" string="Accept" icon="fa-check"/>
                 <button name="action_refuse" type="object" string="Refuse" icon="fa-times"/>
-                <field name="status"/>
+                <field name="status" readonly="1"/>
             </list>
         </field>
     </record>

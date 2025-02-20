@@ -47,7 +47,7 @@ class Property(models.Model):
     buyer = fields.Many2one('res.partner', string='Buyer')
     salesperson = fields.Many2one('res.users', string='Salesperson')
     state = fields.Selection(
-        string='State', 
+        string='State',
         selection = [('new', "new"), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
         default='new'
     )
@@ -72,6 +72,12 @@ class Property(models.Model):
             self.garden_orientation = False
             self.garden_area = 0
     
+    def action_reset(self):
+        if self.state == 'cancelled':
+            self.state = 'new'
+        else: 
+            raise UserError("You can only reset a cancelled property")
+    
     def action_cancel(self):
         if self.state == 'sold':
             raise UserError("You cannot cancel a sold property")
@@ -85,16 +91,19 @@ class Property(models.Model):
             raise UserError("You cannot sell a cancelled property")
         elif self.state == 'sold':
             raise UserError("Property already sold")
+        elif self.state != 'offer_accepted':
+            raise UserError("Can't sell a property without an accepted offer")
         else: 
             self.state = 'sold'
     
     # Called by offer.action_accept
     def action_accept_offer(self, offer_to_accept_id):
         for offer in self.property_offer_ids:
-            if offer.status == 'accepted' and self.state == 'sold':
+            if offer.status == 'accepted' and (self.state == 'sold'):
                 raise UserError("You cannot change accepted offer on a sold property")
             offer.action_refuse()
         offer_to_accept_id.accept()
+        self.state = 'offer_accepted'
     
     @api.constrains('selling_price', 'expected_price')
     def check_selling_price(self):
