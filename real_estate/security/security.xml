@@ -10,7 +10,7 @@
     </record>
     <record id="estate_property_agent_rule" model="ir.rule">
         <field name="name">Estate Property Agent Rule</field>
-        <field name="model_id" ref="model_estate_property"/>
+        <field name="model_id" ref="real_estate.model_estate_property"/>
         <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
@@ -18,10 +18,35 @@
         <field name="perm_unlink" eval="False"/>
         <field name="domain_force">[('salesman_id', 'in', (user.id, False))]</field>
     </record>
+    <record id="rule_agent_property_access" model="ir.rule">
+        <field name="name">Agent Access to Properties</field>
+        <field name="model_id" ref="real_estate.model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
+        <field name="domain_force">[
+            '|', 
+            ('salesman_id', '=', user.id),
+            ('salesman_id', '=', False)
+        ]</field>
+    </record>
+        <!-- Manager can see and edit all properties-->
+    <record id="rule_manager_property_access" model="ir.rule">
+        <field name="name">Manager Access to Properties</field>
+        <field name="model_id" ref="real_estate.model_estate_property"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_manager'))]"/>
+        <field name="domain_force">[]</field>
+    </record>
     <record id="estate_property_company_rule" model="ir.rule">
     <field name="name">Estate Property Company Rule</field>
     <field name="model_id" ref="model_estate_property"/>
     <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
-    <field name="domain_force">[('company_id', '=', company_ids)]</field>
+    <field name="domain_force">[('company_id', 'in', company_ids)]</field>
 </record>
 </odoo>

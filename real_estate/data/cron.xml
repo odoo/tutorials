@@ -1,0 +1,11 @@
+<odoo>
+    <record id="ir_cron_property_offer_accept" model="ir.cron">
+        <field name="name">Estate Property Offer Accept Cron</field>
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_accept_best_offer()</field>
+        <field name="interval_type">minutes</field>
+        <field name="interval_number">1</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

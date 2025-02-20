@@ -124,3 +124,16 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Offer Price is lower than the existing ones")
             property.state = 'offer_received'
         return super().create(vals_list)
+    
+    def auto_accept_best_offer(self):
+        today = date.today()
+
+        properties = self.env['estate.property'].search([
+            ('date_deadline', '=', today),
+            ('state', '=', 'offer_received')
+        ])
+        for property in properties:
+            best_offer = property.offer_ids.filtered(lambda o: o.status != 'reject').sorted('price', reverse=True)[:1]
+
+            if best_offer:
+                best_offer.action_confirm()

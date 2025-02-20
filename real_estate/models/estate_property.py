@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
-
+from datetime import date, timedelta
 
 class EstateProperty(models.Model):
     """Model representing real estate properties available for sale."""
@@ -30,6 +30,12 @@ class EstateProperty(models.Model):
         copy=False,
         default=fields.Date.today,
         help="Date when the property will be available for sale"
+    )
+    date_deadline = fields.Date(
+        string="Date Deadline",
+        copy=False,
+        default=lambda self: fields.Date.today()+timedelta(days=10),
+        help="Date when the property will not be available"
     )
     # Pricing Fields
     expected_price = fields.Float(
@@ -166,7 +172,7 @@ class EstateProperty(models.Model):
     @api.depends('property_type_id')
     def _compute_is_commercial(self):
         for property in self:
-            property._is_commercial = property.property_type_id.name=='Commercial'
+            property._is_commercial = property.property_type_id.id==self.env.ref('real_estate.property_type_commercial').id
 
     # Compute Total Area
     @api.depends('living_area', 'garden_area')

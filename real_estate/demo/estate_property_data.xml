@@ -20,7 +20,7 @@
         <field name="facades">4</field>
         <field name="garage">True</field>
         <field name="garden">True</field>
-        <field name="garden_area">1500</field>
+        <field name="garden_area">1500</field>  
         <field name="garden_orientation">south</field>
         <field name="state">sold</field>
     </record>

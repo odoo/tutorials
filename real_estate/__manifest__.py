@@ -17,6 +17,7 @@
         'data/property_types.xml',
         'demo/estate_property_demo_data.xml',
         'demo/estate_property_offers_demo_data.xml',
+        'data/cron.xml',
     ],
     'license': 'AGPL-3'
 }

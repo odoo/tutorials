@@ -1,5 +1,6 @@
 from odoo import Command, fields, models
-from odoo.exceptions import UserError, AccessError
+from odoo.exceptions import AccessError, UserError
+
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
@@ -22,7 +23,8 @@ class EstateProperty(models.Model):
             *self.env['account.journal']._check_company_domain(self.company_id.id),
         ], limit=1)
         if not journal:
-            raise UserError(f"No sales journal found for company {self.company_id.name}."
+            raise UserError(
+                f"No sales journal found for company {self.company_id.name}."
                 " Please ensure there is a journal of type 'Sale'."
             )
         # Create an invoice linked to the same company as the property

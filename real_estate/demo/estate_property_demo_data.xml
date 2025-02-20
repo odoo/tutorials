@@ -9,7 +9,7 @@
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
-        <field name="property_type_id" ref="real_estate_module.property_type_residential"/>
+        <field name="property_type_id" ref="real_estate.property_type_residential"/>
 </record>
     <record id="property_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
@@ -25,7 +25,7 @@
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
-        <field name="property_type_id" ref="real_estate_module.property_type_residential"/>
+        <field name="property_type_id" ref="real_estate.property_type_residential"/>
     </record>
     <record id="property_trailer_home" model="estate.property">
         <field name="name">Trailer Home</field>
@@ -40,6 +40,6 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
         <field name="garden">False</field>
-        <field name="property_type_id" ref="real_estate_module.property_type_residential"/>
+        <field name="property_type_id" ref="real_estate.property_type_residential"/>
     </record>
 </odoo>
