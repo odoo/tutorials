@@ -9,6 +9,7 @@
         Add property and fees directly to the invoice module.
     """,
     'data': [
+        'report/estate_invoice_template.xml'
     ],
     'installable': True,
     'application': True,
