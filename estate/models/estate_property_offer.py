@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from odoo import fields, models, api
 from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
@@ -45,9 +42,11 @@ class PropertyOffer(models.Model):
     def action_accept(self):
         if self.status == 'accepted':
             raise UserError("Offer already accepted")
-        elif self.status == 'refused':
+        
+        if self.status == 'refused':
             raise UserError("Can't accept a refused offer")
-        else: self.property_id.action_accept_offer(self)
+        
+        self.property_id.action_accept_offer(self)
         
     def accept(self):
         self.status = 'accepted'
@@ -57,9 +56,11 @@ class PropertyOffer(models.Model):
     def action_refuse(self):
         if self.status == 'refused':
             raise UserError('Offer already refused')
+        
         if self.status == 'accepted':
             raise UserError("Can't refuse an accepted offer")
-        else: self.property_id.action_refuse_offer(self)
+        
+        self.property_id.action_refuse_offer(self)
         
     def refuse(self):
         self.status = 'refused'
@@ -71,3 +72,4 @@ class PropertyOffer(models.Model):
             if 'property_id' in vals: 
                 self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
         return super(PropertyOffer, self).create(vals_list)
+

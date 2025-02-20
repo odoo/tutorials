@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from odoo import fields, models, api
 
 
@@ -26,4 +23,4 @@ class PropertyType(models.Model):
         for record in self:
             record.offer_count = len(record.offer_ids)
     
-    
+

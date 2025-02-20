@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models, api
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
-from dateutil.relativedelta import relativedelta
 
 
 class Property(models.Model):
@@ -19,7 +17,7 @@ class Property(models.Model):
     
     # Metadata
     name = fields.Char('Title', required=True, translate=True, default="Best House In Town")
-    active = fields.Boolean('Active', default=True)
+    active = fields.Boolean(default=True)
     description = fields.Text('Description', default="Yo yo yo, no dup for date and status !")
     postcode = fields.Char('Postcode', translate=True)
     property_type_id = fields.Many2one('estate.property.type', string='Type')
@@ -35,7 +33,12 @@ class Property(models.Model):
     garden_area = fields.Integer('Garden Area (sqm)')
     garden_orientation = fields.Selection(
         string='Garden Orientation', 
-        selection = [('north', "North"), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection = [
+            ('north', "North"), 
+            ('south', 'South'), 
+            ('east', 'East'), 
+            ('west', 'West')
+        ]
     )
     total_area = fields.Integer('Total Area (sqm)', compute="_compute_total_area")
     
@@ -48,7 +51,13 @@ class Property(models.Model):
     salesperson = fields.Many2one('res.users', string='Salesperson')
     state = fields.Selection(
         string='State',
-        selection = [('new', "new"), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection = [
+            ('new', "new"), 
+            ('offer_received', 'Offer Received'), 
+            ('offer_accepted', 'Offer Accepted'), 
+            ('sold', 'Sold'), 
+            ('cancelled', 'Cancelled')
+        ],
         default='new'
     )
     
@@ -61,7 +70,7 @@ class Property(models.Model):
     @api.depends("property_offer_ids")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.property_offer_ids.mapped('price')) if record.property_offer_ids else 0.0
+            record.best_price = max(record.property_offer_ids.mapped('price')) + [0]
             
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -73,54 +82,59 @@ class Property(models.Model):
             self.garden_area = 0
     
     def action_reset(self):
-        if self.state == 'cancelled':
-            self.state = 'new'
-        else: 
+        if self.state != 'cancelled':
             raise UserError("You can only reset a cancelled property")
+        
+        self.state = 'new'
     
     def action_cancel(self):
         if self.state == 'sold':
             raise UserError("You cannot cancel a sold property")
-        elif self.state == 'cancelled':
+        
+        if self.state == 'cancelled':
             raise UserError("Property already cancelled")
-        else: 
-            self.state = 'cancelled'
+        
+        self.state = 'cancelled'
     
     def action_sold(self):
         if self.state == 'cancelled':
             raise UserError("You cannot sell a cancelled property")
-        elif self.state == 'sold':
+        
+        if self.state == 'sold':
             raise UserError("Property already sold")
-        elif self.state != 'offer_accepted':
+        
+        if self.state != 'offer_accepted':
             raise UserError("Can't sell a property without an accepted offer")
-        else: 
-            self.state = 'sold'
+        
+        self.state = 'sold'
     
     # Called by offer.action_accept
     def action_accept_offer(self, offer_to_accept_id):
         if self.state == 'cancelled':
             raise UserError("You cannot accept an offer on a cancelled property")
-        elif self.state == 'cancelled':
+        
+        if self.state == 'cancelled':
             raise UserError("You cannot accept an offer on a sold property")
-        else:
-            offer_to_accept_id.accept()
-            self.state = 'offer_accepted'
+        
+        offer_to_accept_id.accept()
+        self.state = 'offer_accepted'
     
     # Called by offer.action_accept
     def action_refuse_offer(self, offer_to_accept_id):
         if self.state == 'cancelled':
             raise UserError("You cannot refuse an offer on a cancelled property")
-        elif self.state == 'cancelled':
+        
+        if self.state == 'cancelled':
             raise UserError("You cannot refuse an offer on a sold property")
-        else:
-            offer_to_accept_id.refuse()
-            self.state = 'new'
-            for offer in self.property_offer_ids:
-                if offer.status == 'accepted': # Some accepted offer exists
-                    self.state = 'offer_received'
-                    return
-                elif offer.status != 'refused': # Some neutral offer exists
-                    self.state = 'offer_received'
+        
+        offer_to_accept_id.refuse()
+        self.state = 'new'
+        for offer in self.property_offer_ids:
+            if offer.status == 'accepted': # Some accepted offer exists
+                self.state = 'offer_received'
+                return
+            elif offer.status != 'refused': # Some neutral offer exists
+                self.state = 'offer_received'
     
     @api.constrains('selling_price', 'expected_price')
     def check_selling_price(self):
@@ -133,4 +147,7 @@ class Property(models.Model):
         for record in self:
             if record.state not in ['New', 'Cancelled']:
                 raise UserError("You only delete new and cancelled properties")
-    
+
+
+
+

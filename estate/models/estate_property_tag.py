@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from odoo import fields, models
 
 
@@ -17,3 +14,5 @@ class PropertyTag(models.Model):
     name = fields.Char('Name', required=True, translate=True)
     color = fields.Integer('Color Index')
     property_ids = fields.Many2many('estate.property', 'property_tag_ids')
+
+

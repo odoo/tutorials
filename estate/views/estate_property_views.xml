@@ -49,22 +49,17 @@
                     </h1>
                     <group>
                         <group>
-                            <div class="row">
-                                <div class="col">
-                                    <group>
-                                        <field name="property_type_id" options="{'no_create' : true}"/>
-                                        <field name="postcode"/>
-                                        <field name="date_availability"/>
-                                    </group>
-                                </div>
-                                <div class="col">
-                                    <group>
-                                        <field name="expected_price"/>
-                                        <field name="best_price"/>
-                                        <field name="selling_price"/>
-                                    </group>
-                                </div>
-                            </div>
+                            <group>
+                                <field name="property_type_id" options="{'no_create' : true}"/>
+                                <field name="postcode"/>
+                                <field name="date_availability"/>
+                            </group>
+                            
+                            <group>
+                                <field name="expected_price"/>
+                                <field name="best_price"/>
+                                <field name="selling_price"/>
+                            </group>
                         </group>
                         <notebook>
                             <page string="Description">
@@ -110,7 +105,7 @@
 
                 <separator/>
                 
-                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" help="New or Order received"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]" help="New or Order received"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="group_postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
                 </group>
