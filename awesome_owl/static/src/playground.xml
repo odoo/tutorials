@@ -3,14 +3,27 @@
     <t t-name="awesome_owl.Playground">
         <div class="p-3 border border-secondary">
             <h3>Playground</h3>
-            <Counter/>
-            <Counter/>
+            <Counter onChange.bind="incrementSum" />
+            <Counter onChange.bind="incrementSum" />
+            <p>Sum: <t t-esc="state.sum"/>
+            </p>
         </div>
         <div class="p-3">
             <h3>Playground</h3>
-            <t t-foreach="cards" t-as="card" t-key="card.title">
-                <Card title="card.title" content="card.content"/>
-            </t>
+            <!-- <t t-foreach="cards" t-as="card" t-key="card.title">
+                <Card title="card.title">
+                    <t t-esc="props.content"/>
+                </Card>
+            </t> -->
+            <Card title="'card 1'">
+                content of card 1
+            </Card>
+            <Card title="'card 2'">
+                <Counter />
+            </Card>
+        </div>
+        <div class="p-3">
+            <TodoList />
         </div>
     </t>
 </templates>

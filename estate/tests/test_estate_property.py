@@ -1,4 +1,4 @@
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, Form
 from odoo.exceptions import UserError
 
 class TestRealEstateProperty(TransactionCase):
@@ -58,13 +58,11 @@ class TestRealEstateProperty(TransactionCase):
 
     def test_garden_reset_on_uncheck(self):
         """Ensure that unchecking the garden checkbox resets garden area and orientation."""
-        self.property.garden = True
-        self.property._onchange_garden()
-        self.assertEqual(self.property.garden_area, 10, "Garden area should be set to 10 when garden is checked.")
-        self.assertEqual(self.property.garden_orientation, "north", "Garden orientation should default to North.")
-
-        self.property.garden = False  # Disable the garden
-        self.property._onchange_garden()
-        self.assertEqual(self.property.garden_area, 0, "Garden area should reset to 0 when garden is unchecked.")
-        self.assertFalse(self.property.garden_orientation, "Garden orientation should reset when garden is unchecked.")
+        with Form(self.property) as form:
+            form.garden = True
+            self.assertEqual(form.garden_area, 10, "Garden Area should be 10 when Garden checkbox is checked!")
+            self.assertEqual(form.garden_orientation, "north", "Garden Orientation should be North when Garden checkbox is checked!")
+            form.garden = False
+            self.assertEqual(form.garden_area, 0, "Garden Area should be reset to 0 when Garden checkbox is unchecked!")
+            self.assertEqual(form.garden_orientation, False, "Garden Orientation should be reset to False when Garden checkbox is unchecked!")
 

@@ -1,16 +1,21 @@
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { Counter } from "./counter/counter";
 import { Card } from "./card/card";
+import { TodoList } from './todo/todo_list';
 
 export class Playground extends Component {
     static template = "awesome_owl.Playground"; //
-    static components = { Counter, Card }; //
+    static props =
+        {
+            cards: { type: Array, optional: true }
+        };
+    static components = { Counter, Card, TodoList }; //
 
     setup() {
-        this.cards = [
-            { title: "Card 1", content: "This is the content for Card 1." },
-            { title: "Card 2", content: "This is the content for Card 2." },
-            { title: "Card 3", content: "This is the content for Card 3." }
-        ];
+        this.state = useState({ sum: 0 });
+    }
+
+    incrementSum() {
+        this.state.sum++;
     }
 }

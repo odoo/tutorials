@@ -5,9 +5,10 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-esc="props.title"/>
+                    <button class="btn" t-on-click="toggleExpansion">Toggle</button>
                 </h5>
-                <p class="card-text">
-                    <t t-esc="props.content"/>
+                <p class="card-text" t-if="state.isExpanded">
+                    <t t-slot="default"/>
                 </p>
             </div>
         </div>

@@ -2,7 +2,53 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <div class="d-flex">
+                <div class="flex-fill text-center">
+                    <DashboardItem>
+                    Number of new Orders this month
+                        <div class="text-center text-success">
+                            <t t-esc="statistics.nb_new_orders"></t>
+                        </div>
+                    </DashboardItem>
+                </div>
+                <div class="flex-fill text-center">
+                    <DashboardItem>
+                    Total Number of new orders
+                        <div class="text-center">
+                            <t t-esc="statistics.total_amount"></t>
+                        </div>
+                    </DashboardItem>
+                </div>
+                <div class="flex-fill text-center">
+                    <DashboardItem>
+                    Average Quantity
+                        <div class="text-center">
+                            <t t-esc="statistics.average_quantity"></t>
+                        </div>
+                    </DashboardItem>
+                </div>
+                <div class="flex-fill text-center">
+                    <DashboardItem>
+                    Number of cancelled Orders
+                        <div class="text-center text-danger">
+                            <t t-esc="statistics.nb_cancelled_orders"></t>
+                        </div>
+                    </DashboardItem>
+                </div>
+                <div class="flex-fill text-center">
+                    <DashboardItem>
+                    Average time to deliver Orders
+                        <div class="text-center">
+                            <t t-esc="statistics.average_time"></t>
+                        </div>
+                    </DashboardItem>
+                </div>
+            </div>
+        </Layout>
     </t>
-
 </templates>

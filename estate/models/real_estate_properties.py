@@ -5,12 +5,15 @@ from datetime import timedelta, datetime
 
 class RealEstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Real Estate Property Table"
+    _description = "Real Estate Property"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "id desc"
 
     name = fields.Char(required=True)  # Property name
     description = fields.Text()  # Property description
     postcode = fields.Char("Postcode")  # Postal code of the property
+    # Adding the image field
+    image = fields.Image("Image", max_width=1024, max_height=1024)
     # Availability date: default is 90 days from creation
     date_availability = fields.Date(
         "Date Availability",
@@ -47,7 +50,8 @@ class RealEstateProperty(models.Model):
             ("cancelled", "Cancelled")
         ],
         default="new",
-        required=True
+        required=True,
+        tracking=True
     )
     total_area = fields.Float(
         string="Total Area",

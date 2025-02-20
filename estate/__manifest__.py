@@ -6,7 +6,8 @@
     "license": "LGPL-3",
     "version" : "1.0",
     "depends": [
-        "base"
+        "base",
+        "website",
     ],
     "data": [
          "security/security.xml",
@@ -17,6 +18,8 @@
          "views/estate_property_view.xml",
          "views/res_users_inherit.xml",
          "views/estate_menu.xml",
+         "views/property_list_detail.xml",
+         "views/properties_list.xml",
          "data/master_data.xml",
          "report/estate_reports.xml",
          "report/estate_reports_views.xml"

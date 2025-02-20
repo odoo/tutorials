@@ -17,6 +17,7 @@
                 <list decoration-success="state in ['offer_received', 'offer_accepted'] " decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                     <!-- Columns to be displayed in the list view -->
                     <field name="name"/>
+                    <field name="image" widget="image" options="{'preview_image': 'image', 'width': 50, 'height': 50}"/>
                     <field name="postcode"/>
                     <field name="state"/>
                     <field name="bedrooms"/>
@@ -74,6 +75,7 @@
                             <!-- First Group: Basic Information -->
                             <group class="mb32">
                                 <field name="state" class="w-50"/>
+                                <field name="image" widget="image" class="w-50"/>
                                 <field name="property_type" class="w-50" options="{'no_create_edit': true, 'no_create': true}"/>
                                 <field name="postcode" class="w-50" />
                                 <field name="date_availability" class="w-50" />
@@ -128,6 +130,7 @@
                             </page>
                         </notebook>
                     </sheet>
+                    <chatter />
                 </form>
             </field>
         </record>
