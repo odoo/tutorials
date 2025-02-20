@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <template xml:space="preserve">
-  
     <t t-name='awesome_owl.Counter'>
-        <p>Counter : <t t-esc="state.value"/></p>
-        <button class='btn btn-primary' t-on-click='increment'>Increment</button>
+        <div class="mx-3 my-4 p-4 border rounded shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="h4 mb-0">Counter: <t t-esc="state.value"/></p>
+                <button class="btn btn-success btn-lg text-light" type="button" t-on-click='increment' style="background-color: #28a745; border-color: #28a745;">
+                    <i class="bi bi-plus-circle"></i> Increment
+                </button>
+            </div>
+        </div>
     </t>
-
 </template>

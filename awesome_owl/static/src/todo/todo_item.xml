@@ -1,0 +1,17 @@
+<template xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <h5 class="card-title">Todo ID: <t t-esc="props.todo.id"/></h5>
+        
+        <div class="row align-items-center mb-2">
+            <div class="col-auto">
+                <input type="checkbox"  t-att-checked="isChecked" t-on-change="toggleCheck" class="form-check-input"/>
+            </div>
+            <div class="col">
+                <p class="card-text"  t-ref="id"
+                   t-att-class="isCrossed ? 'text-decoration-line-through' : ''">
+                    Description: <t t-esc="props.todo.description"/>
+                </p>
+            </div>
+        </div>
+    </t>
+</template>

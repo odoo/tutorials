@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <template xml:space="preserve">
-    <t t-name="awesome_owl.playground" >
-        <Counter />
-        <Counter />
+    <t t-name="awesome_owl.playground">
+        <div class="container p-4">
+            <div class="border p-4 rounded shadow-sm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <Counter sum.bind="onChange" />    
+                    </div>
+                    <div class="col-md-6">
+                        <Counter sum.bind="onChange" />
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <p class="h5">Sum of both counters: <t t-esc="state.sum" /></p>
+                </div>
+            </div>
+            <div class="mt-4">
+                <Card title="title1" content="content1" />
+                <Card title="title2" content="content2" />
+            </div>
+        </div>
+        <TodoList/>
     </t>
 </template>
