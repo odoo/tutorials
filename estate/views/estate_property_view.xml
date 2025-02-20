@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_avalible': True}</field>
     </record>
 
@@ -18,10 +18,20 @@
                         type="object"
                         string="Sold"
                         invisible="state in('sold', 'cancelled')" />
+
                     <button name="action_property_cancel"
                         type="object"
                         string="Cancel"
                         invisible="state in('sold', 'cancelled')" />
+
+                    <div name="button_box" position="before">
+                        <button name="%(action_report_property_offers)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-print"
+                            string="Report" />
+                    </div>
+
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,received,accepted,sold" />
                 </header>
@@ -65,7 +75,27 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids"
-                                readonly="state in ('accepted', 'sold', 'cancelled')" />
+                                readonly="state in ('accepted', 'sold', 'cancelled')">
+                                <list editable="bottom"
+                                    decoration-success="state == 'accepted'"
+                                    decoration-danger="state == 'refused'">
+                                    <field name="partner_id" />
+                                    <field name="property_id" />
+                                    <field name="price" />
+                                    <field name="deadline" />
+                                    <button name="action_offer_confirm"
+                                        string="Confirm"
+                                        type="object"
+                                        icon="fa-check"
+                                        invisible=" state in ('accepted', 'refused')" />
+                                    <button name="action_offer_cancel"
+                                        string="Cancel"
+                                        type="object"
+                                        icon="fa-times"
+                                        invisible=" state in ('accepted', 'refused')" />
+                                </list>
+                            </field>
+
                         </page>
                         <page string="Other Info.">
                             <group>
@@ -76,6 +106,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True" />
             </form>
         </field>
     </record>
@@ -103,6 +134,58 @@
         </field>
     </record>
 
+    <!-- Estate Property Kanban View -->
+    <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" group_create="false">
+                <field name="name" />
+                <field name="property_type_id" />
+                <field name="expected_price" />
+                <field name="best_price" />
+                <field name="selling_price" />
+                <field name="property_tag_ids" />
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card">
+                            <strong>
+                                <field name="name" />
+                            </strong>
+                            <div>
+                                <span>Expected Price: </span>
+                                <strong>
+                                    <field name="expected_price" widget="monetary" />
+                                </strong>
+                            </div>
+                            <t t-if="record.best_price.raw_value">
+                                <div>
+                                    <span>Best Price: </span>
+                                    <strong>
+                                        <field name="best_price" widget="monetary" />
+                                    </strong>
+                                </div>
+                            </t>
+                            <t t-if="record.selling_price.raw_value">
+                                <div>
+                                    <span>Selling Price: </span>
+                                    <strong>
+                                        <field name="selling_price" widget="monetary" />
+                                    </strong>
+                                </div>
+                            </t>
+                            <div>
+                                <field name="property_tag_ids" widget="many2many_tags"
+                                    options="{'color_field': 'color'}" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+
+        </field>
+    </record>
+
     <!-- Estate Property Search View -->
     <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search.view</field>
@@ -124,7 +207,7 @@
                 <filter name="offered" string="State: received"
                     domain="[('state', '=', 'received')]" />
                 <filter name="avalible" string="Avalible"
-                    domain="['|', ('state', '=', 'new'), ('state', '=', 'recevied')]" />
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'received')]" />
                 <filter name="livingArea" string="Living Area(feet²)"
                     domain="[('living_area', '&lt;=', 'self')]" />
 

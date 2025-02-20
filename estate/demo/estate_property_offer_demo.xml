@@ -1,0 +1,24 @@
+<odoo>
+
+    <record id="offer_1" model="estate.property.offers">
+        <field name="partner_id" ref="base.res_partner_12" />
+        <field name="property_id" ref="estate.property_1" />
+        <field name="price">10000</field>
+        <field name="validity_days">14</field>
+    </record>
+
+    <record id="offer_2" model="estate.property.offers">
+        <field name="partner_id" ref="base.res_partner_12" />
+        <field name="property_id" ref="estate.property_1" />
+        <field name="price">1500000</field>
+        <field name="validity_days">14</field>
+    </record>
+
+    <record id="offer_3" model="estate.property.offers">
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="property_id" ref="estate.property_1" />
+        <field name="price">1500001</field>
+        <field name="validity_days">14</field>
+    </record>
+
+</odoo>

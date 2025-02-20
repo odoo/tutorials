@@ -1,6 +1,6 @@
+from datetime import timedelta
 from odoo import api,fields, models
 from odoo.exceptions import UserError, ValidationError
-from datetime import timedelta
 
 
 class EstatePropertyOffers(models.Model):

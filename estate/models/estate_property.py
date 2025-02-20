@@ -6,8 +6,9 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
-    _rec_name = 'name'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
+    _rec_name = 'name'
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', "The expected price must be greater then 0."),
         ('check_selling_price', 'CHECK(selling_price >= 0)', "The selling price must be greater then 0."),
@@ -37,9 +38,7 @@ class EstateProperty(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner")
     company_id = fields.Many2one(
         string="Company",
-        comodel_name='res.company', 
-        required=True, 
-        # default=lambda self: 
+        comodel_name='res.company'
     )
 
     description = fields.Text(string="Description")
@@ -108,13 +107,15 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price")
     def check_selling_price(self):
         if any(property.selling_price < (property.expected_price * 0.90) for property in self):
-            raise ValidationError("The selling price must be 90'%' of expected price."
-                                    " You must Lower the expected price to accpect offer.")
+            raise ValidationError(
+                "The selling price must be 90'%' of expected price."
+                " You must Lower the expected price to accpect offer."
+            )
         
     @api.constrains("property_type_id", "partner_id")
     def check_partner_id(self):
         for property in self:
-            if property.property_type_id.name == 'commercial':
+            if property.property_type_id.id  == property.env.ref('estate.property_type_commercial').id:
                 if property.partner_id and property.partner_id.company_type != 'company':
                     raise UserError("When a property is of commercial type, the partner must be a company.")
 
@@ -137,14 +138,14 @@ class EstateProperty(models.Model):
     def action_property_cancel(self):
         self.state = 'cancelled'
 
-    # def _accept_offer(self):
-    #     price_list = self.offer_ids.mapped('price')
-    #     max_price = max(price_list) if price_list else 0
-
-    #     best_offer = self.env['estate.property.offers'].search([
-    #         ('property_id', '=', self.id),
-    #         ('price', '=', max_price)
-    #     ], limit=1)
-
-    #     if (self.date_availability - fields.Date.today()) < 0:
-    #         best_offer.write({'state': 'accepted'})
+    def _accept_offer(self):
+        expried_properties = self.search([
+            ('date_availability', '<=', fields.Date.today()),
+            ('offer_ids.state', '!=', 'accepted'),
+            ('state', '=' , 'received'), 
+        ])
+        for property in expried_properties:
+            best_offer = property.offer_ids.filtered(lambda offer : offer.state !='refused').sorted('price', reverse=True)[:1]
+            
+            if best_offer:
+                best_offer.action_offer_confirm()

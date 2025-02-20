@@ -1,13 +1,13 @@
 <odoo>
-    <!-- <record id="view_estate_property_offer_ir_cron" model="ir.cron">
-        <field name="name">Accpect best offer</field>
+    <record id="accept_best_offer_after_deadline_cron" model="ir.cron">
+        <field name="name">Accpect best offer when pass deadlin</field>
         <field name="model_id" ref="model_estate_property" />
         <field name="state">code</field>
         <field name="code">model._accept_offer()</field>
         <field name="user_id" ref="base.user_root" />
-        <field name="interval_number">2</field>
-        <field name="interval_type">minutes</field>
-        <field name="active"></field>
-    </record> -->
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
 
 </odoo>

@@ -1,0 +1,13 @@
+<odoo>
+    <record id="action_report_property_offers" model="ir.actions.report">
+        <field name="name">Property Offers Report</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">estate.report_property_offers</field>
+        <field name="report_file">estate.report_property_offers</field>
+        <field name="binding_model_id" ref="estate.model_estate_property" />
+        <field name="print_report_name">'Estate Property - %s' % (object.name or
+            'Property').replace('/','')</field>
+    </record>
+
+</odoo>
