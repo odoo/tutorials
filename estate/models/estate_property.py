@@ -19,7 +19,7 @@ class EstateProperty(models.Model):
         copy=False,
         default=lambda self: fields.Datetime.today() + timedelta(days=90),
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
+    expected_price = fields.Float(string="Expected Price", required=True, tracking=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area(sqm)")
@@ -49,7 +49,8 @@ class EstateProperty(models.Model):
         ],
         default="new",
         copy=False,
-        readonly=True
+        readonly=True,
+        tracking=True
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
