@@ -4,19 +4,18 @@
 
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"><t t-out="props.title"/></h5>
-                    <t t-if="state.isOpened != false">
-                        <p class="card-text">
-                            <t t-slot="default"/>
-                        </p>
-                        <a href="#" class="btn btn-primary" t-on-click="toggleCard">Click to Close</a>
-                    </t>
-                    <t t-else="">
-                        <a href="#" class="btn btn-primary" t-on-click="toggleCard">Click to Open</a>
-                    </t>
-                </div>
+            <div class="card-body">
+                <h5 class="card-header d-flex ">
+                    <t t-out="props.title"/>
+                    <a href="#" class="btn btn-primary" t-on-click="toggleCard">
+                        <t t-esc="state.isOpened ? 'Click to Close' : 'Click to Open'"/>
+                    </a>
+                </h5>
+                <t t-if="state.isOpened">
+                    <p class="card-body">
+                        <t t-slot="default"/>
+                    </p>
+                </t>
             </div>
         </div>
     </t>

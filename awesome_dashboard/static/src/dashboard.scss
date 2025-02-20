@@ -1,0 +1,28 @@
+.o_dashboard {
+    background-color: grey;
+}
+
+.dashboard-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.dashboard-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    max-width: 100%;
+}
+
+.dashboard-grid .card {
+    flex: 1 1 auto;
+    min-width: 18rem;
+    max-width: calc(18rem * 3);
+}
+
+.dashboard-value{
+    font-size: 3rem;
+    font-weight: bold;
+    color: green;
+}

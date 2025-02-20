@@ -7,8 +7,6 @@
             Counter
             <p> <t t-out="state.count"/> </p>
             <button t-on-click="increment"> Increment </button>
-            <t t-if="onChange">
-            </t>
         </div>
     </t>
 
