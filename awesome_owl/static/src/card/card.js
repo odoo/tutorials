@@ -6,6 +6,20 @@ export class Card extends Component {
 
     static props = {
         title: { type: String },
-        content: { type: String },
+        // content: { type: String },
+        slots: {
+            type: Object,
+            shape: {
+                default: true
+            },
+        }
     };
+
+    setup() {
+        this.state = useState({ isOpen: true });
+    }
+
+    toggleCardContent() {
+        this.state.isOpen = !this.state.isOpen;
+    }
 }

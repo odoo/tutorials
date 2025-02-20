@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space='preserve'>
     <t t-name="awesome_owl.card">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
+        <div class="card d-inline-block m-3" style="width: 18rem;" t-att-style="'background-color: Lavender;'">
             <div class="card-body">
-                <h5 class="card-title">
-                    <t t-out="props.title"/>
-                </h5>
-                <p class="card-text">
-                    <t t-out="props.content"/>
-                </p>
+                <h4 class="card-title">
+                    <div t-att-style="'color: RebeccaPurple;'">
+                        <t t-out="props.title"/>
+                        <button class="fa fa-angle-down" t-on-click="toggleCardContent"
+                            t-att-style="'color: Maroon; border: 0px; background-color: Thistle; padding: 7px; border-radius: 5px; margin-left: 100px;'"/>
+                    </div>
+                </h4>
+                <div class="mt-4" t-if="state.isOpen">
+                    <p class="card-text">
+                        <t t-slot="default"/>
+                    </p>
+                </div>
             </div>
         </div>
     </t>
