@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.counter">
-    <div>
-        <p>Counter: <t t-esc="state.value"/></p>
-        <button class="btn btn-primary " t-on-click="increment">Increment</button>
+    <div class="mx-2 my-2 border border 2">
+        <p class="mx-2">Counter: <t t-esc="state.value"/></p>
+        <button class="btn btn-primary mx-2 my-2 border border2 " t-on-click="increment">Increment</button>
     </div>
     </t>
 </templates>
