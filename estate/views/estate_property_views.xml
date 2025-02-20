@@ -36,15 +36,34 @@
                     <header>
                         <button invisible = "state in ['sold', 'cancelled']" name="action_sold" type="object" string="Sold"/>
                         <button invisible = "state in ['sold', 'cancelled']" name="action_cancelled" type="object" string="Cancel"/>
+                        <!-- <div>
+                            <button class="oe_stat_button" name="website_publish_button"
+                                    type="object" icon="fa-globe">
+                                    <field name="website_published" widget="website_button"/>
+                            </button>
+                        </div> -->
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
+                        <!-- <div class="oe_button_box" position="inside">
+                            <button class="oe_stat_button"
+                                name="action_open_documents"
+                                type="object"
+                                icon="fa-file-text-o">
+                            <field string="Documents" name="product_document_count" widget="statinfo"/>
+                            </button>
+                        </div> -->
                         <group>
-                            <h1>
-                                <field name="name"/>
-                            </h1>
-                            <field name="reference"/>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <group>
+                                <h1>
+                                    <field name="name"/>
+                                </h1>
+                                <field name="reference"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </group>
+                            <group>
+                                <field name="property_image" nolabel="1" widget="image" class="oe_avatar"/>
+                            </group>
                         </group>
                         <group>
                             <group>

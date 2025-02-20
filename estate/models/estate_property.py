@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['rating.mixin', 'mail.thread', 'mail.activity.mixin', 'website.published.mixin']
     _sql_constraints = [
         ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be strictly positive"),
         ("check_selling_price", "CHECK(selling_price > 0)", "Selling price must be strictly positive")  
@@ -52,6 +52,8 @@ class EstateProperty(models.Model):
     best_offer = fields.Integer(string="Best Offer", compute="_compute_best_offer")
     reference = fields.Char(string="Reference", readonly=True, copy=False)
     company_id = fields.Many2one("res.company", string="Company", required=True, default=lambda self: self.env.company)
+    rating_count = fields.Integer(string="Ratings", compute="_compute_rating_count")
+    property_image = fields.Image()
 
     # === COMPUTE METHODS === #
     @api.depends('living_area','garden_area')
@@ -79,6 +81,15 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.depends('message_ids.rating_value')
+    def _compute_rating_count(self):
+        """Compute the number of ratings for this property."""
+        for record in self:
+            record.rating_count = self.env['rating.rating'].search_count([
+                ('res_model', '=', 'estate.property'),
+                ('res_id', '=', record.id)
+            ])
+
     # === CRUD Methods === #
     @api.model_create_multi
     def create(self, vals_list):
@@ -100,6 +111,10 @@ class EstateProperty(models.Model):
                 raise UserError(_("Cancelled properties cannot be sold"))
             else:
                 record.state = "sold"
+
+            template_id = self.env.ref("estate.estate_rating_template")
+            if template_id:
+                template_id.send_mail(record.id, force_send=True)
                 
     def action_cancelled(self):
         for record in self:
@@ -113,3 +128,11 @@ class EstateProperty(models.Model):
         if 'state' in vals and self.state == 'offeraccepted':
             return self.env.ref('estate.mt_state_change')
         return super()._track_subtype(vals)
+
+    def rating_get_partner_id(self):
+        """Return the partner that gives the rating (Buyer)"""
+        return self.buyer_id
+
+    def rating_get_rated_partner_id(self):
+        """Return the partner that is rated (Seller)"""
+        return self.seller_id

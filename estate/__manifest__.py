@@ -6,22 +6,24 @@
     'version':'1.0',
     'category':'Real Estate/Brokerage',
     'author':'JODH',
-    'depends': ['mail'],
+    'depends': ['mail', 'website', 'rating'],
     'description':"""
 This Module provides real estate advertisements
 """,
     'data':[
         'security/security.xml',
         'security/ir.model.access.csv',
-        'data/company_data.xml',
-        'data/currency_data.xml',
         'data/estate_property_sequence.xml',
+        'data/mail_rating_data_template.xml',
         'data/mail_message_subtype_data.xml',
+        'data/estate_property_website_data.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_type_views.xml',
         'views/res_users_views.xml',
+        'views/rating_rating_views.xml',
+        'views/estate_property_template.xml',
         'views/estate_property_menus.xml',
     ],
     'demo':[
