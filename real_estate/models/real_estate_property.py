@@ -22,6 +22,7 @@ class RealEstateProperty(models.Model):
             ('offer_received', "Offer Received"),
             ('under_option', "Under Option"),
             ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
         ],
         required=True,
         default='new',
@@ -187,3 +188,16 @@ class RealEstateProperty(models.Model):
                     })
                     property.address_id = address.id
         return res
+
+    def action_cancel_listing(self):
+        for property in self:
+            property.offer_ids.action_refuse()
+            property.write({
+                'state': 'cancelled',
+                'active': False,
+            })
+        return True
+
+    def action_assign_user_as_salesperson(self):
+        self.salesperson_id = self.env.user.id
+        return True

@@ -81,3 +81,13 @@ class RealEstateOffer(models.Model):
             ):
                 offer.property_id.state = 'new'
         return super().unlink()
+
+    def action_accept(self):
+        self.state = 'accepted'
+        self.property_id.state = 'under_option'
+        (self.property_id.offer_ids - self).state = 'refused'
+        return True
+
+    def action_refuse(self):
+        self.state = 'refused'
+        return True
