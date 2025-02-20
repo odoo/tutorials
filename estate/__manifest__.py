@@ -2,7 +2,7 @@
     "name":'Real Estate',
     "summary": "An estate app",
     'category':'Real Estate/Brokerage',
-    'depends': ['base','mail','website'],
+    'depends': ['base', 'mail', 'website'],
     'author': 'Devmitra sharma (dvsh)',
     'data':[
         'security/estate_security.xml',
@@ -25,7 +25,7 @@
         'demo/estate_property_tag_demo.xml',
         'demo/estate_property_demo.xml',
         'demo/estate_property_offer_demo.xml'
-        ],
+    ],
     'assets': {
         'web.assets_backend':   [
             'estate/static/description/icon.png',

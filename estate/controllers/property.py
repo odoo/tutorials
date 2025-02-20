@@ -3,6 +3,7 @@ from odoo.http import request
 
 
 class PropertyWebsite(http.Controller):
+
     @http.route(['/properties', '/properties/page/<int:page>'], auth='public', website=True)
     def list_properties(self, page=1, **kwargs):
         Property = request.env['estate.property'].sudo()
