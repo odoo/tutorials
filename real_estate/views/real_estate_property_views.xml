@@ -40,10 +40,16 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button
+                        string="Cancel Listing"
+                        type="object"
+                        name="action_cancel_listing"
+                        confirm="Are you sure you want to cancel this property listing?"
+                    />
                     <field name="state" widget="statusbar" options="{'clickable': True}"/>
                 </header>
                 <sheet>
-                    <div name="button_box" class="oe_button_box">
+                    <div name="button_box">
                         <button
                             string="Offers"
                             icon="fa-handshake-o"
@@ -96,7 +102,15 @@
                                 <group>
                                     <field name="address_id"/>
                                     <field name="seller_id"/>
-                                    <field name="salesperson_id"/>
+                                    <label for="salesperson_id"/>
+                                    <div class="o_row">
+                                        <field name="salesperson_id" class="oe_inline"/>
+                                        <button
+                                            string="Assign Myself"
+                                            type="object"
+                                            name="action_assign_user_as_salesperson"
+                                        />
+                                    </div>
                                 </group>
                             </group>
                         </page>
