@@ -83,6 +83,11 @@ class Property(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_inactive(self):
+        if any(property.status not in ("new", "cancelled") for property in self):
+            raise exceptions.UserError("Can't delete an active property!")
+
     def cancel_property(self):
         if self.filtered(lambda property: property.status == "sold"):
             raise exceptions.UserError("Sold properties cannot be cancelled")

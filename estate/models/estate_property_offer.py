@@ -1,4 +1,5 @@
 from odoo import api, fields, models, exceptions
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class PropertyOffer(models.Model):
@@ -18,6 +19,16 @@ class PropertyOffer(models.Model):
         ("check_offer_price", "CHECK(price >= 0.0)",
          "The offer price should be strictly positive."),
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            offers = self.env["estate.property"].browse(vals["property_id"]).offer_ids
+            if len(offers) > 0 and min([offer.price for offer in offers]) > vals["price"]:
+                raise exceptions.ValidationError("The offer price can't be lower than another existing offer")
+            if self.env["estate.property"].browse(vals["property_id"]).status == "new":
+                self.env["estate.property"].browse(vals["property_id"]).status = "offer_received"
+        return super().create(vals_list)
 
     def _inverse_deadline(self):
         for record in self:
