@@ -20,6 +20,7 @@
         "views/estate_property_view.xml",
         "views/res_users_view.xml",
         "views/estate_menus.xml",
+        "wizard/estate_property_wizard_view.xml",
         "views/estate_property_web_temp.xml",
         "views/website_menu.xml",
         "data/estate_data.xml"

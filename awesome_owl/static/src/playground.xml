@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="p-3" style="background: #2d2d2d; color: #ffffff; min-height: 100vh;">
+            <p>Main Counter: <t t-esc="state.count"/></p>
+            <Counter incrementsum="incrementsum"/>
         </div>
     </t>
-
 </templates>

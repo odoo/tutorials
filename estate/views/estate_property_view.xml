@@ -29,12 +29,15 @@
                         invisible="status in ('sold', 'cancel')" class="oe_highlight" />
                     <button name="action_cancel" type="object" string="CANCEL"
                         invisible="status in ('sold', 'cancel')" class="oe_highlight" />
+                    <button name="estate.estate_property_wizard_action" type="action"
+                        string="Add Offer" />
                     <field name="status" widget="statusbar"
                         statusbar_visible="new, offer_received, offer_accepted, sold"></field>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="estate.property_offer_report" type="action" string="print" invisible="status != 'sold'"
+                        <button name="estate.property_offer_report" type="action" string="print"
+                            invisible="status != 'sold'"
                             class="oe_stat_button" icon="fa-print"></button>
                     </div>
                     <div>
@@ -113,7 +116,8 @@
                 <field name="postcode" string="Postcode" />
                 <field name="expected_price" string="Expected Price" />
                 <field name="bedrooms" string="Bedrooms" />
-                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '&gt;', self)]" />
+                <field name="living_area" string="Living Area (sqm)"
+                    filter_domain="[('living_area', '&gt;', self)]" />
                 <filter name="status" domain="[('status','=','new')]" />
                 <filter name="total_area" />
                 <filter name="Available" domain="[('status', 'not in', ['sold', 'cancel'])]" />

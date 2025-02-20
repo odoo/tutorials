@@ -8,18 +8,15 @@ class PropertyController(http.Controller):
 
     @http.route(['/property', '/property/page/<int:page>'], type="http", auth="public", website=True)
     def property(self, page=1):
-
         properties = request.env['estate.property']
-        domain = [('status', 'not in', ['sold', 'cancelled', 'archived'])]
-        properties_count = properties.search_count(domain)
-        per_page = 4 
+        properties_count = properties.search_count([('status', 'not in', ['sold', 'cancelled'])])
         pager = request.website.pager(
             url='/property',
             total=properties_count,
             page=page,
-            step=per_page
+            step=4
         )
-        properties = properties.search(domain, offset=(page - 1)* per_page, limit=per_page)
+        properties = properties.search([('status', 'not in', ['sold', 'cancelled'])], offset=(page - 1)* 4, limit=4)
         return request.render("estate.property_page", {
             'properties': properties,
             'pager': pager

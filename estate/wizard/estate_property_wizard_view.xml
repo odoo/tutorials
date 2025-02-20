@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="estate_property_wizard_action" model="ir.actions.act_window">
-        <field name="name">esate property wizard action</field>
+      <record id="estate_property_wizard_action" model="ir.actions.act_window">
+        <field name="name">Add offer</field>
         <field name="res_model">estate.property.wizard</field>
         <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="context">{'default_property_ids':active_ids}</field>
+    </record>
+
+     <record id="estate_property_wizard_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.wizard.form</field>
+        <field name="model">estate.property.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Offer">
+                <group>
+                    <field name="price"/>
+                    <field name="validity"/>
+                    <field name="property_ids"/>
+                    <field name="partner_id"/>
+                </group>
+                <footer>
+                    <button string="Add Offer" type="object" name="add_offer" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
     </record>
 </odoo>

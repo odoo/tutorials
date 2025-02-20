@@ -39,11 +39,14 @@ class EstatePropertyOffer(models.Model):
             rec.validity=(rec.date_deadline - fields.Date.today()).days or 0       
     
     def action_accepted(self):
-            self.status="accepted"
-            self.property_id.selling_price = self.price
-            self.property_id.partner_id = self.partner_id
-            self.property_id.status="offer_accepted"
-            
+            if (self.property_id.status != 'offer_accepted' and self.status != 'accepted'):
+                    self.status="accepted"
+                    self.property_id.selling_price = self.price
+                    self.property_id.partner_id = self.partner_id
+                    self.property_id.status="offer_accepted"
+            else:
+                    raise UserError(_("Only one offer is acceptable."))
+
     def action_refused(self):
             self.status="refused"   
        
@@ -52,7 +55,6 @@ class EstatePropertyOffer(models.Model):
             for rec in self:
                     if(rec.price < (rec.property_id.expected_price * 90) / 100):
                            raise UserError(_(r"Selling price cannot be less than 90% of the expected price."))
-
 
     @api.model_create_multi
     def create(self, rec_list):
