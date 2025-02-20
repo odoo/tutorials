@@ -72,11 +72,6 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.company,
         required=True,
     )
-    wa_property_sold_template_id = fields.Many2one(
-        "whatsapp.template",
-        string="Property Sold WhatsApp Template",
-        config_parameter="estate.wa_property_sold_template_id",
-    )
 
     _sql_constraints = [
         (
@@ -121,16 +116,15 @@ class EstateProperty(models.Model):
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-        if (
-            not float_is_zero(self.selling_price, precision_rounding=2)
-            and float_compare(
-                self.selling_price, self.expected_price * 0.9, precision_rounding=2
-            )
-            < 0
-        ):
-            raise UserError(
-                "Selling price must be at least 90% greater than expected price."
-            )
+        for property in self:
+            if (
+                not float_is_zero(property.selling_price, precision_rounding=2)
+                and float_compare(
+                    property.selling_price, property.expected_price * 0.9, precision_rounding=2)
+                < 0):
+                raise UserError(
+                    "Selling price must be at least 90% greater than expected price."
+                )
 
     def action_property_cancel(self):
         if self.state != "sold":

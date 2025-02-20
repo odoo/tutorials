@@ -1,0 +1,7 @@
+<odoo>
+    <record id="menu_estate_property" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu" />
+    </record>
+</odoo>

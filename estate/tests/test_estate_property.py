@@ -43,7 +43,6 @@ class EstateTestCase(TransactionCase):
 
     def test_prevent_selling_property_without_accepted_offer(self):
         print("---------------------------------------2--------------------------------------------------")
-        self.offer.write({"status": "refused"})
         with self.assertRaises(UserError):
             self.property.action_property_sold()
 
@@ -65,5 +64,4 @@ class EstateTestCase(TransactionCase):
             print(form.garden_orientation)
             self.assertEqual(form.garden_area, 0, "Garden Area should be reset to 0 when Garden checkbox is unchecked")
             self.assertEqual(form.garden_orientation, False, "Garden Orientation should be reset to False when Garden checkbox is unchecked")
-
-    
+ 

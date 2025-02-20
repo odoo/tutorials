@@ -9,6 +9,8 @@
     'depends': [
         'base',
         'mail',
+        'whatsapp',
+        'website',
     ],
     'data': [
          'report/estate_property_report.xml',
@@ -20,11 +22,10 @@
          'security/ir.model.access.csv',
 
          'data/master_data.xml',
+         'data/estate_property_email_template.xml',
 
          'wizard/estate_property_offer_wizard_views.xml',
 
-         'views/estate_property_whatsapp_template.xml',
-         'views/estate_property_email_template.xml',
          'views/estate_property_details_website.xml',
          'views/estate_property_website.xml',
          'views/estate_property_offer_views.xml',
@@ -33,7 +34,7 @@
          'views/estate_property_tag_views.xml',
          'views/res_users_views.xml',
          'views/estate_property_menus.xml',
-         
+         'views/website_menu.xml',
     ],
     'demo' : [
         'demo/estate_property_demo.xml',

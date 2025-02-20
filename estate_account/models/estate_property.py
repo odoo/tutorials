@@ -1,22 +1,10 @@
 from odoo import Command, models
-from odoo.exceptions import AccessError, UserError
 
 class InheritEstateProperty(models.Model):
     _inherit = "estate.property"
 
 
     def action_property_sold(self):
-        try:
-            self.check_access("write")
-            self.check_access("write")
-        except AccessError:
-            raise AccessError(
-                "You do not have the necessary permissions to mark this property as sold."
-            )
-        if not self.partner_id:
-            raise UserError("Please define a buyer for the property before marking it as sold.")
-        if not self.selling_price:
-            raise UserError("Selling price must be set before marking the property as sold.")
         invoice_vals = {
             "partner_id": self.partner_id.id,
             "move_type": "out_invoice",
