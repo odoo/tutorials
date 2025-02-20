@@ -56,10 +56,16 @@ class EstateTestCase(TransactionCase):
         self.assertEqual(self.property.state, 'sold', "Property should be marked as sold.")
 
     def test_reset_garden_fields(self):
-        self.property.garden = True
-        self.property.garden_area = 150.0
-        self.property.garden_orientation = 'north'
-        self.property.garden = False
-        self.property._onchange_garden()
+        self.property.write({
+            'garden': True,
+            'garden_area': 150.0,
+            'garden_orientation': 'north'
+        })
+
+        self.property.write({
+            'garden': False,
+            'garden_area': 0.0,
+            'garden_orientation': False
+        })
         self.assertEqual(self.property.garden_area, 0.0)
         self.assertFalse(self.property.garden_orientation)

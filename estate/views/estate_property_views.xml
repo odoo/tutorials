@@ -11,18 +11,18 @@
                         <h3><field name="name" /></h3>
                         <div class="flex-row">
                             <text>Expected price: </text>
-                            <field name="expected_price" />
+                            <field name="expected_price"/>
                         </div>
                         <t t-if="record.state.raw_value=='offer_received'">
                             <div class="flex-row">
                                 <text>Best offer: </text>
-                                <field name="best_price" />
+                                <field name="best_price"/>
                             </div>
                         </t>
                         <t t-if="record.state.raw_value=='offer_accepted' or record.state.raw_value=='sold'">
                             <div class="flex-row">
                                 <text>Selling price: </text>
-                                <field name="selling_price" />
+                                <field name="selling_price"/>
                             </div>
                         </t>
                         <footer class="d-flex justify-content-between align-items-center">

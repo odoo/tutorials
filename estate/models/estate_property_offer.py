@@ -11,7 +11,7 @@ class EstatePropertytOffer(models.Model):
     price= fields.Float(copy=False, string='Price')
     status= fields.Selection(selection=[('accepted','Accepted'), ('refused','Refused')], string='Status', copy=False)
     partner_id= fields.Many2one('res.partner', string="Partner", required=True)
-    property_id= fields.Many2one('estate.property', string='Property',required=True)
+    property_id= fields.Many2one('estate.property', string='Property', required=True)
     validity= fields.Integer(default=7)
     property_status = fields.Selection(related='property_id.state', string='Property Status', store=True)
     date_deadline= fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
@@ -22,10 +22,10 @@ class EstatePropertytOffer(models.Model):
         records = super().create(vals_list)
         for record in records:
             property_record = record.property_id
-            if property_record.state=='sold':
-                raise UserError("Can't add a new offer to already sold property")
+            if property_record.state == 'sold':
+                raise UserError(_("Can't add a new offer to already sold property"))
             if record.price< property_record.best_price:
-                raise UserError(f"Offer price must be greater than existing best price ({property_record.best_price})")
+                raise UserError(_(f"Offer price must be greater than existing best price ({property_record.best_price})"))
             if property_record.state == 'new':
                 property_record.write({'state': 'offer_received'})
         return records
