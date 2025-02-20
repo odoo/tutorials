@@ -15,6 +15,7 @@
             type="text"
             placeholder="Add a todo"
             t-on-keyup="addTodo"
+            t-ref="input"
           />
           <ul class="list-group list-group-flush">
             <t t-foreach="todos" t-as="todo" t-key="todo.id">

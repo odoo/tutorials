@@ -1,5 +1,6 @@
 import { Component, useState } from "@odoo/owl";
 import { TodoItem } from "./todoitem";
+import { useAutofocus } from "./utils";
 
 
 export class TodoList extends Component {
@@ -9,6 +10,7 @@ export class TodoList extends Component {
     setup() {
          this.nextId = 1;
         this.todos = useState([]);
+        useAutofocus("input");
     }
 
     addTodo(ev) {
