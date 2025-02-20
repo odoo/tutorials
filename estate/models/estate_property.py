@@ -22,7 +22,7 @@ class EstateProperty(models.Model):
     bedrooms = fields.Integer("Bedrooms", default=2)
     facades = fields.Integer("facade")
     living_area = fields.Integer("Area(sqm)")
-    image = fields.Binary("Image", attachment=True)
+    image = fields.Image(attachment=True)
     garage = fields.Boolean("Available", help="Mark if Garage is available")
     garden = fields.Boolean(
         "Garden",

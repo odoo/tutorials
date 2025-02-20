@@ -50,25 +50,23 @@
                 <sheet>
                     <group>
                         <group>
-                            <h1>
-                                <field name="name" />
-                            </h1>
-                            <field name='tags_ids' widget="many2many_tags"
+                            <field name="name" />
+                            <field name="tags_ids" widget="many2many_tags"
                                 options="{'color_field': 'color'}" />
-                            <group>
-                                <field name="image" widget='image' optional="show" class="oe_avatar"
-                                    style="max-width: 150px; max-height: 150px;" />
-                            </group>
+                            <field name="property_type_id"
+                                options="{'no_create':True, 'no_open':True}"></field>
                             <field name="postcode" />
-                            <field name="date_availability" />
-                            <field name="property_type_id" string="Property Type"
-                                options="{'no_create': true, 'no_open': true}" />
+                        </group>
+                        <group style="float: right; max-width: 150px; max-height: 150px;">
+                            <field name="image" widget="image" class="oe_avatar"
+                                style="max-width: 150px; max-height: 150px;" nolabel='1' />
                         </group>
                         <group>
                             <field name="expected_price" />
-                            <field name="best_price" />
                             <field name="selling_price" />
+                            <field name="best_price" />
                         </group>
+
                     </group>
                     <notebook>
                         <page string='Description'>
@@ -151,7 +149,7 @@
 
     <record id="open_url_action" model="ir.actions.act_url">
         <field name="name">Open External Website</field>
-        <field name="url">http://localhost:8069/properties</field>
+        <field name="url">/properties</field>
         <field name="target">new</field>
     </record>
 

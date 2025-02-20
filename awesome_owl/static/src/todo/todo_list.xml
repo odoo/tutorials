@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_list">
+        <div class="todo-list">
+            <h2>Welcome to Todo App</h2>
+            <h2>Todo List</h2>
+            <div>
+                <input type="text" placeholder="Enter a new task." t-on-keyup="addTodo" t-ref="todoInput" />
+            </div>
+            <div>
+                <t t-foreach="todos" t-as="todo" t-key="todo.id" t-index="index">
+                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo" index="todos.indexOf(todo)+1"/>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

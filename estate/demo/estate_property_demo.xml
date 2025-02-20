@@ -18,7 +18,7 @@
 
     <record id="estate_property_2" model="estate.property">
         <field name="name">Cozy Cabin</field>
-        <field name="state">sold</field>
+        <field name="state">new</field>
         <field name="description">A charming cabin in the woods</field>
         <field name="postcode">11223</field>
         <field name="date_availability">2019-08-15</field>
