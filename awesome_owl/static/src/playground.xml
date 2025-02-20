@@ -2,9 +2,23 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
+        <h4>1. Displaying Counter</h4>
         <div class="p-3">
-            hello world
+            counter : <t t-esc="state.value"></t>  
         </div>
-    </t>
+        <div>
+            <button t-on-click="increment">Increment</button>
+            <button t-on-click="decrement">Decrement</button>
+        </div>
 
+        <h4>2. Extract Counter in a sub component</h4>
+        <Counter/>
+        <Counter/>
+
+        <h4>3. A simple Card component</h4>
+        <Card title="'Card with HTML'" content="'&lt;strong&gt;Bold Content&lt;/strong&gt;'"/>
+        <Card title="'Card 2'" content="'Content of card 2'"/>
+    </t>
 </templates>
+
+      

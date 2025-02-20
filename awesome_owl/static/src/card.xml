@@ -1,0 +1,6 @@
+<t t-name="awesome_owl.card_template">
+    <div class="card-body">
+        <h5 class="card-title"><t t-esc="props.title"/></h5>
+         <p class="card-text"><t t-out="safeContent"/></p>
+    </div>
+</t>
