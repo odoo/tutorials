@@ -154,12 +154,16 @@
         <field name="name">Estate Property</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="New estate property type">
-                    <sheet>
-                        <h1>New estate property type</h1>
-                        <field name="name" />
-                    </sheet>
-                </form>
+            <form string="Properties">
+                <h1><field name="name" /></h1>
+                <field name="property_ids">
+                    <list>
+                        <field name="name" string="Title" />
+                        <field name="expected_price" string="Expected Price" />
+                        <field name="state" string="Status" />
+                    </list>
+                </field>
+            </form>
         </field>
     </record>
 
