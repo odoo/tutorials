@@ -52,3 +52,17 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_offer(self):
         self.status = 'refused'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            max_offer = max((offer.price for offer in self.env['estate.property'].browse(vals['property_id']).offer_ids), default=0.0)
+            if max_offer > vals['price']:
+                raise UserError(f"The offer price must be at least {max_offer:,.2f}")
+
+        offers = super().create(vals_list)
+
+        for vals in vals_list:
+            self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
+
+        return offers

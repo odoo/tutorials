@@ -6,9 +6,8 @@
             <form String="Property Types">
                 <header>
                     <button type="action"
-                        name="%(estate.estate_property_offer_action_list)d"
+                            name="%(estate.estate_property_offer_action_list)d"
                             class="oe_stat_button btn-primary"
-                            icon="fa-money"
                             string="Offers">
                         <field name="offer_count" widget="statinfo" string="Offers"/>
                     </button>

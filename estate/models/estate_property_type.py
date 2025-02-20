@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyType(models.Model):
@@ -20,3 +21,11 @@ class EstatePropertyType(models.Model):
     def _compute_offer_count(self):
         for type in self:
             type.offer_count = len(type.offer_ids)
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_property_new_cancelled(self):
+        for property in self:
+            if not property.state in ('new', 'cancelled'):
+                raise UserError("Only new and cancelled properties can be deleted.")
+
+        return super().unlink()
