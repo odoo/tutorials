@@ -56,7 +56,12 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for record in vals_list:
             property = self.env['estate.property'].browse(record.get('property_id'))
+
+            if property.state == 'sold':
+                raise UserError("Property is already sold.")
+
             if property.best_price > record.get('price'):
                 raise UserError("Offer price can't be less than the current best offer.")
+
             property.state = 'offer_received'
         return super().create(vals_list)

@@ -36,6 +36,7 @@
                     <group invisible="state in ['sold','cancelled']">
                         <button string="SOLD" name="action_sold" type="object" class="oe_highlight" />
                         <button string="CANCEL" name="action_cancel" type="object" />
+                        <button string="Offer" name="action_open_offer_wizard" type="object" class="btn-primary" />
                     </group>
                     <field name="state" widget="statusbar"
                         statusbar_visible="new, offer_received, offer_accepted, sold" />

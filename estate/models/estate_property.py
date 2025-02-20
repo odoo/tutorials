@@ -79,6 +79,8 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            if 'accepted' not in record.offer_ids.mapped('status'):
+                raise UserError("This property does not have an accepted offer.")
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold.")
             else:
@@ -106,3 +108,13 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError("Only new and cancelled properties can be deleted.")
+
+    def action_open_offer_wizard(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Create Offer',
+            'res_model': 'estate.property.offer.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'active_id': self.id},
+        }
