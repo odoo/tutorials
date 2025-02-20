@@ -7,7 +7,7 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         move_type = 'out_invoice'
-        journals = self.env['account.journal'].search([])
+        journals = self.env['account.journal'].search([('name', '=', 'Customer Invoices')])
         if len(journals) == 0:
             raise UserError("Please define an accounting journal")
         invoice_vals = {
