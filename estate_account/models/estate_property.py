@@ -7,7 +7,6 @@ class EstateProperty(models.Model):
     def action_sold_btn(self):
 
         self.check_access("write")
-        print(" reached ".center(100, '='))
         self.env["account.move"].sudo().create({
             "move_type": "out_invoice",
             "partner_id": self.buyer.id,

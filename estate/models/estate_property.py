@@ -10,9 +10,9 @@ class EstateProperty(models.Model):
     _name = 'estate.property'  # . will be shown as _ in actual database 
     _description = 'listing for the properties'
     _order = 'id desc'
-    _inherit = 'mail.thread'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Post Code", index=True)
 
@@ -21,7 +21,7 @@ class EstateProperty(models.Model):
         default=lambda self:date.today()+relativedelta(months=3),
         copy=False
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
+    expected_price = fields.Float(string="Expected Price", required=True, tracking=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
@@ -62,7 +62,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id', string="Offers")
     total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area')
-    best_price = fields.Integer(string='Best Offer', compute='_compute_best_price')
+    best_price = fields.Integer(string='Best Offer', compute='_compute_best_price', tracking=True)
     company_id = fields.Many2one('res.company', string="Company", default = lambda self: self.env.company, required = True)
     image = fields.Binary("Image",attachment = True)
 

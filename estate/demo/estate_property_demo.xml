@@ -1,54 +1,71 @@
 <odoo>
-    <data noupdate="1">
 
-        <record id="demo_property_1" model="estate.property">
-            <field name="name">Big Villa</field>
-            <field name="state">new</field>
-            <field name="description">A nice and big villa</field>
-            <field name="postcode">560001</field>
-            <field name="date_availability">2025-06-15</field>
-            <field name="expected_price">1600000.0</field>
-            <field name="bedrooms">6</field>
-            <field name="living_area">100</field>
-            <field name="facades">4</field>
-            <field name="garage">True</field>
-            <field name="garden">True</field>
-            <field name="garden_area">100000</field>
-            <field name="garden_orientation">north</field>
-            <field name="image" type="base64" file="estate/static/src/img/image1.png"></field>
+    <record id="property_residential" model="estate.property.type">
+        <field name="name">Residential</field>
+    </record>
 
-        </record>
+    <record id="property_commercial" model="estate.property.type">
+        <field name="name">Commercial</field>
+    </record>
 
-        <record id="demo_property_2" model="estate.property">
-            <field name="name">Trailer home</field>
-            <field name="state">cancelled</field>
-            <field name="description">Home in a trailer park</field>
-            <field name="postcode">54321</field>
-            <field name="date_availability">2025-05-10</field>
-            <field name="expected_price">100000.0</field>
-            <field name="selling_price">120000.0</field>
-            <field name="bedrooms">1</field>
-            <field name="living_area">10</field>
-            <field name="facades">4</field>
-            <field name="garage">False</field>
-            <field name="garden">False</field>
-            <field name="image" type="base64" file="estate/static/src/img/image2.png"></field>
-        </record>
+    <record id="property_industrial" model="estate.property.type">
+        <field name="name">Industrial</field>
+    </record>
 
-        <record id="demo_property_3" model="estate.property">
-            <field name="name">suzie home</field>
-            <field name="state">new</field>
-            <field name="description">Home in a suzie park</field>
-            <field name="postcode">54322</field>
-            <field name="date_availability">2025-05-15</field>
-            <field name="expected_price">100000.0</field>
-            <field name="bedrooms">1</field>
-            <field name="living_area">12</field>
-            <field name="facades">4</field>
-            <field name="garage">False</field>
-            <field name="garden">False</field>
-            <field name="image" type="base64" file="estate/static/src/img/image3.png"></field>
-        </record>
+    <record id="property_land" model="estate.property.type">
+        <field name="name">Land</field>
+    </record>
 
-    </data>
+    <record id="demo_property_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">560001</field>
+        <field name="date_availability">2025-06-15</field>
+        <field name="expected_price">1600000.0</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">north</field>
+        <field name="property_type_id" ref="property_residential"/>
+        <field name="image" type="base64" file="estate/static/src/img/image1.png"></field>
+
+    </record>
+
+    <record id="demo_property_2" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">2025-05-10</field>
+        <field name="expected_price">100000.0</field>
+        <field name="selling_price">120000.0</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="property_type_id" ref="property_industrial"/>
+        <field name="image" type="base64" file="estate/static/src/img/image2.png"></field>
+    </record>
+
+    <record id="demo_property_3" model="estate.property">
+        <field name="name">suzie home</field>
+        <field name="state">new</field>
+        <field name="description">Home in a suzie park</field>
+        <field name="postcode">54322</field>
+        <field name="date_availability">2025-05-15</field>
+        <field name="expected_price">100000.0</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">12</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="property_type_id" ref="property_commercial"/>
+        <field name="image" type="base64" file="estate/static/src/img/image3.png"></field>
+    </record>
+
 </odoo>

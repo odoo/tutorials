@@ -11,7 +11,7 @@
     'installable': True,
     'depends': ['estate','account'],
     'data':[
-
+        'report/estate_account_templates.xml'
     ],
     'license': 'AGPL-3'
 }
