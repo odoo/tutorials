@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from datetime import timedelta
 
 
@@ -71,3 +72,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_sold(self):
+        if self.state == "cancelled":
+            raise UserError("A cancelled property can't be sold")
+        for record in self:
+            record.state = "sold"
+        return True
+
+    def action_cancel(self):
+        if self.state == "sold":
+            raise UserError("A sold property can't be cancalled")
+        for record in self:
+            record.state = "cancelled"
+        return True
