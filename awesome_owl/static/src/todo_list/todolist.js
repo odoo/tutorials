@@ -9,11 +9,19 @@ export class TodoList extends Component {
 
     setup() {
 
-        this.todos = useState(
-            [
-                { id: 3 , description: "buy milk", isCompleted: false },
-                { id: 4 , description: "buy tea", isCompleted: true },
-            ]);
+        this.tempid=0;
+        this.todos = useState([]);
+    }
+
+    addTodo(ev) {
+        if( ev.keyCode === 13 && ev.target.value != ""){
+            this.todos.push(
+                {
+                    id:this.tempid++,
+                    description: ev.target.value,
+                    isCompleted: false
+                });
+            ev.target.value = "";
+        }
     }
 }
-
