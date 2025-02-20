@@ -1,8 +1,63 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
-    </t>
-
+	<t t-name="awesome_dashboard.AwesomeDashboard">
+		<Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+			<t t-set-slot="layout-buttons">
+				<button t-on-click="showCustomers" class="btn btn-primary ms-2">
+					Customers
+				</button>
+				<button t-on-click="showLeads" class="btn btn-primary ms-2">
+					Leads
+				</button>
+			</t>
+			<div class="d-flex flex-wrap">
+				<DashboardItem size="2">
+					<h4>
+						Average amount of t-shirt by order this month
+					</h4>
+					<h1 class="text-success">
+						<t t-esc="result.average_quantity" />
+					</h1>
+				</DashboardItem>
+				<DashboardItem size="3">
+					<h4>
+						Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+					</h4>
+					<h1 class="text-success">
+						<t t-esc="result.average_time" />
+					</h1>
+				</DashboardItem>
+				<DashboardItem size="1.5">
+					<h4>
+						Number of new orders this month
+					</h4>
+					<h1 class="text-success">
+						<t t-esc="result.nb_new_orders" />
+					</h1>
+				</DashboardItem>
+				<DashboardItem size="1.5">
+					<h4>
+						Number of cancelled orders this month
+					</h4>
+					<h1 class="text-success">
+						<t t-esc="result.nb_cancelled_orders" />
+					</h1>
+				</DashboardItem>
+				<DashboardItem size="1.5">
+					<h4>
+						Total amount of new orders this month
+					</h4>
+					<h1 class="text-success">
+						<t t-esc="result.total_amount" />
+					</h1>
+				</DashboardItem>
+				<DashboardItem size="2">
+					<h4>
+						T-shirt orders by size
+					</h4>
+					<PieChart />
+				</DashboardItem>
+			</div>
+		</Layout>
+	</t>
 </templates>
