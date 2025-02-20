@@ -1,7 +1,7 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'depends': ['base', 'mail', 'rating'],
+    'depends': ['base', 'mail', 'rating', 'website'],
     'author': 'ATPA',
     'category': 'Real Estate/Brokerage',
     'description': """
@@ -13,6 +13,7 @@ Real Estate module is for training, the module contains property types, offers a
         'data/estate_property_sequence.xml',
         'data/mail_message_subtype.xml',
         'data/estate_rating_email_template.xml',
+        'data/website_menu.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
@@ -20,6 +21,8 @@ Real Estate module is for training, the module contains property types, offers a
         'views/res_users_view.xml',
         'views/estate_property_menus.xml',
         'views/rating_rating_view.xml',
+        'views/estate_property_template.xml',
+        'views/estate_property_detail_template.xml',
     ],
     'demo' : [
         'demo/estate_property_type_demo.xml',
@@ -27,5 +30,5 @@ Real Estate module is for training, the module contains property types, offers a
         'demo/estate_property_offer_demo.xml',
     ],
     'application' : True,
-    'license' : 'LGPL-3' 
+    'license' : 'LGPL-3'
 }

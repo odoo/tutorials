@@ -48,6 +48,7 @@ class EstateProperty(models.Model):
     best_price = fields.Monetary(compute='_compute_best_price', string='Best Offer', currency_field='currency_id')
     estate_property_sequence = fields.Char(string='Reference', readonly=True, copy=False)
     company_id = fields.Many2one('res.company', required=True, string='Company', default=lambda self: self.env.company)
+    property_image = fields.Image(string="Property Image", copy=False)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0.0)', 'The expected price must be strictly positive.'),
@@ -102,23 +103,14 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(_("Cancelled properties cannot be sold."))
-            if record.state != 'offer_accepted':
-                raise UserError(_("Offer cannot be sold without offer accepted."))
-            else:
+            if record.state == 'offer_accepted':
                 record.state = 'sold'
-        template = self.env.ref('estate.estate_rating_template')
-        for record in self:
-            if record.buyer_id:
-                template.send_mail(record.id, force_send=True)
+                template = self.env.ref('estate.estate_rating_template')
+                if record.buyer_id:
+                    template.send_mail(record.id, force_send=True)
+            else:
+                raise UserError(_("Offer cannot be sold without offer accepted."))           
         return True
-
-    def rating_get_partner_id(self):
-        """Defines which partner is providing the rating (e.g., the customer)"""
-        return self.buyer_id
-
-    def rating_get_rated_partner_id(self):
-        """Defines which partner is being rated (e.g., the responsible user)"""
-        return self.salesperson_id.buyer_id
 
     def _track_subtype(self, init_values):
         self.ensure_one()
