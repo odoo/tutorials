@@ -85,9 +85,14 @@ class EstatePropertyOffer(models.Model):
                 property_offer.property_id.best_price,
                 precision_digits=10
             ) < 0:
-                raise UserError(
-                    "Creating an offer which is worse \
-                     than another is not allowed"
-                )
+                raise UserError((
+                    "Creating an offer which is worse "
+                    "than another is not allowed"
+                ))
+            if property_offer.property_id.state == 'sold':
+                raise UserError((
+                    "Creating an offer for a sold property "
+                    "is not allowed"
+                ))
             property_offer.property_id.state = 'received'
         return property_offers

@@ -89,7 +89,7 @@
         <field name="arch" type="xml">
             <list
                 string="Estate Property"
-                decoration-success="state == 'received' or state == 'accepted'"
+                decoration-success="state in ('resolved', 'accepted')"
                 decoration-bf="state == 'accepted'"
                 decoration-muted="state == 'sold'">
                 <field name="name" />
@@ -141,8 +141,8 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="action_sold" string="Sold" type="object" invisible="state == 'cancelled' or state == 'sold'" />
-                    <button name="action_cancel" string="Cancel" type="object" invisible="state == 'sold' or state =='cancelled'" />
+                    <button name="action_sold" string="Sold" type="object" invisible="state in ('cancelled', 'sold')" />
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('sold', 'cancelled')" />
                     <field name="state" widget="statusbar" statusbar_visible="new,received,accepted,sold" />
                 </header>
                 <sheet>
@@ -185,7 +185,7 @@
                         <page string="Offers">
                             <field
                                 name="offer_ids"
-                                readonly="state == 'accepted' or state == 'sold' or state == 'cancelled'"
+                                readonly="state in ('accepted', 'cancelled')"
                             />
                         </page>
                         <page string="Other Info">

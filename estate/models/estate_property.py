@@ -87,8 +87,8 @@ class EstateProperty(models.Model):
     @api.onchange('garden')
     def _onchange_garden(self):
         if not self.garden:
-            self.garden_area = None
-            self.garden_orientation = None
+            self.garden_area = 0
+            self.garden_orientation = False
         else:
             self.garden_area = 10
             self.garden_orientation = 'north'
@@ -97,6 +97,11 @@ class EstateProperty(models.Model):
         for property in self:
             if property.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold")
+            if property.state != 'accepted':
+                raise UserError((
+                    "Properties without an accepted offer "
+                    "cannot be sold"
+                ))
             property.state = 'sold'
         return True
 
@@ -115,17 +120,17 @@ class EstateProperty(models.Model):
                 .9 * property.expected_price,
                 precision_digits=10
             ) < 0:
-                raise ValidationError(
-                    "The selling price must be \
-                     at least 90% of the expected price"
-                )
+                raise ValidationError((
+                    "The selling price must be "
+                    "at least 90% of the expected price"
+                ))
 
     @api.ondelete(at_uninstall=True)
     def _unlink_estate_property(self):
         if self.filtered(
             lambda property: property.state not in ('new', 'cancelled')
         ):
-            raise UserError(
-                "Removing a property is not allowed \
-                 if it is neither new nor cancelled"
-            )
+            raise UserError((
+                "Removing a property is not allowed "
+                "if it is neither new nor cancelled"
+            ))
