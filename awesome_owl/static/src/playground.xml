@@ -10,8 +10,13 @@
             <t t-esc="totalCount.value"/>
         </h2>
         <div class="d-flex gap-3 p-3">
-            <Card title="'kshitij'" content="'odoo intern'" html="html1"/>
-            <Card title="'Ashutosh'" content="'odoo intern also'" html="html2"/>
+            <Card title="'kshitij'" html="html1">
+                <Counter onChange.bind="onChange"/>
+            </Card>
+            <Card title="'Ashutosh'" html="html2"/>
+        </div>
+        <div>
+            <TodoList/>
         </div>
     </t>
 </templates>
