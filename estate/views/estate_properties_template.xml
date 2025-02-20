@@ -22,7 +22,7 @@
                                             <t t-esc="property.name"/>
                                         </a>
                                     </h5>
-                                    <p class="text-muted">💰 <t t-esc="property.expected_price"/> INR</p>
+                                    <p class="text-muted">💵 <t t-esc="property.expected_price"/> INR</p>
                                     <p class="text-secondary small">📅 Listed on: <t t-esc="property.create_date.strftime('%Y-%m-%d')"/></p>
                                 </div>
                             </div>

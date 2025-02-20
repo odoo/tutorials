@@ -79,8 +79,7 @@
                         <!-- Price Section (At Bottom) -->
                         <t t-if="property.expected_price">
                             <div class="mt-4">
-                                <h3 class="text-danger fw-bold">₹ <t t-esc="property.expected_price"/> Only</h3>
-                                <a href="tel:+919876543210" class="btn btn-success btn-lg mt-3">📲 Call Now</a>
+                                <h3 class="fw-bold">₹ <t t-esc="property.expected_price"/> /-</h3>
                             </div>
                         </t>
                     </div>
@@ -88,7 +87,7 @@
                 <!-- Similar Properties Section -->
                 <t t-if="property.property_type_id.property_ids.filtered(lambda p: p.id != property.id)">
                     <div class="mt-5">
-                        <h3 class="text-center fw-bold">🏠 Similar Properties</h3>
+                        <h3 class="text-center fw-bold">Similar Properties</h3>
                         <div class="row g-4">
                             <t t-foreach="property.property_type_id.property_ids.filtered(lambda p: p.id != property.id)[:3]" t-as="similar">
                                 <div class="col-md-4">
@@ -104,7 +103,7 @@
                                                 </a>
                                             </h6>
                                             <t t-if="similar.expected_price">
-                                                <p class="text-muted">💰 ₹ <t t-esc="similar.expected_price"/> INR</p>
+                                                <p class="text-muted"> 💵 ₹ <t t-esc="similar.expected_price"/> INR</p>
                                             </t>
                                         </div>
                                     </div>
