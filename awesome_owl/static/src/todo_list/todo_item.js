@@ -4,7 +4,8 @@ export class TodoItem extends Component {
     static props = {
         todo: {
             type: Object,
-            shape: { id: Number, description: String, isCompleted: Boolean }
+            type:"checkbox",
+            shape: {id: Number, description: String, isCompleted: Boolean }
         }
     };
 }
