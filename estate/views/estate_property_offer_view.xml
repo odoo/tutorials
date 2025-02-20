@@ -18,7 +18,7 @@
                     <field name="partner_id"/>
                     <field name="property_id"/>
                     <field name="property_type_id"/>
-                    <button name="action_accept" type="object" help="Accepted" title="accept" icon="fa-check" invisible="status=='accepted' or status=='refused'"/>
+                    <button name="action_accept" type="object" help="Accepted" title="accept" icon="fa-check" invisible="status=='accepted' or status=='refused' or property_id.state=='cancel'"/>
                     <button name="action_refuse" type="object" help="Refuse" title="refuse" icon="fa-times" invisible="status=='accepted' or status=='refused'"/>
                     <field name="status"/>
                 </list>
