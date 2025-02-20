@@ -36,6 +36,7 @@
                     <h1>Property Detail</h1>
                     <group>
                         <group>
+                            <field name='image' widget="image" class="oe_avatar"/>
                             <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/> <!-- widget display this field in tag-style UI-->
                             <field name="name"/>
                             <field name="property_type_id" options="{'no_create': True, 'no_create_edit': True}"/>

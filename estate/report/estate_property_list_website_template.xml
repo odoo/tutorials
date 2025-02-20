@@ -1,0 +1,41 @@
+<odoo>
+    <template id="template_properties_webview">
+        <t t-call="website.layout">
+            <div class="container mt-4 bg-dark text-white ">
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-3 mt-2" style="padding:20px">
+                            <div class="card p-2 shadow-sm">
+                                <img t-if="property.image"
+                                    t-att-src="image_data_uri(property.image)"
+                                    style="height:230px; fit-type:covor;" />
+                                <div class="card-body">
+                                    <h5 class="card-title" t-out="property.name" />
+                                    <p class="card-text">
+                                        <strong>Price:</strong> <t t-out="property.selling_price" />
+                                        $ </p>
+                                    <p class="card-text">
+                                        <strong>Expected Price:</strong>
+                                        <t t-out="property.expected_price" />
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Living Area:</strong>
+                                        <t t-out="property.living_area" />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+                <t t-if="pager">
+                    <t t-call="website.pager">
+                        <t t-set="pager" t-value="pager" />
+                    </t>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

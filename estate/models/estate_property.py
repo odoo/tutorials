@@ -18,6 +18,7 @@ class EstateProperty(models.Model):
     ]
 
     name = fields.Char(string="Property Name", required=True, default="Unknown name")
+    image = fields.Binary(string="Image")
     property_tag_ids = fields.Many2many("estate.property.tag", string="Property Condition") # all many2many fields have suffix _ids.
     property_type_id = fields.Many2one("estate.property.type", string="Property Type" ) # all many2one field have suffix _id, and it display by default name of estate.property.type
     salesmen_id = fields.Many2one("res.users", string="Salesmen", default=lambda self: self.env.user) # many2one field by default display name field of other model, self.env.user return current user's name
@@ -84,6 +85,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                   raise UserError("Cancelled Property cannot be sold")
+            elif not ("accepted" in record.offer_ids.mapped("status")):
+                  raise UserError("Accept Offer before sold")
             else:
                 record.state = "sold"
         return True
