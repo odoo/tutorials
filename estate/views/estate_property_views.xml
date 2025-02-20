@@ -44,6 +44,13 @@
                         statusbar_visible="new, offer_received, offer_accepted, sold" />
                 </header>
                 <sheet>
+                    <field name="property_image" widget="image" class="oe_avatar"
+                        options="{'convert_to_webp': True}" />
+
+                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success"
+                        invisible="state != 'sold'" />
+                    <widget name="web_ribbon" title="Cancelled" bg_color="text-bg-danger"
+                        invisible="state != 'cancelled'" />
                     <div class="oe_title mt32 mb32">
                         <h1 class="mb10 mt10">
                             <field name="name" placeholder="Property Name" nolabel="1" />

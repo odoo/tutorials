@@ -64,6 +64,7 @@ class EstateProperty(models.Model):
     )
     best_price = fields.Float("Best Price", compute="_compute_best_price")
     company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company)
+    property_image = fields.Image()
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -117,6 +118,15 @@ class EstateProperty(models.Model):
                     raise ValidationError(
                         "The Selling Price cannot be lower than 90% of Expected Price"
                     )
+    @api.model_create_multi
+    def create(self, vals_list):
+        created_property = super().create(vals_list)
+        # breakpoint()
+        # print(created_property)
+        for record in created_property:
+            message = "{} created a property named ' {} '".format(self.env.user.name, record.name)
+            record.message_post(body=message)
+        return created_property
 
     @api.ondelete(at_uninstall=False)
     def _unlink_expect_state_new_or_Cancelled(self):
@@ -134,6 +144,7 @@ class EstateProperty(models.Model):
                 raise UserError(message)
             else:
                 record.state = "sold"
+                record.message_post(body="Property Sold to buyer : {}".format(record.buyer_id.name))
             return True
 
     def action_set_property_status_cancel(self):
@@ -144,13 +155,3 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
             return True 
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        created_property = super().create(vals_list)
-        # breakpoint()
-        # print(created_property)
-        for record in created_property:
-            message = "{} created a property named ' {} '".format(self.env.user.name, record.name)
-            record.message_post(body=message)
-        return created_property

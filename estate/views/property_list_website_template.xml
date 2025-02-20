@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="website_property_listing_menu" model="website.menu">
+            <field name="name">Properties</field>
+            <field name="url">/properties</field>
+            <field name="parent_id" ref="website.main_menu" />
+        </record>
+
+        <template id="property_list_website_template" name="Estate Properties List Card View">
+            <!-- website.layout adds all the meta data/html data available in website module -->
+            <t t-call="website.layout">
+                <div class="container mt-4">
+                    <h1 class="mb-4">Properties</h1>
+                    <!-- form for filtering  -->
+                    <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+                        <form method="get" action="/properties" class="d-flex">
+                            <select name="filter_domain" class="form-select me-3"
+                                onchange="this.form.submit()">
+                                <option value="all" t-att-selected="filter_domain == 'All'">All</option>
+                                <option value="available"
+                                    t-att-selected="filter_domain == 'available'">Available</option>
+                                <option value="sold" t-att-selected="filter_domain == 'sold'">Sold</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div t-if="pager"
+                        class="d-flex justify-content-between align-items-center mt-5 mb-4">
+                        <t>
+                            <div class="pagination mt-4 text-center">
+                                <t t-call="website.pager" t-set="pager" />
+                            </div>
+                        </t>
+                    </div>
+                    <div class="row">
+                        <!-- 'property_list' should be a recordset passed from your controller -->
+                        <t t-foreach="property_list" t-as="property">
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    <!-- Property image -->
+                                    <t t-if="property.property_image">
+                                        <img class="card-img-top img-fluid"
+                                            t-att-src="'data:image/png;base64,%s' % property.property_image.decode('utf-8')"
+                                            alt="Property Image" />
+                                    </t>
+                                    <t t-else="">
+                                        <img class="card-img-top img-fluid"
+                                            src="/your_module/static/src/img/default_property.png"
+                                            alt="Default Image" />
+                                    </t>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <t t-esc="property.name" />
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>Expected Price:</strong>
+                                            <t t-esc="property.expected_price" />
+                                            <br />
+                                            <strong>Postcode:</strong>
+                                            <t t-esc="property.postcode" />
+                                        </p>
+                                        <!-- Link to detail page -->
+                                        <a t-att-href="'/properties/%s' % property.id"
+                                            class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

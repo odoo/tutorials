@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="property_details_website_template" name="Estate Property Detail View">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1 t-esc="property.name" />
+                        <p class="card-text">
+                            <strong>Status:</strong>
+                            <span t-field="property.state" />
+                        </p>
+
+                        <!-- Property image -->
+                        <t t-if="property.property_image">
+                            <img class="img-fluid mb-4"
+                                t-att-src="'data:image/png;base64,%s' % property.property_image.decode('utf-8')"
+                                alt="Property Image" />
+                        </t>
+                        <t t-else="">
+                            <img class="img-fluid mb-4"
+                                src="/your_module/static/src/img/default_property.png"
+                                alt="Default Image" />
+                        </t>
+                        <p>
+                            <strong>Description:</strong>
+                        </p>
+                        <p t-esc="property.description" />
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                Property Details
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <strong>Postcode:</strong>
+                                    <span t-esc="property.postcode" />
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Date Available:</strong>
+                                    <span t-esc="property.date_availability" />
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Expected Price:</strong>
+                                    <span t-esc="property.expected_price" />
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Selling Price:</strong>
+                                    <span t-esc="property.selling_price" />
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Bedrooms:</strong>
+                                    <span t-esc="property.bedrooms" />
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Living Area (sqm):</strong>
+                                    <span t-esc="property.living_area" />
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Facades:</strong>
+                                    <span t-esc="property.facades" />
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Garage:</strong>
+                                    <span t-if="property.garage">Yes</span>
+                                    <span t-else="">No</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Garden:</strong>
+                                    <span t-if="property.garden">Yes</span>
+                                    <span t-else="">No</span>
+                                </li>
+                                <li class="list-group-item" t-if="property.garden">
+                                    <strong>Garden Area (sqm):</strong>
+                                    <span t-esc="property.garden_area" />
+                                </li>
+                                <li class="list-group-item" t-if="property.garden">
+                                    <strong>Garden Orientation:</strong>
+                                    <span t-esc="property.garden_orientation" />
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Total Area (sqm):</strong>
+                                    <span t-esc="property.total_area" />
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Best Price:</strong>
+                                    <span t-esc="property.best_price" />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+</odoo>
