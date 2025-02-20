@@ -20,7 +20,7 @@
                 <div class="mt-3">
                     <t t-if="todos.length">
                         <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                            <TodoItem todo="todo"/>
+                            <TodoItem todo="todo" toggleState.bind="this.toggleState" removeTodo.bind="this.removeTodo"/>
                         </t>
                     </t>
                     <p t-else="" class="text-center text-muted">No tasks available.</p>

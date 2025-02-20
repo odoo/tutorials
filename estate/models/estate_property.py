@@ -110,14 +110,16 @@ class EstateProperty(models.Model):
     def action_property_sold(self):
         if self.selling_price == 0:
             raise UserError("No any offer found")
-
-        for record in self:
-            if record.status == "sold":
-                raise UserError("Property is already Sold")
-            if record.status == "cancelled":
-                raise UserError("Cancelled property cannot be Sold")
-            else:
-                record.status = "sold"
+        if self.status == "sold":
+            raise UserError("Property is already Sold")
+        if self.status == "cancelled":
+            raise UserError("Cancelled property cannot be Sold")
+        else:
+            self.status = "sold"    
+            if self.partner_id.email:
+                template = self.env.ref('estate.estate_property_sold_email_template')
+                template.send_mail(self.id, force_send=True)
+        
 
     def action_property_cancel(self):
         for record in self:

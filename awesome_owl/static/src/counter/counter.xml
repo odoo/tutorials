@@ -4,7 +4,7 @@
         <div class="p-3">
             <!-- Use state.value instead of props.value -->
             <p>Counter: <t t-esc="this.state.value"/></p>
-            <button class="btn btn-primary" t-on-click="increment">Increment</button>
+            <button class="" t-on-click="increment">Increment</button>
         </div>
     </t>
 </templates>

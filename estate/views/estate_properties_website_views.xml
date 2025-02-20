@@ -124,7 +124,7 @@
                                     style="color: rgba(113,75,103,1);"
                                     onmouseover="this.style.backgroundColor='rgba(113, 75, 103, 1)'; this.style.color='white';"
                                     onmouseout="this.style.backgroundColor=''; this.style.borderColor=''; this.style.color='rgba(113, 75, 103, 1)';">
-                                    Make an Offer
+                                    Create Offer
                                 </button>
                             </form>
                         </div>

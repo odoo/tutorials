@@ -10,8 +10,7 @@ export class TodoList extends Component{
     setup(){
         this.todos = useState([]);
         this.current_id = 1;
-        useAutoFocus("input")
-
+        useAutoFocus("input");
     }
 
 
@@ -24,6 +23,20 @@ export class TodoList extends Component{
                 isCompleted: false
             })
             ev.target.value = "";
+        }
+    }
+
+    toggleState(todo_id){
+        const todo = this.todos.find(todo => todo.id === todo_id)
+        if(todo){
+            todo.isCompleted = !todo.isCompleted
+        }
+    }
+
+    removeTodo(todo_id){
+        const index = this.todos.findIndex(todo => todo.id === todo_id)
+        if(index !== -1){
+            this.todos.splice(index, 1)
         }
     }
 }

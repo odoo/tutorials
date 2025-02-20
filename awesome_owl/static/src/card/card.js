@@ -4,8 +4,30 @@ export class Card extends Component{
 
     static template = "awesome_owl.Card"
     static props = {
-        title: String,
-        description: String,
+        title: {
+            type: String,
+            optional: true
+        },
+        description: {
+            type: String,
+            optional: true
+        },
+        slots: {
+            type: Object,
+            shape: {
+                default: true
+            }
+        }
+    }
+
+
+    setup() {
+        this.state = useState({isOpen: true})
+    }
+
+    toggleVisibility() {
+        console.log("the function is executing")
+        this.state.isOpen = !this.state.isOpen
     }
 
 }

@@ -1,0 +1,26 @@
+button {
+    background: linear-gradient(45deg, #007bff, #0056b3); // Gradient blue
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        background: linear-gradient(45deg, #0056b3, #003d80);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.8);
+    }
+}

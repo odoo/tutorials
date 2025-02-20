@@ -5,6 +5,10 @@
             <div class="card-body">
                 <p class="card-title text-primary">Title: <t t-out="props.title"/></p>
                 <p class="card-text">Description: <t t-out="props.description"/></p>
+                <div t-if="this.state.isOpen">
+                    <t t-slot="default"></t>
+                </div>
+                <button t-on-click="this.toggleVisibility">View More</button>
             </div>
         </div>
     </t>

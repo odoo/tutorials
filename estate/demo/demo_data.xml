@@ -2,6 +2,10 @@
 
 <odoo>
 
+    <record id="res_partner_01" model="res.partner">
+        <field name="name">Dhruv</field>
+    </record>
+
     <record id="property_demo_1" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="status">new</field>
@@ -17,6 +21,7 @@
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
         <field name="property_type_id" ref="estate.property_type_residentials"/>
+        <field name="image" type="base64" file="estate/static/img/img1.jpeg"/>
     </record>
 
     <record id="property_demo_2" model="estate.property">
@@ -32,10 +37,92 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
         <field name="property_type_id" ref="estate.property_type_residentials"/>
+        <field name="image" type="base64" file="estate/static/img/img2.jpeg"/>
     </record>
 
+    <record id="property_demo_3" model="estate.property">
+    <field name="name">Luxury Villa</field>
+    <field name="status">new</field>
+    <field name="description">A stunning villa with a sea view</field>
+    <field name="postcode">98765</field>
+    <field name="date_availability">2025-06-01</field>
+    <field name="expected_price">500000</field>
+    <field name="selling_price">550000</field>
+    <field name="bedrooms">5</field>
+    <field name="living_area">300</field>
+    <field name="facades">3</field>
+    <field name="garage">True</field>
+    <field name="property_type_id" ref="estate.property_type_residentials"/>
+    <field name="image" type="base64" file="estate/static/img/img1.jpeg"/>
+    </record>
+
+    <record id="property_demo_4" model="estate.property">
+        <field name="name">Downtown Apartment</field>
+        <field name="status">offer_received</field>
+        <field name="description">Modern apartment in the city center</field>
+        <field name="postcode">11223</field>
+        <field name="date_availability">2025-09-15</field>
+        <field name="expected_price">250000</field>
+        <field name="selling_price">270000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">120</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="estate.property_type_residentials"/>
+        <field name="image" type="base64" file="estate/static/img/img2.jpeg"/>
+    </record>
+
+    <record id="property_demo_5" model="estate.property">
+        <field name="name">Country House</field>
+        <field name="status">sold</field>
+        <field name="description">Peaceful house in the countryside</field>
+        <field name="postcode">33445</field>
+        <field name="date_availability">2023-12-10</field>
+        <field name="expected_price">150000</field>
+        <field name="selling_price">160000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">200</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="property_type_id" ref="estate.property_type_residentials"/>
+        <field name="image" type="base64" file="estate/static/img/img1.jpeg"/>
+    </record>
+
+    <record id="property_demo_6" model="estate.property">
+        <field name="name">Office Space</field>
+        <field name="status">new</field>
+        <field name="description">Spacious office space in a business district</field>
+        <field name="postcode">55678</field>
+        <field name="date_availability">2026-01-01</field>
+        <field name="expected_price">350000</field>
+        <field name="selling_price">370000</field>
+        <field name="bedrooms">0</field>
+        <field name="living_area">500</field>
+        <field name="facades">6</field>
+        <field name="garage">True</field>
+        <field name="property_type_id" ref="estate.property_type_commercial"/>
+        <field name="image" type="base64" file="estate/static/img/img2.jpeg"/>
+    </record>
+
+    <record id="property_demo_7" model="estate.property">
+        <field name="name">Beachfront Bungalow</field>
+        <field name="status">cancelled</field>
+        <field name="description">Small bungalow right on the beach</field>
+        <field name="postcode">77889</field>
+        <field name="date_availability">2024-05-20</field>
+        <field name="expected_price">180000</field>
+        <field name="selling_price">190000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">80</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="estate.property_type_residentials"/>
+        <field name="image" type="base64" file="estate/static/img/img1.jpeg"/>
+    </record>
+
+
     <record id="offer_demo_1" model="estate.property.offer">
-        <field name="partner_id" ref="base.res_partner_12"></field>
+        <field name="partner_id" ref="estate.res_partner_01"></field>
         <field name="property_id" ref="property_demo_1"/>
         <field name="price">10000</field>
         <field name="validity">7</field>
@@ -43,14 +130,14 @@
     </record>
 
     <record id="offer_demo_2" model="estate.property.offer">
-        <field name="partner_id" ref="base.res_partner_12"></field>
+        <field name="partner_id" ref="estate.res_partner_01"></field>
         <field name="property_id" ref="property_demo_1"/>
         <field name="price">1500000</field>
         <field name="validity">14</field>
     </record>
 
     <record id="offer_demo_3" model="estate.property.offer">
-        <field name="partner_id" ref="base.res_partner_2"></field>
+        <field name="partner_id" ref="estate.res_partner_01"></field>
         <field name="property_id" ref="property_demo_1"/>
         <field name="price">1500001</field>
         <field name="validity">14</field>

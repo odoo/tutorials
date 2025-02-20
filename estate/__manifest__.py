@@ -18,6 +18,7 @@
         "views/estate_property_tag_views.xml",
         "views/estate_menu.xml",
         "views/estate_properties_website_views.xml",
+        "views/estate_mail_template.xml",
         "data/estate_property_type.xml",
         "report/estate_property_report.xml",
         "report/estate_property_template.xml",

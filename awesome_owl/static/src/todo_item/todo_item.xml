@@ -3,10 +3,14 @@
 <!-- TodoItem Component -->
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoItem">
-        <div class="card p-2 mb-2 d-flex flex-row">
-            <p class="fw-semibold text-dark"><t t-esc="props.todo.id"/>.</p>
-            <p class="fw-semibold text-dark" t-att-class="props.todo.isCompleted ? 'text-decoration-line-through': ''"><t t-esc="props.todo.task"/></p>
+        <div class="card p-3 mb-2 d-flex flex-row align-items-center shadow-sm border rounded bg-light">
+            <input type="checkbox" class="form-check-input me-2" t-att-checked="props.todo.isCompleted" t-on-change="this.onToggle"/>
+            <p class="fw-semibold text-primary mb-0"><t t-esc="props.todo.id"/>.</p>
+            <p class="fw-semibold mb-0 ms-2 flex-grow-1"
+            t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : 'text-dark'">
+                <t t-esc="props.todo.task"/>
+            </p>
+            <span role="button" class="fa fa-remove" t-on-click="this.onRemove"/>
         </div>
     </t>
-
 </templates>
