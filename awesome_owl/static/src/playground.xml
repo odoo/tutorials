@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <div class="d-flex mt-2 flex-column align-items-center gap-3">
-            <Counter callbackIncrement.bind="incrementSum"/>
-            <Counter callbackIncrement.bind="incrementSum" />
-            <h3 class="text-success">Total Sum:
-                <t t-esc="state.sum" />
-            </h3>
-            <Card title="'Card 1'" content="card1ContentValue" />
-            <Card title="'Card 2'" content="'Some Content'" />
+        <div class="container mt-4">
+            <!-- Counters Section -->
+            <h2 class="text-primary text-center">Counter</h2>
+            <div class="d-flex justify-content-center gap-4 mt-3">
+                <Counter callbackIncrement.bind="incrementSum"/>
+                <Counter callbackIncrement.bind="incrementSum" />
+            </div>
+
+            <!-- Total Sum Display -->
+            <div class="text-center mt-3">
+                <h3 class="text-success">Total Sum:
+                    <t t-esc="state.sum" />
+                </h3>
+            </div>
+
+            <!-- Cards Section -->
+            <h2 class="text-primary text-center mt-4s border-2 ">Cards</h2>
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                <Card title="'Card 1'" >
+                    <Counter  />
+                </Card>
+                <Card title="'Card 2'" >
+                    <Counter />
+                </Card>
+            </div>
+
+            <!-- Todo List -->
+            <div class="mt-4">
+                <TodoList />
+            </div>
         </div>
     </t>
 </templates>

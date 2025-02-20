@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.card">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
+        <div class="card bg-light border-primary shadow-sm rounded-3 p-3 text-center bg-white border-1" style="width: 20rem;">
             <div class="card-body">
-                <h5 class="card-title">
+                <h5 class="card-title text-primary fw-bold">
                     <t t-esc="props.title"/>
                 </h5>
-                <p class="card-text">
-                    <t t-esc="props.content"/>
-                </p>
+                <button t-on-click="toggleCounter" class="btn btn-primary fw-semibold px-4 py-2 rounded-3 shadow-sm mb-4">
+                    <t t-esc="state.isCounterOpen ? 'Close Counter' : 'Open Counter'"/>
+                </button>
+                <div class="card-text text-dark" t-if="state.isCounterOpen">
+                    <t t-slot="default"/>
+                </div>
             </div>
         </div>
     </t>
