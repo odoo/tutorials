@@ -4,7 +4,7 @@
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body text-center">
                 <p class="card-text">Counter: <t t-esc="state.value"/></p>
-                <button class="btn-dark mt-2" t-on-click="increment">Increment</button>
+                <button class="btn btn-dark mt-2" style="background-color:rgb(30, 248, 255);" t-on-click="increment">Increment</button>
             </div>
         </div>
    </t>

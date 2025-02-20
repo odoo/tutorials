@@ -2,10 +2,15 @@
 <templates xml:space="preserve">
    <t t-name="awesome_owl.Playground">
         <h1>Welcome to the Playground</h1>
-        <Counter/>
-        <Counter/>
+        <div class="m-2 d-flex flex-row">
+            <div>
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+                <div class="text-center">The sum is: <t t-esc="sum.value"/></div>
+            </div>
         <t t-foreach="cards" t-as="card" t-key="card.title">
             <Card title="card.title" content="card.content"/>
         </t>
+        </div>
     </t>
 </templates>
