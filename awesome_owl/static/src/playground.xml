@@ -5,7 +5,6 @@
         <div class="p-3">
             Playground
         </div>
-
         <div class="p-3">
             <span style="display: flex; gap: 10px;">
                 <Counter onChange.bind="incrementSum"/>
@@ -16,10 +15,24 @@
         </div>
 
         <div class="p-3">
-            Card
-            <Card title="'Card 1'" content="content_1"/>
-            <Card title="'Card 2'" content="content_2"/>
+            Cards
+            <Card title="'Hello Card'">
+                <p>This is a simple card with text.</p>
+            </Card>
+
+            <Card title="'Counter Card'">
+                <Counter/>
+            </Card>
+
+            <Card title="'Another Card'">
+                <ul>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                </ul>
+            </Card>
         </div>
+
 
         <div class="p-3">
             TodoList

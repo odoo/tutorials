@@ -3,6 +3,7 @@ import { TodoItem } from './todo_item';
 import { useAutofocus } from '../utils';
 
 export class TodoList extends Component {
+    static components = { TodoItem };
     static template = 'awesome_owl.TodoList';
 
     setup() {
@@ -21,11 +22,17 @@ export class TodoList extends Component {
     }
 
     toggleState(todoId) {
-        const todo = this.todos.find(todo => todo.id === todoId);
+        const todo = this.todos.find(task => task.id === todoId);
         if (todo){
             todo.isCompleted = !todo.isCompleted;
         }
     }
 
-    static components = { TodoItem };
+    removeTodo(todoId) {
+        const index = this.todos.findIndex(task => task.id === todoId);
+        if (index !== -1) {
+            this.todos.splice(index, 1);
+        }
+
+    }
 }

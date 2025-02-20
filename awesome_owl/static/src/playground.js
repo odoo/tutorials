@@ -5,6 +5,7 @@ import { Card } from "./Card/card";
 import { TodoList } from "./TodoList/todo_list";
 
 export class Playground extends Component {
+    static components = { Counter, Card, TodoList };
     static template = "awesome_owl.playground";
 
     setup() {
@@ -15,8 +16,7 @@ export class Playground extends Component {
         this.state.sum++;
     }
 
-    content_1 = "<div class='text-primary'> content of card 1</div>";
-    content_2 = markup("<div class='text-primary'> content of card 2</div>");
+    // content_1 = "<div class='text-primary'> content of card 1</div>";
+    // content_2 = markup("<div class='text-primary'> content of card 2</div>");
 
-    static components = { Counter, Card, TodoList };
 }
