@@ -7,9 +7,6 @@
         <field name="view_mode">list,form</field>
     </record>
 
-
-
-
     <record id="estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -36,18 +33,19 @@
                 <header>
                     <button name="action_cancel" type="object" string="Cancel"/>
                     <button name="action_sold" type="object" string="Sold"/>
+                    <field name="state" widget='statusbar'/>
                 </header>
                 <sheet>
                     <h1 class="mb32">
                         <field name="name"/>
-                        <h4><field name="property_tag_ids" widget="many2many_tags"/></h4>
+                        <h4><field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/></h4>
                     </h1>
                     <group>
                         <group>
                             <div class="row">
                                 <div class="col">
                                     <group>
-                                        <field name="property_type_id"/>
+                                        <field name="property_type_id" options="{'no_create' : true}"/>
                                         <field name="postcode"/>
                                         <field name="date_availability"/>
                                     </group>

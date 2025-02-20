@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 class Property(models.Model):
     _name = "estate.property"
     _description = "Real Estate Properties"
+    _order = "id desc"
     
     _sql_constraints = [
         ('check_prices', 'CHECK(expected_price > 0 AND selling_price >= 0)',

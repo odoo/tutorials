@@ -7,6 +7,7 @@ from odoo import fields, models
 class PropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Real Estate Property Types"
+    _order = "sequence, name asc"
     
     _sql_constraints = [
         ('check_unique_name', 'UNIQUE(name)',
@@ -14,4 +15,5 @@ class PropertyType(models.Model):
     ]
     
     name = fields.Char('Name', required=True, translate=True)
+    sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
     property_ids = fields.One2many('estate.property', 'property_type_id')
