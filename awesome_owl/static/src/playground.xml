@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <ChildCounter/>
-        <ChildCounter/>
-    </t>
-    <t t-name="awesome_owl.childCounter">
-        <button t-on-click="increment">Increment</button>
-        <p>Counter: <t t-out="state.value"/> </p>
+        <div class="container mt-4">
+            <div class="text-center mb-3">
+                <h4 class="fw-bold text-primary">Total Sum: <span class="badge bg-success"><t t-out="sum.value"/></span></h4>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <Card title="'Generic Card 1'">
+                        <Counter incrementSum.bind="incrementSum"/>
+                    </Card>
+                </div>
+                <div class="col-md-4">
+                    <Card title="'Generic Card 2'">
+                        <Counter incrementSum.bind="incrementSum"/>
+                    </Card>
+                </div>
+                <div class="col-md-4">
+                    <Card title="'Generic Card 3'">
+                        <Counter incrementSum.bind="incrementSum"/>
+                    </Card>
+                </div>
+            </div>
+
+            <div class="container mt-5">
+                <div class="card shadow-lg p-4 bg-light">
+                    <h2 class="text-center text-primary mb-4">📝 My Todo List</h2>
+                    <TodoList />
+                </div>
+            </div>
+        </div>
     </t>
 </templates>
