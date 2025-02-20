@@ -1,8 +1,29 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" type="button" t-on-click="showCustomers">
+                    Customers
+                </button>
+                <button class="btn btn-primary" type="button" t-on-click="showLeads">
+                    Leads
+                </button>
+            </t>
+            some content
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                    some content
+                </DashboardItem>
+                <DashboardItem size="2">
+                    I love milk
+                </DashboardItem>
+                <DashboardItem>
+                    some content
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
