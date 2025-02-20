@@ -4,7 +4,7 @@ from odoo.tools import float_is_zero, float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
-    
+    _order = "id desc"
     
     active = fields.Boolean(default=True)
     name = fields.Char(required=True)
@@ -67,6 +67,10 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        if self.state == 'new' and len(self.offer_ids) > 0:
+            self.state = 'offer-received'
 
     @api.onchange("garden")
     def _onchange_garden(self):

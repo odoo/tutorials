@@ -32,15 +32,24 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="sell_property" type="object" string="SOLD"/>
-                    <button name="cancel_property" type="object" string="CANCEL"/>
+                    <button name="sell_property" type="object" string="SOLD" 
+                        invisible="(
+                            state in ('sold', 'cancelled', 'offer-accepted') 
+                            )"/>
+                    <button name="sell_property" class="oe_highlight" type="object" string="SOLD" 
+                        invisible="(
+                            state in ('sold', 'cancelled')
+                            or state != 'offer-accepted'
+                            )"/>
+                    <button name="cancel_property" type="object" string="CANCEL" invisible="state == 'sold'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer-received,offer-accepted,sold"/>
                 </header>
                 <sheet>
                     <group>
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <field name="property_tag_ids" widget="many2many_tags"/>
+                        <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </group>
                     <group>
                         <group>
@@ -63,9 +72,9 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
-                                <field name="property_type_id"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="property_type_id" options="{'no_create_edit': true, 'no_quick_create': true}"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
@@ -74,8 +83,8 @@
                                 <list>
                                     <field name="price"/>
                                     <field name="partner_id"/>
-                                    <button name="action_validate" string=" " type="object" icon="fa-check"/>
-                                    <button name="action_refuse" string=" " type="object" icon="fa-times"/>
+                                    <button name="action_validate" string=" " type="object" icon="fa-check" invisible="property_id.state in ('sold', 'cancelled')"/>
+                                    <button name="action_refuse" string=" " type="object" icon="fa-times" invisible="property_id.state in ('sold', 'cancelled')"/>
                                     <field name="status"/>
                                 </list>
                             </field>
