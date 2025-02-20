@@ -58,7 +58,7 @@ class EstatePropertyOffer(models.Model):
                 )
 
             if record.property_id.state == "new":
-                record.property_id.state = "offer received"
+                record.property_id.state = "offer_received"
 
             record.property_id.message_post(
                 body=f"New offer of {record.price} received from {record.partner_id.name}."
@@ -78,7 +78,7 @@ class EstatePropertyOffer(models.Model):
                 )
 
             record.status = "accepted"
-            record.property_id.state = "offer accepted"
+            record.property_id.state = "offer_accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
             record.property_id.message_post(

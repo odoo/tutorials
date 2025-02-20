@@ -58,8 +58,8 @@ class EstateProperty(models.Model):
         copy=False,
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -127,6 +127,8 @@ class EstateProperty(models.Model):
     def action_set_property_sold(self):
         if self.state == "cancelled":
             raise UserError("Cancelled properties cannot be Sold.")
+        elif self.state in ["new", "offer_received"]:
+            raise UserError("You can not sell property without accepting an offer.")
         else:
             self.state = "sold"
         self.message_post(

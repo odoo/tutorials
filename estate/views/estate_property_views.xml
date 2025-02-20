@@ -11,7 +11,10 @@
             <field name="name">estate.property.view.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Channel" default_order="id desc" decoration-success="state in ['offer received', 'offer accepted']" decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
+                <list string="Channel" default_order="id desc" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                    <header>
+                        <button name="%(action_estate_offer_wizard)d" string="Add Offer" type="action" class="btn-primary" />
+                    </header>
                     <field name="name"/>
                     <field name="property_type_id"/>
                     <field name="postcode"/>
@@ -34,8 +37,8 @@
                         <button name="action_set_property_cancel" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'"/>
                         <button name="%(action_print_property_info_report)d" type="action" string="Print" icon="fa-print"/>
                         <field name="state" widget="statusbar" invisible="state in ['sold','cancelled']"/>
-                        <field name="state" widget="statusbar" invisible="state in ['sold','new','offer received','offer accepted']" statusbar_visible="new, offer received, offer accepted"/>
-                        <field name="state" widget="statusbar" invisible="state in ['cancelled','new','offer received','offer accepted']" statusbar_visible="new, offer received, offer accepted"/>
+                        <field name="state" widget="statusbar" invisible="state in ['sold','new','offer_received','offer_accepted']" statusbar_visible="new, offer_received, offer_accepted"/>
+                        <field name="state" widget="statusbar" invisible="state in ['cancelled','new','offer_received','offer_accepted']" statusbar_visible="new, offer_received, offer_accepted"/>
                     </header>
                     <sheet>
                         <group>
@@ -85,7 +88,7 @@
                                     </group>
                                 </page>
                                 <page string="Offers">
-                                    <field name="offer_ids" readonly="state in ['cancelled', 'sold', 'offer accepted']">
+                                    <field name="offer_ids" readonly="state in ['cancelled', 'sold', 'offer_accepted']">
                                         <list editable="bottom" default_order="price desc" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                             <field name="partner_id"/>
                                             <field name="price"/>
@@ -122,7 +125,7 @@
                     <field name="facades" string="Facades"/>
                     <field name="property_type_id" string="Property Type"/>
                     <separator/>
-                    <filter name="available_property" string="Available" domain="['|', ('state', '=', 'new' ), ('state', '=', 'offer received')]"/>
+                    <filter name="available_property" string="Available" domain="[('state', 'in', ['new', 'offer received'])]"/>
                     <separator/>
                     <group expand="1" string="Group By">
                         <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
