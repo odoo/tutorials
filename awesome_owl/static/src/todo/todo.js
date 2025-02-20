@@ -1,18 +1,7 @@
-import { Component, useState } from "@odoo/owl";
-
-export class TodoList extends Component {
-    static template = awesome_owl.todolist_template
-    setup(){
-        this.todos = useState([
-            { id: 1, description: "buy milk", isCompleted: true },
-            { id: 2, description: "buy cake", isCompleted: false },
-            { id: 3, description: "buy coldrike", isCompleted: false }
-        ]);
-    }
-}
+import { Component, useState, useRef } from "@odoo/owl";
 
 export class TodoItem extends Component {
-    static template = awesome_owl.todo_template
+    static template = "awesome_owl.todoitem_template"
     static props = {
         todo: 
         {type: Object,
@@ -21,6 +10,49 @@ export class TodoItem extends Component {
             description: String,
             isCompleted: Boolean,
         },
-        required: true}
+        required: true},
+        toggleState: Function,
+        removeTodo: Function,
+    }
+
+    toggle() {
+        this.props.toggleState(this.props.todo.id);
+    }
+
+    removeTodo() {
+        this.props.removeTodo(this.props.todo.id);
+    }
+}
+
+export class TodoList extends Component {
+    static template = "awesome_owl.todolist_template"
+    static components = { TodoItem }
+    setup(){
+        this.todos = useState([]);
+        this.taskNum = useState({'count':0})
+        this.inputRef = useRef("input");
+    }
+
+    addTodo(ev){
+        if(ev.keyCode === 13 && ev.target.value){
+            this.todos.push({id:this.taskNum.count, description:ev.target.value, isCompleted:false});
+            this.taskNum.count++;
+            ev.target.value="";
+        }
+    }
+
+    deleteTodo(todoID){
+        this.todos.splice(this.todos.findIndex(todo => todo.id === todoID), 1); 
+    }
+
+    inputFocus(){
+        this.inputRef.el.focus();
+    }
+
+    toggleTodo(todoID){
+        console.log(this.todos)
+        const todo = this.todos.find(todo => todo.id === todoID);
+        if (todo)
+            todo.isCompleted = !todo.isCompleted;
     }
 }

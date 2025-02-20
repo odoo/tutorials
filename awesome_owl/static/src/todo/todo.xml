@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="awesome_owl.todo_template">
-        <div class="card p-2 mb-2 shadow-sm">
-            <strong class="text-primary">ID: <t t-esc="props.todo.id"/></strong>
-            <p class="text-dark">Task: <t t-esc="props.todo.description"/></p>
+    <t t-name="awesome_owl.todoitem_template">
+        <div class="card p-2 mb-2 shadow-sm w-75">
+            <div class="d-flex align-items-center">
+                <input type="checkbox" class="form-check-input me-2" t-att-checked="props.todo.isCompleted" t-on-change="toggle"/>
+                <strong class="text-primary flex-grow-1" t-att-class="{'text-decoration-line-through text-muted': props.todo.isCompleted}">
+                    <t t-esc="props.todo.id"/>. <t t-esc="props.todo.description"/>
+                </strong>
+                <span class="fa fa-remove" t-on-click="removeTodo"/>
+            </div>
         </div>
     </t>
 
     <t t-name="awesome_owl.todolist_template">
-        <t t-foreach="todos" t-as="todo" t-key="todo.id">
-            <TodoItem t-props="todo"/>
-        </t>
+        <div class="container mb-5 d-flex flex-column align-items-center">
+            <h2 class="mb-3 text-primary">My Todo List</h2>
+            <div class="input-group mb-3 w-50">
+                <input type="text" class="form-control" placeholder="Enter a new task" t-on-keyup="addTodo" t-ref="input"/>
+            </div>
+            <div class="list-group w-50">
+                <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                    <TodoItem todo="todo" toggleState="toggleTodo.bind(this)" removeTodo="deleteTodo.bind(this)" />
+                </t>
+            </div>
+        </div>
     </t>
 </templates>
