@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="property_info_template" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row">
+                    <!-- Property Image Section -->
+                    <div class="col-md-6">
+                        <img t-if="property.image" 
+                             t-att-src="image_data_uri(property.image)" 
+                             class="img-fluid rounded shadow-lg"
+                             style="width: 100%; height: auto; object-fit: cover;"/>
+                    </div>
+
+                    <!-- Property Details Section -->
+                    <div class="col-md-6">
+                        <h1 class="display-5"><t t-out="property.name"/></h1>
+                        <h4 class="text-primary">$<t t-out="property.expected_price"/></h4>
+                        <p class="lead"><t t-out="property.description"/></p>
+
+                        <div class="mt-4">
+                            <p><strong>Bedrooms:</strong> <t t-out="property.bedrooms"/></p>
+                            <p><strong>Area:</strong> <t t-out="property.living_area"/> sq ft</p>
+                            <p><strong>Facades:</strong> <t t-out="property.facades"/></p>
+                            <p t-if="property.garden">
+                                <strong>Garden Area:</strong> <t t-out="property.garden_area"/> sqm
+                            </p>
+                            <p t-if="property.garden_orientation">
+                                <strong>Direction:</strong> <t t-out="property.garden_orientation"/>
+                            </p>
+                            <p><strong>Totla Area:</strong> <t t-out="property.total_area"/></p>
+                        </div>
+
+                        <a href="/properties" class="btn btn-secondary mt-3">Back to Listings</a>
+                    </div>
+
+                    <!-- Features Section -->
+                    <t t-if="property.garden or property.facades or property.garage or property.living_area">
+                        <div class="container mt-4">
+                            <h3 class="text-center">Property Features</h3>
+                            <div class="row text-center">
+                                <div t-if="property.garden" class="col-md-3">
+                                    <i class="fa fa-tree fa-3x text-success"></i>
+                                    <p>Garden</p>
+                                </div>
+                                <div t-if="property.facades" class="col-md-3">
+                                    <i class="fa fa-building fa-3x text-primary"></i>
+                                    <p>Facades: <t t-out="property.facades"/></p>
+                                </div>
+                                <div t-if="property.garage" class="col-md-3">
+                                    <i class="fa fa-car fa-3x text-dark"></i>
+                                    <p>Garage</p>
+                                </div>
+                                <div t-if="property.living_area" class="col-md-3">
+                                    <i class="fa fa-arrows-alt fa-3x text-warning"></i>
+                                    <p><t t-out="property.living_area"/> sqm Living Area</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

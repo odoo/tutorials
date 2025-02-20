@@ -14,6 +14,7 @@ class EstateProperty(models.Model):
 
     name = fields.Char(string="Title", required=True, tracking=True)
     description = fields.Text(string="Description")
+    image = fields.Image(string="Property Image")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Available from", copy=False, default = fields.Date.today() + timedelta(days=+90))
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id.id)
@@ -100,6 +101,7 @@ class EstateProperty(models.Model):
                     template.send_mail(record.id, force_send=True)
             else:
                 raise UserError(_("Offer must be accepted"))
+        return True
 
     def action_cancel(self):
         for record in self:
@@ -107,6 +109,7 @@ class EstateProperty(models.Model):
                 raise UserError(_("Sold property cannot be cancelled"))
             else:
                 record.state = 'cancelled'
+        return True
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
@@ -119,11 +122,3 @@ class EstateProperty(models.Model):
         if 'state' in init_values and self.state == 'offer_accepted':
             return self.env.ref('estate.mt_state_accept')
         return super()._track_subtype(init_values)
-
-    def rating_get_partner_id(self):
-        """Defines the partner receiving the rating request."""
-        return self.buyer_id
-
-    def rating_get_rated_partner_id(self):
-        """Defines the rated partner (agent)."""
-        return self.seller_id.buyer_id

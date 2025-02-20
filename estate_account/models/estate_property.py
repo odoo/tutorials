@@ -6,9 +6,6 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            # Create the account move for each record
-            record.check_access('create')
-            print(" reached ".center(100, '='))
             move = self.env['account.move'].create({
                 'move_type': 'out_invoice',
                 'partner_id': record.buyer_id.id,

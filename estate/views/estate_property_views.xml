@@ -31,12 +31,17 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
-                        <h1 class="mb32">
-                            <field name="name" class="mb16"/>
-                        </h1>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
-                    </div>
+                    <group>
+                        <div class="oe_title">
+                            <h1 class="mb32">
+                                <field name="name" class="mb16"/>
+                            </h1>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                        </div>
+                        <group>
+                            <field name="image" widget="image" nolabel="1" class="oe_avatar"/>
+                        </group>
+                    </group>
                     <group>
                         <group>
                             <field name="estate_property_seq"/>

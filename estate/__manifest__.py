@@ -1,7 +1,7 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base', 'mail', 'rating'],
+    'depends': ['base', 'mail', 'rating', 'website'],
     'author': "djsh",
     'category': 'Real Estate/Brokerage',
     'description': """
@@ -13,10 +13,13 @@ Real Estate Properties with the information regarding buyers, sellers, propertie
         'data/ir_sequence_data.xml',
         'data/mail_message_subtype.xml',
         'data/estate_rating_email_template.xml',
+        'data/website_menu.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
+        'views/property_info_template.xml',
+        'views/property_list_template.xml',
         'views/rating_rating_views.xml',
         'views/res_users_views.xml',
         'views/estate_property_menus.xml',
