@@ -2,7 +2,9 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_item">
         <div class="p-2" t-att-class="{'text-decoration-line-through text-muted': props.todo.isCompleted}">
+            <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="()=> props.togglestate(props.todo.id)" class="mt-2"/>
             <t t-out="props.todo.id"/>. <t t-out="props.todo.description"/>
+            <span class="fa fa-remove" role="button" t-on-click="() => props.removeTodo(props.todo.id)"></span>
         </div>
     </t>
 </templates>

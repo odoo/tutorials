@@ -16,9 +16,13 @@
             </div>
             <h4 class="mt-4 text-secondary">Cards Section</h4>
             <div class="d-flex justify-content-center flex-wrap">
-                <Card title="'Safe HTML Card'" content="state.htmlContent"/>
-                <Card title="'Normal Text Card'" content="state.normalText"/>
-                <Card title="'Another Card'" content="'Just a simple card'"/>
+                <Card title="'Safe HTML Card'">
+                    <p>Toggle Content Card-1</p>
+                </Card>
+                <Card title="'Normal Text Card'"/>
+                <Card title="'Counter in Card'">
+                    <Counter onChange.bind="incrementSum"/>
+                </Card>
             </div>
             <h4 class="mt-4 text-secondary">Todo List Section</h4>
             <div class="d-flex justify-content-center flex-wrap">

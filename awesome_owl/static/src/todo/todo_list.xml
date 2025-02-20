@@ -8,7 +8,7 @@
                    t-on-keyup="addTodo"/>
             <div>
                 <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo"/>
+                    <TodoItem todo="todo" togglestate.bind="togglestate" removeTodo.bind="removeTodo"/>
                 </t>
             </div>
         </div>

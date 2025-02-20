@@ -3,8 +3,11 @@
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2 shadow-sm" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title text-primary"><t t-out="props.title"/></h5>
-                <p class="card-text text-muted"><t t-out="props.content"/></p>
+                <h5 class="card-title text-primary"><t t-out="props.title || 'Default Title'"/></h5>
+                <button class="btn btn-sm btn-light" t-on-click="toggleContent">
+                    <t t-out="state.isOpen ? 'Toggle' : 'Show'"/>
+                </button>
+                <p t-if="state.isOpen" class="card-text text-muted"><t t-slot="default"/></p>
             </div>
         </div>
     </t>
