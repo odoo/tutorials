@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
-            <p>Counter: <t t-esc="state.value"/>
-            </p>
-            <button class="btn btn-primary" t-on-click="increment">Increment</button>
+            <div class="container py-4">
+                <div class="text-center">The sum is : <t t-esc="total.value"/>
+                </div>
+                <Counter onChangeIncrease.bind="sum" onChangeDecrease.bind="sub"/>
+                <Counter onChangeIncrease.bind="sum" onChangeDecrease.bind="sub"/>
+                <Card title="'hello'">
+                    <Counter/>
+                </Card>
+                <Card title="'hello'">
+                    <Counter/>
+                </Card>
+                <TodoList />
+            </div>
         </div>
     </t>
-
 </templates>
