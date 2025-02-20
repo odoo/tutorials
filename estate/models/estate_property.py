@@ -67,11 +67,8 @@ class EstateProperty(models.Model):
 
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
-        if not self.offer_ids:
-            self.best_offer = 0
-            return
         for record in self:
-            record.best_offer = max(record.offer_ids.mapped('price'))
+            record.best_offer = max(record.offer_ids.mapped('price'), default = 0.0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -83,17 +80,15 @@ class EstateProperty(models.Model):
             self.garden_area = 10
 
     def action_cancel_property(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError('You cannot cancel a sold property')
-            record.state = 'cancelled'
+        if self.filtered(lambda record: record.state == 'sold'):
+            raise UserError('Sold properties cannot be cancelled')
+        self.state = 'cancelled'
         return True
 
     def action_sell_property(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise UserError('You cannot sell a cancelled property')
-            record.state = 'sold'
+        if self.filtered(lambda record: record.state == 'cancelled'):
+            raise UserError('Cancelled properties cannot be sold')
+        self.state = 'sold'
         return True
 
     @api.constrains('selling_price')
@@ -104,7 +99,7 @@ class EstateProperty(models.Model):
             if float_compare(
                 record.selling_price, record.expected_price * self.PROPERTY_SELLING_PRICE_THRESHOLD,
                 precision_rounding = self.PROPERTY_PRICE_PRECISION_EPSILON
-                ) < 0:
+            ) < 0:
                 raise UserError('The selling price must be at least 90% of the the expected price')
 
     _sql_constraints = [
