@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="warranty_extension_quotation_view_form" model="ir.ui.view">
+        <field name="name">warranty.extension.quotation.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+          <button name="action_open_discount_wizard" position="before">
+            <button type="object" name="action_warranty_selection_wizard" string="Add Warranty"/>
+          </button>
+        </field>
+    </record>
+</odoo>

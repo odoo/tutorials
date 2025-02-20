@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="warranty_configuration_view_list" model="ir.ui.view">
+        <field name="name">warranty.configuration.view.list</field>
+        <field name="model">warranty.configuration</field>
+        <field name="arch" type="xml">
+            <list string="Warranty Configurations">
+                <field name="name" string="Name"/>
+                <field name="product_tmpl_id" string="Product"/>
+                <field name="percentage" string="Percentage"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="warranty_configuration_view_form" model="ir.ui.view">
+        <field name="name">warranty.configuration.view.form</field>
+        <field name="model">warranty.configuration</field>
+        <field name="arch" type="xml">
+            <form string="Warranty Configuration">
+                <group>
+                    <field name="name" string="Name"/>
+                    <field name="product_tmpl_id" string="Product"/>
+                    <field name="year" string="Year"/>
+                    <field name="percentage" string="Percentage"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="warranty_configuration_action" model="ir.actions.act_window">
+        <field name="name">Warranty Configurations</field>
+        <field name="res_model">warranty.configuration</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="warranty_configuration_root" action="warranty_configuration_action" web_icon="warranty_extension,static/description/icon.png"/>
+    <menuitem id="warranty_configuration_menu" parent="sale.menu_sales_config" action="warranty_configuration_action"/>
+</odoo>
