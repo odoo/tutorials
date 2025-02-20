@@ -1,0 +1,9 @@
+<template id="counter_template" name="Counter">
+    <t t-name="awesome_owl.counter_template">
+        <div class="counter">
+            <h3>Counter: <t t-esc="state.value" /></h3>
+            <button t-on-click="increment">Increment</button>
+        </div>
+    </t>
+</template>
+

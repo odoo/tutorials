@@ -1,0 +1,15 @@
+<template id="card_template" name="Card">
+    <t t-name="awesome_owl.card_template">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <t t-esc="props.title" />
+                </h5>
+                <p class="card-text">
+                    <t t-out="props.content" />
+                </p>
+            </div>
+        </div>
+    </t>
+</template>
+

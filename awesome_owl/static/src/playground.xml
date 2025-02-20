@@ -1,10 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
+<template id="playground_template" name="Playground">
+    <t t-name="awesome_owl.playground_template">
+        <center>
+            <h1>Playground</h1>
+            <br></br>
+            <div class="counter">
+                <h3>Extract Counter in a sub component</h3>
+                <Counter />
+                <Counter />
+            </div>
+            <br></br>
+            <div class="cards">
+                <h3>A simple Card component</h3>
+                <Card title="'Card 1'" content="'This is the first card.'" />
+                <Card title="'Card 2'" content="'This is the first card.'" />
+                <Card title="'Card 3'" content="'This is the first card.'" />
+            </div>
+            <div class="cards">
+                <h3>Using markup to display html</h3>
+                <Card title="'HTML Card'" content="htmlContent" />
+                <Card title="'Plain Text Card'" content="plainText" />
+            </div>
+            <div class="cards">
+                <h3>Props validation</h3>
+                <Card title="'HTML Card'" content="htmlContent" />
+                <Card title="'Plain Text Card'" content="plainText" />
+            </div>
+            <div class="counter_sum">
+                <h3>The sum of two Counter</h3>
+                <Counter onChange.bind="updateCounter1" />
+                <Counter onChange.bind="updateCounter1" />
+                <h4 class="mt-3">Total Sum: <t t-esc="state.counter1" /></h4>
+            </div>
+        </center>
     </t>
+</template>
 
-</templates>
