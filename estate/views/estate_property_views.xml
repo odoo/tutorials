@@ -39,16 +39,22 @@
                 </header>
                 <sheet>
                     <group>
-                        <h1 class="mb32">
-                            <field name="name" class="mb16" placeholder="Property Name"/>
-                        </h1>
+                        <group>
+                            <h1 class="mb32">
+                                <field name="name" class="mb16" placeholder="Property Name"/>
+                            </h1>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar" options="{'size': [150,150]}" nolabel="1"/>
+                        </group>
                     </group>
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="is_published"/>
                         </group>
                         <group>
                             <field name="expected_price"/>

@@ -2,8 +2,16 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
+        <div class="p-3 border">
             hello world
+            <span class="m-2 p-3 border d-inline-block">
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+                <div>The sum is:<t t-esc="sum.value"/></div>
+            </span>
+        </div>
+        <div class="p-3 border">
+            <ToDoList />
         </div>
     </t>
 

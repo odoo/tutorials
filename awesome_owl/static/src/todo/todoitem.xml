@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.ToDoItem">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" t-att-id="props.todo.id" t-att-checked="props.todo.isCompleted" t-on-change="onChange"/>
+            <label t-att-for="props.todo.id" t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
+                <t t-esc="props.todo.id"/>
+                <t t-esc="props.todo.description"/>
+            </label>
+            <span role="button" class="fa fa-remove ms-3 text-danger" t-on-click="onRemove"/>
+        </div>
+    </t>
+
+</templates>

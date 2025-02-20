@@ -2,7 +2,7 @@
     'name': 'Real Estate',
     'version': '1.0',
     'category': "Real Estate/Brokerage",
-    'depends': ['base','mail'],
+    'depends': ['base', 'mail', 'website'],
     'summary': 'Chapter 2: Server Framework 101',
     'description': "",
     'installable': True,
@@ -17,6 +17,7 @@
         'views/estate_property_tag_views.xml', 
         'views/estate_menus.xml',
         'views/res_users_views.xml',
+        'views/estate_property_website_template.xml',
         'data/estate.property.type.csv',
     ],
     'demo': [
