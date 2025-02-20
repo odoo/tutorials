@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="openCustomerView" type="button" class="btn btn-primary" title="Customer">Customer</button>
+                <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Leads">Leads</button>
+            </t>
+            <DashboardItem/>
+            <DashboardItem size="2">I Love India</DashboardItem>
+            <DashboardItem />
+        </Layout>
     </t>
-
 </templates>

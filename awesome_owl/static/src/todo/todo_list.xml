@@ -6,8 +6,8 @@
                 <input type="text" class="form-control" placeholder="Add a todo" t-on-keyup="addTodo" aria-label="Add a todo" t-ref="elem" />
             </div>
             <div class="list-group">
-                <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem id="todo.id" description="todo.description" isCompleted="todo.isCompleted" toggleState.bind="toggleState" removeTodo.bind="removeTodo" />
+                <t t-foreach="todos" t-as="todo" t-key="todo_index">
+                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo" />
                 </t>
             </div>
         </div>

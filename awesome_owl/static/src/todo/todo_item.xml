@@ -4,12 +4,12 @@
         <div class="card mb-2">
             <div class="card-body d-flex align-items-center">
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" t-att-checked="props.isCompleted" t-on-click="() => props.toggleState(props.id)" t-att-id="props.id" />
-                    <label class="form-check-label" t-att-for="props.id">
-                        <span t-att-class="{'text-muted text-decoration-line-through': props.isCompleted}">
-                            <t t-esc="props.id"/>
-.                            <t t-out="props.description"/>
-                            <span class="fa fa-remove text-danger" t-on-click="() => props.removeTodo(props.id)"/>
+                    <input type="checkbox" class="form-check-input" t-att-checked="props.todo.isCompleted" t-on-click="() => props.toggleState(props.todo.id)" t-att-id="props.todo.id" />
+                    <label class="form-check-label" t-att-for="props.todo.id">
+                        <span t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+                            <t t-esc="props.todo.id"/>
+.                            <t t-out="props.todo.description"/>
+                            <span class="fa fa-remove text-danger" t-on-click="() => props.removeTodo(props.todo.id)"/>
                         </span>
                     </label>
                 </div>
