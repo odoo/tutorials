@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <p>Counter: <t t-esc="state.value"/>
-        </p>
-        <button class="btn btn-primary" t-on-click="increment">Increment</button>
+        <div class="p-3 m-5">
+            <h3 class="text-center text-primary">Total Sum: <t t-out="state.val"/>
+            </h3>
+            <Counter onIncrease.bind="incrementSum" onDecrease.bind="decrementSum" />
+            <Counter onIncrease.bind="incrementSum" onDecrease.bind="decrementSum" />
+            <div class="d-flex mt-5 justify-content-center">
+                <!-- <Card title="'Odoo'" content="this.html"/> -->
+                <Card title="'Owl Framework'"/>
+                <Card title="'Counter Card'">
+                    <Counter/>
+                </Card>
+            </div>
+            <Todolist />
+        </div>
     </t>
 </templates>
