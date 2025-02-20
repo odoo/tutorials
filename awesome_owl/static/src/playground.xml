@@ -2,7 +2,10 @@
 
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-    <div class="p-3 d-flex flex-column gap-4 align-items-center">
+    <div class='bg-primary text-white text-center py-4 rounded shadow-sm'>
+        <h1 class='display-4'>Owl Framework Components</h1>
+    </div>
+        <div class="p-3 d-flex flex-column gap-4 align-items-center">
         <div class="d-flex gap-4 flex-wrap justify-content-center">
                 <Card title="'Counter 1'">
                     <Counter incrementSum.bind="incrementSum"/>

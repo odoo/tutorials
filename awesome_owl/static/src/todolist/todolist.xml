@@ -2,10 +2,31 @@
 
 <templates xml:space="preserve">
   <t t-name="awesome_owl.TodoList">
-       <div class="d-inline-block border p-2 m-2">
-              <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo"/>
-              </t>
-       </div>
+    <div class="d-inline-block border p-2 m-2">
+      <div class="container mt-5">
+        <div class="bg-info text-white text-center py-3 rounded shadow-sm">
+          <h2 class="fw-bold">✨ Todo List ✨</h2>
+          <p class="fst-italic">Manage your tasks efficiently!</p>
+        </div>
+
+        <div class="card p-4 mt-4 shadow border-0 bg-light">
+          <input
+            class="form-control form-control-lg mb-3 border-primary shadow-sm rounded-pill"
+            type="text"
+            placeholder="Add a todo"
+            t-on-keyup="addTodo"
+          />
+          <ul class="list-group list-group-flush">
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+              <TodoItem
+                todo="todo"
+                t-on-remove="() => removeTodo(todo.id)"
+                t-on-toggle="() => toggleCompletion(todo.id)"
+              />
+            </t>
+          </ul>
+        </div>
+      </div>
+    </div>
   </t>
 </templates>
