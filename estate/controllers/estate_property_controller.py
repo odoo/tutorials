@@ -10,8 +10,6 @@ class EstatePropertyController(http.Controller):
         website=True,
     )
     def estate_property(self, page=1, **kw):
-        offset = (int(page) - 1) * 6
-
         listed_after = kw.get("listed_after", False)
         search = kw.get('search',False)
 
@@ -22,11 +20,8 @@ class EstatePropertyController(http.Controller):
         if search:
             domain.append(("name", "ilike", search))  
 
-        properties = request.env["estate.property"].search(
-            domain, limit=6, offset=offset, order="create_date desc"
-        )
         total_properties = request.env["estate.property"].search_count(domain)
-
+        
         pager = request.website.pager(
             url="/properties",
             total=total_properties,
@@ -34,6 +29,11 @@ class EstatePropertyController(http.Controller):
             step=6,
             url_args=kw,
         )
+
+        properties = request.env["estate.property"].search(
+            domain, limit=6, offset=pager['offset'], order="create_date desc"
+        )
+
 
         return request.render(
             "estate.properties_page",

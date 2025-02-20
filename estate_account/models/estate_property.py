@@ -13,10 +13,8 @@ class EstateProperty(models.Model):
         try:
             self.check_access("write")
 
-            print("Access check passed".center(100, "="))
         except Exception as e:
-            print(f"Access error: {str(e)}".center(100, "="))
-            raise
+            raise e
 
         invoice_vals = {
             "partner_id": self.buyer_id.id,

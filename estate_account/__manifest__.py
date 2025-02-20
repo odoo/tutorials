@@ -10,6 +10,4 @@
         'report/estate_account_reports.xml'
     ],
     "installable": True,
-    "application": False,
-    "auto_install": False,
 }

@@ -141,6 +141,19 @@ class EstateProperty(models.Model):
         if template:
             template.send_mail(self.id, force_send=True, email_layout_xmlid='mail.mail_notification_light')
 
+        # Send whatsapp message
+        if self.buyer_id:
+            message_body = f"Hello {self.buyer_id.name}, Congratulations! Your property '{self.name}' has been successfully sold. Thank you!"
+            whatsapp_message = self.env[
+                "whatsapp.message"
+            ].create(
+                {
+                    "body": message_body,
+                    "mobile_number": self.buyer_id.mobile,  # assuming mobile is in international format like +123456789
+                    "message_type": "outbound",
+                }
+            )
+            whatsapp_message._send()
         return True
 
     def action_set_cancelled(self):
