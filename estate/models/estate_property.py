@@ -43,7 +43,7 @@ class Property(models.Model):
                 ('Offer Accepted', 'offer_accepted'),
                 ('Sold', 'sold'),
                 ('Cancelled', 'cancelled')],
-        default="New",
+        default="new",
         string="state",
     )
     active = fields.Boolean(default=True)

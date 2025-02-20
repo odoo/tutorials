@@ -72,10 +72,18 @@
                 <field name="selling_price" string="Selling Price" />
                 <field name="date_availability" string="Available from" />
                 
-                <filter string="Available" name="available" domain="[('active', '=', True)]"/>
+                <filter 
+                string="Available" 
+                name="available" 
+                domain="[('state', 'in', ('new', 'offer_received'))]"/>
+                
                 <group expand="1" string="Group By">
-                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <filter 
+                    string="Postcode" 
+                    name="postcode" 
+                    context="{'group_by':'postcode'}"/>
                 </group>
+       
             </search>
         </field>
     </record>
