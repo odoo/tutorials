@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
    <t t-name="awesome_owl.counter">
-    <div class="d-flex justify-content-center items-align-center border">
-      <p>Counter: <t t-esc="state.value"/></p>
-      <button type="button" class=" border" t-on-click="increment">Increment</button>
-    </div>
+      <div class="d-flex justify-content-center align-items-center p-4 shadow rounded bg-light" style="width: 300px; margin: auto;">
+         <p class="me-4 mb-0 fw-bold text-primary" style="font-size: 1.2rem;">
+            Counter: <t t-esc="state.value" />
+         </p>
+         <button 
+            type="button" 
+            class="btn btn-primary fw-bold px-3 py-2 rounded" 
+            t-on-click="increment" 
+            style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            Increment
+         </button>
+      </div>
    </t>
 </templates>

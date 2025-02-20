@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todoitem">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 t-on-click="toggleStatus" t-att-class="(props.isCompleted ? 'text-secondary text-decoration-line-through':'')">Task ID: <t t-esc="props.id" /></h5>
+                <p class="card-text">
+                    Description: <t t-esc="props.description"/><span t-on-click="onDelete" class="text-danger m-1 fa fa-remove"/>
+                </p>
+                <p class="card-text">
+                    Status: 
+                    <span t-att-class="'badge ' + (props.isCompleted ? 'bg-success' : 'bg-warning')">
+                        <t t-esc="props.isCompleted ? 'Completed' : 'Pending'" />
+                    </span>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>
