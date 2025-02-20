@@ -16,8 +16,8 @@
                 <field name="validity" string="Validity (days)" />
                 <field name="date_deadline" />
                 <field name="status" />
-                <button name="action_accept" type="object" icon="fa-check" />
-                <button name="action_refuse" type="object" icon="fa-times" />
+                <button name="action_accept" type="object" icon="fa-check" title="Accept Offer" />
+                <button name="action_refuse" type="object" icon="fa-times" title="Refuse Offer" />
             </list>
         </field>
     </record>
