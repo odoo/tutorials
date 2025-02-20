@@ -13,12 +13,13 @@ import { rpc } from "@web/core/network/rpc";
 // //     },
 // // });
 
-const statistics = reactive({ data: null });
+// const statistics = reactive({ data: {} });
+const statistics = reactive({ isReady: false });
 
 async function fetchStatistics() {
     try {
         const result = await rpc("/awesome_dashboard/statistics", {});
-        Object.assign(statistics, { data: result });
+        Object.assign(statistics, result, { isReady: true });
         console.log(statistics)
     } catch (error) {
         console.error("Error fetching statistics:", error);
@@ -27,7 +28,7 @@ async function fetchStatistics() {
 
 fetchStatistics();
 
-setInterval(fetchStatistics, 10*60*1000);
+setInterval(fetchStatistics, 10*1000);
 
 registry.category("services").add("awesome_dashboard.statistics", {
     start() {

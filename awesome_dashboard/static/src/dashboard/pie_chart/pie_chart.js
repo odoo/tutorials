@@ -1,6 +1,6 @@
 import { loadJS } from "@web/core/assets";
 import { getColor } from "@web/core/colors/colors";
-import { Component, onWillStart, useRef, onMounted, onWillUnmount } from "@odoo/owl";
+import { Component, onWillStart, useRef, onMounted, onWillUnmount, useEffect } from "@odoo/owl";
 
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
@@ -15,6 +15,14 @@ export class PieChart extends Component {
         onMounted(() => {
             this.renderChart();
         });
+        useEffect(() => {
+            if (this.chart) {
+                this.chart.data.datasets[0].data = Object.values(this.props.data);
+                this.chart.update(); // Manually update the chart when data changes
+            } else {
+                this.renderChart(); // If chart not created, create it
+            }
+        }, () => [this.props.data]); // Re-run when data changes
         onWillUnmount(() => {
             this.chart.destroy();
         });
