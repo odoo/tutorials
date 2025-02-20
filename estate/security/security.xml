@@ -2,7 +2,6 @@
     <record id="estate_group_user" model="res.groups">
         <field name="name">Agent</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
-        <field name="users" eval="[(4, ref('base.user_demo'))]"/>
     </record>
     
     <record id="estate_group_manager" model="res.groups">
@@ -29,5 +28,4 @@
         <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     </record>
-
 </odoo>

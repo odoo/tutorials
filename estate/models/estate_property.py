@@ -10,8 +10,8 @@ class EstateProperty(models.Model):
     _description = "Property"
     _order = 'id desc'
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price >0)', 'Expected Price must be strickly Positive.'),
-        ('check_selling_price', 'CHECK(selling_price >=0)', 'Selling Price must be Positive.')
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected Price must be strickly Positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling Price must be Positive.')
     ]
 
     name = fields.Char(string="Name", required=True, tracking=True)
@@ -20,6 +20,8 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(string="Availabile From", copy=False,
         default=lambda self:fields.Datetime.today() + relativedelta(months=3)
     )
+    date_deadline = fields.Date(string="Property Deadline",
+        default=lambda self:fields.Datetime.today() + relativedelta(months=1))
 
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
@@ -54,7 +56,7 @@ class EstateProperty(models.Model):
         tracking=True
     )
     
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type", required=True)
     property_tag_ids = fields.Many2many('estate.property.tag', string="Property Tags")
     offer_ids = fields.One2many('estate.property.offer','property_id')
     user_id = fields.Many2one('res.users', string='Salesperson',
@@ -121,5 +123,5 @@ class EstateProperty(models.Model):
     # Prevention on Delete
     @api.ondelete(at_uninstall=False)
     def _unlink_if_property_state(self):
-        if any(property.state in ('new', 'cancelled') for property in self):
+        if any(property.state not in ('new', 'cancelled') for property in self):
                 raise UserError("You can not delete a property if its state is not ‘New’ or ‘Cancelled’")

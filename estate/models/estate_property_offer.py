@@ -98,8 +98,24 @@ class EstatePropertyOffer(models.Model):
         if any(
             offer.partner_id 
             and offer.property_id.property_type_id 
-            and offer.property_id.property_type_id.id == offer.env.ref("estate.property_type_commercial").id
+            and offer.property_id.property_type_id.id == offer.env.ref(
+                'estate.property_type_commercial', raise_if_not_found=False).id
             and not offer.partner_id.is_company
             for offer in self
         ):
-            raise UserError("Individuals cannot buy Commercial properties. Only companies are allowed.")
+            raise UserError("Individuals cannot buy Commercial properties. "
+                "Only companies are allowed.")
+
+    # auto accept best offer using cron action
+    def auto_accept_best_offer(self):
+        today = date.today()
+
+        properties = self.env['estate.property'].search([
+            ('date_deadline', '&gt;=', today),
+            ('state', '=', 'received')
+        ])
+        for property in properties:
+            best_offer = property.offer_ids.filtered(lambda o: o.status != 'refused').sorted('price', reverse=True)[:1]
+
+            if best_offer:
+                best_offer.action_accept()
