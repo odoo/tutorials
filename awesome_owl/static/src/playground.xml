@@ -6,18 +6,20 @@
             <h3>Counter</h3>
             <Counter t-props="{'onChange': incrementSum}" />
             <Counter t-props="{'onChange': incrementSum}" />
-
             <h3>Sum: <t t-esc="sum.value" />
             </h3>
         </div>
         <div class="p-3 text-center">
             <h3>Card</h3>
-            <Card t-props="{'title': 'Card 1 Title', 'content': 'This is the content of card 1'}" />
-            <Card t-props="{'title': 'Card 2 Title', 'content': 'This is the content of card 2'}" />
+            <Card title="'card 1'">
+                content of card 1
+            </Card>
+            <Card title="'card 2'">
+                <Counter />
+            </Card>
         </div>
         <div class="p-3 text-center">
             <TodoList />
-
         </div>
     </t>
 

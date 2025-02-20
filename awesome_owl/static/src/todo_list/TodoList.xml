@@ -4,9 +4,14 @@
     <t t-name="awesome_owl.TodoList">
         <div>
             <h1>Todo List</h1>
-            <input class="form-control mb-3" type="text" placeholder="Add a todo" t-on-keyup="addTodo" t-ref="input"/>
+            <div class="row justify-content-center mt-3">
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                    <input class="form-control mb-3" type="text" placeholder="Add a todo" t-on-keyup="addTodo" t-ref="input"/>
+                </div>
+            </div>
+
             <t t-foreach="this.todos" t-as="todo" t-key="todo.id">
-                <TodoItem t-props="{'todo': todo}" />
+                <TodoItem t-props="{'todo': todo}" toggleTodo.bind="toggleTodo" removeTodo.bind="removeTodo" />
             </t>
         </div>
     </t>

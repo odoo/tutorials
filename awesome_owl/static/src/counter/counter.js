@@ -5,7 +5,7 @@ export class Counter extends Component {
     static props = {
         onChange:{
             type : Function,
-            required : false
+            optional: true 
         }
     };
 
@@ -15,8 +15,8 @@ export class Counter extends Component {
 
     increment(){
         this.state.value++;
-        if(this.props.onChange()){
-            this.props.onChange()
+        if(this.props.onChange){
+            this.props.onChange();
         }
     }
 }

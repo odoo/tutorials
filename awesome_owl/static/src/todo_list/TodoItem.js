@@ -6,6 +6,17 @@ export class TodoItem extends Component {
         todo: {
             type: Object,
             optional: true,
-        }
+        },
+        toggleTodo : Function,
+        removeTodo : Function
     };
+
+    onChange() {
+        this.props.toggleTodo(this.props.todo.id);
+    }
+    
+    onRemove() {
+        this.props.removeTodo(this.props.todo.id)
+    }
+    
 }

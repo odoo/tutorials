@@ -8,9 +8,18 @@ export class Card extends Component{
                   type : String,
                   required : true
               },
-              content : {
-                  type : String,
-                  required : true
-              }
+              slots: {
+                type: Object,
+                shape: {
+                    default: true
+                },
        }
+    }
+    setup() {
+        this.state = useState({ isOpen: false });
+    }
+
+    toggleContent() {
+        this.state.isOpen = !this.state.isOpen;
+    }
 }

@@ -9,7 +9,7 @@ export class TodoList extends Component {
     static props = { };
 
     setup() {
-        this.nextId = 1;
+        this.nextId  = 1;
         this.todos = useState([]);
         useAutofocus("input")
     }
@@ -22,6 +22,20 @@ export class TodoList extends Component {
                 isCompleted: false
             });
             ev.target.value = "";
+        }
+    }
+
+    toggleTodo(todoId) {
+        const todo = this.todos.find((todo) => todo.id === todoId);
+        if (todo) {
+            todo.isCompleted = !todo.isCompleted; 
+        }
+    }
+
+    removeTodo(todoId){
+        const index = this.todos.findIndex((todo) => todo.id == todoId);
+        if(index >= 0){
+              this.todos.splice(index , 1);
         }
     }
 
