@@ -13,9 +13,9 @@
                             <div class="card m-2">
                                 <img t-if="property.image" t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'" class="card-img-top img-fluid"/>
                                 <div class="card-body">
-                                    <h5 class="card-title"><t t-esc="property.name"/></h5>
-                                    <p class="card-text"><t t-esc="property.description"/> </p>
-                                    <p class="card-text">Expected Price: <t t-esc="property.expected_price"/></p>
+                                    <h5 class="card-title"><t t-out="property.name"/></h5>
+                                    <p class="card-text"><t t-out="property.description"/> </p>
+                                    <p class="card-text">Expected Price: <t t-out="property.expected_price"/></p>
                                     <a t-att-href="'/property/'+ str(property.id)" class="btn btn-primary">View Details</a>
                                 </div>
                             </div>

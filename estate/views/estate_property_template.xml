@@ -4,7 +4,7 @@
             <div class="container py-5">
                 <div class="row justify-content-center mb-4">
                     <div class="col-md-10 text-center">
-                        <h1 class="display-4 fw-bold text-primary" t-esc="property.name"/>
+                        <h1 class="display-4 fw-bold text-primary" t-out="property.name"/>
                     </div>
                 </div>
                 <div class="row">
@@ -14,42 +14,42 @@
                     <div class="col-md-6">
                         <div class="card shadow-lg p-4">
                             <p class="mb-2"><strong>Description:</strong></p>
-                            <p class="text-muted" t-esc="property.description"/>
+                            <p class="text-muted" t-out="property.description"/>
                             
                             <div class="row">
                                 <div class="col-6">
                                     <p><strong>Expected Price:</strong></p>
-                                    <p class="text-success fw-bold h5" t-esc="property.expected_price"/>
+                                    <p class="text-success fw-bold h5" t-out="property.expected_price"/>
                                 </div>
                                 <div class="col-6">
                                     <p><strong>Best Offer:</strong></p>
-                                    <p class="text-danger fw-bold h5" t-esc="property.best_price"/>
+                                    <p class="text-danger fw-bold h5" t-out="property.best_price"/>
                                 </div>
                             </div>
                             
                             <div class="row">
-                                <div class="col-6"><p><strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/></p></div>
-                                <div class="col-6"><p><strong>Living Area:</strong> <t t-esc="property.living_area"/> sqm</p></div>
-                                <div class="col-6"><p><strong>Facades:</strong> <t t-esc="property.facades"/></p></div>
-                                <div class="col-6"><p><strong>Garage:</strong> <span t-esc="'Yes' if property.garage else 'No'"/></p></div>
-                                <div class="col-6"><p><strong>Garden:</strong> <span t-esc="'Yes' if property.garden else 'No'"/></p></div>
+                                <div class="col-6"><p><strong>Bedrooms:</strong> <t t-out="property.bedrooms"/></p></div>
+                                <div class="col-6"><p><strong>Living Area:</strong> <t t-out="property.living_area"/> sqm</p></div>
+                                <div class="col-6"><p><strong>Facades:</strong> <t t-out="property.facades"/></p></div>
+                                <div class="col-6"><p><strong>Garage:</strong> <span t-out="'Yes' if property.garage else 'No'"/></p></div>
+                                <div class="col-6"><p><strong>Garden:</strong> <span t-out="'Yes' if property.garden else 'No'"/></p></div>
                             </div>
                             
                             <t t-if="property.garden">
                                 <div class="row">
-                                    <div class="col-6"><p><strong>Garden Area:</strong> <t t-esc="property.garden_area"/> sqm</p></div>
-                                    <div class="col-6"><p><strong>Garden Orientation:</strong> <t t-esc="dict(property._fields['garden_orientation'].selection).get(property.garden_orientation)"/></p></div>
+                                    <div class="col-6"><p><strong>Garden Area:</strong> <t t-out="property.garden_area"/> sqm</p></div>
+                                    <div class="col-6"><p><strong>Garden Orientation:</strong> <t t-out="dict(property._fields['garden_orientation'].selection).get(property.garden_orientation)"/></p></div>
                                 </div>
                             </t>
                             
-                            <p><strong>Available From:</strong> <t t-esc="property.date_availability"/></p>
-                            <p><strong>Property Type:</strong> <t t-esc="property.property_type_id.name"/></p>
-                            <p><strong>Salesperson:</strong> <t t-esc="property.salesperson_id.name"/></p>
+                            <p><strong>Available From:</strong> <t t-out="property.date_availability"/></p>
+                            <p><strong>Property Type:</strong> <t t-out="property.property_type_id.name"/></p>
+                            <p><strong>Salesperson:</strong> <t t-out="property.salesperson_id.name"/></p>
                             
                             <p><strong>Tags:</strong>
                                 <t t-if="property.tag_ids">
                                     <t t-foreach="property.tag_ids" t-as="tag">
-                                        <span t-esc="tag.name"/>
+                                        <span t-out="tag.name"/>
                                     </t>
                                 </t>
                             </p>

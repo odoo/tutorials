@@ -35,7 +35,7 @@
                 <header>
                     <button name="action_sold_property" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
                     <button name="action_cancelled_property" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"/>
-                    <field name="state" widget="statusbar" options="{'clickable':'1'}"/>
+                    <field name="state" widget="statusbar" options="{'clickable':'0'}"/>
                 </header>
                 <sheet>
                     <h1 class="fw-bolder">
@@ -84,6 +84,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

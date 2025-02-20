@@ -7,10 +7,11 @@ from odoo.tools.float_utils import float_is_zero, float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is the model for estate property"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = "id desc"
 
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="PostCode")
     date_availability = fields.Date(string="Available From", copy=False, default=lambda self:fields.Date.today() + relativedelta(months=3))
@@ -44,7 +45,7 @@ class EstateProperty(models.Model):
         default="new",
         copy=False
     )
-    property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type", can_create=False, can_write=False)
+    property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type", context={"no_create":True})
     buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(comodel_name="res.users", string="Salesman", default=lambda self:self.env.user)
     tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Property Tag")
@@ -89,16 +90,20 @@ class EstateProperty(models.Model):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
-        else:
-            self.garden_area = None
-            self.garden_orientation = None
+        # else:
+        #     self.garden_area = None
+        #     self.garden_orientation = None
 
     def action_sold_property(self):
         for record in self:
-            if record.state != "cancelled":
-                record.state = "sold"
-            else:
+            if record.state == "sold":
+                raise UserError("You cannot sell an already sold property")
+            if record.state == "cancelled":
                 raise UserError("Cancelled Property can't be sold")
+            accepted_offer = record.offer_ids.filtered(lambda offer: offer.status == "accepted")
+            if not accepted_offer:
+                raise UserError("You cannot sell a property without an accepted offer")
+            record.write({'state': 'sold'})
             
     def action_cancelled_property(self):
         for record in self:

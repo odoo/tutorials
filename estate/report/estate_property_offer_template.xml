@@ -8,17 +8,17 @@
                         <th>Partner</th>
                         <th>Validity (days)</th>
                         <th>Deadline</th>
-                                            <th>State</th>
+                        <th>State</th>
                     </tr>
                 </thead>
                 <tbody>
                     <t t-foreach="property.offer_ids" t-as="offer">
                         <tr>
-                            <td><t t-esc="offer.price"/></td>
-                            <td><t t-esc="offer.partner_id.name"/></td>
-                            <td><t t-esc="offer.validity"/></td>
-                            <td><t t-esc="offer.date_deadline"/></td>
-                            <td><t t-esc="dict(offer._fields['status'].selection).get(offer.status)"/></td>
+                            <td><t t-out="offer.price"/></td>
+                            <td><t t-out="offer.partner_id.name"/></td>
+                            <td><t t-out="offer.validity"/></td>
+                            <td><t t-out="offer.date_deadline"/></td>
+                            <td><t t-out="dict(offer._fields['status'].selection).get(offer.status)"/></td>
                         </tr>
                     </t>
                 </tbody>
