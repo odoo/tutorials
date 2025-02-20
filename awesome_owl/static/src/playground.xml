@@ -5,11 +5,18 @@
             <div class="d-inline">
             hello world
             </div>
-            <Card title="'Hello'" content="this.html_markup"/>
-            <Card title="'Hello'" content="this.html"/>
+            <Card title="'Card 1'">
+                <Counter onChange.bind="this.onChange"/>
+            </Card>
+            <Card title="'Card 2'">
+                <t t-out="this.html_markup"/>
+            </Card>
+            <Card title="'Card 3'">
+                <t t-out="this.html"/>
+            </Card>
             <Counter onChange.bind="this.onChange"/>
-            <Counter onChange.bind="this.onChange"/>
-            <div>The Sum is: <t t-out="this.sum.total"/></div>
+            <div>The Sum is: <t t-out="this.sum.total"/>
+            </div>
         </div>
         <div>
             <TodoList/>

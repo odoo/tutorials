@@ -1,21 +1,20 @@
 /** @odoo-module **/
 
-import { Component,xml } from "@odoo/owl";
+import { Component } from "@odoo/owl";
 
-export class TodoItem extends Component{
+export class TodoItem extends Component {
     static props = {
-            id:Number,
-            description:String,
-            isCompleted:Boolean
-    }
-
-   
-
-    static template = xml`
-        <div class="card d-inline-block p-2">
-            <p><t t-out="props.id"/>.<t t-out="props.description"/></p>
-        </div>
-    `
-
-    
+        id: Number,
+        description: String,
+        isCompleted: Boolean,
+        toggleState: {
+            type: Function,
+            optional: true
+        },
+        removeTodo: {
+            type: Function,
+            optional: true
+        }
+    };
+    static template = "awesome_owl.todo_item";
 }

@@ -66,8 +66,8 @@ class EstatePropertyOffer(models.Model):
 
             property.state = "offer_received"
 
-            property.message_post({'body': _(
-                "offer created with Price %s by %s", record['price'], record['partner_id'])})
+            # property.message_post({'body': _(
+            #     "offer created with Price %s by %s", record['price'], record['partner_id'])})
 
         return super().create(vals)
 

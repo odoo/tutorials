@@ -1,18 +1,32 @@
 /** @odoo-module **/
 
-import { Component, useState, xml } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { TodoItem } from "./todo_item";
+import { useAutoFocus } from "../utils";
 
 export class TodoList extends Component {
-    todos = useState([{ id: 3, description: "buy milk", isCompleted: false }])
+    static template = "awesome_owl.todo_list";
+    static components = { TodoItem };
+    
+    todos = useState([]);
+    inputRef = useAutoFocus()
 
-    static template = xml`
-        <div class="m-2">
-            <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem id="todo.id" description="todo.description" isCompleted="todo.isCompleted"/>
-            </t>
-        </div>
-    `
+    addTodo(e) {
+        let todoTitle = e.target.value;
 
-    static components = { TodoItem }
+        if (e.keyCode === 13 && todoTitle) {
+            this.todos.push({ id: this.todos.length ? this.todos[this.todos.length - 1].id + 1 : 0, description: todoTitle, isCompleted: false });
+            e.target.value = "";
+        }
+    }
+
+    toggleState(id) {
+        let todo = this.todos.find((todo) => todo.id === id)
+        if (todo) todo.isCompleted = !todo.isCompleted
+    }
+
+    removeTodo(id) {
+        const index = this.todos.findIndex((todo) => todo.id === id)
+        this.todos.splice(index, 1)
+    }
 }
