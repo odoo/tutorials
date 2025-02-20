@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import date, timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -110,3 +110,19 @@ class EstatePropertyOffer(models.Model):
                     raise ValidationError("Cannot create offer less than current offer")
                 property.write({'state': 'offer_received'})
         return super().create(vals)
+
+    @api.model
+    def _cron_auto_confirm_best_offer(self):
+        today = date.today()
+        
+        # Find properties that have offers and have exceeded their deadline
+        expired_properties = self.env['estate.property'].search([
+            ('date_deadline', '<=', today),
+            ('state', '=', 'offer_received')
+        ])
+
+        for property in expired_properties:
+            best_offer = property.offer_ids.filtered(lambda o: o.status != 'refused').sorted('price', reverse=True)[:1]
+
+            if best_offer:
+                best_offer.action_confirm()

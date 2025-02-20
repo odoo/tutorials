@@ -9,8 +9,6 @@
         <field name="bedrooms">3</field>
         <field name="living_area">1500</field>
         <field name="facades">4</field>
-        <field name="garage">1</field>
-        <field name="garden">1</field>
         <field name="garden_area">500</field>
         <field name="garden_orientation">south</field>
     </record>
@@ -24,9 +22,6 @@
         <field name="bedrooms">4</field>
         <field name="living_area">1200</field>
         <field name="facades">3</field>
-        <field name="garage">0</field>
-        <field name="garden">0</field>
-        <field name="garden_area">0</field>
         <field name="garden_orientation">north</field>
     </record>
 </odoo>

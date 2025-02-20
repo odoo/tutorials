@@ -4,7 +4,7 @@
     </record>
 
     <record id="property_type_commercial" model="estate.property.type">
-        <field name="name">commercial</field>
+        <field name="name">Commercial</field>
     </record>
 
     <record id="property_type_industrial" model="estate.property.type">

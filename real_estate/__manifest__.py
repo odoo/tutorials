@@ -17,6 +17,7 @@
         'views/res_user_views.xml',
         'views/estate_menus.xml',
         'data/property_types.xml',
+        'data/cron.xml',
     ],
     'demo': [
         'demo/estate_property_data.xml'

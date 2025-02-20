@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -119,12 +120,18 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.company, 
         index=True
     )
-    
+    date_deadline = fields.Date(
+        string="Date Deadline", 
+        default=lambda self: fields.Date.context_today(self) + timedelta(days=10),
+        help="deadline for the property"
+    )
+
     @api.depends("property_type_id")
     def _compute_is_commercial(self):
+        commercial_type = self.env.ref("real_estate.property_type_Commercial", raise_if_not_found=False)
         for property in self:
-            property.is_commercial = property.property_type_id.name == 'commercial'
-
+            property.is_commercial = property.property_type_id == commercial_type
+    
     # Compute the total area 
     @api.depends("living_area","garden_area")
     def _compute_total_area(self):
@@ -148,16 +155,14 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise UserError("Cancelled Properties cannot be sold")
-            record.state = 'sold'
+        if self.state == 'cancelled':
+            raise UserError("Cancelled Properties cannot be sold")
+        self.state = 'sold'
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError("Sold Properties cannot be Cancelled")
-            record.state = 'cancelled'
+        if self.state == 'sold':
+            raise UserError("Sold Properties cannot be Cancelled")
+        self.state = 'cancelled'
     
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):

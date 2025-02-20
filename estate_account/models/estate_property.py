@@ -15,9 +15,10 @@ class EstateProperty(models.Model):
 
         journal = self.env['account.journal'].sudo().search([
             ('type', '=', 'sale'),
-            ('company_id', '=', self.company_id.id)
+            *self.env['account.journal']._check_company_domain(self.company_id.id),
         ], limit=1)
 
+        self.env['account.journal']._check_company_domain(self.company_id)
         if not journal:
             raise ValueError("There is no sales journal")
         self.env['account.move'].sudo().create({
