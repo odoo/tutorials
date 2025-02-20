@@ -7,13 +7,24 @@ class Property(models.Model):
     _name = "estate.property"
     _description = "Real estate property"
     _order = "id desc"
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK (expected_price > 0)",
+            "The expected price should be positive.",
+        ),
+        (
+            "check_selling_price",
+            "CHECK (selling_price > 0 OR NOT (state = 'sold'))",
+            "The selling price should be positive if property is sold.",
+        ),
+    ]
 
     rounding = 0.01
 
     name = fields.Char("Property Name", required=True)
     description = fields.Text()
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
@@ -27,7 +38,6 @@ class Property(models.Model):
         required=True,
         copy=False,
     )
-
     postcode = fields.Char(required=True)
     date_availability = fields.Date(
         "Availability date",
@@ -52,9 +62,7 @@ class Property(models.Model):
         ],
     )
     property_type_id = fields.Many2one("estate.property.type", string="Type")
-
     total_area = fields.Float("Total area (sqm)", compute="_compute_total_area")
-
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(
         "res.users",
@@ -63,19 +71,6 @@ class Property(models.Model):
     )
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_offer = fields.Float("Best Offer", compute="_compute_best_offer")
-
-    _sql_constraints = [
-        (
-            "check_expected_price",
-            "CHECK (expected_price > 0)",
-            "The expected price should be positive.",
-        ),
-        (
-            "check_selling_price",
-            "CHECK (selling_price > 0 OR NOT (state = 'sold'))",
-            "The selling price should be positive if property is sold.",
-        ),
-    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -113,18 +108,6 @@ class Property(models.Model):
             if self.garden_orientation == False:
                 self.garden_orientation = "north"
 
-    def action_set_sold(self):
-        if self.filtered(lambda record: record.state == "cancelled"):
-            raise UserError("Cancelled properties can't be sold.")
-        self.state = "sold"
-        return True
-
-    def action_cancel(self):
-        if self.filtered(lambda record: record.state == "sold"):
-            raise UserError("Sold properties can't be cancelled.")
-        self.state = "cancelled"
-        return True
-
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
@@ -146,3 +129,15 @@ class Property(models.Model):
     def _unlink_except_active_properties(self):
         if self.filtered(lambda record: record.state not in ["cancelled", "new"]):
             raise UserError("You can only delete new or cancelled properties.")
+
+    def action_set_sold(self):
+        if self.filtered(lambda record: record.state == "cancelled"):
+            raise UserError("Cancelled properties can't be sold.")
+        self.state = "sold"
+        return True
+
+    def action_cancel(self):
+        if self.filtered(lambda record: record.state == "sold"):
+            raise UserError("Sold properties can't be cancelled.")
+        self.state = "cancelled"
+        return True

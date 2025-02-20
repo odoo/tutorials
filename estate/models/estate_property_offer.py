@@ -7,6 +7,13 @@ class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real estate property offer"
     _order = "price desc"
+    _sql_constraints = [
+        (
+            "check_offer_price",
+            "CHECK (price > 0)",
+            "The offer price should be positive.",
+        )
+    ]
 
     price = fields.Float()
     state = fields.Selection(
@@ -15,6 +22,10 @@ class PropertyOffer(models.Model):
             ("refused", "Refused"),
         ],
         copy=False,
+    )
+    validity = fields.Integer("Validity (days)", default=7)
+    date_deadline = fields.Date(
+        "Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
     )
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one(
@@ -25,19 +36,6 @@ class PropertyOffer(models.Model):
     property_type_id = fields.Many2one(
         "estate.property.type", related="property_id.property_type_id", store=True
     )
-
-    validity = fields.Integer("Validity (days)", default=7)
-    date_deadline = fields.Date(
-        "Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
-    )
-
-    _sql_constraints = [
-        (
-            "check_offer_price",
-            "CHECK (price > 0)",
-            "The offer price should be positive.",
-        )
-    ]
 
     @api.depends("validity")
     def _compute_deadline(self):
@@ -50,6 +48,25 @@ class PropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.today()).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if (
+                float_compare(
+                    vals["price"],
+                    self.env["estate.property"].browse(vals["property_id"]).best_offer,
+                    precision_rounding=self.env["estate.property"]
+                    .browse(vals["property_id"])
+                    .rounding,
+                )
+                < 0
+            ):
+                raise UserError("Cannot add an offer lower than the current best one.")
+            self.env["estate.property"].browse(
+                vals["property_id"]
+            ).state = "offer_received"
+        return super().create(vals_list)
 
     def action_refuse(self):
         for record in self:
@@ -73,22 +90,3 @@ class PropertyOffer(models.Model):
                 continue
             offer.state = "refused"
         return True
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            if (
-                float_compare(
-                    vals["price"],
-                    self.env["estate.property"].browse(vals["property_id"]).best_offer,
-                    precision_rounding=self.env["estate.property"]
-                    .browse(vals["property_id"])
-                    .rounding,
-                )
-                < 0
-            ):
-                raise UserError("Cannot add an offer lower than the current best one.")
-            self.env["estate.property"].browse(
-                vals["property_id"]
-            ).state = "offer_received"
-        return super().create(vals_list)

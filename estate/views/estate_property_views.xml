@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'"
@@ -28,7 +28,7 @@
     </record>
 
     <record id="estate_property_view_kanban" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
+        <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="False">
@@ -58,9 +58,8 @@
         </field>
     </record>
 
-
-    <record id="estate_property_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
@@ -125,8 +124,8 @@
         </field>
     </record>
 
-    <record id="estate_property_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Property">
@@ -153,132 +152,10 @@
         </field>
     </record>
 
-    <record id="estate_property_type_tree" model="ir.ui.view">
-        <field name="name">estate.property.type.list</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <list string="View">
-                <field name="sequence" widget="handle" />
-                <field name="name" />
-                <field name="offer_count" />
-            </list>
-        </field>
-    </record>
-
-    <record id="estate_property_type_form" model="ir.ui.view">
-        <field name="name">estate.property.type.form</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <form string="Property Type">
-                <sheet>
-                    <header>
-                        <button class="oe_stat_button" name="%(estate_property_offer_action)d"
-                            type="action" icon="fa-money" invisible="offer_count == 0">
-                            <field string=" offers" name="offer_count" widget="statinfo" />
-                        </button>
-                    </header>
-                    <div class="oe_title">
-                        <h1 class="o_row">
-                            <field name="name" placeholder="Property Type, e.g. House" />
-                        </h1>
-                    </div>
-                    <notebook>
-                        <page string="Properties">
-                            <field name="property_ids">
-                                <list>
-                                    <field name="name" />
-                                    <field name="expected_price" />
-                                    <field name="state" />
-                                </list>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="estate_property_tag_form" model="ir.ui.view">
-        <field name="name">estate.property.tag.form</field>
-        <field name="model">estate.property.tag</field>
-        <field name="arch" type="xml">
-            <form string="Property Type">
-                <sheet>
-                    <div class="oe_title">
-                        <h1 class="o_row">
-                            <field name="name"
-                                placeholder="Property Tag, e.g. Swimming Pool" />
-                        </h1>
-                    </div>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="estate_property_offer_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.offer.list</field>
-        <field name="model">estate.property.offer</field>
-        <field name="arch" type="xml">
-            <list string="View" editable="top"
-                decoration-danger="state == 'refused'" decoration-success="state == 'accepted'">
-                <field name="state" column_invisible="True" />
-                <field name="price" />
-                <field name="partner_id" />
-                <field name="validity" />
-                <field name="date_deadline" />
-                <button name="action_accept" type="object" string="Accept" icon="fa-check"
-                    invisible="state == 'accepted'" />
-                <button name="action_refuse" type="object" string="Refuse" icon="fa-times"
-                    invisible="state == 'refused'" />
-            </list>
-        </field>
-    </record>
-
-    <record id="estate_property_offer_form" model="ir.ui.view">
-        <field name="name">estate.property.offer.form</field>
-        <field name="model">estate.property.offer</field>
-        <field name="arch" type="xml">
-            <form string="Property Offer">
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="partner_id" />
-                            <field name="price" />
-                            <field name="state" />
-                        </group>
-                        <group>
-                            <field name="date_deadline" />
-                            <field name="validity" />
-                        </group>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="estate_properties_action" model="ir.actions.act_window">
+    <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
-    </record>
-
-    <record id="estate_property_types_action" model="ir.actions.act_window">
-        <field name="name">Property Types</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
-    <record id="estate_property_tag_action" model="ir.actions.act_window">
-        <field name="name">Property Tags</field>
-        <field name="res_model">estate.property.tag</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
-    <record id="estate_property_offer_action" model="ir.actions.act_window">
-        <field name="name">Property Offers</field>
-        <field name="res_model">estate.property.offer</field>
-        <field name="view_mode">list,form</field>
-        <field name="domain">[('property_type_id','=', active_id)]</field>
     </record>
 </odoo>

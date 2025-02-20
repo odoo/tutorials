@@ -3,7 +3,6 @@ from odoo.exceptions import UserError
 
 
 class Property(models.Model):
-
     _inherit = "estate.property"
 
     journal_id = fields.Many2one(
@@ -13,17 +12,17 @@ class Property(models.Model):
         domain=[("type", "=", "sale")],
     )
 
+    def _get_default_journal(self):
+        return self.env["account.journal"].search(
+            [("type", "=", "sale")],
+            limit=1,
+        )
+
     def action_set_sold(self):
         if not self.journal_id:
-            self.journal_id = self.env["account.journal"].search(
-                [
-                    ("type", "=", "sale"),
-                ],
-                limit=1,
-            )
+            self.journal_id = self.__get_default_journal()
         if not self.journal_id:
             raise UserError("Please define an accounting sales journal.")
-
         move = self.env["account.move"].create(
             {
                 "partner_id": self.buyer_id.id,

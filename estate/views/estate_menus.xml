@@ -8,14 +8,14 @@
             name="Advertisements">
             <menuitem
                 id="advertisement_menu_properties_action"
-                action="estate_properties_action" />
+                action="estate_property_action" />
         </menuitem>
         <menuitem
             id="estate_menu_settings"
             name="Settings">
             <menuitem
-                id="settings_menu_property_types_action"
-                action="estate_property_types_action" />
+                id="settings_menu_property_type_action"
+                action="estate_property_type_action" />
             <menuitem
                 id="settings_menu_property_tag_action"
                 action="estate_property_tag_action" />
