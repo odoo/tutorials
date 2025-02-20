@@ -120,6 +120,12 @@ class EstatePropertyModel(models.Model):
                     "The selling price cannot be lower than 90% of the expected price."
                 )
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_status_not_new_or_cancelled(self):
+        for estate_property in self:
+            if estate_property.state not in ("new", "cancelled"):
+                raise UserError("You cannot delete a property that is not new or cancelled.")
+
     _sql_constraints = [
         (
             "check_expected_price_positive",
