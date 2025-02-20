@@ -26,6 +26,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_sell_property" type="object" string="Sold" />
+                    <button name="action_cancel_property" type="object" string="Cancel" />
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" />
@@ -41,6 +45,7 @@
                             <field name="expected_price" />
                             <field name="best_offer" />
                             <field name="selling_price" />
+                            <field name="state" />
                         </group>
                     </group>
                     <notebook>
