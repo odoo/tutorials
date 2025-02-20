@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template>
+    <t t-name="awesome_owl.Card">
+    <div class="card d-inline-block m-2" style="width: 18rem">
+        <div class="card-body">
+        <h5 class="card-title">
+            <t t-esc="props.title"/>
+        </h5>
+        <p>
+            <t t-out="value1"/>
+            <t t-out="value2"/>
+        </p>
+        </div>
+    </div>
+    </t>
+</template>
