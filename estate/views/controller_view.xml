@@ -1,11 +1,12 @@
 <odoo>
+    <data noupdate="1">
     <template id="property_page" name="Estate Properties">
         <t t-call="website.layout">
             <div class="container mt-4">
 
                 <form action="/properties" method="get" class="d-flex justify-content-between align-items-center mb-4">
     
-                    <!-- Left Side: Date Picker + Button -->
+        
                     <div class="d-flex align-items-center gap-2">
                         <input type="date" name="listed_after" class="form-control form-control-sm" 
                             style="width: 130px; font-size: 14px; padding: 4px;" 
@@ -13,7 +14,7 @@
                         <button type="submit" class="btn btn-secondary btn-sm px-2">Listed</button>
                     </div>
 
-                    <!-- Right Side: Search Bar + Icon Button -->
+                    
                     <div class="input-group" style="width: 250px;">
                         <input type="text" name="property_name" class="form-control form-control-sm" 
                             placeholder="Search..." t-att-value="request.params.get('property_name', '')"/>
@@ -59,4 +60,5 @@
             </div>
         </t>
     </template>
+    </data>
 </odoo>

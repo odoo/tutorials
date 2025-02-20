@@ -146,24 +146,42 @@ class EstateProperty(models.Model):
         if self.status != "canceled" and self.status == "offer_accepted":  # Prevent selling if already sold
             self.status = "sold"
             template=self.env.ref('estate.property_sold_email_template')
-            
+            salesperson_mail=self.property_seller_id.email
             print("PROPERTY HAS BEEN SOLD!!!!!")
             if template:
+                email_vals={
+                    'email_to' : salesperson_mail
+                }
                 print("TEMPLATE HAS BEEN SELECTED!!!!")
-                template.send_mail(self.id, force_send=True,email_layout_xmlid='mail.mail_notification_light')
+                template.send_mail(self.id,email_values=email_vals,force_send=True,email_layout_xmlid='mail.mail_notification_light')
             
             for property in self:
                 if property.property_buyer_id:
-                    print("Anshik i rproooooooooooooooooooo")
-                    message_body = f"Hello {property.property_buyer_id.name}, Congratulations! Your property '{property.name}' has been successfully sold. Thank you!"
+                    print(property.property_buyer_id)
+                if property.property_buyer_id.phone:
+                    print(property.property_buyer_id.phone)
+                if property.property_buyer_id and property.property_buyer_id.phone:
+                    whatsapp_template = self.env.ref('estate.whatsapp_template_property_sold')
+                    
+                    if whatsapp_template:
+                        message_body = whatsapp_template.body.replace("{{1}}", property.property_buyer_id.name) \
+                                                            .replace("{{2}}", property.name) \
+                                                            .replace("{{3}}", property.postcode or "N/A") \
+                                                            .replace("{{4}}", str(property.selling_price))
+                        print(message_body)
+
+                    else:
+                        # Fallback message in case the template is not found
+                        print("TEMPLATE NOT FOUND")
+                        message_body = " "
+
                     whatsapp_message = self.env['whatsapp.message'].create({
                         'body': message_body,
-                        'mobile_number': property.property_buyer_id.mobile,  # assuming mobile is in international format like +123456789
+                        'mobile_number': property.property_buyer_id.phone,
                         'message_type': 'outbound',
                     })
                     whatsapp_message._send()
             
-
         else:
             raise UserError("This property is already sold.")
 

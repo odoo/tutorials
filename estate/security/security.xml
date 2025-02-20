@@ -1,4 +1,5 @@
 <odoo>
+<!-- CORRECTED-->
         <!-- Agent Group -->
         <record id="estate_group_user" model="res.groups">
             <field name="name">Agent</field>

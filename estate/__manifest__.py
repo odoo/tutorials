@@ -4,14 +4,14 @@
     'version':'1.2',
     'summary':'This is real-estate module developed by deep i. joshi',
     'application': True,
-    'depends': ['base','mail','whatsapp'],
+    'depends': ['base','mail','whatsapp','website'],
     'category':'Real Estate/Brokerage',
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv', 
         'data/property_type_data.xml',
         'data/email_template.xml',
-        'demo/property_demo_date.xml',
+        'data/whatsapp_template.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
@@ -23,5 +23,8 @@
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
         'views/estate_property_menu.xml',
+    ],
+    'demo': [
+        'demo/property_demo_date.xml'
     ]
 }
