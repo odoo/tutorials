@@ -1,10 +1,17 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'model for the properties in our app'
+
+    # selling prices for the properties should be at least 90% of the expected price
+    PROPERTY_SELLING_PRICE_THRESHOLD = 0.9
+
+    # epsilon to define the rounding precision when comparing floats
+    PROPERTY_PRICE_PRECISION_EPSILON = 1e-6
 
     name = fields.Char(required = True)
     description = fields.Text()
@@ -60,6 +67,9 @@ class EstateProperty(models.Model):
 
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
+        if not self.offer_ids:
+            self.best_offer = 0
+            return
         for record in self:
             record.best_offer = max(record.offer_ids.mapped('price'))
 
@@ -85,3 +95,19 @@ class EstateProperty(models.Model):
                 raise UserError('You cannot sell a cancelled property')
             record.state = 'sold'
         return True
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding = self.PROPERTY_PRICE_PRECISION_EPSILON):
+                continue
+            if float_compare(
+                record.selling_price, record.expected_price * self.PROPERTY_SELLING_PRICE_THRESHOLD,
+                precision_rounding = self.PROPERTY_PRICE_PRECISION_EPSILON
+                ) < 0:
+                raise UserError('The selling price must be at least 90% of the the expected price')
+
+    _sql_constraints = [
+        ('positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be positive'),
+        ('positive_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive'),
+    ]
