@@ -1,12 +1,13 @@
 /** @odoo-module **/
 
 import { Component, useState } from "@odoo/owl";
-import { Counter } from "./counter";
-import { Card } from "./card";
+import { Counter } from "./counter/counter";
+import { Card } from "./card/card";
+import { Todo } from "./todo/todo";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
-    static components = { Counter, Card }
+    static components = { Counter, Card ,Todo}
 
     setup() {
         this.state = useState({ value: 0, sum: 0 })

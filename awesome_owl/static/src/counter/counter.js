@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { Component, useState } from "@odoo/owl";
-import { Card } from "./card";
+import { Card } from "../card/card";
 
 export class Counter extends Component {
     static template = "awesome_owl.counter";

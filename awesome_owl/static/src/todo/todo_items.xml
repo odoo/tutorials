@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_items">
+        <t t-if="props.todo_lists.length>0">
+            <t t-foreach="props.todo_lists" t-as='i' t-key='i.id'>
+                <div t-att-class="{'text-muted': i.isCompleted,'text-decoration-line-through': i.isCompleted}" style="display:flex; flex-direction:row; align-items:center; gap:10px;">
+                    <input type="checkbox" t-on-click="()=>props.toggle_task(i.id)"/>
+                    <t t-esc='i.id'/>
+                    <t t-esc="i.description"/>
+                    <span class="fa fa-remove" style="color: red; margin-left; cursor:pointer;" t-on-click="()=>props.delete_task(i.id)"/>
+                </div>
+            </t>
+        </t>
+        <t t-else="">
+            <strong>No list found</strong>
+        </t>
+    </t>
+</templates>
