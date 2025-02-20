@@ -10,8 +10,12 @@
             <p class="fw-bold">Sum: <t t-out="state.sum" /></p>
         </div>
         <div class="d-flex">
-            <Card title="1" content="'markup text'" />
-            <Card title="2" content="text" />
+            <Card title="'title'">
+                <p>Content from slot</p>
+            </Card>
+            <Card title="'title'">
+                <Counter />
+            </Card>
         </div>
         <TodoList />
     </t>

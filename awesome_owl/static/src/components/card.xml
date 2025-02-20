@@ -3,7 +3,12 @@
     <t t-name="awesome_owl.card">
         <div class="border p-3">
             <h2>card <t t-out="props.title" /></h2>
-            <p>content: <t t-out="props.content" /></p>
+            <button t-on-click="toggleContent">Toggle</button>
+            <t t-if="state.isOpen">
+                <t t-slot="default">
+                    <p>No content provided</p>
+                </t>
+            </t>
         </div>
     </t>
 </templates>
