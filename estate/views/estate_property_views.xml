@@ -28,8 +28,9 @@
         <field name="arch" type="xml">
             <form string="Properties Form">
                 <header>
-                    <button name="action_sold_property" type="object" string="Sold" invisible="state=='sold' or state=='cancelled'"/> <!--type="object", the Odoo framework will execute a Python method with name="action_sold_property" on the given model.-->
+                    <button name="action_sold_property" type="object" string="Sold" invisible="state=='sold' or state=='cancelled'" class="btn-primary"/> <!--type="object", the Odoo framework will execute a Python method with name="action_sold_property" on the given model.-->
                     <button name="action_cancel_property" type="object" string="Cancel" invisible="state=='sold' or state=='cancelled'"/>
+                    <button name="%(estate_property_offer_wizard_action)d" type="action" string="create offer"/>
                     <field name="state" widget="statusbar" statusbar_visible="new, offer received, offer accepted, sold"/>
                 </header>
                  <sheet>

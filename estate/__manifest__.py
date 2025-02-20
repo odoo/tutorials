@@ -16,6 +16,7 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'wizards/offer_wizard_view.xml',
         'views/estate_property_views.xml', # Maintain the sequance for loading of the data files
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
@@ -25,7 +26,7 @@
         'data/estate.property.type.csv',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
-        'report/estate_property_list_website_template.xml'
+        'views/estate_property_list_website_template.xml',
     ],
     'demo': [
         'demo/demo_data.xml'

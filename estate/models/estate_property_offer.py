@@ -69,7 +69,7 @@ class EstatePropertyOffer(models.Model):
             if property.offer_ids:
                 max_offer = max(property.offer_ids.mapped("price"))
             if max_offer > offer["price"]:
-                    raise UserError(f"The new offer must be higher than the maximum offer of {max_offer:.2f}")
+                    raise UserError(f"The new offer must be higher than or equal to the maximum offer of {max_offer:.2f}")
         return super().create(vals_list)
 
     def action_property_offer_accept(self):
