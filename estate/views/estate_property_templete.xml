@@ -1,4 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu" />
+    </record>
+
     <template id="estate_property_template">
         <t t-call="website.layout">
             <div class="container mt-5">
@@ -23,7 +30,7 @@
                                             <t t-esc="property.name" />
                                         </h5>
                                         <p class="text-muted flex-grow-1">
-                                            <t t-esc="property.description[:100] + ('...' if len(property.description) > 100 else '')" />
+                                            <t t-esc="property.description" />
                                         </p>
                                         <div class="d-flex justify-content-between align-items-center mt-auto">
                                             <a t-att-href="'/property/' + str(property.id)"
@@ -46,7 +53,6 @@
             </div>
         </t>
     </template>
-
 
     <template id="property_details_template">
         <t t-call="website.layout">
@@ -123,10 +129,4 @@
             </div>
         </t>
     </template>
-
-    <record id="menu_properties" model="website.menu">
-        <field name="name">Properties</field>
-        <field name="url">/properties</field>
-        <field name="parent_id" ref="website.main_menu" />
-    </record>
 </odoo>

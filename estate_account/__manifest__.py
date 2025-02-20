@@ -15,5 +15,9 @@
     'application': True,
     'installable': True,
 
+    'data':[
+        'report/estate_property_account_template.xml'
+    ],
+
     'license': 'AGPL-3'
 }

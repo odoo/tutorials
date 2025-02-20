@@ -11,7 +11,7 @@
     'category': 'Real Estate/Brokerage',
     'version': '0.1',
 
-    'depends': ['base', 'website'],
+    'depends': ['base', 'website', 'mail'],
     'application': True,
     'installable': True,
 
@@ -26,14 +26,16 @@
         'views/estate_property_type_views.xml',
         'views/estate_res_users_views.xml',
         'security/estate_security.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
         'views/estate_menus.xml'
     ],
 
     'demo' : [
-        'demo/demo_property.xml',
-        'demo/demo_property_offer.xml',
+        'demo/demo_property_type.xml',
         'demo/demo_property_tag.xml',
-        'demo/demo_property_type.xml'
+        'demo/demo_property.xml',
+        'demo/demo_property_offer.xml'
     ],
 
     'license': 'AGPL-3'

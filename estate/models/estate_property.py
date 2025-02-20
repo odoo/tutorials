@@ -1,4 +1,3 @@
-import re
 from dateutil.relativedelta import relativedelta
 from datetime import date
 
@@ -11,8 +10,9 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = 'Listing for the properties'
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='PostCode', index=True)
     date_availability=fields.Date(
@@ -20,7 +20,7 @@ class EstateProperty(models.Model):
         default=lambda self: date.today()+relativedelta(months=3),
         copy=False
     )
-    expected_price = fields.Float(string='Expected Price', required=True)
+    expected_price = fields.Float(string='Expected Price', required=True, tracking=True)
     selling_price = fields.Float(string='Selling Price', readonly=True)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
     living_area = fields.Integer(string='Living Area(sqm)')
@@ -58,9 +58,9 @@ class EstateProperty(models.Model):
     user_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     property_offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
-    best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store="True")
+    best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store="True", tracking=True)
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
-    _inherit = ["mail.thread"]
+    total_area = fields.Integer(string="Total Area(sqm)", compute="_compute_total_area", store="True")
     property_image = fields.Binary("Image", attachment=True)
 
     @api.depends('property_offer_ids')
@@ -70,8 +70,6 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.property_offer_ids.mapped('price'))
             else:
                 record.best_price = 0.0
-
-    total_area = fields.Integer(string="Total Area(sqm)", compute="_compute_total_area", store="True")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -125,7 +123,7 @@ class EstateProperty(models.Model):
 
             min_selling_price = record.expected_price * 0.9
             if float_compare(record.selling_price, min_selling_price, precision_digits=6) < 0:
-                raise ValidationError("Selling price cannot be less than 90% of the expected price!")
+                raise ValidationError(_("Selling price cannot be less than 90% of the expected price!"))
 
     @api.ondelete(at_uninstall=False)
     def _unlink_stete_not_new_or_cancel(self):

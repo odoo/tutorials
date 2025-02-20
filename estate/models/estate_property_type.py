@@ -1,4 +1,3 @@
-from typing import Sequence
 from odoo import api, fields, models
 
 

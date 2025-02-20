@@ -5,7 +5,7 @@ from odoo.http import request
 
 class EstatePropertyController(http.Controller):
     @http.route(['/properties', '/properties/page/<int:page>'], auth='public', website=True, type='http')
-    def list_properties(self, page=1, listed_date=None, **kw):
+    def list_properties(self, page=1, listed_date=None, **kwargs):
         domain = [('state', 'in', ['new', 'offer_accepted', 'offer_received'])]
         url_args = dict()
 
@@ -32,7 +32,7 @@ class EstatePropertyController(http.Controller):
         })
 
     @http.route('/property/<int:property_id>', auth='public', website=True, type='http')
-    def property_details(self, property_id, **kw):
+    def property_details(self, property_id, **kwargs):
         property_obj = request.env['estate.property'].sudo().browse(property_id)
         if not property_obj.exists():
             return request.not_found()

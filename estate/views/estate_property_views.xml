@@ -27,7 +27,6 @@
         </field>
     </record>
 
-
     <record id="estate_property_form_view" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -41,7 +40,7 @@
                 <sheet>
                     <h1>
                         <field name="name" placeholder="Enter Property Name"/>
-                      <field name="property_image" class='oe_avatar' widget='image'/>
+                        <field name="property_image" class='oe_avatar' widget='image'/>
                     </h1>
                     <field name="property_tag_ids" widget="many2many_tags" placeholder="Tags" options="{'color_field': 'color'}"/>
                     <group>
@@ -82,6 +81,7 @@
                         </notebook>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
