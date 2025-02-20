@@ -107,42 +107,44 @@ class EstateProperty(models.Model):
         accepted_offer = self.offer_ids.filtered(lambda o: o.status == "accepted")
         if not accepted_offer:
             raise UserError("Cannot sell a property without an accepted offer.")
-        self.state = "sold"
-        self.message_post(
-            body=f"The property '{self.name}' has been sold for {self.selling_price}!",
-            subject="Property Sold",
-            message_type="notification",
-        )
-        template = self.env.ref("estate.mail_template_property_sold")
-        template.send_mail(
-            self.id, force_send=True, email_layout_xmlid="mail.mail_notification_light"
-        )
-        message_body = f"Hello {self.partner_id.name}, Congratulations! Your property '{self.name}' has been successfully sold. Thank you!"
-        whatsapp_message = self.env[
-            "whatsapp.message"
-        ].create(
-            {
-                "body": message_body,
-                "mobile_number": self.partner_id.mobile,  # assuming mobile is in international format like +123456789
-                "message_type": "outbound",
-            }
-        )
-        whatsapp_message._send()
+        else:
+            self.state = "sold"
+            self.message_post(
+                body=f"The property '{self.name}' has been sold for {self.selling_price}!",
+                subject="Property Sold",
+                message_type="notification",
+            )
+            template = self.env.ref("estate.mail_template_property_sold")
+            template.send_mail(
+                self.id, force_send=True
+            )
+            message_body = f"Hello {self.partner_id.name}, Congratulations! Your property '{self.name}' has been successfully sold. Thank you!"
+            whatsapp_message = self.env[
+                "whatsapp.message"
+            ].create(
+                {
+                    "body": message_body,
+                    "mobile_number": self.partner_id.mobile,  # assuming mobile is in international format like +123456789
+                    "message_type": "outbound",
+                }
+            )
+            whatsapp_message._send()
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-        if (
-            not float_is_zero(self.selling_price, precision_rounding=0.01)
-            and float_compare(
-                self.selling_price,
-                self.expected_price * 0.9,
-                precision_rounding=0.01,
-            )
-            < 0
-        ):
-            raise ValidationError(
-                "The selling price cannot be lower than 90% of the expected price. Please adjust the selling price or expected price."
-            )
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if (
+                    float_compare(
+                        record.selling_price,
+                        record.expected_price * 0.9,
+                        precision_digits=2,
+                    )
+                    < 0
+                ):
+                    raise ValidationError(
+                        "The selling price cannot be lower than 90% of the expected price."
+                    )
 
     @api.depends("offer_ids.status")
     def _compute_state(self):
@@ -162,12 +164,4 @@ class EstateProperty(models.Model):
                     "You can only delete properties in the 'New' or 'Cancelled' state."
                 )
 
-    def action_add_offer(self):
-        return {
-            "type": "ir.actions.act_window",
-            "name": "Add Offer",
-            "res_model": "estate.property.offer.wizard",
-            "view_mode": "form",
-            "target": "new",
-        }
 

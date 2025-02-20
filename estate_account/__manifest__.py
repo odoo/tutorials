@@ -8,6 +8,5 @@
         "report/estate_account_template.xml",
     ],
     'installable': True,
-    'application': True,
 }
 

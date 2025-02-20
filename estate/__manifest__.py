@@ -2,7 +2,7 @@
     "name": "Estate",
     "version": "1.0",
     "category": "Real Estate/Brokerage",
-    'depends': ['base','mail','whatsapp'],
+    'depends': ['base','mail','whatsapp','website'],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
@@ -20,7 +20,8 @@
         "report/res_users_templates.xml",
         "views/property_template.xml",
         "views/property_detail_template.xml",
-        "views/estate_property_mail.xml"
+        "data/estate_property_mail.xml",
+        "views/website_menu.xml"
     ],
     "demo":[
         "demo/estate_property_demo_data.xml",

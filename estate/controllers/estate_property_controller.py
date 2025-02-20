@@ -14,7 +14,6 @@ class EstatePropertyController(http.Controller):
     def list_properties(self, listed_after=None, search=None, page=1, **kwargs):
         # print("POST data received:", request.params)
         properties_per_page = 6
-        offset = (page - 1) * properties_per_page
         domain = [("state", "in", ("new", "offer_received"))]
 
         if search:
@@ -26,10 +25,9 @@ class EstatePropertyController(http.Controller):
                 domain.append(("create_date", ">", listed_after_date))
             except ValueError:
                 pass
+
         total_properties = request.env["estate.property"].sudo().search_count(domain)
-        properties = request.env["estate.property"].sudo().search(
-            domain, limit=properties_per_page, offset=offset
-        )
+
         pager = request.website.pager(
             url="/properties",
             total=total_properties,
@@ -37,6 +35,10 @@ class EstatePropertyController(http.Controller):
             step=properties_per_page,
             url_args={"listed_after": listed_after, "search": search},
         )
+        properties = request.env["estate.property"].sudo().search(
+            domain, limit=properties_per_page, offset=pager["offset"]
+        )
+        
         return request.render(
             "estate.property_list_template",
             {
