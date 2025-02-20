@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, xml } from "@odoo/owl";
+import { Component, xml } from '@odoo/owl';
 
 export class TodoItem extends Component {
     static props = {

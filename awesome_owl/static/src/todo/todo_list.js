@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { Component, useState, xml, onMounted, useRef } from "@odoo/owl";
-import { TodoItem } from "./todo_item";
-import { useAutofocus } from "../utils";
+import { Component, useState, xml, onMounted, useRef } from '@odoo/owl';
+import { TodoItem } from './todo_item';
+import { useAutofocus } from '../utils';
 
 export class TodoList extends Component {
     static template = xml`
@@ -23,12 +23,7 @@ export class TodoList extends Component {
     `;
     static components = { TodoItem };
     todoKeys = ['', 'ID', 'Description'];
-    todos = useState([
-        // {id: 0, description: "eat breakfast", isCompleted: true},
-        // {id: 1, description: "take a walk", isCompleted: false},
-        // {id: 2, description: "buy milk", isCompleted: false},
-        // {id: 3, description: "go to work", isCompleted: true},
-    ]);
+    todos = useState([]);
 
     setup() {
         useAutofocus('todo_input');
@@ -37,7 +32,7 @@ export class TodoList extends Component {
     addTodo(event) {
         if (event.keyCode === 13 && event.target.value) {
             this.todos.push({id: this.todos.length, description: event.target.value, isCompleted: false});
-            event.target.value = "";
+            event.target.value = '';
         }
     }
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{controlPanel: {}}" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-create-button">
+                <button class="btn btn-primary" t-on-click="showCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn" t-on-click="openDialog"><i class="fa fa-cog" aria-hidden="true"></i></button>
+            </t>
+            <t t-set-slot="default">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1" t-if="!data.invisible.includes(item.id)">
+                        <t t-set="itemProp" t-value="item.props ? item.props(data) : {data}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </t>
+        </Layout>
+    </t>
+    <t t-name="awesome_dashboard.Dialog">
+        <Dialog>
+            <t t-set-slot="default">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <input type="checkbox" t-att-checked="!invisible.includes(item.id)" t-on-click="toggle" t-att-data-id="item.id"/> <label><t t-out="item.props(data).title" /></label><br />
+                </t>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">Done</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

@@ -72,8 +72,7 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_refuse(self):
-        for property_offer in self:
-            property_offer.status = 'refused'
+        self.status = 'refused'
         return True
 
     @api.model_create_multi
