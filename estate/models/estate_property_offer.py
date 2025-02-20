@@ -35,7 +35,6 @@ class PropertyOffer(models.Model):
 
 
     def action_accept(self):
-
         if self.status != 'pending':
             raise UserError('Offer already accepted or refused')
 
@@ -65,3 +64,7 @@ class PropertyOffer(models.Model):
         self.property_id.state = 'new'
         self.property_id.buyer_id = None
         return True
+
+    _sql_constraints = [ 
+        ('check_price_positive', 'CHECK(price > 0)', 'The price must be positive'),
+    ]

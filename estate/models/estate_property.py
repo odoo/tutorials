@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from datetime import datetime, timedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round 
 
 
 class Property(models.Model):
@@ -86,3 +87,22 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+    
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive or zero'),
+        ('check_bedrooms', 'CHECK(bedrooms >= 0)', 'The number of bedrooms must be strictly positive'),
+        ('check_living_area', 'CHECK(living_area > 0)', 'The living area must be strictly positive'),
+        ('check_garden_area', 'CHECK(garden_area >= 0)', 'The garden area must be positive or zero'),
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.state not in ['offer_accepted', 'sold'] and float_is_zero(record.selling_price, precision_digits=5):
+                continue
+            else:
+                expected_price_percentage = 0.9 * record.expected_price
+                if float_compare(record.selling_price, expected_price_percentage, precision_digits=5) == -1:
+                    raise UserError("The selling price cannot be lower than 90% of the expected price")    

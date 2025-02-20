@@ -22,3 +22,7 @@ class PropertyTag(models.Model):
         for offer in self:
             start_date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.validity = (offer.date_deadline - start_date).days
+
+    _sql_constraints = [
+        ('name_unique', 'unique(name)', 'Tag name already exists!'),
+    ]
