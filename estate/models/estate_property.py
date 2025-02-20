@@ -90,9 +90,13 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
-            if not float_is_zero(self.selling_price):
+            if not float_is_zero(self.selling_price, precision_digits=2):
                 if (
-                    float_compare(self.selling_price, (self.expected_price * 0.9), 2, 2)
+                    float_compare(
+                        self.selling_price,
+                        (self.expected_price * 0.9),
+                        precision_digits=2,
+                    )
                     == -1
                 ):
                     raise ValidationError(
