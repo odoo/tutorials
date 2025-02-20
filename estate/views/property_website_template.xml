@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="property_list_template" name="Property listing">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="container mt-4">
+                    <h2 class="text-center">Available properties</h2>
+                </div>
+
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <img t-if="property.image" 
+                                     t-att-src="'/web/image/estate.property/%s/image' % property.id" 
+                                     class="card-img-top img-fluid" 
+                                     style="height: 200px; object-fit: cover;"/>
+                                <div class="card-body">
+                                    <h5 class="card-title"><t t-out="property.name"/></h5>
+                                    <p class="card-text">Price: $ <t t-out="property.expected_price"/></p>
+                                    <a t-att-href="'/property/%s' % property.id" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="d-flex justify-content-center mt-4">
+                    <t t-call="website.pager">
+                        <t t-set="pager" t-value="pager"/>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

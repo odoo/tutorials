@@ -10,7 +10,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate property'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['rating.mixin', 'mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
 
     name = fields.Char(string='Name', required=True, tracking=True)
@@ -48,6 +48,7 @@ class EstateProperty(models.Model):
     best_offer = fields.Float(string='Best Offer', compute='_compute_best_price')
     reference = fields.Char(string="Reference", copy=False, readonly=True)
     company_id = fields.Many2one('res.company', string='Company Name', default=lambda self: self.env.company, required=True)
+    image = fields.Image(string="Image")
 
     _sql_constraints = [('expected_price_check', 'CHECK(expected_price >= 0)', 'Expected price must be strickly possitive.'),
                         ('selling_price_check', 'CHECK(selling_price >= 0)', 'Selling price must be possitive.')]
@@ -83,6 +84,10 @@ class EstateProperty(models.Model):
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold.")
             record.state = 'sold'
+            # Send email notification when state changes to "sold"
+            template_id = record.env.ref('estate.estate_rating_template')
+            if template_id:
+                template_id.send_mail(record.id, force_send=True)
 
     def cancel_action(self):
         for record in self:
@@ -109,21 +114,11 @@ class EstateProperty(models.Model):
             return self.env.ref('estate.mt_state_change')
         return super()._track_subtype(vals)
 
-    def _is_estate_manager(self, partner):
-        for user in partner.user_ids:
-            if user.sudo().has_group('estate_group_manager'):
-                return True
-        return False
+    def rating_get_partner_id(self):
+        """Override to link the rating to the customer (rater)."""
+        return self.buyer_id.id
 
-    def _notify_get_groups(self, message, groups):
-        groups = super()._notify_get_groups(message, groups)
-        self.ensure_one()
-        if self.state == 'offer_accepted':
-            app_action = self._notify_get_action_link('method', method='cancel_action')
-            estate_actions = [{'url': app_action, 'title': _('Cancel')}]
-        new_group = (
-            'estate_group_manage',
-            self._is_estate_manager,
-            {'actions': estate_actions} if estate_actions else {},
-        )
-        return [new_group] + groups
+    def rating_get_rated_partner_id(self):
+        """Override to link the rating to the agent (rated)."""
+        return self.salesman_id.id
+        

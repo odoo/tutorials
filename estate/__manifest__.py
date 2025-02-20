@@ -1,7 +1,7 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'depends': ['base', 'mail'],
+    'depends': ['base', 'rating', 'mail', 'website'],
     'author': 'matd',
     'category': 'Real Estate/Brokerage',
     'description': """
@@ -10,16 +10,19 @@ It provides real estate module
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/estate_property_sequence.xml',
+        'data/estate.property.type.csv',
+        'data/website_menus.xml',
+        'data/estate_rating_data_template.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/res_users_views.xml',
+        'views/property_website_template.xml',
+        'views/property_website_detail_template.xml',
+        'views/rating_rating_views.xml',
         'views/estate_property_menus.xml',
-        'data/estate_property_sequence.xml',
-        'data/estate.property.type.csv',
-        'data/company_data.xml',
-        'data/currency_data.xml',
     ],
     'demo': [
         'demo/estate_property_demo.xml',

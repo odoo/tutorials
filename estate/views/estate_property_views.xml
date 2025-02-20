@@ -27,7 +27,7 @@
         <field name="arch" type="xml">
             <form string="Form property">
                 <header>
-                    <button name="sold_action" string="SOLD" invisible="state in ['sold', 'cancelled']" type="object"/>
+                    <button name="sold_action" string="SOLD" invisible="state in ['sold', 'cancelled']" type="object" />
                     <button name="cancel_action" string="CANCEL" invisible="state in ['sold', 'cancelled']" type="object"/>
                     <field name="state" widget="statusbar"/>
                 </header>
@@ -36,7 +36,9 @@
                         <h1>
                             <field name="name"/>
                         </h1>
+                        <field name="image" nolabel="1" widget="image" class="oe_avatar"/>
                     </group>
+
                     <group>
                         <group>
                             <field name="reference"/>
