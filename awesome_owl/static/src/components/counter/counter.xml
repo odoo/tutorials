@@ -1,7 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.counter">
-        <p>Counter: <t t-esc="state.value"/></p>
-        <button class="btn btn-primary" t-on-click="increment">Increment</button>
+        <div class="text-center mb-4 p-4 rounded-3 shadow-lg bg-gradient" style="background: linear-gradient(45deg, #2e93f7, #1d4ed8); transition: all 0.3s ease-in-out;">
+            <p class="fs-3 fw-bold">
+                Counter: <t t-esc="state.value"/>
+            </p>
+            <button class="btn btn-light btn-lg p-3 mt-3 rounded-circle hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl hover:bg-light" t-on-click="increment">
+                <i class="bi bi-plus-circle-fill"></i> Increment
+            </button>
+        </div>
     </t>
 </templates>

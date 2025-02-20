@@ -1,9 +1,28 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="container my-5 text-center">
+            <p class="h2 text-primary mb-5">Hello World</p>
+
+            <!-- Counter Section -->
+            <div class="d-flex justify-content-center gap-4 mb-5">
+                <Counter onchange="sum" />
+                <Counter onchange="sum" />
+            </div>
+
+            <!-- Sum Section -->
+            <div class="mb-5">
+                <p class="h3 text-warning">Sum: <t t-esc="state.value" />
+                </p>
+            </div>
+
+            <!-- Cards Section -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <t t-foreach="cards" t-as="card" t-key="card.title">
+                    <div class="col">
+                        <Card t-props="card" />
+                    </div>
+                </t>
+            </div>
         </div>
-        <Counter />
-        <Card title="'my title'" content="'some content'"/>
     </t>
 </templates>

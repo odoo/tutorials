@@ -1,10 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.card">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
+        <div class="card d-inline-block m-2 p-3 shadow-lg rounded-3" style="width: 18rem; background: #fff; transition: all 0.3s ease-in-out; border: 1px solid #ddd; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
             <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title" /></h5>
-                <p class="card-text"><t t-esc="props.content" /></p>
+                <h5 class="card-title text-primary fw-bold mb-3" style="font-size: 1.25rem;">
+                    <t t-out="props.title" />
+                </h5>
+                <p class="card-text" style="font-size: 1rem; color: #555;">
+                    <t t-out="props.content" />
+                </p>
             </div>
         </div>
     </t>
