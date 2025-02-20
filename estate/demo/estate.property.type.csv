@@ -1,0 +1,4 @@
+id,name,sequence
+type_residential,Residential,0
+type_commercial,Commercial,1
+type_land,Land,2

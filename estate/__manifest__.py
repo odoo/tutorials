@@ -18,6 +18,11 @@
         "views/estate_menus.xml",
         "views/res_users_view.xml",
     ],
+    "demo": [
+        "demo/estate.property.type.csv",
+        "demo/estate_property.xml",
+        "demo/estate_property_offer.xml",
+    ],
     "installable": True,
     "application": True,
     "auto_install": False,
