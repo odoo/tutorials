@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <div class="flex m-5 justify-between gap-5">
-            <Counter onChange.bind="incrementSum"/>
-            <Counter onChange.bind="incrementSum"/>
+            <div>
+                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
+            </div>
+            <div>
+                <p>Sum is: <t t-esc="sum.value"/></p>
+            </div>
+        <hr/>
+        <div class="todos">
+            <h4>Todos</h4>
+            <TodoList/>
         </div>
         <hr/>
         <div class="flex m-5 justify-between gap-5">
             <Card title="'card1'" content="safehtml"/>
             <Card title="'card2'" content="escapedText"/>
         </div>
-        <p>Sum is: <t t-esc="sum.value"/></p>
     </t>
 </templates>

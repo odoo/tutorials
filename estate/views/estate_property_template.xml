@@ -37,14 +37,14 @@
                             <div class="card border border-success h-100">
                                 <img t-att-src="image_data_uri(property.image_1920)" class="card-img-top img-fluid h-50" alt="Property Image"/>
                                 <div class="card-body">
-                                    <h5 class="card-title font-weight-bold"><t t-esc="property.name"/></h5>
+                                    <h5 class="card-title fw-bold"><t t-esc="property.name"/></h5>
                                     <p class="card-text">Postcode: <t t-esc="property.postcode"/></p>
                                     <p class="card-text">Bedrooms: <t t-esc="property.bedrooms"/> Bedrooms</p>
                                     <p class="card-text text-success">Living Area(sqm):<t t-esc="property.living_area"/></p>
                                     <p class="card-text">Expected Price:<t t-esc="property.expected_price"/></p>
                                     <p class="card-text">Selling Price:<t t-esc="property.selling_price"/></p>
                                     <t t-if="property.tag_ids">
-                                        <span class="badge badge-primary" t-foreach="property.tag_ids" t-as="tag">
+                                        <span class="badge bg-primary" t-foreach="property.tag_ids" t-as="tag">
                                             <t t-esc="tag.name"/>
                                         </span>
                                     </t>
@@ -74,14 +74,14 @@
                         <img t-att-src="image_data_uri(property.image_1920)" class="img-fluid h-100" alt="Property Image"/>
                     </div>
                     <div class="col-md-6">
-                        <h3 class="font-weight-bold"><t t-esc="property.name"/></h3>
+                        <h3 class="fw-bold"><t t-esc="property.name"/></h3>
                         <p class="text-muted"><small>Postcode: <t t-esc="property.postcode"/></small></p>
                         <p><strong>Description:</strong> <t t-esc="property.description or 'No description available'"/></p>
                         <ul class="list-unstyled">
                             <li><strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/> Bedrooms</li>
                             <li><strong>Living Area:</strong> <t t-esc="property.living_area"/> sqm</li>
-                            <li><strong>Expected Price:</strong> $<t t-esc="property.expected_price"/></li>
-                            <li><strong>Selling Price:</strong> $<t t-esc="property.selling_price or 'Not sold yet'"/></li>
+                            <li><strong>Expected Price:</strong> <t t-esc="property.expected_price"/></li>
+                            <li><strong>Selling Price:</strong> <t t-esc="property.selling_price or 'Not sold yet'"/></li>
                             <li><strong>Garden:</strong> <t t-esc="property.garden and 'Yes' or 'No'"/></li>
                             <li><strong>Garage:</strong> <t t-esc="property.garage and 'Yes' or 'No'"/></li>
                             <li><strong>State:</strong> <t t-esc="property.state"/></li>
@@ -91,7 +91,7 @@
                                 <t t-if="property.tag_ids">
                                     <ul class="list-inline">
                                         <t t-foreach="property.tag_ids" t-as="tag">
-                                            <li class="list-inline-item"><span class="badge badge-secondary"><t t-esc="tag.name"/></span></li>
+                                            <li class="list-inline-item"><span class="badge fw-bold"><t t-esc="tag.name"/></span></li>
                                         </t>
                                     </ul>
                                 </t>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="row mt-4">
                     <div class="col">
-                        <h4 class="font-weight-bold">Best Offer:</h4>
+                        <h4 class="fw-bold">Best Offer:</h4>
                         <p class="text-success"><t t-esc="property.best_offer or 'No offers yet'"/></p>
                     </div>
                 </div>
