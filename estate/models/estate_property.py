@@ -22,8 +22,8 @@ class Property(models.Model):
     active = fields.Boolean('Active', default=True)
     description = fields.Text('Description', default="Yo yo yo, no dup for date and status !")
     postcode = fields.Char('Postcode', translate=True)
-    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
-    property_tag_ids = fields.Many2many('estate.property.tag', string='Property Tags')
+    property_type_id = fields.Many2one('estate.property.type', string='Type')
+    property_tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     property_offer_ids = fields.One2many('estate.property.offer', 'property_id')    
     
     # House Data
@@ -98,12 +98,31 @@ class Property(models.Model):
     
     # Called by offer.action_accept
     def action_accept_offer(self, offer_to_accept_id):
-        for offer in self.property_offer_ids:
-            if offer.status == 'accepted' and (self.state == 'sold'):
-                raise UserError("You cannot change accepted offer on a sold property")
-            offer.action_refuse()
-        offer_to_accept_id.accept()
-        self.state = 'offer_accepted'
+        if self.state == 'cancelled':
+            raise UserError("You cannot accept an offer on a cancelled property")
+        elif self.state == 'cancelled':
+            raise UserError("You cannot accept an offer on a sold property")
+        else:
+            for offer in self.property_offer_ids:
+                offer.refuse()
+            offer_to_accept_id.accept()
+            self.state = 'offer_accepted'
+    
+    # Called by offer.action_accept
+    def action_refuse_offer(self, offer_to_accept_id):
+        if self.state == 'cancelled':
+            raise UserError("You cannot refuse an offer on a cancelled property")
+        elif self.state == 'cancelled':
+            raise UserError("You cannot refuse an offer on a sold property")
+        else:
+            offer_to_accept_id.refuse()
+            for offer in self.property_offer_ids:
+                if offer.status == 'accepted':
+                    self.state = 'offer_accepted'
+                    return
+                elif offer.status != 'refused':
+                    self.state = 'offer_received'
+            self.state = 'new'
     
     @api.constrains('selling_price', 'expected_price')
     def check_selling_price(self):

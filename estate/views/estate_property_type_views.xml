@@ -11,7 +11,7 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Channel" editable="top">
+            <list string="Channel">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
@@ -23,19 +23,24 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Types">
-                <h1 class="mb32"><field name="name"/></h1>
-                <notebook>
-                    <page string="Properties">
-                        <field name="property_ids">
-                            <list>
-                                <field name="name"/>
-                                <field name="expected_price"/>
-                                <field name="state"/>
-                            </list>
-                        </field>
-                    </page>
-                </notebook>
+                <sheet>
+                    <h1 class="mb32"><field name="name"/></h1>
+                    <button class="oe_stat_button" type="action" name="%(estate_property_offer_action)d" string="Offers"/>
+                    
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
         </field>
     </record>
+
 </odoo>

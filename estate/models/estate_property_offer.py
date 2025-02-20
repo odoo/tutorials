@@ -22,8 +22,11 @@ class PropertyOffer(models.Model):
         copy=False,
         selection = [('accepted', "Accepted"), ('refused', 'Refused')]
     )
+    
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True)
+    property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id', store=True, string='Property Type')
+    property_state = fields.Selection(related="property_id.state", string="Property State")
     
     create_date = fields.Date('Creation Date', default=fields.Date.today())
     validity = fields.Integer('Validity (days)', default=7)
@@ -50,4 +53,9 @@ class PropertyOffer(models.Model):
         self.property_id.buyer = self.partner_id
     
     def action_refuse(self):
+        if self.status == 'refused':
+            raise UserError('Offer already refused')
+        else: self.property_id.action_refuse_offer(self)
+        
+    def refuse(self):
         self.status = 'refused'
