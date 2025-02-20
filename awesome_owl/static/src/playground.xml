@@ -12,6 +12,7 @@
                 <Card title="'Infocity'" content="str1"/>
                 <Card title="'Sabarmati'" content="str2"/>
             </div>
+            <div class=""><TodoList/></div>
         </div>
     </t>
 

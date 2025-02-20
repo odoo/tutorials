@@ -82,8 +82,8 @@
                             <field name="total_area"/>
                         </group>
                         </page>
-                           <page string="Offers">
-                            <field name="offer_ids" string="Offers" readonly="status in ('offer_accepted','cancelled','sold')"/>
+                        <page string="Offers">
+                            <field name="offer_ids" string="Offers" readonly= "status in ['offer accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page string="Other Info">
                             <group>
