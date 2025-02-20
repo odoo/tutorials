@@ -9,6 +9,9 @@
     'description': """
 This module contains all the feature needed for invoicing estate properties.
     """,
+    'data': [
+        'report/estate_account_templates.xml',
+    ],
     'installable': True,
     'license': 'LGPL-3',
 }

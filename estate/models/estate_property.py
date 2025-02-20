@@ -97,6 +97,13 @@ class EstateProperty(models.Model):
 
     def set_property_sold(self):
         for record in self:
+            if record.offer_ids:
+                rc = record.offer_ids.mapped('status')
+                if not any(status=='accepted' for status in rc) or not rc:
+                    raise ValidationError(_("One of the offer(s) must be accepted before selling property."))
+            else:
+                raise UserError(_("Can't sell a property without offer."))
+
             if record.state == 'cancelled':
                 raise UserError(_("cancelled properties can't be sold"))
             else:

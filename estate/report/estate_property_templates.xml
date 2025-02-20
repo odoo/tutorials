@@ -57,7 +57,7 @@
                         <h2>
                             <span t-field="property.name"/>
                         </h2>
-                        <div>
+                        <div class="property_sale_info">
                             <strong>Salesman: </strong>
                             <span t-field="property.salesman_id"/><br/>
                             <strong>Expected Price: </strong>

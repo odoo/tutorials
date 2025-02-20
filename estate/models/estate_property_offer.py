@@ -50,13 +50,16 @@ class EstatePropertyOffer(models.Model):
         for record in vals:
             property = self.env['estate.property'].browse(record['property_id'])
 
+            if property.state=="sold":
+                    raise UserError(_("Can't create an offer for sold property"))
+
             if property.state != 'offer received':
                 property.state = 'offer received'
 
             existing_offers = property.offer_ids.mapped('price')
             max_offer =  max(existing_offers) if existing_offers else 0
 
-            if property.offer_ids and record['price'] <= max_offer:
+            if property.offer_ids and record['price'] < max_offer:
                 raise UserError(_("The offer must be higher than %f",property.best_offer))
             return super().create(vals)
 
