@@ -1,5 +1,5 @@
 from odoo import fields, models, api, exceptions
-
+from odoo.tools import float_is_zero, float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -89,4 +89,19 @@ class EstateProperty(models.Model):
         else:
             self.state = 'cancelled'
     
-    
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)',
+         'The expected price of a property must be positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price of a property must be positive.')
+    ]
+
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=1):
+                return
+            min_price = record.expected_price * 0.9
+            if float_compare(record.selling_price, min_price, precision_digits=1) == -1:
+                raise exceptions.ValidationError("The selling price is too low.")
