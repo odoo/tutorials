@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-   <t t-name="awesome_owl.Counter">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
+    <t t-name="awesome_owl.Counter">
+        <div class="card d-inline-block m-2 shadow-sm border-1" style="width: 18rem;">
             <div class="card-body text-center">
                 <p class="card-text">Counter: <t t-esc="state.value"/></p>
-                <button class="btn btn-dark mt-2" style="background-color:rgb(30, 248, 255);" t-on-click="increment">Increment</button>
+                <button class="btn btn-dark mt-2"
+                        style="background-color: rgb(30, 248, 255);"
+                        t-on-click="increment">
+                    Increment
+                </button>
             </div>
         </div>
-   </t>
+    </t>
 </templates>
