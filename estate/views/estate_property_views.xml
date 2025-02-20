@@ -38,6 +38,7 @@
                         <h1>
                             <field name="name"/>
                         </h1>
+                        <field name="image" nolabel="1" widget="image" class="oe_avatar"/>
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </group>
                     <group>

@@ -46,6 +46,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_offer = fields.Integer(string="Best Offer", compute="_compute_best_offer")
     sequence = fields.Char(string="Sequence", readonly=True, copy=False)
+    image = fields.Image(string="Property Image") 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     seller_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
