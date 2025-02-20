@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
 
     price = fields.Float('Price')
     partner_id = fields.Many2one('res.partner', string='Buyer', copy=False, required=True)
-    property_id = fields.Many2one('estate.property', string='Property', copy=False, required=True)
+    property_id = fields.Many2one('estate.property', string='Property', copy=False, required=True, ondelete='cascade')
     property_type_id = fields.Many2one(related='property_id.property_type_id', string='Property Type', required=True)
     validity = fields.Integer('Validity', default=7)
     date_deadline = fields.Date('Deadline Date', compute='_compute_deadline', inverse='_inverse_deadline')
@@ -55,3 +55,14 @@ class EstatePropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            property_id.state = 'offer_received'
+
+            if property_id.best_offer > vals['price']:
+                raise UserError("Can't create an offer whose price is lower than another offer")
+
+        return super().create(vals_list)
