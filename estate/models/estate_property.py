@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 
 class Property(models.Model):
-    _name = 'estate_property' 
+    _name = 'estate.property' 
     _description = 'estate property model'
 
     postcode = fields.Char(required=True)
@@ -17,12 +17,12 @@ class Property(models.Model):
                                     copy=False, 
                                     default=lambda self: (datetime.now() + timedelta(days=3*30)))
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(required=True, default=0, readonly=True, copy=False)
+    selling_price = fields.Float(required=True, default=0.0, copy=False)
     bedrooms = fields.Integer(required=True, default=2) 
     living_area = fields.Integer(required=True)
     facades = fields.Integer(required=True)
-    garage = fields.Boolean(required=False, default=False)
-    garden = fields.Boolean(required=False, default=False)
+    garage = fields.Boolean(required=False)
+    garden = fields.Boolean(required=False)
     garden_area = fields.Integer(required=True)
     garden_orientation = fields.Selection(
         selection=[
@@ -47,3 +47,4 @@ class Property(models.Model):
         string="state",
     )
     active = fields.Boolean(default=True)
+    description = fields.Text(default="when duplicated status and date are not copied")
