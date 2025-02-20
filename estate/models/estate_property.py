@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from datetime import datetime, timedelta
+from odoo.exceptions import UserError
 
 
 class Property(models.Model):
@@ -32,12 +33,12 @@ class Property(models.Model):
     last_seen = fields.Datetime('Last seen', default=fields.Datetime.now)
     state = fields.Selection(
         selection=[
-                ('New', 'new'),
-                ('Offer Received', 'offer_received'),
-                ('Offer Accepted', 'offer_accepted'),
-                ('Sold', 'sold'),
-                ('Cancelled', 'cancelled')],
-        default="New",
+                ('new', 'New'),
+                ('offer_received', 'Offer Received'),
+                ('offer_accepted', 'Offer Accepted'),
+                ('sold', 'Sold'),
+                ('cancelled', 'Cancelled')],
+        default="new",
         string="state",
     )
     active = fields.Boolean(default=True)
@@ -57,9 +58,15 @@ class Property(models.Model):
     best_price = fields.Float(compute='_compute_best_price', string="Best Offer")
 
 
-    def action_do_something(self):
-        print('**** ACTION DO SOMETHING HAS BEEN CALLED ****')
-        return True
+    def action_sold(self):
+        if self.state == 'cancelled':
+            raise UserError('You cannot sell a cancelled property')
+        self.state = 'sold'
+    
+    def action_cancel(self):
+        if self.state == 'sold':
+            raise UserError('You cannot cancel a sold property')
+        self.state = 'cancelled'
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
