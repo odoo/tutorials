@@ -10,8 +10,7 @@
             <div class="col-md-5 mb-3">
                <div class="card shadow-sm border-secondary hover-card">
                   <div class="card-body text-center">
-                     <h5 class="card-title">Property 1</h5>
-                     <p class="card-text text-success fw-bold">Rs 4000</p>
+                     <Card title="'Property 1'" content="str1"/>
                   </div>
                </div>
             </div>
@@ -19,8 +18,7 @@
             <div class="col-md-5 mb-3">
                <div class="card shadow-sm border-secondary hover-card">
                   <div class="card-body text-center">
-                     <h5 class="card-title">Property 2</h5>
-                     <p class="card-text text-success fw-bold">Rs 8000</p>
+                     <Card title="'Property 2'" content="str2"/>
                   </div>
                </div>
             </div>
