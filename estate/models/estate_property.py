@@ -102,4 +102,4 @@ class EstateProperty(models.Model):
     def _unlink_except_active(self):
         for record in self:
             if record.state not in ('new', 'cancelled'):
-                raise UserError(_('Only new and cancelled properties can be deleted'))
+                raise UserError(_('Only new and cancelled properties can be delete'))

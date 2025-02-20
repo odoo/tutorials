@@ -14,6 +14,6 @@
     <record id="estate_property_tag_menu_action" model="ir.actions.act_window">
         <field name="name">Property Tag</field>
         <field name="res_model">estate.property.tag</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list</field>
     </record>
 </odoo>
