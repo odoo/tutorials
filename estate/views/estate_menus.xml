@@ -14,6 +14,11 @@
                 action="estate_property_type_action"
                 name="Property Types"
             />
+            <menuitem
+                id="estate_model_tag_menu_action"
+                action="estate_property_tag_action"
+                name="Property Tags"
+            />
         </menuitem>
     </menuitem>
 </odoo>
