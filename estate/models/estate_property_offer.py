@@ -44,7 +44,9 @@ class PropertyOffer(models.Model):
     
     def action_accept(self):
         if self.status == 'accepted':
-            raise UserError('Offer already accepted')
+            raise UserError("Offer already accepted")
+        elif self.status == 'refused':
+            raise UserError("Can't accept a refused offer")
         else: self.property_id.action_accept_offer(self)
         
     def accept(self):
@@ -55,7 +57,17 @@ class PropertyOffer(models.Model):
     def action_refuse(self):
         if self.status == 'refused':
             raise UserError('Offer already refused')
+        if self.status == 'accepted':
+            raise UserError("Can't refuse an accepted offer")
         else: self.property_id.action_refuse_offer(self)
         
     def refuse(self):
         self.status = 'refused'
+    
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'property_id' in vals: 
+                self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
+        return super(PropertyOffer, self).create(vals_list)

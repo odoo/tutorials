@@ -103,8 +103,6 @@ class Property(models.Model):
         elif self.state == 'cancelled':
             raise UserError("You cannot accept an offer on a sold property")
         else:
-            for offer in self.property_offer_ids:
-                offer.refuse()
             offer_to_accept_id.accept()
             self.state = 'offer_accepted'
     
@@ -116,16 +114,23 @@ class Property(models.Model):
             raise UserError("You cannot refuse an offer on a sold property")
         else:
             offer_to_accept_id.refuse()
-            for offer in self.property_offer_ids:
-                if offer.status == 'accepted':
-                    self.state = 'offer_accepted'
-                    return
-                elif offer.status != 'refused':
-                    self.state = 'offer_received'
             self.state = 'new'
+            for offer in self.property_offer_ids:
+                if offer.status == 'accepted': # Some accepted offer exists
+                    self.state = 'offer_received'
+                    return
+                elif offer.status != 'refused': # Some neutral offer exists
+                    self.state = 'offer_received'
     
     @api.constrains('selling_price', 'expected_price')
     def check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=3) and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=3) < 0:
                 raise UserError('Selling price is too low')
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_restrictions(self):
+        for record in self:
+            if record.state not in ['New', 'Cancelled']:
+                raise UserError("You only delete new and cancelled properties")
+    
