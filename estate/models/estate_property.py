@@ -1,9 +1,3 @@
-"""
-    estate_property.py
-
-    Author: Hicham (hime)
-"""
-
 from odoo import models, fields
 from datetime import datetime, timedelta
 
@@ -43,8 +37,17 @@ class Property(models.Model):
                 ('Offer Accepted', 'offer_accepted'),
                 ('Sold', 'sold'),
                 ('Cancelled', 'cancelled')],
-        default="new",
+        default="New",
         string="state",
     )
     active = fields.Boolean(default=True)
     description = fields.Text(default="when duplicated status and date are not copied")
+
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    tag_ids = fields.Many2many('estate.property.tag', string="Property Tags")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False, default=None)
+    salesperson_id = fields.Many2one('res.users', 
+                                     string="Seller",
+                                     default=lambda self: self.env.user)
