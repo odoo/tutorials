@@ -36,6 +36,7 @@ class EstatePropertyController(http.Controller):
             'property': property,
             'offers': offers,
             'max_offer': max_offer,
+            'currency_symbol': request.env.company.currency_id.symbol,
         })
 
     @http.route('/offer/create', auth='user', methods=['POST'], website=True)

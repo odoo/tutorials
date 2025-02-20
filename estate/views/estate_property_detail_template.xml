@@ -5,9 +5,12 @@
                 <div class="row mt-4">
                     <div class="col-md-8">
                         <h2 t-out="property.name"/>
-                        <p class="text-muted">Price: <t t-out="property.expected_price"/></p>
+                        <p class="text-muted">
+                            Price: <t t-out="property.expected_price"/>
+                            <span t-out="currency_symbol"/>
+                        </p>
                         <t t-if="property.property_image">
-                            <img t-att-src="image_data_uri(property.property_image)" class="img-fluid rounded mb-4" alt="Property Image"/>
+                            <img t-att-src="image_data_uri(property.property_image)" class="img-fluid rounded mb-4" alt="Property Image" width="600" height="400"/>
                         </t>
                         <p t-out="property.description"/>
                     </div>
@@ -23,16 +26,16 @@
                         </div>
                         <div class="card mt-2 border p-4">
                             <h4 class="border-bottom mb-3">Your offers</h4>
-                            <t t-if="max_offer != 0">
-                                <span>Your offer must be higher than maximum offer of:</span>
-                                <span t-out="max_offer" class="fw-bold"/>
-                            </t>
-                            <div>
-                                <t t-foreach="offers" t-as="offer">
-                                    <p t-out="offer.price"/>
-                                </t>
+                            <div t-foreach="offers" t-as="offer">
+                                <p t-out="offer.price"/>
                             </div>
-                            <form method="POST" id="o_estate_make_offer_form" t-att-data-property-id="property.id" class="d-flex gap-2 js_website_submit_form"
+                            <t t-if="max_offer != 0">
+                                <span class="mt-4">
+                                    New offer must be higher than:
+                                    <span t-out="max_offer" class="fw-bold"/>
+                                </span>
+                            </t>
+                            <form method="POST" id="o_estate_make_offer_form" t-att-data-property-id="property.id" class="d-flex gap-2"
                                 t-attf-action="/offer/create">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <input type="hidden" name="property_id" t-att-value="property.id"/>

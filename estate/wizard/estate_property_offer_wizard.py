@@ -21,4 +21,4 @@ class EstatePropertyOfferWizard(models.TransientModel):
                 'property_id': property.id,
                 'partner_id': self.partner_id.id,
             })
-        return { 'type': 'ir.actions.act_window_close' }
+        return

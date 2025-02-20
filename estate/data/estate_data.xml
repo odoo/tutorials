@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="properties_page" model="website.page">
+        <field name="url">/properties</field>
+        <field name="is_published">True</field>
+        <field name="view_id" ref="property_list_template"/>
+        <field name="track">True</field>
+        <field name="website_meta_description">This page lists all real estate properties</field>
+    </record>
+
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="page_id" ref="properties_page"/>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">70</field>
+    </record>
+</odoo>
