@@ -15,5 +15,8 @@
                 <h4 class="fw-bold mb-0">Sum is: <t t-esc="sum.value"/></h4>
             </div>
         </div>
+        <div>
+             <TodoList />
+        </div>
     </t>
 </templates>
