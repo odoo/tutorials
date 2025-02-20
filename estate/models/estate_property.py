@@ -8,15 +8,16 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
     
-    name = fields.Char("Property Name", required=True)
+    name = fields.Char("Property Name", required=True, tracking=True)
     description = fields.Text("Description")
     property_image = fields.Image()
     postcode = fields.Char("Postcode")
     date_availability = fields.Date("Available From", copy=False, default=fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
+    selling_price = fields.Float("Selling Price", readonly=True, copy=False, tracking=True)
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer("Facades")
@@ -41,11 +42,11 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled'),
         ],
-        required=True, copy=False, default='new',
+        required=True, copy=False, default='new', tracking=True,
     )
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     user_id = fields.Many2one('res.users', string="Salesman", default=lambda self: self.env.user)
-    partner_id = fields.Many2one('res.partner', string="Buyer", copy=False)
+    partner_id = fields.Many2one('res.partner', string="Buyer", copy=False, tracking=True)
     tag_ids=fields.Many2many('estate.property.tag', string="Tags")
     offer_ids=fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')

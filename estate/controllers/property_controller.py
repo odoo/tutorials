@@ -32,4 +32,3 @@ class PropertyController(http.Controller):
         return request.render('estate.estate_property_detail_page', {
             'property': property
         })
-    

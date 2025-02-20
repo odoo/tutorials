@@ -3,7 +3,7 @@
     'author': 'Odoo - Utsav',
     'license': 'LGPL-3',
     'category': 'Real Estate/Brokerage',
-    'depends':['base', 'website'],
+    'depends':['base', 'website', 'mail'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

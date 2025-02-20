@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_item">
-        <div class="border p-2 m-1" t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''">
-            <strong>ID:</strong> <t t-esc="props.todo.id"/>
-            <span><t t-esc="props.todo.description"/></span>
+        <div class="card shadow-sm p-2 m-1 rounded-3"
+             t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                    <input type="checkbox" class="form-check-input"
+                           t-att-checked="props.todo.isCompleted" t-on-change="toggle" />
+                    <span class="fw-bold"><t t-esc="props.todo.id"/>.</span>
+                    <span><t t-esc="props.todo.description"/></span>
+                </div>
+                <spna class="fa fa-remove text-danger cursor-pointer" t-on-click="remove"/>
+            </div>
         </div>
    </t>
 </templates>

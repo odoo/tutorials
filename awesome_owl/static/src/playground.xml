@@ -1,27 +1,57 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="container my-4">
+            <h2 class="text-center mb-4">Owl Playground</h2>
+
+            <div class="card shadow-sm p-3 mb-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <span class="fs-5">Counter: <t t-esc="state.value"/></span>
+                    <button class="btn btn-primary btn-sm" t-on-click="increment">Increment</button>
+                </div>
+            </div>
+
+            <!-- <Card title="'Safe String'" content="state.safeString"/>
+            <Card title="'HTML Markup'" content="state.htmlContent"/> -->
+
+            <div class="card shadow-sm p-3 mb-4">
+                <h5>Multiple Counters</h5>
+                <div class="d-flex gap-3 flex-wrap">
+                    <Counter onChange="incrementSum.bind(this, 1)"/>
+                    <Counter onChange="incrementSum.bind(this, 2)"/>
+                    <Counter onChange="incrementSum.bind(this, 3)"/>
+                </div>
+                <p class="mt-3"><strong>Total Sum:</strong> <t t-esc="sum.value"/></p>
+            </div>
+
+            <div class="card shadow-sm p-3 mb-4">
+                <h5>Todo List</h5>
+                <TodoList/>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <Card title="'Simple Text'">
+                        <p>This is some simple text inside the card.</p>
+                    </Card>
+                </div>
+
+                <div class="col-md-12">
+                    <Card title="'Counter Inside Card'">
+                        <Counter/>
+                    </Card>
+                </div>
+
+                <div class="col-md-12">
+                    <Card title="'List Example'">
+                        <ul class="list-unstyled">
+                            <li> Item 1</li>
+                            <li> Item 2</li>
+                            <li> Item 3</li>
+                        </ul>
+                    </Card>
+                </div>
+            </div>
         </div>
-
-        <p>Counter: <t t-esc="state.value"/></p>
-        <button class="btn btn-primary" t-on-click="increment">Increment</button>
-
-        <br/>
-
-        <Card title="'Safe String'" content="state.safeString"/>
-        <Card title="'HTML Markup'" content="state.htmlContent"/>
-
-        <br/>
-        
-        <Counter onChange="incrementSum.bind(this, 1)"/>
-        <Counter onChange="incrementSum.bind(this, 2)"/>
-        <p>Sum: <t t-esc="sum.value"/></p>
-
-        <br/>
-
-        <TodoList/>
     </t>
 </templates>
