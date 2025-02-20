@@ -1,8 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
-    </t>
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100 p-3'">
+            <t t-set-slot="layout-buttons">
+                <div class="d-flex gap-1 me-1">
+                    <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                    <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                </div>
+            </t>
 
+            <DashboardItem>
+                <p>Average amount of t-shirt by order this month</p>
+                <p class="fs-1 fw-bold text-success text-center"><t t-esc="orderStats.average_quantity"/></p>
+            </DashboardItem>
+            <DashboardItem>
+                <p>Average time for an order to go from 'new' to 'sent' or 'cancelled'</p>
+                <p class="fs-1 fw-bold text-success text-center"><t t-esc="orderStats.average_time"/></p>
+            </DashboardItem>
+            <DashboardItem>
+                <p>Number of new orders this month</p>
+                <p class="fs-1 fw-bold text-success text-center"><t t-esc="orderStats.nb_cancelled_orders"/></p>
+            </DashboardItem>
+            <DashboardItem>
+                <p>Number of cancelled orders this month</p>
+                <p class="fs-1 fw-bold text-success text-center"><t t-esc="orderStats.nb_new_orders"/></p>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <p>Number of orders by sizes</p>
+                <div class="d-flex gap-3 justify-content-evenly">
+                    <p class="fs-1 fw-bold text-success text-center">M: <t t-esc="orderStats.orders_by_size['m']"/></p>
+                    <p class="fs-1 fw-bold text-success text-center">S: <t t-esc="orderStats.orders_by_size['s']"/></p>
+                    <p class="fs-1 fw-bold text-success text-center">XL: <t t-esc="orderStats.orders_by_size['xl']"/></p>
+                </div>
+            </DashboardItem>
+            <DashboardItem>
+                <p>Total amount of new orders this month</p>
+                <p class="fs-1 fw-bold text-success text-center"><t t-esc="orderStats.total_amount"/></p>
+            </DashboardItem>
+        </Layout>
+    </t>
 </templates>

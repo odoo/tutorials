@@ -9,9 +9,17 @@
         </div>
 
         <div>
-            <Card title="'Card 1'" content="'Content of card 1'" />
-            <Card title="heading_primar_esc" content="'Content for card'" />
-            <Card title="heading_primar_markup" content="'Content for another card'" />
+            <Card title="headingPrimaryEsc">Content for another card</Card>
+            <Card title="headingPrimaryMarkup">Content for another card</Card>
+            <Card title="'Card with default slot'">
+                Content with a counter
+                <Counter onChange.bind="incrementSum" />
+                <Counter />
+            </Card> 
+        </div>
+
+        <div class="px-3">
+            <TodoList />
         </div>
     </t>
 </templates>
