@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 
 
@@ -63,6 +63,14 @@ class PropertyOffer(models.Model):
                 < 0
             ):
                 raise UserError("Cannot add an offer lower than the current best one.")
+            if self.env["estate.property"].browse(vals["property_id"]).state in [
+                "sold",
+                "cancelled",
+            ]:
+                raise ValidationError(
+                    "Cannot create offers for sold or cancelled properties."
+                )
+
             self.env["estate.property"].browse(
                 vals["property_id"]
             ).state = "offer_received"
