@@ -26,11 +26,12 @@
         <field name="name">Estate Property</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="My new Estate Property">
+            <form string="New estate property">
                     <sheet>
-                        <h1>My new estate property</h1>
+                        <h1>New estate property</h1>
                         <group>
                             <group>
+                                <field name="name" string="Title" />
                                 <field name="postcode" string="Postcode" />
                                 <field name="date_availability" string="Available from" />
                             </group>
