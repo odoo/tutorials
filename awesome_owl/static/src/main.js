@@ -1,3 +1,5 @@
+/** @odoo-module **/
+
 import { whenReady } from "@odoo/owl";
 import { mountComponent } from "@web/env";
 import { Playground } from "./playground";

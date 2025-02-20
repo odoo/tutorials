@@ -1,4 +1,5 @@
 /** @odoo-module */
+
 import { Component, useState } from "@odoo/owl";
 import { TodoItem } from "./todo_item";
 import { useAutofocus } from "../utils";
