@@ -1,9 +1,9 @@
 from odoo import models, fields, Command
 
 class EstateProperty(models.Model):
-    
+
     _inherit = "estate.property"
-    
+
     def action_sold(self):
         res = super().action_sold()
         for property in self:

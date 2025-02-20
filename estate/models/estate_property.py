@@ -1,6 +1,5 @@
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
-
 from odoo import models, fields, api
 
 
@@ -114,7 +113,6 @@ class EstateProperty(models.Model):
 
     # ..................CRUD methods..................
     def unlink(self):
-        print("Custom unlink method called")
         if not set(self.mapped("state")) <= {"new", "cancelled"}:
             raise UserError("Only new or cancelled state properties can be deleted")
         return super().unlink()

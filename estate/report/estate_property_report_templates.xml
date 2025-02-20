@@ -3,28 +3,28 @@
 
     <template id="estate_property_report_template">
         <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="property">
-                <t t-call="web.external_layout">
-                    <div class="page">
+            <div class="page">
+                <t t-foreach="docs" t-as="property">
+                    <t t-call="web.external_layout">
+                        <div class="mt-4 mb-4">
+                            <h2><t t-esc="property.name"/></h2>
+                            <p><t t-esc="property.description or ''"/></p>
+                            <p><strong>Salesman:</strong> <t t-esc="property.user_id.name or ''"/></p>
+                            <p><strong>Expected Price:</strong> <t t-esc="property.expected_price or ''"/></p>
 
-                        <h2><t t-esc="property.name"/></h2>
-                        <p><t t-esc="property.description"/></p>
-                        <p> <strong>Salesman:</strong> <t t-esc="property.user_id.name"/></p>
-                        <p> <strong>Expected Price:</strong> <t t-esc="property.expected_price"/></p>
-                        
-                        <t t-if="property.property_offer_ids">
-                            <!-- Call the Offers Table Sub-Template -->
-                            <t t-call="estate.estate_property_offer_table"/>
-                        </t>
-                        <t t-else="">
-                            <p>No offers have been made for this property yet.</p>
-                        </t>
-                    </div>
+                            <t t-if="property.property_offer_ids">
+                                <t t-call="estate.estate_property_offer_table"/>
+                            </t>
+                            <t t-else="">
+                                <p>No offers have been made for this property yet.</p>
+                            </t>
+                        </div>
+                        <div style="page-break-after: always;"></div>
+                    </t>
                 </t>
-            </t>
+            </div>
         </t>
     </template>
-
 
     <template id="estate_user_report_template">
         <t t-call="web.html_container">
@@ -54,7 +54,6 @@
             </t>
         </t>
     </template>
-
 
     <template id="estate_property_offer_table">
 

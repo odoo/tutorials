@@ -30,7 +30,7 @@ class EstatePropertyOffer(models.Model):
     # ..................relational attributes..................
     property_id = fields.Many2one(comodel_name="estate.property", string="Property", required=True)
     partner_id = fields.Many2one(comodel_name="res.partner", string="Partner", required=True)
-    validity = fields.Integer(string="Validity (days)", default=7, compute="_compute_validity", inverse="_inverse_validity", store=True)
+    validity = fields.Integer(string="Validity (days)", default=7,_store=True)
     property_type_id = fields.Many2one(comodel_name="estate.property.type", related="property_id.property_type_id", string="Property Type", store=True)
 
     # ..................compute methods..................
@@ -40,27 +40,14 @@ class EstatePropertyOffer(models.Model):
             date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.date_deadline = date + relativedelta(days=offer.validity)
 
-
     def _inverse_date_deadline(self):
         for offer in self:
             date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.validity = (offer.date_deadline - date).days
 
-
-    @api.depends("create_date", "date_deadline")
-    def _compute_validity(self):
-        for offer in self:
-            date = offer.create_date.date() if offer.create_date else fields.Date.today()
-            offer.validity = (offer.date_deadline - date).days if offer.date_deadline else 7
-
-    def _inverse_validity(self):
-        for offer in self:
-            date = offer.create_date.date() if offer.create_date else fields.Date.today()
-            offer.date_deadline = date + relativedelta(days=offer.validity)
-
     # ..................action methods..................
     def action_accept(self):
-        if "accepted" in self.mapped("property_id.property_offer_ids.state"):
+        if  self.property_id.state == "offer_accepted":
             raise UserError("An Offer is already been accepted")
         else:
             self.state = "accepted"

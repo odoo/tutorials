@@ -1,27 +1,26 @@
+from datetime import datetime
+
 from odoo import http
 from odoo.http import request
 from odoo.addons.website.models.website import pager as website_pager
-from datetime import datetime
+
 
 class EstatePropertyController(http.Controller):
-    
+
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth="public", website=True)
     def list_properties(self, page=1, date_filter=None, **kwargs):
         Properties = request.env['estate.property']
-        
+
         domain = [('state', 'in', ['new', 'offer_received'])]
         properties_count = Properties.search_count(domain)
-        
+
         per_page = 6
         offset = (page - 1) * per_page
 
-        # Filter properties by create_date if date_filter is provided
+
         if date_filter:
-            try:
-                date_obj = datetime.strptime(date_filter, "%Y-%m-%d").date()
-                domain.append(('create_date', '>=', date_obj))
-            except ValueError:
-                pass  # Ignore invalid date formats
+            date_obj = datetime.strptime(date_filter, "%Y-%m-%d").date()
+            domain.append(('create_date', '>=', date_obj))
 
         pager = website_pager(
             url="/properties",
@@ -40,7 +39,7 @@ class EstatePropertyController(http.Controller):
         }
 
         return request.render('estate.property_list_template', values)
-    
+
     
     @http.route('/property/<int:property_id>', type="http", auth="public", website=True)
     def property_details(self, property_id, **kwargs):
