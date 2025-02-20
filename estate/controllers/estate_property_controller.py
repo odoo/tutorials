@@ -48,5 +48,5 @@ class EstatePropertyController(Controller):
     
     @http.route("/properties/<int:property_id>", type="http", auth="public", website=True)
     def show_property_details(self, property_id):
-        property = request.env["estate.property"].browse(property_id)
+        property = request.env["estate.property"].sudo().browse(property_id)
         return request.render("estate.property_details_website_template", {"property":property})
