@@ -7,9 +7,6 @@
                 <t t-call="web.external_layout">
                     <div class="page">
 
-                        <!-- Call the Company header Sub-Template -->
-                        <t t-call="estate.estate_property_company_header"/>
-                         
                         <h2><t t-esc="property.name"/></h2>
                         <p><t t-esc="property.description"/></p>
                         <p> <strong>Salesman:</strong> <t t-esc="property.user_id.name"/></p>
@@ -34,10 +31,7 @@
             <t t-foreach="docs" t-as="user">
                 <t t-call="web.external_layout">
                     <div class="page">
-                    
-                        <!-- Call the Company header Sub-Template -->
-                        <t t-call="estate.estate_property_company_header"/>
-                         
+
                         <h1>Salesman: <t t-esc="user.name"/> </h1>
                         <hr/>
                         <t t-foreach="user.property_ids" t-as="property">
@@ -77,31 +71,17 @@
                 </thead>
                 <tbody>
                     <t t-foreach="property.property_offer_ids" t-as="offer">
-                        <tr t-att-class="('text-success' if offer.state == 'accepted' else 'text-danger')">
+                        <tr>
                             <td t-esc="offer.price"/>
                             <td t-esc="offer.partner_id.name"/>
                             <td t-esc="offer.validity"/>
                             <td t-esc="offer.date_deadline"/>
-                            <td t-esc="offer.state"/>
+                            <td t-esc="offer.state if offer.state else ''"/>
                         </tr>
                     </t>
                 </tbody>
             </table>
         </t>
     </template>
-
-
-    <template id="estate_property_company_header">
-        <div>
-            <strong>YourCompany</strong><br/>
-            <hr/>
-            250 Executive Park Blvd, Suite 3400<br/>
-            San Francisco CA 94134<br/>
-            United States
-        </div>
-        <br/>
-        <br/>   
-    </template>
-
 
 </odoo>

@@ -88,13 +88,16 @@
                                 alt="Property Image"/>
                         </div>
                         <div class="col-md-6">
-                            <h2 t-esc="property.name"/>
-                            <p class="text-muted">Availability: <b t-esc="property.date_availability"/></p>
-                            <p><b>Expected Price:</b> <span t-esc="property.expected_price"/> $</p>
+                            <h2 YourCompanyt-esc="property.name"/>
+                            <p><b>Availability:</b> <span t-esc="property.date_availability"/> </p>
+                            <p><b>Expected Price:</b> <span t-esc="property.expected_price"/></p>
                             <p><b>Bedrooms:</b> <span t-esc="property.bedrooms"/></p>
+                            <p><b>Facades:</b> <span t-esc="property.facades"/></p>
                             <p><b>Living Area:</b> <span t-esc="property.living_area"/> sqm</p>
+                            <p><b>Garage:</b> <span t-esc="'Yes' if property.garage else 'No'"/></p>
                             <p><b>Garden:</b> <span t-esc="'Yes' if property.garden else 'No'"/></p>
-                            <p><b>State:</b> <span class="badge" t-esc="property.state"/></p>
+                            <p><b>Garden Area:</b> <span t-esc="'property.garden_area' if property.garden else ''"/></p>
+                            <p><b>Garden Orientation:</b> <span t-esc="'property.garden_orientation' if property.garden else ''"/></p>
                         </div>
                     </div>
 
@@ -103,7 +106,7 @@
                         <p t-esc="property.description"/>
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-4 item">
                         <a href="/properties" class="btn btn-secondary">Back to Listings</a>
                     </div>
                 </div>

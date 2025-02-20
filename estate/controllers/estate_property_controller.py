@@ -15,7 +15,7 @@ class EstatePropertyController(http.Controller):
         per_page = 6
         offset = (page - 1) * per_page
 
-         # Filter properties by create_date if date_filter is provided
+        # Filter properties by create_date if date_filter is provided
         if date_filter:
             try:
                 date_obj = datetime.strptime(date_filter, "%Y-%m-%d").date()
