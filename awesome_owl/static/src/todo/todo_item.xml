@@ -1,0 +1,13 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <t t-set="Todos" t-value="props.Todos"/>
+        <div class="list-group-item d-flex align-items-center" t-att-class="Todos.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
+            <input type="checkbox" class="me-2" t-att-checked="Todos.isCompleted" t-on-change="OnToggleStatus"/>
+            <span class="me-2 fw-bold text-primary">
+                <t t-esc="Todos.id"/>.
+            </span>
+            <t t-esc="Todos.description"/>
+            <button class="btn text-danger ms-auto" t-on-click="OnRemoveTodo"><i class="fa fa-remove"/></button>
+        </div>
+    </t>
+</templates>

@@ -2,7 +2,23 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="display" className="'o_content o_dashboard h-100 align-content-center'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" type="button" t-on-click="openCustomerView">
+                    Customers
+                </button>
+                <button class="btn btn-primary" type="button" t-on-click="openLeadView">
+                    Leads
+                </button>
+            </t>
+            <div class="o_dashboard_body text-center">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Welcome to the Awesome Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+        </Layout>
     </t>
 
 </templates>
