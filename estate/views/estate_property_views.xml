@@ -13,8 +13,6 @@
             <field name="name">estate.property.view.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-
-
                 <list string="Channel" default_order="id desc" decoration-muted="state == 'sold'" decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-danger="state == 'cancel'">
                     <header>
                         <button name="%(action_estate_offer_wizard)d" string="Add Offer" type="action" class="btn-primary" />
