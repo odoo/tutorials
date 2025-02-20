@@ -6,14 +6,14 @@ class EstatePropertyOfferWizard(models.TransientModel):
     _description = "Wizard to add an offer to a property"
 
     price = fields.Float(string="Offer Price")
-    validity = fields.Date(string="Validity")
+    validity = fields.Integer(string="Validity")
     partner_id = fields.Many2one(
         "res.partner",
         string="Buyer",
         required=True,
-        default=lambda self: self.env.user.id,
+        # default=lambda self: self.env.partner.id,
     )
-    property_id = fields.Many2one("estate.property", required=True)
+    # property_ids = fields.Many2many("estate.property", required=True)
 
     def action_make_offer(self):
         selected_properties = self.env.context.get("active_ids")

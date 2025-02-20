@@ -18,7 +18,7 @@
                 </group>
                 <footer>
                     <button name="action_make_offer" string="Make an Offer" type="object"/>
-                    <button name="action_cancel" string="Cancel" type="object" special="cancel"/>
+                    <button string="Cancel" type="object" special="cancel"/>
                 </footer>
             </form>
         </field>

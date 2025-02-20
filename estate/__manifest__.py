@@ -1,6 +1,6 @@
 {
     "name" : "estate",
-    "depends" : ['base','mail','web','whatsapp'],
+    "depends" : ['base','mail','website','whatsapp'],
     "category" : "Real Estate/Brokerage",
     'data' : [
         'views/res_users.xml',
@@ -12,12 +12,12 @@
         'views/estate_property_tag.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
-        'views/sold_email_template.xml',
-        'views/whatsapp_template.xml',
+        'data/sold_email_template.xml',
+        'data/whatsapp_template.xml',
         'report/res_users_report.xml',
         'report/estate_property_report_template.xml',
         'report/estate_property_reports.xml',
-        'controllers/estate_property_listing_template.xml',
+        'views/estate_property_listing_template.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
     ],
