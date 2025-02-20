@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="container py-4">
+            <div class="alert alert-primary text-center">
+                This is Playground
+            </div>
         </div>
-        <div class="m-2 p-2 border d-inline-block">
-                <span class="me-2">Counter: <t t-esc="state.value"/></span>
-                <button class="btn btn-primary" t-on-click="increment">Increment</button>
+        <!-- counter  -->
+        <div class="card p-3 mb-3">
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <div> Sum is: <t t-esc="sum.value"/></div>
+        </div>
+        <!-- Cards -->
+        <div>
+            <Card title="'card1'" content="'card1 content'"></Card>
+            <Card title="'card2'" content="'card2 content'"></Card>
+        </div>
+        <div>
+            <Card title="'card3'" content="val3"></Card>
+            <Card title="'card4'" content="val4"></Card>
+        </div>
+        <div>
+            <TodoList/>
         </div>
     </t>
 </templates>
