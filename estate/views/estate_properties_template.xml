@@ -25,7 +25,7 @@
                         <div class="col-md-6 col-lg-4 property-item mb-4" t-att-data-date="property.create_date">
                             <div class="card h-100 shadow-sm border-0">
                                 <div class="position-relative">
-                                    <img t-if="property.image" t-att-src="'/web/image/estate.property/%s/image' % property.id"
+                                    <img t-att-src="property.image and '/web/image/estate.property/%s/image' % property.id or '/web/static/img/placeholder.png'"
                                         class="img-fluid rounded-top w-100"
                                         style="object-fit: cover; height: 400px;"
                                         t-att-alt="property.name"/>

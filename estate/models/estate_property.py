@@ -108,3 +108,12 @@ class EstateProperty(models.Model):
                 raise models.ValidationError(_(
                     "Offer price cannot be lower than 90% of the expected price!"
                 ))
+
+    @api.model
+    def fields_get(self, allfields=None, attributes=None):
+        res = super().fields_get(allfields, attributes)
+        if not self.env.user.has_group('estate.estate_group_manager'):
+            if 'salesperson_id' in res:
+                res['salesperson_id']['readonly'] = True
+                res['company_id']['readonly'] = True
+        return res
