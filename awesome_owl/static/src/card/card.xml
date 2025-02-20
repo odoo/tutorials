@@ -6,9 +6,11 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-esc="props.title"/>
+                    <button class="btn btn-primary" style="color:blue" t-on-click="toggleContent">Toggle</button>
                 </h5>
-                <p class="card-content">
-                    <t t-esc="props.content"/>
+                
+                <p class="card-text">
+					<t t-if="this.state.isOpen" t-slot="content" />
                 </p>
             </div>
         </div>

@@ -4,10 +4,10 @@
     <t t-name="awesome_owl.TodoItem">
         <div class="border p-2 my-2" t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
             <p>
-                <strong>
-                    <t t-esc="props.todo.id"/>.&#10630;
-                </strong>
+                <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="togglerAction"/>
+                <strong class="p-2"><t t-esc="props.todo.id"/>.&#10630;</strong>
                 <t t-esc="props.todo.description"/>
+                <span class="fa fa-remove" t-on-click="removeAction"/>
             </p>
         </div>
     </t>

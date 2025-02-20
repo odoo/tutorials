@@ -2,7 +2,39 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <div class="m-2">
+            <button class="btn btn-primary m-1" t-on-click="openCustomers">Customers</button>
+            <button class="btn btn-primary m-1" t-on-click="openLeads">Leads</button>
+        </div>
+
+        <Layout className="'o_dashboard h-100'" >
+            <div class="o_dashboard_content d-flex flex-wrap">
+                <DashboardItem size="1.5">
+                    <p>Average amount of t-shirt by order this month</p>
+                    <h1 class="text-success"><t t-esc="statistics.average_quantity" /></h1>
+                </DashboardItem>
+                <DashboardItem size="3">
+                    <p>Average time for an order to go from 'new' to 'sent' or 'cancelled'</p>
+                    <h1 class="text-success"><t t-esc="statistics.average_time" /></h1>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <p>Number of new orders this month</p>
+                    <h1 class="text-success"><t t-esc="statistics.nb_new_orders" /></h1>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <p>Number of cancelled orders this month</p>
+                    <h1 class="text-success"><t t-esc="statistics.nb_cancelled_orders" /></h1>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <p>Total amount of new orders this month</p>
+                    <h1 class="text-success"><t t-esc="statistics.total_amount" /></h1>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Shirts orders by size </p>
+                    <PieChart tshirtSales="statistics.orders_by_size"/>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
