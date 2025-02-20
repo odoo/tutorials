@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_estate_property_offer_wizard" model="ir.actions.act_window">
+        <field name="name">Create Property Offer</field>
+        <field name="res_model">estate.property.offer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{"default_property_id": active_id}</field>
+    </record>
+
+    <record id="estate_property_offer_wizard_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.wizard.form</field>
+        <field name="model">estate.property.offer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Offer">
+                <group>
+                    <field name="property_id" required="1" options="{'no_open': True}"/>
+                    <field name="partner_id" required="1"/>
+                    <field name="price" required="1"/>
+                </group>
+                <footer>
+                    <button name="action_create_offer" string="Create Offer" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_form_inherit_offer_wizard" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit.offer.wizard</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="inside">
+                <button name="%(action_estate_property_offer_wizard)d" string="Create Offer" type="action" class="btn-secondary"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

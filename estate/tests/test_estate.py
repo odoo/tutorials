@@ -21,10 +21,16 @@ class EstateTestCase(TransactionCase):
             'expected_price': 10000,
         })
 
-        cls.offer = cls.env['estate.property.offer'].create({
+        cls.offer1 = cls.env['estate.property.offer'].create({
             'partner_id': cls.buyer.id,
             'property_id': cls.property.id,
             'price': 9000,
+        })
+
+        cls.offer2 = cls.env['estate.property.offer'].create({
+            'partner_id': cls.buyer.id,
+            'property_id': cls.property.id,
+            'price': 10000,
         })
 
     def test_action_sell(self):
@@ -32,7 +38,10 @@ class EstateTestCase(TransactionCase):
         with self.assertRaises(UserError, msg="Selling a property without an accepted offer!"):
             self.property.action_sold()
 
-        self.offer.action_accept()
+        self.offer1.action_accept()
+
+        with self.assertRaises(UserError, msg="Offer1 has already been accepted, so no new offer allowed!"):
+            self.offer2.action_accept()
 
         self.assertEqual(self.property.buyer_id, self.buyer, msg="Buyer not matched!")
         self.assertEqual(self.property.selling_price, 9000, msg="Selling price not matched!")

@@ -53,7 +53,7 @@ class EstatePropertyOffer(models.Model):
             offer.validity = (offer.date_deadline - create_date).days
 
     def action_accept(self):
-        if self.status == 'accepted':
+        if self.property_id.state == 'offer_accepted' or self.status == 'accepted':
             raise UserError(_("Offer has already been accepted!"))
         self.write({'status':'accepted'})
         for property in self.mapped('property_id'):
