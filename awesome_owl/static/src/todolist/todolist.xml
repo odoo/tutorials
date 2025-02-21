@@ -17,12 +17,11 @@
             t-on-keyup="addTodo"
             t-ref="input"
           />
-          <ul class="list-group list-group-flush">
+          <ul class="list-group list-group-item-primary">
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
               <TodoItem
                 todo="todo"
-                t-on-remove="() => removeTodo(todo.id)"
-                t-on-toggle="() => toggleCompletion(todo.id)"
+                toggleState.bind="toggleTodo"
               />
             </t>
           </ul>
