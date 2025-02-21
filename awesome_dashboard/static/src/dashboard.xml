@@ -2,7 +2,68 @@
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="{ controlPanel:{} }" className="'o_dashboard h-100'">
-            Hello world
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap fs-4">
+                <DashboardItem>
+                    <div class="text-center">
+                        <p>
+                            <strong>Average amount of t-shirt by order this month:</strong>
+                        </p>
+                        <p class="text-success">
+                            <t t-esc="result.average_quantity"/>
+                        </p>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <div class="text-center">
+                        <p>
+                            <strong>Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’:</strong>
+                        </p>
+                        <p class="text-success">
+                            <t t-esc="result.average_time"/>
+                        </p>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="text-center">
+                        <p>
+                            <strong>Number of new orders this month:</strong>
+                        </p>
+                        <p class="text-success">
+                            <t t-esc="result.nb_new_orders"/>
+                        </p>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="text-center">
+                        <p>
+                            <strong>Number of cancelled orders this month:</strong>
+                        </p>
+                        <p class="text-success">
+                            <t t-esc="result.nb_cancelled_orders"/>
+                        </p>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="text-center">
+                        <p>
+                            <strong>Total amount of new orders this month:</strong>
+                        </p>
+                        <p class="text-success"><t t-esc="result.total_amount"/></p>
+                    </div>
+                </DashboardItem>
+                 <DashboardItem size="2">
+                    <div class="text-center">
+                        <p>
+                            <strong>Shirt orders by size:</strong>
+                        </p>
+                        <Piechart orderDetails="result.orders_by_size"/>
+                    </div>
+                </DashboardItem>
+            </div>
         </Layout>
     </t>
 </templates>
