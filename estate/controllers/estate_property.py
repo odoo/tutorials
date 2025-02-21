@@ -28,7 +28,7 @@ class EstatePropertyController(http.Controller):
         )
         return request.render('estate.estate_property_template', {
             'properties': properties,
-            'pager': pager,
+            'pager': pager
         })
 
     @http.route('/property/<int:property_id>', auth='public', website=True, type='http')

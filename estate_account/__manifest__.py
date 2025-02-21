@@ -3,7 +3,8 @@
 
     'summary' : "A module integrating real estate management with accounting in Odoo.",
 
-    'description': """This module enhances real estate operations by seamlessly integrating with Odoo's accounting system. It automates financial transactions, manages invoices, and ensures accurate bookkeeping for property sales and rentals.""",
+    'description': """This module enhances real estate operations by seamlessly integrating with Odoo's accounting system.
+                    It automates financial transactions, manages invoices, and ensures accurate bookkeeping for property sales and rentals.""",
 
     'author': "Krunal Gelot",
     'website': "https://www.odoo.com",

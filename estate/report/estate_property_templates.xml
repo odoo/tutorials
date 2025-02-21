@@ -24,7 +24,13 @@
                             <t t-call="estate.estate_property_offer_table_template" />
                         </t>
                         <t t-else="">
-                            <p>No Available Offers</p>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class='text-center'>No Available Offers</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </t>
                     </div>
                 </t>
@@ -90,7 +96,13 @@
                                 <t t-call="estate.estate_property_offer_table_template" />
                             </t>
                             <t t-else="">
-                                <p>No Available Offers</p>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class='text-center'>No Available Offers</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </t>
                         </t>
                     </div>

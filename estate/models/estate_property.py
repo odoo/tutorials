@@ -34,7 +34,7 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string="Gardern Orientation",
         selection=[
-            ('north','North'),
+            ('north', 'North'),
             ('south', 'South'),
             ('west', 'West'),
             ('east', 'East')
@@ -43,11 +43,11 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         string="Status",
         selection=[
-            ('new','New'),
-            ('offer_received','Offer Received'),
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
-            ('sold','Sold'),
-            ('cancelled','Cancelled')
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
         ],
         required=True,
         copy=False,
@@ -63,6 +63,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area(sqm)", compute="_compute_total_area", store="True")
     property_image = fields.Binary("Image", attachment=True)
 
+#---------------get best price-----------------------------#
     @api.depends('property_offer_ids')
     def _compute_best_price(self):
         for record in self:
@@ -71,6 +72,7 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
+#--------------compute total area---------------------------#
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -85,22 +87,27 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+#---------------on click sold button---------------------------#
     def action_sold_button(self):
         for record in self:
-            if record.state != 'cancelled':
-                record.state = 'sold'
+            if record.state == 'cancelled':
+                raise UserError(_('Cancelled property cannot be sold.'))
+            if record.state != 'offer_accepted':
+                raise UserError(_('Not an any offer has Accepted.'))
             else:
-                raise UserError('Property Is already Cancelled')
+                record.state = 'sold'
         return True
 
+#--------------on click cancel button--------------------------#
     def action_cancel_button(self):
         for record in self:
-            if record.state != 'sold':
-                record.state = 'cancelled'
+            if record.state == 'sold':
+                raise UserError(_('Property Is already Sold'))
             else:
-                raise UserError('Property Is already Sold')
+                record.state = 'cancelled'
         return True
 
+#--------------on click multiple offer button-----------------#
     def action_estate_property_multiple_offer(self):
         return {
             "name" : 'Add Multiple Offers',
@@ -115,6 +122,7 @@ class EstateProperty(models.Model):
         ('positive_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be greater than zero!')
     ]
 
+#---------------check selling price >= 90% of expected price--------------------#
     @api.constrains('selling_price', 'expected_price')
     def _check_price(self):
         for record in self:
@@ -125,6 +133,7 @@ class EstateProperty(models.Model):
             if float_compare(record.selling_price, min_selling_price, precision_digits=6) < 0:
                 raise ValidationError(_("Selling price cannot be less than 90% of the expected price!"))
 
+#---------------only new and cancel property can delete------------------------#
     @api.ondelete(at_uninstall=False)
     def _unlink_stete_not_new_or_cancel(self):
         for record in self:

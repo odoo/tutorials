@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="action_estate_property" model="ir.actions.act_window">
-        <field name="name">Estate Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">kanban,list,form</field>
-        <field name="context">{'search_default_available': True}</field>
-    </record>
-
     <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -35,7 +28,7 @@
                 <header>
                     <button name="action_sold_button" string="Sold" type="object" invisible="state in ['cancelled', 'sold']"/>
                     <button name="action_cancel_button" string="Cancel" type="object" invisible="state in ['cancelled', 'sold']"/>
-                    <field name="state" widget="statusbar"  statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
+                    <field name="state" widget="statusbar"  statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <h1>
@@ -146,5 +139,12 @@
                 </templates>
             </kanban>
         </field>
+    </record>
+
+    <record id="action_estate_property" model="ir.actions.act_window">
+        <field name="name">Estate Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 </odoo>
