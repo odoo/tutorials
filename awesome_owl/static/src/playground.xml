@@ -2,9 +2,10 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
+        <h1>PlayGround</h1>
+        <Counter/>
+        <Counter/>
+
     </t>
 
 </templates>
