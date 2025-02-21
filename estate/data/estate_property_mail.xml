@@ -1,5 +1,5 @@
 <odoo>
-    <data>
+    <data noupdate="1">
         <record id="mail_template_property_sold" model="mail.template">
             <field name="name">Sold Property Email</field>
             <field name="subject">Congratulations! Your Property Has Been Sold</field>
@@ -41,4 +41,3 @@
         </record>
     </data>
 </odoo>
-

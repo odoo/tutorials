@@ -2,6 +2,7 @@ from odoo import models, fields, api
 
 class EstatePropertyOfferWizard(models.TransientModel):
     _name = "estate.property.offer.wizard"
+    _description="wizard for property"
 
     price = fields.Float(string='Offer Price')
     validity = fields.Integer(string='Validity',default=7)

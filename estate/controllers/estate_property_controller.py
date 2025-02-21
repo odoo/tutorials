@@ -55,4 +55,3 @@ class EstatePropertyController(http.Controller):
         if not property.exists():
             return request.not_found()
         return request.render("estate.property_detail_template", {"property": property})
-

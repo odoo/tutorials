@@ -70,4 +70,3 @@ class EstatePropertyOffer(models.Model):
                     "You cannot create an offer with an amount lower than or equal to an existing offer."
                 )
         return super(EstatePropertyOffer, self).create(vals_list)
-

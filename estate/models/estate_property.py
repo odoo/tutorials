@@ -163,5 +163,3 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "You can only delete properties in the 'New' or 'Cancelled' state."
                 )
-
-

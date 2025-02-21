@@ -5,4 +5,3 @@
         <field name="parent_id" ref="website.main_menu" />
     </record>
 </odoo>
-

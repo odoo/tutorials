@@ -9,4 +9,3 @@
         <field name="paperformat_id" ref="estate.paperformat_euro_lowmargin"></field>
     </record>
 </odoo>
-

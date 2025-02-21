@@ -29,7 +29,6 @@ class EstateTestCase(TransactionCase):
         )
 
     def test_prevent_offer_creation_for_sold_property(self):
-        print("---------------------------------------1--------------------------------------------------")
         self.property.state = "sold"
         with self.assertRaises(UserError):
             self.env["estate.property.offer"].create(
@@ -41,26 +40,21 @@ class EstateTestCase(TransactionCase):
             )
 
     def test_prevent_selling_property_without_accepted_offer(self):
-        print("---------------------------------------2--------------------------------------------------")
         self.offer.write({"status": "refused"})
         with self.assertRaises(UserError):
             self.property.action_sold()
 
     def test_property_is_marked_as_sold(self):
-        print("---------------------------------------3--------------------------------------------------")
         self.offer.action_confirm()
         self.property.action_sold()
         self.assertEqual(self.property.state,"sold","Property Should be marked as sold after selling it.")
 
     def test_garden_checkbox_reset(self):
-        print("----------------------------------------4------------------------------------------------")
         with Form(self.property) as form:
             form.garden = False
             self.assertEqual(form.garden_area, 0, "Garden Area should be reset to 0 when Garden checkbox is unchecked")
             self.assertEqual(form.garden_orientation, False, "Garden Orientation should be reset to False when Garden checkbox is unchecked")
-
             form.garden = True
             self.assertEqual(form.garden_area, 10, "Garden Area should be 10 when Garden checkbox is checked")
             self.assertEqual(form.garden_orientation, 'north', "Garden Orientation should North when Garden checkbox is checked")
- 
-            
+      
