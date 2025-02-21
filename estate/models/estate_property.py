@@ -7,6 +7,7 @@ from datetime import timedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Model containing basic info of a property"
+    _order = "id desc"
 
     name = fields.Char(required=True, default="Unknown")
     description = fields.Text("Notes")

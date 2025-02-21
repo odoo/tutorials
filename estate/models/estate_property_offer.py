@@ -5,6 +5,7 @@ from datetime import timedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Model containing property offers"
+    _order = "price desc"
 
     price = fields.Float()
     validity = fields.Integer(default="7")
