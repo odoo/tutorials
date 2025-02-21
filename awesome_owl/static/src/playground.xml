@@ -9,6 +9,8 @@
         <Card title="'card 2'" content="this.test_html"/>
         <Counter onChange.bind="increment"/>
         <Counter onChange.bind="increment"/>
+
+        <TodoList/>
     </t>
 
 </templates>
