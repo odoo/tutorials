@@ -4,9 +4,9 @@ import {
   useRef,
   onMounted,
   onWillUnmount,
+  useEffect
 } from "@odoo/owl";
 import { getColor } from "@web/core/colors/colors";
-
 import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {
@@ -22,6 +22,12 @@ export class PieChart extends Component {
     onWillUnmount(() => {
       this.chart.destroy();
     });
+    useEffect(
+      () => {
+        this.updateChart();
+      },
+      () => [this.props.data]
+    );
   }
 
   renderChart() {
@@ -42,5 +48,20 @@ export class PieChart extends Component {
         ],
       },
     });
+  }
+
+  updateChart() {
+    if (!this.chart || !this.props.data) return;
+
+    const labels = this.props.labels;
+    const data = this.props.data;
+    const colors = labels.map((_, index) => getColor(index));
+
+    // Update chart data
+    this.chart.data.labels = labels;
+    this.chart.data.datasets[0].data = data[0].data;
+    this.chart.data.datasets[0].backgroundColor = colors;
+
+    this.chart.update(); // Refresh the chart
   }
 }

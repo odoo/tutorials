@@ -7,7 +7,7 @@ const statisticsService = {
     const data = reactive({ isReady: false });
     const intervalId = setInterval(() => {
       loadStatistics();
-    }, 10 * 60 * 5000);
+    }, 10 * 60 * 1000);
 
     const loadStatistics = async () => {
       try {
