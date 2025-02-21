@@ -17,7 +17,7 @@ export class TodoList extends Component {
     addTodo(ev) {
         if (ev.keyCode === 13 && ev.target.value) {
             this.todos.push({
-                id: this.todos.length + 1,
+                id: Date.now(),
                 description: ev.target.value,
                 isCompleted: false,
             });

@@ -3,15 +3,13 @@
     <t t-name="awesome_owl.todo_list">
         <div class="todo-list" style="max-width: 400px; margin: auto; padding: 20px; border: 1px solid; border-radius: 8px;">
             <h2 style="text-align: center;">Welcome to Todo App</h2>
-            <h2 style="text-align: center;">Todo List</h2>            
+            <h2 style="text-align: center;">Todo List</h2>
             <div style="margin-bottom: 10px;">
-                <input type="text" placeholder="Enter a new task." 
-                    t-on-keyup="addTodo" t-ref="todoInput"
-                    style="width: 100%; padding: 8px; border: 1px solid; border-radius: 6px; font-size: 14px;"/>
-            </div>            
+                <input type="text" placeholder="Enter a new task." t-on-keyup="addTodo" t-ref="todoInput" style="width: 100%; padding: 8px; border: 1px solid; border-radius: 6px; font-size: 14px;"/>
+            </div>
             <div>
-                <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
+                <t t-foreach="todos" t-as="todo" t-key="todo.id" t-index="index">
+                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo" index="todos.indexOf(todo)+1"/>
                 </t>
             </div>
         </div>

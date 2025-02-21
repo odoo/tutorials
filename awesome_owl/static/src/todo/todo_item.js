@@ -13,6 +13,7 @@ export class TodoItem extends Component {
             },
             required: true
         },
+        index: Number,
         toggleState: { type: Function, required: true },
         removeTodo: { type: Function, required: true },
     };
