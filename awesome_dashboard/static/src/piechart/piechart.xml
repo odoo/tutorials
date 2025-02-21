@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.pie_chart">
+        <div class="o_graph_renderer o_renderer h-100">
+            <div class="o_graph_canvas_container h-100 position-relative">
+                <canvas t-ref="canvas" />
+            </div>
+        </div>
+    </t>
+</templates>
