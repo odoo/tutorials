@@ -11,6 +11,10 @@ class EstatePropertyOffer(models.Model):
 
     _name = "estate.property.offer"
     _description = "Offer on estate property"
+    _sql_constraints = [
+        ('price', 'CHECK(price > 0)', 'Prices must be strictly positive.'),
+    ]
+    _order = "price desc"
 
     price = fields.Float('Price')
     partner_id = fields.Many2one('res.partner', string='Buyer', copy=False, required=True)
@@ -27,33 +31,6 @@ class EstatePropertyOffer(models.Model):
         copy=False,
         default='new',
     )
-
-    _sql_constraints = [
-        ('price', 'CHECK(price > 0)', 'Prices must be strictly positive.'),
-    ]
-
-    _order = "price desc"
-
-    def action_set_accepted(self):
-        """Set the offer as accepted."""
-        for offer in self:
-            if 'accepted' in offer.property_id.offer_ids.mapped('state'):
-                raise UserError('Another offer has already been accepted')
-            
-            offer.property_id.partner_id = offer.partner_id
-            offer.property_id.selling_price = offer.price
-            offer.property_id.state = 'offer_accepted'
-
-            offer.state = 'accepted'
-
-        return True
-
-    def action_set_refused(self):
-        """Set the offer as refused."""
-        for offer in self:
-            offer.state = 'refused'
-
-        return True
 
     @api.depends('validity')
     def _compute_deadline(self):
@@ -75,3 +52,24 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Can't create an offer whose price is lower than another offer")
 
         return super().create(vals_list)
+
+    def action_set_accepted(self):
+        """Set the offer as accepted."""
+        for offer in self:
+            if 'accepted' in offer.property_id.offer_ids.mapped('state'):
+                raise UserError('Another offer has already been accepted')
+            
+            offer.property_id.partner_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            offer.property_id.state = 'offer_accepted'
+
+            offer.state = 'accepted'
+
+        return True
+
+    def action_set_refused(self):
+        """Set the offer as refused."""
+        for offer in self:
+            offer.state = 'refused'
+
+        return True

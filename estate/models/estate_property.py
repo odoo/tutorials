@@ -13,6 +13,11 @@ class EstateProperty(models.Model):
 
     _name = "estate.property"
     _description = "Estate property"
+    _sql_constraints = [
+        ('selling_price', 'CHECK(selling_price > 0)', 'Prices must be strictly positive.'),
+        ('expected_price', 'CHECK(expected_price > 0)', 'Prices must be strictly positive.'),
+    ]
+    _order = "id desc"
 
     name = fields.Char('Name', required=True)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
@@ -55,12 +60,41 @@ class EstateProperty(models.Model):
 
     active = fields.Boolean('Active', default=True)
 
-    _sql_constraints = [
-        ('selling_price', 'CHECK(selling_price > 0)', 'Prices must be strictly positive.'),
-        ('expected_price', 'CHECK(expected_price > 0)', 'Prices must be strictly positive.'),
-    ]
-
-    _order = "id desc"
+    @api.depends('offer_ids')
+    def _compute_best_offer(self):
+        """Compute best offer from all linked offers."""
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped('price'), default=0.0)
+    
+    @api.depends('garden_area', 'living_area')
+    def _compute_total_area(self):
+        """Compute total area from garden area and living area."""
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+    
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        """Constrains the selling price to be at least 80% of the expected price."""
+        for estate in self:
+            if estate.state == 'offer_accepted' and float_compare(estate.selling_price, estate.expected_price*0.8, precision_rounding=0.01) == -1:
+                raise ValidationError('Selling price must be at least 80% of the expected price.')
+    
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        """Update garden related fields on garden enabling/disabling."""
+        for estate in self:
+            if self.garden:
+                self.garden_area = 10
+                self.garden_orientation = 'north'
+            else:
+                self.garden_area = 0
+                self.garden_orientation = ''
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_only_new_cancelled(self):
+        """Avoids deletion of a property if it's not new or cancelled."""
+        if any(estate.state not in ['new', 'cancelled'] for estate in self):
+            raise UserError("Can't delete a property if it's not new or cancelled")
 
     def action_set_cancelled(self):
         """Cancel a property."""
@@ -81,40 +115,4 @@ class EstateProperty(models.Model):
                 estate.state = 'sold'
         
         return True
-    
-    @api.depends('garden_area', 'living_area')
-    def _compute_total_area(self):
-        """Compute total area from garden area and living area."""
-        for record in self:
-            record.total_area = record.garden_area + record.living_area
-
-    @api.depends('offer_ids')
-    def _compute_best_offer(self):
-        """Compute best offer from all linked offers."""
-        for record in self:
-            record.best_offer = max(record.offer_ids.mapped('price'), default=0.0)
-    
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        """Update garden related fields on garden enabling/disabling."""
-        for estate in self:
-            if self.garden:
-                self.garden_area = 10
-                self.garden_orientation = 'north'
-            else:
-                self.garden_area = 0
-                self.garden_orientation = ''
-    
-    @api.constrains('selling_price')
-    def _check_selling_price(self):
-        """Constrains the selling price to be at least 80% of the expected price."""
-        for estate in self:
-            if estate.state == 'offer_accepted' and float_compare(estate.selling_price, estate.expected_price*0.8, precision_rounding=0.01) == -1:
-                raise ValidationError('Selling price must be at least 80% of the expected price.')
-    
-    @api.ondelete(at_uninstall=False)
-    def _unlink_only_new_cancelled(self):
-        """Avoids deletion of a property if it's not new or cancelled."""
-        if any(estate.state not in ['new', 'cancelled'] for estate in self):
-            raise UserError("Can't delete a property if it's not new or cancelled")
 
