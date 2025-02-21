@@ -8,12 +8,8 @@ export class TodoItem extends Component{
             type: Object,
             shape: {id :Number, task: String, isCompleted: Boolean}
         },
-        toggleState: {
-            type: Function
-        },
-        removeTodo:{
-            type: Function
-        }
+        toggleState: { type: Function },
+        removeTodo:{ type: Function }
     };
     
     onToggle(){

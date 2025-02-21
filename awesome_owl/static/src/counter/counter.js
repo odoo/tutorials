@@ -5,11 +5,8 @@ import { Component, useState } from "@odoo/owl";
 export class Counter extends Component {
     static template = "awesome_owl.Counter";
     static props = {
-        value : {
-            type: Number,
-            optional: true
-        },
-        onChange: {type: Function, optional: true}
+        value : { type: Number, optional: true },
+        onChange: { type: Function, optional: true }
     }
 
     setup() {
