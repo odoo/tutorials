@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.NumberCard" owl="1">
+        <h3 t-attf-style="color: white" > 
+        <t t-esc="props.title" />
+        </h3>                
+        <div class="fs-1 fw-bold text-center" t-attf-style="font-weight:500; color:rgb(29, 252, 0);" >
+            <t t-esc="props.value"/>
+        </div>
+    </t>
+</templates>
