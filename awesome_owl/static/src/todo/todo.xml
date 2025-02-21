@@ -6,19 +6,18 @@
             <div>
                 <input type="text" placeholder="Enter a new task" t-on-keyup="addTodo" t-ref="todoInput"/>
             </div>
-            <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo" />
+            <t t-foreach="todos" t-as="todo" t-key="todo.id" t-index="index">
+                <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo" index="todos.indexOf(todo)+ 1"/>
             </t>
         </div>
     </t>
 
     <t t-name="awesome_owl.todo_item">
-        <div class="todo-item" style="padding:5px;"
-            t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
-                <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="toggleCheckbox" style="margin:5px;"/>
-                <strong style="margin:10px;"><t t-esc="props.todo.id" />:</strong>
-                <t t-esc="props.todo.description" />
-                <span class="fa fa-remove" style="color:red;margin-left:15px;" t-on-click="clickRemove" />
+        <div class="todo-item" style="padding:5px;" t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+            <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="toggleCheckbox" style="margin:5px;"/>
+            <strong style="margin:10px;"><t t-esc="props.index" />:</strong>
+            <t t-esc="props.todo.description" />
+            <span class="fa fa-remove" style="color:red;margin-left:15px;" t-on-click="clickRemove" />
         </div>
     </t>
 </templates>
