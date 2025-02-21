@@ -1,9 +1,14 @@
+"""Estate Property extension."""
+
 from odoo import Command, models
 
 class EstateProperty(models.Model):
+    """Estate Property extension with inheritance to add invoice creation on sale."""
+    
     _inherit = "estate.property"
 
     def action_set_sold(self):
+        """Set the offer as sold."""
         move = self.env['account.move'].create(
             {
                 'move_type': 'out_invoice',

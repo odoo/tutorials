@@ -1,3 +1,5 @@
+"""Model of an estate property."""
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
@@ -6,6 +8,8 @@ import datetime
 
 
 class EstateProperty(models.Model):
+    """Estate Property model."""
+
     _name = "estate.property"
     _description = "Estate property"
 
@@ -58,6 +62,7 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     def action_set_cancelled(self):
+        """Cancel a property."""
         for estate in self:
             if estate.state == 'sold':
                 raise UserError('Sold properties can not be cancelled')
@@ -67,6 +72,7 @@ class EstateProperty(models.Model):
         return True
 
     def action_set_sold(self):
+        """Sell a property."""
         for estate in self:
             if estate.state == 'cancelled':
                 raise UserError('Cancelled properties can not be sold')
@@ -77,16 +83,19 @@ class EstateProperty(models.Model):
     
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
+        """Compute total area from garden area and living area."""
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
     @api.depends('offer_ids')
     def _compute_best_offer(self):
+        """Compute best offer from all linked offers."""
         for record in self:
             record.best_offer = max(record.offer_ids.mapped('price'), default=0.0)
     
     @api.onchange("garden")
     def _onchange_garden(self):
+        """Update garden related fields on garden enabling/disabling."""
         for estate in self:
             if self.garden:
                 self.garden_area = 10
@@ -97,12 +106,14 @@ class EstateProperty(models.Model):
     
     @api.constrains('selling_price')
     def _check_selling_price(self):
+        """Constrains the selling price to be at least 80% of the expected price."""
         for estate in self:
             if estate.state == 'offer_accepted' and float_compare(estate.selling_price, estate.expected_price*0.8, precision_rounding=0.01) == -1:
-                raise ValidationError('Selling price must be at least 80% of expected price.')
+                raise ValidationError('Selling price must be at least 80% of the expected price.')
     
     @api.ondelete(at_uninstall=False)
     def _unlink_only_new_cancelled(self):
+        """Avoids deletion of a property if it's not new or cancelled."""
         if any(estate.state not in ['new', 'cancelled'] for estate in self):
             raise UserError("Can't delete a property if it's not new or cancelled")
 

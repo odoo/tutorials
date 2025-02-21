@@ -1,3 +1,5 @@
+"""Model of an offer on an estate property."""
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -5,6 +7,8 @@ import datetime
 
 
 class EstatePropertyOffer(models.Model):
+    """Estate Property  Offer model."""
+
     _name = "estate.property.offer"
     _description = "Offer on estate property"
 
@@ -31,6 +35,7 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     def action_set_accepted(self):
+        """Set the offer as accepted."""
         for offer in self:
             if 'accepted' in offer.property_id.offer_ids.mapped('state'):
                 raise UserError('Another offer has already been accepted')
@@ -44,6 +49,7 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_set_refused(self):
+        """Set the offer as refused."""
         for offer in self:
             offer.state = 'refused'
 
@@ -60,6 +66,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        """Avoids creation of offers with a price lower than any of the other offer."""
         for vals in vals_list:
             property_id = self.env['estate.property'].browse(vals['property_id'])
             property_id.state = 'offer_received'
