@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'model for the properties in our app'
+    _order = 'id desc'
 
     # selling prices for the properties should be at least 90% of the expected price
     PROPERTY_SELLING_PRICE_THRESHOLD = 0.9
@@ -79,6 +80,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
             self.garden_area = 10
 
+    @api.onchange('offer_ids')
+    def _onchange_offer_ids(self):
+        if self.offer_ids and self.state == 'new':
+            self.state = 'offer_received'
+        elif not self.offer_ids and self.state == 'offer_received':
+            self.state = 'new'
+
     def action_cancel_property(self):
         if self.filtered(lambda record: record.state == 'sold'):
             raise UserError('Sold properties cannot be cancelled')
@@ -88,6 +96,8 @@ class EstateProperty(models.Model):
     def action_sell_property(self):
         if self.filtered(lambda record: record.state == 'cancelled'):
             raise UserError('Cancelled properties cannot be sold')
+        if not self.filtered(lambda record: record.state == 'offer_accepted'):
+            raise UserError('You must accept an offer before you can sell the property')
         self.state = 'sold'
         return True
 
