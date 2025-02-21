@@ -16,6 +16,8 @@ This module provides a real estate services
         'data/estate_account_sequence.xml',
         'data/mail_message_subtype_data.xml',
         'data/estate_property_website_templates.xml',
+        'report/estate_property_report_template.xml',
+        'report/estate_property_reports.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_tag_views.xml',
