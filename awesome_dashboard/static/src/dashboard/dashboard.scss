@@ -1,0 +1,16 @@
+
+.o_dashboard {
+    background: linear-gradient(135deg, #f8f9fa, #e3e8ee); // Smooth modern gradient
+    min-height: 100vh; // Ensures full-page height
+}
+
+// Styling for the empty state
+.o_dashboard .empty-state {
+    color: #6c757d; // Soft gray text
+    text-align: center;
+    margin-top: 10vh;
+}
+
+.custom-mt {
+    margin-top: 14rem !important;
+}
