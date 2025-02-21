@@ -9,10 +9,16 @@
                     <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Leads">Leads</button>
                 </t>
 
+                <t t-set-slot="control-panel-additional-actions">
+                    <button t-on-click="openDialog" class="btn p-0 ms-1 border-0">
+                        <i class="fa fa-cog"></i>
+                    </button>
+                </t>
+
                 <div class="dashboard-container p-3">
                     <div class="dashboard-grid">
                         <t t-foreach="items" t-as="item" t-key="item.id">
-                            <DashboardItem size="item.size || 1">
+                            <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
                                 <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
                                 <t t-component="item.Component" t-props="itemProp" />
                             </DashboardItem>
@@ -22,5 +28,21 @@
 
             </Layout>
         </div>
+    </t>
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onItemChange(ev, item)"> <!--ev = true or false -->
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onApply">
+                    Apply
+                </button>
+            </t>
+        </Dialog>
     </t>
 </templates>
