@@ -10,8 +10,8 @@ It provides real estate module
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
-        'data/estate_property_sequence.xml',
         'data/estate.property.type.csv',
+        'data/estate_property_sequence.xml',
         'data/website_menus.xml',
         'data/estate_rating_data_template.xml',
         'views/estate_property_views.xml',
@@ -19,6 +19,8 @@ It provides real estate module
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/res_users_views.xml',
+        'report/estate_property_reports.xml',
+        'report/estate_property_templates.xml',
         'views/property_website_template.xml',
         'views/property_website_detail_template.xml',
         'views/rating_rating_views.xml',
