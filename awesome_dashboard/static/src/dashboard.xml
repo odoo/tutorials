@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
-    </t>
+  <t t-name="awesome_dashboard.AwesomeDashboard"  >
 
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+        hello dashboard
+        <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                    blue sky
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.average_quantity"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    abcd
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.average_quantity"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    Shirt orders by size
+                    <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
+                </DashboardItem>
+            </div>
+        </Layout>
+    </t>
 </templates>
