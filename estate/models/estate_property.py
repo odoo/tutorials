@@ -70,7 +70,7 @@ class Property(models.Model):
     @api.depends("property_offer_ids")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.property_offer_ids.mapped('price')) + [0]
+            record.best_price = max(record.property_offer_ids.mapped('price')) if record.property_offer_ids else 0.0
             
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -145,7 +145,7 @@ class Property(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_restrictions(self):
         for record in self:
-            if record.state not in ['New', 'Cancelled']:
+            if record.state not in ['new', 'cancelled']:
                 raise UserError("You only delete new and cancelled properties")
 
 
