@@ -7,7 +7,7 @@
             <form method="get" action="/properties">
                         <div class="row justify-content-center py-2">
                             <div class="col-md-4 d-flex">
-                                <input type="date" name="date_listed" class="form-control" t-att-value='date_listed'/>
+                                <input type="date" name="date_listed" class="form-control"/>
                                 <button type="submit" class="btn btn-primary">Listed After</button>
                             </div>
                         </div>

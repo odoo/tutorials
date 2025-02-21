@@ -60,6 +60,8 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self,vals):
         property_obj = self.env['estate.property'].browse(vals[0]['property_id'])
+        if property_obj.state == "sold":
+            raise UserError(_("offer cant be created for sold properties"))
         prices = [val['price'] for val in vals]
         min_price = min(prices, default=property_obj.best_price)
         if min_price < property_obj.best_price:
