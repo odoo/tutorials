@@ -6,13 +6,12 @@
 
             <div class="input-group">
                 <input type="text" class="todo-input" placeholder="Enter a new task..." t-on-keyup="addTodo" t-ref="input"/>
-                <button class="add-btn" t-on-click="addTodo">Add</button>
             </div>
 
             <ul class="todo-list">
                 <t t-foreach="todos" t-as="todo" t-key="todo.id">
                     <li class="todo-card">
-                        <TodoItem todo="todo"/>
+                        <TodoItem todo="todo" toggleState.bind="toggleTodo" removeTodo.bind="removeTodo"/>
                     </li>
                 </t>
             </ul>
