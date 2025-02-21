@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.Card">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
+        <div class="card shadow-lg m-2" style="width: 20rem;">
             <div class="card-body">
-                <h5 class="card-title">
-                    <t t-esc="props.title"/>
+                <h5 class="card-title text-primary">
+                    <i class="fa fa-folder-open"></i> <t t-out="props.title"/>
                 </h5>
-                <p class="card-text">
-                    <t t-esc="props.content"/>
+                <button class="btn btn-outline-secondary btn-sm mt-2" t-on-click="toggleContent">
+                    <i class="fa fa-chevron-down"></i> Toggle Content
+                </button>
+                <p class="card-text mt-2" t-if="state.isOpen">
+                    <t t-slot="default"/>
                 </p>
-                <h5 class="card-title"><t t-out="props.title"/></h5>
-                <p class="card-text"><t t-out="props.content"/></p>
             </div>
         </div>
     </t>

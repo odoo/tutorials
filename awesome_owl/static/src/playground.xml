@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3 border">
-            hello world
-            <span class="m-2 p-3 border d-inline-block">
-                <Counter onChange.bind="incrementSum" />
-                <Counter onChange.bind="incrementSum" />
-                <div>The sum is:<t t-esc="sum.value"/></div>
-            </span>
-        </div>
-        <div class="p-3 border">
-            <ToDoList />
+        <div class="container mt-4">
+            <div class="card shadow-lg p-4">
+                <h2 class="text-center text-primary">AWESOME OWL</h2>
+                <div class="d-flex justify-content-around flex-wrap">
+                    <Counter onChange.bind="incrementSum" />
+                    <Counter onChange.bind="incrementSum" />
+                </div>
+                <div class="text-center mt-3">
+                    <strong>The sum is: <t t-esc="sum.value"/></strong>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <Card title="'Card 1'">content of card 1</Card>
+                </div>
+                <div class="col-md-6">
+                    <Card title="'Card 2'">
+                        <Counter />
+                    </Card>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="card shadow p-3">
+                    <h3 class="text-success">To-Do List</h3>
+                    <ToDoList />
+                </div>
+            </div>
         </div>
     </t>
-
 </templates>

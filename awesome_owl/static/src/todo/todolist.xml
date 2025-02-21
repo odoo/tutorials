@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.ToDoList">
-        <div class="d-inline-block border p-2 m-2">
-            <input class="form-control mb-3" type="text" placeholder="Add a task" t-on-keyup="addToDo" t-ref="input"/>
-            <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <ToDoItem todo="todo" toggleState.bind="toggleState" removeToDo.bind="removeToDo"/>
-            </t>
+        <div class="card p-3 shadow-sm">
+            <h4 class="text-secondary">Task Manager</h4>
+            <input class="form-control mb-3" type="text" placeholder="Add a task..." t-on-keyup="addToDo" t-ref="input"/>
+            <div class="list-group">
+                <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                    <ToDoItem todo="todo" toggleState.bind="toggleState" removeToDo.bind="removeToDo"/>
+                </t>
+            </div>
         </div>
     </t>
-
 </templates>
