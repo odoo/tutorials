@@ -15,8 +15,12 @@
         </div>
         <hr/>
         <div class="flex m-5 justify-between gap-5">
-            <Card title="'card1'" content="safehtml"/>
-            <Card title="'card2'" content="escapedText"/>
+            <Card title="'card1'" content="safehtml">
+                <p>This is a custom slot</p>
+            </Card>
+            <Card title="'card2'" content="escapedText">
+                <Counter/>
+            </Card>
         </div>
     </t>
 </templates>

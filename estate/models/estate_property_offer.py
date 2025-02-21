@@ -17,9 +17,6 @@ class EstatePropertyOfferModel(models.Model):
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )
-    # property_state = fields.Selection(
-    #     related="property_id.state", string="property state", store=True
-    # )
 
     _sql_constraints = [
         (

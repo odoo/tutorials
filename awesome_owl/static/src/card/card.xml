@@ -2,6 +2,10 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.card">
         <p><t t-esc="props.title"/></p>
+        <button class="btn btn-primary" t-on-click="toggleContent">Toggle</button>
+        <t t-if="state.isOpen">
         <p><t t-out="props.content"/></p>
+        <p><t t-slot="default"/></p>
+        </t>
     </t>
 </templates>

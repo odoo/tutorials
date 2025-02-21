@@ -8,4 +8,5 @@
             <menuitem id="property_tags_setting_action" action="property_tags_menu_actions"/>
         </menuitem>
     </menuitem>
+    
 </odoo>

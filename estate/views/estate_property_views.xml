@@ -66,7 +66,7 @@
                     <h1>
                         <field name="name"/>
                     </h1>
-                    <group>
+                    <group class="col-6">
                         <field name="tag_ids" widget="many2many_tags"
                             options="{'color_field':'color'}"/>
                     </group>
@@ -88,7 +88,7 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                            <group>
+                            <group class="col-6">
                                 <field name="description"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area" string="Living Area(sqm)"/>
@@ -109,10 +109,10 @@
                                 readonly="state in ('offer_accepted','sold', 'cancelled')"/>
                         </page>
                         <page string="Other Info">
-                            <group>
+                            <group class="col-6">
                                 <field name="buyer_id"/>
                             </group>
-                            <group>
+                            <group class="col-6">
                                 <field name="salesperson_id"/>
                             </group>
                         </page>

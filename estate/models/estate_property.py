@@ -12,7 +12,7 @@ class EstatePropertyModel(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    image_1920 = fields.Image("Image", max_width=256, max_height=256, store=True)
+    image_1920 = fields.Image("Image")
     date_availability = fields.Date(
         copy=False, default=fields.Date.add(fields.Date.today(), months=3)
     )
@@ -118,7 +118,7 @@ class EstatePropertyModel(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_except_state_new_or_cancelled(self):
         for record in self:
-            if record.state != "new" or record.state != "cancelled":
+            if record.state != "new" and record.state != "cancelled":
                 raise UserError("only new and cancelled property can deleted")
 
     def action_set_sold(self):

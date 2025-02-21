@@ -35,7 +35,7 @@
                 <t t-foreach="properties" t-as="property">
                         <div class="col-md-4 col-sm-6 mt-4 mb-4 ">
                             <div class="card border border-success h-100">
-                                <img t-att-src="image_data_uri(property.image_1920)" class="card-img-top img-fluid h-50" alt="Property Image"/>
+                                <img t-att-src="image_data_uri(property.image_1920) if property.image_1920 else '/estate/static/src/property.jpeg'" class="card-img-top img-fluid h-50" alt="Property Image"/>
                                 <div class="card-body">
                                     <h5 class="card-title fw-bold"><t t-esc="property.name"/></h5>
                                     <p class="card-text">Postcode: <t t-esc="property.postcode"/></p>
@@ -71,7 +71,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <img t-att-src="image_data_uri(property.image_1920)" class="img-fluid h-100" alt="Property Image"/>
+                        <img t-att-src="image_data_uri(property.image_1920) if property.image_1920 else '/estate/static/src/property.jpeg'" class="img-fluid h-100" alt="Property Image"/>
                     </div>
                     <div class="col-md-6">
                         <h3 class="fw-bold"><t t-esc="property.name"/></h3>
@@ -113,4 +113,9 @@
             </div>
         </t>
     </template>
+    <record id="menu_estate_property" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
 </odoo>
