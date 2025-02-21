@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_property_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div style="font-size: 21px;">
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price"/>
+                            <br/>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.salesperson_id.name"/>
+                            <br/>
+                            <strong>Status: </strong>
+                            <span t-field="property.state"/>
+                        </div>
+                        <br/>
+                        <div class="invoice_offer">
+                            <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                            <t t-if="offers">
+                                <t t-call="estate.offers_table"/>
+                            </t>
+                            <t t-else="">
+                                <p>No offers yet</p>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

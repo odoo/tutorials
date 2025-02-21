@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+    </record>
+
+    <template id="property_list_template" name="Property List">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <h1 class="text-center text-primary mb-5">Properties</h1>
+                <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+                    <form method="get" action="/properties" class="d-flex">
+                        <select name="filter" class="form-select me-3" onchange="this.form.submit()">
+                            <option value="all" t-att-selected="current_filter == 'all'">All</option>
+                            <option value="available" t-att-selected="current_filter == 'available'">Available</option>
+                            <option value="sold" t-att-selected="current_filter == 'sold'">Sold</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-lg border-0 rounded-4 overflow-hidden hover-shadow">
+
+                                <div class="ratio ratio-16x9">
+                                    <img t-if="property.image"
+                                         t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                                         class="img-fluid rounded-top object-fit-cover"
+                                         alt="Property Image"/>
+                                </div>
+
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-dark fw-bold"><t t-esc="property.name"/></h5>
+                                    <p class="text-success fw-semibold fs-5 mb-2">
+                                        <i class="fa fa-dollar-sign"></i> <t t-esc="property.expected_price"/> $
+                                    </p>
+                                    <div class="text-muted mb-3">
+                                        <p><i class="fa fa-bed"></i> Bedrooms: <t t-esc="property.bedrooms"/></p>
+                                        <p><i class="fa fa-expand"></i> Living Area: <t t-esc="property.living_area"/> m²</p>
+                                    </div>
+                                    <a t-att-href="'/properties/%d' % property.id" class="btn btn-primary w-100">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <t t-if="pager">
+                    <div class="pagination mt-4 text-center">
+                        <t t-call="website.pager" t-set="pager"/>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>
