@@ -2,7 +2,27 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="display">
+            <div style="display:flex; flex-direction:row; align-items:center; justify-center:center; gap:10px; padding:10px;">
+                <button class="btn btn-primary" t-on-click="this.navigateCustomer">Customer</button>
+                <button class="btn btn-primary" t-on-click="this.navigateJournal">Leads</button>
+                <p style="font-size:16px; margin-top:0px; margin-bottom:0px;">
+        Dashboard
+                </p>
+            </div>
+            <div class="container">
+                <t t-foreach="this.state" t-as="i" t-key="i.id">
+                    <DashboardItems title="i.title" size="i.size">
+                        <p>
+                            <t t-esc="i.value"/>
+                        </p>
+                    </DashboardItems>
+                </t>
+            </div>
+            <!-- <DashboardItems title="pie chart"> -->
+            <!-- </DashboardItems> -->
+                <PieChart/>
+        </Layout>
     </t>
 
 </templates>

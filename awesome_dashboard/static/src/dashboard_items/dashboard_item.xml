@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.item">
+        <div class="card d-inline-block m-2" t-att-style="'width: ' + (props.size * 18) + 'rem;'">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <t t-esc="props.title or 'Default Title'"/>
+                </h5>
+                <p class="card-text">
+                    <t t-slot="default"/>
+                </p>
+            </div>
+        </div>
+    </t>
+
+</templates>
