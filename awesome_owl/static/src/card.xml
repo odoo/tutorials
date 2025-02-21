@@ -3,9 +3,9 @@
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="props.title">my title</h5>
-                <p class="props.content">
-                some content
+                <h5><t t-out="props.title"/></h5>
+                <p>
+                <t t-out="props.content"/>
                 </p>
             </div>
         </div>
