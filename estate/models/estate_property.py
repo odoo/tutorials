@@ -67,7 +67,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many(
         "estate.property.offer", "property_id", string="Offers")
     company_id = fields.Many2one(
-        "res.company", string="Company", default=lambda self: self.env.user.company_id,
+        "res.company", string="Company", default=lambda self: self.env.user.company_id.id,
         required=True)
     
     def property_action_cancel(self):
