@@ -4,6 +4,7 @@ from odoo.tools.float_utils import float_compare
 
 import datetime
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
