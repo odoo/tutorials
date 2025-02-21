@@ -94,13 +94,12 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        for record in self:
-            if self.garden:
-                self.garden_area = 10
-                self.garden_orientation = "north"
-            else:
-                self.garden_orientation = False
-                self.garden_area = 0
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_orientation = False
+            self.garden_area = 0
 
     def action_sold(self):
         if self.state == "cancelled":

@@ -37,7 +37,6 @@
             ]"/>
         </record>
 
-        <!-- Trailer Home -->
         <record id="estate_property_trailer_home" model="estate.property">
             <field name="name">Trailer Home</field>
             <field name="state">cancelled</field>

@@ -59,18 +59,25 @@ class EstatePropertyOffer(models.Model):
             record.status = "refused"
         return True
 
-    @api.model
-    def create(self, vals):
-        property_id = vals.get("property_id")
-        property_record = self.env["estate.property"].browse(property_id)
-        if property_record.state == "sold":
-            raise UserError("Cannot Create offer for a sold property")
-        else:
-            property_record.write({"state": "offer received"})
-            if vals["price"] is not None:
-                highest_price = property_record.best_price
-                if vals["price"] < highest_price:
-                    raise UserError(
-                        f"Error: the price cannot be less than maximum price {highest_price}."
-                    )
-            return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # Step 1: Set the property state to 'Offer Received' when a new offer is created
+            property_id = vals.get('property_id')
+            if property_id:
+                property_record = self.env['estate.property'].browse(property_id)
+                if property_record:
+                    # Update the property status to 'offer_received'
+                    if(property_record.state=="sold"):
+                        raise UserError("Can not create offer for sold property")
+                    property_record.write({'state': 'offer received'})
+
+            # Step 2: Raise an error if the new offer price is lower than an existing offer
+            if vals.get('price') is not None:
+                existing_offers = self.env['estate.property.offer'].search([
+                    ('property_id', '=', vals.get('property_id'))
+                ])
+                highest_offer = max(existing_offers.mapped('price'), default=0)
+                if vals['price'] < highest_offer:
+                    raise UserError(f"The offer price must be higher than the existing offer of {highest_offer}.")
+        return super().create(vals)

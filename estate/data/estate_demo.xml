@@ -1,4 +1,4 @@
-<odoo>
+<odoo noupdate="1">
     <data>
         <!-- Residential Property Type -->
         <record id="estate_property_type_residential" model="estate.property.type">

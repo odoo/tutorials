@@ -1,7 +1,6 @@
 <odoo>
     <template id="report_property_offers_inherit" inherit_id="estate.estate_property_report_template">
-        <xpath expr="//div[@class='page']" position="inside">
-            <!-- Only print this line if the property is "Done" -->
+        <xpath expr="//div[hasclass('page')]" position="inside">
             <t t-if="property.state == 'sold'">
                 <p>This property is fully invoiced!</p>
             </t>
