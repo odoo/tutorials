@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
@@ -16,9 +16,19 @@
         <Counter/>
 
         <h4>3. A simple Card component</h4>
-        <Card title="'Card with HTML'" content="'&lt;strong&gt;Bold Content&lt;/strong&gt;'"/>
+        <Card title="'Card 1'" content="'Content of card 1'"/>
         <Card title="'Card 2'" content="'Content of card 2'"/>
+
+        <h4>4. Using markup to display html</h4>
+        <Card title="'Card with HTML'" content="'&lt;strong&gt;Content of card1&lt;/strong&gt;'"/>
+        <Card title="'&lt;strong&gt;Content of card2&lt;/strong&gt;'" content="'Content of card2'"/>
+
+        <h4>6. The sum of two Counter</h4>
+        <Counter onchange="incrementSum"/>
+        <Counter onchange="incrementSum"/>
+        <h3>Total Sum: <t t-esc="state.sum" /></h3>
+
+        <h4>7. A todo list ....... 8. Use dynamic attributes....9. Adding a todo ....10. Focusing the input.....11. Toggling todos.....12. Deleting todos</h4>
+        <TodoList/>
     </t>
 </templates>
-
-      
