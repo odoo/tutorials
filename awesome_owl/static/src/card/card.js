@@ -5,5 +5,16 @@ export class Card extends Component {
     static props = {
         title: { type: String },
         slots: { type: Object,optional:true },
+         
     };  
+
+    setup() {
+        this.state = useState({ isContent: false });
+    }
+
+    toggleContent(){
+        // debugger
+        this.state.isContent=!this.state.isContent
+        console.log("state",this.state.isContent)
+    }
 }

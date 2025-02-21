@@ -7,12 +7,14 @@
                 </div>
                 <Counter onChangeIncrease.bind="sum" onChangeDecrease.bind="sub"/>
                 <Counter onChangeIncrease.bind="sum" onChangeDecrease.bind="sub"/>
-                <Card title="'hello'">
-                    <Counter/>
-                </Card>
-                <Card title="'hello'">
-                    <Counter/>
-                </Card>
+                <div class="d-flex" style="align-items:flex-start;">
+                    <Card title="'hello'">
+                        <Counter/>
+                    </Card>
+                    <Card title="'hello'">
+                        <Counter/>
+                    </Card>
+                </div>
                 <TodoList />
             </div>
         </div>

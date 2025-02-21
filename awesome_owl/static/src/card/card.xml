@@ -5,8 +5,13 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-out="props.title"/>
+                    <button class="btn btn-primary  px-4 py-2" t-on-click="toggleContent">
+                        <i class="fa fa-plus"></i> toggle
+                    </button>
                 </h5>
+                <div t-att-class="{'d-none': state.isContent}">
                 <t t-slot="default"/>
+                </div>
             </div>
         </div>
     </t>
