@@ -11,48 +11,15 @@
 
                 <div class="dashboard-container p-3">
                     <div class="dashboard-grid">
-                        <DashboardItem size="2">
-                            <h2>Average amount of t-shirt by order this month</h2>
-                            <div class="dashboard-value">
-                                <t t-esc="this.statistics.average_quantity"/>
-                            </div>
-                        </DashboardItem>
-
-                        <DashboardItem size="3">
-                            <h2>Average time for an order to go from 'new' to 'sent' or 'cancelled'</h2>
-                            <div class="dashboard-value">
-                                <t t-esc="this.statistics.average_time"/>
-                            </div>
-                        </DashboardItem>
-
-                        <DashboardItem size="2">
-                            <h2>Number of new orders this month</h2>
-                            <div class="dashboard-value">
-                                <t t-esc="this.statistics.nb_new_orders"/>
-                            </div>
-                        </DashboardItem>
-
-                        <DashboardItem size="2">
-                            <h2>Number of cancelled orders this month</h2>
-                            <div class="dashboard-value">
-                                <t t-esc="this.statistics.nb_cancelled_orders"/>
-                            </div>
-                        </DashboardItem>
-
-                        <DashboardItem size="2">
-                            <h2>Total amount of new orders this month</h2>
-                            <div class="dashboard-value">
-                                <t t-esc="this.statistics.total_amount"/>
-                            </div>
-                        </DashboardItem>
-
-                        <DashboardItem size="2">
-                            <h2>Shirt orders by size</h2>
-                            <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
-                        </DashboardItem>
-
+                        <t t-foreach="items" t-as="item" t-key="item.id">
+                            <DashboardItem size="item.size || 1">
+                                <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                                <t t-component="item.Component" t-props="itemProp" />
+                            </DashboardItem>
+                        </t>
                     </div>
                 </div>
+
             </Layout>
         </div>
     </t>

@@ -12,7 +12,7 @@ const statisticsService = {
         }
 
         loadStatistics();
-        setInterval(loadStatistics, 1000*10);
+        setInterval(loadStatistics, 1000*10*60);
 
         return {
             statistics,
