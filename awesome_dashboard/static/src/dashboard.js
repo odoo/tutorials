@@ -15,10 +15,8 @@ class AwesomeDashboard extends Component {
         this.display  = {
             controlPanel: {} 
         };
-        
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
-
 
     }
 
