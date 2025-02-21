@@ -11,9 +11,15 @@
             <menuitem
             id="estate_property_type_menu_action" 
             action="estate_property_type_action"/>
+    
             <menuitem
             id="estate_property_tag_menu_action" 
             action="estate_property_tag_action"/>
+
+            <menuitem
+            id="estate_property_offer_menu_action" 
+            action="estate_property_offer_action"/>
+
 
         </menuitem>
 
