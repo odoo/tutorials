@@ -1,6 +1,7 @@
-import { Component, markup, useState } from "@odoo/owl";
-import { Counter } from "./counter/counter";
 import { Card } from "./card/card";
+import { Counter } from "./counter/counter";
+import { TodoList } from "./todolist/todolist";
+import { Component, markup, useState } from "@odoo/owl";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground_template";
@@ -11,10 +12,9 @@ export class Playground extends Component {
         this.state = useState({ counter1: 2});
     }
 
-    static components = { Counter, Card };
+    static components = { Counter, Card, TodoList };
 
     updateCounter1() {
         this.state.counter1 += 1;
     }
 }
-

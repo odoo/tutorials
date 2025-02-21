@@ -5,11 +5,14 @@
                 <h5 class="card-title">
                     <t t-esc="props.title" />
                 </h5>
-                <p class="card-text">
+                <button class="btn-primary" t-on-click="togglecard">
+                    <t t-esc="state.isOpen ? 'Hide' : 'Show'" />
+                </button>
+                <p class="card-text" t-if="state.isOpen">
                     <t t-out="props.content" />
+                    <t t-slot="default"></t>
                 </p>
             </div>
         </div>
     </t>
 </template>
-
