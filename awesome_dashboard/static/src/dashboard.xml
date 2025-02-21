@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout t-props="displayProps" className="'o_dashboard h-100'">
+        <div class="o_dashboard_content">
+            <h2>Welcome to Awesome Dashboard</h2>
+            <p>This is your main dashboard content.</p>
+        </div>
+    </Layout>
     </t>
-
 </templates>
