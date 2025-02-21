@@ -43,18 +43,15 @@ class EstatePropertyController(http.Controller):
             scope=total_pages,  # typically `self`
             url_args={'search':search,'listed_after':listed_after}if listed_after or search else{},  # additional GET params if needed
         )
-        properties = (
-            request.env["estate.property"]
-            .sudo()
-            .search(domain, limit=6, offset=pager["offset"])
-        )
+        properties = request.env["estate.property"].sudo().search(domain, limit=6, offset=pager["offset"])
+        
 
   
         return request.render(
             "estate.estate_property_webpage",
             {
                 "properties": properties,
-                "total_pages": int(total_pages),
+                "total_pages": total_pages,
                 "current_page": int(page),
                 "pager": pager,
             },

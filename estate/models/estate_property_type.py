@@ -7,7 +7,7 @@ class EstatePropertyType(models.Model):
     _description = "test description 2"
     _order = "name,sequence"
 
-    name = fields.Char(required=True, unique=True)
+    name = fields.Char(required=True)
     property_ids = fields.One2many("estate.property", "property_type_id")
     sequence = fields.Integer(
         "Sequence", default=1, help="Used to order stages. Lower is better."

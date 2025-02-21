@@ -6,7 +6,7 @@ class EstatePropertyTag(models.Model):
     _description = "test description 3"
     _order = "name"
 
-    name = fields.Char(required=True, unique=True)
+    name = fields.Char(required=True)
     color = fields.Integer("Color", default=0xFFFFFF)
 
     _sql_constraints = [

@@ -1,7 +1,7 @@
 {
     "name": "estate",
     "category": "Real Estate/Brokerage",
-    "depends": ["base", "mail","website"], 
+    "depends": ["base", "mail","website","whatsapp"], 
     "data": [
         "wizard/estate_property_offer_wizard_view.xml",
         "views/res_user_views.xml",
@@ -22,4 +22,5 @@
     ],
     "demo": ["demo/estate_demo.xml"],
     "application": True,
+    'license': 'LGPL-3'
 }

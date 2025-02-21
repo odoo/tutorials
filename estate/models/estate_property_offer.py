@@ -70,22 +70,23 @@ class EstatePropertyOffer(models.Model):
             if record.price < 0:
                 raise ValidationError("Price cannot be negative!")
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         # Set property state to 'offer received' when creating an offer
-        property = self.env["estate.property"].browse(vals.get("property_id"))
-        if property:
-            if property.state != 'sold' and property.state != 'cancelled':
-                if vals["price"] > property.best_price:
-                    property.state = (
-                        "offer received"  # Set the property state when an offer is created
-                    )
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals.get("property_id"))
+            if property:
+                if property.state != 'sold' and property.state != 'cancelled':
+                    if vals["price"] > property.best_price:
+                        property.state = (
+                            "offer received"  # Set the property state when an offer is created
+                        )
+                    else:
+                        raise ValidationError("Bidding Price should be more than best price")
                 else:
-                    raise ValidationError("Bidding Price should be more than best price")
-            else:
-                print("Offer cannot be created since this property is either sold or cancelled. Error raised")
-                raise ValidationError("Offer cannot be created since this property is either sold or cancelled.")
-        return super(EstatePropertyOffer, self).create(vals)
+                    print("Offer cannot be created since this property is either sold or cancelled. Error raised")
+                    raise ValidationError("Offer cannot be created since this property is either sold or cancelled.")
+        return super(EstatePropertyOffer, self).create(vals_list)
 
     @api.model
     def unlink(self):

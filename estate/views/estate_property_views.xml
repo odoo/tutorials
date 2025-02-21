@@ -137,10 +137,10 @@
                                     <field name="validity" />
                                     <field name="date_deadline" />
                                     <button name="offer_accept" states="draft" type="object"
-                                        icon="fa-check"
+                                        icon="fa-check"  title="accepted"
                                         invisible="status in ['accepted', 'refused'] or parent.state in ['offer_accepted', 'sold', 'cancelled']" />
                                     <button name="offer_refuse" states="draft" type="object"
-                                        icon="fa-times"
+                                        icon="fa-times" title="refused"
                                         invisible="status in ['accepted', 'refused']or parent.state in ['offer_accepted', 'sold', 'cancelled']" />
                                 </list>
                             </field>

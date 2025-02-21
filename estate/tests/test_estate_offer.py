@@ -7,12 +7,6 @@ class EstateTestCase(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super(EstateTestCase, cls).setUpClass()
-        print()
-        print()
-        print("TEST FILE HAS BEEN INITIALIZED!!!!")
-        print()
-        print()
-
         cls.properties = cls.env["estate.property"].create(
             {
                 "name": "Test Property",
@@ -44,15 +38,7 @@ class EstateTestCase(TransactionCase):
         )
 
     def test_offer_create_after_sold(self):
-        print(
-            "---------------------------Test1-----------------------------------------"
-        )
-        print()
         self.properties2.action_sold()
-        print("CREATING OFFER FOR SOLD PROPERTY!!!!")
-        print()
-        print()
-        print(self.assertRaises(ValidationError))
         with self.assertRaises(ValidationError):
             self.env["estate.property.offer"].create(
                 {
@@ -61,23 +47,12 @@ class EstateTestCase(TransactionCase):
                     "partner_id": self.partner_id.id,
                 }
             )
-        print("Offer for sold property test Complete!")
 
     def test_no_sold_without_accept_offer(self):
-        print("------------------Test2-------------------------------------")
-        print()
-        print("SELLING PROPERTY")
         with self.assertRaises(UserError):
             self.properties.action_sold()
 
-        print("Selling property without accepting offer test completed!")
-
     def test_garden_toggle_check(self):
-        print()
-        print()
-        print(
-            "-------------------------------------------------TEST3--------------------------------"
-        )
         with Form(self.properties) as form:
             form.garden = False
             self.assertEqual(
@@ -102,4 +77,3 @@ class EstateTestCase(TransactionCase):
                 False,
                 "Garden Orientation should be reset to False when Garden checkbox is unchecked",
             )
-        print("3rd TEST CLEARED!!!!!!")

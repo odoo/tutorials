@@ -3,6 +3,7 @@ from odoo import api, fields, models
 
 class EstateOfferWizard(models.TransientModel):
     _name = "estate.property.offer.wizard"
+    _description="Create multiple offers at once!!!"
     property_ids = fields.Many2many("estate.property", required=True)
     validity = fields.Integer(default=7)
     partner_id = fields.Many2one("res.partner")
