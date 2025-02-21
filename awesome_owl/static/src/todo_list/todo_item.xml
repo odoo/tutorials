@@ -1,0 +1,8 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todoItem">
+        <div class="d-flex flex-col">
+            <p class="m-2"><t t-out="props.todo.id"/></p>
+            <p class="m-2"><t t-out="props.todo.description"/></p>
+        </div>
+    </t>
+</templates>
