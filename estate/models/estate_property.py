@@ -10,8 +10,8 @@ class EstateProperty(models.Model):
     _description = "Property"
     _order = 'id desc'
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected Price must be strickly Positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling Price must be Positive.')
+        ('check_expected_price', 'CHECK(expected_price > 0)', "Expected price must be positive."),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', "Selling price must be positive.")
     ]
 
     name = fields.Char(string="Name", required=True, tracking=True)

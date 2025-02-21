@@ -10,9 +10,10 @@ class EstateProperty(models.Model):
         if not self.buyer_id:
             raise UserError("A buyer must be specified before selling the property.")
         
-        journal = self.env['account.journal'].search([('type', '=', 'sale')],limit = 1)
-        if not journal:
-            raise UserError("No sales journal found.")
+        journal = self.env['account.journal'].search([
+                ('type', '=', 'sale'),
+                ('company_id', '=', self.env.company.id)
+            ],limit=1)
 
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,

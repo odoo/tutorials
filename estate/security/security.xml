@@ -7,7 +7,7 @@
     <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
-        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+        <!-- <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/> -->
         <field name="users" eval="[(4, ref('base.user_admin'))]"/>
     </record>
 
@@ -19,13 +19,13 @@
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="False"/>
         <field name="domain_force">[('user_id', '=', user.id)]</field>
-        <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
+        <field name="groups" eval="[(4, (ref('estate.estate_group_user')))]"/>
     </record>
 
-    <record id="estate_property_company_rule" model="ir.rule">
+    <!-- <record id="estate_property_company_rule" model="ir.rule">
         <field name="name">Estate Property Company Rule</field>
         <field name="model_id" ref="model_estate_property"/>
-        <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
-    </record>
+    </record> -->
 </odoo>

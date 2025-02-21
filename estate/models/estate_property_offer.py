@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
     _order = 'price desc'
     _check_company_auto = True
     _sql_constraints = [
-        ('check_price', 'CHECK(price >0)', 'The Offer Price must be strickly Positive.')
+        ('check_price', 'CHECK(price > 0)', "The offer price must be  positive.")
     ]
 
     price = fields.Float(string="Offer Price", tracking=True)
@@ -68,7 +68,7 @@ class EstatePropertyOffer(models.Model):
                 'selling_price': offer.price,
                 'buyer_id': offer.partner_id,
             })
-            offer.property_id.offer_ids.filtered(lambda x: x.id != offer.id).write({'status': 'refused'})
+            (offer.property_id.offer_ids - offer).status = 'refused'
 
     # action to change offer status to refused
     def action_refuse(self):
@@ -107,15 +107,11 @@ class EstatePropertyOffer(models.Model):
                 "Only companies are allowed.")
 
     # auto accept best offer using cron action
-    def auto_accept_best_offer(self):
-        today = date.today()
-
+    def _auto_accept_best_offer(self):
         properties = self.env['estate.property'].search([
-            ('date_deadline', '&gt;=', today),
+            ('date_deadline', '<=', date.today()),
             ('state', '=', 'received')
         ])
         for property in properties:
             best_offer = property.offer_ids.filtered(lambda o: o.status != 'refused').sorted('price', reverse=True)[:1]
-
-            if best_offer:
-                best_offer.action_accept()
+            best_offer.action_accept()
