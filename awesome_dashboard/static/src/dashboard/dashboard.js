@@ -1,10 +1,12 @@
-import { Component, onWillStart } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 import { DashboardItem } from "./components/dashboard_item/dashboard_item";
 import { PieChart } from "./components/Pie_chart/Pie_chart";
+import { ConfigurationDialog } from "./components/configuration_dialog/configuration_dialog";
+import { browser } from "@web/core/browser/browser";
 
 class AwesomeDashboard extends Component {
   static template = "awesome_dashboard.AwesomeDashboard";
@@ -12,14 +14,11 @@ class AwesomeDashboard extends Component {
 
   setup() {
     this.action = useService("action");
-    this.statistics = useService("awesome_dashboard.statistics");
-
-    onWillStart(async () => {
-      try {
-        this.result = await this.statistics.loadStatistics();
-      } catch (err) {
-        console.log(`Error occured during the fetching of statistics : ${err}`);
-      }
+    this.result = useState(useService("awesome_dashboard.statistics"));
+    this.items = registry.category("awesome_dashboard").getAll();
+    this.dialog = useService("dialog");
+    this.state = useState({
+      disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || [],
     });
   }
 
@@ -40,6 +39,18 @@ class AwesomeDashboard extends Component {
       ],
     });
   }
+
+  openDashboardConfiguration() {
+    this.dialog.add(ConfigurationDialog, {
+      items: this.items,
+      disabledItems: this.state.disabledItems,
+      onUpdateConfiguration: this.updateDashboardConfiguration.bind(this),
+    });
+  }
+
+  updateDashboardConfiguration(newDisabledItems) {
+    this.state.disabledItems = newDisabledItems;
+  }
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);

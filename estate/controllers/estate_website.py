@@ -1,5 +1,4 @@
 from odoo import http
-from odoo.http import request
 
 
 class EstateWebsite(http.Controller): 
@@ -14,7 +13,7 @@ class EstateWebsite(http.Controller):
             _url_arguments = {'listed_after' : kwargs['listed_after']}
         
         # Sort properties in descending order of creation
-        properties = request.env['estate.property'].sudo().search(
+        properties = http.request.env['estate.property'].sudo().search(
             domain, order='create_date desc'
         )
         
@@ -24,7 +23,7 @@ class EstateWebsite(http.Controller):
         _starting_index = (page - 1) * _items_per_page
         _page_properties = properties[_starting_index: _starting_index + _items_per_page]
         
-        pager = request.website.pager(
+        pager = http.request.website.pager(
             url='/estate/properties',
             total=_total,
             page=page,
@@ -33,7 +32,7 @@ class EstateWebsite(http.Controller):
             url_args=_url_arguments
         )
         
-        return request.render('estate.estate_website_properties', {
+        return http.request.render('estate.estate_website_properties', {
             'properties': _page_properties,
             'pager': pager,
             'listed_after' : kwargs.get('listed_after', False) # the 2nd parameter is the default value
@@ -41,11 +40,11 @@ class EstateWebsite(http.Controller):
     
     @http.route(['/estate/property/<int:property_id>'], auth='public', website=True)
     def estate_property_detail(self, property_id):
-        property_record = request.env['estate.property'].sudo().browse(property_id)
+        property_record = http.request.env['estate.property'].sudo().browse(property_id)
         
         if not property_record.exists():
-            return request.render('website.page_404')
+            return http.request.render('website.page_404')
         
-        return request.render('estate.estate_website_property_detail',{
+        return http.request.render('estate.estate_website_property_detail',{
             'property' : property_record
         })
