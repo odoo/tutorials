@@ -1,9 +1,9 @@
 """Model of an offer on an estate property."""
 
+import datetime
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-
-import datetime
 
 
 class EstatePropertyOffer(models.Model):

@@ -1,10 +1,11 @@
 """Model of an estate property."""
 
+import datetime
+
 from odoo import api, fields, models
+
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
-
-import datetime
 
 
 class EstateProperty(models.Model):
