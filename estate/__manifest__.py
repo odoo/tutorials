@@ -2,10 +2,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name' : 'estate',
+    'name' : "estate",
     'category' : 'Real Estate/Brokerage',
     'version' : '1.0',
-    'description' : 'Real Estate Management',
+    'description' : """
+        Real Estate Management
+    """,
     'depends' : ['base','website'],
     'data' : [
         'security/estate_security.xml',
@@ -24,7 +26,6 @@
     'demo' : [
         'demo/demo_estate_property.xml',
         'demo/demo_estate_property_offer.xml',
-        # 'demo/estate_demo.xml', #demo data for report
     ],
     'application' : True,
     'installable' : True,

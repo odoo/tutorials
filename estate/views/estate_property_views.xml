@@ -141,37 +141,38 @@
         </field>
     </record>
 
-<template id="properties_template">
-    <t t-call="website.layout">
-        <div class="container mt-4 bg-dark text-white">
-            <div class="row g-4">
-                <t t-foreach="properties" t-as="property">
-                    <div class="col-md-3 mt-2">
-                        <div class="card p-2 shadow-sm bg-light text-dark h-100">
-                            <img t-if="property.image"
-                                 t-att-src="image_data_uri(property.image)"
-                                 class="card-img-top img-fluid rounded"
-                                 style="height: 200px; object-fit: cover;"
-                                 alt="Property Image"/>
-                            <div class="card-body">
-                                <h5 class="card-title" t-out="property.name"></h5>
-                                <p class="card-text">
-                                    <strong>Price:</strong> $<t t-out="property.selling_price" />
-                                </p>
-                                <p class="card-text">
-                                    <strong>Expected Price:</strong> $<t t-out="property.expected_price" />
-                                </p>
-                                <p class="card-text">
-                                    <strong>Living Area:</strong> <t t-out="property.living_area" /> sqft
-                                </p>
+    <template id="properties_template">
+        <t t-call="website.layout">
+            <div class="container mt-4 bg-dark text-white">
+                <div class="row g-4">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-3 mt-2">
+                            <div class="card p-2 shadow-sm bg-light text-dark h-100">
+                                <img t-if="property.image"
+                                    t-att-src="image_data_uri(property.image)"
+                                    class="card-img-top img-fluid rounded"
+                                    style="height: 200px; object-fit: cover;"
+                                    alt="Property Image" />
+                                <div class="card-body">
+                                    <h5 class="card-title" t-out="property.name"></h5>
+                                    <p class="card-text">
+                                        <strong>Price:</strong> $<t t-out="property.selling_price" />
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Expected Price:</strong> $<t
+                                            t-out="property.expected_price" />
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Living Area:</strong> <t t-out="property.living_area" />
+                                        sqft </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </t>
-                <t t-call="website.pager"/>
+                    </t>
+                    <t t-call="website.pager" />
+                </div>
             </div>
-        </div>
-    </t>
-</template>
+        </t>
+    </template>
 
 </odoo>

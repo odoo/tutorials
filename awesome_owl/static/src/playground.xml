@@ -2,8 +2,10 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <p>Counter: <t t-out="state.value"/></p>
-        <button class="btn btn-primary" t-on-click="increment">Increment</button>
+        <Counter/>
+        <Counter/>
+        <Card title="'Title'" content="'Content'"/>
+        <Card title="'Title'" content="'Content'"/>
     </t>
 
 </templates>
