@@ -1,6 +1,7 @@
 from odoo import fields, models
 from odoo.exceptions import ValidationError
 
+
 class EstatePropertyOfferWizard(models.TransientModel):
     _name = "estate.property.offer.wizard"
     _description = "Estate Property Offer Wizard"

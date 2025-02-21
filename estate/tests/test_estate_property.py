@@ -2,6 +2,7 @@ from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import Form, tagged
 
+
 @tagged("post_install", "-at_install")
 class EstateTestCase(TransactionCase):
     @classmethod
@@ -17,7 +18,6 @@ class EstateTestCase(TransactionCase):
         cls.partner = cls.env["res.partner"].create({"name": "Test Partner"})
 
     def test_offer_creation_and_selling_without_accepted_offer_should_fail(self):
-        
         # Attempt to sell a property without an accepted offer
         with self.assertRaises(UserError):
             self.property.action_set_sold()

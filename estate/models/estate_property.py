@@ -1,18 +1,24 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models, tools 
+from odoo import api, fields, models, tools
 from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _inherit = ["mail.thread"]
     _description = "Real Estate Property"
 
-    name = fields.Char(string="Property Name", required=True,tracking=True)
+    name = fields.Char(string="Property Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, default=None,tracking=True)
+    buyer_id = fields.Many2one(
+        "res.partner", string="Buyer", copy=False, default=None, tracking=True
+    )
     salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user,tracking=True
+        "res.users",
+        string="Salesperson",
+        default=lambda self: self.env.user,
+        tracking=True,
     )
     company_id = fields.Many2one(
         "res.company",
@@ -33,7 +39,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(string="Expected Price", required=True, default=0.0)
     selling_price = fields.Float(string="Selling Price")
-    image = fields.Image(string="Image",max_width=1920,max_height=1920)
+    image = fields.Image(string="Image", max_width=1920, max_height=1920)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Float(string="Living Area (sq.m.)")
     facades = fields.Integer(string="Number of Facades")
@@ -51,7 +57,7 @@ class EstateProperty(models.Model):
         ],
         string="State",
         tracking=True,
-        group_expand=True
+        group_expand=True,
     )
     best_price = fields.Float(
         "Best Buyer Price", compute="_compute_best_price", store=True
@@ -124,11 +130,11 @@ class EstateProperty(models.Model):
         self.state = "cancelled"
 
     def action_set_sold(self):
-        if self.state == "cancelled"  :
+        if self.state == "cancelled":
             raise UserError("Cancelled properties cannot be sold.")
-        if self.state != "offer_accepted":   
+        if self.state != "offer_accepted":
             raise UserError("property can not be sold without accepting offer.")
         self.state = "sold"
         if self.buyer_id.email:
-            template=self.env.ref('estate.estate_property_sold_email_template')
-            template.send_mail(self.id,force_send=True)
+            template = self.env.ref("estate.estate_property_sold_email_template")
+            template.send_mail(self.id, force_send=True)

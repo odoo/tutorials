@@ -17,7 +17,7 @@
                                 <span t-field="property.selling_price" />
                             </p>
                         </div>
-                        <t t-call="estate.estate_property_offert_report"/>
+                        <t t-call="estate.estate_property_offert_report" />
                     </div>
                 </t>
             </t>

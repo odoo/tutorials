@@ -4,7 +4,7 @@
             <field name="name">Big Villa</field>
             <field name="state">new</field>
             <field name="description">A nice and big villa</field>
-            <field name="property_type_id" ref="propety_type_residential"/>
+            <field name="property_type_id" ref="propety_type_residential" />
             <field name="postcode">12345</field>
             <field name="date_availability">2020-02-02</field>
             <field name="expected_price">1600000</field>
@@ -37,7 +37,7 @@
             <field name="name">Big Villa with Offers</field>
             <field name="state">new</field>
             <field name="description">A nice villa with multiple offers</field>
-            <field name="property_type_id" ref="propety_type_residential"/>
+            <field name="property_type_id" ref="propety_type_residential" />
             <field name="postcode">12345</field>
             <field name="date_availability">2022-01-01</field>
             <field name="expected_price">20</field>
@@ -47,7 +47,8 @@
             <field name="facades">3</field>
             <field name="garage">True</field>
             <field name="garden">True</field>
-            <field name="offer_ids" eval="[
+            <field name="offer_ids"
+                eval="[
             Command.create({
                 'price': 150000,
                 'validity': 14,
@@ -63,27 +64,27 @@
                 'validity': 14,
                 'partner_id': ref('base.res_partner_2'),
             })
-            ]"/>
+            ]" />
         </record>
 
         <record id="estate_property_offer1" model="estate.property.offer">
             <field name="price">10000</field>
-            <field name="property_id" ref="estate_property_1"/>
-            <field name="partner_id" ref="base.res_partner_1"/>
+            <field name="property_id" ref="estate_property_1" />
+            <field name="partner_id" ref="base.res_partner_1" />
             <field name="validity">14</field>
         </record>
 
         <record id="estate_property_offer2" model="estate.property.offer">
             <field name="price">1500000</field>
-            <field name="property_id" ref="estate_property_1"/>
-            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="property_id" ref="estate_property_1" />
+            <field name="partner_id" ref="base.res_partner_2" />
             <field name="validity">14</field>
         </record>
 
         <record id="estate_property_offer3" model="estate.property.offer">
             <field name="price">1500001</field>
-            <field name="property_id" ref="estate_property_1"/>
-            <field name="partner_id" ref="base.res_partner_3"/>
+            <field name="property_id" ref="estate_property_1" />
+            <field name="partner_id" ref="base.res_partner_3" />
             <field name="validity">14</field>
         </record>
 
@@ -167,5 +168,5 @@
             <field name="garden_area">600</field>
             <field name="garden_orientation">north</field>
         </record>
-    </data>    
+    </data>
 </odoo>

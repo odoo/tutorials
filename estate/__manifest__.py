@@ -27,5 +27,6 @@
         "demo/estate_property_demo.xml"
     ],
     "installable": True,
-    "application": True
+    "application": True,
+    'license': 'LGPL-3',
 }
