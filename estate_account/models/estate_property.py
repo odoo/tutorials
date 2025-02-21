@@ -4,7 +4,6 @@ from odoo import api, Command, models
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
-    @api.model_create_multi
     def action_sold(self):
         for record in self:
             invoice_vals = {

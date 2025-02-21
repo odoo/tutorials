@@ -15,6 +15,7 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
+            <field name="property_image" type="base64" file="estate/demo/big_villa.jpg"/>
             <field name="property_type_id" ref="estate.estate_property_type_residential"></field>
         </record>
 
@@ -30,6 +31,7 @@
             <field name="living_area">10</field>
             <field name="facades">4</field>
             <field name="garage">False</field>
+            <field name="property_image" type="base64" file="estate/demo/trailer_home.jpeg"/>
             <field name="property_type_id" ref="estate.estate_property_type_residential"></field>
         </record>
 
@@ -65,6 +67,30 @@
             <field name="facades">2</field>
             <field name="garage">False</field>
             <field name="property_type_id" ref="estate.estate_property_type_commercial"></field>
+        </record>
+
+        <record id="estate_property_5" model="estate.property">
+            <field name="name">Cozy Cabin</field>
+            <field name="description">Small cabin by lake</field>
+            <field name="postcode">10000</field>
+            <field name="date_availability">2020-01-01</field>
+            <field name="expected_price">80000</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="garden">True</field>
+            <field name="property_type_id" ref="estate.estate_property_type_residential"></field>
+        </record>
+
+        <record id="estate_property_6" model="estate.property">
+            <field name="name">International Space Station</field>
+            <field name="state">new</field>
+            <field name="description">Aliens sometimes come visit</field>
+            <field name="postcode">----</field>
+            <field name="date_availability">2030-12-31</field>
+            <field name="expected_price">45890000</field>
+            <field name="property_type_id" ref="estate.estate_property_type_industrial"></field>
         </record>
     </data>
 </odoo>

@@ -109,7 +109,7 @@ class EstateProperty(models.Model):
                 if record.buyer_id:
                     template.send_mail(record.id, force_send=True)
             else:
-                raise UserError(_("Offer cannot be sold without offer accepted."))           
+                raise UserError(_("Offer cannot be sold without offer accepted."))
         return True
 
     def _track_subtype(self, init_values):

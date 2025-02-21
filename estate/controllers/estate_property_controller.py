@@ -8,21 +8,25 @@ from odoo.http import request
 
 class EstateProperty(http.Controller):
     @http.route(['/properties','/properties/page/<int:page>'], type='http', auth='public', website=True)
-    def estate_property(self, page=1):
+    def estate_property(self, page=1, listed_after=None):
         domain = [('state', 'in', ['new', 'offer_received', 'offer_accepted'])]
+        if listed_after:
+            domain.append(('create_date', '>', listed_after))
         total = request.env['estate.property'].search_count(domain)
         step = 6
         offset = (page - 1) * step
         pager = portal_pager(
-            url='/properties',
-            page=page,
-            total=total,
-            step=step,
+            url = '/properties',
+            url_args = {'listed_after': listed_after},
+            page = page,
+            total = total,
+            step = step,
         )
         properties = request.env['estate.property'].search(domain, limit=step, offset=offset)
         values = {
             'pager': pager,
             'properties' : properties,
+            'listed_after': listed_after or '',
         }
         return request.render('estate.estate_property_template', values)
 

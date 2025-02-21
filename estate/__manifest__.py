@@ -23,6 +23,8 @@ Real Estate module is for training, the module contains property types, offers a
         'views/rating_rating_view.xml',
         'views/estate_property_template.xml',
         'views/estate_property_detail_template.xml',
+        'report/estate_property_report.xml',
+        'report/estate_property_report_template.xml',
     ],
     'demo' : [
         'demo/estate_property_type_demo.xml',

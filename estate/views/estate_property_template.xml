@@ -4,6 +4,16 @@
         <t t-call="website.layout">
             <div class="container">
                 <h1 class="mb-4">Available Properties</h1>
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <input type="date" id="listed_after" name="listed_after" class="form-control" t-att-value="listed_after"/>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary" onclick="window.location.href='/properties?listed_after=' + document.getElementById('listed_after').value;">
+                            Listed After
+                        </button>
+                    </div>
+                </div>
                 <div class="row">
                     <t t-foreach="properties" t-as="prop">
                         <div class="col-md-4 mb-4">
@@ -13,6 +23,9 @@
                                     <h5 class="card-title" t-field="prop.name"></h5>
                                     <p class="card-text">
                                         Expected Price: <span t-field="prop.expected_price"></span>
+                                    </p>
+                                    <p class="card-text">
+                                        Date: <span t-field="prop.create_date"></span>
                                     </p>
                                     <p class="card-text" t-if="prop.state == 'offer_received'">
                                         Best offer: <span t-field="prop.best_price"></span>
