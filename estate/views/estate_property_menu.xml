@@ -12,22 +12,3 @@
     <field name="web_icon">estate,static/dependencies/real_estate_icon.png</field>
  </record>
 </odoo>
-
-<!-- OR YOU CAN ACHIVE THIS BY FOLLOWING AS WELL , THE FOLLOWING DEFINES PARENT HIREARCHY-->
-<!--  
-    <odoo>
-   
-    <menuitem id="main_menu_root" name="Estate"/>
-
-    
-    <menuitem id="first_level_menu" name="First Level" parent="main_menu_root"/>
-
-   
-    <menuitem id="menu_action" action="estate.property_action" parent="first_level_menu"/>
-
-    <record id="main_menu_root" model="ir.ui.menu">
-        <field name="web_icon">real_estate,static/dependencies/real_estate_icon.png</field>
-    </record>
-</odoo>
-
--->

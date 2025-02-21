@@ -1,1 +1,1 @@
-from . import estate_property_acc
+from . import estate_property_account

@@ -22,25 +22,28 @@ class EstatePropertyController(http.Controller):
                 listed_after_date = None
 
         if searching_name:
-            search_filter = ["|", ("name", "ilike", searching_name), ("description", "ilike", searching_name)]
+            search_filter = [
+                "|",
+                ("name", "ilike", searching_name),
+                ("description", "ilike", searching_name),
+            ]
             domain.extend(search_filter)
 
         total_properties = request.env["estate.property"].sudo().search_count(domain)
-        # total_pages = (total_properties // 6) + (1 if total_properties % 6 != 0 else 0)
 
         pager = request.website.pager(
             url="/properties",
             total=total_properties,
-            page=page,  # the page arg.
-            step=6,  # 6 in our case
-            url_args=kwargs,  # Preserve filters like 'listed_after'
+            page=page,
+            step=6,
+            url_args=kwargs,
         )
 
         properties = (
             request.env["estate.property"]
             .sudo()
             .search(
-                domain, order="date_availability desc", limit=6 , offset=pager['offset']
+                domain, order="date_availability desc", limit=6, offset=pager["offset"]
             )
         )
 
@@ -48,7 +51,7 @@ class EstatePropertyController(http.Controller):
             "estate.property_page",
             {
                 "properties": properties,
-                "pager": pager,  # Pass the pager to the template , here no need to explicitly add total_pages and page.
+                "pager": pager,
             },
         )
 
@@ -60,30 +63,3 @@ class EstatePropertyController(http.Controller):
             return request.not_found()
 
         return request.render("estate.property_detail_page", {"property": property})
-
-
-"""
-Pagination by website.pager (built in):
-
-    pager = request.website.pager(
-            url="/properties",
-            total=total_properties, 
-            page=page,        # the page arg.
-            step=per_page,   # 6 in our case
-            url_args=kwargs  # Preserve filters like 'listed_after'
-        )
-
-    Then render and in 
-        return request.render("estate.property_page", {
-            'properties': properties,
-            'pager': pager,  # Pass the pager to the template , here no need to explicitly add total_pages and page. 
-        })
-
-        in xml:
-            <t t-if="pager">
-                <t t-call="website.pager">
-                    <t t-set="pager" t-value="pager"/>
-                </t>
-            </t> 
-            and done.
-"""

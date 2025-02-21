@@ -6,6 +6,7 @@
     'application': True,
     'depends': ['base','mail','whatsapp','website'],
     'category':'Real Estate/Brokerage',
+    'license': 'LGPL-3',
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv', 

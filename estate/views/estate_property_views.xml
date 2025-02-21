@@ -97,8 +97,8 @@
                                    <field name="validity"></field>
                                    <field name="property_type_id"/> 
                                    <field name="date_deadline"></field>
-                                   <button name="accept_offer" type="object" icon="fa-check" invisible="status_offer in ['accepted','refused'] or parent.status in ['offer_accepted','sold','canceled']"/>
-                                   <button name="reject_offer" type="object" icon="fa-times" invisible="status_offer in ['accepted','refused'] or parent.status in ['offer_accepted','sold','canceled']"/>  
+                                   <button name="accept_offer" type="object" title="accpet" icon="fa-check" invisible="status_offer in ['accepted','refused'] or parent.status in ['offer_accepted','sold','canceled']"/>
+                                   <button name="reject_offer" type="object" title="reject" icon="fa-times" invisible="status_offer in ['accepted','refused'] or parent.status in ['offer_accepted','sold','canceled']"/>  
                                    <!-- <field name="status_offer"></field>-->
                                  </list>
                                 </field>   

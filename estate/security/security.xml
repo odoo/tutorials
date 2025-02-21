@@ -1,5 +1,4 @@
 <odoo>
-<!-- CORRECTED-->
         <!-- Agent Group -->
         <record id="estate_group_user" model="res.groups">
             <field name="name">Agent</field>
@@ -30,7 +29,4 @@
         <field name="domain_force">[]</field>
         <field name="perm_read" eval="True"/>
     </record>
-
-
-
 </odoo>

@@ -40,4 +40,3 @@ class EstatePropertyAccount(models.Model):
         }
         invoice = self.env['account.move'].sudo().create(invoice_vals)
         return super().sold_event()
-

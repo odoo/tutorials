@@ -17,4 +17,3 @@ class MakeAnOffer(models.TransientModel):
                 'validity': self.validity,
                 'partner_id': self.partner_id.id,
             })
-            

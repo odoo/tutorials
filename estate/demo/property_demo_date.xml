@@ -32,7 +32,7 @@
             <field name="garden">False</field>
         </record>
 
-     <record id="estate_property_luxury_villa" model="estate.property">
+        <record id="estate_property_luxury_villa" model="estate.property">
             <field name="name">Luxury Villa</field>
             <field name="status">new</field>
             <field name="description">A luxury villa with sea view</field>  <!-- Fixed typo -->
@@ -46,58 +46,60 @@
             <field name="garden">True</field>
             <field name="garden_area">500</field>
             <field name="garden_orientation">west</field>
-            <field name="property_type_id" ref="estate_property_type_residential"/>
+            <field name="property_type_id" ref="estate_property_type_residential" />
 
-           <field name="offer_ids" eval="[
-    Command.create({
-        'partner_id': ref('base.res_partner_12'),
-        'price': 2200000,
-        'validity': 14
-    }),
-    Command.create({
-        'partner_id': ref('base.res_partner_2'),
-        'price': 2300000,
-        'validity': 21
-    })
-]"/>  
+            <field name="offer_ids"
+                eval="[
+                        Command.create({
+                            'partner_id': ref('base.res_partner_12'),
+                            'price': 2200000,
+                            'validity': 14
+                        }),
+                        Command.create({
+                            'partner_id': ref('base.res_partner_2'),
+                            'price': 2300000,
+                            'validity': 21
+                        })
+                    ]" />
 
         </record>
- 
-        <record id="estate_property_azure_1" model="estate.property.offer"> 
+
+        <record id="estate_property_azure_1" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"></field>
             <field name="property_id" ref="estate_property_big_villa"></field>
             <field name="price">144000</field>
             <field name="validity">14</field>
         </record>
 
-        <record id="estate_property_azure_2" model="estate.property.offer"> 
+        <record id="estate_property_azure_2" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_12"></field>
             <field name="property_id" ref="estate_property_big_villa"></field>
             <field name="price">150000</field>
             <field name="validity">14</field>
         </record>
 
-        <record id="estate_property_deco_addict_1" model="estate.property.offer"> 
+        <record id="estate_property_deco_addict_1" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_2"></field>
             <field name="property_id" ref="estate_property_big_villa"></field>
             <field name="price">150001</field>
             <field name="validity">14</field>
         </record>
 
-        <record id="estate_property_deco_addict_2" model="estate.property.offer"> 
+        <record id="estate_property_deco_addict_2" model="estate.property.offer">
             <field name="partner_id" ref="base.res_partner_2"></field>
             <field name="property_id" ref="estate_property_big_villa"></field>
             <field name="price">1500001</field>
             <field name="validity">14</field>
         </record>
 
-       
+
         <function model="estate.property.offer" name="reject_offer">
-            <value eval="[ref('estate_property_deco_addict_1'), ref('estate_property_azure_1'),ref('estate_property_azure_2')]"/>
+            <value
+                eval="[ref('estate_property_deco_addict_1'), ref('estate_property_azure_1'),ref('estate_property_azure_2')]" />
         </function>
 
         <function model="estate.property.offer" name="accept_offer">
-            <value eval="[ref('estate_property_deco_addict_2')]"/>
+            <value eval="[ref('estate_property_deco_addict_2')]" />
         </function>
 
     </data>
