@@ -4,8 +4,21 @@ from odoo.http import request
 class EstatePropertyWebsite(http.Controller):
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
     def property_list(self, page=1, **kwargs):
+
+        filter_key = request.params.get('filter')
+        print(filter_key)
+
+        def get_filter(domain_filter):
+            if domain_filter == "available":
+                return [('state', 'not in', ['sold', 'cancelled']), ('active', '=', True)]
+            elif domain_filter == "sold":
+                return [("state", "=", "sold")]
+            else:
+                return []
+
+        domain = get_filter(filter_key)
+
         Property = request.env['estate.property'].sudo()
-        domain = [('state', 'not in', ['sold', 'cancelled']), ('active', '=', True)]
         
         properties_count = Property.search_count(domain)
         page_size = 9
@@ -13,14 +26,16 @@ class EstatePropertyWebsite(http.Controller):
             url='/properties',
             total=properties_count,
             page=page,
-            step=page_size
+            step=page_size,
+            url_args={'filter': filter_key}
         )
         
         properties = Property.search(domain, limit=page_size, offset=pager['offset'])
         
         return request.render('estate.property_list_template', {
             'properties': properties,
-            'pager': pager
+            'pager': pager,
+            'current_filter': filter_key
         })
 
     @http.route('/properties/<int:property_id>', type='http', auth='public', website=True)

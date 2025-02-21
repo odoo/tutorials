@@ -6,6 +6,7 @@
         "security/security.xml",
         "security/ir.model.access.csv",
         "data/estate.property.type.csv",
+        "wizard/estate_wizard_view.xml",
         "views/property_list_template.xml",
         "views/property_detail_template.xml",
         "report/estate_property_user_templates.xml",

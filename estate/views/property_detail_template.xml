@@ -5,11 +5,16 @@
             <div class="container my-5">
                 <div class="row">
                     <div class="col-md-6 mb-4">
-                        <img t-if="property.image" t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'" class="img-fluid rounded-3 shadow" alt="Property Image"/>
+                        <div class="ratio ratio-16x9">
+                            <img t-if="property.image"
+                                 t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                                 class="img-fluid rounded shadow-sm object-fit-cover"
+                                 alt="Property Image"/>
+                        </div>
                     </div>
-                    
+
                     <div class="col-md-6">
-                        <div class="card shadow-lg border-0 rounded-3">
+                        <div class="card shadow-sm border-0 rounded-3">
                             <div class="card-body">
                                 <h1 class="card-title text-center text-primary mb-4"><t t-esc="property.name"/></h1>
                                 <p class="card-text">

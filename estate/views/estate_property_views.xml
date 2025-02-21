@@ -12,6 +12,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state=='sold'">
+                <header>
+                    <button name="%(estate.estate_property_offer_wizard_action)d" string="Add Offer" type="action" class="btn-primary"/>
+                </header>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="tags_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
