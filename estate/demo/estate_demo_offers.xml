@@ -27,6 +27,5 @@
     <function model="estate.property.offer" name="action_refuse_offer">
         <value eval="[ref('offer_1'), ref('offer_3')]"/>
     </function>
-
-
+    
 </odoo>

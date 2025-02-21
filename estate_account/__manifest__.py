@@ -5,6 +5,7 @@
     "description": "This moduls helps manage connect estate and account, and create invoice.",
     "category": "Real Estate",
     "author": "Darshan Patel",
+    'license':'LGPL-3',
     "depends": ["estate", "account"],
     "data": [
         'report/estate_account_reports.xml'

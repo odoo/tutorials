@@ -21,6 +21,5 @@
             <field name="description">A accepted offer has been Sold.</field>
         </record>
     </data>
-    
 
 </odoo>

@@ -11,17 +11,17 @@ class EstatePropertyController(http.Controller):
     )
     def estate_property(self, page=1, **kw):
         listed_after = kw.get("listed_after", False)
-        search = kw.get('search',False)
+        search = kw.get("search", False)
 
         domain = [("state", "in", ["new", "offer_received"])]
         if listed_after:
             domain.append(("date_availability", ">", listed_after))
 
         if search:
-            domain.append(("name", "ilike", search))  
+            domain.append(("name", "ilike", search))
 
         total_properties = request.env["estate.property"].search_count(domain)
-        
+
         pager = request.website.pager(
             url="/properties",
             total=total_properties,
@@ -31,13 +31,17 @@ class EstatePropertyController(http.Controller):
         )
 
         properties = request.env["estate.property"].search(
-            domain, limit=6, offset=pager['offset'], order="create_date desc"
+            domain, limit=6, offset=pager["offset"], order="create_date desc"
         )
-
 
         return request.render(
             "estate.properties_page",
-            {"properties": properties, "pager": pager, "listed_after": listed_after, "search": search},
+            {
+                "properties": properties,
+                "pager": pager,
+                "listed_after": listed_after,
+                "search": search,
+            },
         )
 
     @http.route(

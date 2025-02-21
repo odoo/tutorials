@@ -8,7 +8,8 @@
     """,
     "category": "Real Estate/Brokerage",
     "author": "Darshan Patel",
-    "depends": ["base", "mail", "website","whatsapp"],
+    "depends": ["base", "mail", "website", "whatsapp"],
+    "license": "LGPL-3",
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
