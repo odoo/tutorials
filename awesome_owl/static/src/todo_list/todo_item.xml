@@ -2,10 +2,21 @@
 <template xml:space="preserve">
 
     <t t-name="awesome_owl.TodoItem">
-        <div class="d-flex align-items-center gap-3 p-2 border rounded bg-light" t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted': '' ">
-            <span class="fw-bold text-primary">#<t t-esc="props.todo.id" /></span>
-            <span class=" fw-bold"><t t-esc="props.todo.description" /></span>
-        </div>        
+        <div class="form-check d-flex align-items-center gap-2 p-2 border rounded shadow-sm bg-light">
+            <input class="form-check-input mt-0 p-2" type="checkbox" 
+                   t-att-id="props.todo.id" 
+                   t-att-checked="props.todo.isCompleted" 
+                   t-on-change="onChange"/>
+            
+            <label class="flex-grow-1"
+                t-att-for="props.todo.id" 
+                t-att-class="(props.todo.isCompleted ? 'text-decoration-line-through text-muted' : 'fw-bold text-dark')">
+                <span class="badge me-2" t-att-class="(props.todo.isCompleted ? 'bg-light text-muted text-dark' : 'bg-danger')">#<t t-esc="props.todo.id"/></span>
+                <t t-esc="props.todo.description" />
+            </label>
+            <span class="fa fa-remove text-danger fa-lg cursor-pointer	" t-on-click="onRemove" />
+        </div>
+        
     </t>
     
 </template>

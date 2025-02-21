@@ -2,10 +2,22 @@
 <template xml:space="preserve">
 
     <t t-name="awesome_owl.card">
-        <div class="card d-inline-block m-2 border" style="width: 18rem;">
+        <div class="card d-inline-block m-2 p-2 shadow border rounded-3" style="width: 22rem;">
             <div class="card-body">
-                <h5 class="card-title" t-esc="props.title or 'Default Title'" />
-                <p class="card-text" t-out="props.content or 'Default Content'" />
+                <h5 class="card-title d-flex gap-2">
+                    <t t-out="props.title or 'Default Card'" />
+                    <button class="btn border" t-on-click="toggleContent">
+                        <t t-if="this.state.isCollapsed">
+                            Collapse
+                        </t>
+                        <t t-else="">
+                            Expand
+                        </t>
+                    </button>
+                </h5>
+                <p class="card-text" t-if="state.isCollapsed">
+                    <t t-slot="default"/>
+                </p>
             </div>
         </div>
     </t>

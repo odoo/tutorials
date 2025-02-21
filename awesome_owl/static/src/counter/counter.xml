@@ -3,14 +3,13 @@
 
     <t t-name="awesome_owl.counter">
         <div class="d-inline-flex">
-            <div class="card p-4 me-4 text-center">
+            <div class="card p-4 m-1 text-center shadow border rounded-3" >
                 <div class="d-flex flex-column justify-content-center align-items-center">
-                    <span class="fs-5 fw-bold">Counter: <t t-esc="state.value"/></span>
+                    <span class="fs-4 fw-bold">Counter: <span class="text-primary" t-esc="state.value" /></span>
                 </div>
-                <button t-on-click="increment" class="btn btn-primary mt-3 border">Increment</button>
+                <button t-on-click="increment" class="btn btn-primary border mt-4 w-100 fw-bold">Increment</button>
             </div>
-        </div>
-        
+        </div>        
     </t>
 
 </templates>
