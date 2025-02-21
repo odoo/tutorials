@@ -1,0 +1,109 @@
+from odoo import models, fields, api
+from datetime import datetime, timedelta
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round 
+
+
+class Property(models.Model):
+    _name = 'estate.property' 
+    _description = 'estate property model'
+    _order = 'id desc'
+
+    postcode = fields.Char(required=True)
+    date_availability = fields.Date(required=True, 
+                                    copy=False, 
+                                    default=lambda self: (datetime.now() + timedelta(days=3*30)))
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(required=True, default=0.0, copy=False)
+    bedrooms = fields.Integer(required=True, default=2) 
+    living_area = fields.Integer(required=True)
+    facades = fields.Integer(required=True)
+    garage = fields.Boolean(required=False)
+    garden = fields.Boolean(required=False)
+    garden_area = fields.Integer(required=True)
+    garden_orientation = fields.Selection(
+        selection=[
+            ('north', 'North'), 
+            ('south', 'South'), 
+            ('east', 'East'), 
+            ('west', 'West'),
+        ],
+        string='Garden Orientation',
+        default='north',
+    )
+    name = fields.Char(default='Uknown')
+    last_seen = fields.Datetime('Last seen', default=fields.Datetime.now)
+    state = fields.Selection(
+        selection=[
+                ('new', 'New'),
+                ('offer_received', 'Offer Received'),
+                ('offer_accepted', 'Offer Accepted'),
+                ('sold', 'Sold'),
+                ('cancelled', 'Cancelled')],
+        default="new",
+        string="state",
+    )
+    active = fields.Boolean(default=True)
+    description = fields.Text(default="when duplicated status and date are not copied")
+
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    tag_ids = fields.Many2many('estate.property.tag', string="Property Tags")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False, default=None)
+    salesperson_id = fields.Many2one('res.users', 
+                                     string="Seller",
+                                     default=lambda self: self.env.user)
+
+
+    total_area = fields.Integer(compute='_compute_total_area')
+    best_price = fields.Float(compute='_compute_best_price', string="Best Offer")
+
+
+    def action_sold(self):
+        if self.state == 'cancelled':
+            raise UserError('You cannot sell a cancelled property')
+        self.state = 'sold'
+    
+    def action_cancel(self):
+        if self.state == 'sold':
+            raise UserError('You cannot cancel a sold property')
+        self.state = 'cancelled'
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0
+    
+    @api.onchange('garden')
+    def _onchange_garden_values(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
+    
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive or zero'),
+        ('check_bedrooms', 'CHECK(bedrooms >= 0)', 'The number of bedrooms must be strictly positive'),
+        ('check_living_area', 'CHECK(living_area > 0)', 'The living area must be strictly positive'),
+        ('check_garden_area', 'CHECK(garden_area >= 0)', 'The garden area must be positive or zero'),
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.state not in ['offer_accepted', 'sold'] and float_is_zero(record.selling_price, precision_digits=5):
+                continue
+            else:
+                expected_price_percentage = 0.9 * record.expected_price
+                if float_compare(record.selling_price, expected_price_percentage, precision_digits=5) == -1:
+                    raise UserError("The selling price cannot be lower than 90% of the expected price")    
