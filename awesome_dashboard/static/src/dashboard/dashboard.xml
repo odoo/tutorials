@@ -8,7 +8,7 @@
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
 
-            <div class="d-flex flex-wrap">
+            <div class="d-flex flex-wrap" t-if="statistics.isReady">
                 <DashboardItem>
                     Average time for an order to go from 'new' to 'sent' or 'cancelled'
                     <div class="fs-1 fw-bold text-success text-center">
@@ -38,6 +38,10 @@
                     <div class="fs-1 fw-bold text-success text-center">
                         <t t-esc="statistics.orders_by_size.m"/>
                     </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Shirt by size
+                    <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'" colors="['red', 'blue', 'yellow']"/>
                 </DashboardItem>
             </div>
             </Layout>
