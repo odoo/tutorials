@@ -113,7 +113,7 @@ class Property(models.Model):
         if self.state == 'cancelled':
             raise UserError("You cannot accept an offer on a cancelled property")
         
-        if self.state == 'cancelled':
+        if self.state == 'sold':
             raise UserError("You cannot accept an offer on a sold property")
         
         offer_to_accept_id.accept()
@@ -124,14 +124,14 @@ class Property(models.Model):
         if self.state == 'cancelled':
             raise UserError("You cannot refuse an offer on a cancelled property")
         
-        if self.state == 'cancelled':
+        if self.state == 'sold':
             raise UserError("You cannot refuse an offer on a sold property")
         
         offer_to_accept_id.refuse()
         self.state = 'new'
         for offer in self.property_offer_ids:
             if offer.status == 'accepted': # Some accepted offer exists
-                self.state = 'offer_received'
+                self.state = 'offer_accepted'
                 return
             elif offer.status != 'refused': # Some neutral offer exists
                 self.state = 'offer_received'
