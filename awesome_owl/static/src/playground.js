@@ -1,17 +1,19 @@
 /** @odoo-module **/
 
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, markup } from "@odoo/owl";
 import { CounterComponent } from "./counter/counter";
 import { Card } from "./card/card";
+import { TodoList } from "./todo/todolist";
 
 export class Playground extends Component {
   static template = "awesome_owl.playground";
   setup() {
-    this.state = useState({ value: 4 });
+    this.sum = useState({ value: 2 });
+    this.str1 = "<div class='text-primary'>content</div>";
+    this.str2 = markup("<div class='text-primary'>content</div>");
   }
-  increment() {
-    this.state.value++;
+  incrementSum() {
+    this.sum.value++;
   }
-
-  static components = { CounterComponent, Card }
+  static components = { CounterComponent, Card, TodoList };
 }
