@@ -11,6 +11,7 @@ class EstateProperty(models.Model):
 
     name = fields.Char("Title", required=True)
     description = fields.Text()
+    image = fields.Binary(string="Property Image")
     postcode = fields.Char()
     date_availability = fields.Date(
         string="Available From",

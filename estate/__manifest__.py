@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
     'name': 'Real Estate',
-    'depends': ['base'],
+    'depends': ['base', 'website'],
     'category': 'Real Estate/Brokerage',
     'version': '1.0',
     'summary': 'Real estate internal machinery',
@@ -20,6 +19,9 @@ This module contains all the common features of Estate property management.
         'views/estate_property_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
+        'views/website_property.xml',
+        'views/website_property_details.xml',
+        'views/website_menus.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
     ],
