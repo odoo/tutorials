@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="mt_offer_received" model="mail.message.subtype">
+        <field name="name">Offer Created</field>
+        <field name="res_model">estate.property</field>
+        <field name="default" eval="True"/>
+        <field name="description">Offer is Created</field>
+    </record>
+
+    <record id="mt_offer_accepted" model="mail.message.subtype">
+        <field name="name">Offer Accepted</field>
+        <field name="res_model">estate.property</field>
+        <field name="default" eval="True"/>
+        <field name="description">Offer is Accepted</field>
+    </record>
+</odoo>
