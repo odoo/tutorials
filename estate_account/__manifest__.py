@@ -8,6 +8,6 @@
     'data': [
         'reports/property_report.xml'
         ],
-    'installable': True
+    'installable': True,
+    'license': 'LGPL-3',
 }
-
