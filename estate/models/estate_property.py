@@ -1,4 +1,3 @@
-# -- coding: utf-8 --
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
@@ -9,51 +8,51 @@ from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
-    _description = 'Real Estate Property'
-    _order = "id desc"
+    _description = "Real Estate Property"
+    _order = 'id desc'
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+        ('check_expected_price', "CHECK(expected_price > 0)", "The expected price must be strictly positive."),
+        ('check_selling_price', "CHECK(selling_price >= 0)", "The selling price must be positive."),
     ]
 
-    name = fields.Char(string='Property Name', required=True)
-    description = fields.Text(string='Description')
-    postcode = fields.Char(string='Postcode')
-    date_availability = fields.Date(string='Date Availability', copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
-    expected_price = fields.Float(string='Expected Price', required=True)
-    selling_price = fields.Float(string='Selling Price', readonly=True , copy=False)
-    bedrooms = fields.Integer(string='Bedrooms', default=2)
-    living_area = fields.Integer(string='Living Area(sqm)')
-    facades = fields.Integer(string='Facades')
-    garage = fields.Boolean(string='Garage')
-    garden = fields.Boolean(string='Garden')
-    garden_area = fields.Integer(string='Garden Area(sqm)')
+    name = fields.Char(string="Property Name", required=True)
+    description = fields.Text(string="Description")
+    postcode = fields.Char(string="Postcode")
+    date_availability = fields.Date(string="Date Availability", copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
+    expected_price = fields.Float(string="Expected Price", required=True)
+    selling_price = fields.Float(string="Selling Price", readonly=True , copy=False)
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    living_area = fields.Integer(string="Living Area(sqm)")
+    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area(sqm)")
     garden_orientation = fields.Selection([ 
-        ('north', 'North'),
-        ('south', 'South'),
-        ('east', 'East'),
-        ('west', 'West')
-    ], string='Garden Orientation')
+        ('north', "North"),
+        ('south', "South"),
+        ('east', "East"),
+        ('west', "West")
+    ], string="Garden Orientation")
     state = fields.Selection([
-        ('new', 'New'),
-        ('offer_received', 'Offer Received'),
-        ('offer_accepted', 'Offer Accepted'),
-        ('sold', 'Sold'),
-        ('cancelled', 'Cancelled'),
+        ('new', "New"),
+        ('offer_received', "Offer Received"),
+        ('offer_accepted', "Offer Accepted"),
+        ('sold', "Sold"),
+        ('cancelled', "Cancelled"),
     ], default='new', required=True)
 
     active = fields.Boolean('Active', default=True)
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    buyer_id = fields.Many2one('res.partner', string='Buyer')
-    salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user, string='Salesperson')
+    buyer_id = fields.Many2one('res.partner', string="Buyer")
+    salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user, string="Salesperson")
     property_tag_ids = fields.Many2many('estate.property.tag', string="Property Tag")
-    property_offer_ids= fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    property_offer_ids= fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
-    total_area = fields.Float(compute = "_compute_total_area")
-    best_offer = fields.Float(compute = "_compute_best_offer" , store = True)
+    total_area = fields.Float(compute = '_compute_total_area')
+    best_offer = fields.Float(compute = '_compute_best_offer' , store = True)
     image = fields.Image(string = "Property Image" , max_width=1024 , max_height=1024)
 
-    company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company,
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company,
         help="This field specifies the company to which the property belongs.")
    
     @api.depends('living_area' , 'garden_area')

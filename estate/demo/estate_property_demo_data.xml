@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="demo_property_residential" model="estate.property">
+            <field name="name">Beautiful Family Home</field>
+            <field name="state">new</field>
+            <field name="description">A spacious 4-bedroom house with a large backyard, perfect for
+                families
+                looking for comfort and luxury.</field>
+            <field name="postcode">90210</field>
+            <field name="date_availability">2025-06-01</field>
+            <field name="expected_price">450000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">4</field>
+            <field name="living_area">250</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="property_type_id" ref="estate_property_type_residential" />
+            <field name="property_tag_ids"
+                eval="[(6, 0, [ref('estate_property_tag_luxury'), ref('estate_property_tag_family')])]" />
+        </record>
+
+
+        <record id="demo_property_commercial" model="estate.property">
+            <field name="name">Modern Office Space</field>
+            <field name="state">offer_received</field>
+            <field name="description">A premium office space in the heart of the business district,
+                featuring open work areas and private meeting rooms.</field>
+            <field name="postcode">10001</field>
+            <field name="date_availability">2025-07-15</field>
+            <field name="expected_price">850000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">500</field>
+            <field name="facades">4</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="property_type_id" ref="estate_property_type_commercial" />
+            <field name="property_tag_ids"
+                eval="[(6, 0, [ref('estate_property_tag_premium'), ref('estate_property_tag_downtown')])]" />
+        </record>
+
+        <record id="demo_property_industrial" model="estate.property">
+            <field name="name">Large Warehouse</field>
+            <field name="state">new</field>
+            <field name="description">A high-capacity warehouse ideal for storage and logistics
+                operations,
+                located near major highways.</field>
+            <field name="postcode">60606</field>
+            <field name="date_availability">2025-05-20</field>
+            <field name="expected_price">1200000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">2000</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="property_type_id" ref="estate_property_type_industrial" />
+            <field name="property_tag_ids"
+                eval="[(6, 0, [ref('estate_property_tag_large'), ref('estate_property_tag_storage')])]" />
+        </record>
+
+
+        <record id="demo_property_land" model="estate.property">
+            <field name="name">Scenic Plot of Land</field>
+            <field name="state">offer_received</field>
+            <field name="description">A beautiful 5-acre plot of land with stunning mountain views,
+                perfect
+                for building a dream home or investment property.</field>
+            <field name="postcode">75000</field>
+            <field name="date_availability">2025-09-10</field>
+            <field name="expected_price">350000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">5000</field>
+            <field name="facades">0</field>
+            <field name="garage">False</field>
+            <field name="garden">True</field>
+            <field name="property_type_id" ref="estate_property_type_land" />
+            <field name="property_tag_ids"
+                eval="[(6, 0, [ref('estate_property_tag_scenic'), ref('estate_property_tag_investment')])]" />
+        </record>
+
+        <record id="demo_property_villa" model="estate.property">
+            <field name="name">Luxury Villa</field>
+            <field name="description">A stunning 5-bedroom villa with a private pool and sea view.</field>
+            <field name="postcode">10001</field>
+            <field name="date_availability">2025-03-01</field>
+            <field name="expected_price">1200000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">300</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="property_type_id" ref="estate_property_type_residential" />
+            <field name="property_tag_ids"
+                eval="[(6, 0, [ref('estate_property_tag_luxury'), ref('estate_property_tag_family')])]" />
+        </record>
+
+        <record id="demo_property_apartment" model="estate.property">
+            <field name="name">City Apartment</field>
+            <field name="description">A modern 2-bedroom apartment in the heart of downtown.</field>
+            <field name="postcode">20002</field>
+            <field name="date_availability">2025-05-15</field>
+            <field name="expected_price">350000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">120</field>
+            <field name="facades">2</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="property_type_id" ref="estate_property_type_residential" />
+            <field name="property_tag_ids"
+                eval="[(6, 0, [ref('estate_property_tag_luxury'), ref('estate_property_tag_family')])]" />
+        </record>
+
+        <record id="demo_property_office" model="estate.property">
+            <field name="name">Corporate Office Space</field>
+            <field name="description">A fully furnished office space in a prime business district.</field>
+            <field name="postcode">30003</field>
+            <field name="date_availability">2025-06-10</field>
+            <field name="expected_price">750000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">500</field>
+            <field name="facades">6</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="property_type_id" ref="estate_property_type_commercial" />
+        </record>
+
+        <record id="demo_property_retail" model="estate.property">
+            <field name="name">Retail Storefront</field>
+            <field name="description">A high-visibility storefront in a popular shopping area.</field>
+            <field name="postcode">40004</field>
+            <field name="date_availability">2025-04-20</field>
+            <field name="expected_price">550000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">250</field>
+            <field name="facades">3</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="property_type_id" ref="estate_property_type_commercial" />
+        </record>
+
+        <record id="demo_property_factory" model="estate.property">
+            <field name="name">Industrial Factory</field>
+            <field name="description">A large industrial facility with ample storage and production
+                space.</field>
+            <field name="postcode">50005</field>
+            <field name="date_availability">2025-07-01</field>
+            <field name="expected_price">2200000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">1000</field>
+            <field name="facades">8</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="property_type_id" ref="estate_property_type_industrial" />
+        </record>
+
+        <record id="demo_property_farmland" model="estate.property">
+            <field name="name">Agricultural Farmland</field>
+            <field name="description">100 acres of fertile farmland, ideal for crops and livestock.</field>
+            <field name="postcode">60006</field>
+            <field name="date_availability">2025-08-15</field>
+            <field name="expected_price">1500000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">0</field>
+            <field name="living_area">0</field>
+            <field name="facades">0</field>
+            <field name="garage">False</field>
+            <field name="garden">True</field>
+            <field name="property_type_id" ref="estate_property_type_land" />
+        </record>
+    </data>
+</odoo>

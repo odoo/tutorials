@@ -1,4 +1,3 @@
-# -- coding: utf-8 --
 # Part of Odoo. See LICENSE file for full copyright and licensing details. 
 
 from odoo import http
@@ -6,11 +5,11 @@ from odoo.http import request
 
 class PropertyController(http.Controller):
 
-    @http.route(['/properties', '/properties/page/<int:page>'], type="http", auth="public", website=True)
+    @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
     def properties(self, page=1, **kwargs):
         property_model = request.env['estate.property']
-        filter = [('state', 'not in', ['sold', 'cancelled'])]
-        properties_count = property_model.search_count(filter)
+        domain = [('state', 'not in', ['sold', 'cancelled'])]
+        properties_count = property_model.search_count(domain)
         per_page = 4    
 
         pager = request.website.pager(
@@ -20,9 +19,8 @@ class PropertyController(http.Controller):
             step=per_page
         )
 
-        properties = property_model.search(filter, offset=(page - 1) * per_page, limit=per_page)
-
-        return request.render("estate.estate_property_list", {  
+        properties = property_model.search(domain, offset=(page - 1) * per_page, limit=per_page)
+        return request.render('estate.estate_property_list', {  
             'properties': properties,
             'pager': pager
         })
@@ -33,10 +31,8 @@ class PropertyController(http.Controller):
 
         if not property_record.exists():
             return request.render('Not Found')
-
         return request.render('estate.property_detail_template', {
-            'property': property_record
-        })
+            'property': property_record })
 
     @http.route('/offer/create', auth='user', methods=['POST'], website=True)
     def create_offer(self, **kw):

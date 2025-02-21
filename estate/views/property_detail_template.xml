@@ -16,7 +16,7 @@
                             <h2 class="text-uppercase fw-bold text-center mb-3" t-out="property.name" />
                             
                             <img t-if="property.image"
-                                t-att-src="'data:image/webp;base64,%s' % property.image.decode('utf-8')"
+                                 t-att-src="image_data_uri(property.image)"
                                 class="img-fluid mx-auto d-block rounded"
                                 alt="Property Image"
                                 style="width: 100%; max-height: 400px; object-fit: contain;" />
