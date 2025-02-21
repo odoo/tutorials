@@ -16,10 +16,12 @@
         "views/estate_property_offer.xml",
         "views/estate_property_type_view.xml",
         "views/estate_property_tag_view.xml",
-        "views/ir_cron.xml",
         "views/res_user_view.xml",
         "views/estate_menus.xml",
         "data/estate_property_types.xml",
+        "data/ir_cron.xml",
+    ],
+    'demo' : [
         "demo/estate_property_demo.xml",
         "demo/estate_property_offer_demo.xml"
     ],

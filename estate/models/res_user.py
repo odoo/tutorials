@@ -8,5 +8,4 @@ class ResUsers(models.Model):
         comodel_name='estate.property',
         inverse_name='user_id',
         string="Properties",
-        # domain=[('state', '!=', 'sold')]
     )

@@ -11,12 +11,19 @@ class EstatePropertyInherit(models.Model):
         if not self.partner_id:
             raise UserError("A buyer must be specified before selling the property.")
 
-        journal = self.env['account.journal'].search([('type', '=', 'sale')],limit = 1)
+        journal = self.env['account.journal'].search(
+            [
+                ('type', '=', 'sale'),
+                ('company', '=', self.company_id)
+            ],
+            limit = 1
+        )
         if not journal:
             raise UserError("No sales journal found.")
 
         self.env['account.move'].sudo().create({
             'partner_id': self.partner_id.id,
+            'journal_id' : journal.id,
             'move_type' : 'out_invoice',
             "invoice_line_ids" : [
                 Command.create({

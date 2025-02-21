@@ -16,7 +16,8 @@
             <field name="name">Estate Property Company Rule</field>
             <field name="model_id" ref="model_estate_property" />
             <field name="groups" eval="[(4, ref('estate_group_user'))]" />
-            <field name="domain_force">['|',('company_id', 'in' , company_ids), ('company_id', '=', False)]</field>
+            <field name="domain_force">['|',('company_id', 'in' , company_ids), ('company_id', '=',
+                False)]</field>
         </record>
 
         <record id="estate_real_estate_agent_rule" model="ir.rule">
@@ -30,11 +31,9 @@
             <field name="domain_force">[('user_id', '=', user.id)]</field>
         </record>
 
-    </data>
-
-    <!-- <data nonupdate="1">
         <record id="base.default_user" model="res.users">
             <field name="groups_id" eval="[(4,ref('account.group_account_manager'))]" />
         </record>
-    </data> -->
+    </data>
+
 </odoo>

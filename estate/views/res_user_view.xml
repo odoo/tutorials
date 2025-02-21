@@ -5,6 +5,13 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"></field>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(action_report_salesperson_property)d"
+                    type="action"
+                    class="oe_stat_button"
+                    icon="fa-print"
+                    string="Report" />
+            </xpath>
             <xpath expr="//sheet/notebook" position="inside">
                 <page string="Properties">
                     <field name="property_ids">
@@ -14,6 +21,7 @@
                             <field name="living_area" />
                             <field name="expected_price" />
                             <field name="selling_price" />
+                            <field name="state" />
                         </list>
                     </field>
                 </page>

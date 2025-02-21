@@ -1,3 +1,4 @@
+from datetime import date
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -50,7 +51,10 @@ class EstateProperty(models.Model):
     )
     
     expected_price = fields.Float(string="Expected Price", required=True)
-    best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+    best_price = fields.Float(
+        string="Best Offer", 
+        compute="_compute_best_price"
+    )
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (feet²)")
@@ -58,7 +62,10 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area (feet²)")
-    total_area = fields.Integer(string="Total Area (feet²)", compute="_compute_totalarea")
+    total_area = fields.Integer(
+        string="Total Area (feet²)", 
+        compute="_compute_totalarea"
+    )
 
     garden_orientation = fields.Selection(
         string="Garden Orientation",
@@ -102,6 +109,9 @@ class EstateProperty(models.Model):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
 
     # checks if selling price is greater then or equal to 90% expected price
     @api.constrains("selling_price")
@@ -114,10 +124,21 @@ class EstateProperty(models.Model):
         
     @api.constrains("property_type_id", "partner_id")
     def check_partner_id(self):
+        commercial_type = self.env.ref(
+            'estate.property_type_commercial',
+            raise_if_not_found=False
+        )
         for property in self:
-            if property.property_type_id.id  == property.env.ref('estate.property_type_commercial').id:
-                if property.partner_id and property.partner_id.company_type != 'company':
-                    raise UserError("When a property is of commercial type, the partner must be a company.")
+            if (
+                commercial_type
+                and property.property_type_id  == commercial_type
+                and property.partner_id
+                and property.partner_id.company_type != 'company'
+            ):
+                raise UserError(
+                    "When a property is of commercial type,"
+                    "the partner must be a company."
+                )
 
     # Prevent delete if property is in new or cancelled state
     @api.ondelete(at_uninstall=False)
@@ -130,7 +151,9 @@ class EstateProperty(models.Model):
     def action_property_sold(self):
         for property in self:
             if property.state == 'cancelled':   
-                raise UserError(message="Cancelled property can't be sold.")
+                raise UserError("Cancelled property can't be sold.")
+            if not property.offer_ids:
+                raise UserError("You can't sell property with no offers!!")
             else:
                 property.state = 'sold'
 
@@ -138,14 +161,15 @@ class EstateProperty(models.Model):
     def action_property_cancel(self):
         self.state = 'cancelled'
 
-    def _accept_offer(self):
+    def _cron_accept_offer(self):
+        today = date.today()
         expried_properties = self.search([
-            ('date_availability', '<=', fields.Date.today()),
-            ('offer_ids.state', '!=', 'accepted'),
+            ('date_availability', '<=', today),
             ('state', '=' , 'received'), 
         ])
         for property in expried_properties:
-            best_offer = property.offer_ids.filtered(lambda offer : offer.state !='refused').sorted('price', reverse=True)[:1]
-            
-            if best_offer:
-                best_offer.action_offer_confirm()
+            best_offer = (
+                property.offer_ids.filtered(lambda offer : offer.state !='refused')
+                .sorted('price', reverse=True)[:1]
+            )
+            best_offer.action_offer_confirm()

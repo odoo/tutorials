@@ -7,7 +7,11 @@ class EstatePropertyType(models.Model):
     _order = 'name'
 
     name = fields.Char(string="Name", required=True)
-    sequence = fields.Integer(string="sequence", default=1, help="Used to order stages. Lower is better.")
+    sequence = fields.Integer(
+        string="sequence",
+        default=1,
+        help="Used to order stages. Lower is better."
+    )
     property_ids = fields.One2many(
         string="Property Types",
         comodel_name='estate.property', 
@@ -18,7 +22,10 @@ class EstatePropertyType(models.Model):
         comodel_name='estate.property.offers', 
         inverse_name='property_type_id'
     )
-    offers_count = fields.Integer(string="Offer Count", compute="_offer_count")
+    offers_count = fields.Integer(
+        string="Offer Count",
+        compute="_offer_count"
+    )
 
     @api.depends("offer_ids")
     def _offer_count(self):

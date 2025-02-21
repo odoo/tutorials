@@ -1,10 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
-
+   <t t-name="awesome_owl.playground" >
+      <div class="p-3">Hello world!!</div>
+      <div class="m-2 p-2 border d-inline-block">
+         <span class="me-2">Counter: <t t-esc="state.value"/></span>
+         <button class="btn btn-primary" t-on-click="increment">Increment</button>
+      </div>
+      <div class="card d-inline-block m-2" style="width: 18rem;">
+         <div class="card-body">
+            <h5 class="card-title">my title</h5>
+            <p class="card-text">
+               some content
+            </p>
+         </div>
+      </div>
+   </t>
 </templates>

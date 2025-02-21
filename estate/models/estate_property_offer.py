@@ -64,7 +64,9 @@ class EstatePropertyOffers(models.Model):
     # Sets offer state to accepted when called
     def action_offer_confirm(self):
         for record in self:
-            if record.property_id.offer_ids.filtered(lambda offer: offer.state == 'accepted'):
+            if record.property_id.offer_ids.filtered(
+                lambda offer: offer.state == 'accepted'
+            ):
                 raise UserError("You can't accept two offers!")
             
             record.write({'state': 'accepted'})  
@@ -75,5 +77,4 @@ class EstatePropertyOffers(models.Model):
 
     # Sets offer state to refused when called
     def action_offer_cancel(self):
-        for record in self:
-            record.write({'state' : 'refused'})
+        self.state = 'refused'
