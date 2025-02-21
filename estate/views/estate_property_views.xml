@@ -6,20 +6,21 @@
         <field name="name">Test action</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True, 'search_default_current': True}</field>
     </record>
 
     <record id="estate_advertisements_list" model="ir.ui.view">    
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Real Estates">
+            <list string="Real Estates" decoration-success="state in ('offer-received', 'offer-accepted')"  decoration-bf="state == 'offer-accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
                 <field name="property_type_id"/>
                 <field name="property_tag_ids" widget="many2many_tags"/>
             </list>
@@ -79,13 +80,13 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" >
-                                <list>
+                            <field name="offer_ids" readonly="state in ('offer-accepted', 'sold', 'cancelled')">
+                                <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                     <field name="price"/>
                                     <field name="partner_id"/>
-                                    <button name="action_validate" string=" " type="object" icon="fa-check" invisible="property_id.state in ('sold', 'cancelled')"/>
-                                    <button name="action_refuse" string=" " type="object" icon="fa-times" invisible="property_id.state in ('sold', 'cancelled')"/>
-                                    <field name="status"/>
+                                    <button name="action_validate" string=" " type="object" icon="fa-check" invisible="status in ('accepted', 'refused')"/>
+                                    <button name="action_refuse" string=" " type="object" icon="fa-times" invisible="status in ('accepted', 'refused')"/>
+                                    <field name="status" optional="hide"/>
                                 </list>
                             </field>
                         </page>
@@ -110,7 +111,7 @@
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="['|', ('living_area', '&gt;', self), ('living_area', '=', self)]"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>

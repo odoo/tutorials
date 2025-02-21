@@ -19,16 +19,32 @@
         </field>
     </record>
 
+
     <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
+                
                 <sheet>
+                    <div name="button_box">
+                        <button
+                            name="%(estate.estate_action_property_offers)d"
+                            icon="fa-money"
+                            type="action"
+                        >
+                            <field
+                                name="offer_count"
+                                widget="statinfo"
+                                options="{' ': 'offer_count'}"
+                            />
+                        </button>
+                    </div>
                     <group>
                         <h1>
                             <field name="name"/>
                         </h1>
+                        
                     </group>
                     <notebook>
                         <page string="Properties">
@@ -45,4 +61,5 @@
             </form>
         </field>
     </record>
+
 </odoo>
