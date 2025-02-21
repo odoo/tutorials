@@ -1,0 +1,11 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="card m-2 border-dark shadow-sm w-100" t-attf-style="max-width: {{18*props.size}}rem; height: min-content; min-height: 13vh;">
+            <div class="card-body text-center align-content-center">
+                <p class="fw-semibold text-dark mb-0">
+                    <t t-slot="default"/>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>
