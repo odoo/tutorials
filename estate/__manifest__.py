@@ -17,6 +17,8 @@ This Module provides real estate advertisements
         'data/mail_rating_data_template.xml',
         'data/mail_message_subtype_data.xml',
         'data/estate_property_website_data.xml',
+        'report/estate_property_reports.xml',
+        'report/estate_property_report_template.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_tag_views.xml',

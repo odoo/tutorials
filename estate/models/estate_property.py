@@ -52,7 +52,7 @@ class EstateProperty(models.Model):
     best_offer = fields.Integer(string="Best Offer", compute="_compute_best_offer")
     reference = fields.Char(string="Reference", readonly=True, copy=False)
     company_id = fields.Many2one("res.company", string="Company", required=True, default=lambda self: self.env.company)
-    rating_count = fields.Integer(string="Ratings", compute="_compute_rating_count")
+    rating_count = fields.Integer(string="Ratings count", compute="_compute_rating_count")
     property_image = fields.Image()
 
     # === COMPUTE METHODS === #
@@ -118,10 +118,23 @@ class EstateProperty(models.Model):
                 
     def action_cancelled(self):
         for record in self:
-            if record.state== "sold":
+            if record.state == "sold":
                 raise UserError(_("sold properties cannot be cancelled"))
             else:
                 record.state = "cancelled"
+
+    # Improvement Needed
+    
+    # def action_helper(self):
+    #     # self.ensure_one()
+    #     action = self.env['ir.actions.actions']._for_xml_id('estate.estate_property_action')
+    #     domain = [('state', 'in', ['new', 'offerreceived', 'offeraccepted'])]
+    #     total_available_properties = self.search(domain, limit=1)
+    #     if total_available_properties == 0:
+    #         action['help'] = self.env['ir.ui.view']._render_template(
+    #             'estate.estate_property_action_helper'
+    #         )
+    #     return action
 
     def _track_subtype(self, vals):
         self.ensure_one()

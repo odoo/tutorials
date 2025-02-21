@@ -14,7 +14,7 @@
         <field name="arch" type="xml">
             <xpath expr="//header/field[@name='state']" position="after">
                 <button name="%(rating_rating_action_estate_property)d" type="action" class="oe_stat_button" icon="fa-star">
-                    <field name="rating_count" string="Ratings" widget="statinfo"></field>
+                    <field name="rating_count" widget="statinfo"></field>
                 </button>
             </xpath>
         </field>

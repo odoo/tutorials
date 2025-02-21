@@ -9,7 +9,7 @@ class EstatePropertyController(http.Controller):
 
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
     def list_properties(self, page=1):
-        domain =[('state', 'in', ['new', 'offerreceived'])]
+        domain = [('state', 'in', ['new', 'offerreceived', 'offeraccepted'])]
         properties_per_page = 6
         total_properties = request.env['estate.property'].search_count(domain)
         properties = request.env['estate.property'].search(domain, offset=(page-1) * properties_per_page, limit=properties_per_page)
@@ -28,7 +28,6 @@ class EstatePropertyController(http.Controller):
         Property = request.env['estate.property'].browse(property_id)
         if not Property.exists():
             return request.not_found()
-        
         return request.render('estate.property_info_template',{
             'property': Property,
         })

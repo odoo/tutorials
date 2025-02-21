@@ -59,7 +59,7 @@
                             <p t-if="property.garden_orientation">
                                 <strong>Direction:</strong> <t t-out="property.garden_orientation"/>
                             </p>
-                            <p><strong>Totla Area:</strong> <t t-out="property.total_area"/></p>
+                            <p><strong>Total Area:</strong> <t t-out="property.total_area"/></p>
                         </div>
 
                         <a href="/properties" class="btn btn-secondary mt-3">Back to Listings</a>
