@@ -9,9 +9,13 @@ from odoo.addons.portal.controllers.portal import pager as portal_pager
 class EstateWebsite(http.Controller):
 
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth="public", website=True)
-    def properties_list(self, page=1, **kwargs):
+    def properties_list(self, page=1, filter_date=None, **kwargs):
         Property = request.env['estate.property']
         domain = [('state', 'in', ['new', 'offer_received', 'offer_accepted'])]
+
+        if filter_date:
+            domain.append(('create_date', '>', filter_date))
+        
         per_page = 6
         offset = (page - 1) * per_page
         properties = Property.search(domain, limit=per_page, offset=offset)
@@ -21,10 +25,12 @@ class EstateWebsite(http.Controller):
             total=count,
             page=page,
             step=per_page,
+            url_args={'filter_date': filter_date} if filter_date else {}
         )
         return request.render('estate.property_list_template',{
             'properties': properties,
             'pager': pager,
+            'filter_date': filter_date,
         })
 
     @http.route('/property/<int:property_id>', type='http', auth="public", website=True)
