@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 class Property(models.Model):
     _name = 'estate.property' 
     _description = 'estate property model'
+    _order = 'id desc'
 
     postcode = fields.Char(required=True)
     date_availability = fields.Date(required=True, 

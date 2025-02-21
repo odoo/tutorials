@@ -5,6 +5,7 @@ from datetime import timedelta
 class PropertyTag(models.Model):
     _name = 'estate.property.tag'
     _description = 'the estate property tag'
+    _order = 'name'
 
     name = fields.Char(required=True)
     color = fields.Integer(string="Color")
