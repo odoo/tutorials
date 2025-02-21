@@ -2,7 +2,7 @@ from odoo import exceptions, Command, models
 from odoo.exceptions import UserError
 
 
-class InheritedEstateProperty(models.Model):
+class Estate_Property_Inheritence(models.Model):
     _inherit="estate.property"
 
     def action_set_sold(self):

@@ -1,7 +1,7 @@
 from odoo import fields, models
 from odoo.exceptions import UserError
 
-class OfferWizard(models.Model):
+class MultipleOffersWizard(models.Model):
     _name = "offer.wizard"
     _description = "This is a wizard to make offers"
 

@@ -71,7 +71,7 @@
     </record>
 
     <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">form view</field>
+        <field name="name">Estate Property Form View</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
