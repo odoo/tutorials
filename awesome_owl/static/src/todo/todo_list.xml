@@ -5,7 +5,7 @@
             <h1 class="todo-header">Todo List</h1>
 
             <div class="input-group">
-                <input type="text" class="todo-input" placeholder="Enter a new task..." t-on-keyup="addTodo"/>
+                <input type="text" class="todo-input" placeholder="Enter a new task..." t-on-keyup="addTodo" t-ref="input"/>
                 <button class="add-btn" t-on-click="addTodo">Add</button>
             </div>
 

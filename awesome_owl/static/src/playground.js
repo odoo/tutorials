@@ -14,7 +14,7 @@ export class Playground extends Component {
         this.str2 = markup("<div class='text-primary'>Not some Content</div>");
         this.state = useState({
             sum: 0
-        })
+        });
     }
     incrementSum(){
         this.state.sum+=1;
