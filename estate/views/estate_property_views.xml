@@ -6,6 +6,12 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face"/>
+                <p>
+                    No properties exist. Please create a property to play with the pipeline.
+                </p>
+        </field>
     </record>
 
     <!-- Define the List View for the "estate.property" model -->
@@ -25,7 +31,7 @@
                 <field name="selling_price" string="Selling Price" />
                 <field name="bedrooms" string="Bedrooms" />
                 <field name="living_area" string="Living Area" />
-                 <header>
+                <header>
                     <button name="%(action_estate_property_offer_wizard)d" string="Add Offer" type="action" class="btn-primary"/>
                 </header>
             </list>
@@ -44,10 +50,11 @@
                         invisible="state in ['sold','cancelled']" />
                     <button name="action_set_sold" string="Sold" type="object"
                         invisible="state in ['sold','cancelled']" />
-                    <field name="state" widget="statusbar"
+                    <field name="state" widget="statusbar" 
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
+                            <field string="image" name="image" class="oe_avatar" widget="image"/>
                     <div class="oe_title">
                         <div class="oe_edit_only">
                             <label for="name" />
@@ -60,7 +67,6 @@
                         <group class="mb32">
                             <!-- <field name"partner_id" class="w-50" /> -->
                             <field string="State" name="state" />
-                            <field string="image" name="image" widget="image"/>
                             <field name="property_type_id" string="property_type" />
                             <field name="tag_ids" string="propert tag" widget="many2many_tags"
                                 options="{'color_field': 'color'}" />

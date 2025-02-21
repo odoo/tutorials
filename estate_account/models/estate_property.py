@@ -5,8 +5,8 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         # Ensures that the current user has write access to the property before creating an invoice.
-        self.check_access_rights('write')
-        self.check_access_rule('write')
+        self.check_access('write')
+        self.check_access('write')
         self.ensure_one()
         self.env["account.move"].sudo().create(
             {

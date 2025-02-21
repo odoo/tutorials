@@ -1,6 +1,6 @@
 import { loadJS } from "@web/core/assets";
 import { getColor } from "@web/core/colors/colors";
-import { Component, onWillStart, useRef, onMounted, onWillUnmount } from "@odoo/owl";
+import { Component, onWillStart, useRef, onMounted, onWillUnmount, onPatched } from "@odoo/owl";
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
     static props = {
@@ -13,6 +13,11 @@ export class PieChart extends Component {
         onMounted(() => {
             this.renderChart();
         });
+        onPatched(() => {
+            this.updateChart();
+        });
+
+
         // onWillUnmount(() => {
         //     this.chart.destroy();
         // });
@@ -34,5 +39,16 @@ export class PieChart extends Component {
                 ],
             },
         });
+    }
+
+    updateChart() {
+        if (this.chart) {
+            // Update chart data
+            this.chart.data.labels = Object.keys(this.props.data);
+            this.chart.data.datasets[0].data = Object.values(this.props.data);
+            this.chart.update();
+        } else {
+            this.renderChart();
+        }
     }
 }

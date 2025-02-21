@@ -19,7 +19,7 @@ const statisticsService = {
             const updates = await rpc("/awesome_dashboard/statistics");
             Object.assign(statistics, updates, { isReady: true });
         }
-        setInterval(loadData, 10*60*1000);
+        setInterval(loadData, 5000);
         loadData();
         return statistics;
     },

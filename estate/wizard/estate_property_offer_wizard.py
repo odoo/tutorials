@@ -21,3 +21,5 @@ class estatepropertyofferwizard(models.TransientModel):
                 'property_id': estate_property.id,
             })
         return {'type': 'ir.actions.act_window_close'}
+
+        

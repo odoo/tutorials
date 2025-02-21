@@ -19,6 +19,7 @@
         'report/estate_property_subtemplate.xml',
         'report/estate_property_user_template.xml',
         'wizard/estate_property_offer_wizard.xml',
+        'views/estate_property_sold_email_template.xml',
         'views/estate_property_template.xml',
         'views/res_users_views.xml',
         'views/estate_property_offer.xml',

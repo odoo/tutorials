@@ -8,7 +8,7 @@ class estateProperty(models.Model):
     _name = "estate.property"
     _des5iption = "Real Estate Property"
     _order="id desc"
-    _inherit = ["mail.thread"]
+    _inherit = ["mail.thread","mail.activity.mixin"]
 
 
     # Basic fields for property details
@@ -135,7 +135,12 @@ class estateProperty(models.Model):
         for property in self:
             if property.state == "cancelled":
                 raise UserError("A cancelled property cannot be set as sold.")
+            if self.state != "offer_accepted":   
+                raise UserError("property can not be sold without accepting offer.")
             property.state = "sold"
+            if self.buyer_id.email:
+                template=self.env.ref('estate.estate_property_sold_email_template')
+                template.send_mail(self.id,)
             message = "Property {} has been sold to ' {} '".format(property.name,property.buyer_id.name)
             property.message_post(body=message)
 
