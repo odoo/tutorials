@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+<t t-name="awesome_owl.TodoList">
+        <div class="p-3">
+         <input type="text" name="todo" placeholder="To do" t-on-keyup="addTodo" t-ref="input">To do:</input>
+            <TodoItem todo="state"/>
+        </div>
+    </t>
+</templates>
