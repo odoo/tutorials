@@ -6,6 +6,7 @@
          <div class="text-center">
             <h1 class="mb-4 text-danger">Welcome To Owl WebFrameworks</h1>
          </div>
+
          <div class="row justify-content-center">
             <div class="col-md-5 mb-3">
                <div class="card shadow-sm border-secondary hover-card">
@@ -14,7 +15,6 @@
                   </div>
                </div>
             </div>
-
             <div class="col-md-5 mb-3">
                <div class="card shadow-sm border-secondary hover-card">
                   <div class="card-body text-center">
@@ -24,8 +24,27 @@
             </div>
          </div>
 
-         <div class="text-center mt-4">
-            <Counter/>
+         <div class="row justify-content-center">
+            <div class='col-md-5 mb-3'>
+               <div class="card shadow-sm border-secondary hover-card">
+                  <div class="card-body text-center">
+                     <Counter onChange.bind="incrementSum"/>
+                  </div>
+               </div>
+            </div>
+            <div class='col-md-5 mb-3'>
+               <div class="card shadow-sm border-secondary hover-card">
+                  <div class="card-body text-center">
+                     <Counter onChange.bind="incrementSum"/>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <h1 class='text-center '>Sum: <t t-esc="state.sum"/> </h1>
+
+         <div class="row justify-content-center text-center mt-5">
+            <TodoList />
          </div>
       </div>
    </t>
