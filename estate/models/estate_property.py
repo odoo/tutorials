@@ -24,7 +24,7 @@ class Property(models.Model):
     property_tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     property_offer_ids = fields.One2many('estate.property.offer', 'property_id')    
     
-    # House Data
+    # House data
     bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer('Facades')
@@ -42,7 +42,7 @@ class Property(models.Model):
     )
     total_area = fields.Integer('Total Area (sqm)', compute="_compute_total_area")
     
-    # Business things
+    # Business data
     date_availability = fields.Date('Available From', copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float('Expected price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
@@ -61,7 +61,7 @@ class Property(models.Model):
         default='new'
     )
     
-    # Functions
+    # Computation functions
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -71,7 +71,8 @@ class Property(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.property_offer_ids.mapped('price')) if record.property_offer_ids else 0.0
-            
+    
+    # Onchange functions
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -81,6 +82,7 @@ class Property(models.Model):
             self.garden_orientation = False
             self.garden_area = 0
     
+    # Business methods
     def action_reset(self):
         if self.state != 'cancelled':
             raise UserError("You can only reset a cancelled property")
@@ -90,7 +92,6 @@ class Property(models.Model):
     def action_cancel(self):
         if self.state == 'sold':
             raise UserError("You cannot cancel a sold property")
-        
         if self.state == 'cancelled':
             raise UserError("Property already cancelled")
         
@@ -99,10 +100,8 @@ class Property(models.Model):
     def action_sold(self):
         if self.state == 'cancelled':
             raise UserError("You cannot sell a cancelled property")
-        
         if self.state == 'sold':
             raise UserError("Property already sold")
-        
         if self.state != 'offer_accepted':
             raise UserError("Can't sell a property without an accepted offer")
         
@@ -112,7 +111,6 @@ class Property(models.Model):
     def action_accept_offer(self, offer_to_accept_id):
         if self.state == 'cancelled':
             raise UserError("You cannot accept an offer on a cancelled property")
-        
         if self.state == 'sold':
             raise UserError("You cannot accept an offer on a sold property")
         
@@ -123,11 +121,12 @@ class Property(models.Model):
     def action_refuse_offer(self, offer_to_accept_id):
         if self.state == 'cancelled':
             raise UserError("You cannot refuse an offer on a cancelled property")
-        
         if self.state == 'sold':
             raise UserError("You cannot refuse an offer on a sold property")
         
         offer_to_accept_id.refuse()
+        
+        # Decide new state
         self.state = 'new'
         for offer in self.property_offer_ids:
             if offer.status == 'accepted': # Some accepted offer exists
@@ -136,12 +135,15 @@ class Property(models.Model):
             elif offer.status != 'refused': # Some neutral offer exists
                 self.state = 'offer_received'
     
+    # Constraints
     @api.constrains('selling_price', 'expected_price')
-    def check_selling_price(self):
+    # selling_price >= 0.9 * expected_price (when > 0)
+    def check_selling_price(self): 
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=3) and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=3) < 0:
                 raise UserError('Selling price is too low')
     
+    # ORM Overrides
     @api.ondelete(at_uninstall=False)
     def _unlink_restrictions(self):
         for record in self:

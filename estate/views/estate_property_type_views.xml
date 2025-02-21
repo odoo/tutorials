@@ -21,12 +21,18 @@
     <record id="estate_property_type_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
+        <field name="arch" type="xml">         
             <form string="Property Types">
                 <sheet>
                     <h1><field name="name"/></h1>
-                    <button class="oe_stat_button" type="action" name="%(estate_property_offer_action)d" string="Offers"/>
-                    
+                    <div name="button_box" position="inside">
+                        <button name="%(estate_property_offer_action)d" 
+                                class="oe_stat_button" 
+                                type="action"
+                                icon="fa-money">
+                            <field name="offer_count" string="Offers" widget="statinfo"/>
+                        </button>
+                    </div>
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">

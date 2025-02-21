@@ -4,6 +4,10 @@ from odoo import Command
 class InheritedModel(models.Model):
     _inherit = "estate.property"
 
+
+    # Create an invoice for the buyer when a property is sold, with:
+    #       - a line for the selling price (6% of the selling price)
+    #       - a line for the agency fees (fixed at 100)
     def action_sold(self):
         
         sold_invoice_line = {

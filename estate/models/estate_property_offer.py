@@ -13,23 +13,26 @@ class PropertyOffer(models.Model):
          "Offer prices should be strictly positive.")
     ]
     
-    price = fields.Float('Price')
+    # Date & status
+    create_date = fields.Date('Creation Date', default=fields.Date.today())
+    validity = fields.Integer('Validity (days)', default=7)
+    date_deadline = fields.Date('Deadline', compute="_compute_date_deadline", inverse="_reverse_date_deadline")
     status = fields.Selection(
         string='Status',
         copy=False,
         selection = [('accepted', "Accepted"), ('refused', 'Refused')]
     )
     
+    # Business & Property data
+    price = fields.Float('Price')
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True)
     property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id', store=True, string='Property Type')
     property_state = fields.Selection(related="property_id.state", string="Property State")
     
-    create_date = fields.Date('Creation Date', default=fields.Date.today())
-    validity = fields.Integer('Validity (days)', default=7)
-    date_deadline = fields.Date('Deadline', compute="_compute_date_deadline", inverse="_reverse_date_deadline")
     
     
+    # Compute and inverse methods
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -39,10 +42,10 @@ class PropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date).days
     
+    # Business methods
     def action_accept(self):
         if self.status == 'accepted':
             raise UserError("Offer already accepted")
-        
         if self.status == 'refused':
             raise UserError("Can't accept a refused offer")
         
@@ -57,15 +60,12 @@ class PropertyOffer(models.Model):
         if self.status == 'refused':
             raise UserError('Offer already refused')
         
-        if self.status == 'accepted':
-            raise UserError("Can't refuse an accepted offer")
-        
         self.property_id.action_refuse_offer(self)
         
     def refuse(self):
         self.status = 'refused'
     
-    
+    # CRUD methods
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
