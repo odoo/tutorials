@@ -10,5 +10,5 @@ class InheritedSalesPerson(models.Model):
     property_ids = fields.One2many(
         "estate.property",
         inverse_name="sales_person_id",
-        domain=[("state", "in", ["new", "offer received"])],
+        domain=[("state", "in", ["new", "offer_received"])],
     )

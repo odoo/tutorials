@@ -10,7 +10,6 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "estate property offer"
     _inherit = ["mail.thread"]
-
     _sql_constraints = [
         (
             "check_offer_price",
