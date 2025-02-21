@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="estate_menus" model="website.menu">
+            <field name="name">Properties</field>
+            <field name="url">/properties</field>
+        </record>
+    </data>
+</odoo>

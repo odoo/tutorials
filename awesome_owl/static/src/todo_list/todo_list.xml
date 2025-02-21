@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoList">
+        <div class="d-inline-block border p-2 m-2">
+            <input class="form-control mb-3" type="text" placeholder="Add a to-do Tasks" t-on-keyup="addTodoList"  t-ref="input"/>
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo" toggleState.bind="toggleTodo" removeTodo.bind="removeTodo"/>
+            </t>
+            <style>
+            /* Container Styling */
+            .d-inline-block {
+                background: #f8f9fa;
+                border-radius: 8px;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+                width: 300px;
+            }
+
+            /* Input Field */
+            .form-control {
+                border-radius: 5px;
+                border: 1px solid #ced4da;
+            }
+
+            /* Todo Item Styling */
+            .TodoItem {
+                background: white;
+                padding: 8px;
+                border-radius: 5px;
+                margin-bottom: 5px;
+                transition: background 0.3s ease-in-out;
+            }
+
+            .TodoItem:hover {
+                background: #e9ecef;
+            }
+
+            /* Animation for Adding Todo */
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .TodoItem {
+                animation: fadeIn 0.3s ease-in-out;
+            }
+            </style>
+
+        </div>
+    </t>
+</templates>

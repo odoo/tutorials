@@ -1,10 +1,132 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
+        <div class="container p-4">
+            <h2 class="text-primary text-center mb-4">Welcome to Owl Playground</h2>
 
+            <div class="counter-container d-flex justify-content-center gap-3">
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+            </div>
+
+            <div class="sum-display mt-3 text-center">
+                <strong>The sum is: <t t-esc="sum.value"/></strong>
+            </div>
+
+            <div class="card-container d-flex justify-content-center flex-wrap mt-4">
+                <button t-on-click="togglePopup">Show Card in Popup</button>
+            </div>   
+
+           
+
+            <div class="card-container d-flex justify-content-center flex-wrap mt-4">
+                <!-- <Card title="'my title1'" content='this.html1'/>   
+                <Card title="'my title2'" content='this.html2'/>    -->
+                <Card title="'my title3'" />
+            </div>
+
+            <div class="mt-4">
+                <TodoList />
+            </div>
+             <!-- ✅ Popup View for Card -->
+            <div class="popup-overlay" t-if="state.showPopup">
+                <div class="popup-content">
+                    <button class="close-btn" t-on-click="togglePopup">X</button>
+                    <Card title="'Popup Card Title'" />
+                </div>
+            </div>
+        </div>
+
+        
+        <style>
+        /* General Container */
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Counter Section */
+        .counter-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .sum-display {
+            font-size: 1.2rem;
+            color: #007bff;
+        }
+
+        /* Cards */
+        .card-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .card {
+            width: 250px;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        /* ✅ Popup Styling */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            width: 470px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        </style>
+    </t>
 </templates>
