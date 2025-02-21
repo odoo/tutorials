@@ -65,10 +65,17 @@
 
                 <div class="row">
                     <div class="col-md-6">
+                        <t t-if="property.image">
                         <img t-att-src="image_data_uri(property.image)" 
                             class="img-fluid rounded shadow" 
                             alt="Property Image" 
                             style="max-height: 400px; object-fit: cover; width: 100%;"/>
+                        </t>
+                        <t t-else="">
+                            <img t-att-src="'/estate/static/src/img/placeholder.png'" 
+                                class="card-img-top" alt="No Image Available" 
+                                style="max-height: 200px; object-fit: cover;"/>
+                        </t>
                     </div>
 
                     <div class="col-md-6">
