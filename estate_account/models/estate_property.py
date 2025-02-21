@@ -1,6 +1,6 @@
 from datetime import date
 
-from odoo import Command, models
+from odoo import _, Command, models
 from odoo.exceptions import AccessError
 
 
@@ -21,7 +21,7 @@ class EstateProperty(models.Model):
             'name' : f'INV/2025/{self.id}',
             'invoice_date': date.today(),
             'invoice_line_ids': [
-                Command.create({'name': "Selling Price", 'quantity': 1, 'price_unit': self.selling_price * 0.06}),
+                Command.create({'name': "Selling Price", 'quantity': 1, 'price_unit': self.selling_price * 1.06}),
                 Command.create({'name': "Administrative Fees", 'quantity': 1, 'price_unit': 100.00}),
                 ]
             })

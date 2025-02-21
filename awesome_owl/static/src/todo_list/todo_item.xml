@@ -2,12 +2,14 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoItem">
         <div class="d-flex align-items-center p-2 border rounded bg-light shadow-sm">
-            <span class="badge bg-primary me-2">
-                <t t-esc="props.todo.id"/>
-            </span>
-            <span class="flex-grow-1">
-                <t t-esc="props.todo.description"/>
-            </span>
+            <div t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
+                <span class="badge bg-primary me-2">
+                    <t t-esc="props.todo.id"/>
+                </span>
+                <span class="flex-grow-1">
+                    <t t-esc="props.todo.description"/>
+                </span>
+            </div>
         </div>
     </t>
 </templates>
