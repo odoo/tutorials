@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
@@ -40,3 +40,44 @@ class SaleOrder(models.Model):
         }
 
         return action
+
+
+
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
+
+    is_warranty = fields.Boolean(string="Is Warranty", default=False)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Ensure warranty lines are marked accordingly on creation."""
+        for vals in vals_list:
+            if vals.get("is_warranty") and "product_id" in vals:
+                product = self.env["product.template"].browse(vals["product_id"])
+                if product:
+                    vals["name"] = f"Warranty for {product.name}"
+        return super().create(vals_list)
+
+    def unlink(self):
+        """Remove associated warranty lines when the main product is deleted."""
+        lines_to_delete = self.env['sale.order.line']
+        
+        for line in self:
+            # If this is a warranty line (has 'Valid until' in name), just add it
+            if "Valid until" in (line.name or ''):
+                lines_to_delete |= line
+                continue
+                
+            # For product lines, find and delete their warranty lines
+            warranty_lines = line.order_id.order_line.filtered(
+                lambda l: f"For product: {line.product_id.name}" in (l.name or '') 
+                and f"Valid until" in (l.name or '')
+            )
+            if warranty_lines:
+                print(f"Found {len(warranty_lines)} warranty lines for product {line.product_id.name}")
+                lines_to_delete |= warranty_lines
+            
+            # Add the product line itself
+            lines_to_delete |= line
+        
+        return super(SaleOrderLine, lines_to_delete).unlink()
