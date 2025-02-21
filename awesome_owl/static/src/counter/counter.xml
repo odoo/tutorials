@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.counter">
-        <div>
+        <div class ='gradient-container hover-card'>
             <p class="fs-3 fw-bold">Counter: <t t-out="state.count"/></p>
             <div class="d-flex justify-content-center">
                 <button class="btn btn-primary px-4 py-2 fw-bold"

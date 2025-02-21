@@ -6,3 +6,83 @@
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
+
+.gradient-container {
+    max-width: 500px;
+    background: linear-gradient(135deg, #f9a8d4, #8b5cf6);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.todo-header {
+    font: 'Helvetica';
+    text-align: center;
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.todo-input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+}
+
+.add-btn {
+    background: #8b5cf6;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-btn:hover {
+    background: #6d28d9;
+}
+
+.todo-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.todo-card {
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s ease-in-out;
+    font-weight: bold;
+}
+
+.todo-card:nth-child(3n+1) {
+    background: #ffadad;
+}
+
+.todo-card:nth-child(3n+2) {
+    background: #ffd6a5;
+}
+
+.todo-card:nth-child(3n+3) {
+    background: #caffbf;
+}
+.todo-card:hover {
+    transform: scale(1.05);
+}

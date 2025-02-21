@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoList">
-        <div class="card w-50 p-2">
-            <h1>TodoList</h1>
-            <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo"/>
-            </t>
+        <div class="gradient-container">
+            <h1 class="todo-header">Todo List</h1>
+
+            <div class="input-group">
+                <input type="text" class="todo-input" placeholder="Enter a new task..." t-on-keyup="addTodo"/>
+                <button class="add-btn" t-on-click="addTodo">Add</button>
+            </div>
+
+            <ul class="todo-list">
+                <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                    <li class="todo-card">
+                        <TodoItem todo="todo"/>
+                    </li>
+                </t>
+            </ul>
         </div>
     </t>
 </templates>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
    <t t-name="awesome_owl.card">
-      <div>
+      <div class='gradient-container hover-card'>
             <h5 class="card-title"><t t-out="props.title"/></h5>
             <p class="card-text"><t t-out="props.content"/></p>
       </div>

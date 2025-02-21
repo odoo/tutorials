@@ -4,44 +4,37 @@
    <t t-name="awesome_owl.Playground">
       <div class="container mt-5">
          <div class="text-center">
-            <h1 class="mb-4 text-danger">Welcome To Owl WebFrameworks</h1>
+            <h1 class="mb-4">Welcome To Owl WebFrameworks</h1>
          </div>
 
          <div class="row justify-content-center">
             <div class="col-md-5 mb-3">
-               <div class="card shadow-sm border-secondary hover-card">
-                  <div class="card-body text-center">
-                     <Card title="'Property 1'" content="str1"/>
-                  </div>
+               <div class="card-body text-center">
+                  <Card title="'Property 1'" content="str1"/>
                </div>
             </div>
             <div class="col-md-5 mb-3">
-               <div class="card shadow-sm border-secondary hover-card">
-                  <div class="card-body text-center">
-                     <Card title="'Property 2'" content="str2"/>
-                  </div>
+               <div class="card-body text-center">
+                  <Card title="'Property 2'" content="str2"/>
                </div>
             </div>
          </div>
 
          <div class="row justify-content-center">
             <div class='col-md-5 mb-3'>
-               <div class="card shadow-sm border-secondary hover-card">
-                  <div class="card-body text-center">
-                     <Counter onChange.bind="incrementSum"/>
-                  </div>
+               <div class="card-body text-center">
+                  <Counter onChange.bind="incrementSum"/>
                </div>
             </div>
             <div class='col-md-5 mb-3'>
-               <div class="card shadow-sm border-secondary hover-card">
-                  <div class="card-body text-center">
-                     <Counter onChange.bind="incrementSum"/>
-                  </div>
+               <div class="card-body text-center">
+                  <Counter onChange.bind="incrementSum"/>
                </div>
             </div>
+            <div class='gradient-container text-center fw-bold' style="font-size: 1.5em;">
+               Sum: <t t-esc="state.sum"/>
+            </div>
          </div>
-
-         <h1 class='text-center '>Sum: <t t-esc="state.sum"/> </h1>
 
          <div class="row justify-content-center text-center mt-5">
             <TodoList />
