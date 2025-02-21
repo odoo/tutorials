@@ -18,6 +18,8 @@
         'views/estate_menus.xml',
         'data/property_types.xml',
         'data/cron.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
     ],
     'demo': [
         'demo/estate_property_data.xml'

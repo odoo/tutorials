@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
@@ -122,7 +123,7 @@ class EstateProperty(models.Model):
     )
     date_deadline = fields.Date(
         string="Date Deadline", 
-        default=lambda self: fields.Date.context_today(self) + timedelta(days=10),
+        default=lambda self: fields.Date.today() + timedelta(days=10),
         help="deadline for the property"
     )
 

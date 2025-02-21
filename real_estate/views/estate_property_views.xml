@@ -95,12 +95,12 @@
                                             string="Confirm" 
                                             type="object" 
                                             icon="fa-check" 
-                                            invisible="status == 'refused' or status == 'cancelled'"/>
+                                            invisible="status in ('refused', 'cancelled')"/>
                                         <button name="action_refused" 
                                             string="Cancel" 
                                             type="object" 
                                             icon="fa-times" 
-                                            invisible="status == 'refused' or status == 'cancelled'"/>
+                                            invisible="status in ('refused', 'cancelled')"/>
                                         <field name="status" string="Status"/>
                                     </list>
                                     <!--Offer
@@ -148,7 +148,7 @@
                                     <field name="expected_price"/>
                                 </strong>
                             </div>
-                            <div t-if="record.best_price.raw_value != 0">
+                            <div t-if="record.best_price != 0">
                                 <span>Best Price:</span>
                                 <strong>
                                     <field name="best_price"/>

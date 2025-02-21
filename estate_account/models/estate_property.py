@@ -7,7 +7,7 @@ class EstateProperty(models.Model):
     def action_sold(self):
         res = super().action_sold()
 
-        self.check_access_rights('write', raise_exception=True)
+        self.check_access_rights('write')
         self.check_access_rule('write')
 
         if not self.buyer_id:
@@ -18,7 +18,6 @@ class EstateProperty(models.Model):
             *self.env['account.journal']._check_company_domain(self.company_id.id),
         ], limit=1)
 
-        self.env['account.journal']._check_company_domain(self.company_id)
         if not journal:
             raise ValueError("There is no sales journal")
         self.env['account.move'].sudo().create({
@@ -29,7 +28,7 @@ class EstateProperty(models.Model):
             'invoice_line_ids': [
                 # First Invoice line (60% of the selling price)
                 Command.create({
-                    'name': 'Real Estate Commission Fee',
+                    'name': "Real Estate Commission Fee",
                     'quantity': 1,
                     'price_unit': self.selling_price * 0.6 # commission fee which is 60% of selling price,
                 }),

@@ -89,8 +89,9 @@ class EstatePropertyOffer(models.Model):
             # Update the offer status using CRUD method
             offer.write({'status': 'accepted'})
             offer.property_id.write({
+                'state': 'offer_accepted',
                 'buyer_id': offer.partner_id.id,
-                'selling_price': offer.price
+                'selling_price': offer.price,
             })
     
     def action_refused(self):
@@ -111,8 +112,7 @@ class EstatePropertyOffer(models.Model):
                 property.write({'state': 'offer_received'})
         return super().create(vals)
 
-    @api.model
-    def _cron_auto_confirm_best_offer(self):
+    def cron_auto_confirm_best_offer(self):
         today = date.today()
         
         # Find properties that have offers and have exceeded their deadline
@@ -123,6 +123,4 @@ class EstatePropertyOffer(models.Model):
 
         for property in expired_properties:
             best_offer = property.offer_ids.filtered(lambda o: o.status != 'refused').sorted('price', reverse=True)[:1]
-
-            if best_offer:
-                best_offer.action_confirm()
+            best_offer.action_confirm()
