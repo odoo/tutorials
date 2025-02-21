@@ -6,7 +6,6 @@
         <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
     
-    <!-- Estate Property Offer Form View -->
     <record id="estate_property_offer_form_view" model="ir.ui.view">
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
@@ -25,7 +24,6 @@
         </field>
     </record>
 
-    <!-- Estate Property Offer List View -->
      <record id="estate_property_offer_list_view" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
@@ -39,5 +37,4 @@
             </list>
         </field>
     </record>
-
 </odoo>

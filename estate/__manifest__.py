@@ -1,11 +1,6 @@
 {
     'name': 'Real Estate',
-    # 'version': '1.2',
     'category': 'Real Estate/Brokerage',
-    # 'sequence': 15,
-    # 'summary': 'cover a business area',
-    # 'description': "",
-    # 'website': 'https://www.odoo.com/page/crm',
     'depends': [
         'base',
         'mail',
@@ -42,5 +37,5 @@
    
     'installable': True,
     'application': True,
-
+    'license': 'AGPL-3',
 }

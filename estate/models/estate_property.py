@@ -1,5 +1,4 @@
-from datetime import timedelta  # Import required libraries
-
+from datetime import timedelta  
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_is_zero
@@ -51,11 +50,11 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        default="new",  # Default state is 'New'
-        required=True,  # Make this field required
-        copy=False,  # Do not copy this field when duplicating a record
+        default="new",
+        required=True,
+        copy=False,
         group_expand="_group_expand_states",
-        tracking=True 
+        tracking=True,
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     user_id = fields.Many2one(
@@ -107,11 +106,11 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden:  # When garden is set to True
-            self.garden_area = 10  # Set garden_area to an integer value
-            self.garden_orientation = "north"  # Set to lowercase value "north"
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
         else:
-            self.garden_area = 0  # If no garden, reset the area
+            self.garden_area = 0
             self.garden_orientation = ""
 
     @api.constrains("selling_price", "expected_price")
@@ -120,8 +119,12 @@ class EstateProperty(models.Model):
             if (
                 not float_is_zero(property.selling_price, precision_rounding=2)
                 and float_compare(
-                    property.selling_price, property.expected_price * 0.9, precision_rounding=2)
-                < 0):
+                    property.selling_price,
+                    property.expected_price * 0.9,
+                    precision_rounding=2,
+                )
+                < 0
+            ):
                 raise UserError(
                     "Selling price must be at least 90% greater than expected price."
                 )
@@ -140,18 +143,18 @@ class EstateProperty(models.Model):
         else:
             self.state = "sold"
             if self.partner_id:
-                template = self.env.ref('estate.email_template_property_sold')  # Replace with your template XML ID
+                template = self.env.ref("estate.email_template_property_sold")
                 if template:
                     template.send_mail(self.id, force_send=True)
                 message_body = f"Hello {self.partner_id.name}, Congratulations! Your property '{self.name}' has been successfully sold. Thank you!"
-                whatsapp_message = self.env['whatsapp.message'].create({
-                    'body': message_body,
-                    'mobile_number': self.partner_id.mobile,  # assuming mobile is in international format like +123456789
-                    'message_type': 'outbound',
-                })
+                whatsapp_message = self.env["whatsapp.message"].create(
+                    {
+                        "body": message_body,
+                        "mobile_number": self.partner_id.mobile,
+                        "message_type": "outbound",
+                    }
+                )
                 whatsapp_message._send()
-
-
 
     @api.ondelete(at_uninstall=False)
     def _check_delete_condition(self):
@@ -160,4 +163,3 @@ class EstateProperty(models.Model):
                 raise UserError(
                     f"You cannot delete the property '{record.name}' because its state is '{record.state}'."
                 )
-                

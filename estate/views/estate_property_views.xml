@@ -12,7 +12,6 @@
         </field>
     </record>
 
-    <!--list view -->
     <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -140,13 +139,11 @@
         </field>
     </record>
 
-
     <record id="estate_property_search_view" model="ir.ui.view">
         <field name="name">estate.property.search.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Estate Properties">
-
                 <field name="name" string="Title" />
                 <field name="postcode" string="Postcode" />
                 <field name="expected_price" string="Expected Price" />

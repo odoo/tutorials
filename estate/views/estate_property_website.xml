@@ -5,10 +5,8 @@
             <br></br>
                 <h2 class="text-center mb-4">Available Properties</h2>
 
-                <!-- Filter Form: Date Picker for 'Listed After' -->
                 <div class="row mb-4">
 
-                    <!-- Date Filter on the Left -->
                     <div class="col-md-6">
                         <form method="GET" action="/properties" class="d-flex">
                             <input type="date" name="listed_after" class="form-control w-50"
@@ -17,7 +15,6 @@
                         </form>
                     </div>
 
-                    <!-- Search Bar on the Right -->
                     <div class="col-md-6 d-flex justify-content-end">
                         <form method="GET" action="/properties" class="d-flex">
                             <input type="text" name="search" class="form-control w-50"
@@ -26,10 +23,7 @@
                             <button type="submit" class="btn btn-primary ms-2">Search</button>
                         </form>
                     </div>
-
                 </div>
-
-
                 <div class="row mb-4">
                     <t t-foreach="properties" t-as="property">
                         <div class="col-md-4 mb-4">
@@ -60,8 +54,6 @@
                         </div>
                     </t>
                 </div>
-
-                <!-- Pagination: Odoo Website Pager -->
                 <div class="row mt-4">
                     <div class="col d-flex justify-content-center">
                         <t t-call="website.pager">

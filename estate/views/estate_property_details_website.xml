@@ -3,7 +3,6 @@
         <t t-call="website.layout">
             <div class="container mt-5">
                 <div class="row">
-                    <!-- Property Image and Description -->
                     <div class="col-md-8">
                         <div class="card p-4 shadow-sm">
                             <h2 class="mb-3">🏡 <t t-esc="property.name"/></h2>
@@ -21,7 +20,6 @@
                         </div>
                     </div>
 
-                    <!-- Property Details -->
                     <div class="col-md-4">
                         <div class="card p-4 shadow-sm">
                             <h4 class="mb-3 text-primary">📌 Property Details</h4>
@@ -34,7 +32,6 @@
                                 <li><strong>Facades:</strong> <t t-esc="property.facades"/></li>
                             </ul>
 
-                            <!-- Garden Details (Displayed Only If Available) -->
                             <t t-if="property.garden">
                                 <hr/>
                                 <h5 class="text-success">🌳 Garden Details</h5>
@@ -54,7 +51,6 @@
                     </div>
                 </div>
 
-                <!-- Back Button -->
                 <div class="row mt-4">
                     <div class="text-center">
                         <a href="/properties" class="btn btn-primary btn-lg">Back to List</a>
