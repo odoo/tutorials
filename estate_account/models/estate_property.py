@@ -7,10 +7,12 @@ class estateProperty(models.Model):
     def set_sold(self):
        for property in self:
            if property.state != "offer_accepted":
-               raise UserError("You can only sell properties with an accepted offer.")   
-           # Create the account.move (invoice)
-           print(" reached ".center(100, '='))
-           print(self.env.user)
+               raise UserError("You can only sell properties with an accepted offer.")  
+
+           res =  super().set_sold()    
+            #Create the account.move (invoice)
+            #print(" reached ".center(100, '='))
+            #print(self.env.user)
            self.env['account.move'].check_access("write")
            self.ensure_one()
            invoice = self.env["account.move"].sudo().create({
@@ -34,4 +36,4 @@ class estateProperty(models.Model):
            # Mark the property as sold
            property.invoice_id = invoice
            property.state = "sold"   
-       return super().set_sold()
+       return res

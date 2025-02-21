@@ -22,7 +22,6 @@ class estatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline", 
         store=True
     )
-    property_id = fields.Many2one("estate.property", string="Property", required=True)
     property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type",

@@ -17,6 +17,8 @@
         "data/estate.property.offer.demo.xml",
         "data/website_menu.xml",
 
+        "wizard/estate_offer_views.xml",
+
         "views/property_detail.xml",
         "views/property_listing.xml",
         "views/res_users_views.xml",

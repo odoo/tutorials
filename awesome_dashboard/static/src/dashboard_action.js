@@ -7,7 +7,6 @@ class AwesomeDashboardLoader extends Component {
     static template = xml`
     <LazyComponent bundle="'awesome_dashboard.dashboard_assets'" Component="'awesome_dashboard.dashboard'"/>
     `;
-
 }
 
 registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboardLoader);

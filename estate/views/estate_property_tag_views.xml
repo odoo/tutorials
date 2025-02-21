@@ -16,7 +16,6 @@
         </field>
     </record>
 
-
     <!-- Define the Search View for Property Tag -->
     <record id="estate_property_Tag_view_search" model="ir.ui.view">
         <field name="name">estate.property.tag.search</field>
