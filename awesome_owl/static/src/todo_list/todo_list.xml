@@ -5,7 +5,7 @@
             <div class="card-body">
                 <h5 class="card-title text-primary">Todo List</h5>
                 <div class="list-group">
-                <input class="form-control mb-3" type="text" placeholder="Add a todo" t-on-keyup="addTodo"/>
+                <input class="form-control mb-3" type="text" placeholder="Add a todo" t-on-keyup="addTodo" t-ref="input"/>
                     <t t-foreach="todos" t-as="todo" t-key="todo.id">
                         <div class="list-group-item border-0">
                             <TodoItem todo="todo"/>
