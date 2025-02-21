@@ -19,7 +19,8 @@
                 <field name="selling_price" />
                 <field name="date_availability" />
                 <field name="property_type_id" />
-                <field name="tag_ids" string="Tags" widget="many2many_tags" />
+                <field name="tag_ids" string="Tags" widget="many2many_tags"
+                    options="{'color_field': 'color'}" />
             </list>
         </field>
     </record>
@@ -41,7 +42,8 @@
                             <h1>
                                 <field name="name" />
                             </h1>
-                            <field name="tag_ids" string="" widget="many2many_tags" />
+                            <field name="tag_ids" string="" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
                         </group>
                         <group>
                             <field name="postcode" />
@@ -66,7 +68,7 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
-                                <field name="property_type_id" />
+                                <field name="property_type_id" options="{'no_create': true}" />
                                 <field name="total_area" />
                             </group>
                         </page>
