@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <t t-name="awesome_owl.Counter">
-    <div class="counter-container">
-        <h2>Counter: <t t-esc="state.count"/></h2>
+    <div class="card" style="width: 18rem">
+        <div class="card-body">
+            <h2>Counter: <t t-esc="state.count"/></h2>
 
-        <button t-on-click="increment">Increment</button>
+            <button t-on-click="increment">Increment</button>
+        </div>
     </div>
 </t>

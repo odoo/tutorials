@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t t-name="awesome_owl.todo_list">
+    <div>
+        <h3>Todo List</h3>
+
+        <!-- Input Field -->
+        <input t-ref="input" type="text" placeholder="Enter a new task" t-on-keyup="addTodo"/>
+
+        <!-- List of Todos -->
+        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+            <TodoItem todo="todo"/>
+        </t>
+    </div>
+</t>

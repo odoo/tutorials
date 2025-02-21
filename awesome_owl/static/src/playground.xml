@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-<t t-name="awesome_owl.Playground"> 
-    <div class="container">
-        <h1>Multiple Counters and Cards</h1>
-        <Counter/>
-        <Counter/>
-        <Card title="'Card 1'" content="'This is the first card'"/>
-        <Card title="'Card 2'" content="'This is the second card'"/>
-    </div>
-</t>
+    <t t-name="awesome_owl.Playground"> 
+        <div class="container">
+            <!-- Card -->
+            <div>
+            <h1>Cards</h1>
+                <Card title="'Card 1'" content="'This is the first card'"/>
+                <Card title="'Card 2'" content="'This is the second card'"/>
+            </div>
+
+            <!-- Counter -->
+            <div>
+                <h1>Counter and sum</h1>
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+                <h2>Sum: <t t-esc="state.sum"/></h2>
+            </div>
+
+            <!-- TodoList -->
+            <div>
+                <TodoList/>
+            </div>
+
+
+        </div>
+    </t>
 
 </templates>

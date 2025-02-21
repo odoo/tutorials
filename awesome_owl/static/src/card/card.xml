@@ -7,6 +7,7 @@
             <t t-esc="props.title"/>
         </h5>
         <p>
+            <t t-out="props.content"/>
             <t t-out="value1"/>
             <t t-out="value2"/>
         </p>
