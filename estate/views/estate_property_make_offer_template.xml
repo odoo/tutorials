@@ -1,0 +1,36 @@
+
+    <!-- Make Offer Template -->
+    <template id="estate_property_make_offer_template" name="Make an Offer">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card p-4 shadow-lg border-0 rounded">
+                            <h2 class="text-center text-primary fw-bold">Make an Offer</h2>
+                            <form t-att-action="'/properties/%s/make_offer' % property.id" method="post">
+                                <div class="mb-3">
+                                    <label for="partner_id" class="form-label">Buyer</label>
+                                    <select name="partner_id" class="form-control" required>
+                                        <t t-foreach="request.env['res.partner'].sudo().search([])" t-as="partner">
+                                            <option t-att-value="partner.id"><t t-esc="partner.name"/></option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="offer_price" class="form-label">Offer Price ($)</label>
+                                    <input type="number" name="offer_price" class="form-control" required min="1"/>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Submit Offer</button>
+                            </form>
+                            <div class="text-center mt-4">
+                                <a t-att-href="'/properties/%s' % property.id" class="btn btn-outline-primary">
+                                    Back to Property Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
