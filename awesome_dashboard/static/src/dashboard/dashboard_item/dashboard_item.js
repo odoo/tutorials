@@ -4,16 +4,12 @@ export class DashboardItem extends Component {
     static template = "awesome_dashboard.DashboardItem";
     static components = {};
     static props = {
-        slots: {
-            type: Object,
-            shape: {
-                default: Object
-            }
-        },
         size: {
             type: Number,
-            default: 1,
-            optional: true
-        }
+            optional: true,
+        },
+    }
+    static defaultProps = {
+        size: 1,
     };
 }
