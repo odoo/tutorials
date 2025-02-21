@@ -13,7 +13,8 @@
             </menuitem>
             <menuitem 
                 id="test_second_level_menu" 
-                name="Settings">
+                name="Settings"
+                groups="estate_group_manager">
                     <menuitem 
                         id="test_model_menu_action_2" 
                         name="Property Type" 

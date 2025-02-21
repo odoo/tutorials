@@ -4,14 +4,15 @@ class EstatePropertyAccount(models.Model):
   _inherit = "estate_model"
 
   def action_sold(self):
+    res = super().action_sold()
     journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
-
+  
     for record in self:
       self.env["account.move"].create({
-      'partner_id': record.buyer_id.id,
-      'move_type': 'out_invoice',
-      'journal_id': journal.id,
-      'invoice_line_ids': [
+        'partner_id': record.buyer_id.id,
+        'move_type': 'out_invoice',
+        'journal_id': journal.id,
+        'invoice_line_ids': [
         Command.create({
           'name': record.name,
           'quantity': 1,
@@ -24,4 +25,4 @@ class EstatePropertyAccount(models.Model):
         })
       ]
     })
-    return super().action_sold()
+    return res
