@@ -62,7 +62,7 @@ class EstateProperty(models.Model):
             if estate.state == 'sold':
                 raise UserError('Sold properties can not be cancelled')
             else:
-                estate.write({'state': 'cancelled'})
+                estate.state = 'cancelled'
         
         return True
 
@@ -71,7 +71,7 @@ class EstateProperty(models.Model):
             if estate.state == 'cancelled':
                 raise UserError('Cancelled properties can not be sold')
             else:
-                estate.write({'state': 'sold'})
+                estate.state = 'sold'
         
         return True
     
