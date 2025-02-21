@@ -1,4 +1,4 @@
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, useRef, onMounted } from "@odoo/owl";
 import { Todoitem } from "./todoitem";
 
 export class Todolist extends Component {
@@ -13,6 +13,10 @@ export class Todolist extends Component {
             nextId: 1
         });
         this.removeTodo = this.removeTodo.bind(this);
+        this.inputRef = useRef("todoInput");
+        onMounted(() => {
+            this.inputRef.el.focus();
+        });
     }
 
     addTodo(ev) {
@@ -31,8 +35,8 @@ export class Todolist extends Component {
         todo.isCompleted = !todo.isCompleted
     }
 
-    removeTodo(todo) {   
-        const todo1 = this.state.todos.find((t)=>(t.id===todo.id));
-        this.state.todos.splice(todo1,1);
+    removeTodo(todo) {
+        const todo1 = this.state.todos.find((t) => (t.id === todo.id));
+        this.state.todos.splice(todo1, 1);
     }
 }

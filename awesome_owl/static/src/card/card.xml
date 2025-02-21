@@ -6,10 +6,10 @@
             <h5 class="text-primary fw-bold mb-2">
                 <t t-out="props.title"/>
             </h5>
-            <!-- <p class="text-muted">
-                <t t-esc="props.content"/>
-            </p> -->
-            <div class="card-body">
+            <button class="btn btn-outline-primary px-3 py-1" t-on-click="toggleContent">
+                Toggle
+            </button>
+            <div class="card-body" t-if="state.isVisible">
                 <t t-slot="default"/>
             </div>
         </div>
