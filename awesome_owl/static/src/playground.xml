@@ -1,39 +1,22 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
-    <!-- Main Playground Component -->
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            <Counter onChange.bind="incrementSum"/>
-            <Counter onChange.bind="incrementSum"/>
-            <Sum/>
+           <h2>------Counter in a sub component-------</h2>
+           <Counter/>
+           <Counter/>
+           <h2>--------Card component-----------</h2>
+            <Card title="'card1'" content="'this is card'"/>
+            <h2>-------Using markup to display html-------</h2>
             <t t-foreach="cards" t-as="card" t-key="card.title">
                 <Card title="card.title" content="card.content"/>
             </t>
+            <h2>--------The sum of two Counter------</h2> 
+             <Sum/>
+             <h2>-------todo list------</h2>
+             <TodoList/> 
+             <h2>----------Card with slots-------</h2>
+             <Card title="'card content optional'"><Counter/></Card> 
         </div>
-    </t>
-
-    <!-- Counter Component -->
-    <t t-name="estate.Counter">
-        <div class="d-flex align-items-center gap-2">
-            <p class="m-0">Counter: <t t-esc="state.value"/></p>  <!-- FIXED HERE -->
-            <button class="btn btn-primary" t-on-click="increment">
-                Increment
-            </button>
-        </div>
-    </t>
-
-    <t t-name="estate.Card">
-      <div class="card d-inline-block m-2" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text"><t t-out="props.content"/></p>
-            </div>
-        </div>
-    </t>
-
-    <t t-name="estate.Sum">
-      
-      <p class="m-0">Sum: <t t-esc="state.sum"/></p>
     </t>
 </templates>

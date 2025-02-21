@@ -1,0 +1,11 @@
+<templates>
+    <!-- Counter Component -->
+    <t t-name="estate.Counter">
+        <div class="d-flex align-items-center gap-2">
+            <p class="m-0">Counter: <t t-esc="state.value"/></p>  <!-- FIXED HERE -->
+            <button class="btn btn-primary" t-on-click="increment">
+                Increment
+            </button>
+        </div>
+    </t>
+</templates>

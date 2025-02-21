@@ -1,0 +1,16 @@
+<templates>
+  <t t-name="estate.Card">
+      <div class="card d-inline-block m-2" style="width: 18rem;">
+           <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title"><t t-esc="props.title"/></h5>
+               <button t-on-click="toggleContent">
+                    <t t-esc="state.isOpen ? 'hide' : 'show'"/>
+                </button>
+            </div>
+            <div class="card-body" t-if="state.isOpen">
+                <t t-out="props.content"/>
+                 <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+</templates>

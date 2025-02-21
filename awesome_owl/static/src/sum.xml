@@ -1,0 +1,7 @@
+<templates>
+    <t t-name="estate.Sum">
+        <Counter onChange.bind="incrementSum" />
+        <Counter onChange.bind="incrementSum" />
+        <p class="m-0">Sum: <t t-esc="state.sum" /></p>
+    </t>
+</templates>
