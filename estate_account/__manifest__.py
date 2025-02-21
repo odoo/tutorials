@@ -1,7 +1,6 @@
 {
-    'name': "estate_account",
-    'depends': ['estate', 'account'],
-    'data': [
-    ],
-    'license': 'AGPL-3',
+    "name": "estate_account",
+    "depends": ["estate", "account"],
+    "data": [],
+    "license": "AGPL-3",
 }
