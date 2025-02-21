@@ -12,9 +12,10 @@ export class Playground extends Component {
     setup() {
         this.html = '<em>test</em>';
         this.test_html = markup(this.html);
+        this.state = useState({ sum: 0 });
     }
 
     increment() {
-        this.state.value++;
+        this.state.sum++;
     }
 }
