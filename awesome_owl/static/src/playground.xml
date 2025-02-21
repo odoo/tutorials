@@ -2,10 +2,12 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <Counter/>
-        <Counter/>
+        <Counter t-props="{onChange: incrementSum}"/>
+        <Counter t-props="{onChange: incrementSum}"/>
+        <p>Sum : <t t-esc="state.sum"/></p>
         <Card title="cardTitle" content="cardContent"/>
         <Card title="cardTitle" content="safeContent"/>
+        <TodoList/>
     </t>
 
 </templates>
