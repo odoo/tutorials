@@ -23,7 +23,6 @@ export class TodoList extends Component {
             this.counterId.value++;
             this.newTask.value = "";
         }
-        this.inputRef.el.focus();
     }
     keyPress(ev) {
         if (ev.keyCode === 13) {

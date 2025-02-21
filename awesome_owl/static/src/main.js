@@ -8,5 +8,12 @@ const config = {
     name: "Owl Tutorial",
 };
 
-// Mount the Playground component when the document.body is ready
-whenReady(() => mountComponent(TodoList, document.body, config));
+whenReady(() =>
+    mountComponent(
+        window.location.pathname === "/awesome_owl/todos"
+            ? TodoList
+            : Playground,
+        document.body,
+        config
+    )
+);
