@@ -95,3 +95,11 @@ class EstateProperty(models.Model):
 
             property.state = 'cancelled'
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_property_new_cancelled(self):
+        for property in self:
+            if not property.state in ('new', 'cancelled'):
+                raise UserError("Only new and cancelled properties can be deleted.")
+
+        return super().unlink()
