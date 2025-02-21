@@ -8,5 +8,5 @@
         "report/estate_account_template.xml",
     ],
     'installable': True,
+    'license':'LGPL-3'
 }
-

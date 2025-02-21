@@ -44,4 +44,3 @@ class EstateProperty(models.Model):
 
         self.env["account.move"].sudo().create(invoice_vals)
         return super(EstateProperty, self).action_sold()
-
