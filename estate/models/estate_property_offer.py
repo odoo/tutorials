@@ -59,9 +59,21 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property = self.env["estate.property"].browse(vals["property_id"])
+            # checks if property is already sold such that new offers cannot be created
+            if property.state == "sold":
+                raise UserError("Sold Property cannot receive more offers")
             property.state = "offer_received"
+
+            '''
+            # Heavy computation code for large number of offers in single property
             for offer in property.offer_ids:
                 if offer.price > vals["price"]:
+                    raise UserError("The offer must be higher than the existing offer")
+            '''
+            # better approach
+            if (self.property_id.offer_ids): # check if there are offers in property
+                max_price = max(property_id.offer_ids.mapped('price')) # create a dict of property_id with their prices and return max value of it
+                if vals["price"] < max_price:
                     raise UserError("The offer must be higher than the existing offer")
         return super().create(vals_list)
 

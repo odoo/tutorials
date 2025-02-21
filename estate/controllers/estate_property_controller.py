@@ -3,7 +3,6 @@ from odoo.http import Controller, request
 
 class EstatePropertyController(Controller):
     
-    # @http.route(["/properties", "/properties/page/<int:page>"], type="http", auth="public", website=True)
     @http.route(["/properties", "/properties/page/<int:page>"], type="http", auth="public", website=True)
     def show_property_list(self, filter_domain ="all", page=1, **kwargs):
 
@@ -40,7 +39,8 @@ class EstatePropertyController(Controller):
             url='/properties',
             total=properties_count,
             page=page,
-            step=page_size
+            step=page_size,
+            url_args={"filter_domain": filter_domain}
         )
 
         property_list = request.env["estate.property"].sudo().search(domain, limit=page_size, offset=pager["offset"])
@@ -48,5 +48,5 @@ class EstatePropertyController(Controller):
     
     @http.route("/properties/<int:property_id>", type="http", auth="public", website=True)
     def show_property_details(self, property_id):
-        property = request.env["estate.property"].sudo().browse(property_id)
+        property = request.env["estate.property"].sudo(). browse(property_id)
         return request.render("estate.property_details_website_template", {"property":property})

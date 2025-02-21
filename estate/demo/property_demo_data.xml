@@ -92,8 +92,7 @@
             <field name="property_type_id" ref="estate.property_type_industrial" />
             <field name="property_image" type="base64" file="estate/static/scr/img/rene_skyline.jpg" />
             <field name="offer_ids"
-                eval="[
-         Command.create({
+                eval="[Command.create({
                 'price': 1800000,
                 'partner_id': ref('base.res_partner_1'),
                 'validity':14,

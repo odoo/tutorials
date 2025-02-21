@@ -22,7 +22,7 @@
     </record>
 
     <function model="estate.property.offer" name="action_set_status_accepted">
-        <value eval="[ref('offer_demo_data_2')]" />
+        <value eval="[ref('offer_demo_data_3')]" />
     </function>
     <function model="estate.property.offer" name="action_set_status_refused">
         <value eval="[ref('offer_demo_data_1', 'offer_demo_data_3')]" />

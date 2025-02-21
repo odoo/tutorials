@@ -142,6 +142,8 @@ class EstateProperty(models.Model):
             elif not record.buyer_id:
                 message = "Buyer must be assigned to sell Property"
                 raise UserError(message)
+            elif not record.offer_ids.filtered(lambda current_property: current_property.state == "accepted"): # filtered is a odoo made method works same as js filter method
+                raise UserError("Property need a accepted offer letter to be sold")
             else:
                 record.state = "sold"
                 record.message_post(body="Property Sold to buyer : {}".format(record.buyer_id.name))
