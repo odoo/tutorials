@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -125,6 +126,15 @@ class EstatePropertyOffer(models.Model):
             property.state = 'offer_received'
         return super().create(vals_list)
     
+    @api.constrains('property_type_id','partner_id')
+    def _check_commercial_buyer(self):
+        for offer in self:
+            if(
+                offer.property_type_id==offer.env.ref('real_estate.property_type_commercial').id
+                and not offer.partner_id._is_company
+            ):
+                raise UserError("Individual cannot buy Commercial Property")
+
     def auto_accept_best_offer(self):
         today = date.today()
 
@@ -134,6 +144,4 @@ class EstatePropertyOffer(models.Model):
         ])
         for property in properties:
             best_offer = property.offer_ids.filtered(lambda o: o.status != 'reject').sorted('price', reverse=True)[:1]
-
-            if best_offer:
-                best_offer.action_confirm()
+            best_offer.action_confirm()

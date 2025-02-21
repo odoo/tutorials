@@ -88,15 +88,6 @@
                                     <button name="action_confirm" type="object" icon="fa-check" invisible="status" title="Confirm"/>
                                     <button name="action_reject" type="object" icon="fa-times" invisible="status" title="Reject"/>
                                 </list>
-                                <form>
-                                    <group>
-                                        <field name="price"/>
-                                        <field name="partner_id"/>
-                                        <field name="validity"/>
-                                        <field name="date_deadline"/>
-                                        <field name="status"/>
-                                    </group>
-                                </form>
                             </field>
                         </page>
                         <page string="Other Info">

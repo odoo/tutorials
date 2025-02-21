@@ -112,15 +112,10 @@ class EstateProperty(models.Model):
         string="Property Type",
         help="The type of the property (e.g., Apartment, House, etc.)"
     )
-    _is_commercial = fields.Boolean(
-        compute='_compute_is_commercial',
-        store=True
-    )
     buyer_id = fields.Many2one(
         comodel_name='res.partner',
         string="Buyer",
         help="The buyer who purchased the property",
-        domain="[('is_company','=',_is_commercial)]",
     )
     salesman_id = fields.Many2one(
         comodel_name='res.users',
@@ -168,11 +163,6 @@ class EstateProperty(models.Model):
             "The Selling Price must be strictly positive."
         )
     ]
-
-    @api.depends('property_type_id')
-    def _compute_is_commercial(self):
-        for property in self:
-            property._is_commercial = property.property_type_id.id==self.env.ref('real_estate.property_type_commercial').id
 
     # Compute Total Area
     @api.depends('living_area', 'garden_area')
