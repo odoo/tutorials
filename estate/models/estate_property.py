@@ -58,18 +58,20 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     def action_set_cancelled(self):
-        if self.state == 'sold':
-            raise UserError('Sold properties can not be cancelled')
-        else:
-            self.write({'state': 'cancelled'})
+        for estate in self:
+            if estate.state == 'sold':
+                raise UserError('Sold properties can not be cancelled')
+            else:
+                estate.write({'state': 'cancelled'})
         
         return True
 
     def action_set_sold(self):
-        if self.state == 'cancelled':
-            raise UserError('Cancelled properties can not be sold')
-        else:
-            self.write({'state': 'sold'})
+        for estate in self:
+            if estate.state == 'cancelled':
+                raise UserError('Cancelled properties can not be sold')
+            else:
+                estate.write({'state': 'sold'})
         
         return True
     
@@ -85,12 +87,13 @@ class EstateProperty(models.Model):
     
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = ''
+        for estate in self:
+            if self.garden:
+                self.garden_area = 10
+                self.garden_orientation = 'north'
+            else:
+                self.garden_area = 0
+                self.garden_orientation = ''
     
     @api.constrains('selling_price')
     def _check_selling_price(self):

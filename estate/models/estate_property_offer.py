@@ -31,19 +31,21 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     def action_set_accepted(self):
-        if 'accepted' in self.property_id.offer_ids.mapped('state'):
-            raise UserError('Another offer has already been accepted')
-        
-        self.property_id.partner_id = self.partner_id
-        self.property_id.selling_price = self.price
-        self.property_id.state = 'offer_accepted'
+        for offer in self:
+            if 'accepted' in offer.property_id.offer_ids.mapped('state'):
+                raise UserError('Another offer has already been accepted')
+            
+            offer.property_id.partner_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            offer.property_id.state = 'offer_accepted'
 
-        self.state = 'accepted'
+            offer.state = 'accepted'
 
         return True
 
     def action_set_refused(self):
-        self.state = 'refused'
+        for offer in self:
+            offer.state = 'refused'
 
         return True
 
