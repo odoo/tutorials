@@ -7,10 +7,22 @@
     </record>
 
     <record id="estate_type_list_view" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Type" multi_edit="1">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_type_form_view" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Types">
+                <field name="sequence" widget="handle" />
                 <sheet>
                     <h1>
                         <field name="name"></field>
@@ -21,7 +33,7 @@
                                 <list>
                                     <field name="name" string="Title" />
                                     <field name="expected_price" />
-                                    <field name="state" classe="oe_right" />
+                                    <field name="state" />
                                 </list>
                             </field>
                         </page>
@@ -29,6 +41,5 @@
                 </sheet>
             </form>
         </field>
-
     </record>
 </odoo>
