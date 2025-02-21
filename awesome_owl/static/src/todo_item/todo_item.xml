@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- TodoItem Component -->
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoItem">
         <div class="card p-3 mb-2 d-flex flex-row align-items-center shadow-sm border rounded bg-light">

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
-
-    <!-- Property template -->
     <template id="report_property_offers">
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container">
@@ -36,8 +33,6 @@
         </t>
     </template>
 
-
-    <!-- User Properties Template -->
     <template id="report_user_properties">
         <t t-foreach="docs" t-as="user">
             <t t-call="web.html_container">
@@ -74,8 +69,7 @@
             </t>
         </t>
     </template>
-
-    <!-- Property Offers Template -->
+    
     <template id="property_offers_table">
         <table class="table">
             <thead>
@@ -113,5 +107,4 @@
             </tbody>
         </table>
     </template>
-
 </odoo>

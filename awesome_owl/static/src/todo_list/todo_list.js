@@ -4,7 +4,6 @@ import {useAutoFocus} from "../utils"
 
 export class TodoList extends Component{
     static template = "awesome_owl.TodoList"
-
     static components = {TodoItem}
 
     setup(){
@@ -12,8 +11,7 @@ export class TodoList extends Component{
         this.current_id = 1;
         useAutoFocus("input");
     }
-
-
+    
     addTodo(ev){
         let task = ev.target.value.trim()
         if(ev.keyCode === 13 && task != ""){

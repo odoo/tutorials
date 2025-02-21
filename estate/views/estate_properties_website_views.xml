@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
-
     <record id="menu_properties" model="website.menu">
         <field name="name">Properties</field>
         <field name="url">/properties</field>
     </record>
-
     <!-- ====================================
                 Properties Template
     ==================================== -->
@@ -49,7 +46,6 @@
             </div>
         </t>
     </template>
-
     <!-- ====================================
                 Property Template
     ==================================== -->
@@ -92,8 +88,6 @@
             </div>
         </t>
     </template>
-
-
     <!-- ====================================
                 Make an Offer Template
     ==================================== -->
@@ -133,6 +127,4 @@
             </div>
         </t>
     </template>
-
-
 </odoo>

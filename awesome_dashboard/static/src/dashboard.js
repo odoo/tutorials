@@ -35,5 +35,4 @@ class AwesomeDashboard extends Component {
         })
     }
 }
-
 registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);

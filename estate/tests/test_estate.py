@@ -10,7 +10,6 @@ class EstateTestCase(TransactionCase):
     def setUpClass(cls):
         super(EstateTestCase, cls).setUpClass()
 
-        # Create dummy data for testing
         cls.property = cls.env['estate.property'].create([{
             "name": "Test Property",
             "living_area": 20,
@@ -30,21 +29,17 @@ class EstateTestCase(TransactionCase):
             })]
         cls.partner = cls.env["res.partner"].create({"name": "Test Partner"})
 
-    # ------------------------------------------------------------
-    # TEST 1 : can't create offer for sold property
-    # ------------------------------------------------------------
     def test_offer_creation_on_sold_property(self):
-        # print(" Test 1 : Sold Property test case execute ".center(100,"-"))
+        # User cannot create offer for sold property
         self.property[0].status = "sold"
         with self.assertRaises(UserError):
             self.property[0].offer_ids = [Command.create({
                 "price": 135000,
                 "partner_id": self.partner.id
             })]
-    # ------------------------------------------------------------
-    # TEST 2 : property can't be sold which do not have any accepted offer
-    # ------------------------------------------------------------
+
     def test_property_without_accepted_offer_should_fail(self):
+        # property can't be sold which do not have any accepted offer
         print(" Test 2 : Property cannot be sold without accepting the offer ".center(100,"-"))
         with self.assertRaises(UserError):
             self.property[0].action_property_sold()
@@ -57,10 +52,8 @@ class EstateTestCase(TransactionCase):
             {'status': 'sold'},
         ])        
 
-    # ------------------------------------------------------------
-    # Test 3 : garden button behaviour checkup
-    # ------------------------------------------------------------
     def test_reset_garden_area_and_garden_orientation_when_garden_is_unchecked(self):
+        # garden button behaviour checkup
         print(" Test 3 : Garden button with their linked properties behaviour checkup".center(100, "-"))
         estate_form = Form(self.property[0])
 

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
     <!-- =============== Root Menu =================== -->
     <menuitem id="estate_menu_root" name="Real Estate" web_icon="estate,static/description/icon.png"/>
@@ -9,7 +8,6 @@
     <!-- Property Menuitem -->
     <menuitem id="estate_model_menu_property" action="estate_model_property" 
     parent="estate_model_advertisement_menu"/>
-
 
     <!-- =============== Setting Menuitem =============== -->
     <menuitem id="estate_model_setting_menu" name="Settings" parent="estate_menu_root"/>

@@ -1,6 +1,5 @@
 import {registry} from "@web/core/registry";
 import {rpc} from "@web/core/network/rpc";
-// import {memoize} from "@web/core/utils/functions";
 import { reactive } from "@odoo/owl"; 
 
 const statistics = reactive({ isReady: false});

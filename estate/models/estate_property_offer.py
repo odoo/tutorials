@@ -1,6 +1,5 @@
 from datetime import timedelta, datetime
-
-from odoo import fields, models, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 class EstatePropetyOffer(models.Model):
@@ -14,7 +13,6 @@ class EstatePropetyOffer(models.Model):
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price >= 0)', 'The expected price must be positive')
     ]
-
 
     #---------------------------------------------------------------------
     # Fields
@@ -30,14 +28,12 @@ class EstatePropetyOffer(models.Model):
     validity = fields.Integer(default=7, string="Validity")
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
 
-
     #---------------------------------------------------------------------
     # Relations
     #---------------------------------------------------------------------
     partner_id = fields.Many2one(comodel_name="res.partner", required=True)
     property_id = fields.Many2one(comodel_name="estate.property", required=True, ondelete="cascade")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type",related="property_id.property_type_id", store=True)
-
 
     #---------------------------------------------------------------------
     # Compute fields
@@ -54,7 +50,6 @@ class EstatePropetyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
 
-
     # --------------------------- Action Methods ---------------------------
     def action_property_offer_accept(self):
         self.property_id.selling_price = self.price
@@ -67,7 +62,6 @@ class EstatePropetyOffer(models.Model):
                 offer.status = "refused"
         return True
 
-
     def action_property_offer_refused(self):
         for record in self:
             if record.status == 'accepted':
@@ -75,7 +69,6 @@ class EstatePropetyOffer(models.Model):
                 record.property_id.selling_price = 0.00
             record.status = 'refused'
         return True
-
 
     # --------------------------- Oncreate Methods ---------------------------
     @api.model_create_multi

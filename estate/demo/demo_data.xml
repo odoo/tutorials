@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
-
     <record id="res_partner_01" model="res.partner">
         <field name="name">Dhruv</field>
     </record>
@@ -41,19 +39,19 @@
     </record>
 
     <record id="property_demo_3" model="estate.property">
-    <field name="name">Luxury Villa</field>
-    <field name="status">new</field>
-    <field name="description">A stunning villa with a sea view</field>
-    <field name="postcode">98765</field>
-    <field name="date_availability">2025-06-01</field>
-    <field name="expected_price">500000</field>
-    <field name="selling_price">550000</field>
-    <field name="bedrooms">5</field>
-    <field name="living_area">300</field>
-    <field name="facades">3</field>
-    <field name="garage">True</field>
-    <field name="property_type_id" ref="estate.property_type_residentials"/>
-    <field name="image" type="base64" file="estate/static/img/img1.jpeg"/>
+        <field name="name">Luxury Villa</field>
+        <field name="status">new</field>
+        <field name="description">A stunning villa with a sea view</field>
+        <field name="postcode">98765</field>
+        <field name="date_availability">2025-06-01</field>
+        <field name="expected_price">500000</field>
+        <field name="selling_price">550000</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">300</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="property_type_id" ref="estate.property_type_residentials"/>
+        <field name="image" type="base64" file="estate/static/img/img1.jpeg"/>
     </record>
 
     <record id="property_demo_4" model="estate.property">
@@ -178,5 +176,4 @@
             })
         ]"/>
     </record>
-
 </odoo>

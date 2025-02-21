@@ -5,7 +5,6 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
-    # Model Configuration
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
@@ -69,16 +68,10 @@ class EstateProperty(models.Model):
     # Relations
     #---------------------------------------------------------------------
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-
-    # Salesmen
     user_id = fields.Many2one("res.users", string="Salesmen", copy=False, default = lambda self: self.env.user)
-    # Buyer
     partner_id = fields.Many2one("res.partner", string="Buyer", readonly=True)
-
     tag_ids = fields.Many2many("estate.property.tag", string="Tag")
-
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
-
 
     #---------------------------------------------------------------------
     # Compute Methods
@@ -88,12 +81,10 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
-
 
     # --------------------------- Onchange Methods ---------------------------    
     @api.onchange("garden")
@@ -104,7 +95,6 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
-
 
     # --------------------------- Action Methods ---------------------------
     def action_property_sold(self):
@@ -119,7 +109,6 @@ class EstateProperty(models.Model):
             if self.partner_id.email:
                 template = self.env.ref('estate.estate_property_sold_email_template')
                 template.send_mail(self.id, force_send=True)
-        
 
     def action_property_cancel(self):
         for record in self:
@@ -135,7 +124,6 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status not in ('new', 'cancelled'):
                 raise UserError("You cannot delete the property which status is not new or cancelled")
-            
 
     #---------------------------------------------------------------------
     # Python Constraints

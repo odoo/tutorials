@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
     <!-- ====================================
                 Action
@@ -18,7 +17,6 @@
             </p>
         </field>
     </record>
-
     <!-- ====================================
                 List View
     ==================================== -->
@@ -43,7 +41,6 @@
             </list>
         </field>
     </record>
-
     <!-- ====================================
                 Form View
     ==================================== -->
@@ -117,66 +114,60 @@
         </form>
         </field>
     </record>
-
-
     <!-- ====================================
                 Filter and Group by View
     ==================================== -->
     <record id="estate_model_search" model="ir.ui.view">    
-    <field name="name">estate.property.search</field>
-    <field name="model">estate.property</field>
-    <field name="arch" type="xml">
-        <search string="Search">
-            <field name="name"/>
-            <field name="postcode"/>
-            <field name="expected_price"/>
-            <field name="bedrooms"/>
-            <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area','&gt;=', self)]"/>
-            <field name="facades"/>
-            <filter name="bedrooms_2" string="2 Bedrooms" domain="[('bedrooms', '=', 2)]"/>
-            <group expand="1" string="Postcode">
-                <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
-            </group>
-            <filter string="Available" name="filter_by_state" domain="['|',('status', '=', 'new'),('status','=','offer_received')]"/>
-            <filter string="Archive" name="archived" domain="[('active','=', False)]" />
-        </search>
-    </field>
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area','&gt;=', self)]"/>
+                <field name="facades"/>
+                <filter name="bedrooms_2" string="2 Bedrooms" domain="[('bedrooms', '=', 2)]"/>
+                <group expand="1" string="Postcode">
+                    <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
+                </group>
+                <filter string="Available" name="filter_by_state" domain="['|',('status', '=', 'new'),('status','=','offer_received')]"/>
+                <filter string="Archive" name="archived" domain="[('active','=', False)]" />
+            </search>
+        </field>
     </record>
-
-
     <!-- ====================================
                 Kanban View
     ==================================== -->
     <record id="estate_model_kanban_view" model="ir.ui.view">
-    <field name="name">estate.property.view.kanban</field>
-    <field name="model">estate.property</field>
-    <field name="arch" type="xml">
-        <kanban default_group_by="status" records_draggable='False'>
-            <field name="status"/>
-            <templates>
-                <t t-name="card">
-                    <div class="oe_kanban_global_click">
-                        <strong>
-                            Name : <field name="name" string="Name"/>
-                        </strong>
-                        <div>
-                            Expected Price : <field name="expected_price" string="Expected Price"/>
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" records_draggable='False'>
+                <field name="status"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <strong>
+                                Name : <field name="name" string="Name"/>
+                            </strong>
+                            <div>
+                                Expected Price : <field name="expected_price" string="Expected Price"/>
+                            </div>
+                            <t t-if="record.status.raw_value == 'offer_received'">
+                                Best Price : <field name="best_price" string="Best Price"/>
+                            </t>
+                            <t t-if="record.status.raw_value == 'offer_accepted'">
+                                Selling Price : <field name="selling_price" string="Selling Price"/>
+                            </t>
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags" string="Tags" options="{'color_field': 'color'}"/>    
+                            </div>
                         </div>
-                        <t t-if="record.status.raw_value == 'offer_received'">
-                            Best Price : <field name="best_price" string="Best Price"/>
-                        </t>
-                        <t t-if="record.status.raw_value == 'offer_accepted'">
-                            Selling Price : <field name="selling_price" string="Selling Price"/>
-                        </t>
-                        <div>
-                            <field name="tag_ids" widget="many2many_tags" string="Tags" options="{'color_field': 'color'}"/>    
-                        </div>
-                    </div>
-                </t>
-            </templates>
-        </kanban>
-    </field>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
     </record>
-
-
 </odoo>

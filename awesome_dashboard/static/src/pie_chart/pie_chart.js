@@ -22,6 +22,7 @@ export class PieChart extends Component{
             () => [this.props.data]
         )
     }
+
     renderChart() {
         const labels = Object.keys(this.props.data);
         const data = Object.values(this.props.data);
@@ -40,6 +41,7 @@ export class PieChart extends Component{
             }
         })
     }
+    
     updateChart() {
         if (!this.chart || !this.props.data) return;
 

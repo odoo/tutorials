@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
-
     <!-- ====================================
                 Action
     ==================================== -->
@@ -10,7 +8,6 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
-
     <!-- ====================================
                 List View
     ==================================== -->
@@ -24,7 +21,6 @@
             </list>
         </field>
     </record>
-    
     <!-- ====================================
                 Form View
     ==================================== -->
@@ -55,5 +51,4 @@
             </form>
         </field>
     </record>
-
 </odoo>

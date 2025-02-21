@@ -1,9 +1,7 @@
 from odoo.http import request, route
 from odoo import http
 
-
 class EstatePropertyOfferController(http.Controller):
-
     # ------------------------------------------------------------
     # MAKE OFFER
     # ------------------------------------------------------------
@@ -18,7 +16,6 @@ class EstatePropertyOfferController(http.Controller):
         return request.render("estate.estate_make_offer", {
             "property": property_data
         })
-
 
     # ------------------------------------------------------------
     # CREATE OFFER
