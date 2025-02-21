@@ -37,6 +37,10 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
+                    <button name="%(action_report_property_offers)d"
+                            string="Print Offers Report"
+                            type="action"
+                            class="oe_highlight"/>
                     <button 
                         name="action_set_sold" 
                         type="object" 
@@ -74,6 +78,7 @@
                         </group>
                         <group>
                             <field name="date_availability" string="Available From"/>
+                            <field name="date_of_deadline" string="Deadline From"/>
                         </group>
                     </group>
 

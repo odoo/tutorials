@@ -4,6 +4,14 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <header>
+                    <button name="%(action_report_res_users_estate)d"
+                            string="Print User Report"
+                            type="action"
+                            class="oe_highlight"/>
+                </header>
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Properties" nolabel="1">
                     <group>

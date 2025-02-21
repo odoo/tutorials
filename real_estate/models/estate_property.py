@@ -10,6 +10,18 @@ class EstateProperty(models.Model):
     _description = "Property"
     _order = 'id desc'
     _inherit = 'mail.thread'
+    _sql_constraints = [
+        (
+            'check_expected_price',
+            'CHECK(expected_price>0)',
+            'Expected price must be strictly positive'
+        ),
+        (
+            'check_selling_price',
+            'CHECK(selling_price>0)',
+            'Selling price must be positive'
+        )
+    ]
 
     name = fields.Char(
         string="Name",
@@ -102,8 +114,11 @@ class EstateProperty(models.Model):
         help="Current state of the property."
     )
     date_of_deadline = fields.Date(
-        string="property deadline",
-        compute='_compute_property_deadline'
+        string="Date Deadline",
+        copy=False,
+        default=lambda self: fields.Date.today()+timedelta(days=10),
+        help="Date when the property will not be available",
+        compute="_compute_property_deadline"
     )
 
     property_type_id = fields.Many2one(
@@ -146,30 +161,11 @@ class EstateProperty(models.Model):
         string="Best Offer",
         compute='_compute_best_price',
     )
-    # SQL CONSTRAINTS
-    _sql_constraints = [
-        (
-            'check_expected_price',
-            'CHECK(expected_price>0)',
-            'Expected price must be strictly positive'
-        ),
-        (
-            'check_selling_price',
-            'CHECK(selling_price>0)',
-            'Selling price must be positive'
-        )
-    ]
 
-    @api.depends('date_availability')
-    def _compute_property_deadline(self):
-        for property in self:
-            if property.date_availability:
-                property.date_of_deadline = property.date_availability + timedelta(days=10)
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
         for property in self:
             property.total_area = property.garden_area + property.living_area
-
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for property in self:
@@ -177,6 +173,10 @@ class EstateProperty(models.Model):
                 property.best_price = max(property.offer_ids.mapped('price'))
             else:
                 property.best_price = 0.0
+    @api.depends('date_availability')
+    def _compute_property_deadline(self):
+        for property in self:
+            property.date_of_deadline = property.date_availability + timedelta(days=10)
 
     # PYTHON CONSTRAINTS
     @api.constrains('expected_price', 'selling_price')
@@ -194,7 +194,7 @@ class EstateProperty(models.Model):
         if self.property_type_id:
             commercial_type_id = self.env.ref('real_estate.property_type_commercial').id
             if commercial_type_id and commercial_type_id == self.property_type_id.id:
-                return {'domain': {'buyer_id': [('is_company', '=', true)]}}
+                return {'domain': {'buyer_id': ['|', ('is_company', '=', True), ('id', '=', False)]}}
             else:
                 return {'domain': {'buyer_id': []}}
                 
@@ -230,16 +230,3 @@ class EstateProperty(models.Model):
             if property.state == 'sold':
                 raise UserError("Sold Property can not be cancel")
             property.state = 'cancelled'
-
-    def _cron_property_offer_accept(self):
-        expired_properties = self.search([('date_of_deadline', '<=', date.today()), ('state', '=', 'offer_received')])
-        for property in expired_properties:
-            print(property.name)
-            if property.best_price > 0:
-                for offer_id in property.offer_ids:
-                    if offer_id.price == property.best_price:
-                        best_offer = offer_id
-            if best_offer:
-                property.selling_price = best_offer.price
-                property.buyer_id = best_offer.partner_id
-                property.state = 'offer_accepted'

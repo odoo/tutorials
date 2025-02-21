@@ -7,6 +7,13 @@ class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Offers on Property"
     _order = 'price desc'
+    _sql_constraints = [
+        (
+            'check_offer_price',
+            'CHECK(price>0)',
+            'Offer Price must be positive'
+        )
+    ] 
 
     create_date = fields.Date(
         string="Create Date",
@@ -50,14 +57,6 @@ class EstatePropertyOffer(models.Model):
         related='property_id.property_type_id',
         store=True
     )
-     # SQL CONSTRAINTS   
-    _sql_constraints = [
-        (
-            'check_offer_price',
-            'CHECK(price>0)',
-            'Offer Price must be positive'
-        )
-    ] 
     
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -93,3 +92,21 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_offer(self):
         self.status = 'refused'
+
+    def cron_property_offer_accept(self):
+        expired_properties = self.env['estate.property'].search([
+            ('date_of_deadline', '<=', date.today()),
+            ('state', '=', 'offer_received'),
+            ('offer_ids', '!=', False)
+        ])
+        for property in expired_properties:
+            best_offer = None
+            for offer in property.offer_ids:
+                if offer.status != 'refused' and (best_offer is None or offer.price > best_offer.price):
+                    best_offer=offer
+                    property.best_price = offer.price
+            if best_offer:
+                best_offer.status = 'accepted'
+                property.selling_price = best_offer.price
+                property.buyer_id = best_offer.partner_id
+                property.state = 'offer_accepted'

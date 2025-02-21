@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
             self.check_access('write')
             self.env['account.move'].check_access_rights('create', raise_exception=True)
         except AccessError:
-            raise ValidationError('Access nahi hai')
+            raise ValidationError("You do not have permission to update this property.")
         res = super().action_set_sold()
         if not self.buyer_id:
             raise ValidationError("No buyer assigned! Cannot create an invoice.")
