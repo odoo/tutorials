@@ -23,7 +23,7 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <header>
-                    <button type="action" name="%(estate.estate_property_offer_action)d" string="Offers"/>
+                    <button type="action" name="%(estate.estate_property_offer_action_from_type)d" string="Offers"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
