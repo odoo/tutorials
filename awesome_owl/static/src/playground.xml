@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="container">
+        <div class="container bg-dark bg-gradient text-white">
             <h1 class="text-center"> OWL Framework !! </h1>
             <div class="d-flex gap-3 justify-content-center p-4">
                 <Counter onChange.bind="incrementSum" />
