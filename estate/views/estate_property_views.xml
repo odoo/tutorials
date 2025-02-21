@@ -104,7 +104,7 @@
                             </page>
                             <page string="Offers">
                                 <group>
-                                    <field name="offer_ids" string="" readonly="state in ['offer_accepted', 'sold', 'cancelled']" editable="bottom">
+                                    <field name="offer_ids" nolabel="1" readonly="state in ['offer_accepted', 'sold', 'cancelled']" editable="bottom">
                                         <list decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                             <field name="price"/>
                                             <field name="partner_id"/>

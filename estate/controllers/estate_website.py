@@ -3,9 +3,7 @@ from odoo.http import request
 
 
 class EstateWebsite(http.Controller):
-    @http.route(['/property', "/property/page/<int:page>"], type="http", auth="public",
-        website=True
-    )
+    @http.route(['/property', "/property/page/<int:page>"], type="http", auth="public",website=True)
     def list_properties(self, page=1, status="all", min_price=None, max_price=None, **kwargs):
         step = 6
         offset = (page-1)*step
@@ -37,8 +35,6 @@ class EstateWebsite(http.Controller):
             "pager": pager
         })
 
-    @http.route("/property/<model('estate.property'):property>", type="http", auth="public",
-        website=True,
-    )
+    @http.route("/property/<model('estate.property'):property>", type="http", auth="public",website=True)
     def property_detail(self, property, **kwargs):
         return request.render("estate.property_detail_page", {"property": property})
