@@ -1,7 +1,8 @@
+import { registry } from "@web/core/registry";
 import { NumberCard } from "./number_card/number_card";
 import { PieChartCard } from "./pie_chart_card/pie_chart_card";
 
-export const DASHBOARD_ITEMS = [
+const DASHBOARD_ITEMS = [
     {
         id: "average_quantity",
         description: "Average amount of t-shirt by order this month",
@@ -40,7 +41,7 @@ export const DASHBOARD_ITEMS = [
     },
     {
         id: "amount_new_orders",
-        description: "amount orders this month",
+        description: "Amount orders this month",
         Component: NumberCard,
         props: (data) => ({
             title: "Total amount of new orders this month",
@@ -58,3 +59,7 @@ export const DASHBOARD_ITEMS = [
         })
     }
 ]
+
+DASHBOARD_ITEMS.forEach(dashboard_item => {
+    registry.category("awesome_dashboard").add(dashboard_item.id, dashboard_item)
+});

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100 p-3 d-flex flex-wrap gap-3'">
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100 p-3'">
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn p-0 m-0" t-on-click="openConfigurationDialog">
+                    <i class="fa fa-cog" />
+                </button>
+            </t>
             <t t-set-slot="layout-buttons">
                 <div class="d-flex gap-1 me-1">
                     <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
@@ -9,12 +14,14 @@
                 </div>
             </t>
             <t t-if="orderStats">
-                <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size || 1">
-                        <t t-set="itemProp" t-value="item.props ? item.props(orderStats) : {'data': orderStats}"/>
-                        <t t-component="item.Component" t-props="itemProp" />
-                    </DashboardItem>
-                </t>
+                <div class="d-flex flex-wrap gap-3">
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                            <t t-set="itemProp" t-value="item.props ? item.props(orderStats) : {'data': orderStats}"/>
+                            <t t-component="item.Component" t-props="itemProp" />
+                        </DashboardItem>
+                    </t>
+                </div>
             </t>
         </Layout>
     </t>

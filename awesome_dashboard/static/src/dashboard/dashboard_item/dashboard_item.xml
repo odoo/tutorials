@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <template xml:space="preserve" >
     <t t-name="awesome_dashboard.DashboardItem">
-        <div class="card p-3 d-inline-block border border-dark" t-attf-style="min-width: {{ props.size*18 }}rem;">
+        <div class="card p-3 d-inline-block border border-dark w-100 w-md-auto" t-attf-style="min-width: {{ props.size*18 }}rem;">
             <t t-slot="default" />
         </div>
     </t>
