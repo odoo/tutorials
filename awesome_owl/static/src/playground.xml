@@ -10,25 +10,29 @@
          <div class="row justify-content-center">
             <div class="col-md-5 mb-3">
                <div class="card-body text-center">
-                  <Card title="'Property 1'" content="str1"/>
+                  <Card title="'Property 1'"> NEWNEW</Card>
                </div>
             </div>
             <div class="col-md-5 mb-3">
                <div class="card-body text-center">
-                  <Card title="'Property 2'" content="str2"/>
+                  <Card title="'Property 2'"> old old</Card>
                </div>
             </div>
          </div>
 
          <div class="row justify-content-center">
-            <div class='col-md-5 mb-3'>
+            <div class="col-md-5 mb-3">
                <div class="card-body text-center">
-                  <Counter onChange.bind="incrementSum"/>
+                  <Card title="'count'">
+                     <Counter onChange.bind="incrementSum"/>
+                  </Card>
                </div>
             </div>
-            <div class='col-md-5 mb-3'>
+            <div class="col-md-5 mb-3">
                <div class="card-body text-center">
-                  <Counter onChange.bind="incrementSum"/>
+                  <Card title="'count'">
+                     <Counter onChange.bind="incrementSum"/>
+                  </Card>
                </div>
             </div>
             <div class='gradient-container text-center fw-bold' style="font-size: 1.5em;">
