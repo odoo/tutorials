@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<templates xml:space='preserve'>
+  <t t-name='awesome_owl.TodoItem'>
+    <li t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''">
+      <input
+        type='checkbox'
+        t-on-change='onChange'
+      />
+      <span>
+        <t t-out='props.todo.description'/>
+      </span>
+      <button t-on-click='() => props.deleteTodo(props.todo.id)'>Delete</button>
+      <button t-on-click='upperCaseOne'>Uppercase</button>
+    </li>
+  </t>
+</templates>
