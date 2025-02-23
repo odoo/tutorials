@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, models, fields
+from odoo import api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_is_zero, float_compare
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -9,7 +9,6 @@ class EstateProperty(models.Model):
     _description = "This is the model for estate property"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = "id desc"
-
 
     name = fields.Char(string="Name", required=True, tracking=True)
     description = fields.Text(string="Description")
@@ -55,16 +54,16 @@ class EstateProperty(models.Model):
     company_id = fields.Many2one(comodel_name="res.company", string="Company", default=lambda self:self.env.user.company_id)
     image = fields.Binary(string="Image", attachment=True)
 
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be greater than 0"),
+        ("check_selling_price", "CHECK(selling_price > 0)", "The selling price must be positive"),
+    ]
+
     @api.ondelete(at_uninstall=False)
     def _unlink_check_state(self):
         for record in self:
             if record.state not in ["new", "cancelled"]:
                 raise UserError("You can only delete properties in 'New' & 'Cancelled' state")
-
-    _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be greater than 0"),
-        ("check_selling_price", "CHECK(selling_price > 0)", "The selling price must be positive"),
-    ]
 
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
@@ -90,9 +89,9 @@ class EstateProperty(models.Model):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
-        # else:
-        #     self.garden_area = None
-        #     self.garden_orientation = None
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     def action_sold_property(self):
         for record in self:

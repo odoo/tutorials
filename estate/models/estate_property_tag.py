@@ -1,11 +1,10 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "This is the model for the estate property tag"
     _order ="name"
-
 
     name = fields.Char(string="Name")
     color = fields.Integer(string="Color")

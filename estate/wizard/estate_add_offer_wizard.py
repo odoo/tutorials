@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class EstateAddOfferWizard(models.TransientModel):
     _name = "estate.add.offer.wizard"
     _description = "Add Offer Wizard"
