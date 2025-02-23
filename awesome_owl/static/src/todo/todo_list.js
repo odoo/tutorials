@@ -2,10 +2,10 @@ import { Component , useState} from '@odoo/owl';
 import { TodoItem } from './todo_item';
 import { useAutofocus } from "../utils";
 
-
 export class TodoList extends Component {
     static template = 'awesome_owl.TodoList';
     static components = { TodoItem };
+
     setup(){
         this.todoID = 1;
         this.todos = useState([]);
@@ -29,6 +29,7 @@ export class TodoList extends Component {
             todo.isCompleted = !todo.isCompleted;
         }
     }
+
     removeTodo(todoID) {
         const index = this.todos.findIndex((todo) => todo.id === todoID);
         if (index !== -1) {
