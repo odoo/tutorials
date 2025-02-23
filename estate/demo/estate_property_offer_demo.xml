@@ -73,31 +73,12 @@
         </record>
 
         <function model="estate.property.offer" name="action_offer_accepted">
-            <value eval="[ref('demo_property_offer_2')]"/>
-        </function>
-
-        <function model="estate.property.offer" name="action_offer_accepted">
-            <value eval="[ref('demo_property_offer_8')]"/>
-        </function>
-
-        <function model="estate.property.offer" name="action_offer_accepted">
-            <value eval="[ref('demo_property_offer_10')]"/>
+            <value eval="[ref('demo_property_offer_2'), ref('demo_property_offer_8'), ref('demo_property_offer_10')]"/>
         </function>
 
         <function model="estate.property.offer" name="action_offer_refused">
-            <value eval="[ref('demo_property_offer_1')]"/>
+            <value eval="[ref('demo_property_offer_1'), ref('demo_property_offer_3'), ref('demo_property_offer_7'), ref('demo_property_offer_9')]"/>
         </function>
-
-        <function model="estate.property.offer" name="action_offer_refused">
-            <value eval="[ref('demo_property_offer_3')]"/>
-        </function>
-
-        <function model="estate.property.offer" name="action_offer_refused">
-            <value eval="[ref('demo_property_offer_7')]"/>
-        </function>
-
-        <function model="estate.property.offer" name="action_offer_refused">
-            <value eval="[ref('demo_property_offer_9')]"/>
-        </function>
+        
     </data>
 </odoo>

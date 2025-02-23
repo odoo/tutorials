@@ -10,7 +10,6 @@
     "data": [
         "report/estate_property_report.xml"
     ],
-    "application": True,
     "installable": True,
     "license": "LGPL-3"
 }

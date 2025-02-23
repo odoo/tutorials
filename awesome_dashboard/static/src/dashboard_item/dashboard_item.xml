@@ -1,0 +1,9 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.dashboardItem">
+        <div class="card m-2 border border-2 border-dark" t-attf-style="width: {{18*props.size}}rem;">
+            <div class="card-body">
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+</templates>

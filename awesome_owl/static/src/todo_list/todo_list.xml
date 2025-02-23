@@ -1,10 +1,10 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todoList">
-        <div>
-            <input type="text" placeholder="Enter a task" t-on-keyup="addTodo"/>
+        <div class="border border-2 border-dark p-2 m-2">
+            <input type="text" placeholder="Enter a task" t-on-keyup="addTodo" t-ref="todoInput"/>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
                 <p class="bordered d-flex flex-col m-2" t-att-class="{'text-muted text-decoration-line-through': todo.isCompleted}">
-                    <TodoItem todo="todo" />
+                    <TodoItem todo="todo" toggleState.bind="toggleTodo" removeTodo.bind="removeTodo"/>
                 </p>
             </t>
         </div>

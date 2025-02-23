@@ -1,4 +1,4 @@
-from odoo import fields, models, Command
+from odoo import models, Command
 
 
 class EstateProperty(models.Model):
@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
         self.env['account.move'].check_access("create")
         res = super().action_sold_property()
         for record in self:
-            self.env['account.move'].sudo().create({
+            self.env['account.move'].create({
                 'partner_id': self.buyer_id.id,
                 "move_type": "out_invoice",
                 "invoice_line_ids": [
@@ -24,5 +24,4 @@ class EstateProperty(models.Model):
                     })
                 ]
                 })
-            print(" reached ".center(100, '='))
         return res

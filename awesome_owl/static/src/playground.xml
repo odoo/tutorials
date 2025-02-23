@@ -7,8 +7,12 @@
             </p>
             <Counter onChange="incrementSum"/>
             <Counter onChange="incrementSum"/>
-            <Card title="'Hello'" content="'World'"/>
-            <Card title="'Hello'" content="safeHtml"/>
+            <Card title="'Hello'">
+                World
+            </Card>
+            <Card title="'Hello'">
+                <Counter onChange="incrementSum"/>
+            </Card>
             <p class="mt-3">Total Sum: <t t-esc="sum.value"/></p>
         </div>
         <TodoList/>

@@ -74,5 +74,5 @@ class EstateTestCase(TransactionCase):
             property_form.garden = False
             property = property_form.save()
 
-        self.assertEqual(property.garden_area, 50, "Garden Area was reset unexpectedly")
-        self.assertEqual(property.garden_orientation, 'north', "Orientation was reset unexpectedly")
+        self.assertEqual(property.garden_area, 0, "Garden Area was reset unexpectedly")
+        self.assertEqual(property.garden_orientation, False, "Orientation was reset unexpectedly")

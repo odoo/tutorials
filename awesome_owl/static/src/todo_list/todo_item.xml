@@ -1,8 +1,10 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todoItem">
-        <div class="d-flex flex-col">
-            <p class="m-2"><t t-out="props.todo.id"/></p>
-            <p class="m-2"><t t-out="props.todo.description"/></p>
+        <div class="d-flex flex-row align-items-center gap-2 border border-2 border-dark p-2">
+            <input class="form-check-input" type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="onToggleState"/>
+            <p class="m-0"><t t-out="props.todo.id"/></p>
+            <p class="m-0"><t t-out="props.todo.description"/></p>
+            <span class="fa fa-remove text-danger" t-on-click="onRemove"/>
         </div>
     </t>
 </templates>

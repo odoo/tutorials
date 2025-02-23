@@ -1,11 +1,10 @@
-from odoo import api, models, fields
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "This is the model for the estate property type"
     _order = "name"
-
 
     name = fields.Char(string="Name", required=True)
     property_ids = fields.One2many(comodel_name="estate.property", inverse_name="property_type_id", string="Property")
