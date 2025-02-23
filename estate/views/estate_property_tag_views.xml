@@ -7,24 +7,25 @@
     </record>
 
     <record id="estate_property_tag_list_view" model="ir.ui.view">
-        <field name="name">Estate Property Tag View</field>
+        <field name="name">Estate Property Tag List View</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <list string="Property Tags" editable="bottom">
                 <field name="name"/>
-                <field name="color" widget="colorpicker"/> 
+                <field name="color" widget="colorpicker"/>
             </list>
         </field>
     </record>
 
     <record id="estate_property_tag_form_view" model="ir.ui.view">
-        <field name="name">eEstate Property Tag Form</field>
+        <field name="name">Estate Property Tag Form View</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <form string="Property Tag">
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="color" widget="colorpicker"/>
                     </group>
                 </sheet>
             </form>

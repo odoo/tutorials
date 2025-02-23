@@ -49,7 +49,6 @@
                             string="print" invisible="state != 'sold'"
                             class="oe_stat_button" icon="fa-print"></button>
                     </div>
-
                     <div>
                         <h1>
                             <field name="name" />
@@ -94,8 +93,7 @@
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="property_offer_ids"
-                                    readonly="state in ['offer_accepted', 'sold', 'cancelled']" />
+                                <field name="property_offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']" />
                             </group>
                         </page>
                     </notebook>

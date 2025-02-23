@@ -2,7 +2,7 @@
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, models, fields, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -27,43 +27,70 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area(sqm)")
-    garden_orientation = fields.Selection([ 
-        ('north', "North"),
-        ('south', "South"),
-        ('east', "East"),
-        ('west', "West")
-    ], string="Garden Orientation")
-    state = fields.Selection([
-        ('new', "New"),
-        ('offer_received', "Offer Received"),
-        ('offer_accepted', "Offer Accepted"),
-        ('sold', "Sold"),
-        ('cancelled', "Cancelled"),
-    ], default='new', required=True)
+    garden_orientation = fields.Selection(
+        selection=[ 
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West")
+        ], 
+        string="Garden Orientation"
+    )
+    state = fields.Selection(
+        selection=[  
+            ('new', "New"),  
+            ('offer_received', "Offer Received"),  
+            ('offer_accepted', "Offer Accepted"),  
+            ('sold', "Sold"),  
+            ('cancelled', "Cancelled")  
+        ],  
+        default='new',  
+        required=True  
+    )
+    active = fields.Boolean(string = 'Active', default=True)
+    property_type_id = fields.Many2one(
+        comodel_name="estate.property.type",
+        string="Property Type"
+    )
+    buyer_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Buyer"
+    )
+    salesperson_id = fields.Many2one(
+        comodel_name="res.users",
+        default=lambda self: self.env.user,
+        string="Salesperson"
+    )
+    property_tag_ids = fields.Many2many(
+        comodel_name="estate.property.tag",
+        string="Property Tag"
+    )
+    property_offer_ids = fields.One2many(
+        comodel_name="estate.property.offer", 
+        inverse_name="property_id",
+        string="Offers"
+    )
+    total_area = fields.Float(compute="_compute_total_area")
+    best_offer = fields.Float(compute="_compute_best_offer", store=True)
+    image = fields.Image(string="Property Image",
+         max_width=1024, 
+         max_height=1024
+    )
+    company_id = fields.Many2one(
+        comodel_name="res.company",
+        required=True, default=lambda self: self.env.company, 
+        help="This field specifies the company to which the property belongs."
+    )
 
-    active = fields.Boolean('Active', default=True)
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    buyer_id = fields.Many2one('res.partner', string="Buyer")
-    salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user, string="Salesperson")
-    property_tag_ids = fields.Many2many('estate.property.tag', string="Property Tag")
-    property_offer_ids= fields.One2many('estate.property.offer', 'property_id', string="Offers")
-
-    total_area = fields.Float(compute = '_compute_total_area')
-    best_offer = fields.Float(compute = '_compute_best_offer' , store = True)
-    image = fields.Image(string = "Property Image" , max_width=1024 , max_height=1024)
-
-    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company,
-        help="This field specifies the company to which the property belongs.")
-   
-    @api.depends('living_area' , 'garden_area')
+    @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
     @api.depends('property_offer_ids.price')
     def _compute_best_offer(self):
-        for record in self:
-            record.best_offer= max(record.property_offer_ids.mapped('price'), default=0.0)
+        for offer in self:
+            offer.best_offer= max(offer.property_offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -75,28 +102,27 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
+        for property in self:
+            if property.state == 'sold':
                 raise UserError(_("Sold properties cannot be cancelled."))
-            record.state = 'cancelled'
+            property.state = 'cancelled'
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
+        for property in self:
+            if property.state == 'cancelled':
                 raise UserError(_("Cancelled properties cannot be sold."))
-            elif 'accepted' not in [offer.status for offer in record.property_offer_ids]:
-                raise UserError(("You cannot sell the property without an accepted offer."))
+            elif 'accepted' not in [offer.status for offer in property.property_offer_ids]:
+                raise UserError(_("You cannot sell the property without an accepted offer."))
             else: 
-                record.state = 'sold' 
+                property.state = 'sold' 
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
-        for record in self:
-                if record.selling_price and record.selling_price < 0.9 * record.expected_price:
-                    raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
+        if any(property.selling_price and property.selling_price < 0.9 * property.expected_price for property in self):
+                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
 
     @api.ondelete(at_uninstall=False)
-    def _unlink_if_new_or_cancelled(self):
-        for record in self:
-            if record.state not in ['new', 'cancelled']:
+    def _restrict_property_unlink(self):
+        for property in self:
+            if property.state not in ['new', 'cancelled']:
                 raise exceptions.UserError(_("You can only delete properties that are New or Cancelled."))

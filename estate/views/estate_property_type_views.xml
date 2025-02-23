@@ -6,8 +6,8 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="view_property_type_list_view" model="ir.ui.view">
-        <field name="name">Estate Property Type List</field>
+    <record id="estate_property_type_list_view" model="ir.ui.view">
+        <field name="name">Estate Property Type List View</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list>
@@ -17,23 +17,23 @@
         </field>
     </record>
 
-    <record id="view_property_type_form_view" model="ir.ui.view">
-        <field name="name">Estate Property Type Form</field>
+    <record id="estate_property_type_form_view" model="ir.ui.view">
+        <field name="name">Estate Property Type Form View</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                            <button name="estate.estate_property_offer_action" type="action" class="oe_stat_button" icon="fa-money">
-                                <field name="offer_count" string="Offers" widget="statinfo"/>
-                            </button>
+                       <button name="estate.estate_property_offer_action" type="action" class="oe_stat_button" icon="fa-money">
+                           <field name="offer_count" string="Offers" widget="statinfo"/>
+                       </button>
                     </div>  
                     <group>
-                        <div><h1><field name="name"/></h1></div>
+                        <field name="name" placeholder="Property Type Name"/>
                     </group>
                     <notebook>
                         <page string="Properties">
-                            <field name = "property_ids">
+                            <field name="property_ids">
                                 <list>
                                     <field name="name"/>
                                     <field name="expected_price"/>

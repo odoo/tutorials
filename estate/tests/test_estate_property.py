@@ -13,13 +13,12 @@ class EstateTestCase(TransactionCase):
         super(EstateTestCase, cls).setUpClass()
 
         cls.property = cls.env['estate.property'].create({
-            'name': 'Test Property',
+            'name': "Test Property",
             'expected_price': 100,
             'state':'offer_accepted'
         })
-
         cls.partner = cls.env['res.partner'].create({
-            'name': 'Test Partner',
+            'name': "Test Partner",
         })
 
     def test_cannot_create_offer_for_sold_property(self):
@@ -61,7 +60,7 @@ class EstateTestCase(TransactionCase):
             self.assertIs(p.garden_orientation, False)
             p.garden = True
             self.assertEqual(p.garden_area, 10)
-            self.assertEqual(p.garden_orientation, "north")
+            self.assertEqual(p.garden_orientation, 'north')
             p.garden = False
             self.assertEqual(p.garden_area, 0)
             self.assertIs(p.garden_orientation, False)

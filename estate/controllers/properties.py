@@ -11,14 +11,12 @@ class PropertyController(http.Controller):
         domain = [('state', 'not in', ['sold', 'cancelled'])]
         properties_count = property_model.search_count(domain)
         per_page = 4    
-
         pager = request.website.pager(
             url='/properties',
             total=properties_count,
             page=page,
             step=per_page
         )
-
         properties = property_model.search(domain, offset=(page - 1) * per_page, limit=per_page)
         return request.render('estate.estate_property_list', {  
             'properties': properties,
@@ -30,7 +28,7 @@ class PropertyController(http.Controller):
         property_record = request.env['estate.property'].browse(property_id)
 
         if not property_record.exists():
-            return request.render('Not Found')
+            return request.render("Not Found")
         return request.render('estate.property_detail_template', {
             'property': property_record })
 

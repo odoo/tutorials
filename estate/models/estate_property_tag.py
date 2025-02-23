@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details. 
 
-from odoo import models, fields
+from odoo import fields, models
 
 class EstatePropertyTag(models.Model):
     _name = 'estate.property.tag'
@@ -10,5 +10,5 @@ class EstatePropertyTag(models.Model):
         ('unique_tag_name', "UNIQUE(name)", "The property tag name must be unique."),
     ]
 
-    name = fields.Char('Tag Name', required=True)
+    name = fields.Char(string="Tag Name", required=True)
     color = fields.Integer(string="Color")

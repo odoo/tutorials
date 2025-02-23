@@ -4,7 +4,7 @@
         <field name="name">Agent</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
     </record>
-
+    
     <record id="estate_group_manager" model="res.groups">
         <field name="name">Manager</field>
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Card">
+        <div class="card p-3 shadow-sm" style="width: 200px;">
+            <h5 class="fw-bold text-center" style="color: #9873AC;">
+                <t t-out="props.title"/>
+            </h5>
+            <p class="fw-bold text-center text-black">
+                <t t-out="props.content"/>
+            </p>
+        </div>
+    </t>
+</templates>

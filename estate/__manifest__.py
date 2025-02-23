@@ -7,7 +7,6 @@
     'version': "1.0",
     'author': "praj",
     'depends': ['base', 'website'],
-    'license': "LGPL-3",
     'data': [
         'report/estate_property_templates.xml',  
         'report/estate_property_reports.xml',  
@@ -27,5 +26,6 @@
         'demo/estate_property_demo_data.xml',   
     ],
     'installable': True,
-    'application': True
+    'application': True,
+    'license': "LGPL-3"
 }

@@ -5,7 +5,6 @@
             <t t-call="website.layout">
                 <div class="container">
                     <h1 class="text-center">🏡 Explore Your Dream Home 🏡</h1>
-
                     <div class="row g-4">
                         <t t-foreach="properties" t-as="property">
                             <div class="col-md-3">
@@ -17,7 +16,6 @@
                                         style="height: 250px; object-fit: cover; width: 100%; align-items: center" />
                                     <div class="card-body">
                                         <h5 class="card-title" t-out="property.name" />
-
                                         <div class="tags mb-3">
                                             <span class="badge bg-secondary text-white mx-1"
                                                 t-foreach="property.property_tag_ids"
@@ -25,13 +23,11 @@
                                                 <t t-out="tag.name" />
                                             </span>
                                         </div>
-
                                         <p class="card-type">
                                             <t t-out="property.property_type_id.name" />
                                         </p>
                                         <p class="card-text"><strong>Price:</strong> <t
                                                 t-out="property.expected_price" /> $</p>
-
                                         <div class="text-center mt-3">
                                             <a t-att-href="'/properties/%s' % property.id"
                                                 class="btn btn-lg text-white shadow-sm px-4 py-2 d-block mx-auto"
@@ -44,7 +40,6 @@
                             </div>
                         </t>
                     </div>
-
                     <div class="d-flex justify-content-center mt-4">
                         <t t-if="pager">
                             <t t-call="website.pager">

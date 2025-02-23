@@ -32,8 +32,6 @@
             </table>
         </t>
     </template>
-
-
     <template id="estate_property_offer_report_template">
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container">
@@ -60,16 +58,13 @@
                 </t>
             </t>
         </t>
-    </template>  
-
-    
+    </template>   
     <template id="estate_salesman_property_report_template">
         <t t-foreach="docs" t-as="user">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
                         <h2>Salesman: <span t-field="user.name"/></h2>
-
                         <t t-if="user.property_ids">
                             <t t-foreach="user.property_ids" t-as="property">
                                 <div class="property-section">
@@ -83,9 +78,7 @@
                                         <strong>Status:</strong>
                                         <span t-field="property.state"/>
                                     </div>
-
                                     <t t-call="estate.estate_property_offer_table"/>
-
                                 </div>
                             </t>
                         </t>
