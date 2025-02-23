@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.card">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text"><t t-esc="props.content"/></p>
+        <div class="card p-3 border rounded shadow">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3><t t-esc="props.title"/></h3>
+                <button class="btn" t-on-click="toggleContent">Toggle</button>
+            </div>
+            <div t-if="state.isOpen">
+                <t t-slot="default"/>
             </div>
         </div>
     </t>

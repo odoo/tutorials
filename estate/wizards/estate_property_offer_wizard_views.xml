@@ -7,7 +7,6 @@
         <field name="target">new</field>
         <field name="context">{"default_property_id": active_id}</field>
     </record>
-
     <record id="estate_property_offer_wizard_form" model="ir.ui.view">
         <field name="name">estate.property.offer.wizard.form</field>
         <field name="model">estate.property.offer.wizard</field>
@@ -25,7 +24,6 @@
             </form>
         </field>
     </record>
-
     <record id="estate_property_form_inherit_offer_wizard" model="ir.ui.view">
         <field name="name">estate.property.form.inherit.offer.wizard</field>
         <field name="model">estate.property</field>

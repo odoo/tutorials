@@ -15,18 +15,15 @@ class EstateTestCase(TransactionCase):
         cls.buyer = cls.env['res.partner'].create({
             'name': 'buyer',
         })
-
         cls.property = cls.env['estate.property'].create({
             'name': 'Test Property',
             'expected_price': 10000,
         })
-
         cls.offer1 = cls.env['estate.property.offer'].create({
             'partner_id': cls.buyer.id,
             'property_id': cls.property.id,
             'price': 9000,
         })
-
         cls.offer2 = cls.env['estate.property.offer'].create({
             'partner_id': cls.buyer.id,
             'property_id': cls.property.id,

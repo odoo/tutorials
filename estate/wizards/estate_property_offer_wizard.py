@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import _, api, fields, models
@@ -23,13 +22,13 @@ class EstatePropertyOfferWizard(models.TransientModel):
         })
 
         return {
-            "type": "ir.actions.client",
-            "tag": "display_notification",
-            "params": {
-                "title": _("Success"),
-                "message": _("Offer has been created successfully!"),
-                "type": "success",
-                "sticky": False,
-                "next": {"type": "ir.actions.act_window_close"}
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Success'),
+                'message': _('Offer has been created successfully!'),
+                'type': 'success',
+                'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'}
             }
         }
