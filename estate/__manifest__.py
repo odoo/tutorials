@@ -17,7 +17,8 @@
         "views/res_user.xml",
         "views/estate_menus.xml",
         "views/property_list_website_template.xml",
-        "views/property_details_website_template.xml"
+        "views/property_details_website_template.xml",
+        "wizard/estate_property_offer_wizard.xml",
     ],
     "demo": [
         "demo/property_demo_data.xml",
