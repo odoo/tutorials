@@ -79,6 +79,18 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
+    @api.onchange("offer_ids", "offer_ids.status")
+    def _compute_state(self):
+        for record in self:
+            if record.state in ("sold", "cancelled"):
+                continue
+            if any(offer.status == "accepted" for offer in record.offer_ids):
+                record.state = "offer accepted"
+            elif record.offer_ids:
+                record.state = "offer received"
+            else:
+                record.state = "new"
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden == True:
