@@ -21,6 +21,7 @@
     'data': [
         'views/views.xml',
     ],
+    'images': ['static/description/icon.png'],
     'assets': {
         'web.assets_backend': [
             'awesome_dashboard/static/src/**/*',

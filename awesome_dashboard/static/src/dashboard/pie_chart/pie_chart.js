@@ -1,12 +1,12 @@
 import { loadJS } from "@web/core/assets";
 import { Component, onWillStart, useRef, onMounted, onWillUnmount, onWillUpdateProps } from "@odoo/owl";
+import { getColor } from "@web/core/colors/colors";
 
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
     static props = {
-        label: String,
-        data: Object,
-        colors: Array
+        label: {type: String},
+        data: {type: Object},
     };
     setup() {
         this.canvasRef = useRef("pieCanvas");
@@ -26,6 +26,7 @@ export class PieChart extends Component {
     renderChart() {
         const labels = Object.keys(this.props.data);
         const data = Object.values(this.props.data);
+        const sliceColor = labels.map((_, index) => getColor(index*3));
         this.chart = new Chart(this.canvasRef.el, {
             type: "pie",
             data: {
@@ -34,7 +35,7 @@ export class PieChart extends Component {
                     {
                         label: this.props.label,
                         data: data,
-                        backgroundColor: this.props.colors,
+                        backgroundColor: sliceColor,
                     },
                 ],
             },
