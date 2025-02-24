@@ -27,11 +27,8 @@ class Estate_Property_Inheritence(models.Model):
             ]
             }
 
-        print(f"Invoice creation attempt for Buyer ID: {self.buyer_id.id}, Selling Price: {self.selling_price}")
-
-
-        if not self.env.user.has_group('estate.estate_group_user'):
-            raise UserError("You do not have permission to confirm the sale.")
+        # if not self.env.user.has_group('estate.estate_group_user'):
+        #     raise UserError("You do not have permission to confirm the sale.")
         
 
         invoice = self.env["account.move"].sudo().create(invoice_vals)

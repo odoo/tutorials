@@ -41,7 +41,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.property_id.state in ['sold', 'cancelled']:
                 raise exceptions.UserError("The property has already been sold or cancelled. The offer cannot be accepted.")
-
             accepted_offers = self.env['estate.property.offer'].search([
                 ('property_id', '=', record.property_id.id),
                 ('status', '=', 'accepted')])

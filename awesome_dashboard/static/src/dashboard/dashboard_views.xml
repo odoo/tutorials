@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-primary" t-on-click="openCustomers">Customers</button>
+            <button type="button" class="btn btn-outline-primary" t-on-click="openLeads">Leads</button>
+        </div>
+        <Layout display="{controlPanel:{}}" className="'o_dashboard h-100'">
+            <div class="o_dashboard_content"></div>
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                    Average amount of t-shirt by order this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.average_quantity"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.average_time"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of new orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.nb_new_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of cancelled orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.nb_cancelled_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Total amount of new orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.total_amount"/>
+                    </div>
+                </DashboardItem>
+                <!-- <DashboardItem title="T-shirt Sales by Size">
+                    <PieChart data="statistics"/>
+                </DashboardItem> -->
+            </div>
+        </Layout>
+    </t>
+</templates>

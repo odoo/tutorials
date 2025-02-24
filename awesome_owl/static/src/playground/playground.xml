@@ -22,6 +22,7 @@
                 <Card title="'Markup Content'" content="htmlText"/>
             </div>
         </div>
+        <hr class='mb-4'/>
         <h3>Counter Components</h3>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
@@ -31,8 +32,31 @@
                 <Counter onChange.bind="incrementSum"/>
             </div>
         </div>
-        <h5>Sum of Counter Values</h5>
+        <hr class='mb-4'/>
+        <h3>Sum of Counter Values</h3>
         <p>Sum:<t t-esc="state.sum"/></p>
+        <div>
+            <card title="TodoList">
+                <hr class='mb-4'/>
+                <div>
+                    <TodoList/>
+                </div>
+            </card>
+        </div>
+        <Card title="'card 1'">
+                content of card 1
+            </Card>
+            <Card title="'card 2'">
+                <Counter />
+            </Card>
+        
+        <!-- <h3>Generic card with slots</h3>
+        <Card title="Hello World">
+            <p>This is a card with some text.</p>
+        </Card>
+        <Card>
+            <Counter/>
+        </Card> -->
 
     </t>
 </templates>

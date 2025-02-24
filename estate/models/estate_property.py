@@ -5,7 +5,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property" 
+    _name = "estate.property"
     _description = "Real Estate Property"
     _inherit = ['mail.thread']
     _order = "id desc" 
@@ -14,7 +14,8 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(string="Expected Price", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
-    date_availability = fields.Date(string="Available From",copy=False, default=lambda self: date.today() + timedelta(days=(90)))
+    date_availability = fields.Date(string="Available From",copy=False, 
+     default=lambda self: date.today() + timedelta(days=(90)))
     selling_price = fields.Float(string="Selling Price",readonly=True,copy=False)
     bedrooms = fields.Integer(string="Bedrooms",default=2)
     living_area = fields.Integer(string="Living Area")
@@ -30,7 +31,7 @@ class EstateProperty(models.Model):
 
     state = fields.Selection([
         ('new', 'New'),('offer_received','Offer Received'),
-        ('offer_accepted', 'Offer Accepted'),
+        ('offer_accepted', 'Offer Accepted'),   
         ('sold', 'Sold'),('cancelled', 'Cancelled'),
         ],string="State",required=True,default='new',copy=False, group_expand='_group_expand_states')
                     
@@ -49,7 +50,6 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
@@ -66,8 +66,6 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         for record in self:
-            if not record.offer_ids:
-                raise UserError("No offers available to accept!")
             accepted_offer = record.offer_ids.filtered(lambda o: o.property_id.state == 'accepted')
             if not accepted_offer:
                 raise UserError("Accept an offer first!")
@@ -76,7 +74,7 @@ class EstateProperty(models.Model):
 
     def action_cancel_property(self):
         for record in self:
-                record.state = "cancelled"
+            record.state = "cancelled"
         return True
 
     _sql_constraints = [
@@ -108,4 +106,3 @@ class EstateProperty(models.Model):
             'target': 'new',
             'context': {'default_property_ids': [(6, 0, self.ids)]}
         }
-        
