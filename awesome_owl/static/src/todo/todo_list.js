@@ -31,4 +31,12 @@ export class TodoList extends Component {
         let item = this.todos.find((item) => item.id === id);
         item.isCompleted = !item.isCompleted;
     }
+
+    onItemRemoval(id) {
+        const index = this.todos.findIndex((item) => item.id === id);
+        if (index >= 0) {
+            // remove the element at index from list
+            this.todos.splice(index, 1);
+        }
+    }
 }
