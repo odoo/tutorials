@@ -7,9 +7,8 @@
                 <h5>
                     <t t-esc="props.title"/>
                 </h5>
-                <p>
-                    <t t-out="props.content"/>
-                </p>
+                <button t-on-click="toggleContent" class="btn">Toggle content</button>
+                <t t-slot="default" t-if="state.contentVisible"/>
             </div>
         </div>
     </t>
