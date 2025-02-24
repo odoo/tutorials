@@ -15,7 +15,7 @@ class EstateProperty(models.Model):
             if not has_access:
                 raise UserError(_("You do not have permission to modify properties."))
             invoice_vals ={
-                "name" : "INV/2025/test",
+                "name" : False,
                 "partner_id" : record.buyer_id.id,
                 "move_type" : "out_invoice",
                 "invoice_line_ids" : [

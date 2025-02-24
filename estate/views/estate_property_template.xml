@@ -1,11 +1,17 @@
 <?xml version="1.0"?>
 <odoo>
+    <!-- Properties list Page -->
     <template id="property_list_template" name="Property listing">
         <t t-call="website.layout">
             <div class="container">
                 <div class="container mt-4">
                     <h2 class="text-center">Available properties</h2>
                 </div>
+                <form action="/properties" method="GET" class="d-flex align-items-center mb-3">
+                    <input type="date" name="listed_after" class="form-control w-auto mx-2"
+                        t-att-value="listed_after or ''" />
+                    <button type="submit" class="btn btn-primary">Listed After</button>
+                </form>
                 <div class="row">
                     <t t-foreach="properties" t-as="property">
                         <div class="col-md-4 mb-4">
@@ -31,6 +37,7 @@
         </t>
     </template>
 
+    <!-- Property Page -->
     <template id="property_info_template" name="Property Details">
         <t t-call="website.layout">
             <div class="container mt-5">

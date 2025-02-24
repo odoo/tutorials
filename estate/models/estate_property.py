@@ -107,8 +107,11 @@ class EstateProperty(models.Model):
     # === Action Methods === #
     def action_sold(self):
         for record in self:
-            if record.state== "cancelled":
+            if record.state == "cancelled":
                 raise UserError(_("Cancelled properties cannot be sold"))
+            elif record.state != "offeraccepted":
+                raise UserError(_("No offers received yet") if record.state == "new"
+                else _("Select an offer to sell the property"))
             else:
                 record.state = "sold"
 
@@ -122,6 +125,17 @@ class EstateProperty(models.Model):
                 raise UserError(_("sold properties cannot be cancelled"))
             else:
                 record.state = "cancelled"
+
+    def action_open_add_offer(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Add Offer',
+            'res_model': 'estate.property.offer.wizard',
+            'view_mode': 'form',
+            'view_id': self.env.ref('estate.estate_propety_offer_wizard_form').id,
+            'target': 'new',
+            'context': {'default_property_ids': [(6, 0, self.ids)]}
+        }
 
     # Improvement Needed
     
@@ -141,11 +155,3 @@ class EstateProperty(models.Model):
         if 'state' in vals and self.state == 'offeraccepted':
             return self.env.ref('estate.mt_state_change')
         return super()._track_subtype(vals)
-
-    def rating_get_partner_id(self):
-        """Return the partner that gives the rating (Buyer)"""
-        return self.buyer_id
-
-    def rating_get_rated_partner_id(self):
-        """Return the partner that is rated (Seller)"""
-        return self.seller_id
