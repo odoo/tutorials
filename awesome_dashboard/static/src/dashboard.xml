@@ -7,6 +7,9 @@
                 <button t-on-click="openCustomers" type="button" class="btn btn-primary" title="Customers">Customers</button>
                 <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Leads">Leads</button>
             </t>
+            <t t-set-slot="default">
+                <DashboardItem size="1">I love milk</DashboardItem>
+            </t>
         </Layout>
     </t>
 
