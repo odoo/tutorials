@@ -1,0 +1,16 @@
+{
+    'name': 'Add Second UOM in POS',
+    'version': '1.0.0',
+    'category': 'Sales/Point of Sale',
+    'depends': ['point_of_sale', 'awesome_dashboard'],
+    'installable': True,
+    'application': True,
+    'license': 'LGPL-3',
+    
+    'assets': {
+        'point_of_sale._assets_pos': [
+            "pos_second_uom/static/src/**/*.js",
+            "pos_second_uom/static/src/**/*.xml",
+        ],
+    },
+}

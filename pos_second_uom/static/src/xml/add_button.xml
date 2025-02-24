@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-light btn-lg flex-shrink-0 ms-auto']" position="before">
+            <button class="btn btn-primary btn-lg" t-on-click="clickCustomButton">
+                <i class="fa fa-plus me-1" /> Custom Action
+            </button>
+        </xpath>
+    </t>
+</templates>
