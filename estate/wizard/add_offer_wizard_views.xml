@@ -1,7 +1,7 @@
 <odoo>
-    <record id="estate_property_add_offer_view_form" model="ir.ui.view">
-        <field name="name">estate.property.offer.wizard.form</field>
-        <field name="model">estate.property.offer.wizard</field>
+    <record id="add_offer_wizard_view_form" model="ir.ui.view">
+        <field name="name">add.offer.wizard.form</field>
+        <field name="model">add.offer.wizard</field>
         <field name="arch" type="xml">
             <form string="Add Offer">
                 <group>
@@ -11,21 +11,19 @@
                     <field name="property_ids"/>
                 </group>
                 <footer>
-                    <button string="Add Offer" type="object" name="add_offer" class="oe_highlight"/>
+                    <button string="Add Offer" type="object" name="action_add_offer" class="oe_highlight"/>
                     <button string="Cancel" special="cancel"/>
                 </footer>
             </form>
         </field>
     </record>
 
-    <record id="estate_property_add_offer_action" model="ir.actions.act_window">
+    <record id="add_offer_wizard_action" model="ir.actions.act_window">
         <field name="name">Add offer</field>
-        <field name="res_model">estate.property.offer.wizard</field>
+        <field name="res_model">add.offer.wizard</field>
         <field name="view_mode">form,list</field>
-        <field name="view_id" ref="estate_property_add_offer_view_form"/>
+        <field name="view_id" ref="add_offer_wizard_view_form"/>
         <field name="target">new</field>
-        <!-- for showing in the actions menu of above mentioned view modes -->
         <field name="binding_model_id" ref="model_estate_property"/>
-        <!-- need to pass context here for auto filling of wizard -->
     </record>
 </odoo>

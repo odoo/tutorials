@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.tests.common import TransactionCase
@@ -13,11 +12,11 @@ class TestEstateProperty(TransactionCase):
     def setUpClass(self):
         super().setUpClass()
         self.property = self.env['estate.property'].create({
-            'name': 'Test Property 1',
+            'name': "Test Property 1",
             'expected_price': 100,
         })
         self.partner = self.env['res.partner'].create({
-            'name': 'Test Partner 1',
+            'name': "Test Partner 1",
         })
 
     def test_total_area(self):
@@ -29,8 +28,6 @@ class TestEstateProperty(TransactionCase):
 
     def test_cannot_create_offer_for_sold_property(self):
         self.property.state ='sold'
-        # self.property.write({ 'state': 'sold' })
-        # self.property.action_sold()
         with self.assertRaises(UserError):
             self.env['estate.property.offer'].create({
                 'price': 100,
@@ -58,12 +55,12 @@ class TestEstateProperty(TransactionCase):
             self.property.action_cancel()
 
     def test_property_form(self):
-        with Form(self.property) as p:
-            self.assertEqual(p.garden_area, 0)
-            self.assertIs(p.garden_orientation, False)
-            p.garden = True
-            self.assertEqual(p.garden_area, 10)
-            self.assertEqual(p.garden_orientation, "north")
-            p.garden = False
-            self.assertEqual(p.garden_area, 0)
-            self.assertIs(p.garden_orientation, False)
+        with Form(self.property) as property:
+            self.assertEqual(property.garden_area, 0)
+            self.assertIs(property.garden_orientation, False)
+            property.garden = True
+            self.assertEqual(property.garden_area, 10)
+            self.assertEqual(property.garden_orientation, 'north')
+            property.garden = False
+            self.assertEqual(property.garden_area, 0)
+            self.assertIs(property.garden_orientation, False)
