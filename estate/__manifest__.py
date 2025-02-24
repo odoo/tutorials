@@ -4,6 +4,7 @@
     "application": True,
     "author": "Parth Pujara",
     "category": "Real Estate/Brokerage",
+    "icon": "/estate/static/src/img/icon.png",
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",

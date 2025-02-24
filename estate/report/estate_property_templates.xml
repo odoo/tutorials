@@ -6,31 +6,6 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <img t-if="property.company_id"
-                            t-att-src="image_data_uri(property.company_id.logo)" alt="Company Logo"
-                            style="max-height: 50px;" />
-                        <div style="border-top: 2px solid #000; margin: 10px 0;"></div>
-                        <div>
-                            <t t-out="property.company_id.name" />
-                        </div>
-                        <div>
-                            <t t-out="property.company_id.street" />
-                        </div>
-                        <div>
-                            <t t-out="property.company_id.street2" />
-                        </div>
-                        <div>
-                            <t t-out="property.company_id.city" />
-                        </div>
-                        <div>
-                            <t t-out="property.company_id.state_id" />
-                        </div>
-                        <div>
-                            <t t-out="property.company_id.zip" />
-                        </div>
-                        <div>
-                            <t t-out="property.company_id.country_id" />
-                        </div>
                         <div>
                             <strong>Salesman: </strong>
                             <span t-field="property.sales_person" />
