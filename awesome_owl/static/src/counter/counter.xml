@@ -4,8 +4,6 @@
         <div class="border p-3 d-inline-block mx-2">
             <p> Counter: <t t-esc="state.value"/> </p>
             <button class="btn btn-primary" t-on-click="increment">Increment</button>
-            <button class="btn btn-primary" t-on-click="decrement">Decrement</button>
-            <button class="btn btn-primary" t-on-click="reset">Reset</button>
         </div>
     </t>
 </templates>

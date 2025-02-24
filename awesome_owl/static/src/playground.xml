@@ -3,8 +3,11 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3 d-flex align-items-center">
             <div class="d-flex">
-                <Card title="'Card 1'" content="this.html1"/>
-                <Card title="'Card 2'" content="this.html2"/>
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+            </div>
+            <div>
+                Sum: <t t-esc="sum.value"/>
             </div>
         </div>
     </t>
